@@ -80,8 +80,12 @@ bash scripts/compare.sh .venv/bin/python              # laya vs rtk table
 
 | fixture (lines) | rtk | laya | lx |
 |---|---|---|---|
-| `git log` 50 | 14 | 50 (kept: unique facts) | 14+ via `rtk` stage |
+| `git log` 50 | 14 | 50 (kept: unique facts) | 14 via `rtk` stage |
 | npm log 502 | 8 | 10 | 10 via `laya` stage |
 | `git status` 5 | 6 | 5 | `rtk` stage |
+| build log 12K | 25 | 4,125 | 4,125 `laya` |
+| test run (pest) | 3 | 1,248 | 1,248 `laya` |
 
 Full method: `docs/COMPARISON.md`, regenerate: `scripts/compare.sh`.
+
+Tested on a real codebase: **Laya** (the [`convaiinnovations/laya`](https://huggingface.co/convaiinnovations/laya) System-1 decision engine) handles long, noisy logs — build logs, test output, tracebacks — keeping errors and failure neighborhoods while dropping routine DEBUG/INFO chatter. **RTK** owns deterministic rewrites (`git`, `ls`, `grep`, `ps`, `pest/phpunit`…). `lx` routes each command to the right one automatically.
