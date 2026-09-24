@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+"""Backward-compatible entry point. Real code lives in src/lx_prune/runner.py."""
+
+import os
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+
+
+def _have_laya():
+    try:
+        import importlib.util
+        return importlib.util.find_spec("laya") is not None
+    except Exception:
+        return False
+
+
+# Prefer the project venv (has `laya`) over system python. Graceful: if the
+# venv is gone, keep running wherever we are (laya-only fallback keeps all).
+# NB: compare sys.executable literally -- .venv/bin/python is a symlink to the
+# system binary, so Path.resolve() would wrongly report "already there".
+if os.getenv("LX_REEXEC", "0") != "1" and not _have_laya():
+    venv_py = HERE / ".venv" / "bin" / "python"
+    if os.path.abspath(sys.executable) != os.path.abspath(str(venv_py)) and venv_py.exists():
+        os.environ["LX_REEXEC"] = "1"
+        os.execv(str(venv_py), [str(venv_py), str(HERE / "lx")] + sys.argv[1:])
+
+sys.path.insert(0, str(HERE / "src"))
+
+from lx_prune.runner import USAGE, main  # noqa: E402
+
+__doc__ = USAGE
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main(sys.argv[1:]))
+    except BrokenPipeError:  # e.g. `lx status | head`
+        pass
