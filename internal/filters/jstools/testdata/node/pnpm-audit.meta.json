@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "pnpm",
+    "audit"
+  ],
+  "shell": "pnpm audit",
+  "exit_code": 1,
+  "description": "pnpm audit: 26 advisories as box-drawn key/value tables (critical/high/moderate/low), multi-path cells",
+  "cwd": "/home/user/src/pnpm-app"
+}

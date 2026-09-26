@@ -1,0 +1,19 @@
+collected 23 items
+[lx: 1 progress line hidden]
+=================================== FAILURES ===================================
+_____________________________ test_remove_unknown ______________________________
+    def test_remove_unknown(stock):
+>       assert stock.remove("ZZ") == 0
+tests/test_models.py:26:
+self = <inventory.models.Stock object at 0x10a6da0d0>, sku = 'ZZ', qty = 1
+    def remove(self, sku: str, qty: int = 1) -> int:
+>       have = self.counts[sku]
+E       KeyError: 'ZZ'
+inventory/models.py:33: KeyError
+=============================== warnings summary ===============================
+../../venv/lib/python3.9/site-packages/urllib3/__init__.py:35
+  ~/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+=========================== short test summary info ============================
+FAILED tests/test_models.py::test_remove_unknown - KeyError: 'ZZ'
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+==================== 1 failed, 4 passed, 1 warning in 0.17s ====================

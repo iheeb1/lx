@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "color.ui=always",
+    "diff",
+    "HEAD"
+  ],
+  "shell": "git -c color.ui=always diff HEAD",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git diff HEAD with color forced (ANSI) covering staged + unstaged changes",
+  "cwd": "repos/gin"
+}

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_basic.py"
+  ],
+  "shell": "pytest -p no:cacheprovider tests/test_basic.py",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): teardown error of a passing test, ZeroDivisionError through app code, and a test whose captured stdout contains a nested pytest report (section headers, E line, result line)",
+  "cwd": "/home/user/src/edge",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv: pytest 8.3.4, pytest-cov 4.1.0, pytest-xdist 3.8.0, pytest-timeout 2.4.0, pytest-rerunfailures 16.0.1, pip 21.2.4"
+}

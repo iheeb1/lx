@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "tsc",
+    "--noEmit",
+    "--foo"
+  ],
+  "shell": "npx tsc --noEmit --foo",
+  "exit_code": 1,
+  "description": "tsc with an unknown compiler option: one global diagnostic without a file",
+  "cwd": "/home/user/src/vite-app"
+}

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "adv/uncaught.js"
+  ],
+  "shell": "npx mocha adv/uncaught.js",
+  "repo": "scratch/mochaproj",
+  "exit_code": 7,
+  "description": "mocha 11 spec: an error thrown from a timer after the test finished",
+  "cwd": "repos/mochaproj"
+}

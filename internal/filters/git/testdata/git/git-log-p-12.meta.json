@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "-p",
+    "-n",
+    "12"
+  ],
+  "exit_code": 0,
+  "cwd": "/home/user/src/gin",
+  "description": "git log -p -n 12 in gin: default format with patches, larger than the 7000-token filter budget"
+}

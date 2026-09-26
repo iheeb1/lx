@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "diff",
+    "--stat"
+  ],
+  "shell": "git diff --stat",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git diff --stat summary for the same unstaged changes",
+  "cwd": "repos/gin"
+}

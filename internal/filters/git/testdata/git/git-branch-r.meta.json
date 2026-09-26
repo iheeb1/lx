@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "branch",
+    "-r"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/vite",
+  "description": "git branch -r in vite"
+}

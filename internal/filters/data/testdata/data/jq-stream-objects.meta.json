@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "jq",
+    ".packages | to_entries[] | {name: .key, version: .value.version, license: .value.license}",
+    "package-lock.json"
+  ],
+  "shell": "jq .packages | to_entries[] | {name: .key, version: .value.version, license: .value.license} package-lock.json",
+  "repo": "",
+  "exit_code": 0,
+  "description": "jq projecting a stream of small objects (7 KB): data the user shaped, kept",
+  "cwd": "repos/vite-react-app"
+}

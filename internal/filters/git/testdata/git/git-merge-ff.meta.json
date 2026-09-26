@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "merge",
+    "ff-src"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git merge fast-forward"
+}

@@ -1,0 +1,12 @@
+gcc -std=c89 -c -fPIC -pedantic -Wall -Werror -Wstrict-prototypes -Wwrite-strings -Wshadow -Winit-self -Wcast-align -Wformat=2 -Wmissing-prototypes -Wstrict-overflow=2 -Wcast-qual -Wc++-compat -Wundef -Wswitch-default -Wconversion -fstack-protector cJSON.c
+cJSON.c:605:9: error: unused variable 'precision' [-Werror,-Wunused-variable]
+  605 |     int precision = 17;
+      |         ^~~~~~~~~
+cJSON.c:1230:42: error: use of undeclared identifier 'buffer_length'
+ 1230 |     return cJSON_ParseWithOpts(value, 0, buffer_length);
+      |                                          ^~~~~~~~~~~~~
+cJSON.c:1310:12: error: returning 'unsigned char *' from a function with result type 'char *' converts between pointers to integer types where one is of the unique plain 'char' type and the other is not [-Werror,-Wpointer-sign]
+ 1310 |     return print(item, true, &global_hooks);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3 errors generated.
+make: *** [cJSON.o] Error 1

@@ -1,0 +1,32 @@
+app.conf
+empty
+logs
+node_modules
+src
+with space
+ünï-目录
+
+./empty:
+
+./logs:
+12:30:00.log
+
+./node_modules:
+dep
+
+./node_modules/dep:
+index.js
+
+./src:
+crlf.txt
+main.go
+sub
+
+./src/sub:
+a.go
+
+./with space:
+notes.md
+
+./ünï-目录:
+文件.txt

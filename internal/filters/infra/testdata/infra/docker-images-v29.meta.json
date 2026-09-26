@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "docker",
+    "images"
+  ],
+  "shell": "docker images",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of docker 29 `docker images` with the containerd image store (right-aligned size columns); the tool is not available on the capture host): 10 images, EXTRA empty for unused ones",
+  "cwd": "repos/shop"
+}

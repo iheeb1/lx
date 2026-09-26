@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "mvn",
+    "-o",
+    "package"
+  ],
+  "exit_code": 0,
+  "description": "mvn package (offline, Maven 3.9.16): compiles, 8 passing tests in 2 classes (one prints to stdout), builds the jar; BUILD SUCCESS",
+  "cwd": "/home/user/src/mvnapp"
+}

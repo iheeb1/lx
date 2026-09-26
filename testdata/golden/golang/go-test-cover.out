@@ -1,0 +1,7 @@
+ok  	github.com/gin-gonic/gin	0.781s	coverage: 98.7% of statements
+ok  	github.com/gin-gonic/gin/binding	1.372s	coverage: 99.8% of statements
+	github.com/gin-gonic/gin/codec/json		coverage: 0.0% of statements
+ok  	github.com/gin-gonic/gin/ginS	1.770s	coverage: 74.1% of statements
+ok  	github.com/gin-gonic/gin/internal/bytesconv	2.616s	coverage: 100.0% of statements
+ok  	github.com/gin-gonic/gin/internal/fs	0.893s	coverage: 100.0% of statements
+ok  	github.com/gin-gonic/gin/render	2.243s	coverage: 100.0% of statements

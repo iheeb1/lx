@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "-n",
+    "60"
+  ],
+  "shell": "git log -n 60",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git log -n 60 in gin (default medium format, merge-free PR squash commits with long bodies)",
+  "cwd": "repos/gin"
+}

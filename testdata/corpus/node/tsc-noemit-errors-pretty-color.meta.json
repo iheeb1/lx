@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "tsc",
+    "--noEmit",
+    "--pretty"
+  ],
+  "shell": "npx tsc --noEmit --pretty",
+  "repo": "jquense/yup",
+  "exit_code": 2,
+  "description": "same tsc run with --pretty: ANSI-colored diagnostics with code frames and summary table",
+  "cwd": "repos/yup"
+}

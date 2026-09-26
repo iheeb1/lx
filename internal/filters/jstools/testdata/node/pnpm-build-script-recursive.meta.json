@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "pnpm",
+    "build"
+  ],
+  "shell": "pnpm build",
+  "exit_code": 2,
+  "description": "pnpm build whose script runs pnpm -r build: same failure plus ELIFECYCLE",
+  "cwd": "/home/user/src/pnpm-ws"
+}

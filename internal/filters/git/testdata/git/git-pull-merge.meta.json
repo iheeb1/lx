@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "pull.rebase=false",
+    "pull",
+    "--no-edit",
+    "origin",
+    "main"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git pull producing a merge commit (ort strategy) with a diffstat"
+}

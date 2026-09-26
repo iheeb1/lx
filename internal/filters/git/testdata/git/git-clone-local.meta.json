@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "clone",
+    "origin.git",
+    "clone2"
+  ],
+  "exit_code": 0,
+  "cwd": "/home/user/gitplay",
+  "description": "git clone of a local repository"
+}

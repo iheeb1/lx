@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "kubectl",
+    "logs",
+    "orders-7c9d5b8f6-x2kqp",
+    "--previous"
+  ],
+  "shell": "kubectl logs orders-7c9d5b8f6-x2kqp --previous",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of klog-formatted logs of a Go pod as printed by kubectl logs; the tool is not available on the capture host): 120 klog lines (retries as W lines) ending in a nil-pointer panic with a goroutine trace",
+  "cwd": "repos/shop"
+}

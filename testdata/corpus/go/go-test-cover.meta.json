@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-cover",
+    "./..."
+  ],
+  "shell": "go test -cover ./...",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "go test -cover ./... in gin with per-package coverage percentages",
+  "cwd": "repos/gin"
+}

@@ -1,0 +1,6 @@
+ Exception during run: /home/user/src/mochaproj/test2/broken.js:5
+  })
+  ^
+
+SyntaxError: Unexpected token '}'
+    … 15 library frames (node:internal, mocha)

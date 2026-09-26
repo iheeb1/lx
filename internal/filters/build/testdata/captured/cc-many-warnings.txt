@@ -1,0 +1,367 @@
+gen.c:3:61: warning: unused variable 'unused_0' [-Wunused-variable]
+    3 | int handler_0(void *ctx, int flags, const char *name) { int unused_0; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:3:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+    3 | int handler_0(void *ctx, int flags, const char *name) { int unused_0; return (int)strlen(name); }
+      |                     ^
+gen.c:3:30: warning: unused parameter 'flags' [-Wunused-parameter]
+    3 | int handler_0(void *ctx, int flags, const char *name) { int unused_0; return (int)strlen(name); }
+      |                              ^
+gen.c:4:61: warning: unused variable 'unused_1' [-Wunused-variable]
+    4 | int handler_1(void *ctx, int flags, const char *name) { int unused_1; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:4:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+    4 | int handler_1(void *ctx, int flags, const char *name) { int unused_1; return (int)strlen(name); }
+      |                     ^
+gen.c:4:30: warning: unused parameter 'flags' [-Wunused-parameter]
+    4 | int handler_1(void *ctx, int flags, const char *name) { int unused_1; return (int)strlen(name); }
+      |                              ^
+gen.c:5:61: warning: unused variable 'unused_2' [-Wunused-variable]
+    5 | int handler_2(void *ctx, int flags, const char *name) { int unused_2; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:5:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+    5 | int handler_2(void *ctx, int flags, const char *name) { int unused_2; return (int)strlen(name); }
+      |                     ^
+gen.c:5:30: warning: unused parameter 'flags' [-Wunused-parameter]
+    5 | int handler_2(void *ctx, int flags, const char *name) { int unused_2; return (int)strlen(name); }
+      |                              ^
+gen.c:6:61: warning: unused variable 'unused_3' [-Wunused-variable]
+    6 | int handler_3(void *ctx, int flags, const char *name) { int unused_3; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:6:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+    6 | int handler_3(void *ctx, int flags, const char *name) { int unused_3; return (int)strlen(name); }
+      |                     ^
+gen.c:6:30: warning: unused parameter 'flags' [-Wunused-parameter]
+    6 | int handler_3(void *ctx, int flags, const char *name) { int unused_3; return (int)strlen(name); }
+      |                              ^
+gen.c:7:61: warning: unused variable 'unused_4' [-Wunused-variable]
+    7 | int handler_4(void *ctx, int flags, const char *name) { int unused_4; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:7:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+    7 | int handler_4(void *ctx, int flags, const char *name) { int unused_4; return (int)strlen(name); }
+      |                     ^
+gen.c:7:30: warning: unused parameter 'flags' [-Wunused-parameter]
+    7 | int handler_4(void *ctx, int flags, const char *name) { int unused_4; return (int)strlen(name); }
+      |                              ^
+gen.c:8:61: warning: unused variable 'unused_5' [-Wunused-variable]
+    8 | int handler_5(void *ctx, int flags, const char *name) { int unused_5; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:8:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+    8 | int handler_5(void *ctx, int flags, const char *name) { int unused_5; return (int)strlen(name); }
+      |                     ^
+gen.c:8:30: warning: unused parameter 'flags' [-Wunused-parameter]
+    8 | int handler_5(void *ctx, int flags, const char *name) { int unused_5; return (int)strlen(name); }
+      |                              ^
+gen.c:9:61: warning: unused variable 'unused_6' [-Wunused-variable]
+    9 | int handler_6(void *ctx, int flags, const char *name) { int unused_6; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:9:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+    9 | int handler_6(void *ctx, int flags, const char *name) { int unused_6; return (int)strlen(name); }
+      |                     ^
+gen.c:9:30: warning: unused parameter 'flags' [-Wunused-parameter]
+    9 | int handler_6(void *ctx, int flags, const char *name) { int unused_6; return (int)strlen(name); }
+      |                              ^
+gen.c:10:61: warning: unused variable 'unused_7' [-Wunused-variable]
+   10 | int handler_7(void *ctx, int flags, const char *name) { int unused_7; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:10:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+   10 | int handler_7(void *ctx, int flags, const char *name) { int unused_7; return (int)strlen(name); }
+      |                     ^
+gen.c:10:30: warning: unused parameter 'flags' [-Wunused-parameter]
+   10 | int handler_7(void *ctx, int flags, const char *name) { int unused_7; return (int)strlen(name); }
+      |                              ^
+gen.c:11:61: warning: unused variable 'unused_8' [-Wunused-variable]
+   11 | int handler_8(void *ctx, int flags, const char *name) { int unused_8; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:11:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+   11 | int handler_8(void *ctx, int flags, const char *name) { int unused_8; return (int)strlen(name); }
+      |                     ^
+gen.c:11:30: warning: unused parameter 'flags' [-Wunused-parameter]
+   11 | int handler_8(void *ctx, int flags, const char *name) { int unused_8; return (int)strlen(name); }
+      |                              ^
+gen.c:12:61: warning: unused variable 'unused_9' [-Wunused-variable]
+   12 | int handler_9(void *ctx, int flags, const char *name) { int unused_9; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:12:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+   12 | int handler_9(void *ctx, int flags, const char *name) { int unused_9; return (int)strlen(name); }
+      |                     ^
+gen.c:12:30: warning: unused parameter 'flags' [-Wunused-parameter]
+   12 | int handler_9(void *ctx, int flags, const char *name) { int unused_9; return (int)strlen(name); }
+      |                              ^
+gen.c:13:62: warning: unused variable 'unused_10' [-Wunused-variable]
+   13 | int handler_10(void *ctx, int flags, const char *name) { int unused_10; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:13:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   13 | int handler_10(void *ctx, int flags, const char *name) { int unused_10; return (int)strlen(name); }
+      |                      ^
+gen.c:13:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   13 | int handler_10(void *ctx, int flags, const char *name) { int unused_10; return (int)strlen(name); }
+      |                               ^
+gen.c:14:62: warning: unused variable 'unused_11' [-Wunused-variable]
+   14 | int handler_11(void *ctx, int flags, const char *name) { int unused_11; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:14:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   14 | int handler_11(void *ctx, int flags, const char *name) { int unused_11; return (int)strlen(name); }
+      |                      ^
+gen.c:14:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   14 | int handler_11(void *ctx, int flags, const char *name) { int unused_11; return (int)strlen(name); }
+      |                               ^
+gen.c:15:62: warning: unused variable 'unused_12' [-Wunused-variable]
+   15 | int handler_12(void *ctx, int flags, const char *name) { int unused_12; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:15:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   15 | int handler_12(void *ctx, int flags, const char *name) { int unused_12; return (int)strlen(name); }
+      |                      ^
+gen.c:15:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   15 | int handler_12(void *ctx, int flags, const char *name) { int unused_12; return (int)strlen(name); }
+      |                               ^
+gen.c:16:62: warning: unused variable 'unused_13' [-Wunused-variable]
+   16 | int handler_13(void *ctx, int flags, const char *name) { int unused_13; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:16:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   16 | int handler_13(void *ctx, int flags, const char *name) { int unused_13; return (int)strlen(name); }
+      |                      ^
+gen.c:16:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   16 | int handler_13(void *ctx, int flags, const char *name) { int unused_13; return (int)strlen(name); }
+      |                               ^
+gen.c:17:62: warning: unused variable 'unused_14' [-Wunused-variable]
+   17 | int handler_14(void *ctx, int flags, const char *name) { int unused_14; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:17:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   17 | int handler_14(void *ctx, int flags, const char *name) { int unused_14; return (int)strlen(name); }
+      |                      ^
+gen.c:17:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   17 | int handler_14(void *ctx, int flags, const char *name) { int unused_14; return (int)strlen(name); }
+      |                               ^
+gen.c:18:62: warning: unused variable 'unused_15' [-Wunused-variable]
+   18 | int handler_15(void *ctx, int flags, const char *name) { int unused_15; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:18:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   18 | int handler_15(void *ctx, int flags, const char *name) { int unused_15; return (int)strlen(name); }
+      |                      ^
+gen.c:18:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   18 | int handler_15(void *ctx, int flags, const char *name) { int unused_15; return (int)strlen(name); }
+      |                               ^
+gen.c:19:62: warning: unused variable 'unused_16' [-Wunused-variable]
+   19 | int handler_16(void *ctx, int flags, const char *name) { int unused_16; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:19:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   19 | int handler_16(void *ctx, int flags, const char *name) { int unused_16; return (int)strlen(name); }
+      |                      ^
+gen.c:19:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   19 | int handler_16(void *ctx, int flags, const char *name) { int unused_16; return (int)strlen(name); }
+      |                               ^
+gen.c:20:62: warning: unused variable 'unused_17' [-Wunused-variable]
+   20 | int handler_17(void *ctx, int flags, const char *name) { int unused_17; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:20:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   20 | int handler_17(void *ctx, int flags, const char *name) { int unused_17; return (int)strlen(name); }
+      |                      ^
+gen.c:20:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   20 | int handler_17(void *ctx, int flags, const char *name) { int unused_17; return (int)strlen(name); }
+      |                               ^
+gen.c:21:62: warning: unused variable 'unused_18' [-Wunused-variable]
+   21 | int handler_18(void *ctx, int flags, const char *name) { int unused_18; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:21:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   21 | int handler_18(void *ctx, int flags, const char *name) { int unused_18; return (int)strlen(name); }
+      |                      ^
+gen.c:21:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   21 | int handler_18(void *ctx, int flags, const char *name) { int unused_18; return (int)strlen(name); }
+      |                               ^
+gen.c:22:62: warning: unused variable 'unused_19' [-Wunused-variable]
+   22 | int handler_19(void *ctx, int flags, const char *name) { int unused_19; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:22:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   22 | int handler_19(void *ctx, int flags, const char *name) { int unused_19; return (int)strlen(name); }
+      |                      ^
+gen.c:22:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   22 | int handler_19(void *ctx, int flags, const char *name) { int unused_19; return (int)strlen(name); }
+      |                               ^
+gen.c:23:62: warning: unused variable 'unused_20' [-Wunused-variable]
+   23 | int handler_20(void *ctx, int flags, const char *name) { int unused_20; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:23:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   23 | int handler_20(void *ctx, int flags, const char *name) { int unused_20; return (int)strlen(name); }
+      |                      ^
+gen.c:23:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   23 | int handler_20(void *ctx, int flags, const char *name) { int unused_20; return (int)strlen(name); }
+      |                               ^
+gen.c:24:62: warning: unused variable 'unused_21' [-Wunused-variable]
+   24 | int handler_21(void *ctx, int flags, const char *name) { int unused_21; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:24:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   24 | int handler_21(void *ctx, int flags, const char *name) { int unused_21; return (int)strlen(name); }
+      |                      ^
+gen.c:24:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   24 | int handler_21(void *ctx, int flags, const char *name) { int unused_21; return (int)strlen(name); }
+      |                               ^
+gen.c:25:62: warning: unused variable 'unused_22' [-Wunused-variable]
+   25 | int handler_22(void *ctx, int flags, const char *name) { int unused_22; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:25:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   25 | int handler_22(void *ctx, int flags, const char *name) { int unused_22; return (int)strlen(name); }
+      |                      ^
+gen.c:25:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   25 | int handler_22(void *ctx, int flags, const char *name) { int unused_22; return (int)strlen(name); }
+      |                               ^
+gen.c:26:62: warning: unused variable 'unused_23' [-Wunused-variable]
+   26 | int handler_23(void *ctx, int flags, const char *name) { int unused_23; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:26:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   26 | int handler_23(void *ctx, int flags, const char *name) { int unused_23; return (int)strlen(name); }
+      |                      ^
+gen.c:26:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   26 | int handler_23(void *ctx, int flags, const char *name) { int unused_23; return (int)strlen(name); }
+      |                               ^
+gen.c:27:62: warning: unused variable 'unused_24' [-Wunused-variable]
+   27 | int handler_24(void *ctx, int flags, const char *name) { int unused_24; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:27:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   27 | int handler_24(void *ctx, int flags, const char *name) { int unused_24; return (int)strlen(name); }
+      |                      ^
+gen.c:27:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   27 | int handler_24(void *ctx, int flags, const char *name) { int unused_24; return (int)strlen(name); }
+      |                               ^
+gen.c:28:62: warning: unused variable 'unused_25' [-Wunused-variable]
+   28 | int handler_25(void *ctx, int flags, const char *name) { int unused_25; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:28:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   28 | int handler_25(void *ctx, int flags, const char *name) { int unused_25; return (int)strlen(name); }
+      |                      ^
+gen.c:28:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   28 | int handler_25(void *ctx, int flags, const char *name) { int unused_25; return (int)strlen(name); }
+      |                               ^
+gen.c:29:62: warning: unused variable 'unused_26' [-Wunused-variable]
+   29 | int handler_26(void *ctx, int flags, const char *name) { int unused_26; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:29:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   29 | int handler_26(void *ctx, int flags, const char *name) { int unused_26; return (int)strlen(name); }
+      |                      ^
+gen.c:29:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   29 | int handler_26(void *ctx, int flags, const char *name) { int unused_26; return (int)strlen(name); }
+      |                               ^
+gen.c:30:62: warning: unused variable 'unused_27' [-Wunused-variable]
+   30 | int handler_27(void *ctx, int flags, const char *name) { int unused_27; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:30:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   30 | int handler_27(void *ctx, int flags, const char *name) { int unused_27; return (int)strlen(name); }
+      |                      ^
+gen.c:30:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   30 | int handler_27(void *ctx, int flags, const char *name) { int unused_27; return (int)strlen(name); }
+      |                               ^
+gen.c:31:62: warning: unused variable 'unused_28' [-Wunused-variable]
+   31 | int handler_28(void *ctx, int flags, const char *name) { int unused_28; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:31:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   31 | int handler_28(void *ctx, int flags, const char *name) { int unused_28; return (int)strlen(name); }
+      |                      ^
+gen.c:31:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   31 | int handler_28(void *ctx, int flags, const char *name) { int unused_28; return (int)strlen(name); }
+      |                               ^
+gen.c:32:62: warning: unused variable 'unused_29' [-Wunused-variable]
+   32 | int handler_29(void *ctx, int flags, const char *name) { int unused_29; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:32:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   32 | int handler_29(void *ctx, int flags, const char *name) { int unused_29; return (int)strlen(name); }
+      |                      ^
+gen.c:32:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   32 | int handler_29(void *ctx, int flags, const char *name) { int unused_29; return (int)strlen(name); }
+      |                               ^
+gen.c:33:62: warning: unused variable 'unused_30' [-Wunused-variable]
+   33 | int handler_30(void *ctx, int flags, const char *name) { int unused_30; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:33:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   33 | int handler_30(void *ctx, int flags, const char *name) { int unused_30; return (int)strlen(name); }
+      |                      ^
+gen.c:33:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   33 | int handler_30(void *ctx, int flags, const char *name) { int unused_30; return (int)strlen(name); }
+      |                               ^
+gen.c:34:62: warning: unused variable 'unused_31' [-Wunused-variable]
+   34 | int handler_31(void *ctx, int flags, const char *name) { int unused_31; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:34:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   34 | int handler_31(void *ctx, int flags, const char *name) { int unused_31; return (int)strlen(name); }
+      |                      ^
+gen.c:34:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   34 | int handler_31(void *ctx, int flags, const char *name) { int unused_31; return (int)strlen(name); }
+      |                               ^
+gen.c:35:62: warning: unused variable 'unused_32' [-Wunused-variable]
+   35 | int handler_32(void *ctx, int flags, const char *name) { int unused_32; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:35:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   35 | int handler_32(void *ctx, int flags, const char *name) { int unused_32; return (int)strlen(name); }
+      |                      ^
+gen.c:35:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   35 | int handler_32(void *ctx, int flags, const char *name) { int unused_32; return (int)strlen(name); }
+      |                               ^
+gen.c:36:62: warning: unused variable 'unused_33' [-Wunused-variable]
+   36 | int handler_33(void *ctx, int flags, const char *name) { int unused_33; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:36:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   36 | int handler_33(void *ctx, int flags, const char *name) { int unused_33; return (int)strlen(name); }
+      |                      ^
+gen.c:36:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   36 | int handler_33(void *ctx, int flags, const char *name) { int unused_33; return (int)strlen(name); }
+      |                               ^
+gen.c:37:62: warning: unused variable 'unused_34' [-Wunused-variable]
+   37 | int handler_34(void *ctx, int flags, const char *name) { int unused_34; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:37:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   37 | int handler_34(void *ctx, int flags, const char *name) { int unused_34; return (int)strlen(name); }
+      |                      ^
+gen.c:37:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   37 | int handler_34(void *ctx, int flags, const char *name) { int unused_34; return (int)strlen(name); }
+      |                               ^
+gen.c:38:62: warning: unused variable 'unused_35' [-Wunused-variable]
+   38 | int handler_35(void *ctx, int flags, const char *name) { int unused_35; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:38:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   38 | int handler_35(void *ctx, int flags, const char *name) { int unused_35; return (int)strlen(name); }
+      |                      ^
+gen.c:38:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   38 | int handler_35(void *ctx, int flags, const char *name) { int unused_35; return (int)strlen(name); }
+      |                               ^
+gen.c:39:62: warning: unused variable 'unused_36' [-Wunused-variable]
+   39 | int handler_36(void *ctx, int flags, const char *name) { int unused_36; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:39:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   39 | int handler_36(void *ctx, int flags, const char *name) { int unused_36; return (int)strlen(name); }
+      |                      ^
+gen.c:39:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   39 | int handler_36(void *ctx, int flags, const char *name) { int unused_36; return (int)strlen(name); }
+      |                               ^
+gen.c:40:62: warning: unused variable 'unused_37' [-Wunused-variable]
+   40 | int handler_37(void *ctx, int flags, const char *name) { int unused_37; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:40:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   40 | int handler_37(void *ctx, int flags, const char *name) { int unused_37; return (int)strlen(name); }
+      |                      ^
+gen.c:40:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   40 | int handler_37(void *ctx, int flags, const char *name) { int unused_37; return (int)strlen(name); }
+      |                               ^
+gen.c:41:62: warning: unused variable 'unused_38' [-Wunused-variable]
+   41 | int handler_38(void *ctx, int flags, const char *name) { int unused_38; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:41:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   41 | int handler_38(void *ctx, int flags, const char *name) { int unused_38; return (int)strlen(name); }
+      |                      ^
+gen.c:41:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   41 | int handler_38(void *ctx, int flags, const char *name) { int unused_38; return (int)strlen(name); }
+      |                               ^
+gen.c:42:62: warning: unused variable 'unused_39' [-Wunused-variable]
+   42 | int handler_39(void *ctx, int flags, const char *name) { int unused_39; return (int)strlen(name); }
+      |                                                              ^~~~~~~~~
+gen.c:42:22: warning: unused parameter 'ctx' [-Wunused-parameter]
+   42 | int handler_39(void *ctx, int flags, const char *name) { int unused_39; return (int)strlen(name); }
+      |                      ^
+gen.c:42:31: warning: unused parameter 'flags' [-Wunused-parameter]
+   42 | int handler_39(void *ctx, int flags, const char *name) { int unused_39; return (int)strlen(name); }
+      |                               ^
+gen.c:43:43: warning: comparison of integers of different signs: 'int' and 'unsigned int' [-Wsign-compare]
+   43 | int compare(int a, unsigned b) { return a < b; }
+      |                                         ~ ^ ~
+gen.c:44:44: warning: comparison of integers of different signs: 'int' and 'unsigned int' [-Wsign-compare]
+   44 | int compare2(int a, unsigned b) { return a > b; }
+      |                                          ~ ^ ~
+122 warnings generated.

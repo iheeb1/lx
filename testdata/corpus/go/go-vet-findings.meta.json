@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "vet",
+    "./..."
+  ],
+  "shell": "go vet ./...",
+  "repo": "gin-gonic/gin",
+  "exit_code": 1,
+  "description": "go vet ./... in gin reporting printf verb/arg mismatches, copylocks (value receiver on struct with sync.RWMutex), bad struct tag, and httpresponse misuse",
+  "cwd": "repos/gin"
+}

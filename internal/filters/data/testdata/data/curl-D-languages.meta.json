@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "curl",
+    "-sD",
+    "-",
+    "https://api.github.com/repos/golang/go/languages"
+  ],
+  "shell": "curl -sD - https://api.github.com/repos/golang/go/languages",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -sD - (dump headers to stdout): head then small JSON body",
+  "cwd": "data/api"
+}

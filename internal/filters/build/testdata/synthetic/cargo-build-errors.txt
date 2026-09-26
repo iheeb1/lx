@@ -1,0 +1,60 @@
+   Compiling proc-macro2 v1.0.86
+   Compiling unicode-ident v1.0.12
+   Compiling libc v0.2.155
+   Compiling cfg-if v1.0.0
+   Compiling quote v1.0.36
+   Compiling syn v2.0.72
+   Compiling serde v1.0.204
+   Compiling memchr v2.7.4
+   Compiling itoa v1.0.11
+   Compiling ryu v1.0.18
+   Compiling serde_derive v1.0.204
+   Compiling serde_json v1.0.120
+   Compiling autocfg v1.3.0
+   Compiling once_cell v1.19.0
+   Compiling log v0.4.22
+   Compiling quick-error v2.0.1
+   Compiling demo v0.1.0 (/home/user/src/demo)
+warning: unused import: `std::io::Write`
+ --> src/main.rs:2:5
+  |
+2 | use std::io::Write;
+  |     ^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+error[E0308]: mismatched types
+  --> src/main.rs:18:22
+   |
+18 |     let port: u16 = config.get("port");
+   |               ---   ^^^^^^^^^^^^^^^^^^ expected `u16`, found `Option<&String>`
+   |               |
+   |               expected due to this
+   |
+   = note: expected type `u16`
+              found enum `Option<&String>`
+
+error[E0425]: cannot find value `retries` in this scope
+  --> src/main.rs:24:31
+   |
+24 |     for attempt in 0..retries {
+   |                       ^^^^^^^ help: a local variable with a similar name exists: `retry`
+
+error[E0599]: no method named `connect_timeout` found for struct `Client` in the current scope
+  --> src/net.rs:9:14
+   |
+4  | pub struct Client {
+   | ----------------- method `connect_timeout` not found for this struct
+...
+9  |     client.connect_timeout(Duration::from_secs(5))?;
+   |            ^^^^^^^^^^^^^^^ method not found in `Client`
+   |
+help: there is a method `connect` with a similar name
+   |
+9  |     client.connect(Duration::from_secs(5))?;
+   |            ~~~~~~~
+
+Some errors have detailed explanations: E0308, E0425, E0599.
+For more information about an error, try `rustc --explain E0308`.
+warning: `demo` (bin "demo") generated 1 warning
+error: could not compile `demo` (bin "demo") due to 3 previous errors; 1 warning emitted

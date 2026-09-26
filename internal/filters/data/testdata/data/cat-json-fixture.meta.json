@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "test/fixture/urltestdata.json"
+  ],
+  "shell": "cat test/fixture/urltestdata.json",
+  "repo": "",
+  "exit_code": 0,
+  "description": "cat of a 165 KB JSON test fixture (array of strings and objects)",
+  "cwd": "repos/ufo"
+}

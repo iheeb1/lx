@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "ls",
+    "-R"
+  ],
+  "shell": "ls -R",
+  "exit_code": 0,
+  "description": "ls -R with no operand",
+  "cwd": "/home/user/src/gin"
+}

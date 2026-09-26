@@ -1,0 +1,98 @@
+* commit adbc8813901bba65827259daa8e22ff94ec1f30e
+| Author: Shudhanshu Singh <sudhanshuwriterblc@gmail.com>
+| Date:   Sat Jul 11 06:13:07 2026 +0530
+|
+|     fix: resolve macOS test link failure and update lint rules (#2429)
+|
+|     * chore(ci): fix macOS test linking and tune linter exclusions
+|
+|     * fix: resolve macOS linking errors and suppress unused staticcheck nolint warnings in tests
+|
+|     * fix(ci): restrict macOS link workaround to Go < 1.24
+|
+* commit ad460ea8f249db69c943a365fb84f3a59042d54e
+| Author: takanuva15 <6986426+takanuva15@users.noreply.github.com>
+| Date:   Sat Apr 25 19:07:41 2026 -0400
+|
+|     Add cobra unique args validator (#2397)
+|
+* commit 746ef07158728502482cea9f880a6f4b21ef29a9
+| Author: Varun Chawla <34209028+veeceey@users.noreply.github.com>
+| Date:   Fri Apr 24 13:41:57 2026 -0700
+|
+|     fix: prevent completions from mutating os.Args via append side effect (#2356)
+|
+|     Fixes #2257
+|
+|     When getCompletions() checks for interspersed flags, it calls
+|     append(finalArgs, "--") to temporarily add a "--" sentinel. However,
+|     finalArgs is a sub-slice of the original args (ultimately derived from
+|     os.Args[1:] or SetArgs), and if the sub-slice has spare capacity in its
+|     backing array, append writes "--" into the shared array, corrupting
+|     the caller's data.
+|
+|     This is particularly visible when TraverseChildren is enabled: the
+|     Traverse method returns sub-slices that share the original backing
+|     array. A user's ValidArgsFunction inspecting os.Args would then see
+|     "--" where a real argument should be.
+|
+|     Copy trimmedArgs at the top of getCompletions to prevent any future
+|     append from accidentally mutating the caller's backing array.
+|
+|     Co-authored-by: Claude Opus 4.6 <noreply@anthropic.com>
+|
+* commit f2878bab8c96afd6e36968af96343b35dbb82a82
+| Author: Marc Khouzam <marc.khouzam@gmail.com>
+| Date:   Wed Apr 15 12:23:05 2026 -0700
+|
+|     Ignore the linter error (#2390)
+|
+* commit 85c12c2201a7d2bb8d2a731d41cfd8557a025c90
+| Author: Artur Aronov <52620016+ArturAronov@users.noreply.github.com>
+| Date:   Thu Apr 16 02:47:24 2026 +0800
+|
+|     projects_using_cobra: add Ollama (#2389)
+|
+* commit 61968e893eee2f27696c2fbc8e34fa5c4afaf7c4
+| Author: Niklas Vogel <github@n9v9.de>
+| Date:   Wed Dec 10 03:18:50 2025 +0100
+|
+|     fix: quote args in fish shell completion (#2285)
+|
+|     * fix: quote args in fish shell completion
+|
+|     The arguments used for dynamic completions in fish were missing quotes.
+|     This resulted in an error when one of the arguments had a `*` in it
+|     whose expansion matched no file. Once the completion got triggered, fish
+|     errored with the message `No matches for wildcard [...]`. Don't quote
+|     the first argument as that is the name of the binary.
+|
+|     * Protect against arguments that start with --
+|
+|     Signed-off-by: Marc Khouzam <marc.khouzam@gmail.com>
+|
+|     ---------
+|
+|     Co-authored-by: Marc Khouzam <marc.khouzam@gmail.com>
+|
+* commit 10d4b48a79be3d4e89e6c45cb59f4d32a3d2ae19
+| Author: Jeffrey Faer <jeffrey.faer@gmail.com>
+| Date:   Sat Dec 6 07:14:39 2025 -0700
+|
+|     perf: Loop over the bash variable directly instead of starting subprocesses. (#2333)
+|
+|     Today, the loop is printing the completions one value per line and then
+|     reading one line to a variable. We can just skip the whole IO rigamarole
+|     by looping over the completions directly.
+|
+* commit 88b30ab89da2d0d0abb153818746c5a2d30eccec
+| Author: Davanum Srinivas <davanum@gmail.com>
+| Date:   Wed Dec 3 18:51:15 2025 -0500
+|
+|     chore: Migrate from gopkg.in/yaml.v3 to go.yaml.in/yaml/v3 (#2336)
+|
+|     The original gopkg.in/yaml.v3 was marked unmaintained (April 2025).
+|     go.yaml.in/yaml/v3 is now maintained by the official YAML organization
+|     and is a drop-in replacement with an identical API.
+|
+|     Signed-off-by: Davanum Srinivas <davanum@gmail.com>

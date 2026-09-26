@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "FORCE_COLOR=1",
+    "TZ=America/New_York",
+    "npx",
+    "jest"
+  ],
+  "shell": "FORCE_COLOR=1 TZ=America/New_York npx jest",
+  "repo": "moment/luxon",
+  "exit_code": 1,
+  "description": "same failing jest run with FORCE_COLOR=1 (ANSI colors in diffs, code frames and summary)",
+  "cwd": "repos/luxon"
+}

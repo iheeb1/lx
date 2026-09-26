@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "lint:strict",
+    "--",
+    "--rule",
+    "no-var: warn",
+    "--rule",
+    "eqeqeq: warn",
+    "--ignore-pattern",
+    "src/sub dir/**"
+  ],
+  "shell": "npm run lint:strict -- --rule no-var: warn --rule eqeqeq: warn --ignore-pattern src/sub dir/**",
+  "exit_code": 1,
+  "description": "npm run lint:strict (eslint . --max-warnings 0) with rules downgraded to warnings: errors and warnings mixed",
+  "cwd": "/home/user/src/eslint9-app"
+}

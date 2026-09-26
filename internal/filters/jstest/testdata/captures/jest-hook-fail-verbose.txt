@@ -1,0 +1,45 @@
+FAIL adv/hook.test.js
+  error handling
+    ✕ returns 503 on failure
+    ✕ retries after error
+
+  ● error handling › returns 503 on failure
+
+    database connection refused
+
+      1 | describe("error handling", () => {
+      2 |   beforeAll(() => {
+    > 3 |     throw new Error("database connection refused");
+        |           ^
+      4 |   });
+      5 |   test("returns 503 on failure", () => {
+      6 |     expect(1).toBe(1);
+
+      at Object.<anonymous> (adv/hook.test.js:3:11)
+
+  ● error handling › retries after error
+
+    database connection refused
+
+      1 | describe("error handling", () => {
+      2 |   beforeAll(() => {
+    > 3 |     throw new Error("database connection refused");
+        |           ^
+      4 |   });
+      5 |   test("returns 503 on failure", () => {
+      6 |     expect(1).toBe(1);
+
+      at Object.<anonymous> (adv/hook.test.js:3:11)
+
+PASS adv/errtitles.test.js
+  error handling
+    ✓ throws TypeError on bad input (2 ms)
+    when the db fails
+      ✓ returns error 500
+      ✓ logs the failure
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       2 failed, 3 passed, 5 total
+Snapshots:   0 total
+Time:        0.241 s, estimated 1 s
+Ran all test suites matching /adv\/hook.test.js|adv\/errtitles.test.js/i.

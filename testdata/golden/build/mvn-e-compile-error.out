@@ -1,0 +1,20 @@
+[lx: hidden: 21 [INFO] progress lines, 6 lines of Maven's help footer]
+[INFO] Error stacktraces are turned on.
+[ERROR] COMPILATION ERROR :
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[7,34] cannot find symbol
+  symbol:   method helper(int)
+  location: class com.example.Calc
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[8,35] incompatible types: int cannot be converted to java.lang.String
+[INFO] 2 errors
+[INFO] BUILD FAILURE
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project demo: Compilation failure: Compilation failure:
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[7,34] cannot find symbol
+[ERROR]   symbol:   method helper(int)
+[ERROR]   location: class com.example.Calc
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[8,35] incompatible types: int cannot be converted to java.lang.String
+org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project demo: Compilation failure
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2 (MojoExecutor.java:333)
+    … 23 library frames (org.apache.maven, jdk.internal, java.lang, …)
+Caused by: org.apache.maven.plugin.compiler.CompilationFailureException: Compilation failure
+    at org.apache.maven.plugin.compiler.AbstractCompilerMojo.execute (AbstractCompilerMojo.java:1212)
+    … 26 library frames (org.apache.maven, jdk.internal, java.lang, …)

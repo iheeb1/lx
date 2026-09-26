@@ -1,0 +1,23 @@
+[lx: hidden: 15 task lines (UP-TO-DATE ×7, executed ×4, NO-SOURCE ×4), 1 download/daemon line, 2 lines of Gradle's help text (* Try:, --warning-mode)]
+> Task :app:test FAILED
+
+CalcTest > addsWrong() FAILED
+    org.opentest4j.AssertionFailedError at CalcTest.java:8
+
+CalcTest > dividesByZero() FAILED
+    java.lang.ArithmeticException at CalcTest.java:10
+
+ErrorHandlerTest > wrapsIoErrors() FAILED
+    java.lang.NullPointerException at ErrorHandlerTest.java:31
+        Caused by: java.io.IOException at ErrorHandlerTest.java:29
+
+14 tests completed, 3 failed
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:test'.
+> There were failing tests. See the report at: file:///home/user/src/app/app/build/reports/tests/test/index.html
+
+BUILD FAILED in 6s
+7 actionable tasks: 2 executed, 5 up-to-date

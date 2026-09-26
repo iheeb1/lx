@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "curl",
+    "https://nonexistent.invalid/api"
+  ],
+  "shell": "curl https://nonexistent.invalid/api",
+  "repo": "",
+  "exit_code": 6,
+  "description": "curl without -s, DNS failure: progress meter frames with 'curl: (6) Could not resolve host' glued to the last frame",
+  "cwd": "data/api"
+}

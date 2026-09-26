@@ -1,0 +1,8 @@
+[lx: hidden: 6 build steps]
+FAILED: CMakeFiles/netd_core.dir/src/parse.c.o
+/usr/bin/cc  -I/home/user/src/netd/include -O2 -g -Wall -Werror -MD -MT CMakeFiles/netd_core.dir/src/parse.c.o -MF CMakeFiles/netd_core.dir/src/parse.c.o.d -o CMakeFiles/netd_core.dir/src/parse.c.o -c /home/user/src/netd/src/parse.c
+/home/user/src/netd/src/parse.c:12:10: fatal error: hdrs.h: No such file or directory
+   12 | #include "hdrs.h"
+      |          ^~~~~~~~
+compilation terminated.
+ninja: build stopped: subcommand failed.

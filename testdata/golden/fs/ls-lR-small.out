@@ -1,0 +1,22 @@
+[ls: owner user · group wheel · mode -rw-r--r--@ files · link counts dropped]
+packages/vite/src/client:
+total 120
+1842 Sep 26 00:31 bundledDevClient.ts
+12908 Sep 26 00:31 bundledDevHmrClient.ts
+20048 Sep 26 00:31 client.ts
+360 Sep 26 00:31 clientEntry.ts
+698 Sep 26 00:31 env.ts
+7353 Sep 26 00:31 overlay.ts
+236 Sep 26 00:31 tsconfig.json
+
+packages/vite/src/types:
+total 128
+2525 Sep 26 00:31 alias.d.ts
+214 Sep 26 00:31 anymatch.d.ts
+7109 Sep 26 00:31 chokidar.d.ts
+11059 Sep 26 00:31 commonjs.d.ts
+3356 Sep 26 00:31 connect.d.ts
+429 Sep 26 00:31 dynamicImportVars.d.ts
+101 Sep 26 00:31 package.json
+863 Sep 26 00:31 shims.d.ts
+16508 Sep 26 00:31 ws.d.ts

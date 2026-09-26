@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "node",
+    "esm.mjs"
+  ],
+  "shell": "node esm.mjs",
+  "repo": "scratch/nodeproj",
+  "exit_code": 1,
+  "description": "node 24: ESM script throws ENOENT reading a missing file",
+  "cwd": "repos/nodeproj"
+}

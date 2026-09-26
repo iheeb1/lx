@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--reporter=tree",
+    "test/cart.test.ts",
+    "test/ok.test.ts",
+    "adv/hook.test.ts"
+  ],
+  "shell": "npx vitest run --reporter=tree test/cart.test.ts test/ok.test.ts adv/hook.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4 --reporter=tree over the mixed suite",
+  "cwd": "repos/vitproj"
+}

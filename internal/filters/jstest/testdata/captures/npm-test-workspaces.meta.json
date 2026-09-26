@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npm",
+    "test",
+    "--workspaces"
+  ],
+  "shell": "npm test --workspaces",
+  "repo": "scratch/mono",
+  "exit_code": 1,
+  "description": "npm 11: npm test --workspaces over two jest packages (one failing)",
+  "cwd": "repos/mono"
+}

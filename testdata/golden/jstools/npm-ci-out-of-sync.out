@@ -1,0 +1,9 @@
+npm error code EUSAGE
+npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+npm error Invalid: lock file's ms@2.1.3 does not satisfy ms@2.1.2
+npm error Clean install a project
+npm error Usage:
+npm error npm ci
+[npm usage text: 85 option lines hidden; `npm help ci` shows them]
+npm error Run "npm help ci" for more info
+npm error A complete log of this run can be found in: /home/user/.npm/_logs/2026-09-26T03_03_53_683Z-debug-0.log

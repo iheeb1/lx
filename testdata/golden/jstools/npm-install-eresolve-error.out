@@ -1,0 +1,23 @@
+npm error code ERESOLVE
+npm error ERESOLVE could not resolve
+npm error While resolving: unbuild@3.6.1
+npm error Found: typescript@6.0.3
+npm error node_modules/typescript
+npm error   dev typescript@"^6.0.3" from the root project
+npm error   peer typescript@"*" from eslint-config-unjs@0.6.2
+npm error   node_modules/eslint-config-unjs
+npm error     dev eslint-config-unjs@"^0.6.2" from the root project
+npm error   11 more (typescript-eslint, @typescript-eslint/eslint-plugin, ...)
+npm error Could not resolve dependency:
+npm error peerOptional typescript@"^5.9.2" from unbuild@3.6.1
+npm error node_modules/unbuild
+npm error   dev unbuild@"^3.6.1" from the root project
+npm error Conflicting peer dependency: typescript@5.9.3
+npm error node_modules/typescript
+npm error   peerOptional typescript@"^5.9.2" from unbuild@3.6.1
+npm error   node_modules/unbuild
+npm error     dev unbuild@"^3.6.1" from the root project
+npm error Fix the upstream dependency conflict, or retry this command with --force or --legacy-peer-deps to accept an incorrect (and potentially broken) dependency resolution.
+npm error For a full report see:
+npm error /home/user/home/.npm/_logs/2026-09-25T23_34_29_338Z-eresolve-report.txt
+npm error A complete log of this run can be found in: /home/user/home/.npm/_logs/2026-09-25T23_34_29_338Z-debug-0.log

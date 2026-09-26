@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "status"
+  ],
+  "shell": "git status",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git status (long format) on a work-in-progress branch: staged edits, a staged rename pair, staged add/delete, partially staged file, many unstaged modifications incl. go.mod/go.sum, unstaged deletion, untracked dirs",
+  "cwd": "repos/gin"
+}

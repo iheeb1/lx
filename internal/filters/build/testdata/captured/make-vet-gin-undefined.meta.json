@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "make",
+    "vet"
+  ],
+  "exit_code": 2,
+  "description": "make vet in gin after adding code that uses fmt without importing it: type-check error reported twice under a '# pkg' header, make error",
+  "cwd": "/home/user/src/gin"
+}

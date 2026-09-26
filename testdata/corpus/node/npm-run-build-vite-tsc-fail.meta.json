@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "shell": "npm run build",
+  "repo": "vitejs/vite",
+  "exit_code": 2,
+  "description": "npm run build (tsc -b && vite build) failing at the tsc step with type errors in src/App.tsx; npm lifecycle error footer",
+  "cwd": "repos/vite-react-app"
+}

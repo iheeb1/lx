@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "kubectl",
+    "events",
+    "-n",
+    "shop"
+  ],
+  "shell": "kubectl events -n shop",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of kubectl 1.31 `kubectl events`; the tool is not available on the capture host): 94 events: a rolling churn of Normal pod lifecycle events, FailedScheduling, repeated BackOff and a liveness failure",
+  "cwd": "repos/shop"
+}

@@ -1,0 +1,34 @@
+# get https://proxy.golang.org/go.yaml.in/yaml/v3/@v/v3.0.4.mod
+# get https://proxy.golang.org/github.com/spf13/pflag/@v/v1.0.9.mod
+# get https://proxy.golang.org/github.com/inconshreveable/mousetrap/@v/v1.1.0.mod
+# get https://proxy.golang.org/github.com/cpuguy83/go-md2man/v2/@v/v2.0.6.mod
+# get https://proxy.golang.org/github.com/inconshreveable/mousetrap/@v/v1.1.0.mod: 200 OK (0.245s)
+# get https://proxy.golang.org/go.yaml.in/yaml/v3/@v/v3.0.4.mod: 200 OK (0.245s)
+# get https://proxy.golang.org/github.com/cpuguy83/go-md2man/v2/@v/v2.0.6.mod: 200 OK (0.332s)
+# get https://proxy.golang.org/github.com/spf13/pflag/@v/v1.0.9.mod: 200 OK (0.333s)
+# get https://proxy.golang.org/github.com/russross/blackfriday/v2/@v/v2.1.0.mod
+# get https://proxy.golang.org/github.com/russross/blackfriday/v2/@v/v2.1.0.mod: 200 OK (0.057s)
+# get https://proxy.golang.org/github.com/spf13/pflag/@v/v1.0.9.info
+# get https://proxy.golang.org/github.com/cpuguy83/go-md2man/v2/@v/v2.0.6.info
+# get https://proxy.golang.org/go.yaml.in/yaml/v3/@v/v3.0.4.info
+# get https://proxy.golang.org/github.com/russross/blackfriday/v2/@v/v2.1.0.info
+# get https://proxy.golang.org/gopkg.in/check.v1/@v/v0.0.0-20161208181325-20d25e280405.info
+# get https://proxy.golang.org/github.com/inconshreveable/mousetrap/@v/v1.1.0.info
+# get https://proxy.golang.org/github.com/spf13/pflag/@v/v1.0.9.info: 200 OK (0.055s)
+# get https://proxy.golang.org/github.com/cpuguy83/go-md2man/v2/@v/v2.0.6.info: 200 OK (0.055s)
+# get https://proxy.golang.org/github.com/russross/blackfriday/v2/@v/v2.1.0.info: 200 OK (0.063s)
+# get https://proxy.golang.org/go.yaml.in/yaml/v3/@v/v3.0.4.info: 200 OK (0.063s)
+# get https://proxy.golang.org/gopkg.in/check.v1/@v/v0.0.0-20161208181325-20d25e280405.info: 200 OK (0.149s)
+# get https://proxy.golang.org/github.com/inconshreveable/mousetrap/@v/v1.1.0.info: 200 OK (0.149s)
+# get https://proxy.golang.org/gopkg.in/check.v1/@v/v0.0.0-20161208181325-20d25e280405.zip
+# get https://proxy.golang.org/go.yaml.in/yaml/v3/@v/v3.0.4.zip
+# get https://proxy.golang.org/github.com/cpuguy83/go-md2man/v2/@v/v2.0.6.zip
+# get https://proxy.golang.org/github.com/russross/blackfriday/v2/@v/v2.1.0.zip
+# get https://proxy.golang.org/github.com/inconshreveable/mousetrap/@v/v1.1.0.zip
+# get https://proxy.golang.org/github.com/spf13/pflag/@v/v1.0.9.zip
+# get https://proxy.golang.org/gopkg.in/check.v1/@v/v0.0.0-20161208181325-20d25e280405.zip: 200 OK (0.061s)
+# get https://proxy.golang.org/go.yaml.in/yaml/v3/@v/v3.0.4.zip: 200 OK (0.105s)
+# get https://proxy.golang.org/github.com/russross/blackfriday/v2/@v/v2.1.0.zip: 200 OK (0.200s)
+# get https://proxy.golang.org/github.com/cpuguy83/go-md2man/v2/@v/v2.0.6.zip: 200 OK (0.214s)
+# get https://proxy.golang.org/github.com/spf13/pflag/@v/v1.0.9.zip: 200 OK (0.258s)
+# get https://proxy.golang.org/github.com/inconshreveable/mousetrap/@v/v1.1.0.zip: 200 OK (0.276s)

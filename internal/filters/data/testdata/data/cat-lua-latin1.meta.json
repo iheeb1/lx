@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "testes/strings.lua"
+  ],
+  "shell": "cat testes/strings.lua",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL: Lua's testes/strings.lua (19.4 KB, 400 lines) holds 43 Latin-1 bytes in string literals; it is text and must be shown \u2014 the old strict UTF-8 check replaced the whole file with \"binary data not shown\"",
+  "cwd": "repos/lua"
+}

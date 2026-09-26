@@ -1,0 +1,103 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 612B done
+#1 DONE 0.0s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-alpine
+#3 DONE 1.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 91B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/node:20-alpine@sha256:ce915cd09dd0784b77f52305fcb4435d9b4fe31c82b81c6449d5de9f1c6b4ef6
+#5 resolve docker.io/library/node:20-alpine@sha256:ce915cd09dd0784b77f52305fcb4435d9b4fe31c82b81c6449d5de9f1c6b4ef6 0.0s done
+#5 sha256:48dbc45a6738318c9e35db13781199f18495e5a61272ff94b60b30b8079da5c1 0B / 3.64MB 0.2s
+#5 sha256:48dbc45a6738318c9e35db13781199f18495e5a61272ff94b60b30b8079da5c1 3.64MB / 3.64MB 0.3s done
+#5 sha256:2804bad6fe94a55f18b2b37e300919a5fd517b95aa81e95db574c0ba069a3740 0B / 42.3MB 0.2s
+#5 sha256:2804bad6fe94a55f18b2b37e300919a5fd517b95aa81e95db574c0ba069a3740 42.3MB / 42.3MB 0.4s done
+#5 sha256:8a1cee436cbac1489a1883c9d886fcfc46f302c55ed4106ae31729e4f4eb9041 0B / 1.26MB 0.2s
+#5 sha256:8a1cee436cbac1489a1883c9d886fcfc46f302c55ed4106ae31729e4f4eb9041 1.26MB / 1.26MB 0.5s done
+#5 sha256:10dacdccfe877dc064d57442e6fa7a4e3085dc94e11a29819c2290fc3d788724 0B / 446B 0.2s
+#5 sha256:10dacdccfe877dc064d57442e6fa7a4e3085dc94e11a29819c2290fc3d788724 446B / 446B 0.6s done
+#5 extracting sha256:48dbc45a6738318c9e35db13781199f18495e5a61272ff94b60b30b8079da5c1
+#5 extracting sha256:48dbc45a6738318c9e35db13781199f18495e5a61272ff94b60b30b8079da5c1 0.1s done
+#5 extracting sha256:2804bad6fe94a55f18b2b37e300919a5fd517b95aa81e95db574c0ba069a3740
+#5 extracting sha256:2804bad6fe94a55f18b2b37e300919a5fd517b95aa81e95db574c0ba069a3740 0.2s done
+#5 extracting sha256:8a1cee436cbac1489a1883c9d886fcfc46f302c55ed4106ae31729e4f4eb9041
+#5 extracting sha256:8a1cee436cbac1489a1883c9d886fcfc46f302c55ed4106ae31729e4f4eb9041 0.3s done
+#5 extracting sha256:10dacdccfe877dc064d57442e6fa7a4e3085dc94e11a29819c2290fc3d788724
+#5 extracting sha256:10dacdccfe877dc064d57442e6fa7a4e3085dc94e11a29819c2290fc3d788724 0.4s done
+#5 DONE 4.1s
+
+#6 [internal] load build context
+#6 transferring context: 1.87MB 0.1s done
+#6 DONE 0.1s
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [3/7] COPY package.json package-lock.json ./
+#8 CACHED
+
+#9 [4/7] RUN npm ci --no-audit --no-fund
+#9 0.412 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+#9 0.512 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#9 0.612 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+#9 1.500 npm http fetch GET 200 https://registry.npmjs.org/pkg-0/-/pkg-0-1.0.0.tgz 40ms (cache miss)
+#9 1.900 npm http fetch GET 200 https://registry.npmjs.org/pkg-1/-/pkg-1-1.1.0.tgz 43ms (cache miss)
+#9 2.300 npm http fetch GET 200 https://registry.npmjs.org/pkg-2/-/pkg-2-1.2.0.tgz 46ms (cache miss)
+#9 2.700 npm http fetch GET 200 https://registry.npmjs.org/pkg-3/-/pkg-3-1.3.0.tgz 49ms (cache miss)
+#9 3.100 npm http fetch GET 200 https://registry.npmjs.org/pkg-4/-/pkg-4-1.4.0.tgz 52ms (cache miss)
+#9 3.500 npm http fetch GET 200 https://registry.npmjs.org/pkg-5/-/pkg-5-1.5.0.tgz 55ms (cache miss)
+#9 3.900 npm http fetch GET 200 https://registry.npmjs.org/pkg-6/-/pkg-6-1.6.0.tgz 58ms (cache miss)
+#9 4.300 npm http fetch GET 200 https://registry.npmjs.org/pkg-7/-/pkg-7-1.7.0.tgz 61ms (cache miss)
+#9 4.700 npm http fetch GET 200 https://registry.npmjs.org/pkg-8/-/pkg-8-1.8.0.tgz 64ms (cache miss)
+#9 5.100 npm http fetch GET 200 https://registry.npmjs.org/pkg-9/-/pkg-9-1.9.0.tgz 67ms (cache miss)
+#9 5.500 npm http fetch GET 200 https://registry.npmjs.org/pkg-10/-/pkg-10-1.10.0.tgz 70ms (cache miss)
+#9 5.900 npm http fetch GET 200 https://registry.npmjs.org/pkg-11/-/pkg-11-1.11.0.tgz 73ms (cache miss)
+#9 6.300 npm http fetch GET 200 https://registry.npmjs.org/pkg-12/-/pkg-12-1.12.0.tgz 76ms (cache miss)
+#9 6.700 npm http fetch GET 200 https://registry.npmjs.org/pkg-13/-/pkg-13-1.13.0.tgz 79ms (cache miss)
+#9 7.100 npm http fetch GET 200 https://registry.npmjs.org/pkg-14/-/pkg-14-1.14.0.tgz 82ms (cache miss)
+#9 7.500 npm http fetch GET 200 https://registry.npmjs.org/pkg-15/-/pkg-15-1.15.0.tgz 85ms (cache miss)
+#9 7.900 npm http fetch GET 200 https://registry.npmjs.org/pkg-16/-/pkg-16-1.16.0.tgz 88ms (cache miss)
+#9 8.300 npm http fetch GET 200 https://registry.npmjs.org/pkg-17/-/pkg-17-1.17.0.tgz 91ms (cache miss)
+#9 9.871 
+#9 9.872 added 412 packages in 9s
+#9 DONE 10.4s
+
+#10 [5/7] COPY . .
+#10 DONE 0.3s
+
+#11 [6/7] RUN npm run build
+#11 0.388 
+#11 0.388 > shop-web@1.8.2 build
+#11 0.388 > vite build
+#11 0.388 
+#11 1.021 vite v5.4.2 building for production...
+#11 1.130 transforming...
+#11 4.812 ✓ 1204 modules transformed.
+#11 5.102 rendering chunks...
+#11 5.330 computing gzip size...
+#11 5.401 dist/index.html                   0.46 kB │ gzip:   0.30 kB
+#11 5.401 dist/assets/index-DiwrgTda.css   18.20 kB │ gzip:   4.12 kB
+#11 5.402 dist/assets/index-C8zLx1Qy.js   512.66 kB │ gzip: 162.01 kB
+#11 5.402 
+#11 5.403 (!) Some chunks are larger than 500 kB after minification. Consider:
+#11 5.403 - Using dynamic import() to code-split the application
+#11 5.403 ✓ built in 4.38s
+#11 DONE 5.9s
+
+#12 [7/7] RUN addgroup -S app && adduser -S app -G app
+#12 DONE 0.4s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 1.9s done
+#13 writing image sha256:b29814cf5792e684cd75d6a7fce7a67a11887e312f87ca2ac2496d81f365ff72 done
+#13 naming to docker.io/shop/web:1.8.2 done
+#13 DONE 2.0s

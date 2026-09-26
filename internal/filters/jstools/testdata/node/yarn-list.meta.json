@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "yarn",
+    "list",
+    "--depth=0"
+  ],
+  "shell": "yarn list --depth=0",
+  "exit_code": 0,
+  "description": "yarn 1 list --depth=0: flat tree of every package",
+  "cwd": "/home/user/src/yarn-app"
+}

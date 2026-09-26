@@ -1,0 +1,23 @@
+panic: test timed out after 2s
+	running tests:
+		TestDeadlock (2s)
+
+goroutine 8 [running]:
+testing.(*M).startAlarm.func1()
+	$GOROOT/src/testing/testing.go:2802
+created by time.goFunc
+	$GOROOT/src/time/sleep.go:215
+
+goroutine 7 [chan send]:
+example.com/lxcap/dead.TestDeadlock(...)
+	dead/dead_test.go:7
+testing.tRunner(...)
+	$GOROOT/src/testing/testing.go:2036
+created by testing.(*T).Run in goroutine 1
+	$GOROOT/src/testing/testing.go:2101
+
+1 goroutine [chan receive] in library code: testing.(*T).Run
+[paths: $GOROOT=/opt/homebrew/Cellar/go/1.26.5/libexec]
+FAIL	example.com/lxcap/dead	2.243s
+FAIL
+[hidden: 1 === RUN/--- PASS line]

@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "docker",
+    "build",
+    "--no-cache",
+    "-t",
+    "lx-review-img",
+    "ctx"
+  ],
+  "shell": "docker build --no-cache -t lx-review-img ctx",
+  "repo": "",
+  "exit_code": 2,
+  "description": "REAL docker 29.5.2 legacy builder (no buildx): a 220-line successful step, then a failing step with two compiler errors on stderr and 200 lines of output, exit 2",
+  "cwd": "repos/shop"
+}

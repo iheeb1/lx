@@ -1,0 +1,22 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+Step 1/5 : FROM alpine:3.20
+Step 2/5 : WORKDIR /app
+Step 3/5 : RUN echo "fetching deps" && i=0; while [ $i -lt 220 ]; do i=$((i+1)); echo "fetched module example.com/mod$i v1.$i.0"; done  [lx: 221 output lines not shown]
+Step 4/5 : RUN echo "building" && echo "main.go:12:5: undefined: handler" >&2 && echo "main.go:19:2: cannot use x (variable of type int) as string value" >&2 && i=0; while [ $i -lt 200 ]; do i=$((i+1)); echo "compile step $i ok"; done; exit 2
+main.go:12:5: undefined: handler
+main.go:19:2: cannot use x (variable of type int) as string value
+building
+compile step 1 ok
+compile step 2 ok
+compile step 3 ok
+compile step 4 ok
+compile step 5 ok
+compile step 6 ok
+compile step 7 ok
+compile step 8 ok
+compile step 9 ok
+compile step 10 ok
+  … 189 similar lines …
+compile step 200 ok
+The command '/bin/sh -c echo "building" && echo "main.go:12:5: undefined: handler" >&2 && echo "main.go:19:2: cannot use x (variable of type int) as string value" >&2 && i=0; while [ $i -lt 200 ]; do i=$((i+1)); echo "compile step $i ok"; done; exit 2' returned a non-zero code: 2
+[lx: 4 of 5 steps ran; 11 intermediate container/image lines not shown]

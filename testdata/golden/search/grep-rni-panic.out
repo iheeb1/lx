@@ -1,0 +1,73 @@
+./render/html.go:88:panic("the HTML debug render was created without files or glob pattern or file system with patterns")
+./render/redirect.go:22:panic(fmt.Sprintf("Cannot redirect with status code %d", r.Code))
+./routes_test.go:854:func TestIssue4818_skippedNodesOverflow_Panic(t *testing.T) {
+
+./routergroup.go
+131:panic("http method " + httpMethod + " is not valid")
+222:panic("URL parameters can not be used when serving a static file")
+245:panic("URL parameters can not be used when serving a static folder")
+
+./binding/json_test.go
+155:panic(err)
+211:panic(err)
+
+./context_test.go:76:panic(err.Error())
+./routergroup_test.go:86:panic("unknown method")
+
+./context.go
+263:panic("err is nil")
+309:panic(fmt.Sprintf("key %v does not exist", key))
+
+./utils.go
+33:panic(`Bind struct can not be a pointer. Example:
+88:panic(text)
+108:panic("negotiation config is invalid")
+127:panic("The length of the string can't be 0")
+160:panic("too many parameters")
+
+./radix_tree_test.go
+362:func catchPanic(testFunc func()) (recv any) {
+380:recv := catchPanic(func() {
+468:recv := catchPanic(func() {
+476:recv = catchPanic(func() {
+505:recv := catchPanic(func() {
+550:recv := catchPanic(func() {
+608:recv := catchPanic(func() {
+679:recv := catchPanic(func() {
+757:recv := catchPanic(func() {
+885:recv := catchPanic(func() {
+893:recv = catchPanic(func() {
+970:recv := catchPanic(func() {
+988:recv := catchPanic(func() {
+1008:recv := catchPanic(func() {
+1036:recv := catchPanic(func() {
+1076:recv := catchPanic(func() {
+
+./mode.go:75:panic("gin mode unknown: " + value + " (available mode: debug release test)")
+
+./recovery_test.go
+26:panic("Oops, Houston, we have a problem")
+56:panic("Oops, Houston, we have a problem")
+84:panic("Oops, Houston, we have a problem")
+120:panic(e)
+145:panic(http.ErrAbortHandler)
+185:panic(tt.recoveredErr)
+209:panic("Oops, Houston, we have a problem")
+244:panic("Oops, Houston, we have a problem")
+279:panic("Oops, Houston, we have a problem")
+
+./benchmarks_test.go:152:panic(err)
+
+./radix_tree.go
+230:panic("'" + pathSeg +
+243:panic("handlers are already registered for path '" + fullPath + "'")
+262:panic("invalid escape string in path '" + path + "'")
+298:panic("only one wildcard per path segment is allowed, has: '" +
+304:panic("wildcards must be named with a non-empty name in path '" + fullPath + "'")
+345:panic("catch-all routes are only allowed at the end of the path in path '" + fullPath + "'")
+353:panic("catch-all wildcard '" + path +
+363:panic("no / before catch-all in path '" + fullPath + "'")
+590:panic("invalid node type")
+942:panic("invalid node type")
+
+./debug_test.go:139:panic(err)

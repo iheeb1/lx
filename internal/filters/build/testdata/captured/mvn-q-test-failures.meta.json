@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "mvn",
+    "-o",
+    "-q",
+    "test"
+  ],
+  "exit_code": 1,
+  "description": "mvn -q test (quiet, offline, Maven 3.9.16, surefire 3.1.2, JUnit 5.10.1): only [ERROR] lines and unlevelled traces are printed: one assertion failure, one ArithmeticException, the Results section and the goal failure",
+  "cwd": "/home/user/src/mvnapp"
+}

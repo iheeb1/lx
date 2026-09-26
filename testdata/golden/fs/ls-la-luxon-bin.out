@@ -1,0 +1,35 @@
+[ls: owner user · group wheel · mode drwxr-xr-x@ dirs · link counts dropped]
+total 0
+1056 Sep 26 00:49 ./
+15072 Sep 26 00:49 ../
+18 Sep 26 00:49 acorn -> ../acorn/bin/acorn
+32 Sep 26 00:31 babel-node -> ../@babel/node/bin/babel-node.js
+22 Sep 26 00:31 browserslist -> ../browserslist/cli.js
+32 Sep 26 00:31 browserslist-lint -> ../update-browserslist-db/cli.js
+37 Sep 26 00:31 documentation -> ../documentation/bin/documentation.js
+25 Sep 26 00:31 esparse -> ../esprima/bin/esparse.js
+28 Sep 26 00:31 esvalidate -> ../esprima/bin/esvalidate.js
+12 Sep 26 00:31 he -> ../he/bin/he
+30 Sep 26 00:31 http-server -> ../http-server/bin/http-server
+15 Sep 26 00:49 husky -> ../husky/bin.js
+31 Sep 26 00:31 import-local-fixture -> ../import-local/fixtures/cli.js
+19 Sep 26 00:31 jest -> ../jest/bin/jest.js
+25 Sep 26 00:31 js-yaml -> ../js-yaml/bin/js-yaml.js
+18 Sep 26 00:31 jsesc -> ../jsesc/bin/jsesc
+19 Sep 26 00:31 json5 -> ../json5/lib/cli.js
+33 Sep 26 00:31 lint-staged -> ../lint-staged/bin/lint-staged.js
+14 Sep 26 00:31 mime -> ../mime/cli.js
+20 Sep 26 00:31 mkdirp -> ../mkdirp/bin/cmd.js
+24 Sep 26 00:31 nanoid -> ../nanoid/bin/nanoid.cjs
+23 Sep 26 00:31 node-which -> ../which/bin/node-which
+27 Sep 26 00:31 opener -> ../opener/bin/opener-bin.js
+36 Sep 26 00:31 parser -> ../@babel/parser/bin/babel-parser.js
+25 Sep 26 00:31 pidtree -> ../pidtree/bin/pidtree.js
+27 Sep 26 00:31 prettier -> ../prettier/bin-prettier.js
+25 Sep 26 00:31 regjsparser -> ../regjsparser/bin/parser
+22 Sep 26 00:31 resolve -> ../resolve/bin/resolve
+25 Sep 26 00:31 rollup -> ../rollup/dist/bin/rollup
+23 Sep 26 00:31 semver -> ../semver/bin/semver.js
+20 Sep 26 00:49 terser -> ../terser/bin/terser
+25 Sep 26 00:31 uglifyjs -> ../uglify-js/bin/uglifyjs
+13 Sep 26 00:31 uvu -> ../uvu/bin.js

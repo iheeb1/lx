@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "yarn",
+    "add",
+    "lodash@4.17.20"
+  ],
+  "shell": "yarn add lodash@4.17.20",
+  "exit_code": 0,
+  "description": "yarn 1 add lodash: step lines, direct and all dependencies",
+  "cwd": "/home/user/src/yarn-app"
+}

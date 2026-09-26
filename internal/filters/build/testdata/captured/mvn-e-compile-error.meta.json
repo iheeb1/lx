@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "mvn",
+    "-o",
+    "-e",
+    "-B",
+    "compile"
+  ],
+  "exit_code": 1,
+  "description": "mvn -e -B compile (offline, Maven 3.9.16, -e: full exception stack traces): two javac errors, then the MojoFailureException / CompilationFailureException chain with 'Caused by:' and dozens of org.apache.maven frames",
+  "cwd": "/home/user/src/mvnapp"
+}

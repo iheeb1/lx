@@ -1,0 +1,9 @@
+removed 18 packages, and audited 1034 packages in 5s
+
+24 vulnerabilities (2 low, 8 moderate, 14 high)
+
+Run `npm audit` for details.
+npm warn allow-scripts 2 packages have install scripts not yet covered by allowScripts:
+npm warn allow-scripts   core-js@3.27.0 (install: (install scripts present))
+npm warn allow-scripts   fsevents@2.3.2 (install: (install scripts present))
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.

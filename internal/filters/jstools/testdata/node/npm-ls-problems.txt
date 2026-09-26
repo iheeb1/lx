@@ -1,0 +1,19 @@
+vite-react-app@0.0.0 /home/user/src/vite-app
+├── @types/node@24.19.0
+├── @types/react-dom@19.3.0
+├── @types/react@19.3.0
+├── @vitejs/plugin-react@6.1.1
+├── left-pad@1.3.0 extraneous
+├── oxlint@1.85.0
+├── UNMET DEPENDENCY react-dom@^19.2.8
+├── react@18.0.0 invalid: "^19.2.8" from the root project
+├── scheduler@0.28.0 extraneous
+├── typescript@6.0.3
+└── vite@8.3.1
+
+npm error code ELSPROBLEMS
+npm error extraneous: left-pad@1.3.0 /home/user/src/vite-app/node_modules/left-pad
+npm error missing: react-dom@^19.2.8, required by vite-react-app@0.0.0
+npm error invalid: react@18.0.0 /home/user/src/vite-app/node_modules/react
+npm error extraneous: scheduler@0.28.0 /home/user/src/vite-app/node_modules/scheduler
+npm error A complete log of this run can be found in: /home/user/.npm/_logs/2026-09-26T01_41_54_832Z-debug-0.log

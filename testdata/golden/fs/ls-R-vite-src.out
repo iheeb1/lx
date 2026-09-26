@@ -1,0 +1,376 @@
+[ls -R: 534 files in 206 subdirectories]
+packages/vite/src/
+  client/
+    bundledDevClient.ts  bundledDevHmrClient.ts  client.ts  clientEntry.ts  env.ts  overlay.ts  tsconfig.json
+  module-runner/
+    constants.ts  createImportMeta.ts  esmEvaluator.ts  evaluatedModules.ts  hmrHandler.ts  hmrLogger.ts  importMetaResolver.ts  index.ts  runner.ts
+    tsconfig.json  types.ts  utils.ts
+    __tests_dts__/
+      importMeta.ts  tsconfig.json
+    sourcemap/
+      decoder.ts  index.ts  interceptor.ts
+  node/
+    assetSource.ts  baseEnvironment.ts  build.ts  cli.ts  config.ts  constants.ts  deprecations.ts  env.ts  environment.ts  external.ts  http.ts  idResolver.ts
+    index.ts  internalIndex.ts  logger.ts  nativeConfigCompat.ts  nodeResolve.ts  packages.ts  plugin.ts  preview.ts  publicDir.ts  shortcuts.ts  tsconfig.json
+    typeUtils.ts  utils.ts  watch.ts
+    __tests__/
+      assetSource.spec.ts  build.spec.ts  config.spec.ts  constants.spec.ts  dev.spec.ts  env.spec.ts  environment.spec.ts  external.spec.ts
+      filterRegex.spec.ts  html.spec.ts  http.spec.ts  logger.spec.ts  oxc.spec.ts  package.json  packages.spec.ts  resolve.spec.ts  runnerImport.spec.ts
+      scan.spec.ts  shortcuts.spec.ts  utils.spec.ts
+      __snapshots__/
+        logger.spec.ts.snap  utils.spec.ts.snap
+      env/
+      fixtures/
+        cjs-ssr-dep/
+          index.js  package.json
+        config/
+          cjs-module-vars-in-esm/
+            package.json  vite.config.ts
+          entry/
+            imports-field.ts  package.json  vite.config.import-attributes.ts  vite.config.ts
+          import-meta/
+            package.json  vite.config.ts
+          loadConfigFromFile/
+          native-compat/
+            package.json
+            cjs/
+              vite.config.cjs
+            cjs-imports-esm/
+              esm-helper.mjs  vite.config.cjs
+            clean/
+              helper.js  vite.config.js
+            directory-index/
+              vite.config.js
+              plugins/
+                index.js
+            dirname/
+              vite.config.js
+            esm-in-commonjs-pkg/
+              package.json  vite.config.js
+            extensionless/
+              helper.js  vite.config.js
+            json/
+              data.json  vite.config.js
+            json-extensionless/
+              foo.json  vite.config.js
+            json-named-import/
+              data.json  vite.config.js
+            json-named-import-bare/
+              vite.config.js
+              node_modules/ [1 file]
+            json-named-import-ok/
+              data.json  vite.config.js
+              node_modules/ [1 file]
+            json-ok/
+              data.json  vite.config.js
+            mts-config/
+              package.json  vite.config.mts
+            ts-syntax/
+              vite.config.ts
+          native-import/
+            basic.js  package.json
+          nested/
+          plugin-module-condition/
+            index.cjs  index.d.ts  index.mjs  module.mjs  package.json
+          root-resolution/
+            link
+            real/
+          shebang/
+            package.json  vite.config.ts
+          shebang-crlf/
+            package.json  vite.config.ts
+          siblings/
+            foo.ts  package.json
+        css-entry-same-basename/
+          a/
+            index.css
+          b/
+            index.css
+        dynamic-import/
+          dep.mjs  entry.mjs
+        emit-assets/
+          css-module.module.css  css-normal.css  entry.mjs
+        environment-alias/
+          test.client.js  test.rsc.js  test.ssr.js
+        file-url/
+          entry.js  package.json
+        glob-exports/node_modules/ [4 files]
+        input-option/
+          entry.js
+        optimizer-discover-before-listen/
+          entry.js
+        public-dir-write-false/
+          index.html
+          public/
+            favicon.svg
+        runner-import/
+          basic.ts  cjs.js  dynamic-import-dep.ts  dynamic-import.ts  plugin.ts  vite.config.outside-pkg-import.mts  vite.config.ts
+        scan-build-input/src/
+          entry-client.tsx
+        scan-jsx-runtime/
+          entry-glob-custom-oxc.tsx  entry-jsx.tsx  entry-no-jsx.js  tsconfig.json
+          pages/
+            index.tsx
+        scan-subpath-import-glob/
+          entry.ts  package.json
+          src/foo/
+            a.ts
+        shared-config-build/emitAssets/
+          entry.js  test.css
+        shared-plugins/
+          chunk-import-map/
+            entry.js  lazy.css  lazy.js
+          minify/
+            entry.js
+        test-dep-conditions/
+          index.browser.js  index.css  index.custom1.js  index.default.js  index.worker.js  package.json
+          dir/
+            index.default.js  index.module.js
+        test-dep-conditions-app/
+          entry-with-module.js  entry.css  entry.js
+        watch-rebuild-manifest/
+          dep.js  entry.js  package.json
+        worker-dynamic/
+          dynamic.js  main.js  worker.js
+      optimizer/
+        customExtensionBundleClose.spec.ts  discoverBeforeListen.spec.ts  pluginConverter.spec.ts  resolve.spec.ts  rolldownDepPlugin.spec.ts
+      packages/
+        package.json
+        build-project/
+          asset.txt  index.html
+        child/
+          index.js  package.json
+        module/
+          package.json
+        name/
+          package.json
+        noname/
+          package.json
+        parent/
+          index.ts  package.json
+      plugins/
+        assetImportMetaUrl.spec.ts  clientInjections.spec.ts  css.spec.ts  cssPreprocessorTeardown.spec.ts  define.spec.ts  esbuild.spec.ts  hooks.spec.ts
+        import.spec.ts  importAnalysisBuild.spec.ts  index.spec.ts  license.spec.ts  oxc.spec.ts  pluginFilter.spec.ts  terser.spec.ts  worker.spec.ts
+        workerImportMetaUrl.spec.ts
+        __snapshots__/
+          license.spec.ts.snap
+        dynamicImportVar/
+          parse.spec.ts
+          __snapshots__/
+            parse.spec.ts.snap
+          mods/
+            hello.js  hi.js
+        fixtures/
+          css-module-compose/css/
+            bar.module.css
+          license/
+            index.html  package.json
+            dep-licence-cc0/
+              index.js  licence  package.json
+            dep-license-mit/
+              index.js  license  package.json
+            dep-license-type-marker/
+              license  package.json
+              build/ [4 files]
+            dep-nested-license-isc/
+              LICENSE  index.js  package.json
+          oxc-tsconfigs/
+            decorator-metadata/
+              tsconfig.json
+            empty/
+              tsconfig.json
+            jsx-complex-options/
+              tsconfig.json
+            jsx-preserve/
+              tsconfig.json
+            jsx-react-jsx/
+              tsconfig.json
+            target-es2021/
+              tsconfig.json
+            target-es2022/
+              tsconfig.json
+            target-esnext/
+              tsconfig.json
+            use-define-false/
+              tsconfig.json
+            use-define-true/
+              tsconfig.json
+          sass-package-resolution/node_modules/ [3 files]
+          worker-url/
+            entry.js  worker.js
+        importGlob/
+          fixture.spec.ts  parse.spec.ts  utils.spec.ts
+          __snapshots__/
+            fixture.spec.ts.snap
+          fixture-a/
+            index.ts  sibling.ts
+            modules/
+              a.ts  b.ts  index.ts
+            node_modules/ [1 file]
+          fixture-b/
+            a.ts  b.ts  index.ts
+        modulePreloadPolyfill/
+          modulePreloadPolyfill.spec.ts
+          __snapshots__/
+            modulePreloadPolyfill.spec.ts.snap
+      utils/isFileReadable/
+        permission-test-file
+    __tests_dts__/
+      config.ts  importGlob.ts  plugin.ts  postcss.ts  tsconfig.json  typeOptions.ts  utils.ts
+    optimizer/
+      index.ts  optimizer.ts  pluginConverter.ts  resolve.ts  rolldownDepPlugin.ts  scan.ts
+    plugins/
+      asset.ts  assetImportMetaUrl.ts  clientInjections.ts  css.ts  define.ts  dynamicImportVars.ts  esbuild.ts  esbuildBannerFooterCompatPlugin.ts
+      forwardConsole.ts  html.ts  importAnalysis.ts  importAnalysisBuild.ts  importMetaGlob.ts  index.ts  json.ts  license.ts  manifest.ts
+      modulePreloadPolyfill.ts  optimizedDeps.ts  oxc.ts  pluginFilter.ts  preAlias.ts  prepareOutDir.ts  reporter.ts  resolve.ts  terser.ts  wasm.ts  worker.ts
+      workerImportMetaUrl.ts
+    server/
+      bundledDev.ts  environment.ts  hmr.ts  index.ts  mixedModuleGraph.ts  moduleGraph.ts  openBrowser.ts  pluginContainer.ts  searchRoot.ts  send.ts
+      sourcemap.ts  transformRequest.ts  warmup.ts  ws.ts
+      __tests__/
+        hmr.spec.ts  moduleGraph.spec.ts  pluginContainer.spec.ts  search-root.spec.ts  sourcemap.spec.ts  transformRequest.spec.ts  watcher.spec.ts
+        fixtures/
+          deno/
+            deno.json
+            nested/
+              package.json
+          lerna/
+            lerna.json
+            nested/
+              package.json
+          none/nested/
+            package.json
+          pnpm/
+            package.json  pnpm-workspace.yaml
+            nested/
+              package.json
+          watcher/
+            package.json
+            config-deps/
+              foo.js
+            custom-env/
+            custom-public/
+              foo.txt
+            nested-root/
+              vite.config.js
+          yarn/
+            package.json
+            nested/
+              package.json
+      environments/
+        fetchableEnvironments.ts  runnableEnvironment.ts
+      middlewares/
+        base.ts  error.ts  hostCheck.ts  htmlFallback.ts  indexHtml.ts  memoryFiles.ts  notFound.ts  proxy.ts  rejectInvalidRequest.ts  static.ts  time.ts
+        transform.ts  triggerLazyBundling.ts
+        __tests__/
+          hostCheck.spec.ts  indexHtml.spec.ts  static.spec.ts
+          fixtures/
+            base-root/
+              index.html
+              src/
+                main.ts
+            root/
+              index.html
+    ssr/
+      fetchModule.ts  index.ts  runnerImport.ts  ssrManifestPlugin.ts  ssrModuleLoader.ts  ssrStacktrace.ts  ssrTransform.ts
+      __tests__/
+        ssrLoadModule.spec.ts  ssrStacktrace.spec.ts  ssrTransform.spec.ts
+        __snapshots__/
+          ssrLoadModule.spec.ts.snap
+        fixtures/
+          basic/
+            file.js
+          bundled-with-sourcemaps/
+            bundle.js  bundle.js.map
+          errors/
+            syntax-error-dep.js  syntax-error-dep.ts  syntax-error.js  syntax-error.ts
+          file-url/
+            test space.js  test.js
+          global/
+            export.js  test.js
+          json/
+            test.json
+          modules/
+            has-error.js  has-invalid-import.js  import-meta.js
+            with space/
+              has-error.js
+          multi-source-sourcemaps/
+            dist.js  dist.js.map  entrypoint.js
+            nested-directory/
+              nested-file.js
+          named-overwrite-all/
+            dep1.js  dep2.js  main.js
+      runtime/
+        serverModuleRunner.ts
+        __tests__/
+          fixture-outside.js  package.json  server-hmr.spec.ts  server-no-hmr.spec.ts  server-runtime.spec.ts  server-source-maps.spec.ts
+          server-worker-runner.invoke.spec.ts  server-worker-runner.spec.ts  utils.ts
+          fixtures/
+            a.ts  assets.js  b.ts  basic.js  builtin-import.ts  c.ts  cjs-external-existing.js  cjs-external-non-existing.js  d.ts  default-string.ts
+            dynamic-import.js  esm-external-existing.js  esm-external-non-existing.js  has-error-deep.ts  has-error-first-comment.ts  has-error-first.js
+            has-error-toplevel-dep.js  has-error-toplevel.js  has-error.js  hmr.js  import-external.ts  installed.js  native.js  oxc-runtime-helper.ts
+            pre-source-mapped-file.js  simple.js  string-literal-sourcemap.ts  test.css  test.module.css  throws-error-method.ts  top-level-object.js
+            virtual.js  worker.invoke.mjs  worker.mjs
+            assets/
+              placeholder.mov  placeholder.png  placeholder.txt  placeholder.webp
+            circular/
+              circular-a.js  circular-b.js  circular-index.js
+            cjs-external/
+              index.cjs  package.json
+            cyclic/
+              action.js  entry-cyclic.js  entry.js
+            cyclic2/
+              README.md  package.json
+              test1/
+                dep1.js  dep2.js  index.js
+              test2/
+                dep1.js  dep2.js  index.js
+              test3/
+                dep1.js  dep2.js  index.js
+              test4/
+                dep1.js  dep2.js  index.js
+              test5/
+                dep1.js  dep2.js  index.js
+              test6/
+                dep1.js  dep2.js  index.js
+              test7/
+                Ion.js  IonTypes.js  README.md
+                dom/
+                  Blob.js  index.js
+              test9/
+                dep.js  index.js
+            esm-external/
+              index.mjs  package.json
+            execution-order-re-export/
+              dep1.js  dep2.js  index.js
+            hmr-evaluated-import-race/
+              evaluated.js  shared.js
+            hmr-reexport-race/
+              core.js  entry-a.js  entry-b.js  shared.js
+            invalid-package/
+              test.js
+              deps/test-dep-invalid-exports/
+                package.json
+            live-binding/
+              package.json
+              test1/
+                dep.js  index.js
+              test2/
+                dep.js  index.js
+              test3/
+                dep.js  index.js
+              test4/
+                dep.js  index.js
+            no-this/
+              importee.js  importer.js
+            tla-circular/
+              a.js  b.js  index.js
+            with space/
+              has-error-deep.ts
+  shared/
+    builtin.ts  constants.ts  forwardConsole.ts  hmr.ts  hmrHandler.ts  invokeMethods.ts  moduleRunnerTransport.ts  pretty-format.ts  ssrTransform.ts
+    tsconfig.json  utils.ts
+    __tests__/
+      forwardConsole.spec.ts  pretty-format.spec.ts
+  types/
+    alias.d.ts  anymatch.d.ts  chokidar.d.ts  commonjs.d.ts  connect.d.ts  dynamicImportVars.d.ts  package.json  shims.d.ts  ws.d.ts

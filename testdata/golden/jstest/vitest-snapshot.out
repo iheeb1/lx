@@ -1,0 +1,26 @@
+stdout | test/snap.test.ts > renders card
+rendering card for { id: 7 }
+
+ ❯ test/snap.test.ts (1 test | 1 failed) 23ms
+   × renders card 13ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/snap.test.ts > renders card
+Error: Snapshot `renders card 1` mismatched
+- Expected
++ Received
+  {
+-   "count": 1,
++   "count": 2,
+    "title": "Hello",
+  }
+ ❯ test/snap.test.ts:5:40
+      5|   expect({ title: "Hello", count: 2 }).toMatchSnapshot();
+       |                                        ^
+
+[1 passing file, 2 passing tests hidden; 1 console block of passing tests hidden]
+  Snapshots  1 failed
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 2 passed (3)
+   Duration  948ms (transform 159ms, setup 0ms, import 349ms, tests 27ms, environment 0ms)

@@ -1,0 +1,11 @@
+context.go
+865:// ShouldBindJSON is a shortcut for c.ShouldBindWith(obj, binding.JSON).
+884://	if err := c.ShouldBindJSON(&user); err != nil {
+889:func (c *Context) ShouldBindJSON(obj any) error {
+894:// It works like ShouldBindJSON but binds the request body as XML data.
+900:// It works like ShouldBindJSON but binds query parameters from the URL.
+906:// It works like ShouldBindJSON but binds the request body as YAML data.
+912:// It works like ShouldBindJSON but binds the request body as TOML data.
+918:// It works like ShouldBindJSON but binds plain text data from the request body.
+924:// It works like ShouldBindJSON but binds values from HTTP headers.
+930:// It works like ShouldBindJSON but binds parameters from the URI.

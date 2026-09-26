@@ -1,0 +1,36 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] parent                                                             [pom]
+[INFO] core                                                               [jar]
+[INFO] api                                                                [jar]
+[INFO] web                                                                [jar]
+[INFO] 
+[INFO] -------------------------< com.example:parent >-------------------------
+[INFO] Building parent 1.0                                                [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[WARNING] The POM for org.apache.maven.plugins:maven-install-plugin:jar:3.1.4 is missing, no dependency information available
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for parent 1.0:
+[INFO] 
+[INFO] parent ............................................. FAILURE [  0.013 s]
+[INFO] core ............................................... SKIPPED
+[INFO] api ................................................ SKIPPED
+[INFO] web ................................................ SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.099 s
+[INFO] Finished at: 2026-09-26T03:03:54+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Plugin org.apache.maven.plugins:maven-install-plugin:3.1.4 or one of its dependencies could not be resolved:
+[ERROR] 	Cannot access central (https://repo.maven.apache.org/maven2) in offline mode and the artifact org.apache.maven.plugins:maven-install-plugin:jar:3.1.4 has not been downloaded from it before.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/PluginResolutionException

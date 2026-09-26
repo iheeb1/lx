@@ -1,0 +1,42 @@
+commit ae3438630742049c588e9fc7fa980548fa1bd607
+Author: Dev One <dev1@example.com>
+Date:   Sat Sep 26 02:32:20 2026 +0100
+
+    docs: more
+
+commit 62f0a8af9fccb3e6639677dde80ff4bc9df95da5
+Author: Dev One <dev1@example.com>
+Date:   Sat Sep 26 02:32:19 2026 +0100
+
+    main: A returns 20
+
+commit c75465c11a7e082f990839c47e0a5c50a0cc7333
+Merge: f32fccf 3100b9b
+Author: Dev One <dev1@example.com>
+Date:   Sat Sep 26 02:32:19 2026 +0100
+
+    Merge branch 'main' of /home/user/src/origin
+
+commit f32fccfd8192d87f4d625cd87fd9c2ff5019f50c
+Author: Dev One <dev1@example.com>
+Date:   Sat Sep 26 02:32:19 2026 +0100
+
+    local: add d.go
+
+commit 3100b9b474dbb357c5bc95f5396accf336842b43
+Author: Dev One <dev1@example.com>
+Date:   Sat Sep 26 02:32:19 2026 +0100
+
+    teammate: add c.go and extras
+
+commit c9c52991a050e9795fe89f96f4b58c07ed9d8a81
+Author: Dev One <dev1@example.com>
+Date:   Sat Sep 26 02:32:04 2026 +0100
+
+    rework assets and docs
+
+commit 01ad1490fd7fb87109d516ab4a4ed446be4fb34f
+Author: Dev One <dev1@example.com>
+Date:   Sat Sep 26 02:32:04 2026 +0100
+
+    initial import

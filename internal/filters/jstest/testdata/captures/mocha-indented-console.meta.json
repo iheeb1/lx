@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "adv/indented.js"
+  ],
+  "shell": "npx mocha adv/indented.js",
+  "repo": "scratch/mochaproj",
+  "exit_code": 0,
+  "description": "mocha 11 spec: passing tests print indented console output including an Error line, and console.error(new Error)",
+  "cwd": "repos/mochaproj"
+}

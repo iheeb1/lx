@@ -1,0 +1,18 @@
+
+
+  cleanup
+    ✔ works
+    1) "after all" hook for "works"
+
+
+  1 passing (2ms)
+  1 failing
+
+  1) cleanup
+       "after all" hook for "works":
+     Error: teardown failed: could not drop table
+      at Context.<anonymous> (adv/afterhook.js:5:11)
+      at process.processImmediate (node:internal/timers:504:21)
+
+
+

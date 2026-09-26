@@ -1,0 +1,21 @@
+PASS adv/passlog.test.js
+  console.error
+    Error: something went wrong in the mock server
+      at Object.error (adv/passlog.test.js:3:11)
+
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------|---------|----------|---------|---------|-------------------
+All files |      20 |        0 |      25 |      20 |
+ math.js  |      20 |        0 |      25 |      20 | 6-21
+----------|---------|----------|---------|---------|-------------------
+Jest: "global" coverage threshold for lines (95%) not met: 20%
+
+[1 passing suite, 1 passing test hidden]
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.295 s, estimated 1 s
+Ran all test suites matching /adv\/passlog.test.js/i.
+
+[lx: jest exited 1 but reported no failing test; see the lines above or the full output]

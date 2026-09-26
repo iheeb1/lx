@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "adv/exit.test.ts"
+  ],
+  "shell": "npx vitest run adv/exit.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4: a test calls process.exit(1)",
+  "cwd": "repos/vitproj"
+}

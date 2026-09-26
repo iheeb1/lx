@@ -1,0 +1,35 @@
+FAIL adv/newsnap.test.js
+  ✕ new snapshot in ci (2 ms)
+
+  ● new snapshot in ci
+
+    expect(received).toMatchSnapshot()
+
+    Snapshot name: `new snapshot in ci 1`
+
+    New snapshot was not written. The update flag must be explicitly passed to write a new snapshot.
+
+    This is likely because this test is run in a continuous integration (CI) environment in which snapshots are not written by default.
+
+    Received:
+    {
+      "a": 1,
+    }
+
+      1 | test("new snapshot in ci", () => {
+    > 2 |   expect({ a: 1 }).toMatchSnapshot();
+        |                    ^
+      3 | });
+      4 |
+
+      at Object.toMatchSnapshot (adv/newsnap.test.js:2:20)
+
+ › 1 snapshot failed.
+Snapshot Summary
+ › 1 snapshot failed from 1 test suite. Inspect your code changes or run `npm run npx -- -u` to update them.
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   1 failed, 1 total
+Time:        0.187 s, estimated 1 s
+Ran all test suites matching /adv\/newsnap.test.js/i.

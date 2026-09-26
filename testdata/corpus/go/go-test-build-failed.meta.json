@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "./..."
+  ],
+  "shell": "go test ./...",
+  "repo": "gin-gonic/gin",
+  "exit_code": 1,
+  "description": "go test ./... with the same compile errors: test files add more errors ('too many errors'), dependent packages report [build failed] / setup failed",
+  "cwd": "repos/gin"
+}

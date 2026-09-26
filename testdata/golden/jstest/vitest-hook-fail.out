@@ -1,0 +1,21 @@
+stderr | adv/errtitles.test.ts > error handling > returns error 500 on failure
+Error: simulated failure log from a passing test
+
+ ❯ adv/hook.test.ts (2 tests | 2 skipped) 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  adv/hook.test.ts > error handling
+Error: database connection refused
+ ❯ adv/hook.test.ts:4:11
+      2| describe("error handling", () => {
+      3|   beforeAll(() => {
+      4|     throw new Error("database connection refused");
+       |           ^
+      5|   });
+      6|   it("returns 503 on failure", () => {
+
+[1 passing file, 2 passing tests hidden]
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 passed | 2 skipped (4)
+   Duration  136ms (transform 24ms, setup 0ms, import 40ms, tests 5ms, environment 0ms)

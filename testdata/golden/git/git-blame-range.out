@@ -1,0 +1,46 @@
+4b68a5f1 (thinkerou 2022-05-28) 1) // Copyright 2014 Manu Martinez-Almeida. All rights reserved.
+8e5397bf (Manu Mtz-Almeida 2014-08-29)
+  2) // Use of this source code is governed by a MIT style
+  3) // license that can be found in the LICENSE file.
+  4)
+^15216a0 (Manu Mtz-Almeida 2014-06-18)
+  5) package gin
+  6)
+  7) import (
+66b47a80 (Yoshiki Nakagawa 2018-11-06) 8) 	"fmt"
+^15216a0 9) 	"html/template"
+cd6e95f0 (Manu Mtz-Almeida 2015-05-19) 10) 	"net"
+^15216a0 11) 	"net/http"
+cd6e95f0 12) 	"os"
+ccb105db (Tudor Roman 2019-02-27) 13) 	"path"
+bfc8ca28 (Manu MA 2021-04-06) 14) 	"strings"
+3e403367 (Manu Mtz-Almeida 2014-07-06) 15) 	"sync"
+d8f2d588 (Ruben Pari 2026-09-19) 16) 	"time"
+615c62d7 (Manu Mtz-Almeida 2015-03-23) 17)
+982daeb1 (Andy Pan 2020-01-18) 18) 	"github.com/gin-gonic/gin/internal/bytesconv"
+71496abe (sunshineplan 2025-04-21) 19) 	filesystem "github.com/gin-gonic/gin/internal/fs"
+615c62d7 20) 	"github.com/gin-gonic/gin/render"
+3ac729dc (thinkerou 2024-05-09) 21) 	"github.com/quic-go/quic-go/http3"
+b40ded18 (涛叔 2022-02-05)
+ 22) 	"golang.org/x/net/http2"
+ 23) 	"golang.org/x/net/http2/h2c"
+^15216a0
+ 24) )
+ 25)
+93ff771e (Bo-Yi Wu 2025-11-15)
+ 26) const (
+ 27) 	defaultMultipartMemory = 32 << 20 // 32 MB
+ 28) 	escapedColon           = "\\:"
+ 29) 	colon                  = ":"
+ 30) 	backslash              = "\\"
+ 31) )
+66fa43f9 (Manu Mtz-Almeida 2015-05-22) 32)
+d8f2d588
+ 33) // defaultReadHeaderTimeout is the default ReadHeaderTimeout applied to the
+ 34) // http.Server created by Run, RunTLS and RunListener. It protects against
+ 35) // slowloris-style resource exhaustion when the caller does not configure a
+ 36) // custom http.Server.
+ 37) const defaultReadHeaderTimeout = 10 * time.Second
+ 38)
+f7376f7c (田欧 2017-09-28) 39) var (
+54175dbe (thinkerou 2020-05-04) 40) 	default404Body = []byte("404 page not found")

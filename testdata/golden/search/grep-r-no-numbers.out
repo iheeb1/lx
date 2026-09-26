@@ -1,0 +1,115 @@
+./gin_test.go
+  var middleware0 HandlerFunc = func(c *Context) {}
+  var middleware1 HandlerFunc = func(c *Context) {}
+  var middleware0 HandlerFunc = func(c *Context) {}
+  var middleware1 HandlerFunc = func(c *Context) {}
+  var middleware2 HandlerFunc = func(c *Context) {}
+  var middleware0 HandlerFunc = func(c *Context) {}
+  var middleware1 HandlerFunc = func(c *Context) {}
+  var middleware0 HandlerFunc = func(c *Context) {}
+  var middleware1 HandlerFunc = func(c *Context) {}
+  var middleware0 HandlerFunc = func(c *Context) {}
+  var middleware1 HandlerFunc = func(c *Context) {}
+  var middleware2 HandlerFunc = func(c *Context) {}
+
+./middleware/ratelimit/ratelimit.go:func New(limit int, window time.Duration) gin.HandlerFunc {
+
+./recovery.go
+  func Recovery() HandlerFunc {
+  func CustomRecovery(handle RecoveryFunc) HandlerFunc {
+  func RecoveryWithWriter(out io.Writer, recovery ...RecoveryFunc) HandlerFunc {
+  func CustomRecoveryWithWriter(out io.Writer, handle RecoveryFunc) HandlerFunc {
+
+./auth.go
+  func BasicAuthForRealm(accounts Accounts, realm string) HandlerFunc {
+  func BasicAuth(accounts Accounts) HandlerFunc {
+  func BasicAuthForProxy(accounts Accounts, realm string) HandlerFunc {
+
+./logger.go
+  // ErrorLogger returns a HandlerFunc for any error type.
+  func ErrorLogger() HandlerFunc {
+  // ErrorLoggerT returns a HandlerFunc for a given error type.
+  func ErrorLoggerT(typ ErrorType) HandlerFunc {
+  func Logger() HandlerFunc {
+  func LoggerWithFormatter(f LogFormatter) HandlerFunc {
+  func LoggerWithWriter(out io.Writer, notlogged ...string) HandlerFunc {
+  func LoggerWithConfig(conf LoggerConfig) HandlerFunc {
+
+./render/render_test.go:srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+./ginS/gins.go
+  func NoRoute(handlers ...gin.HandlerFunc) {
+  func NoMethod(handlers ...gin.HandlerFunc) {
+  func Group(relativePath string, handlers ...gin.HandlerFunc) *gin.RouterGroup {
+  func Handle(httpMethod, relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func POST(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func GET(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func QUERY(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func DELETE(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func PATCH(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func PUT(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func OPTIONS(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func HEAD(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func Any(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+  func Use(middlewares ...gin.HandlerFunc) gin.IRoutes {
+
+./routergroup.go
+  Group(string, ...HandlerFunc) *RouterGroup
+  Use(...HandlerFunc) IRoutes
+  Handle(string, string, ...HandlerFunc) IRoutes
+  Any(string, ...HandlerFunc) IRoutes
+  GET(string, ...HandlerFunc) IRoutes
+  POST(string, ...HandlerFunc) IRoutes
+  DELETE(string, ...HandlerFunc) IRoutes
+  PATCH(string, ...HandlerFunc) IRoutes
+  PUT(string, ...HandlerFunc) IRoutes
+  OPTIONS(string, ...HandlerFunc) IRoutes
+  HEAD(string, ...HandlerFunc) IRoutes
+  Match([]string, string, ...HandlerFunc) IRoutes
+  QUERY(string, ...HandlerFunc) IRoutes
+  func (group *RouterGroup) Use(middleware ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) Group(relativePath string, handlers ...HandlerFunc) *RouterGroup {
+  func (group *RouterGroup) Handle(httpMethod, relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) POST(relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) DELETE(relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) PATCH(relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) PUT(relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) OPTIONS(relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) HEAD(relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) QUERY(relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) Any(relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) Match(methods []string, relativePath string, handlers ...HandlerFunc) IRoutes {
+  func (group *RouterGroup) staticFileHandler(relativePath string, handler HandlerFunc) IRoutes {
+  func (group *RouterGroup) createStaticHandler(relativePath string, fs http.FileSystem) HandlerFunc {
+
+./context_test.go
+  var handlerTest HandlerFunc = func(c *Context) {
+  handlers := []HandlerFunc{
+  c.handlers = []HandlerFunc{
+  srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+
+./routergroup_test.go
+  handlers1 := make([]HandlerFunc, maximumCnt-1)
+  handlers2 := make([]HandlerFunc, maximumCnt+1)
+
+./response_writer_test.go:testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+./context.go:func (c *Context) Handler() HandlerFunc {
+
+./utils.go
+  func Bind(val any) HandlerFunc {
+  // WrapF is a helper function for wrapping http.HandlerFunc and returns a Gin middleware.
+  func WrapF(f http.HandlerFunc) HandlerFunc {
+  func WrapH(h http.Handler) HandlerFunc {
+
+./gin.go
+  // HandlerFunc defines the handler used by gin middleware as return value.
+  type HandlerFunc func(*Context)
+  // HandlersChain defines a HandlerFunc slice.
+  type HandlersChain []HandlerFunc
+  func (c HandlersChain) Last() HandlerFunc {
+  HandlerFunc HandlerFunc
+  func (engine *Engine) NoRoute(handlers ...HandlerFunc) {
+  func (engine *Engine) NoMethod(handlers ...HandlerFunc) {
+  func (engine *Engine) Use(middleware ...HandlerFunc) IRoutes {
+  HandlerFunc: handlerFunc,

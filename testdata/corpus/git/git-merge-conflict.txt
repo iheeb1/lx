@@ -1,0 +1,16 @@
+Auto-merging Makefile
+CONFLICT (content): Merge conflict in Makefile
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Auto-merging args.go
+CONFLICT (content): Merge conflict in args.go
+Auto-merging command.go
+CONFLICT (content): Merge conflict in command.go
+Auto-merging completions.go
+CONFLICT (content): Merge conflict in completions.go
+CONFLICT (modify/delete): fish_completions.go deleted in feature/args-validation and modified in HEAD.  Version HEAD of fish_completions.go left in tree.
+Auto-merging go.mod
+CONFLICT (content): Merge conflict in go.mod
+Auto-merging site/content/user_guide.md
+CONFLICT (content): Merge conflict in site/content/user_guide.md
+Automatic merge failed; fix conflicts and then commit the result.

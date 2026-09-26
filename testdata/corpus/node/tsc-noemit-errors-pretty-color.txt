@@ -1,0 +1,430 @@
+[96msrc/array.ts[0m:[93m151[0m:[93m3[0m - [91merror[0m[90m TS2416: [0mProperty 'clone' in type 'ArraySchema<TIn, TContext, TDefault, TFlags>' is not assignable to the same property in base type 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Type '(spec?: SchemaSpec<any> | undefined) => this' is not assignable to type '(spec: Partial<SchemaSpec<any>>, reason: string) => this'.
+    Types of parameters 'spec' and 'spec' are incompatible.
+      Type 'Partial<SchemaSpec<any>>' is not assignable to type 'SchemaSpec<any>'.
+        Types of property 'coerce' are incompatible.
+          Type 'boolean | undefined' is not assignable to type 'boolean'.
+            Type 'undefined' is not assignable to type 'boolean'.
+
+[7m151[0m   clone(spec?: SchemaSpec<any>) {
+[7m   [0m [91m  ~~~~~[0m
+
+[96msrc/array.ts[0m:[93m152[0m:[93m24[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m152[0m     const next = super.clone(spec);
+[7m   [0m [91m                       ~~~~~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m41[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m                                        ~~~~~~~~~~~~~~[0m
+    An argument for 'reason' was not provided.
+
+[96msrc/array.ts[0m:[93m163[0m:[93m3[0m - [91merror[0m[90m TS2416: [0mProperty 'concat' in type 'ArraySchema<TIn, TContext, TDefault, TFlags>' is not assignable to the same property in base type 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Type '{ <IIn extends Maybe<any[]>, IC, ID, IF extends Flags>(schema: ArraySchema<IIn, IC, ID, IF>): ArraySchema<Concat<TIn, IIn>, TContext & IC, Extract<...> extends never ? TDefault : ID, TFlags | IF>; (schema: this): this; }' is not assignable to type '{ (schema: this): this; (schema: AnySchema<any, any, any, Flags>): AnySchema<any, any, any, Flags>; }'.
+    Types of parameters 'schema' and 'schema' are incompatible.
+      Type 'Schema<any, any, any, Flags>' is missing the following properties from type 'ArraySchema<any, any, any, any>': json, of, length, min, and 3 more.
+
+[7m163[0m   concat<IIn extends Maybe<any[]>, IC, ID, IF extends Flags>(
+[7m   [0m [91m  ~~~~~~[0m
+
+[96msrc/array.ts[0m:[93m171[0m:[93m3[0m - [91merror[0m[90m TS2416: [0mProperty 'concat' in type 'ArraySchema<TIn, TContext, TDefault, TFlags>' is not assignable to the same property in base type 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Type '{ <IIn extends Maybe<any[]>, IC, ID, IF extends Flags>(schema: ArraySchema<IIn, IC, ID, IF>): ArraySchema<Concat<TIn, IIn>, TContext & IC, Extract<...> extends never ? TDefault : ID, TFlags | IF>; (schema: this): this; }' is not assignable to type '{ (schema: this): this; (schema: AnySchema<any, any, any, Flags>): AnySchema<any, any, any, Flags>; }'.
+
+[7m171[0m   concat(schema: this): this;
+[7m   [0m [91m  ~~~~~~[0m
+
+[96msrc/array.ts[0m:[93m172[0m:[93m3[0m - [91merror[0m[90m TS2416: [0mProperty 'concat' in type 'ArraySchema<TIn, TContext, TDefault, TFlags>' is not assignable to the same property in base type 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Type '{ <IIn extends Maybe<any[]>, IC, ID, IF extends Flags>(schema: ArraySchema<IIn, IC, ID, IF>): ArraySchema<Concat<TIn, IIn>, TContext & IC, Extract<...> extends never ? TDefault : ID, TFlags | IF>; (schema: this): this; }' is not assignable to type '{ (schema: this): this; (schema: AnySchema<any, any, any, Flags>): AnySchema<any, any, any, Flags>; }'.
+
+[7m172[0m   concat(schema: any): any {
+[7m   [0m [91m  ~~~~~~[0m
+
+[96msrc/array.ts[0m:[93m297[0m:[93m26[0m - [91merror[0m[90m TS2430: [0mInterface 'ArraySchema<TIn, TContext, TDefault, TFlags>' incorrectly extends interface 'Schema<TIn, TContext, TDefault, TFlags>'.
+
+[7m297[0m export default interface ArraySchema<
+[7m   [0m [91m                         ~~~~~~~~~~~[0m
+
+[96msrc/array.ts[0m:[93m297[0m:[93m26[0m - [91merror[0m[90m TS2430: [0mInterface 'ArraySchema<TIn, TContext, TDefault, TFlags>' incorrectly extends interface 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Types of property 'clone' are incompatible.
+    Type '(spec?: SchemaSpec<any> | undefined) => this' is not assignable to type '(spec: Partial<SchemaSpec<any>>, reason: string) => this'.
+
+[7m297[0m export default interface ArraySchema<
+[7m   [0m [91m                         ~~~~~~~~~~~[0m
+
+[96msrc/boolean.ts[0m:[93m61[0m:[93m16[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m61[0m         return isAbsent(value) || value === true;
+[7m  [0m [91m               ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/boolean.ts[0m:[93m75[0m:[93m16[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m75[0m         return isAbsent(value) || value === false;
+[7m  [0m [91m               ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/locale.ts[0m:[93m101[0m:[93m3[0m - [91merror[0m[90m TS2322: [0mType '{ length: string; min: string; max: string; matches: string; email: string; url: string; uuid: string; datetime: string; datetime_precision: string; datetime_offset: string; trim: string; lowercase: string; uppercase: string; }' is not assignable to type 'Required<StringLocale>'.
+  Object literal may only specify known properties, and 'min' does not exist in type 'Required<StringLocale>'.
+
+[7m101[0m   min: '${path} must be at least ${min} characters',
+[7m   [0m [91m  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/number.ts[0m:[93m135[0m:[93m40[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m135[0m     return this.transform((value) => (!isAbsent(value) ? value | 0 : value));
+[7m   [0m [91m                                       ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/number.ts[0m:[93m151[0m:[93m8[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m151[0m       !isAbsent(value) ? Math[method!](value) : value,
+[7m   [0m [91m       ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/object.ts[0m:[93m285[0m:[93m24[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m285[0m     const next = super.clone(spec);
+[7m   [0m [91m                       ~~~~~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m41[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m                                        ~~~~~~~~~~~~~~[0m
+    An argument for 'reason' was not provided.
+
+[96msrc/Reference.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2614: [0mModule '"property-expr"' has no exported member 'getter'. Did you mean to use 'import getter from "property-expr"' instead?
+
+[7m1[0m import { getter } from 'property-expr';
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/schema.ts[0m:[93m225[0m:[93m41[0m - [91merror[0m[90m TS6133: [0m'reason' is declared but its value is never read.
+
+[7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+[7m   [0m [91m                                        ~~~~~~[0m
+
+[96msrc/schema.ts[0m:[93m255[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m255[0m     let next = this.clone();
+[7m   [0m [91m                    ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m265[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m265[0m     let next = this.clone();
+[7m   [0m [91m                    ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m289[0m:[93m27[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m289[0m     let combined = schema.clone();
+[7m   [0m [91m                          ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m342[0m:[93m23[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m342[0m       schema = schema.clone();
+[7m   [0m [91m                      ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m391[0m:[93m31[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m391[0m       if (allowOptionality && isAbsent(result)) {
+[7m   [0m [91m                              ~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/schema.ts[0m:[93m683[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m683[0m     let next = this.clone({ default: def });
+[7m   [0m [91m                    ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m41[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m                                        ~~~~~~~~~~~~~~[0m
+    An argument for 'reason' was not provided.
+
+[96msrc/schema.ts[0m:[93m689[0m:[93m17[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m689[0m     return this.clone({ strict: isStrict });
+[7m   [0m [91m                ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m41[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m                                        ~~~~~~~~~~~~~~[0m
+    An argument for 'reason' was not provided.
+
+[96msrc/schema.ts[0m:[93m693[0m:[93m23[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m693[0m     const next = this.clone({ nullable });
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m41[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m                                        ~~~~~~~~~~~~~~[0m
+    An argument for 'reason' was not provided.
+
+[96msrc/schema.ts[0m:[93m705[0m:[93m23[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m705[0m     const next = this.clone({ optional });
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m41[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m                                        ~~~~~~~~~~~~~~[0m
+    An argument for 'reason' was not provided.
+
+[96msrc/schema.ts[0m:[93m731[0m:[93m17[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m731[0m     return this.clone().withMutation((next) =>
+[7m   [0m [91m                ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m736[0m:[93m17[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m736[0m     return this.clone().withMutation((next) => next.nullable().optional());
+[7m   [0m [91m                ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m740[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m740[0m     let next = this.clone();
+[7m   [0m [91m                    ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m786[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m786[0m     let next = this.clone();
+[7m   [0m [91m                    ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m827[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m827[0m     let next = this.clone();
+[7m   [0m [91m                    ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m845[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m845[0m     let next = this.clone();
+[7m   [0m [91m                    ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m876[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m876[0m     let next = this.clone();
+[7m   [0m [91m                    ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m909[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m909[0m     let next = this.clone();
+[7m   [0m [91m                    ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m936[0m:[93m21[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m936[0m     let next = this.clone();
+[7m   [0m [91m                    ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/schema.ts[0m:[93m947[0m:[93m59[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m947[0m     const next = (options ? this.resolve(options) : this).clone();
+[7m   [0m [91m                                                          ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/string.ts[0m:[93m40[0m:[93m3[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m40[0m   isAbsent(value) || value === value.trim();
+[7m  [0m [91m  ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/string.ts[0m:[93m138[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'min' does not exist on type 'Required<StringLocale>'.
+
+[7m138[0m     message: Message<{ min: number }> = locale.min,
+[7m   [0m [91m                                               ~~~[0m
+
+[96msrc/string.ts[0m:[93m154[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'max' does not exist on type 'Required<StringLocale>'.
+
+[7m154[0m     message: Message<{ max: number }> = locale.max,
+[7m   [0m [91m                                               ~~~[0m
+
+[96msrc/string.ts[0m:[93m284[0m:[93m8[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m284[0m       !isAbsent(value) ? value.toLowerCase() : value,
+[7m   [0m [91m       ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/string.ts[0m:[93m291[0m:[93m9[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m291[0m         isAbsent(value) || value === value.toLowerCase(),
+[7m   [0m [91m        ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/string.ts[0m:[93m297[0m:[93m8[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m297[0m       !isAbsent(value) ? value.toUpperCase() : value,
+[7m   [0m [91m       ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/string.ts[0m:[93m304[0m:[93m9[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m304[0m         isAbsent(value) || value === value.toUpperCase(),
+[7m   [0m [91m        ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/tuple.ts[0m:[93m169[0m:[93m59[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 0.
+
+[7m169[0m     const next = (options ? this.resolve(options) : this).clone();
+[7m   [0m [91m                                                          ~~~~~~~[0m
+
+  [96msrc/schema.ts[0m:[93m225[0m:[93m9[0m
+    [7m225[0m   clone(spec: Partial<SchemaSpec<any>>, reason: string): this {
+    [7m   [0m [96m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    An argument for 'spec' was not provided.
+
+[96msrc/util/createValidation.ts[0m:[93m144[0m:[93m38[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m144[0m     const shouldSkip = skipAbsent && isAbsent(value);
+[7m   [0m [91m                                     ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/util/isAbsent.ts[0m:[93m1[0m:[93m35[0m
+    [7m1[0m const isAbsent = (value: unknown, strict: boolean): value is undefined | null =>
+    [7m [0m [96m                                  ~~~~~~~~~~~~~~~[0m
+    An argument for 'strict' was not provided.
+
+[96msrc/util/reach.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2614: [0mModule '"property-expr"' has no exported member 'forEach'. Did you mean to use 'import forEach from "property-expr"' instead?
+
+[7m1[0m import { forEach } from 'property-expr';
+[7m [0m [91m         ~~~~~~~[0m
+
+[96msrc/util/reach.ts[0m:[93m21[0m:[93m18[0m - [91merror[0m[90m TS7006: [0mParameter '_part' implicitly has an 'any' type.
+
+[7m21[0m   forEach(path, (_part, isBracket, isArray) => {
+[7m  [0m [91m                 ~~~~~[0m
+
+[96msrc/util/reach.ts[0m:[93m21[0m:[93m25[0m - [91merror[0m[90m TS7006: [0mParameter 'isBracket' implicitly has an 'any' type.
+
+[7m21[0m   forEach(path, (_part, isBracket, isArray) => {
+[7m  [0m [91m                        ~~~~~~~~~[0m
+
+[96msrc/util/reach.ts[0m:[93m21[0m:[93m36[0m - [91merror[0m[90m TS7006: [0mParameter 'isArray' implicitly has an 'any' type.
+
+[7m21[0m   forEach(path, (_part, isBracket, isArray) => {
+[7m  [0m [91m                                   ~~~~~~~[0m
+
+[96msrc/util/sortFields.ts[0m:[93m3[0m:[93m10[0m - [91merror[0m[90m TS2614: [0mModule '"property-expr"' has no exported member 'split'. Did you mean to use 'import split from "property-expr"' instead?
+
+[7m3[0m import { split } from 'property-expr';
+[7m [0m [91m         ~~~~~[0m
+
+
+Found 48 errors in 12 files.
+
+Errors  Files
+     7  src/array.ts[90m:151[0m
+     2  src/boolean.ts[90m:61[0m
+     1  src/locale.ts[90m:101[0m
+     2  src/number.ts[90m:135[0m
+     1  src/object.ts[90m:285[0m
+     1  src/Reference.ts[90m:1[0m
+    20  src/schema.ts[90m:225[0m
+     7  src/string.ts[90m:40[0m
+     1  src/tuple.ts[90m:169[0m
+     1  src/util/createValidation.ts[90m:144[0m
+     4  src/util/reach.ts[90m:1[0m
+     1  src/util/sortFields.ts[90m:3[0m

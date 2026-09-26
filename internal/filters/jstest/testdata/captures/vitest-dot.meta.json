@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--reporter=dot"
+  ],
+  "shell": "-u CLAUDECODE -u AI_AGENT CI=1 npx vitest run --reporter=dot",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest run --reporter=dot on the mixed project plus a snapshot mismatch whose test logs to stdout",
+  "cwd": "repos/vitproj"
+}

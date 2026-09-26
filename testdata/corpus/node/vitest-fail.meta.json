@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run"
+  ],
+  "shell": "npx vitest run",
+  "repo": "unjs/ufo",
+  "exit_code": 1,
+  "description": "vitest 4 run with 7 failing tests across 3 files after regressions injected in src/utils.ts and src/encoding.ts (assertion diffs, code frames) Captured with Claude Code's agent env vars present (CLAUDECODE/AI_AGENT), so vitest auto-selected its compact agent reporter (only failing files listed).",
+  "cwd": "repos/ufo"
+}

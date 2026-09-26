@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "adv/assertions.test.js"
+  ],
+  "shell": "npx jest adv/assertions.test.js",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "jest 29: expect.assertions and done(err) failures",
+  "cwd": "repos/jestproj"
+}

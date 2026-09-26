@@ -1,0 +1,13 @@
+--- FAIL: TestFirst (0.00s)
+    e_test.go:9: first broke
+--- FAIL: Example_greeting (0.00s)
+got:
+hello
+world
+want:
+hello
+there
+FAIL
+FAIL	example.com/lxcap2/example	0.981s
+FAIL
+[2 passed, 2 failed · hidden: 6 === RUN/--- PASS lines, 1 line of passing-test output]

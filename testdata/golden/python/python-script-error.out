@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "scripts/restock.py", line 21, in <module>
+    main(sys.argv[1:])
+  File "scripts/restock.py", line 16, in main
+    restock(stock, rows)
+  File "scripts/restock.py", line 9, in restock
+    stock.remove(sku, -int(qty))
+  File "inventory/models.py", line 33, in remove
+    have = self.counts[sku]
+KeyError: 'B2'

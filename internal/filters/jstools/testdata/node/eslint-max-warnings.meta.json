@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "npx",
+    "eslint",
+    "lib",
+    "--rule",
+    "prefer-arrow-callback: warn",
+    "--max-warnings",
+    "0"
+  ],
+  "shell": "npx eslint lib --rule prefer-arrow-callback: warn --max-warnings 0",
+  "exit_code": 1,
+  "description": "eslint with --max-warnings 0: only warnings, exit 1 with 'ESLint found too many warnings'",
+  "cwd": "/home/user/src/express"
+}

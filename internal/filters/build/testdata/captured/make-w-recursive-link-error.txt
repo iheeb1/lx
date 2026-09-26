@@ -1,0 +1,19 @@
+make: Entering directory `/home/user/src/recur'
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -C core
+make[1]: Entering directory `/home/user/src/recur/core'
+cc -Wall -O2 -c core.c
+ar rcs libcore.a core.o
+make[1]: Leaving directory `/home/user/src/recur/core'
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -C app
+make[1]: Entering directory `/home/user/src/recur/app'
+cc -Wall -O2 -c main.c
+cc -o app main.o ../core/libcore.a
+Undefined symbols for architecture arm64:
+  "_missing_symbol", referenced from:
+      _main in main.o
+ld: symbol(s) not found for architecture arm64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [app] Error 1
+make[1]: Leaving directory `/home/user/src/recur/app'
+make: *** [all] Error 2
+make: Leaving directory `/home/user/src/recur'

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "docker",
+    "ps",
+    "-a",
+    "--filter",
+    "name=lx-review-"
+  ],
+  "shell": "docker ps -a --filter name=lx-review-",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL docker 29.5.2: 68 containers (64 short jobs, a few exited 1/3/137, one running); the non-zero exits past row 40 must be shown",
+  "cwd": "repos/shop"
+}

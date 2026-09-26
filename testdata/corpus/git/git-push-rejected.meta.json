@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "push",
+    "backup",
+    "main"
+  ],
+  "shell": "git push backup main",
+  "repo": "spf13/cobra",
+  "exit_code": 1,
+  "description": "git push rejected because the remote has new commits (non-fast-forward) with git's hint lines",
+  "cwd": "repos/cobra-merge"
+}

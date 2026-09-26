@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--reporter=verbose"
+  ],
+  "shell": "-u CLAUDECODE -u AI_AGENT npx vitest run --reporter=verbose",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "same project with --reporter=verbose",
+  "cwd": "repos/vitproj"
+}

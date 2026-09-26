@@ -1,0 +1,101 @@
+vite-react-app@0.0.0 /home/user/src/vite-app
+├─┬ @types/node@24.19.0
+│ └── undici-types@7.24.6
+├─┬ @types/react-dom@19.3.0
+│ └── @types/react@19.3.0 deduped
+├─┬ @types/react@19.3.0
+│ └── csstype@3.2.3
+├─┬ @vitejs/plugin-react@6.1.1
+│ ├── UNMET OPTIONAL DEPENDENCY @rolldown/plugin-babel@^0.1.7 || ^0.2.0
+│ ├── @rolldown/pluginutils@1.0.1
+│ ├── UNMET OPTIONAL DEPENDENCY babel-plugin-react-compiler@^1.0.0
+│ ├── UNMET OPTIONAL DEPENDENCY oxc-transform-react@^0.145.0
+│ └── vite@8.3.1 deduped
+├── left-pad@1.3.0 extraneous
+├─┬ oxlint@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-android-arm-eabi@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-android-arm64@1.85.0
+│ ├── @oxlint/binding-darwin-arm64@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-darwin-x64@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-freebsd-x64@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-arm-gnueabihf@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-arm-musleabihf@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-arm64-gnu@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-arm64-musl@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-ppc64-gnu@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-riscv64-gnu@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-riscv64-musl@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-s390x-gnu@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-x64-gnu@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-linux-x64-musl@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-openharmony-arm64@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-win32-arm64-msvc@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-win32-ia32-msvc@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY @oxlint/binding-win32-x64-msvc@1.85.0
+│ ├── UNMET OPTIONAL DEPENDENCY oxlint-tsgolint@>=7.0.2001
+│ └── UNMET OPTIONAL DEPENDENCY vite-plus@*
+├── UNMET DEPENDENCY react-dom@^19.2.8
+├── react@18.0.0 invalid: "^19.2.8" from the root project
+├── scheduler@0.28.0 extraneous
+├── typescript@6.0.3
+└─┬ vite@8.3.1
+  ├── @types/node@24.19.0 deduped
+  ├── UNMET OPTIONAL DEPENDENCY @vitejs/devtools@^0.7.1
+  ├── UNMET OPTIONAL DEPENDENCY esbuild@^0.27.0 || ^0.28.0
+  ├── fsevents@2.3.3
+  ├── UNMET OPTIONAL DEPENDENCY jiti@>=1.21.0
+  ├── UNMET OPTIONAL DEPENDENCY less@^4.0.0
+  ├─┬ lightningcss@1.33.0
+  │ ├── detect-libc@2.1.2
+  │ ├── UNMET OPTIONAL DEPENDENCY lightningcss-android-arm64@1.33.0
+  │ ├── lightningcss-darwin-arm64@1.33.0
+  │ ├── UNMET OPTIONAL DEPENDENCY lightningcss-darwin-x64@1.33.0
+  │ ├── UNMET OPTIONAL DEPENDENCY lightningcss-freebsd-x64@1.33.0
+  │ ├── UNMET OPTIONAL DEPENDENCY lightningcss-linux-arm-gnueabihf@1.33.0
+  │ ├── UNMET OPTIONAL DEPENDENCY lightningcss-linux-arm64-gnu@1.33.0
+  │ ├── UNMET OPTIONAL DEPENDENCY lightningcss-linux-arm64-musl@1.33.0
+  │ ├── UNMET OPTIONAL DEPENDENCY lightningcss-linux-x64-gnu@1.33.0
+  │ ├── UNMET OPTIONAL DEPENDENCY lightningcss-linux-x64-musl@1.33.0
+  │ ├── UNMET OPTIONAL DEPENDENCY lightningcss-win32-arm64-msvc@1.33.0
+  │ └── UNMET OPTIONAL DEPENDENCY lightningcss-win32-x64-msvc@1.33.0
+  ├── picomatch@4.0.7
+  ├─┬ postcss@8.5.28
+  │ ├── nanoid@3.3.19
+  │ ├── picocolors@1.1.1
+  │ └── source-map-js@1.2.1
+  ├─┬ rolldown@1.2.11
+  │ ├── @oxc-project/types@0.151.0
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-android-arm-eabi@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-android-arm64@1.2.11
+  │ ├── @rolldown/binding-darwin-arm64@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-darwin-x64@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-freebsd-x64@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-linux-arm-gnueabihf@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-linux-arm64-gnu@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-linux-arm64-musl@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-linux-ppc64-gnu@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-linux-s390x-gnu@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-linux-x64-gnu@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-linux-x64-musl@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-openharmony-arm64@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-win32-arm64-msvc@1.2.11
+  │ ├── UNMET OPTIONAL DEPENDENCY @rolldown/binding-win32-x64-msvc@1.2.11
+  │ └── @rolldown/pluginutils@1.0.1 deduped
+  ├── UNMET OPTIONAL DEPENDENCY sass-embedded@^1.70.0
+  ├── UNMET OPTIONAL DEPENDENCY sass@^1.70.0
+  ├── UNMET OPTIONAL DEPENDENCY stylus@>=0.54.8
+  ├── UNMET OPTIONAL DEPENDENCY sugarss@^5.0.0
+  ├── UNMET OPTIONAL DEPENDENCY terser@^5.16.0
+  ├─┬ tinyglobby@0.2.17
+  │ ├─┬ fdir@6.5.0
+  │ │ └── picomatch@4.0.7 deduped
+  │ └── picomatch@4.0.7 deduped
+  ├── UNMET OPTIONAL DEPENDENCY tsx@^4.8.1
+  └── UNMET OPTIONAL DEPENDENCY yaml@^2.4.2
+
+npm error code ELSPROBLEMS
+npm error extraneous: left-pad@1.3.0 /home/user/src/vite-app/node_modules/left-pad
+npm error missing: react-dom@^19.2.8, required by vite-react-app@0.0.0
+npm error invalid: react@18.0.0 /home/user/src/vite-app/node_modules/react
+npm error extraneous: scheduler@0.28.0 /home/user/src/vite-app/node_modules/scheduler
+npm error A complete log of this run can be found in: /home/user/.npm/_logs/2026-09-26T01_41_55_693Z-debug-0.log

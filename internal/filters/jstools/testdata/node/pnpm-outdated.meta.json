@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "pnpm",
+    "outdated"
+  ],
+  "shell": "pnpm outdated",
+  "exit_code": 1,
+  "description": "pnpm outdated: box-drawn table",
+  "cwd": "/home/user/src/pnpm-app"
+}

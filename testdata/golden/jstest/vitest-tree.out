@@ -1,0 +1,69 @@
+ ❯ adv/hook.test.ts (2 tests | 2 skipped) 3ms
+ ❯ test/cart.test.ts (10 tests | 4 failed | 1 skipped | 1 todo) 20ms
+     × handles fractional prices 4ms
+     × rejects bad pct 0ms
+     × deep equal 1ms
+     × fails for missing 6ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  adv/hook.test.ts > error handling
+Error: database connection refused
+ ❯ adv/hook.test.ts:4:11
+      2| describe("error handling", () => {
+      3|   beforeAll(() => {
+      4|     throw new Error("database connection refused");
+       |           ^
+      5|   });
+      6|   it("returns 503 on failure", () => {
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cart.test.ts > total > handles fractional prices
+AssertionError: expected 0.30000000000000004 to be 0.3 // Object.is equality
+- Expected
++ Received
+- 0.3
++ 0.30000000000000004
+ ❯ test/cart.test.ts:12:56
+     12|     expect(total([{ name: "b", price: 0.1, qty: 3 }])).toBe(0.3);
+       |                                                        ^
+
+ FAIL  test/cart.test.ts > discount > rejects bad pct
+RangeError: invalid discount percentage: 150
+ ❯ discount src/cart.ts:13:11
+     13|     throw new RangeError(`invalid discount percentage: ${pct}`);
+       |           ^
+ ❯ test/cart.test.ts:23:12
+
+ FAIL  test/cart.test.ts > discount > deep equal
+AssertionError: expected { items: [ 1, 2, 3 ], …(1) } to deeply equal { items: [ 1, 2, 4 ], …(1) }
+- Expected
++ Received
+  {
+    "items": [
+      1,
+      2,
+-     4,
++     3,
+    ],
+    "meta": {
+-     "tag": "y",
++     "tag": "x",
+    },
+  }
+ ❯ test/cart.test.ts:26:54
+     26|     expect({ items: [1, 2, 3], meta: { tag: "x" } }).toEqual({ items: …
+       |                                                      ^
+
+ FAIL  test/cart.test.ts > fetchPrice > fails for missing
+Error: price not found for sku missing
+ ❯ fetchPrice src/cart.ts:21:11
+     21|     throw new Error(`price not found for sku ${sku}`);
+       |           ^
+ ❯ test/cart.test.ts:35:12
+
+[1 passing file, 6 passing tests hidden; 1 console block of passing tests hidden]
+ Test Files  2 failed | 1 passed (3)
+      Tests  4 failed | 6 passed | 3 skipped | 1 todo (14)
+   Duration  160ms (transform 48ms, setup 0ms, import 71ms, tests 25ms, environment 0ms)

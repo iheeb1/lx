@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "diff"
+  ],
+  "shell": "git diff",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git diff of unstaged changes: debugPrint->debugPrintf rename across files, license header edits in render/, README section, go.mod and large go.sum churn from go get -u, deleted file",
+  "cwd": "repos/gin"
+}

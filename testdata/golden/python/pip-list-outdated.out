@@ -1,0 +1,4 @@
+Package    Version Latest Type
+---------- ------- ------ -----
+pytest     8.3.4   8.4.2  wheel
+setuptools 58.0.4  82.0.1 wheel

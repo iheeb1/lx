@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "adv/soft.test.ts"
+  ],
+  "shell": "npx vitest run adv/soft.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4: expect.soft with two failures, test.each with one failing case",
+  "cwd": "repos/vitproj"
+}

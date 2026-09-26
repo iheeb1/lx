@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--coverage",
+    "test/cart.test.ts",
+    "test/ok.test.ts"
+  ],
+  "shell": "CLAUDECODE=1 AI_AGENT=claude-code npx vitest run --coverage test/cart.test.ts test/ok.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest run --coverage (v8, text reporter, reportOnFailure, 95% lines threshold) with failing tests",
+  "cwd": "repos/vitproj"
+}

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--bail",
+    "test/"
+  ],
+  "shell": "npx jest --bail test/",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "jest 29 --bail over the mixed suite",
+  "cwd": "repos/jestproj"
+}

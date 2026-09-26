@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npx",
+    "eslint",
+    "."
+  ],
+  "shell": "npx eslint .",
+  "exit_code": 1,
+  "description": "ESLint 9 (flat config) stylish report: repeated no-var errors, a warning without rule (unused eslint-disable directive), a path with a space and a non-ASCII letter, a parse error",
+  "cwd": "/home/user/src/eslint9-app"
+}

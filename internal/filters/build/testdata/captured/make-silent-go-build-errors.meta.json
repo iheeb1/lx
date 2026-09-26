@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "make"
+  ],
+  "exit_code": 2,
+  "description": "make with silent (@) recipes printing kbuild-style '  GEN'/'  GO' steps, then go build errors (10 'undefined: lookup' diagnostics differing only in line numbers, then 'too many errors') under a '# module' header, make error",
+  "cwd": "/home/user/src/gomk"
+}

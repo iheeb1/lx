@@ -1,0 +1,21 @@
+> next-app@0.1.0 build
+> next build
+
+▲ Next.js 16.3.6 (Turbopack)
+✓ Running next.config took 6ms
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 error:
+./app/broken/page.js:1:1
+Error: Module not found: Can't resolve '../../lib/nope'
+> 1 | import { thing } from '../../lib/nope'
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 | export default function B() { return <main>{thing}</main> }
+  3 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+    at <unknown> (./app/broken/page.js:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)

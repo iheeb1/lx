@@ -1,0 +1,29 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.15, pytest-9.1.1, pluggy-1.6.0
+rootdir: /home/user/src/edge
+configfile: pyproject.toml
+plugins: cov-7.1.0, xdist-3.8.0, timeout-2.4.0, rerunfailures-16.7
+collected 1 item
+
+tests/test_groups.py F                                                   [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_exception_group _____________________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/user/src/edge/tests/test_groups.py", line 8, in test_exception_group
+  |     raise ExceptionGroup("2 validation errors", errors)
+  | ExceptionGroup: 2 validation errors (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/user/src/edge/tests/test_groups.py", line 5, in test_exception_group
+    |     raise ValueError(f"bad value {i}")
+    | ValueError: bad value 0
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/user/src/edge/tests/test_groups.py", line 5, in test_exception_group
+    |     raise ValueError(f"bad value {i}")
+    | ValueError: bad value 1
+    +------------------------------------
+=========================== short test summary info ============================
+FAILED tests/test_groups.py::test_exception_group - ExceptionGroup: 2 validat...
+============================== 1 failed in 0.17s ===============================

@@ -1,0 +1,3 @@
+[lx: hidden: 16 build steps]
+ninja: Entering directory `build'
+ld: warning: ignoring duplicate libraries: '-lpthread'

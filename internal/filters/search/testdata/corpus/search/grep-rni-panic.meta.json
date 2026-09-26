@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "grep",
+    "-rni",
+    "panic(",
+    "--include=*.go",
+    "."
+  ],
+  "shell": "grep -rni panic( --include=*.go .",
+  "exit_code": 0,
+  "description": "grep -rni for panic(: hits that look like errors",
+  "cwd": "/home/user/src/gin"
+}

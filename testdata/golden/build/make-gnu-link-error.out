@@ -1,0 +1,8 @@
+gcc -O2 -g -o netd main.o server.o client.o lib/libnetd.a -lpthread
+/usr/bin/ld: server.o: in function `server_start':
+/home/user/src/netd/server.c:41:(.text+0x1a4): undefined reference to `tls_init'
+/usr/bin/ld: /home/user/src/netd/server.c:77:(.text+0x2f0): undefined reference to `tls_accept'
+/usr/bin/ld: client.o: in function `client_connect':
+client.c:(.text+0x88): undefined reference to `tls_init'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:22: netd] Error 1

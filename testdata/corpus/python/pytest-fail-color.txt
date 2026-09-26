@@ -1,0 +1,293 @@
+[1m============================= test session starts ==============================[0m
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.5.0
+rootdir: /home/user/src/click
+configfile: pyproject.toml
+testpaths: tests
+collected 650 items
+
+tests/test_arguments.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m             [  5%][0m
+tests/test_basic.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m [ 13%]
+[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m                                                                     [ 14%][0m
+tests/test_chain.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33mx[0m[32m                                     [ 16%][0m
+tests/test_command_decorators.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m                                    [ 17%][0m
+tests/test_commands.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m [ 24%]
+[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m                                                              [ 26%][0m
+tests/test_compat.py [32m.[0m[32m                                                   [ 26%][0m
+tests/test_context.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m                            [ 30%][0m
+tests/test_custom_classes.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m                                      [ 31%][0m
+tests/test_defaults.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m                                             [ 31%][0m
+tests/test_formatting.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m                               [ 34%][0m
+tests/test_imports.py [32m.[0m[32m                                                  [ 34%][0m
+tests/test_info_dict.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m                           [ 38%][0m
+tests/test_normalization.py [31mF[0m[31mF[0m[31mF[0m[31m                                          [ 38%][0m
+tests/test_options.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[31mF[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31mF[0m[31mF[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m [ 46%]
+[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m          [ 55%][0m
+tests/test_parser.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m                                             [ 56%][0m
+tests/test_shell_completion.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m  [ 63%][0m
+tests/test_termui.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[31m [ 70%]
+[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[33ms[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m                                           [ 75%][0m
+tests/test_testing.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m                           [ 79%][0m
+tests/test_types.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31mF[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31mF[0m[32m.[0m[32m.[0m[31mF[0m[31mF[0m[32m.[0m[31mF[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33ms[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m              [ 85%][0m
+tests/test_utils.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m [ 93%]
+[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m                             [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m__________________________ test_option_normalization ___________________________[0m
+
+runner = <click.testing.CliRunner object at 0x106bd6370>
+
+    def test_option_normalization(runner):
+        @click.command(context_settings=CONTEXT_SETTINGS)
+        @click.option("--foo")
+        @click.option("-x")
+        def cli(foo, x):
+            click.echo(foo)
+            click.echo(x)
+    
+        result = runner.invoke(cli, ["--FOO", "42", "-X", 23])
+>       assert result.output == "42\n23\n"
+[1m[31mE       AssertionError: assert '' == '42\n23\n'[0m
+[1m[31mE         [0m
+[1m[31mE         - 42[0m
+[1m[31mE         - 23[0m
+
+[1m[31mtests/test_normalization.py[0m:15: AssertionError
+[31m[1m__________________________ test_choice_normalization ___________________________[0m
+
+runner = <click.testing.CliRunner object at 0x106bde0a0>
+
+    def test_choice_normalization(runner):
+        @click.command(context_settings=CONTEXT_SETTINGS)
+        @click.option("--choice", type=click.Choice(["Foo", "Bar"]))
+        def cli(choice):
+            click.echo(choice)
+    
+        result = runner.invoke(cli, ["--CHOICE", "FOO"])
+>       assert result.output == "Foo\n"
+[1m[31mE       AssertionError: assert '' == 'Foo\n'[0m
+[1m[31mE         [0m
+[1m[31mE         - Foo[0m
+
+[1m[31mtests/test_normalization.py[0m:25: AssertionError
+[31m[1m__________________________ test_command_normalization __________________________[0m
+
+runner = <click.testing.CliRunner object at 0x107200370>
+
+    def test_command_normalization(runner):
+        @click.group(context_settings=CONTEXT_SETTINGS)
+        def cli():
+            pass
+    
+        @cli.command()
+        def foo():
+            click.echo("here!")
+    
+        result = runner.invoke(cli, ["FOO"])
+>       assert result.output == "here!\n"
+[1m[31mE       AssertionError: assert '' == 'here!\n'[0m
+[1m[31mE         [0m
+[1m[31mE         - here![0m
+
+[1m[31mtests/test_normalization.py[0m:38: AssertionError
+[31m[1m________________________________ test_counting _________________________________[0m
+
+runner = <click.testing.CliRunner object at 0x107080220>
+
+    def test_counting(runner):
+        @click.command()
+        @click.option("-v", count=True, help="Verbosity", type=click.IntRange(0, 3))
+        def cli(v):
+            click.echo(f"verbosity={v:d}")
+    
+        result = runner.invoke(cli, ["-vvv"])
+        assert not result.exception
+        assert result.output == "verbosity=3\n"
+    
+        result = runner.invoke(cli, ["-vvvv"])
+        assert result.exception
+>       assert "Invalid value for '-v': 4 is not in the range 0<=x<=3." in result.output
+[1m[31mE       assert "Invalid value for '-v': 4 is not in the range 0<=x<=3." in "Usage: cli [OPTIONS]\nTry 'cli --help' for help.\n\nError: Invalid value for '-v': 4 is not in the range 0<=x<3.\n"[0m
+[1m[31mE        +  where "Usage: cli [OPTIONS]\nTry 'cli --help' for help.\n\nError: Invalid value for '-v': 4 is not in the range 0<=x<3.\n" = <Result SystemExit(2)>.output[0m
+
+[1m[31mtests/test_options.py[0m:69: AssertionError
+[31m[1m_______________ test_intrange_default_help_text[type0-1<=x<=32] ________________[0m
+
+type = <IntRange 1<=x<32>, expect = '1<=x<=32'
+
+    @pytest.mark.parametrize(
+        ("type", "expect"),
+        [
+            (click.IntRange(1, 32), "1<=x<=32"),
+            (click.IntRange(1, 32, min_open=True, max_open=True), "1<x<32"),
+            (click.IntRange(1), "x>=1"),
+            (click.IntRange(max=32), "x<=32"),
+        ],
+    )
+    def test_intrange_default_help_text(type, expect):
+        option = click.Option(["--num"], type=type, show_default=True, default=2)
+        context = click.Context(click.Command("test"))
+        result = option.get_help_record(context)[1]
+>       assert expect in result
+[1m[31mE       AssertionError: assert '1<=x<=32' in '[default: 2; 1<=x<32]'[0m
+
+[1m[31mtests/test_options.py[0m:335: AssertionError
+[31m[1m________________ test_intrange_default_help_text[type1-1<x<32] _________________[0m
+
+type = <IntRange 1<x<=32>, expect = '1<x<32'
+
+    @pytest.mark.parametrize(
+        ("type", "expect"),
+        [
+            (click.IntRange(1, 32), "1<=x<=32"),
+            (click.IntRange(1, 32, min_open=True, max_open=True), "1<x<32"),
+            (click.IntRange(1), "x>=1"),
+            (click.IntRange(max=32), "x<=32"),
+        ],
+    )
+    def test_intrange_default_help_text(type, expect):
+        option = click.Option(["--num"], type=type, show_default=True, default=2)
+        context = click.Context(click.Command("test"))
+        result = option.get_help_record(context)[1]
+>       assert expect in result
+[1m[31mE       AssertionError: assert '1<x<32' in '[default: 2; 1<x<=32]'[0m
+
+[1m[31mtests/test_options.py[0m:335: AssertionError
+[31m[1m____________________________ test_range[type8-5-4] _____________________________[0m
+
+type = <IntRange x<5 clamped>, value = '5', expect = 4
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "3", 3),
+            (click.IntRange(5), "5", 5),
+            (click.IntRange(5), "100", 100),
+            (click.IntRange(max=5), "5", 5),
+            (click.IntRange(max=5), "-100", -100),
+            (click.IntRange(0, clamp=True), "-1", 0),
+            (click.IntRange(max=5, clamp=True), "6", 5),
+            (click.IntRange(0, min_open=True, clamp=True), "0", 1),
+            (click.IntRange(max=5, max_open=True, clamp=True), "5", 4),
+            (click.FloatRange(0.5, 1.5), "1.2", 1.2),
+            (click.FloatRange(0.5, min_open=True), "0.51", 0.51),
+            (click.FloatRange(max=1.5, max_open=True), "1.49", 1.49),
+            (click.FloatRange(0.5, clamp=True), "-0.0", 0.5),
+            (click.FloatRange(max=1.5, clamp=True), "inf", 1.5),
+        ],
+    )
+    def test_range(type, value, expect):
+>       assert type.convert(value, None, None) == expect
+[1m[31mE       AssertionError: assert 5 == 4[0m
+[1m[31mE        +  where 5 = convert('5', None, None)[0m
+[1m[31mE        +    where convert = <IntRange x<5 clamped>.convert[0m
+
+[1m[31mtests/test_types.py[0m:32: AssertionError
+[31m[1m___________ test_range_fail[type0-6-6 is not in the range 0<=x<=5.] ____________[0m
+
+type = <IntRange 0<=x<5>, value = '6', expect = '6 is not in the range 0<=x<=5.'
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "6", "6 is not in the range 0<=x<=5."),
+            (click.IntRange(5), "4", "4 is not in the range x>=5."),
+            (click.IntRange(max=5), "6", "6 is not in the range x<=5."),
+            (click.IntRange(0, 5, min_open=True), 0, "0<x<=5"),
+            (click.IntRange(0, 5, max_open=True), 5, "0<=x<5"),
+            (click.FloatRange(0.5, min_open=True), 0.5, "x>0.5"),
+            (click.FloatRange(max=1.5, max_open=True), 1.5, "x<1.5"),
+        ],
+    )
+    def test_range_fail(type, value, expect):
+        with pytest.raises(click.BadParameter) as exc_info:
+            type.convert(value, None, None)
+    
+>       assert expect in exc_info.value.message
+[1m[31mE       AssertionError: assert '6 is not in the range 0<=x<=5.' in '6 is not in the range 0<=x<5.'[0m
+[1m[31mE        +  where '6 is not in the range 0<=x<5.' = BadParameter('6 is not in the range 0<=x<5.').message[0m
+[1m[31mE        +    where BadParameter('6 is not in the range 0<=x<5.') = <ExceptionInfo BadParameter('6 is not in the range 0<=x<5.') tblen=3>.value[0m
+
+[1m[31mtests/test_types.py[0m:51: AssertionError
+[31m[1m_______________________ test_range_fail[type3-0-0<x<=5] ________________________[0m
+
+type = <IntRange 0<x<5>, value = 0, expect = '0<x<=5'
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "6", "6 is not in the range 0<=x<=5."),
+            (click.IntRange(5), "4", "4 is not in the range x>=5."),
+            (click.IntRange(max=5), "6", "6 is not in the range x<=5."),
+            (click.IntRange(0, 5, min_open=True), 0, "0<x<=5"),
+            (click.IntRange(0, 5, max_open=True), 5, "0<=x<5"),
+            (click.FloatRange(0.5, min_open=True), 0.5, "x>0.5"),
+            (click.FloatRange(max=1.5, max_open=True), 1.5, "x<1.5"),
+        ],
+    )
+    def test_range_fail(type, value, expect):
+        with pytest.raises(click.BadParameter) as exc_info:
+            type.convert(value, None, None)
+    
+>       assert expect in exc_info.value.message
+[1m[31mE       AssertionError: assert '0<x<=5' in '0 is not in the range 0<x<5.'[0m
+[1m[31mE        +  where '0 is not in the range 0<x<5.' = BadParameter('0 is not in the range 0<x<5.').message[0m
+[1m[31mE        +    where BadParameter('0 is not in the range 0<x<5.') = <ExceptionInfo BadParameter('0 is not in the range 0<x<5.') tblen=3>.value[0m
+
+[1m[31mtests/test_types.py[0m:51: AssertionError
+[31m[1m_______________________ test_range_fail[type4-5-0<=x<5] ________________________[0m
+
+type = <IntRange 0<=x<=5>, value = 5, expect = '0<=x<5'
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "6", "6 is not in the range 0<=x<=5."),
+            (click.IntRange(5), "4", "4 is not in the range x>=5."),
+            (click.IntRange(max=5), "6", "6 is not in the range x<=5."),
+            (click.IntRange(0, 5, min_open=True), 0, "0<x<=5"),
+            (click.IntRange(0, 5, max_open=True), 5, "0<=x<5"),
+            (click.FloatRange(0.5, min_open=True), 0.5, "x>0.5"),
+            (click.FloatRange(max=1.5, max_open=True), 1.5, "x<1.5"),
+        ],
+    )
+    def test_range_fail(type, value, expect):
+        with pytest.raises(click.BadParameter) as exc_info:
+>           type.convert(value, None, None)
+[1m[31mE           Failed: DID NOT RAISE <class 'click.exceptions.BadParameter'>[0m
+
+[1m[31mtests/test_types.py[0m:49: Failed
+[31m[1m_______________________ test_range_fail[type6-1.5-x<1.5] _______________________[0m
+
+type = <FloatRange x<1.5>, value = 1.5, expect = 'x<1.5'
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "6", "6 is not in the range 0<=x<=5."),
+            (click.IntRange(5), "4", "4 is not in the range x>=5."),
+            (click.IntRange(max=5), "6", "6 is not in the range x<=5."),
+            (click.IntRange(0, 5, min_open=True), 0, "0<x<=5"),
+            (click.IntRange(0, 5, max_open=True), 5, "0<=x<5"),
+            (click.FloatRange(0.5, min_open=True), 0.5, "x>0.5"),
+            (click.FloatRange(max=1.5, max_open=True), 1.5, "x<1.5"),
+        ],
+    )
+    def test_range_fail(type, value, expect):
+        with pytest.raises(click.BadParameter) as exc_info:
+>           type.convert(value, None, None)
+[1m[31mE           Failed: DID NOT RAISE <class 'click.exceptions.BadParameter'>[0m
+
+[1m[31mtests/test_types.py[0m:49: Failed
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m tests/test_normalization.py::[1mtest_option_normalization[0m - AssertionError: assert '' == '42\n23\n'
+[31mFAILED[0m tests/test_normalization.py::[1mtest_choice_normalization[0m - AssertionError: assert '' == 'Foo\n'
+[31mFAILED[0m tests/test_normalization.py::[1mtest_command_normalization[0m - AssertionError: assert '' == 'here!\n'
+[31mFAILED[0m tests/test_options.py::[1mtest_counting[0m - assert "Invalid value for '-v': 4 is not in the range 0<=x<=3." in "Usage: ...
+[31mFAILED[0m tests/test_options.py::[1mtest_intrange_default_help_text[type0-1<=x<=32][0m - AssertionError: assert '1<=x<=32' in '[default: 2; 1<=x<32]'
+[31mFAILED[0m tests/test_options.py::[1mtest_intrange_default_help_text[type1-1<x<32][0m - AssertionError: assert '1<x<32' in '[default: 2; 1<x<=32]'
+[31mFAILED[0m tests/test_types.py::[1mtest_range[type8-5-4][0m - AssertionError: assert 5 == 4
+[31mFAILED[0m tests/test_types.py::[1mtest_range_fail[type0-6-6 is not in the range 0<=x<=5.][0m - AssertionError: assert '6 is not in the range 0<=x<=5.' in '6 is not in the...
+[31mFAILED[0m tests/test_types.py::[1mtest_range_fail[type3-0-0<x<=5][0m - AssertionError: assert '0<x<=5' in '0 is not in the range 0<x<5.'
+[31mFAILED[0m tests/test_types.py::[1mtest_range_fail[type4-5-0<=x<5][0m - Failed: DID NOT RAISE <class 'click.exceptions.BadParameter'>
+[31mFAILED[0m tests/test_types.py::[1mtest_range_fail[type6-1.5-x<1.5][0m - Failed: DID NOT RAISE <class 'click.exceptions.BadParameter'>
+[31m============ [31m[1m11 failed[0m, [32m616 passed[0m, [33m22 skipped[0m, [33m1 xfailed[0m[31m in 0.84s[0m[31m =============[0m

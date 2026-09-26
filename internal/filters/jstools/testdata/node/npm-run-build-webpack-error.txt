@@ -1,0 +1,60 @@
+
+> webpack-app@1.0.0 build
+> webpack --mode production
+
+assets by status 507 KiB [cached] 1 asset
+orphan modules 511 KiB [orphan] 3 modules
+cacheable modules 511 KiB
+  ./src/index.js + 3 modules 511 KiB [built] [code generated]
+  ./src/syntax.js 12 bytes [built] [code generated] [1 error]
+
+ERROR in ./src/broken.js 1:0-18
+Module not found: Error: Can't resolve './nope.js' in '/home/user/src/webpack-app/src'
+resolve './nope.js' in '/home/user/src/webpack-app/src'
+  using description file: /home/user/src/webpack-app/package.json (relative path: ./src)
+    Field 'browser' doesn't contain a valid alias configuration
+    aliased from extension alias with mapping '.js' to '.js'
+      using description file: /home/user/src/webpack-app/package.json (relative path: ./src/nope.js)
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/user/src/webpack-app/src/nope.js doesn't exist
+    Failed to alias from extension alias with mapping '.js' to '.js' for './nope.js': undefined
+    aliased from extension alias with mapping '.js' to '.ts'
+      using description file: /home/user/src/webpack-app/package.json (relative path: ./src/nope.ts)
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/user/src/webpack-app/src/nope.ts doesn't exist
+    using description file: /home/user/src/webpack-app/package.json (relative path: ./src/nope.js)
+      no extension
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/user/src/webpack-app/src/nope.js doesn't exist
+      .ts
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/user/src/webpack-app/src/nope.js.ts doesn't exist
+      .js
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/user/src/webpack-app/src/nope.js.js doesn't exist
+      .json
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/user/src/webpack-app/src/nope.js.json doesn't exist
+      .wasm
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/user/src/webpack-app/src/nope.js.wasm doesn't exist
+      .html
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/user/src/webpack-app/src/nope.js.html doesn't exist
+      .css
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/user/src/webpack-app/src/nope.js.css doesn't exist
+      as directory
+        /home/user/src/webpack-app/src/nope.js doesn't exist
+ @ ./src/index.js 4:0-20
+
+ERROR in ./src/syntax.js 1:10
+Module parse failed: Unexpected token (1:10)
+File was parsed as module type 'javascript/auto'.
+You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
+> 1 | const x = ;
+    |           ^
+  2 | 
+ @ ./src/index.js 5:0-20
+
+webpack 5.111.1 compiled with 2 errors in 248 ms

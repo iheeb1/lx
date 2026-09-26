@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "branch",
+    "-avv"
+  ],
+  "exit_code": 0,
+  "cwd": "/home/user/src/vite",
+  "description": "git branch -avv in vite: verbose listing (sha, upstream, subject) of the local and ~77 remote-tracking branches"
+}

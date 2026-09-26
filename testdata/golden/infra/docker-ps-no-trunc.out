@@ -1,0 +1,6 @@
+[lx: same in all 4 rows: CREATED=3 days ago, STATUS=Up 3 days]
+CONTAINER ID                                                      IMAGE              COMMAND                                                                                                   PORTS                                        NAMES
+f72d5aa3d0033f1baa19b2ffad52feb4350f28c1dce158a641b62629e8fe7f37  shop/api:1.8.2     "/app/api serve --config /etc/shop/api.yaml --listen 0.0.0.0:8080 --metrics-listen 0.0.0.0:9090"          0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp  shop-api-1
+d8b0c474d6875e5c8507a8d216a8eabf2b64d668300b68516be035455469fb85  shop/worker:1.8.2  "/app/worker --queue=orders,payments,emails --concurrency=16 --max-retries=5 --dead-letter=dlq"                                                        shop-worker-1
+70b557a0ffcc28f9655aad29ebb382fa5dc8cb05db9ac016d387ff531d381dc1  shop/web:1.8.2     "docker-entrypoint.sh node server.js --port 3000"                                                         0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp  shop-web-1
+58d994304bbf8f2f978c8f6f5b1cbd008e936573fbeec5d52d2d82a4366bbd27  shop/search:1.8.2  "/usr/share/elasticsearch/bin/elasticsearch -Ediscovery.type=single-node -Expack.security.enabled=false"  9200/tcp, 9300/tcp                           shop-search-1

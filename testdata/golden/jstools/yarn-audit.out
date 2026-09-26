@@ -1,0 +1,100 @@
+yarn audit v1.22.22
+high  body-parser  Patched in: >=1.20.3
+  body-parser vulnerable to denial of service when url encoding is enabled - https://www.npmjs.com/advisories/1099520
+  Dependency of: express
+  Path: express > body-parser
+low  serve-static  Patched in: >=1.16.0
+  serve-static vulnerable to template injection that can lead to XSS - https://www.npmjs.com/advisories/1100528
+  Dependency of: express
+  Path: express > serve-static
+low  express  Patched in: >=4.20.0
+  express vulnerable to XSS via response.redirect() - https://www.npmjs.com/advisories/1100530
+  Dependency of: express
+  Path: express
+high  path-to-regexp  Patched in: >=0.1.10
+  path-to-regexp outputs backtracking regular expressions - https://www.npmjs.com/advisories/1101850
+  Dependency of: express
+  Path: express > path-to-regexp
+low  cookie  Patched in: >=0.7.0
+  cookie accepts cookie name, path, and domain with out of bounds characters - https://www.npmjs.com/advisories/1103907
+  Dependency of: express
+  Path: express > cookie
+high  qs  Patched in: >=6.7.3
+  qs vulnerable to Prototype Pollution - https://www.npmjs.com/advisories/1104120
+  Dependency of: express
+  Path: express > qs, express > body-parser > qs
+high  path-to-regexp  Patched in: >=0.1.12
+  path-to-regexp contains a ReDoS - https://www.npmjs.com/advisories/1105199
+  Dependency of: express
+  Path: express > path-to-regexp
+low  send  Patched in: >=0.19.0
+  send vulnerable to template injection that can lead to XSS - https://www.npmjs.com/advisories/1109556
+  Dependency of: express
+  Path: express > send, express > serve-static > send
+moderate  express  Patched in: >=4.19.2
+  Express.js Open Redirect in malformed URLs - https://www.npmjs.com/advisories/1111636
+  Dependency of: express
+  Path: express
+low  qs  Patched in: >=6.14.2
+  qs's arrayLimit bypass in comma parsing allows denial of service - https://www.npmjs.com/advisories/1113161
+  Dependency of: express
+  Path: express > qs, express > body-parser > qs
+moderate  qs  Patched in: >=6.14.1
+  qs's arrayLimit bypass in its bracket notation allows DoS via memory exhaustion - https://www.npmjs.com/advisories/1113719
+  Dependency of: express, request
+  Path: express > qs, express > body-parser > qs, request > qs
+high  path-to-regexp  Patched in: >=0.1.13
+  path-to-regexp vulnerable to Regular Expression Denial of Service via multiple route parameters - https://www.npmjs.com/advisories/1115527
+  Dependency of: express
+  Path: express > path-to-regexp
+low  body-parser  Patched in: >=1.20.6
+  body-parser vulnerable to denial of service when invalid limit value silently disables size enforcement - https://www.npmjs.com/advisories/1123977
+  Dependency of: express
+  Path: express > body-parser
+moderate  qs  Patched in: >=6.16.0
+  qs: Denial of Service via Attacker Controlled isBuffer - https://www.npmjs.com/advisories/1158507
+  Dependency of: express, request
+  Path: express > qs, express > body-parser > qs, request > qs
+high  lodash  Patched in: >=4.17.21
+  Command Injection in lodash - https://www.npmjs.com/advisories/1106913
+  Dependency of: lodash
+  Path: lodash
+moderate  lodash  Patched in: >=4.17.21
+  Regular Expression Denial of Service (ReDoS) in lodash - https://www.npmjs.com/advisories/1108258
+  Dependency of: lodash
+  Path: lodash
+high  lodash  Patched in: >=4.18.0
+  lodash vulnerable to Code Injection via `_.template` imports key names - https://www.npmjs.com/advisories/1115806
+  Dependency of: lodash
+  Path: lodash
+moderate  lodash  Patched in: >=4.18.0
+  lodash vulnerable to Prototype Pollution via array path bypass in `_.unset` and `_.omit` - https://www.npmjs.com/advisories/1115810
+  Dependency of: lodash
+  Path: lodash
+moderate  lodash  Patched in: >=4.17.23
+  Lodash has Prototype Pollution Vulnerability in `_.unset` and `_.omit` functions - https://www.npmjs.com/advisories/1120370
+  Dependency of: lodash
+  Path: lodash
+moderate  request  Patched in: No patch available
+  Server-Side Request Forgery in Request - https://www.npmjs.com/advisories/1096727
+  Dependency of: request
+  Path: request
+moderate  tough-cookie  Patched in: >=4.1.3
+  tough-cookie Prototype Pollution vulnerability - https://www.npmjs.com/advisories/1097682
+  Dependency of: request
+  Path: request > tough-cookie
+critical  form-data  Patched in: >=2.5.4
+  form-data uses unsafe random function in form-data for choosing boundary - https://www.npmjs.com/advisories/1109540
+  Dependency of: request
+  Path: request > form-data
+high  form-data  Patched in: >=2.5.6
+  form-data: CRLF injection in form-data via unescaped multipart field names and filenames - https://www.npmjs.com/advisories/1120745
+  Dependency of: request
+  Path: request > form-data
+moderate  uuid  Patched in: >=11.1.1
+  uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided - https://www.npmjs.com/advisories/1119441
+  Dependency of: request
+  Path: request > uuid
+31 vulnerabilities found - Packages audited: 110
+Severity: 8 Low | 13 Moderate | 9 High | 1 Critical
+Done in 0.94s.

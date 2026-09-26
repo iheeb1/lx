@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "node",
+    "rejection.js"
+  ],
+  "shell": "node rejection.js",
+  "repo": "scratch/nodeproj",
+  "exit_code": 1,
+  "description": "node 24: async main throws TypeError (unhandled rejection)",
+  "cwd": "repos/nodeproj"
+}

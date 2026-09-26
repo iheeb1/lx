@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "python",
+    "tg.py"
+  ],
+  "shell": "python tg.py",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): Python 3.13 asyncio.TaskGroup: exception-group traceback with '|' rails through asyncio frames, two sub-exceptions",
+  "cwd": "/home/user/src/edge",
+  "env_setup": "Python 3.13.15 venv at /home/user/venv313: pytest 9.1.1, pytest-cov 7.1.0, pytest-xdist 3.8.0, mypy 2.3.1, ruff 0.11.0"
+}

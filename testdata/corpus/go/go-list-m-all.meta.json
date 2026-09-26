@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "list",
+    "-m",
+    "all"
+  ],
+  "shell": "go list -m all",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "go list -m all: every module in gin's build list with versions",
+  "cwd": "repos/gin"
+}

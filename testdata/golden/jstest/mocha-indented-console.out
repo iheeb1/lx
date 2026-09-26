@@ -1,0 +1,10 @@
+  reporting
+  Report for job 42
+    Error: connection refused while fetching /api
+    retrying
+Error: logged but test passes
+    at Context.<anonymous> (adv/indented.js:11:19)
+    … 9 library frames (mocha, node:internal)
+
+[2 passing tests hidden]
+  2 passing (3ms)

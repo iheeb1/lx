@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--bail=1",
+    "test/cart.test.ts",
+    "test/ok.test.ts",
+    "adv/soft.test.ts"
+  ],
+  "shell": "npx vitest run --bail=1 test/cart.test.ts test/ok.test.ts adv/soft.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4 --bail=1",
+  "cwd": "repos/vitproj"
+}

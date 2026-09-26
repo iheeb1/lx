@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "show",
+    "4262a38d"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/luxon",
+  "description": "git show of a luxon commit touching package-lock.json"
+}

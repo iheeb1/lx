@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 /home/user/src/vitproj
+
+ ❯ test/syntax.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/syntax.test.ts [ test/syntax.test.ts ]
+Error: Transform failed with 1 error:
+
+[31m[PARSE_ERROR] [0mExpected `,` or `)` but found `;`
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m test/syntax.test.ts:4:23 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m4 │[0m [38;5;249m [0m[38;5;249m [0m[38;5;249me[0m[38;5;249mx[0m[38;5;249mp[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249mt[0m[38;5;249m([0m[38;5;249m1[0m[38;5;249m [0m[38;5;249m+[0m[38;5;249m [0m[38;5;249m1[0m[38;5;249m)[0m[38;5;249m.[0m[38;5;249mt[0m[38;5;249mo[0m[38;5;249mB[0m[38;5;249me[0m([38;5;249m2[0m;
+ [38;5;240m  │[0m                     ┬ ┬  
+ [38;5;240m  │[0m                     ╰──── Opened here
+ [38;5;240m  │[0m                       │  
+ [38;5;240m  │[0m                       ╰── `,` or `)` expected
+[38;5;246m───╯[0m
+
+  Plugin: vite:oxc
+  File: /home/user/src/vitproj/test/syntax.test.ts
+ ❯ transformWithOxc node_modules/vite/dist/node/chunks/node.js:7551:19
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:7623:26
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8515:51
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:19998:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  02:15:32
+   Duration  307ms (transform 0ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

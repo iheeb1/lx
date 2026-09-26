@@ -1,0 +1,69 @@
+[96msrc/App.tsx[0m:[93m7[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module './utils/missing' or its corresponding type declarations.
+
+[7m7[0m import { missing } from './utils/missing'
+[7m [0m [91m                        ~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/App.tsx[0m:[93m9[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'string' is not assignable to type 'number'.
+
+[7m9[0m const label: number = formatCount(1)
+[7m [0m [91m      ~~~~~[0m
+
+[96msrc/App.tsx[0m:[93m9[0m:[93m23[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m9[0m const label: number = formatCount(1)
+[7m [0m [91m                      ~~~~~~~~~~~[0m
+
+  [96msrc/utils/format.ts[0m:[93m1[0m:[93m40[0m
+    [7m1[0m export function formatCount(n: number, label: string): string {
+    [7m [0m [96m                                       ~~~~~~~~~~~~~[0m
+    An argument for 'label' was not provided.
+
+[96msrc/App.tsx[0m:[93m10[0m:[93m34[0m - [91merror[0m[90m TS2345: [0mArgument of type 'number' is not assignable to parameter of type 'string'.
+
+[7m10[0m const total: string = parseCount(42) + limits.maxx
+[7m  [0m [91m                                 ~~[0m
+
+[96msrc/App.tsx[0m:[93m10[0m:[93m47[0m - [91merror[0m[90m TS2551: [0mProperty 'maxx' does not exist on type '{ min: number; max: number; }'. Did you mean 'max'?
+
+[7m10[0m const total: string = parseCount(42) + limits.maxx
+[7m  [0m [91m                                              ~~~~[0m
+
+  [96msrc/utils/format.ts[0m:[93m15[0m:[93m3[0m
+    [7m15[0m   max: 10,
+    [7m  [0m [96m  ~~~~~~~[0m
+    'max' is declared here.
+
+[96msrc/App.tsx[0m:[93m19[0m:[93m22[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'number'.
+
+[7m19[0m console.log(describe('3', 4), missing, label, total)
+[7m  [0m [91m                     ~~~[0m
+
+[96msrc/App.tsx[0m:[93m25[0m:[93m7[0m - [91merror[0m[90m TS2345: [0mArgument of type '(n: number) => string' is not assignable to parameter of type '(n: number) => number'.
+  Type 'string' is not assignable to type 'number'.
+
+[7m25[0m apply((n: number) => {
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~[0m
+
+[96msrc/App.tsx[0m:[93m56[0m:[93m35[0m - [91merror[0m[90m TS2345: [0mArgument of type '(count: number) => string' is not assignable to parameter of type 'SetStateAction<number>'.
+  Type '(count: number) => string' is not assignable to type '(prevState: number) => number'.
+    Type 'string' is not assignable to type 'number'.
+
+[7m56[0m           onClick={() => setCount((count) => `${count}`)}
+[7m  [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/utils/span.ts[0m:[93m7[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType '{ x: number; y: number; z: number; w: number; } | { x: number; y: number; }' is not assignable to type 'Point'.
+  Object literal may only specify known properties, and 'z' does not exist in type 'Point'.
+
+[7m7[0m       z: 3,
+[7m [0m [91m      ~[0m
+
+[96msrc/utils/span.ts[0m:[93m12[0m:[93m14[0m - [91merror[0m[90m TS2322: [0mType '("far" | { x: number; y: number; })[]' is not assignable to type 'Point[]'.
+  Type '"far" | { x: number; y: number; }' is not assignable to type 'Point'.
+    Type 'string' is not assignable to type 'Point'.
+
+[7m12[0m export const pts: Point[] = [1, 2].map((n) =>
+[7m  [0m [91m             ~~~[0m
+
+
+Found 10 errors.
+

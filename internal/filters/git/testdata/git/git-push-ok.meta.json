@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "push",
+    "origin",
+    "main"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git push fast-forward update"
+}

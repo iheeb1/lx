@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "clean",
+    "-n",
+    "-d"
+  ],
+  "exit_code": 0,
+  "cwd": "/home/user/src/cJSON",
+  "description": "git clean -n -d in a cJSON clone with 24 untracked numbered outputs (tests/inputs/test41.out \u2026 test64.out): the generic reducer factors them into \"test<N>.out \u00d724\", losing which files would be deleted"
+}

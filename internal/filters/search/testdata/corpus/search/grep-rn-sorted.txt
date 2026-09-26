@@ -1,0 +1,16 @@
+./context.go:860:func (c *Context) ShouldBind(obj any) error {
+./context.go:889:func (c *Context) ShouldBindJSON(obj any) error {
+./context.go:895:func (c *Context) ShouldBindXML(obj any) error {
+./context.go:901:func (c *Context) ShouldBindQuery(obj any) error {
+./context.go:907:func (c *Context) ShouldBindYAML(obj any) error {
+./context.go:913:func (c *Context) ShouldBindTOML(obj any) error {
+./context.go:919:func (c *Context) ShouldBindPlain(obj any) error {
+./context.go:925:func (c *Context) ShouldBindHeader(obj any) error {
+./context.go:931:func (c *Context) ShouldBindUri(obj any) error {
+./context.go:941:func (c *Context) ShouldBindWith(obj any, b binding.Binding) error {
+./context.go:950:func (c *Context) ShouldBindBodyWith(obj any, bb binding.BindingBody) (err error) {
+./context.go:968:func (c *Context) ShouldBindBodyWithJSON(obj any) error {
+./context.go:973:func (c *Context) ShouldBindBodyWithXML(obj any) error {
+./context.go:978:func (c *Context) ShouldBindBodyWithYAML(obj any) error {
+./context.go:983:func (c *Context) ShouldBindBodyWithTOML(obj any) error {
+./context.go:988:func (c *Context) ShouldBindBodyWithPlain(obj any) error {

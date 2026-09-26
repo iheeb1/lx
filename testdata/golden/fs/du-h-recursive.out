@@ -1,0 +1,31 @@
+ 64K	packages/vite/src/types
+ 80K	packages/vite/src/shared
+136K	packages/vite/src/node/optimizer
+540K	packages/vite/src/node/plugins
+120K	packages/vite/src/node/server/middlewares
+ 40K	packages/vite/src/node/server/__tests__/fixtures
+ 84K	packages/vite/src/node/server/__tests__
+476K	packages/vite/src/node/server
+108K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2
+ 36K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding
+388K	packages/vite/src/node/ssr/runtime/__tests__/fixtures
+456K	packages/vite/src/node/ssr/runtime/__tests__
+464K	packages/vite/src/node/ssr/runtime
+ 92K	packages/vite/src/node/ssr/__tests__/fixtures
+164K	packages/vite/src/node/ssr/__tests__
+684K	packages/vite/src/node/ssr
+ 68K	packages/vite/src/node/__tests__/plugins/fixtures/license
+ 40K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs
+136K	packages/vite/src/node/__tests__/plugins/fixtures
+ 80K	packages/vite/src/node/__tests__/plugins/importGlob
+384K	packages/vite/src/node/__tests__/plugins
+ 40K	packages/vite/src/node/__tests__/packages
+116K	packages/vite/src/node/__tests__/fixtures/config/native-compat
+212K	packages/vite/src/node/__tests__/fixtures/config
+440K	packages/vite/src/node/__tests__/fixtures
+1.2M	packages/vite/src/node/__tests__
+3.4M	packages/vite/src/node
+ 96K	packages/vite/src/module-runner
+ 60K	packages/vite/src/client
+3.7M	packages/vite/src
+… 179 smaller entries omitted (each ≤ 32K)

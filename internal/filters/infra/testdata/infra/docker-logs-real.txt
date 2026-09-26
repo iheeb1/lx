@@ -1,0 +1,101 @@
+2026-09-26T10:00:30.500Z WARN  [db] slow query 1030ms
+2026-09-26T10:01:00.500Z WARN  [db] slow query 1060ms
+2026-09-26T10:01:11.900Z ERROR [orders] unhandled error in GET /api/orders/9812
+Traceback (most recent call last):
+  File "/app/orders/views.py", line 118, in get
+    return totals(order)
+  File "/app/orders/totals.py", line 41, in totals
+    return order["lines"][0]["total"]
+KeyError: 'lines'
+2026-09-26T10:01:30.500Z WARN  [db] slow query 1090ms
+2026-09-26T10:01:30.000Z FATAL [main] shutting down: database connection lost
+2026-09-26T10:00:01.007Z INFO  [http] GET /api/orders?page=2 200 16ms
+2026-09-26T10:00:02.014Z INFO  [http] GET /api/orders?page=3 200 29ms
+2026-09-26T10:00:03.021Z INFO  [http] GET /api/orders?page=4 200 42ms
+2026-09-26T10:00:04.028Z INFO  [http] GET /api/orders?page=5 200 55ms
+2026-09-26T10:00:05.035Z INFO  [http] GET /api/orders?page=1 200 68ms
+2026-09-26T10:00:06.042Z INFO  [http] GET /api/orders?page=2 200 81ms
+2026-09-26T10:00:07.049Z INFO  [http] GET /api/orders?page=3 200 4ms
+2026-09-26T10:00:08.056Z INFO  [http] GET /api/orders?page=4 200 17ms
+2026-09-26T10:00:09.063Z INFO  [http] GET /api/orders?page=5 200 30ms
+2026-09-26T10:00:10.070Z INFO  [http] GET /api/orders?page=1 200 43ms
+2026-09-26T10:00:11.077Z INFO  [http] GET /api/orders?page=2 200 56ms
+2026-09-26T10:00:12.084Z INFO  [http] GET /api/orders?page=3 200 69ms
+2026-09-26T10:00:13.091Z INFO  [http] GET /api/orders?page=4 200 82ms
+2026-09-26T10:00:14.098Z INFO  [http] GET /api/orders?page=5 200 5ms
+2026-09-26T10:00:15.105Z INFO  [http] GET /api/orders?page=1 200 18ms
+2026-09-26T10:00:16.112Z INFO  [http] GET /api/orders?page=2 200 31ms
+2026-09-26T10:00:17.119Z INFO  [http] GET /api/orders?page=3 200 44ms
+2026-09-26T10:00:18.126Z INFO  [http] GET /api/orders?page=4 200 57ms
+2026-09-26T10:00:19.133Z INFO  [http] GET /api/orders?page=5 200 70ms
+2026-09-26T10:00:20.140Z INFO  [http] GET /api/orders?page=1 200 83ms
+2026-09-26T10:00:21.147Z INFO  [http] GET /api/orders?page=2 200 6ms
+2026-09-26T10:00:22.154Z INFO  [http] GET /api/orders?page=3 200 19ms
+2026-09-26T10:00:23.161Z INFO  [http] GET /api/orders?page=4 200 32ms
+2026-09-26T10:00:24.168Z INFO  [http] GET /api/orders?page=5 200 45ms
+2026-09-26T10:00:25.175Z INFO  [http] GET /api/orders?page=1 200 58ms
+2026-09-26T10:00:26.182Z INFO  [http] GET /api/orders?page=2 200 71ms
+2026-09-26T10:00:27.189Z INFO  [http] GET /api/orders?page=3 200 84ms
+2026-09-26T10:00:28.196Z INFO  [http] GET /api/orders?page=4 200 7ms
+2026-09-26T10:00:29.203Z INFO  [http] GET /api/orders?page=5 200 20ms
+2026-09-26T10:00:30.210Z INFO  [http] GET /api/orders?page=1 200 33ms
+2026-09-26T10:00:31.217Z INFO  [http] GET /api/orders?page=2 200 46ms
+2026-09-26T10:00:32.224Z INFO  [http] GET /api/orders?page=3 200 59ms
+2026-09-26T10:00:33.231Z INFO  [http] GET /api/orders?page=4 200 72ms
+2026-09-26T10:00:34.238Z INFO  [http] GET /api/orders?page=5 200 85ms
+2026-09-26T10:00:35.245Z INFO  [http] GET /api/orders?page=1 200 8ms
+2026-09-26T10:00:36.252Z INFO  [http] GET /api/orders?page=2 200 21ms
+2026-09-26T10:00:37.259Z INFO  [http] GET /api/orders?page=3 200 34ms
+2026-09-26T10:00:38.266Z INFO  [http] GET /api/orders?page=4 200 47ms
+2026-09-26T10:00:39.273Z INFO  [http] GET /api/orders?page=5 200 60ms
+2026-09-26T10:00:40.280Z INFO  [http] GET /api/orders?page=1 200 73ms
+2026-09-26T10:00:41.287Z INFO  [http] GET /api/orders?page=2 200 86ms
+2026-09-26T10:00:42.294Z INFO  [http] GET /api/orders?page=3 200 9ms
+2026-09-26T10:00:43.301Z INFO  [http] GET /api/orders?page=4 200 22ms
+2026-09-26T10:00:44.308Z INFO  [http] GET /api/orders?page=5 200 35ms
+2026-09-26T10:00:45.315Z INFO  [http] GET /api/orders?page=1 200 48ms
+2026-09-26T10:00:46.322Z INFO  [http] GET /api/orders?page=2 200 61ms
+2026-09-26T10:00:47.329Z INFO  [http] GET /api/orders?page=3 200 74ms
+2026-09-26T10:00:48.336Z INFO  [http] GET /api/orders?page=4 200 87ms
+2026-09-26T10:00:49.343Z INFO  [http] GET /api/orders?page=5 200 10ms
+2026-09-26T10:00:50.350Z INFO  [http] GET /api/orders?page=1 200 23ms
+2026-09-26T10:00:51.357Z INFO  [http] GET /api/orders?page=2 200 36ms
+2026-09-26T10:00:52.364Z INFO  [http] GET /api/orders?page=3 200 49ms
+2026-09-26T10:00:53.371Z INFO  [http] GET /api/orders?page=4 200 62ms
+2026-09-26T10:00:54.378Z INFO  [http] GET /api/orders?page=5 200 75ms
+2026-09-26T10:00:55.385Z INFO  [http] GET /api/orders?page=1 200 88ms
+2026-09-26T10:00:56.392Z INFO  [http] GET /api/orders?page=2 200 11ms
+2026-09-26T10:00:57.399Z INFO  [http] GET /api/orders?page=3 200 24ms
+2026-09-26T10:00:58.406Z INFO  [http] GET /api/orders?page=4 200 37ms
+2026-09-26T10:00:59.413Z INFO  [http] GET /api/orders?page=5 200 50ms
+2026-09-26T10:01:00.420Z INFO  [http] GET /api/orders?page=1 200 63ms
+2026-09-26T10:01:01.427Z INFO  [http] GET /api/orders?page=2 200 76ms
+2026-09-26T10:01:02.434Z INFO  [http] GET /api/orders?page=3 200 89ms
+2026-09-26T10:01:03.441Z INFO  [http] GET /api/orders?page=4 200 12ms
+2026-09-26T10:01:04.448Z INFO  [http] GET /api/orders?page=5 200 25ms
+2026-09-26T10:01:05.455Z INFO  [http] GET /api/orders?page=1 200 38ms
+2026-09-26T10:01:06.462Z INFO  [http] GET /api/orders?page=2 200 51ms
+2026-09-26T10:01:07.469Z INFO  [http] GET /api/orders?page=3 200 64ms
+2026-09-26T10:01:08.476Z INFO  [http] GET /api/orders?page=4 200 77ms
+2026-09-26T10:01:09.483Z INFO  [http] GET /api/orders?page=5 200 90ms
+2026-09-26T10:01:10.490Z INFO  [http] GET /api/orders?page=1 200 13ms
+2026-09-26T10:01:11.497Z INFO  [http] GET /api/orders?page=2 200 26ms
+2026-09-26T10:01:12.504Z INFO  [http] GET /api/orders?page=3 200 39ms
+2026-09-26T10:01:13.511Z INFO  [http] GET /api/orders?page=4 200 52ms
+2026-09-26T10:01:14.518Z INFO  [http] GET /api/orders?page=5 200 65ms
+2026-09-26T10:01:15.525Z INFO  [http] GET /api/orders?page=1 200 78ms
+2026-09-26T10:01:16.532Z INFO  [http] GET /api/orders?page=2 200 91ms
+2026-09-26T10:01:17.539Z INFO  [http] GET /api/orders?page=3 200 14ms
+2026-09-26T10:01:18.546Z INFO  [http] GET /api/orders?page=4 200 27ms
+2026-09-26T10:01:19.553Z INFO  [http] GET /api/orders?page=5 200 40ms
+2026-09-26T10:01:20.560Z INFO  [http] GET /api/orders?page=1 200 53ms
+2026-09-26T10:01:21.567Z INFO  [http] GET /api/orders?page=2 200 66ms
+2026-09-26T10:01:22.574Z INFO  [http] GET /api/orders?page=3 200 79ms
+2026-09-26T10:01:23.581Z INFO  [http] GET /api/orders?page=4 200 92ms
+2026-09-26T10:01:24.588Z INFO  [http] GET /api/orders?page=5 200 15ms
+2026-09-26T10:01:25.595Z INFO  [http] GET /api/orders?page=1 200 28ms
+2026-09-26T10:01:26.602Z INFO  [http] GET /api/orders?page=2 200 41ms
+2026-09-26T10:01:27.609Z INFO  [http] GET /api/orders?page=3 200 54ms
+2026-09-26T10:01:28.616Z INFO  [http] GET /api/orders?page=4 200 67ms
+2026-09-26T10:01:29.623Z INFO  [http] GET /api/orders?page=5 200 80ms
+2026-09-26T10:01:30.630Z INFO  [http] GET /api/orders?page=1 200 3ms

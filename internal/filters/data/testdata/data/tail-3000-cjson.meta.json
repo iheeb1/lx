@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "tail",
+    "-n",
+    "3000",
+    "cJSON.c"
+  ],
+  "shell": "tail -n 3000 cJSON.c",
+  "repo": "",
+  "exit_code": 0,
+  "description": "tail -n 3000 of cJSON.c: over budget; output line numbers are not file line numbers",
+  "cwd": "repos/cJSON"
+}

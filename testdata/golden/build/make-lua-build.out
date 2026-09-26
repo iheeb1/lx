@@ -1,0 +1,8 @@
+[lx: hidden: 36 recipe commands (gcc ×34, ar, ranlib)]
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option] [×34]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option] [×34]
+2 warnings generated. [×34]
+gcc -o lua -Wl,-E lua.o liblua.a -lm -ldl
+ld: unknown options: -E
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [lua] Error 1

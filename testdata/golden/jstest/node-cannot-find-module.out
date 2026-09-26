@@ -1,0 +1,19 @@
+node:internal/modules/cjs/loader:1520
+  throw err;
+  ^
+
+Error: Cannot find module 'redis'
+Require stack:
+- examples/search/index.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)
+    … 6 library frames (node:internal)
+    at require (node:internal/modules/helpers:153:16)
+    at Object.<anonymous> (examples/search/index.js:16:13)
+    at Module._compile (node:internal/modules/cjs/loader:1871:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'examples/search/index.js'
+  ]
+}
+
+Node.js v24.18.0

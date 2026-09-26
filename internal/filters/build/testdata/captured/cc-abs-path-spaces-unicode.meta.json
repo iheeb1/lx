@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "cc",
+    "-Wall",
+    "-Wextra",
+    "-c",
+    "/home/user/src/my proj \u00e9/src/main.c",
+    "/home/user/src/my proj \u00e9/src/other.c"
+  ],
+  "exit_code": 1,
+  "description": "cc -Wall -Wextra -c on absolute source paths containing a space and a non-ASCII letter (clang 21, macOS): include chains, warnings and errors with absolute locations",
+  "cwd": "/home/user/src/my proj \u00e9"
+}

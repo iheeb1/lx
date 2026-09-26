@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "TZ=America/New_York",
+    "npm",
+    "test"
+  ],
+  "shell": "TZ=America/New_York npm test",
+  "repo": "moment/luxon",
+  "exit_code": 1,
+  "description": "npm test running 'jest --coverage' with failing tests: npm lifecycle header, failures, full istanbul coverage table, npm error footer",
+  "cwd": "repos/luxon"
+}

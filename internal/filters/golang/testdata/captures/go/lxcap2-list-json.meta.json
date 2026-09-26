@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "list",
+    "-json",
+    "./coverfail"
+  ],
+  "shell": "go list -json ./coverfail",
+  "repo": "",
+  "exit_code": 0,
+  "description": "go list -json of one package (machine output)",
+  "cwd": "/home/user/src/lxcap2"
+}

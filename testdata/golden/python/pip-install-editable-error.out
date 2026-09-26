@@ -1,0 +1,4 @@
+ERROR: File "setup.py" or "setup.cfg" not found. Directory cannot be installed in editable mode: /home/user/src/click
+(A "pyproject.toml" file was found, but editable mode currently requires a setuptools-based build.)
+WARNING: You are using pip version 21.2.4; however, version 26.0.1 is available.
+You should consider upgrading via the '~/venv/bin/python3 -m pip install --upgrade pip' command.

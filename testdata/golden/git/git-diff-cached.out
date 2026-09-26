@@ -1,0 +1,42 @@
+diff --git a/binding/binding.go b/binding/binding.go
+[same hunks also in 7 files: binding/{binding_test.go, form.go, form_mapping.go, json.go, protobuf.go, validate_test.go, xml.go}]
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+
+diff --git a/codecov.yml b/codecov.yml
+deleted file mode 100644
+[deleted file: 14 lines not shown]
+diff --git a/context.go b/context.go
+@@ -650,7 +650,7 @@ func (c *Context) initFormCache() {
+ 		req := c.Request
+ 		if err := req.ParseMultipartForm(c.engine.MaxMultipartMemory); err != nil {
+ 			if !errors.Is(err, http.ErrNotMultipart) {
+-				debugPrint("error on parse multipart form array: %v", err)
++				debugPrintf("error on parse multipart form array: %v", err)
+ 			}
+ 		}
+ 		c.formCache = req.PostForm
+diff --git a/context_ratelimit.go b/context_ratelimit.go
+new file mode 100644
+@@ -0,0 +1,14 @@
++package gin
++
++// RateLimitKey is the context key under which rate limit metadata is stored.
++const RateLimitKey = "_gin-gonic/gin/ratelimit"
++
++// RateLimitRemaining returns the remaining request budget recorded by a rate limiting middleware.
++func (c *Context) RateLimitRemaining() (int, bool) {
++	v, ok := c.Get(RateLimitKey)
++	if !ok {
++		return 0, false
++	}
++	n, ok := v.(int)
++	return n, ok
++}
+diff --git a/tree.go b/radix_tree.go
+similarity index 100%
+diff --git a/tree_test.go b/radix_tree_test.go
+similarity index 100%

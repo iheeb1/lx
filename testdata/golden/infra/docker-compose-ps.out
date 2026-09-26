@@ -1,0 +1,7 @@
+[lx: same in all 5 rows: CREATED=5 minutes ago]
+NAME           IMAGE               COMMAND                 SERVICE  STATUS                        PORTS
+shop-api-1     shop/api:dev        "/app/api"              api      Up 5 minutes (healthy)        0.0.0.0:8080->8080/tcp
+shop-db-1      postgres:16-alpine  "docker-entrypoint.s…"  db       Up 5 minutes (healthy)        5432/tcp
+shop-redis-1   redis:7-alpine      "docker-entrypoint.s…"  redis    Up 5 minutes (healthy)        6379/tcp
+shop-web-1     shop/web:dev        "docker-entrypoint.s…"  web      Up 5 minutes (healthy)        0.0.0.0:3000->3000/tcp
+shop-worker-1  shop/worker:dev     "/app/worker"           worker   Restarting (1) 8 seconds ago

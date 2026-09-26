@@ -1,0 +1,27 @@
+  + Exception Group Traceback (most recent call last):
+  |   File "tg.py", line 17, in <module>
+  |     asyncio.run(main())
+  |     ~~~~~~~~~~~^^^^^^^^
+  |   … 3 library frames (asyncio)
+  |   File "tg.py", line 12, in main
+  |     async with asyncio.TaskGroup() as tg:
+  |                ~~~~~~~~~~~~~~~~~^^
+  |   File "~/.local/share/uv/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/asyncio/taskgroups.py", line 71, in __aexit__
+  |     return await self._aexit(et, exc)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "~/.local/share/uv/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/asyncio/taskgroups.py", line 173, in _aexit
+  |     raise BaseExceptionGroup(
+  |     ...<2 lines>...
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "tg.py", line 7, in fetch
+    |     raise ConnectionError(f"worker {n} lost connection")
+    | ConnectionError: worker 1 lost connection
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "tg.py", line 7, in fetch
+    |     raise ConnectionError(f"worker {n} lost connection")
+    | ConnectionError: worker 3 lost connection
+    +------------------------------------

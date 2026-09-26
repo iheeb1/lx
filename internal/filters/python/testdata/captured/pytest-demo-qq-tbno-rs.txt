@@ -1,0 +1,17 @@
+....F......FEsx.FF..FFF                                                  [100%]
+=============================== warnings summary ===============================
+../../venv/lib/python3.9/site-packages/urllib3/__init__.py:35
+  /home/user/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+    warnings.warn(
+
+tests/test_models.py::test_legacy_total[1]
+tests/test_models.py::test_legacy_total[2]
+tests/test_models.py::test_legacy_total[3]
+tests/test_models.py::test_legacy_total[4]
+tests/test_models.py::test_legacy_total[5]
+  /home/user/src/demo/tests/test_models.py:32: DeprecationWarning: legacy_total() is deprecated, use total_price()
+    assert stock.legacy_total() == 16 + qty
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_models.py:54: needs network

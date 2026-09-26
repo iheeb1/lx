@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "TZ=America/New_York",
+    "npx",
+    "jest"
+  ],
+  "shell": "TZ=America/New_York npx jest",
+  "repo": "moment/luxon",
+  "exit_code": 1,
+  "description": "jest 29: 10 failing tests in 3 suites after regressions injected in luxon src (isLeapYear, untruncateYear, month abbreviations); 1212 passing",
+  "cwd": "repos/luxon"
+}

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "ruff",
+    "check",
+    "."
+  ],
+  "shell": "ruff check .",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): ruff 0.11.0 on a file with a syntax error: 'SyntaxError:' diagnostics with full snippets",
+  "cwd": "/home/user/src/synerr",
+  "env_setup": "Python 3.13.15 venv at /home/user/venv313: pytest 9.1.1, pytest-cov 7.1.0, pytest-xdist 3.8.0, mypy 2.3.1, ruff 0.11.0"
+}

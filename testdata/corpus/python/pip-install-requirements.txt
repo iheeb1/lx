@@ -1,0 +1,39 @@
+Obtaining file:///home/user/src/click
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Collecting iniconfig==2.0.0 (from -r requirements/tests.txt (line 7))
+  Downloading iniconfig-2.0.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting packaging==24.2 (from -r requirements/tests.txt (line 9))
+  Downloading packaging-24.2-py3-none-any.whl.metadata (3.2 kB)
+Collecting pluggy==1.5.0 (from -r requirements/tests.txt (line 11))
+  Downloading pluggy-1.5.0-py3-none-any.whl.metadata (4.8 kB)
+Collecting pytest==8.3.4 (from -r requirements/tests.txt (line 13))
+  Downloading pytest-8.3.4-py3-none-any.whl.metadata (7.5 kB)
+Collecting exceptiongroup>=1.0.0rc8 (from pytest==8.3.4->-r requirements/tests.txt (line 13))
+  Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+Collecting tomli>=1 (from pytest==8.3.4->-r requirements/tests.txt (line 13))
+  Downloading tomli-2.4.1-py3-none-any.whl.metadata (10 kB)
+Collecting typing-extensions>=4.6.0 (from exceptiongroup>=1.0.0rc8->pytest==8.3.4->-r requirements/tests.txt (line 13))
+  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Downloading iniconfig-2.0.0-py3-none-any.whl (5.9 kB)
+Downloading packaging-24.2-py3-none-any.whl (65 kB)
+Downloading pluggy-1.5.0-py3-none-any.whl (20 kB)
+Downloading pytest-8.3.4-py3-none-any.whl (343 kB)
+Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+Downloading tomli-2.4.1-py3-none-any.whl (14 kB)
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Building wheels for collected packages: click
+  Building editable for click (pyproject.toml): started
+  Building editable for click (pyproject.toml): finished with status 'done'
+  Created wheel for click: filename=click-8.1.8-py3-none-any.whl size=3018 sha256=247123ce47dcc45be285bf1599cc36587318e05e039e04cbce2835e9acd11ac9
+  Stored in directory: /private/var/folders/80/4_lyj_vx2bl5xtz0k9hny73m0000gn/T/pip-ephem-wheel-cache-x59yhgy_/wheels/61/14/2d/ea225130545bc1d41b37683fd031d32e1d447e82d84e818313
+Successfully built click
+Installing collected packages: typing-extensions, tomli, pluggy, packaging, iniconfig, click, exceptiongroup, pytest
+
+Successfully installed click-8.1.8 exceptiongroup-1.3.1 iniconfig-2.0.0 packaging-24.2 pluggy-1.5.0 pytest-8.3.4 tomli-2.4.1 typing-extensions-4.16.0

@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "make",
+    "test"
+  ],
+  "exit_code": 2,
+  "description": "make test in gin where utils.go references an undefined function: echoed shell loop, go test build failure (# pkg header, compiler errors, FAIL pkg [build failed]), make error",
+  "cwd": "/home/user/src/gin"
+}

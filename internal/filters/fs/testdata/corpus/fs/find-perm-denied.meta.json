@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "find",
+    "."
+  ],
+  "shell": "find .",
+  "exit_code": 1,
+  "description": "find with an unreadable directory",
+  "cwd": "/home/user/scratch/permtest/proj"
+}

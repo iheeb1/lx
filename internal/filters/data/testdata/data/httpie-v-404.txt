@@ -1,0 +1,44 @@
+/home/user/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+
+http: warning: HTTP 404 Not Found
+
+
+GET /repos/golang/go/nonexistent HTTP/1.1
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+User-Agent: HTTPie/3.2.4
+Accept: application/json, */*;q=0.5
+Content-Type: application/json
+Host: api.github.com
+
+
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.v3; format=json
+Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, X-GitHub-Edge-Region, Deprecation, Sunset
+Access-Control-Allow-Origin: *
+Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+X-Frame-Options: deny
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'none'
+Vary: Accept-Encoding, Accept, X-Requested-With
+Server: github.com
+Date: Sat, 26 Sep 2026 03:29:30 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 58
+X-RateLimit-Used: 2
+X-RateLimit-Resource: core
+X-RateLimit-Reset: 1790396970
+Content-Length: 106
+X-GitHub-Request-Id: 05BC:BDB0A:21DB13D:220D570:6AB73C1B
+x-github-edge-region: fra
+
+{
+  "message": "Not Found",
+  "documentation_url": "https://docs.github.com/rest",
+  "status": "404"
+}

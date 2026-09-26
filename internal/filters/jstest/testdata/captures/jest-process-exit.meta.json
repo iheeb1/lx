@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "adv/exit.test.js"
+  ],
+  "shell": "npx jest adv/exit.test.js",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "jest 29: a test calls process.exit(1) mid-run",
+  "cwd": "repos/jestproj"
+}

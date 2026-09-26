@@ -1,0 +1,51 @@
+node_modules/send/index.js
+180:setHeaders(res, err.headers)
+185:res.setHeader('Content-Type', 'text/html; charset=UTF-8')
+186:res.setHeader('Content-Length', Buffer.byteLength(doc))
+187:res.setHeader('Content-Security-Policy', "default-src 'none'")
+188:res.setHeader('X-Content-Type-Options', 'nosniff')
+387:res.setHeader('Content-Type', 'text/html; charset=UTF-8')
+388:res.setHeader('Content-Length', Buffer.byteLength(doc))
+389:res.setHeader('Content-Security-Policy', "default-src 'none'")
+390:res.setHeader('X-Content-Type-Options', 'nosniff')
+391:res.setHeader('Location', loc)
+508:this.setHeader(path, stat)
+551:res.setHeader('Content-Range', contentRange('bytes', len))
+565:res.setHeader('Content-Range', contentRange('bytes', len, ranges[0]))
+583:res.setHeader('Content-Length', len)
+724:res.setHeader('Content-Type', type)
+736:SendStream.prototype.setHeader = function setHeader (path, stat) {
+743:res.setHeader('Accept-Ranges', 'bytes')
+754:res.setHeader('Cache-Control', cacheControl)
+760:res.setHeader('Last-Modified', modified)
+766:res.setHeader('ETag', val)
+990:function setHeaders (res, headers) {
+995:res.setHeader(key, headers[key])
+
+node_modules/send/README.md
+215:res.setHeader('Content-Type', 'application/x-my-type')
+260:res.setHeader('Content-Type', 'text/plain; charset=UTF-8')
+283:res.setHeader('Content-Disposition', 'attachment')
+289:res.setHeader('Location', req.url + '/')
+
+node_modules/serve-static/index.js
+56:var setHeaders = opts.setHeaders
+58:if (setHeaders && typeof setHeaders !== 'function') {
+59:throw new TypeError('option setHeaders must be function')
+79:res.setHeader('Allow', 'GET, HEAD')
+80:res.setHeader('Content-Length', '0')
+101:if (setHeaders) {
+102:stream.on('headers', setHeaders)
+201:res.setHeader('Content-Type', 'text/html; charset=UTF-8')
+202:res.setHeader('Content-Length', Buffer.byteLength(doc))
+203:res.setHeader('Content-Security-Policy', "default-src 'none'")
+204:res.setHeader('X-Content-Type-Options', 'nosniff')
+205:res.setHeader('Location', loc)
+
+node_modules/serve-static/README.md
+120:##### setHeaders
+162:setHeaders: setHeaders
+166:function setHeaders (res, path) {
+167:res.setHeader('Content-Disposition', contentDisposition(path))
+228:setHeaders: setCustomCacheControl
+236:res.setHeader('Cache-Control', 'public, max-age=0')

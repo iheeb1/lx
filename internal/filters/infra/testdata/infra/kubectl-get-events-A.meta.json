@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "kubectl",
+    "get",
+    "events",
+    "-A"
+  ],
+  "shell": "kubectl get events -A",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of kubectl 1.31 `kubectl get events -A`; the tool is not available on the capture host): 40 events across namespaces, with a repeated BackOff",
+  "cwd": "repos/shop"
+}

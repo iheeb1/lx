@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "test"
+  ],
+  "shell": "CLAUDECODE=1 AI_AGENT=claude-code npm test",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "npm test wrapping vitest run (agent reporter)",
+  "cwd": "repos/vitproj"
+}

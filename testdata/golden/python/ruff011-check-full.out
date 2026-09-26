@@ -1,0 +1,65 @@
+inventory/models.py:7:1: UP035 `typing.Dict` is deprecated, use `dict` instead
+7 | from typing import Dict, List, Optional
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ UP035
+
+inventory/models.py:7:1: UP035 `typing.List` is deprecated, use `list` instead
+7 | from typing import Dict, List, Optional
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ UP035
+
+inventory/models.py:15:11: UP006 Use `list` instead of `List` for type annotation
+15 |     tags: List[str] = field(default_factory=list)
+   |           ^^^^ UP006
+   = help: Replace with `list`
+
+inventory/models.py:23:21: UP006 Use `dict` instead of `Dict` for type annotation
+23 |         self.items: Dict[str, Item] = {}
+   |                     ^^^^ UP006
+   = help: Replace with `dict`
+
+inventory/models.py:24:22: UP006 Use `dict` instead of `Dict` for type annotation
+24 |         self.counts: Dict[str, int] = {}
+   |                      ^^^^ UP006
+   = help: Replace with `dict`
+
+inventory/models.py:39:33: UP007 Use `X | Y` for type annotations
+39 |     def find(self, sku: str) -> Optional[Item]:
+   |                                 ^^^^^^^^^^^^^^ UP007
+   = help: Convert to `X | Y`
+
+inventory/models.py:42:24: UP006 Use `list` instead of `List` for type annotation
+42 |     def names(self) -> List[str]:
+   |                        ^^^^ UP006
+   = help: Replace with `list`
+
+inventory/models.py:46:89: E501 Line too long (106 > 88)
+46 |         warnings.warn("legacy_total() is deprecated, use total_price()", DeprecationWarning, stacklevel=2)
+   |                                                                                         ^^^^^^^^^^^^^^^^^^ E501
+
+inventory/models.py:50:33: UP037 [*] Remove quotes from type annotation
+50 |     def load(cls, path: str) -> "Stock":
+   |                                 ^^^^^^^ UP037
+   = help: Remove quotes
+
+inventory/pricing.py:1:1: UP035 [*] Import from `collections.abc` instead: `Iterable`
+1 | from typing import Iterable
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ UP035
+  = help: Import from `collections.abc`
+
+inventory/reports.py:2:1: UP035 `typing.Dict` is deprecated, use `dict` instead
+inventory/reports.py:2:1: UP035 `typing.List` is deprecated, use `list` instead
+inventory/reports.py:11:31: UP006 Use `dict` instead of `Dict` for type annotation
+   = help: Replace with `dict`
+inventory/reports.py:16:44: UP006 Use `list` instead of `List` for type annotation
+   = help: Replace with `list`
+inventory/reports.py:51:29: UP006 Use `list` instead of `List` for type annotation
+   = help: Replace with `list`
+scripts/fetch.py:1:1: I001 [*] Import block is un-sorted or un-formatted
+  = help: Organize imports
+scripts/load.py:1:1: I001 [*] Import block is un-sorted or un-formatted
+  = help: Organize imports
+tests/conftest.py:16:89: E501 Line too long (95 > 88)
+tests/test_models.py:1:8: F401 [*] `json` imported but unused
+  = help: Remove unused import: `json`
+Found 19 errors.
+[*] 5 fixable with the `--fix` option (8 hidden fixes can be enabled with the `--unsafe-fixes` option).
+[lx: hid source snippets of 9 diagnostics]

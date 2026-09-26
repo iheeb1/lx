@@ -1,0 +1,14 @@
+npm warn exec The following package was not found and will be installed: create-vite@9.2.1
+
+> npx
+> "create-vite" vite-react-app --template react-ts --no-interactive
+
+│
+◇  Scaffolding project in /home/user/src/vite-react-app...
+│
+└  Done. Now run:
+
+  cd vite-react-app
+  npm install
+  npm run dev
+

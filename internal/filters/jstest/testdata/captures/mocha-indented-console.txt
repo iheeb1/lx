@@ -1,0 +1,23 @@
+
+
+  reporting
+  Report for job 42
+    Error: connection refused while fetching /api
+    retrying
+    ✔ prints an indented report
+Error: logged but test passes
+    at Context.<anonymous> (/home/user/src/mochaproj/adv/indented.js:11:19)
+    at callFn (/home/user/src/mochaproj/node_modules/mocha/lib/runnable.js:366:21)
+    at Runnable.run (/home/user/src/mochaproj/node_modules/mocha/lib/runnable.js:354:5)
+    at Runner.runTest (/home/user/src/mochaproj/node_modules/mocha/lib/runner.js:809:10)
+    at /home/user/src/mochaproj/node_modules/mocha/lib/runner.js:959:12
+    at next (/home/user/src/mochaproj/node_modules/mocha/lib/runner.js:724:14)
+    at /home/user/src/mochaproj/node_modules/mocha/lib/runner.js:734:7
+    at next (/home/user/src/mochaproj/node_modules/mocha/lib/runner.js:595:14)
+    at Immediate._onImmediate (/home/user/src/mochaproj/node_modules/mocha/lib/runner.js:702:5)
+    at process.processImmediate (node:internal/timers:504:21)
+    ✔ logs an error object
+
+
+  2 passing (3ms)
+

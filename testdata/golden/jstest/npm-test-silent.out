@@ -1,0 +1,56 @@
+FAIL test/user.test.js
+  console.log
+    fetching user { id: 3 }
+      at Object.log (test/user.test.js:16:13)
+  console.warn
+    deprecated lookup path
+      at Object.warn (test/user.test.js:17:13)
+  ● UserService › handles missing user
+    TypeError: Cannot read properties of undefined (reading 'name')
+    >  7 |     return row.name.toUpperCase();
+         |                ^
+      at UserService.name [as getName] (src/user.js:7:16)
+      at Object.getName (test/user.test.js:12:16)
+
+  ● UserService › logs while failing
+    expect(received).toEqual(expected) // deep equality
+    Expected: "Bob"
+    Received: "BOB"
+    > 19 |     expect(svc.getName(3)).toEqual("Bob");
+         |                            ^
+      at Object.toEqual (test/user.test.js:19:28)
+
+  ● config › rejects bad json
+    SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+        at JSON.parse (<anonymous>)
+    > 13 |   const cfg = JSON.parse(text);
+         |                    ^
+      at parse (src/math.js:13:20)
+      at Object.parseConfig (test/user.test.js:28:12)
+
+  ● config › object equality
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 2
+    + Received  + 2
+      Object {
+        "a": 1,
+        "b": Array [
+          1,
+          2,
+    -     4,
+    +     3,
+        ],
+        "c": Object {
+    -     "d": "y",
+    +     "d": "x",
+        },
+      }
+    > 31 |     expect({ a: 1, b: [1, 2, 3], c: { d: "x" } }).toEqual({ a: 1, b: [1, 2, 4], c: { d: "y" } });
+         |                                                   ^
+      at Object.toEqual (test/user.test.js:31:51)
+
+Test Suites: 1 failed, 1 total
+Tests:       4 failed, 2 passed, 6 total
+Snapshots:   0 total
+Time:        0.22 s, estimated 1 s
+Ran all test suites matching /test\/user.test.js/i.

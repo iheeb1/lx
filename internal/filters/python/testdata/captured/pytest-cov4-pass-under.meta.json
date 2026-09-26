@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "pytest",
+    "--cov=inventory",
+    "--cov-fail-under=95",
+    "-p",
+    "no:cacheprovider",
+    "-k",
+    "legacy or add_and_find or roundtrip"
+  ],
+  "shell": "pytest --cov=inventory --cov-fail-under=95 -p no:cacheprovider -k legacy or add_and_find or roundtrip",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): pytest 8.3.4 + pytest-cov 4.1: all selected tests pass but coverage is under --cov-fail-under; the old '---- coverage ----' table and 'FAIL Required test coverage' follow the warnings summary's Docs line (exit 1)",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv: pytest 8.3.4, pytest-cov 4.1.0, pytest-xdist 3.8.0, pytest-timeout 2.4.0, pytest-rerunfailures 16.0.1, pip 21.2.4"
+}

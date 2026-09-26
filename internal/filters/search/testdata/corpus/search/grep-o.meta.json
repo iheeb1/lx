@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "grep",
+    "-rno",
+    "Should[A-Za-z]*",
+    "context.go",
+    "binding/binding.go"
+  ],
+  "shell": "grep -rno Should[A-Za-z]* context.go binding/binding.go",
+  "exit_code": 0,
+  "description": "grep -o: one line per match, line numbers repeat",
+  "cwd": "/home/user/src/gin"
+}

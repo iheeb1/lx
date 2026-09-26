@@ -1,0 +1,25 @@
+
+ Exception during run: Error: `.only` forbidden by --forbid-only
+    at createForbiddenExclusivityError (/home/user/src/mochaproj/node_modules/mocha/lib/errors.js:332:13)
+    at Object.only (/home/user/src/mochaproj/node_modules/mocha/lib/interfaces/common.js:182:17)
+    at context.it.only (/home/user/src/mochaproj/node_modules/mocha/lib/interfaces/bdd.js:102:26)
+    at Suite.<anonymous> (/home/user/src/mochaproj/adv/only.js:3:6)
+    at Object.create (/home/user/src/mochaproj/node_modules/mocha/lib/interfaces/common.js:153:19)
+    at context.describe.context.context (/home/user/src/mochaproj/node_modules/mocha/lib/interfaces/bdd.js:46:27)
+    at Object.<anonymous> (/home/user/src/mochaproj/adv/only.js:2:1)
+    at Module._compile (node:internal/modules/cjs/loader:1871:14)
+    at Object..js (node:internal/modules/cjs/loader:2002:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at loadCJSModuleWithModuleLoad (node:internal/modules/esm/translators:372:15)
+    at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:244:9)
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async formattedImport (/home/user/src/mochaproj/node_modules/mocha/lib/nodejs/esm-utils.js:10:14)
+    at async Object.requireModule [as requireOrImport] (/home/user/src/mochaproj/node_modules/mocha/lib/nodejs/esm-utils.js:105:30)
+    at async exports.loadFilesAsync (/home/user/src/mochaproj/node_modules/mocha/lib/nodejs/esm-utils.js:158:20)
+    at async singleRun (/home/user/src/mochaproj/node_modules/mocha/lib/cli/run-helpers.js:174:3)
+    at async exports.handler (/home/user/src/mochaproj/node_modules/mocha/lib/cli/run.js:389:5) {
+  code: 'ERR_MOCHA_FORBIDDEN_EXCLUSIVITY'
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "pnpm",
+    "add",
+    "lodash@4.17.20"
+  ],
+  "shell": "pnpm add lodash@4.17.20",
+  "exit_code": 0,
+  "description": "pnpm add lodash: progress, deprecations, one-char + bar",
+  "cwd": "/home/user/src/pnpm-app"
+}

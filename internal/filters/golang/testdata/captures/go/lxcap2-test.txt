@@ -1,0 +1,47 @@
+--- FAIL: TestAdd (0.00s)
+    c_test.go:7: Add(2, 2) = 4, want 5
+FAIL
+FAIL	example.com/lxcap2/coverfail	4.344s
+--- FAIL: TestParse (0.00s)
+    f_test.go:10: Parse("12") = 21, want 12
+loading config from testdata/app.yaml
+2026/09/26 03:11:20 open testdata/app.yaml: permission issue
+FAIL	example.com/lxcap2/fatal2	1.229s
+progress: 3/5--- FAIL: TestNoNewline (0.00s)
+    g_test.go:10: stopped early
+ok-no-newlineFAIL
+FAIL	example.com/lxcap2/glued	3.525s
+--- FAIL: TestBroken (0.00s)
+    l_test.go:21: broken: status = "down", want "up"
+later test chatter
+FAIL
+leakcheck: found unexpected goroutines:
+goroutine 36 [chan receive]:
+example.com/lxcap2/leak.worker(...)
+	/home/user/src/lxcap2/leak/l_test.go:13
+created by example.com/lxcap2/leak.TestStartsWorker in goroutine 35
+	/home/user/src/lxcap2/leak/l_test.go:17 +0x6c
+
+FAIL	example.com/lxcap2/leak	2.858s
+ok  	example.com/lxcap2/manyok/p1	(cached)
+ok  	example.com/lxcap2/manyok/p10	(cached)
+ok  	example.com/lxcap2/manyok/p11	(cached)
+ok  	example.com/lxcap2/manyok/p12	(cached)
+ok  	example.com/lxcap2/manyok/p2	(cached)
+ok  	example.com/lxcap2/manyok/p3	(cached)
+ok  	example.com/lxcap2/manyok/p4	(cached)
+ok  	example.com/lxcap2/manyok/p5	(cached)
+ok  	example.com/lxcap2/manyok/p6	(cached)
+ok  	example.com/lxcap2/manyok/p7	(cached)
+ok  	example.com/lxcap2/manyok/p8	(cached)
+ok  	example.com/lxcap2/manyok/p9	(cached)
+--- FAIL: TestFirst (0.00s)
+    r_test.go:12: first failed: got 0, want 1
+FAIL
+FAIL	example.com/lxcap2/racepost	5.166s
+--- FAIL: TestÜnicode (0.00s)
+    --- FAIL: TestÜnicode/naïve_case (0.00s)
+        ü_test.go:7: got "café", want "cafe"
+FAIL
+FAIL	example.com/lxcap2/uni	5.784s
+FAIL

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "docker",
+    "build",
+    "--no-cache",
+    "."
+  ],
+  "shell": "docker build --no-cache .",
+  "repo": "",
+  "exit_code": 2,
+  "description": "REAL (docker 29.6 legacy builder, no buildx installed): 6-step Dockerfile whose RUN step 5 fails with a compiler error on stderr (ANSI-colored)",
+  "cwd": "repos/app"
+}

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "docker",
+    "build",
+    "-t",
+    "shop/web:1.8.2",
+    "."
+  ],
+  "shell": "docker build -t shop/web:1.8.2 .",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of docker 27 BuildKit `--progress=plain` output (the non-TTY default); the tool is not available on the capture host): 7-step Node image: two CACHED steps, npm ci with deprecation warnings, a vite build with a chunk-size warning",
+  "cwd": "repos/shop"
+}

@@ -1,0 +1,162 @@
+examples/auth/index.js
+  error  Unexpected var, use let or const instead  no-var  ×9: 7:1 8:1 9:1 10:1 12:1 31:3 32:3 43:1 62:3
+
+examples/content-negotiation/db.js
+  3:1  error  Unexpected var, use let or const instead  no-var
+
+examples/content-negotiation/index.js
+  error  Unexpected var, use let or const instead  no-var  ×4: 3:1 4:1 5:1 34:3
+
+examples/content-negotiation/users.js
+   3:1   error    Unexpected var, use let or const instead  no-var
+
+examples/cookie-sessions/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+
+examples/cookies/index.js
+  error  Unexpected var, use let or const instead  no-var  ×5: 7:1 8:1 9:1 10:1 40:3
+
+examples/downloads/index.js
+  error  Unexpected var, use let or const instead  no-var  ×4: 7:1 8:1 10:1 13:1
+
+examples/ejs/index.js
+  error  Unexpected var, use let or const instead  no-var  ×4: 7:1 8:1 10:1 39:1
+
+examples/error-pages/index.js
+  error  Unexpected var, use let or const instead  no-var  ×6: 7:1 8:1 9:1 10:1 11:1 43:3
+
+examples/error/index.js
+  error  Unexpected var, use let or const instead  no-var  ×4: 7:1 8:1 9:1 10:1
+
+examples/hello-world/index.js
+  3:1   error    Unexpected var, use let or const instead  no-var
+  5:1   error    Unexpected var, use let or const instead  no-var
+
+examples/markdown/index.js
+  error  Unexpected var, use let or const instead  no-var  ×7: 7:1 8:1 9:1 10:1 11:1 13:1 20:5
+
+examples/multi-router/controllers/api_v1.js
+   3:1   error    Unexpected var, use let or const instead  no-var
+   5:1   error    Unexpected var, use let or const instead  no-var
+
+examples/multi-router/controllers/api_v2.js
+   3:1   error    Unexpected var, use let or const instead  no-var
+   5:1   error    Unexpected var, use let or const instead  no-var
+
+examples/multi-router/index.js
+   3:1   error    Unexpected var, use let or const instead  no-var
+   5:1   error    Unexpected var, use let or const instead  no-var
+
+examples/mvc/controllers/pet/index.js
+   7:1  error  Unexpected var, use let or const instead  no-var
+  12:3  error  Unexpected var, use let or const instead  no-var
+  27:3  error  Unexpected var, use let or const instead  no-var
+
+examples/mvc/controllers/user-pet/index.js
+  error  Unexpected var, use let or const instead  no-var  ×5: 7:1 13:3 14:3 15:3 17:3
+
+examples/mvc/controllers/user/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+  12:3   error    Unexpected var, use let or const instead  no-var
+  37:3   error    Unexpected var, use let or const instead  no-var
+
+examples/mvc/db.js
+   5:1  error  Unexpected var, use let or const instead  no-var
+  12:1  error  Unexpected var, use let or const instead  no-var
+
+examples/mvc/index.js
+  error  Unexpected var, use let or const instead  no-var  ×8: 7:1 8:1 9:1 10:1 11:1 13:1 26:3 54:3
+
+examples/mvc/lib/boot.js
+  error  Unexpected var, use let or const instead  no-var  ×14: 7:1 8:1 9:1 12:3 13:3 15:5 18:5 19:5 20:5 21:5 22:5 23:5 24:5 32:10
+
+examples/online/index.js
+  error  Unexpected var, use let or const instead  no-var  ×5: 14:1 15:1 16:1 17:1 25:1
+
+examples/params/index.js
+  error  Unexpected var, use let or const instead  no-var  ×7: 7:1 8:1 9:1 13:1 64:3 65:3 66:3
+
+examples/resource/index.js
+  error  Unexpected var, use let or const instead  no-var  ×11: 7:1 9:1 16:5 17:5 18:5 23:5 30:1 41:1 49:5 54:5 61:9
+
+examples/route-map/index.js
+  error  Unexpected var, use let or const instead  no-var  ×7: 7:1 8:1 10:1 12:1 16:8 31:1 45:1
+
+examples/route-middleware/index.js
+  error  Unexpected var, use let or const instead  no-var  ×4: 7:1 9:1 19:1 27:3
+
+examples/route-separation/index.js
+  error  Unexpected var, use let or const instead  no-var  ×9: 7:1 8:1 9:1 10:1 11:1 12:1 13:1 14:1 15:1
+
+examples/route-separation/post.js
+  5:1  error  Unexpected var, use let or const instead  no-var
+
+examples/route-separation/user.js
+  error  Unexpected var, use let or const instead  no-var  ×4: 5:1 15:3 20:5 43:3
+
+examples/search/index.js
+  error  Unexpected var, use let or const instead  no-var  ×6: 14:1 15:1 16:1 18:1 19:1 53:3
+
+examples/search/public/client.js
+  3:1   error    Unexpected var, use let or const instead  no-var
+  4:1   error    Unexpected var, use let or const instead  no-var
+  7:3   error    Unexpected var, use let or const instead  no-var
+
+examples/session/index.js
+  error  Unexpected var, use let or const instead  no-var  ×4: 10:1 11:1 13:1 23:3
+
+examples/session/redis.js
+  error  Unexpected var, use let or const instead  no-var  ×6: 7:1 8:1 9:1 13:1 15:1 28:3
+
+examples/static-files/index.js
+  error  Unexpected var, use let or const instead  no-var  ×4: 7:1 8:1 9:1 10:1
+
+examples/vhost/index.js
+  error  Unexpected var, use let or const instead  no-var  ×6: 7:1 8:1 9:1 21:1 35:1 44:1
+
+examples/view-constructor/github-view.js
+  error  Unexpected var, use let or const instead  no-var  ×6: 7:1 8:1 9:1 37:3 38:3 46:5
+
+examples/view-constructor/index.js
+  error  Unexpected var, use let or const instead  no-var  ×5: 7:1 8:1 9:1 11:1 16:5
+
+examples/view-locals/index.js
+  error  Unexpected var, use let or const instead  no-var  ×4: 7:1 8:1 9:1 10:1
+
+examples/view-locals/user.js
+  30:1   error    Unexpected var, use let or const instead  no-var
+
+examples/web-service/index.js
+  error  Unexpected var, use let or const instead  no-var  ×10: 7:1 9:1 16:3 31:3 49:1 53:1 59:1 65:1 86:3 87:3
+
+lib/application.js
+  error  Unexpected var, use let or const instead  no-var  ×42: 16:1 17:1 18:1 19:1 20:1 21:1 22:1 23:1 24:1 25:1 26:1 33:1 34:1 40:1 47:1 60:3 91:3 154:3 191:3 192:3 197:5 210:3 217:3 231:7
+      300:3 324:10 478:5 495:3 496:3 498:8 523:3 524:3 525:3 526:3 527:3 536:3 550:5 559:7 562:7 599:3 600:3 602:5
+
+lib/express.js
+  error  Unexpected var, use let or const instead  no-var  ×8: 15:1 16:1 17:1 18:1 19:1 20:1 21:1 37:3
+
+lib/request.js
+  error  Unexpected var, use let or const instead  no-var  ×36: 16:1 17:1 18:1 19:1 20:1 21:1 22:1 23:1 30:1 73:3 128:3 141:3 215:3 231:3 238:3 270:3 275:10 298:3 301:3 309:3 310:3 341:3 358:3 359:3
+      384:3 388:3 389:3 419:3 420:3 445:3 450:3 453:3 470:3 471:3 472:3 509:3
+
+lib/response.js
+  error  Unexpected var, use let or const instead  no-var  ×90: 15:1 16:1 17:1 18:1 19:1 20:1 21:1 22:1 23:1 24:1 25:1 26:1 27:1 28:1 29:1 30:1 31:1 32:1 33:1 34:1 35:1 43:1 99:3 127:3
+      128:3 129:3 132:3 162:3 163:3 165:3 188:3 238:3 239:3 240:3 241:3 242:3 266:3 267:3 268:3 269:3 270:3 271:3 326:3 376:3 377:3 378:3 379:3 380:3
+      401:3 405:3 438:3 439:3 440:3 460:3 466:5 467:10 468:7 480:3 509:3 574:3 575:3 577:3 580:3 635:3 636:3 672:5 686:10 748:3 749:3 750:3 756:3 765:5
+      815:3 816:3 817:3 847:7 897:3 898:3 899:3 900:3 901:3 924:3 925:3 932:5 942:5 999:7 1000:7 1002:12 1003:9 1028:3
+
+lib/utils.js
+  error  Unexpected var, use let or const instead  no-var  ×20: 15:1 16:1 17:1 18:1 19:1 20:1 21:1 90:3 91:3 92:3 93:3 96:5 99:5 100:5 107:5 108:5 131:3 163:3 231:3 251:5
+
+lib/view.js
+  error  Unexpected var, use let or const instead  no-var  ×26: 16:1 17:1 18:1 25:1 26:1 27:1 28:1 29:1 53:3 64:3 77:5 81:5 105:3 106:3 110:8 111:5 114:5 115:5 116:5 134:3 145:5 146:5 148:10 170:3
+      173:3 174:3
+
+[113 warnings grouped by rule; first 3 locations each]
+warning  Unexpected function expression  prefer-arrow-callback  ×113: examples/auth/index.js:30:9 examples/auth/index.js:50:30 examples/auth/index.js:68:45 … +110 more
+
+✖ 529 problems (416 errors, 113 warnings)
+  410 errors and 113 warnings potentially fixable with the `--fix` option.

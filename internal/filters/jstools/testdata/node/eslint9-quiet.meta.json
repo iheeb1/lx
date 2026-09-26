@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "eslint",
+    "--quiet",
+    "."
+  ],
+  "shell": "npx eslint --quiet .",
+  "exit_code": 1,
+  "description": "ESLint 9 --quiet: errors only",
+  "cwd": "/home/user/src/eslint9-app"
+}

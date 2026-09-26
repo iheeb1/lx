@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npm",
+    "test",
+    "--silent",
+    "--",
+    "test/user.test.js"
+  ],
+  "shell": "npm test --silent -- test/user.test.js",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "npm 11: npm test --silent (no lifecycle echo)",
+  "cwd": "repos/jestproj"
+}

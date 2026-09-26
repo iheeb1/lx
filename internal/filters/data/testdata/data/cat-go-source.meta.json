@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "context.go"
+  ],
+  "shell": "cat context.go",
+  "repo": "",
+  "exit_code": 0,
+  "description": "cat of gin's context.go (1,544 lines of Go, 48 KB)",
+  "cwd": "repos/gin"
+}

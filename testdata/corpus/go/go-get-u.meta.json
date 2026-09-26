@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "get",
+    "-u",
+    "./..."
+  ],
+  "shell": "go get -u ./...",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "go get -u ./... in gin: downloading newer module versions and 'go: upgraded X => Y' lines",
+  "cwd": "repos/gin"
+}

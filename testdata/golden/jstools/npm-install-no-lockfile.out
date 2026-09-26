@@ -1,0 +1,12 @@
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated glob@7.2.3, glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated uuid@8.3.2: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+npm warn deprecated superagent@8.1.2, @humanwhocodes/object-schema@2.0.3, @humanwhocodes/config-array@0.11.14, supertest@6.3.4 [4 deprecated packages, messages hidden]
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated eslint@8.47.0: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 403 packages, and audited 404 packages in 22s
+
+6 vulnerabilities (1 low, 4 moderate, 1 high)
+
+Run `npm audit` for details.

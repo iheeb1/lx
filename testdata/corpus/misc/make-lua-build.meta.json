@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "make"
+  ],
+  "shell": "make",
+  "repo": "lua/lua",
+  "exit_code": 2,
+  "description": "make in the Lua development tree on macOS/clang: one long gcc command line per translation unit, repeated clang 'unknown warning option' noise for gcc-only flags, then a genuine link failure ('ld: unknown options: -E') and make error",
+  "cwd": "repos/lua"
+}

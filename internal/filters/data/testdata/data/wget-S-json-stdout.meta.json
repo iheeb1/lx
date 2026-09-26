@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "wget",
+    "-S",
+    "-O",
+    "-",
+    "https://api.github.com/repos/golang/go/issues?per_page=30"
+  ],
+  "shell": "wget -S -O - https://api.github.com/repos/golang/go/issues?per_page=30",
+  "repo": "",
+  "exit_code": 0,
+  "cwd": "data/api",
+  "description": "SYNTHETIC (hand-assembled in GNU Wget 1.24 / HTTPie 3.2 format; tool not installed on the capture host): wget -S -O - of the GitHub issues API: resolve/connect lines, server response headers, dot progress, then the 30-issue JSON body (the real body from corpus data/curl-github-issues-json)"
+}

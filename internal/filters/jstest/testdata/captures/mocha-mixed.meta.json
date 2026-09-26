@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "--reporter",
+    "spec",
+    "test/"
+  ],
+  "shell": "npx mocha --reporter spec test/",
+  "repo": "scratch/mochaproj",
+  "exit_code": 6,
+  "description": "mocha 11 spec reporter: assertion diffs, thrown TypeError, timeout, rejection, before-all hook failure, pending tests, console output",
+  "cwd": "repos/mochaproj"
+}

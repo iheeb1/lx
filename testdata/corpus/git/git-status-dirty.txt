@@ -1,0 +1,48 @@
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   binding/binding.go
+	modified:   binding/binding_test.go
+	modified:   binding/form.go
+	modified:   binding/form_mapping.go
+	modified:   binding/json.go
+	modified:   binding/protobuf.go
+	modified:   binding/validate_test.go
+	modified:   binding/xml.go
+	deleted:    codecov.yml
+	modified:   context.go
+	new file:   context_ratelimit.go
+	renamed:    tree.go -> radix_tree.go
+	renamed:    tree_test.go -> radix_tree_test.go
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    CODE_OF_CONDUCT.md
+	modified:   README.md
+	modified:   context.go
+	modified:   debug.go
+	modified:   debug_test.go
+	modified:   gin.go
+	modified:   go.mod
+	modified:   go.sum
+	modified:   render/data.go
+	modified:   render/html.go
+	modified:   render/json.go
+	modified:   render/redirect.go
+	modified:   render/render.go
+	modified:   render/render_msgpack_test.go
+	modified:   render/render_test.go
+	modified:   render/text.go
+	modified:   render/xml.go
+	modified:   render/yaml.go
+	modified:   response_writer.go
+	modified:   utils.go
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	docs/rate-limiting.md
+	middleware/
+

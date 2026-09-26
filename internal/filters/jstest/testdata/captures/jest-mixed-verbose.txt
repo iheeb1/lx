@@ -1,0 +1,337 @@
+  console.log
+    hello from a passing test
+
+      at Object.log (test/log.test.js:2:11)
+
+FAIL test/missing.test.js
+  ● Test suite failed to run
+
+    Cannot find module 'lodash-nonexistent' from 'test/missing.test.js'
+
+    > 1 | const lodashx = require("lodash-nonexistent");
+        |                         ^
+      2 |
+      3 | test("uses missing module", () => {
+      4 |   expect(lodashx).toBeDefined();
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.<anonymous> (test/missing.test.js:1:25)
+
+FAIL test/snap.test.js
+  ✕ renders snapshot (3 ms)
+  ✕ inline snapshot (1 ms)
+
+  ● renders snapshot
+
+    expect(received).toMatchSnapshot()
+
+    Snapshot name: `renders snapshot 1`
+
+    - Snapshot  - 1
+    + Received  + 1
+
+    @@ -1,7 +1,7 @@
+      {
+    -   "count": 1,
+    +   "count": 2,
+        "items": [
+          "a",
+          "b",
+        ],
+        "title": "Hello",
+
+      1 | test("renders snapshot", () => {
+    > 2 |   expect({ title: "Hello", count: 2, items: ["a", "b"] }).toMatchSnapshot();
+        |                                                           ^
+      3 | });
+      4 | test("inline snapshot", () => {
+      5 |   expect("world").toMatchInlineSnapshot(`"word"`);
+
+      at Object.toMatchSnapshot (test/snap.test.js:2:59)
+
+  ● inline snapshot
+
+    expect(received).toMatchInlineSnapshot(snapshot)
+
+    Snapshot name: `inline snapshot 1`
+
+    Snapshot: "word"
+    Received: "world"
+
+      3 | });
+      4 | test("inline snapshot", () => {
+    > 5 |   expect("world").toMatchInlineSnapshot(`"word"`);
+        |                   ^
+      6 | });
+      7 |
+
+      at Object.toMatchInlineSnapshot (test/snap.test.js:5:19)
+
+ › 2 snapshots failed.
+PASS test/log.test.js
+  ✓ passing test that logs (56 ms)
+
+PASS test/math.test.js
+  math
+    ✓ adds numbers (1 ms)
+    ✓ adds negative numbers
+    ✓ divides
+    ○ skipped skipped divide by zero
+    ✎ todo handles bigint
+
+FAIL test/async.test.js
+  ✕ times out (63 ms)
+  ✕ rejects (2 ms)
+  ✕ throws inside callback
+
+  ● times out
+
+    thrown: "Exceeded timeout of 50 ms for a testfalse.
+    Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."
+
+    > 1 | test("times out", async () => {
+        |                   ^
+      2 |   await new Promise((r) => setTimeout(r, 200));
+      3 | }, 50);
+      4 |
+
+      at Object.<anonymous> (test/async.test.js:1:19)
+
+  ● rejects
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: 1
+
+      4 |
+      5 | test("rejects", async () => {
+    > 6 |   await expect(Promise.resolve(1)).rejects.toThrow("boom");
+        |         ^
+      7 | });
+      8 |
+      9 | test("throws inside callback", () => {
+
+      at expect (node_modules/expect/build/index.js:105:15)
+      at Object.expect (test/async.test.js:6:9)
+
+  ● throws inside callback
+
+    RangeError: value out of range: 2
+
+      10 |   const arr = [1, 2, 3];
+      11 |   arr.forEach((x) => {
+    > 12 |     if (x === 2) throw new RangeError("value out of range: " + x);
+         |                        ^
+      13 |   });
+      14 | });
+      15 |
+
+      at test/async.test.js:12:24
+          at Array.forEach (<anonymous>)
+      at Object.forEach (test/async.test.js:11:7)
+
+  console.log
+    fetching user { id: 3 }
+
+      at Object.log (test/user.test.js:16:13)
+
+  console.warn
+    deprecated lookup path
+
+      15 |   test("logs while failing", () => {
+      16 |     console.log("fetching user", { id: 3 });
+    > 17 |     console.warn("deprecated lookup path");
+         |             ^
+      18 |     const svc = new UserService({ find: () => ({ name: "bob" }) });
+      19 |     expect(svc.getName(3)).toEqual("Bob");
+      20 |   });
+
+      at Object.warn (test/user.test.js:17:13)
+
+FAIL test/user.test.js
+  UserService
+    ✓ returns upper-cased name (14 ms)
+    ✕ handles missing user
+    ✕ logs while failing (125 ms)
+  config
+    ✓ parses level (1 ms)
+    ✕ rejects bad json (6 ms)
+    ✕ object equality (2 ms)
+
+  ● UserService › handles missing user
+
+    TypeError: Cannot read properties of undefined (reading 'name')
+
+       5 |   getName(id) {
+       6 |     const row = this.db.find(id);
+    >  7 |     return row.name.toUpperCase();
+         |                ^
+       8 |   }
+       9 | }
+      10 | module.exports = { UserService };
+
+      at UserService.name [as getName] (src/user.js:7:16)
+      at Object.getName (test/user.test.js:12:16)
+
+  ● UserService › logs while failing
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: "Bob"
+    Received: "BOB"
+
+      17 |     console.warn("deprecated lookup path");
+      18 |     const svc = new UserService({ find: () => ({ name: "bob" }) });
+    > 19 |     expect(svc.getName(3)).toEqual("Bob");
+         |                            ^
+      20 |   });
+      21 | });
+      22 |
+
+      at Object.toEqual (test/user.test.js:19:28)
+
+  ● config › rejects bad json
+
+    SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+        at JSON.parse (<anonymous>)
+
+      11 |
+      12 | function parseConfig(text) {
+    > 13 |   const cfg = JSON.parse(text);
+         |                    ^
+      14 |   return cfg.settings.level;
+      15 | }
+      16 |
+
+      at parse (src/math.js:13:20)
+      at Object.parseConfig (test/user.test.js:28:12)
+
+  ● config › object equality
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+        "a": 1,
+        "b": Array [
+          1,
+          2,
+    -     4,
+    +     3,
+        ],
+        "c": Object {
+    -     "d": "y",
+    +     "d": "x",
+        },
+      }
+
+      29 |   });
+      30 |   test("object equality", () => {
+    > 31 |     expect({ a: 1, b: [1, 2, 3], c: { d: "x" } }).toEqual({ a: 1, b: [1, 2, 4], c: { d: "y" } });
+         |                                                   ^
+      32 |   });
+      33 | });
+      34 |
+
+      at Object.toEqual (test/user.test.js:31:51)
+
+FAIL test/syntax.test.js
+  ● Test suite failed to run
+
+    SyntaxError: /home/user/src/jestproj/test/syntax.test.js: Unexpected token, expected "," (4:26)
+
+      2 |
+      3 | test("broken file", () => {
+    > 4 |   expect(add(1, 2).toBe(3);
+        |                           ^
+      5 | });
+      6 |
+
+      at constructor (node_modules/@babel/parser/src/parse-error.ts:81:19)
+      at Parser.toParseError [as raise] (node_modules/@babel/parser/src/tokenizer/index.ts:1487:19)
+      at Parser.raise [as unexpected] (node_modules/@babel/parser/src/tokenizer/index.ts:1528:16)
+      at Parser.unexpected [as expect] (node_modules/@babel/parser/src/parser/util.ts:149:28)
+      at Parser.expect [as parseCallExpressionArguments] (node_modules/@babel/parser/src/parser/expression.ts:1023:14)
+      at Parser.parseCallExpressionArguments [as parseCoverCallAndAsyncArrowHead] (node_modules/@babel/parser/src/parser/expression.ts:886:29)
+      at Parser.parseCoverCallAndAsyncArrowHead [as parseSubscript] (node_modules/@babel/parser/src/parser/expression.ts:775:19)
+      at Parser.parseSubscript [as parseSubscripts] (node_modules/@babel/parser/src/parser/expression.ts:731:19)
+      at Parser.parseSubscripts [as parseExprSubscripts] (node_modules/@babel/parser/src/parser/expression.ts:716:17)
+      at Parser.parseExprSubscripts [as parseUpdate] (node_modules/@babel/parser/src/parser/expression.ts:687:21)
+      at Parser.parseUpdate [as parseMaybeUnary] (node_modules/@babel/parser/src/parser/expression.ts:649:23)
+      at Parser.parseMaybeUnary [as parseMaybeUnaryOrPrivate] (node_modules/@babel/parser/src/parser/expression.ts:387:14)
+      at Parser.parseMaybeUnaryOrPrivate [as parseExprOps] (node_modules/@babel/parser/src/parser/expression.ts:399:23)
+      at Parser.parseExprOps [as parseMaybeConditional] (node_modules/@babel/parser/src/parser/expression.ts:354:23)
+      at Parser.parseMaybeConditional [as parseMaybeAssign] (node_modules/@babel/parser/src/parser/expression.ts:294:21)
+      at Parser.parseMaybeAssign [as parseExpressionBase] (node_modules/@babel/parser/src/parser/expression.ts:217:23)
+      at parseExpressionBase (node_modules/@babel/parser/src/parser/expression.ts:208:39)
+      at Parser.callback [as allowInAnd] (node_modules/@babel/parser/src/parser/expression.ts:3137:16)
+      at Parser.allowInAnd [as parseExpression] (node_modules/@babel/parser/src/parser/expression.ts:208:17)
+      at Parser.parseExpression [as parseStatementContent] (node_modules/@babel/parser/src/parser/statement.ts:645:23)
+      at Parser.parseStatementContent [as parseStatementLike] (node_modules/@babel/parser/src/parser/statement.ts:417:17)
+      at Parser.parseStatementLike [as parseStatementListItem] (node_modules/@babel/parser/src/parser/statement.ts:366:17)
+      at Parser.parseStatementListItem [as parseBlockOrModuleBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1395:16)
+      at Parser.parseBlockOrModuleBlockBody [as parseBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1368:10)
+      at Parser.parseBlockBody [as parseBlock] (node_modules/@babel/parser/src/parser/statement.ts:1336:10)
+      at Parser.parseBlock [as parseFunctionBody] (node_modules/@babel/parser/src/parser/expression.ts:2589:24)
+      at Parser.parseFunctionBody [as parseArrowExpression] (node_modules/@babel/parser/src/parser/expression.ts:2534:10)
+      at Parser.parseArrowExpression [as parseParenAndDistinguishExpression] (node_modules/@babel/parser/src/parser/expression.ts:1831:12)
+      at Parser.parseParenAndDistinguishExpression [as parseExprAtom] (node_modules/@babel/parser/src/parser/expression.ts:1170:21)
+      at Parser.parseExprAtom [as parseExprSubscripts] (node_modules/@babel/parser/src/parser/expression.ts:710:23)
+      at Parser.parseExprSubscripts [as parseUpdate] (node_modules/@babel/parser/src/parser/expression.ts:687:21)
+      at Parser.parseUpdate [as parseMaybeUnary] (node_modules/@babel/parser/src/parser/expression.ts:649:23)
+      at Parser.parseMaybeUnary [as parseMaybeUnaryOrPrivate] (node_modules/@babel/parser/src/parser/expression.ts:387:14)
+      at Parser.parseMaybeUnaryOrPrivate [as parseExprOps] (node_modules/@babel/parser/src/parser/expression.ts:399:23)
+      at Parser.parseExprOps [as parseMaybeConditional] (node_modules/@babel/parser/src/parser/expression.ts:354:23)
+      at Parser.parseMaybeConditional [as parseMaybeAssign] (node_modules/@babel/parser/src/parser/expression.ts:294:21)
+      at parseMaybeAssign (node_modules/@babel/parser/src/parser/expression.ts:248:12)
+      at Parser.callback [as allowInAnd] (node_modules/@babel/parser/src/parser/expression.ts:3142:12)
+      at Parser.allowInAnd [as parseMaybeAssignAllowIn] (node_modules/@babel/parser/src/parser/expression.ts:247:17)
+      at Parser.parseMaybeAssignAllowIn [as parseExprListItem] (node_modules/@babel/parser/src/parser/expression.ts:2755:18)
+      at Parser.parseExprListItem [as parseCallExpressionArguments] (node_modules/@babel/parser/src/parser/expression.ts:1044:14)
+      at Parser.parseCallExpressionArguments [as parseCoverCallAndAsyncArrowHead] (node_modules/@babel/parser/src/parser/expression.ts:886:29)
+      at Parser.parseCoverCallAndAsyncArrowHead [as parseSubscript] (node_modules/@babel/parser/src/parser/expression.ts:775:19)
+      at Parser.parseSubscript [as parseSubscripts] (node_modules/@babel/parser/src/parser/expression.ts:731:19)
+      at Parser.parseSubscripts [as parseExprSubscripts] (node_modules/@babel/parser/src/parser/expression.ts:716:17)
+      at Parser.parseExprSubscripts [as parseUpdate] (node_modules/@babel/parser/src/parser/expression.ts:687:21)
+      at Parser.parseUpdate [as parseMaybeUnary] (node_modules/@babel/parser/src/parser/expression.ts:649:23)
+      at Parser.parseMaybeUnary [as parseMaybeUnaryOrPrivate] (node_modules/@babel/parser/src/parser/expression.ts:387:14)
+      at Parser.parseMaybeUnaryOrPrivate [as parseExprOps] (node_modules/@babel/parser/src/parser/expression.ts:399:23)
+      at Parser.parseExprOps [as parseMaybeConditional] (node_modules/@babel/parser/src/parser/expression.ts:354:23)
+      at Parser.parseMaybeConditional [as parseMaybeAssign] (node_modules/@babel/parser/src/parser/expression.ts:294:21)
+      at Parser.parseMaybeAssign [as parseExpressionBase] (node_modules/@babel/parser/src/parser/expression.ts:217:23)
+      at parseExpressionBase (node_modules/@babel/parser/src/parser/expression.ts:208:39)
+      at Parser.callback [as allowInAnd] (node_modules/@babel/parser/src/parser/expression.ts:3137:16)
+      at Parser.allowInAnd [as parseExpression] (node_modules/@babel/parser/src/parser/expression.ts:208:17)
+      at Parser.parseExpression [as parseStatementContent] (node_modules/@babel/parser/src/parser/statement.ts:645:23)
+      at Parser.parseStatementContent [as parseStatementLike] (node_modules/@babel/parser/src/parser/statement.ts:417:17)
+      at Parser.parseStatementLike [as parseModuleItem] (node_modules/@babel/parser/src/parser/statement.ts:354:17)
+      at Parser.parseModuleItem [as parseBlockOrModuleBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1394:16)
+      at Parser.parseBlockOrModuleBlockBody [as parseBlockBody] (node_modules/@babel/parser/src/parser/statement.ts:1368:10)
+      at Parser.parseBlockBody [as parseProgram] (node_modules/@babel/parser/src/parser/statement.ts:213:10)
+      at Parser.parseProgram [as parseTopLevel] (node_modules/@babel/parser/src/parser/statement.ts:195:25)
+      at Parser.parseTopLevel [as parse] (node_modules/@babel/parser/src/parser/index.ts:45:10)
+      at parse (node_modules/@babel/parser/src/index.ts:66:38)
+      at parser (node_modules/@babel/core/src/parser/index.ts:28:19)
+          at parser.next (<anonymous>)
+      at normalizeFile (node_modules/@babel/core/src/transformation/normalize-file.ts:52:24)
+          at normalizeFile.next (<anonymous>)
+      at run (node_modules/@babel/core/src/transformation/index.ts:38:36)
+          at run.next (<anonymous>)
+      at transform (node_modules/@babel/core/src/transform.ts:29:20)
+          at transform.next (<anonymous>)
+      at evaluateSync (node_modules/gensync/index.js:251:28)
+      at sync (node_modules/gensync/index.js:89:14)
+      at fn (node_modules/@babel/core/src/errors/rewrite-stack-trace.ts:97:14)
+      at transformSync (node_modules/@babel/core/src/transform.ts:66:52)
+
+Snapshot Summary
+ › 2 snapshots failed from 1 test suite. Inspect your code changes or run `npm run npx -- -u` to update them.
+
+Test Suites: 5 failed, 2 passed, 7 total
+Tests:       9 failed, 1 skipped, 1 todo, 6 passed, 17 total
+Snapshots:   2 failed, 2 total
+Time:        1.71 s, estimated 2 s
+Ran all test suites.

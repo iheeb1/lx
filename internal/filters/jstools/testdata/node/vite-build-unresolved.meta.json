@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npx",
+    "vite",
+    "build"
+  ],
+  "shell": "npx vite build",
+  "exit_code": 1,
+  "description": "vite 8 (rolldown) build failing on an unresolved import: code frame with box glyphs, help text, node_modules stack trace",
+  "cwd": "/home/user/src/vite-app"
+}

@@ -1,0 +1,919 @@
+commit 688a429d19d8c804447bb889d3635e2c31a5564d
+Author: Tim <xuchonglei@126.com>
+Date:   Mon Jun 16 23:16:36 2025 +0800
+
+    feat: support custom json codec at runtime (#3391)
+    
+    * refactor(json): export json codec
+    
+    * feat(json): support custom json codec at runtime
+    
+    * chore(copyright): update copyright to 2025 gin core team
+    
+    * docs(gin): add custom json codec examples in doc file
+
+diff --git a/binding/form_mapping.go b/binding/form_mapping.go
+index 235692d..1501209 100644
+--- a/binding/form_mapping.go
++++ b/binding/form_mapping.go
+@@ -13,8 +13,8 @@ import (
+ 	"strings"
+ 	"time"
+ 
++	"github.com/gin-gonic/gin/codec/json"
+ 	"github.com/gin-gonic/gin/internal/bytesconv"
+-	"github.com/gin-gonic/gin/internal/json"
+ )
+ 
+ var (
+@@ -333,9 +333,9 @@ func setWithProperType(val string, value reflect.Value, field reflect.StructFiel
+ 		case multipart.FileHeader:
+ 			return nil
+ 		}
+-		return json.Unmarshal(bytesconv.StringToBytes(val), value.Addr().Interface())
++		return json.API.Unmarshal(bytesconv.StringToBytes(val), value.Addr().Interface())
+ 	case reflect.Map:
+-		return json.Unmarshal(bytesconv.StringToBytes(val), value.Addr().Interface())
++		return json.API.Unmarshal(bytesconv.StringToBytes(val), value.Addr().Interface())
+ 	case reflect.Ptr:
+ 		if !value.Elem().IsValid() {
+ 			value.Set(reflect.New(value.Type().Elem()))
+diff --git a/binding/json.go b/binding/json.go
+index e21c2ee..f4ae921 100644
+--- a/binding/json.go
++++ b/binding/json.go
+@@ -10,7 +10,7 @@ import (
+ 	"io"
+ 	"net/http"
+ 
+-	"github.com/gin-gonic/gin/internal/json"
++	"github.com/gin-gonic/gin/codec/json"
+ )
+ 
+ // EnableDecoderUseNumber is used to call the UseNumber method on the JSON
+@@ -42,7 +42,7 @@ func (jsonBinding) BindBody(body []byte, obj any) error {
+ }
+ 
+ func decodeJSON(r io.Reader, obj any) error {
+-	decoder := json.NewDecoder(r)
++	decoder := json.API.NewDecoder(r)
+ 	if EnableDecoderUseNumber {
+ 		decoder.UseNumber()
+ 	}
+diff --git a/binding/json_test.go b/binding/json_test.go
+index fbd5c52..942ee3e 100644
+--- a/binding/json_test.go
++++ b/binding/json_test.go
+@@ -5,8 +5,16 @@
+ package binding
+ 
+ import (
++	"io"
++	"net/http/httptest"
+ 	"testing"
++	"time"
++	"unsafe"
+ 
++	"github.com/gin-gonic/gin/codec/json"
++	"github.com/gin-gonic/gin/render"
++	jsoniter "github.com/json-iterator/go"
++	"github.com/modern-go/reflect2"
+ 	"github.com/stretchr/testify/assert"
+ 	"github.com/stretchr/testify/require"
+ )
+@@ -28,3 +36,181 @@ func TestJSONBindingBindBodyMap(t *testing.T) {
+ 	assert.Equal(t, "FOO", s["foo"])
+ 	assert.Equal(t, "world", s["hello"])
+ }
++
++func TestCustomJsonCodec(t *testing.T) {
++	// Restore json encoding configuration after testing
++	oldMarshal := json.API
++	defer func() {
++		json.API = oldMarshal
++	}()
++	// Custom json api
++	json.API = customJsonApi{}
++
++	// test decode json
++	obj := customReq{}
++	err := jsonBinding{}.BindBody([]byte(`{"time_empty":null,"time_struct": "2001-12-05 10:01:02.345","time_nil":null,"time_pointer":"2002-12-05 10:01:02.345"}`), &obj)
++	require.NoError(t, err)
++	assert.Equal(t, zeroTime, obj.TimeEmpty)
++	assert.Equal(t, time.Date(2001, 12, 5, 10, 1, 2, 345000000, time.Local), obj.TimeStruct)
++	assert.Nil(t, obj.TimeNil)
++	assert.Equal(t, time.Date(2002, 12, 5, 10, 1, 2, 345000000, time.Local), *obj.TimePointer)
++	// test encode json
++	w := httptest.NewRecorder()
++	err2 := (render.PureJSON{Data: obj}).Render(w)
++	require.NoError(t, err2)
++	assert.JSONEq(t, "{\"time_empty\":null,\"time_struct\":\"2001-12-05 10:01:02.345\",\"time_nil\":null,\"time_pointer\":\"2002-12-05 10:01:02.345\"}\n", w.Body.String())
++	assert.Equal(t, "application/json; charset=utf-8", w.Header().Get("Content-Type"))
++}
++
++type customReq struct {
++	TimeEmpty   time.Time  `json:"time_empty"`
++	TimeStruct  time.Time  `json:"time_struct"`
++	TimeNil     *time.Time `json:"time_nil"`
++	TimePointer *time.Time `json:"time_pointer"`
++}
++
++var customConfig = jsoniter.Config{
++	EscapeHTML:             true,
++	SortMapKeys:            true,
++	ValidateJsonRawMessage: true,
++}.Froze()
++
++func init() {
++	customConfig.RegisterExtension(&TimeEx{})
++	customConfig.RegisterExtension(&TimePointerEx{})
++}
++
++type customJsonApi struct{}
++
++func (j customJsonApi) Marshal(v any) ([]byte, error) {
++	return customConfig.Marshal(v)
++}
++
++func (j customJsonApi) Unmarshal(data []byte, v any) error {
++	return customConfig.Unmarshal(data, v)
++}
++
++func (j customJsonApi) MarshalIndent(v any, prefix, indent string) ([]byte, error) {
++	return customConfig.MarshalIndent(v, prefix, indent)
++}
++
++func (j customJsonApi) NewEncoder(writer io.Writer) json.Encoder {
++	return customConfig.NewEncoder(writer)
++}
++
++func (j customJsonApi) NewDecoder(reader io.Reader) json.Decoder {
++	return customConfig.NewDecoder(reader)
++}
++
++// region Time Extension
++
++var (
++	zeroTime         = time.Time{}
++	timeType         = reflect2.TypeOfPtr((*time.Time)(nil)).Elem()
++	defaultTimeCodec = &timeCodec{}
++)
++
++type TimeEx struct {
++	jsoniter.DummyExtension
++}
++
++func (te *TimeEx) CreateDecoder(typ reflect2.Type) jsoniter.ValDecoder {
++	if typ == timeType {
++		return defaultTimeCodec
++	}
++	return nil
++}
++
++func (te *TimeEx) CreateEncoder(typ reflect2.Type) jsoniter.ValEncoder {
++	if typ == timeType {
++		return defaultTimeCodec
++	}
++	return nil
++}
++
++type timeCodec struct{}
++
++func (tc timeCodec) IsEmpty(ptr unsafe.Pointer) bool {
++	t := *((*time.Time)(ptr))
++	return t.Equal(zeroTime)
++}
++
++func (tc timeCodec) Encode(ptr unsafe.Pointer, stream *jsoniter.Stream) {
++	t := *((*time.Time)(ptr))
++	if t.Equal(zeroTime) {
++		stream.WriteNil()
++		return
++	}
++	stream.WriteString(t.In(time.Local).Format("2006-01-02 15:04:05.000"))
++}
++
++func (tc timeCodec) Decode(ptr unsafe.Pointer, iter *jsoniter.Iterator) {
++	ts := iter.ReadString()
++	if len(ts) == 0 {
++		*((*time.Time)(ptr)) = zeroTime
++		return
++	}
++	t, err := time.ParseInLocation("2006-01-02 15:04:05.000", ts, time.Local)
++	if err != nil {
++		panic(err)
++	}
++	*((*time.Time)(ptr)) = t
++}
++
++// endregion
++
++// region *Time Extension
++
++var (
++	timePointerType         = reflect2.TypeOfPtr((**time.Time)(nil)).Elem()
++	defaultTimePointerCodec = &timePointerCodec{}
++)
++
++type TimePointerEx struct {
++	jsoniter.DummyExtension
++}
++
++func (tpe *TimePointerEx) CreateDecoder(typ reflect2.Type) jsoniter.ValDecoder {
++	if typ == timePointerType {
++		return defaultTimePointerCodec
++	}
++	return nil
++}
++
++func (tpe *TimePointerEx) CreateEncoder(typ reflect2.Type) jsoniter.ValEncoder {
++	if typ == timePointerType {
++		return defaultTimePointerCodec
++	}
++	return nil
++}
++
++type timePointerCodec struct{}
++
++func (tpc timePointerCodec) IsEmpty(ptr unsafe.Pointer) bool {
++	t := *((**time.Time)(ptr))
++	return t == nil || (*t).Equal(zeroTime)
++}
++
++func (tpc timePointerCodec) Encode(ptr unsafe.Pointer, stream *jsoniter.Stream) {
++	t := *((**time.Time)(ptr))
++	if t == nil || (*t).Equal(zeroTime) {
++		stream.WriteNil()
++		return
++	}
++	stream.WriteString(t.In(time.Local).Format("2006-01-02 15:04:05.000"))
++}
++
++func (tpc timePointerCodec) Decode(ptr unsafe.Pointer, iter *jsoniter.Iterator) {
++	ts := iter.ReadString()
++	if len(ts) == 0 {
++		*((**time.Time)(ptr)) = nil
++		return
++	}
++	t, err := time.ParseInLocation("2006-01-02 15:04:05.000", ts, time.Local)
++	if err != nil {
++		panic(err)
++	}
++	*((**time.Time)(ptr)) = &t
++}
++
++// endregion
+diff --git a/codec/json/api.go b/codec/json/api.go
+new file mode 100644
+index 0000000..f213568
+--- /dev/null
++++ b/codec/json/api.go
+@@ -0,0 +1,57 @@
++// Copyright 2025 Gin Core Team. All rights reserved.
++// Use of this source code is governed by a MIT style
++// license that can be found in the LICENSE file.
++
++package json
++
++import "io"
++
++// API the json codec in use.
++var API Core
++
++// Core the api for json codec.
++type Core interface {
++	Marshal(v any) ([]byte, error)
++	Unmarshal(data []byte, v any) error
++	MarshalIndent(v any, prefix, indent string) ([]byte, error)
++	NewEncoder(writer io.Writer) Encoder
++	NewDecoder(reader io.Reader) Decoder
++}
++
++// Encoder an interface writes JSON values to an output stream.
++type Encoder interface {
++	// SetEscapeHTML specifies whether problematic HTML characters
++	// should be escaped inside JSON quoted strings.
++	// The default behavior is to escape &, <, and > to \u0026, \u003c, and \u003e
++	// to avoid certain safety problems that can arise when embedding JSON in HTML.
++	//
++	// In non-HTML settings where the escaping interferes with the readability
++	// of the output, SetEscapeHTML(false) disables this behavior.
++	SetEscapeHTML(on bool)
++
++	// Encode writes the JSON encoding of v to the stream,
++	// followed by a newline character.
++	//
++	// See the documentation for Marshal for details about the
++	// conversion of Go values to JSON.
++	Encode(v any) error
++}
++
++// Decoder an interface reads and decodes JSON values from an input stream.
++type Decoder interface {
++	// UseNumber causes the Decoder to unmarshal a number into an any as a
++	// Number instead of as a float64.
++	UseNumber()
++
++	// DisallowUnknownFields causes the Decoder to return an error when the destination
++	// is a struct and the input contains object keys which do not match any
++	// non-ignored, exported fields in the destination.
++	DisallowUnknownFields()
++
++	// Decode reads the next JSON-encoded value from its
++	// input and stores it in the value pointed to by v.
++	//
++	// See the documentation for Unmarshal for details about
++	// the conversion of JSON into a Go value.
++	Decode(v any) error
++}
+diff --git a/codec/json/go_json.go b/codec/json/go_json.go
+new file mode 100644
+index 0000000..42a476a
+--- /dev/null
++++ b/codec/json/go_json.go
+@@ -0,0 +1,42 @@
++// Copyright 2025 Gin Core Team. All rights reserved.
++// Use of this source code is governed by a MIT style
++// license that can be found in the LICENSE file.
++
++//go:build go_json
++
++package json
++
++import (
++	"io"
++
++	"github.com/goccy/go-json"
++)
++
++// Package indicates what library is being used for JSON encoding.
++const Package = "github.com/goccy/go-json"
++
++func init() {
++	API = gojsonApi{}
++}
++
++type gojsonApi struct{}
++
++func (j gojsonApi) Marshal(v any) ([]byte, error) {
++	return json.Marshal(v)
++}
++
++func (j gojsonApi) Unmarshal(data []byte, v any) error {
++	return json.Unmarshal(data, v)
++}
++
++func (j gojsonApi) MarshalIndent(v any, prefix, indent string) ([]byte, error) {
++	return json.MarshalIndent(v, prefix, indent)
++}
++
++func (j gojsonApi) NewEncoder(writer io.Writer) Encoder {
++	return json.NewEncoder(writer)
++}
++
++func (j gojsonApi) NewDecoder(reader io.Reader) Decoder {
++	return json.NewDecoder(reader)
++}
+diff --git a/codec/json/json.go b/codec/json/json.go
+new file mode 100644
+index 0000000..2971f42
+--- /dev/null
++++ b/codec/json/json.go
+@@ -0,0 +1,41 @@
++// Copyright 2025 Gin Core Team. All rights reserved.
++// Use of this source code is governed by a MIT style
++// license that can be found in the LICENSE file.
++
++//go:build !jsoniter && !go_json && !(sonic && (linux || windows || darwin))
++
++package json
++
++import (
++	"encoding/json"
++	"io"
++)
++
++// Package indicates what library is being used for JSON encoding.
++const Package = "encoding/json"
++
++func init() {
++	API = jsonApi{}
++}
++
++type jsonApi struct{}
++
++func (j jsonApi) Marshal(v any) ([]byte, error) {
++	return json.Marshal(v)
++}
++
++func (j jsonApi) Unmarshal(data []byte, v any) error {
++	return json.Unmarshal(data, v)
++}
++
++func (j jsonApi) MarshalIndent(v any, prefix, indent string) ([]byte, error) {
++	return json.MarshalIndent(v, prefix, indent)
++}
++
++func (j jsonApi) NewEncoder(writer io.Writer) Encoder {
++	return json.NewEncoder(writer)
++}
++
++func (j jsonApi) NewDecoder(reader io.Reader) Decoder {
++	return json.NewDecoder(reader)
++}
+diff --git a/codec/json/jsoniter.go b/codec/json/jsoniter.go
+new file mode 100644
+index 0000000..ea624e7
+--- /dev/null
++++ b/codec/json/jsoniter.go
+@@ -0,0 +1,44 @@
++// Copyright 2025 Gin Core Team. All rights reserved.
++// Use of this source code is governed by a MIT style
++// license that can be found in the LICENSE file.
++
++//go:build jsoniter
++
++package json
++
++import (
++	"io"
++
++	jsoniter "github.com/json-iterator/go"
++)
++
++// Package indicates what library is being used for JSON encoding.
++const Package = "github.com/json-iterator/go"
++
++func init() {
++	API = jsoniterApi{}
++}
++
++var json = jsoniter.ConfigCompatibleWithStandardLibrary
++
++type jsoniterApi struct{}
++
++func (j jsoniterApi) Marshal(v any) ([]byte, error) {
++	return json.Marshal(v)
++}
++
++func (j jsoniterApi) Unmarshal(data []byte, v any) error {
++	return json.Unmarshal(data, v)
++}
++
++func (j jsoniterApi) MarshalIndent(v any, prefix, indent string) ([]byte, error) {
++	return json.MarshalIndent(v, prefix, indent)
++}
++
++func (j jsoniterApi) NewEncoder(writer io.Writer) Encoder {
++	return json.NewEncoder(writer)
++}
++
++func (j jsoniterApi) NewDecoder(reader io.Reader) Decoder {
++	return json.NewDecoder(reader)
++}
+diff --git a/codec/json/sonic.go b/codec/json/sonic.go
+new file mode 100644
+index 0000000..6949656
+--- /dev/null
++++ b/codec/json/sonic.go
+@@ -0,0 +1,44 @@
++// Copyright 2025 Gin Core Team. All rights reserved.
++// Use of this source code is governed by a MIT style
++// license that can be found in the LICENSE file.
++
++//go:build sonic && (linux || windows || darwin)
++
++package json
++
++import (
++	"io"
++
++	"github.com/bytedance/sonic"
++)
++
++// Package indicates what library is being used for JSON encoding.
++const Package = "github.com/bytedance/sonic"
++
++func init() {
++	API = sonicApi{}
++}
++
++var json = sonic.ConfigStd
++
++type sonicApi struct{}
++
++func (j sonicApi) Marshal(v any) ([]byte, error) {
++	return json.Marshal(v)
++}
++
++func (j sonicApi) Unmarshal(data []byte, v any) error {
++	return json.Unmarshal(data, v)
++}
++
++func (j sonicApi) MarshalIndent(v any, prefix, indent string) ([]byte, error) {
++	return json.MarshalIndent(v, prefix, indent)
++}
++
++func (j sonicApi) NewEncoder(writer io.Writer) Encoder {
++	return json.NewEncoder(writer)
++}
++
++func (j sonicApi) NewDecoder(reader io.Reader) Decoder {
++	return json.NewDecoder(reader)
++}
+diff --git a/context_test.go b/context_test.go
+index ff43cd0..fe3ccd6 100644
+--- a/context_test.go
++++ b/context_test.go
+@@ -28,7 +28,7 @@ import (
+ 
+ 	"github.com/gin-contrib/sse"
+ 	"github.com/gin-gonic/gin/binding"
+-	"github.com/gin-gonic/gin/internal/json"
++	"github.com/gin-gonic/gin/codec/json"
+ 	testdata "github.com/gin-gonic/gin/testdata/protoexample"
+ 	"github.com/stretchr/testify/assert"
+ 	"github.com/stretchr/testify/require"
+diff --git a/docs/doc.md b/docs/doc.md
+index 249f93a..0dd8668 100644
+--- a/docs/doc.md
++++ b/docs/doc.md
+@@ -63,6 +63,7 @@
+   - [http2 server push](#http2-server-push)
+   - [Define format for the log of routes](#define-format-for-the-log-of-routes)
+   - [Set and get a cookie](#set-and-get-a-cookie)
++  - [Custom json codec at runtime](#custom-json-codec-at-runtime)
+ - [Don't trust all proxies](#dont-trust-all-proxies)
+ - [Testing](#testing)
+ 
+@@ -2371,6 +2372,65 @@ func main() {
+ }
+ ```
+ 
++### Custom json codec at runtime
++
++Gin support custom json serialization and deserialization logic without using compile tags.
++
++1. Define a custom struct implements the `json.Core` interface.
++
++2. Before your engine starts, assign values to `json.API` using the custom struct.
++
++```go
++package main
++
++import (
++  "io"
++
++  "github.com/gin-gonic/gin"
++  "github.com/gin-gonic/gin/codec/json"
++  jsoniter "github.com/json-iterator/go"
++)
++
++var customConfig = jsoniter.Config{
++  EscapeHTML:             true,
++  SortMapKeys:            true,
++  ValidateJsonRawMessage: true,
++}.Froze()
++
++// implement api.JsonApi
++type customJsonApi struct {
++}
++
++func (j customJsonApi) Marshal(v any) ([]byte, error) {
++  return customConfig.Marshal(v)
++}
++
++func (j customJsonApi) Unmarshal(data []byte, v any) error {
++  return customConfig.Unmarshal(data, v)
++}
++
++func (j customJsonApi) MarshalIndent(v any, prefix, indent string) ([]byte, error) {
++  return customConfig.MarshalIndent(v, prefix, indent)
++}
++
++func (j customJsonApi) NewEncoder(writer io.Writer) json.Encoder {
++  return customConfig.NewEncoder(writer)
++}
++
++func (j customJsonApi) NewDecoder(reader io.Reader) json.Decoder {
++  return customConfig.NewDecoder(reader)
++}
++
++func main() {
++  //Replace the default json api
++  json.API = customJsonApi{}
++
++  //Start your gin engine
++  router := gin.Default()
++  router.Run(":8080")
++}
++```
++
+ ## Don't trust all proxies
+ 
+ Gin lets you specify which headers to hold the real client IP (if any),
+diff --git a/errors.go b/errors.go
+index b0d70a9..829e9d2 100644
+--- a/errors.go
++++ b/errors.go
+@@ -9,7 +9,7 @@ import (
+ 	"reflect"
+ 	"strings"
+ 
+-	"github.com/gin-gonic/gin/internal/json"
++	"github.com/gin-gonic/gin/codec/json"
+ )
+ 
+ // ErrorType is an unsigned 64-bit error code as defined in the gin spec.
+@@ -77,7 +77,7 @@ func (msg *Error) JSON() any {
+ 
+ // MarshalJSON implements the json.Marshaller interface.
+ func (msg *Error) MarshalJSON() ([]byte, error) {
+-	return json.Marshal(msg.JSON())
++	return json.API.Marshal(msg.JSON())
+ }
+ 
+ // Error implements the error interface.
+@@ -157,7 +157,7 @@ func (a errorMsgs) JSON() any {
+ 
+ // MarshalJSON implements the json.Marshaller interface.
+ func (a errorMsgs) MarshalJSON() ([]byte, error) {
+-	return json.Marshal(a.JSON())
++	return json.API.Marshal(a.JSON())
+ }
+ 
+ func (a errorMsgs) String() string {
+diff --git a/errors_test.go b/errors_test.go
+index 85ed3dd..6d8df27 100644
+--- a/errors_test.go
++++ b/errors_test.go
+@@ -9,7 +9,7 @@ import (
+ 	"fmt"
+ 	"testing"
+ 
+-	"github.com/gin-gonic/gin/internal/json"
++	"github.com/gin-gonic/gin/codec/json"
+ 	"github.com/stretchr/testify/assert"
+ 	"github.com/stretchr/testify/require"
+ )
+@@ -33,7 +33,7 @@ func TestError(t *testing.T) {
+ 		"meta":  "some data",
+ 	}, err.JSON())
+ 
+-	jsonBytes, _ := json.Marshal(err)
++	jsonBytes, _ := json.API.Marshal(err)
+ 	assert.JSONEq(t, "{\"error\":\"test error\",\"meta\":\"some data\"}", string(jsonBytes))
+ 
+ 	err.SetMeta(H{ //nolint: errcheck
+@@ -92,13 +92,13 @@ Error #03: third
+ 		H{"error": "second", "meta": "some data"},
+ 		H{"error": "third", "status": "400"},
+ 	}, errs.JSON())
+-	jsonBytes, _ := json.Marshal(errs)
++	jsonBytes, _ := json.API.Marshal(errs)
+ 	assert.JSONEq(t, "[{\"error\":\"first\"},{\"error\":\"second\",\"meta\":\"some data\"},{\"error\":\"third\",\"status\":\"400\"}]", string(jsonBytes))
+ 	errs = errorMsgs{
+ 		{Err: errors.New("first"), Type: ErrorTypePrivate},
+ 	}
+ 	assert.Equal(t, H{"error": "first"}, errs.JSON())
+-	jsonBytes, _ = json.Marshal(errs)
++	jsonBytes, _ = json.API.Marshal(errs)
+ 	assert.JSONEq(t, "{\"error\":\"first\"}", string(jsonBytes))
+ 
+ 	errs = errorMsgs{}
+diff --git a/go.mod b/go.mod
+index 24d3a89..1d480f8 100644
+--- a/go.mod
++++ b/go.mod
+@@ -9,6 +9,7 @@ require (
+ 	github.com/goccy/go-json v0.10.2
+ 	github.com/json-iterator/go v1.1.12
+ 	github.com/mattn/go-isatty v0.0.20
++	github.com/modern-go/reflect2 v1.0.2
+ 	github.com/pelletier/go-toml/v2 v2.2.4
+ 	github.com/quic-go/quic-go v0.52.0
+ 	github.com/stretchr/testify v1.10.0
+@@ -30,7 +31,6 @@ require (
+ 	github.com/klauspost/cpuid/v2 v2.0.9 // indirect
+ 	github.com/leodido/go-urn v1.4.0 // indirect
+ 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
+-	github.com/modern-go/reflect2 v1.0.2 // indirect
+ 	github.com/onsi/ginkgo/v2 v2.9.5 // indirect
+ 	github.com/pmezard/go-difflib v1.0.0 // indirect
+ 	github.com/quic-go/qpack v0.5.1 // indirect
+diff --git a/internal/json/go_json.go b/internal/json/go_json.go
+deleted file mode 100644
+index dee09de..0000000
+--- a/internal/json/go_json.go
++++ /dev/null
+@@ -1,25 +0,0 @@
+-// Copyright 2017 Bo-Yi Wu. All rights reserved.
+-// Use of this source code is governed by a MIT style
+-// license that can be found in the LICENSE file.
+-
+-//go:build go_json
+-
+-package json
+-
+-import json "github.com/goccy/go-json"
+-
+-var (
+-	// Marshal is exported by gin/json package.
+-	Marshal = json.Marshal
+-	// Unmarshal is exported by gin/json package.
+-	Unmarshal = json.Unmarshal
+-	// MarshalIndent is exported by gin/json package.
+-	MarshalIndent = json.MarshalIndent
+-	// NewDecoder is exported by gin/json package.
+-	NewDecoder = json.NewDecoder
+-	// NewEncoder is exported by gin/json package.
+-	NewEncoder = json.NewEncoder
+-)
+-
+-// Package indicates what library is being used for JSON encoding.
+-const Package = "github.com/goccy/go-json"
+diff --git a/internal/json/json.go b/internal/json/json.go
+deleted file mode 100644
+index 539daa7..0000000
+--- a/internal/json/json.go
++++ /dev/null
+@@ -1,25 +0,0 @@
+-// Copyright 2017 Bo-Yi Wu. All rights reserved.
+-// Use of this source code is governed by a MIT style
+-// license that can be found in the LICENSE file.
+-
+-//go:build !jsoniter && !go_json && !(sonic && (linux || windows || darwin))
+-
+-package json
+-
+-import "encoding/json"
+-
+-var (
+-	// Marshal is exported by gin/json package.
+-	Marshal = json.Marshal
+-	// Unmarshal is exported by gin/json package.
+-	Unmarshal = json.Unmarshal
+-	// MarshalIndent is exported by gin/json package.
+-	MarshalIndent = json.MarshalIndent
+-	// NewDecoder is exported by gin/json package.
+-	NewDecoder = json.NewDecoder
+-	// NewEncoder is exported by gin/json package.
+-	NewEncoder = json.NewEncoder
+-)
+-
+-// Package indicates what library is being used for JSON encoding.
+-const Package = "encoding/json"
+diff --git a/internal/json/jsoniter.go b/internal/json/jsoniter.go
+deleted file mode 100644
+index 287ebf7..0000000
+--- a/internal/json/jsoniter.go
++++ /dev/null
+@@ -1,26 +0,0 @@
+-// Copyright 2017 Bo-Yi Wu. All rights reserved.
+-// Use of this source code is governed by a MIT style
+-// license that can be found in the LICENSE file.
+-
+-//go:build jsoniter
+-
+-package json
+-
+-import jsoniter "github.com/json-iterator/go"
+-
+-var (
+-	json = jsoniter.ConfigCompatibleWithStandardLibrary
+-	// Marshal is exported by gin/json package.
+-	Marshal = json.Marshal
+-	// Unmarshal is exported by gin/json package.
+-	Unmarshal = json.Unmarshal
+-	// MarshalIndent is exported by gin/json package.
+-	MarshalIndent = json.MarshalIndent
+-	// NewDecoder is exported by gin/json package.
+-	NewDecoder = json.NewDecoder
+-	// NewEncoder is exported by gin/json package.
+-	NewEncoder = json.NewEncoder
+-)
+-
+-// Package indicates what library is being used for JSON encoding.
+-const Package = "github.com/json-iterator/go"
+diff --git a/internal/json/sonic.go b/internal/json/sonic.go
+deleted file mode 100644
+index b3f7242..0000000
+--- a/internal/json/sonic.go
++++ /dev/null
+@@ -1,26 +0,0 @@
+-// Copyright 2022 Gin Core Team. All rights reserved.
+-// Use of this source code is governed by a MIT style
+-// license that can be found in the LICENSE file.
+-
+-//go:build sonic && (linux || windows || darwin)
+-
+-package json
+-
+-import "github.com/bytedance/sonic"
+-
+-var (
+-	json = sonic.ConfigStd
+-	// Marshal is exported by gin/json package.
+-	Marshal = json.Marshal
+-	// Unmarshal is exported by gin/json package.
+-	Unmarshal = json.Unmarshal
+-	// MarshalIndent is exported by gin/json package.
+-	MarshalIndent = json.MarshalIndent
+-	// NewDecoder is exported by gin/json package.
+-	NewDecoder = json.NewDecoder
+-	// NewEncoder is exported by gin/json package.
+-	NewEncoder = json.NewEncoder
+-)
+-
+-// Package indicates what library is being used for JSON encoding.
+-const Package = "github.com/bytedance/sonic"
+diff --git a/render/json.go b/render/json.go
+index 23923c4..2f98676 100644
+--- a/render/json.go
++++ b/render/json.go
+@@ -11,8 +11,8 @@ import (
+ 	"net/http"
+ 	"unicode"
+ 
++	"github.com/gin-gonic/gin/codec/json"
+ 	"github.com/gin-gonic/gin/internal/bytesconv"
+-	"github.com/gin-gonic/gin/internal/json"
+ )
+ 
+ // JSON contains the given interface object.
+@@ -66,7 +66,7 @@ func (r JSON) WriteContentType(w http.ResponseWriter) {
+ // WriteJSON marshals the given interface object and writes it with custom ContentType.
+ func WriteJSON(w http.ResponseWriter, obj any) error {
+ 	writeContentType(w, jsonContentType)
+-	jsonBytes, err := json.Marshal(obj)
++	jsonBytes, err := json.API.Marshal(obj)
+ 	if err != nil {
+ 		return err
+ 	}
+@@ -77,7 +77,7 @@ func WriteJSON(w http.ResponseWriter, obj any) error {
+ // Render (IndentedJSON) marshals the given interface object and writes it with custom ContentType.
+ func (r IndentedJSON) Render(w http.ResponseWriter) error {
+ 	r.WriteContentType(w)
+-	jsonBytes, err := json.MarshalIndent(r.Data, "", "    ")
++	jsonBytes, err := json.API.MarshalIndent(r.Data, "", "    ")
+ 	if err != nil {
+ 		return err
+ 	}
+@@ -93,7 +93,7 @@ func (r IndentedJSON) WriteContentType(w http.ResponseWriter) {
+ // Render (SecureJSON) marshals the given interface object and writes it with custom ContentType.
+ func (r SecureJSON) Render(w http.ResponseWriter) error {
+ 	r.WriteContentType(w)
+-	jsonBytes, err := json.Marshal(r.Data)
++	jsonBytes, err := json.API.Marshal(r.Data)
+ 	if err != nil {
+ 		return err
+ 	}
+@@ -116,7 +116,7 @@ func (r SecureJSON) WriteContentType(w http.ResponseWriter) {
+ // Render (JsonpJSON) marshals the given interface object and writes it and its callback with custom ContentType.
+ func (r JsonpJSON) Render(w http.ResponseWriter) (err error) {
+ 	r.WriteContentType(w)
+-	ret, err := json.Marshal(r.Data)
++	ret, err := json.API.Marshal(r.Data)
+ 	if err != nil {
+ 		return err
+ 	}
+@@ -154,7 +154,7 @@ func (r JsonpJSON) WriteContentType(w http.ResponseWriter) {
+ // Render (AsciiJSON) marshals the given interface object and writes it with custom ContentType.
+ func (r AsciiJSON) Render(w http.ResponseWriter) error {
+ 	r.WriteContentType(w)
+-	ret, err := json.Marshal(r.Data)
++	ret, err := json.API.Marshal(r.Data)
+ 	if err != nil {
+ 		return err
+ 	}
+@@ -183,7 +183,7 @@ func (r AsciiJSON) WriteContentType(w http.ResponseWriter) {
+ // Render (PureJSON) writes custom ContentType and encodes the given interface object.
+ func (r PureJSON) Render(w http.ResponseWriter) error {
+ 	r.WriteContentType(w)
+-	encoder := json.NewEncoder(w)
++	encoder := json.API.NewEncoder(w)
+ 	encoder.SetEscapeHTML(false)
+ 	return encoder.Encode(r.Data)
+ }
+diff --git a/render/render_test.go b/render/render_test.go
+index 4d8ebb1..0b98e63 100644
+--- a/render/render_test.go
++++ b/render/render_test.go
+@@ -15,7 +15,7 @@ import (
+ 	"strings"
+ 	"testing"
+ 
+-	"github.com/gin-gonic/gin/internal/json"
++	"github.com/gin-gonic/gin/codec/json"
+ 	testdata "github.com/gin-gonic/gin/testdata/protoexample"
+ 	"github.com/stretchr/testify/assert"
+ 	"github.com/stretchr/testify/require"
+@@ -173,7 +173,7 @@ func TestRenderJsonpJSONError(t *testing.T) {
+ 	err = jsonpJSON.Render(ew)
+ 	assert.Equal(t, `write "`+`(`+`" error`, err.Error())
+ 
+-	data, _ := json.Marshal(jsonpJSON.Data) // error was returned while writing data
++	data, _ := json.API.Marshal(jsonpJSON.Data) // error was returned while writing data
+ 	ew.bufString = string(data)
+ 	err = jsonpJSON.Render(ew)
+ 	assert.Equal(t, `write "`+string(data)+`" error`, err.Error())

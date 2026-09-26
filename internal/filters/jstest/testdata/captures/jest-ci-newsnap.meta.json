@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--ci",
+    "adv/newsnap.test.js"
+  ],
+  "shell": "npx jest --ci adv/newsnap.test.js",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "jest 29 --ci: a new snapshot is not written in CI",
+  "cwd": "repos/jestproj"
+}

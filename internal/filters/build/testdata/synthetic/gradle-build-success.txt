@@ -1,0 +1,54 @@
+Reusing configuration cache.
+> Task :core:compileJava UP-TO-DATE
+> Task :core:processResources NO-SOURCE
+> Task :core:classes UP-TO-DATE
+> Task :core:jar UP-TO-DATE
+> Task :core:compileTestJava FROM-CACHE
+> Task :core:processTestResources NO-SOURCE
+> Task :core:testClasses UP-TO-DATE
+> Task :core:test FROM-CACHE
+> Task :core:check UP-TO-DATE
+> Task :core:assemble UP-TO-DATE
+> Task :core:build UP-TO-DATE
+> Task :api:compileJava UP-TO-DATE
+> Task :api:processResources NO-SOURCE
+> Task :api:classes UP-TO-DATE
+> Task :api:jar UP-TO-DATE
+> Task :api:compileTestJava FROM-CACHE
+> Task :api:processTestResources NO-SOURCE
+> Task :api:testClasses UP-TO-DATE
+> Task :api:test FROM-CACHE
+> Task :api:check UP-TO-DATE
+> Task :api:assemble UP-TO-DATE
+> Task :api:build UP-TO-DATE
+> Task :web:compileJava UP-TO-DATE
+> Task :web:processResources NO-SOURCE
+> Task :web:classes UP-TO-DATE
+> Task :web:jar UP-TO-DATE
+> Task :web:compileTestJava FROM-CACHE
+> Task :web:processTestResources NO-SOURCE
+> Task :web:testClasses UP-TO-DATE
+> Task :web:test FROM-CACHE
+> Task :web:check UP-TO-DATE
+> Task :web:assemble UP-TO-DATE
+> Task :web:build UP-TO-DATE
+> Task :cli:compileJava UP-TO-DATE
+> Task :cli:processResources NO-SOURCE
+> Task :cli:classes UP-TO-DATE
+> Task :cli:jar UP-TO-DATE
+> Task :cli:compileTestJava FROM-CACHE
+> Task :cli:processTestResources NO-SOURCE
+> Task :cli:testClasses UP-TO-DATE
+> Task :cli:test FROM-CACHE
+> Task :cli:check UP-TO-DATE
+> Task :cli:assemble UP-TO-DATE
+> Task :cli:build UP-TO-DATE
+> Task :web:javadoc
+/home/user/src/app/web/src/main/java/com/example/web/Router.java:27: warning: no comment
+    public Route match(String path) {
+                 ^
+1 warning
+
+BUILD SUCCESSFUL in 3s
+45 actionable tasks: 1 executed, 16 from cache, 28 up-to-date
+Configuration cache entry reused.

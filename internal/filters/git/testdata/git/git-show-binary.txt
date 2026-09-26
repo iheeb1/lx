@@ -1,0 +1,45 @@
+commit c9c52991a050e9795fe89f96f4b58c07ed9d8a81
+Author: Dev One <dev1@example.com>
+Date:   Sat Sep 26 02:32:04 2026 +0100
+
+    rework assets and docs
+
+diff --git a/b.go b/b.go
+new file mode 100644
+index 0000000..628490a
+--- /dev/null
++++ b/b.go
+@@ -0,0 +1,3 @@
++package app
++
++func B() string { return "b" }
+diff --git a/notes.txt b/docs.txt
+similarity index 79%
+rename from notes.txt
+rename to docs.txt
+index 4083766..94cea4e 100644
+--- a/notes.txt
++++ b/docs.txt
+@@ -1,5 +1,5 @@
+ line1
+-line2
++line2 changed
+ line3
+ line4
+ line5
+diff --git a/internal/util/f5.go b/internal/util/f5.go
+deleted file mode 100644
+index 85fb9d9..0000000
+--- a/internal/util/f5.go
++++ /dev/null
+@@ -1,4 +0,0 @@
+-package util
+-
+-// F5 does thing 5.
+-func F5() {}
+diff --git a/logo.png b/logo.png
+index 3d38a63..651c607 100644
+Binary files a/logo.png and b/logo.png differ
+diff --git a/run.sh b/run.sh
+old mode 100644
+new mode 100755

@@ -1,0 +1,44 @@
+POST /repos/golang/go/issues HTTP/1.1
+{
+    "title": "cmd/go: flaky TestScript/list_std",
+    "body": "Seen on linux-amd64-longtest.",
+    "labels": [
+        "NeedsInvestigation"
+    ]
+}
+
+HTTP/1.1 422 Unprocessable Entity
+Access-Control-Allow-Origin: *
+Content-Length: 220
+Content-Security-Policy: default-src 'none'
+Content-Type: application/json; charset=utf-8
+Date: Sat, 26 Sep 2026 02:15:30 GMT
+Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+Server: github.com
+Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+Vary: Accept-Encoding, Accept, X-Requested-With
+X-Content-Type-Options: nosniff
+X-Frame-Options: deny
+X-GitHub-Media-Type: github.v3; format=json
+X-GitHub-Request-Id: 0B41:2D6014:1D1F0A2:1D43B11:6AB72B32
+X-RateLimit-Limit: 5000
+X-RateLimit-Remaining: 4987
+X-RateLimit-Reset: 1790392130
+X-RateLimit-Resource: core
+X-RateLimit-Used: 13
+X-XSS-Protection: 0
+
+{
+    "message": "Validation Failed",
+    "errors": [
+        {
+            "value": null,
+            "resource": "Issue",
+            "field": "title",
+            "code": "missing_field"
+        }
+    ],
+    "documentation_url": "https://docs.github.com/rest/issues/issues#create-an-issue",
+    "status": "422"
+}
+[lx: 8 request header lines not shown]

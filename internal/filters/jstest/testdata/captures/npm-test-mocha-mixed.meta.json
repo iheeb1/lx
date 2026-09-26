@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "test"
+  ],
+  "shell": "npm test",
+  "repo": "scratch/mochaproj",
+  "exit_code": 6,
+  "description": "npm test wrapping mocha with failures",
+  "cwd": "repos/mochaproj"
+}

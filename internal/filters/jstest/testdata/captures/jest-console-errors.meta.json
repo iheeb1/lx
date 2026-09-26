@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--ci",
+    "test2/"
+  ],
+  "shell": "npx jest --ci test2/",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "jest 29 on two files: console.error of an Error object (with its stack) in a passing and in a failing test file, console.log/warn, verbose-style output",
+  "cwd": "repos/jestproj"
+}

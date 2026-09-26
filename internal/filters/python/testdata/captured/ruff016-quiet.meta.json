@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "ruff",
+    "check",
+    "-q",
+    "--select",
+    "F,E",
+    "--no-cache",
+    "multi.py"
+  ],
+  "shell": "ruff check -q --select F,E --no-cache multi.py",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): ruff 0.16.9 -q: diagnostics without the 'Found N errors.' summary (exit 1)",
+  "cwd": "/home/user/src/rf",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv: ruff 0.16.9"
+}

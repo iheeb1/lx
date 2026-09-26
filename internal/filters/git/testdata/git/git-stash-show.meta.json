@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "stash",
+    "show"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git stash show (diffstat)"
+}

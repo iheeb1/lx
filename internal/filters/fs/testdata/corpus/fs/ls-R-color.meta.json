@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "ls",
+    "-R",
+    "--color=always",
+    "packages/vite/src/client",
+    "packages/vite/src/types"
+  ],
+  "shell": "ls -R --color=always packages/vite/src/client packages/vite/src/types",
+  "exit_code": 0,
+  "description": "ls -R --color=always",
+  "cwd": "/home/user/src/vite"
+}

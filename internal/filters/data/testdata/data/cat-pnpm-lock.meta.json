@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "pnpm-lock.yaml"
+  ],
+  "shell": "cat pnpm-lock.yaml",
+  "repo": "",
+  "exit_code": 0,
+  "description": "cat of a 148 KB pnpm-lock.yaml (lockfileVersion 9.0)",
+  "cwd": "repos/ufo"
+}

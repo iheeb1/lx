@@ -1,0 +1,91 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.15, pytest-9.1.1, pluggy-1.6.0
+rootdir: /home/user/src/edge
+configfile: pyproject.toml
+plugins: cov-7.1.0, xdist-3.8.0, timeout-2.4.0, rerunfailures-16.7
+collected 1 item
+
+tests/test_groups.py F                                                   [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_exception_group _____________________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/user/venv313/lib/python3.13/site-packages/_pytest/runner.py", line 361, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/_pytest/runner.py", line 250, in <lambda>
+  |     lambda: runtest_hook(item=item, **kwds),
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+  |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 167, in _multicall
+  |     raise exception
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/_pytest/logging.py", line 865, in pytest_runtest_call
+  |     yield
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/_pytest/capture.py", line 900, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 53, in run_old_style_hookwrapper
+  |     return result.get_result()
+  |            ~~~~~~~~~~~~~~~~~^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_result.py", line 103, in get_result
+  |     raise exc.with_traceback(tb)
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 38, in run_old_style_hookwrapper
+  |     res = yield
+  |           ^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/_pytest/skipping.py", line 268, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/home/user/venv313/lib/python3.13/site-packages/_pytest/runner.py", line 184, in pytest_runtest_call
+  |     item.runtest()
+  |     ~~~~~~~~~~~~^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/_pytest/python.py", line 1707, in runtest
+  |     self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+  |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 167, in _multicall
+  |     raise exception
+  |   File "/home/user/venv313/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/home/user/venv313/lib/python3.13/site-packages/_pytest/python.py", line 167, in pytest_pyfunc_call
+  |     result = testfunction(**testargs)
+  |   File "/home/user/src/edge/tests/test_groups.py", line 8, in test_exception_group
+  |     raise ExceptionGroup("2 validation errors", errors)
+  | ExceptionGroup: 2 validation errors (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/user/src/edge/tests/test_groups.py", line 5, in test_exception_group
+    |     raise ValueError(f"bad value {i}")
+    | ValueError: bad value 0
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/user/src/edge/tests/test_groups.py", line 5, in test_exception_group
+    |     raise ValueError(f"bad value {i}")
+    | ValueError: bad value 1
+    +------------------------------------
+=========================== short test summary info ============================
+FAILED tests/test_groups.py::test_exception_group - ExceptionGroup: 2 validat...
+============================== 1 failed in 0.12s ===============================

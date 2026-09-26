@@ -1,0 +1,4 @@
+ImportError while loading conftest '/home/user/src/demo/tests/conftest.py'.
+tests/conftest.py:3: in <module>
+    from inventory import Item, Stock
+E   ModuleNotFoundError: No module named 'inventory'

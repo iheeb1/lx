@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "adv/retry.test.ts",
+    "adv/timeout.test.ts"
+  ],
+  "shell": "npx vitest run adv/retry.test.ts adv/timeout.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4: a flaky test retried twice and a timeout",
+  "cwd": "repos/vitproj"
+}

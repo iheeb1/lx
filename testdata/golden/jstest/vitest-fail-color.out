@@ -1,0 +1,73 @@
+ ❯ test/query.test.ts (34 tests | 1 failed) 8ms
+     × / with {"str":"&","str2":"%26"} 3ms
+ ❯ test/double-slash.test.ts (5 tests | 4 failed) 7ms
+     × //foo//bar// 5ms
+     × http://foo.com// 0ms
+     × http://foo.com/bar//foo/ 0ms
+     × http://example.com/analyze//http://localhost:3000// 0ms
+ ❯ test/encoding.test.ts (58 tests | 2 failed) 11ms
+     × a=1&b=2 3ms
+     × !@#$%^&*()_+{}[]|\:;<>,./? 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/double-slash.test.ts > cleanDoubleSlashes > //foo//bar//
+AssertionError: expected '//foo//bar//' to be '/foo/bar/' // Object.is equality
+Expected: "/foo/bar/"
+Received: "//foo//bar//"
+ ❯ test/double-slash.test.ts:15:41
+     15|       expect(cleanDoubleSlashes(input)).toBe(tests[input]);
+       |                                         ^
+
+ FAIL  test/double-slash.test.ts > cleanDoubleSlashes > http://foo.com//
+AssertionError: expected 'http://foo.com//' to be 'http://foo.com/' // Object.is equality
+Expected: "http://foo.com/"
+Received: "http://foo.com//"
+ ❯ test/double-slash.test.ts:15:41
+     15|       expect(cleanDoubleSlashes(input)).toBe(tests[input]);
+       |                                         ^
+
+ FAIL  test/double-slash.test.ts > cleanDoubleSlashes > http://foo.com/bar//foo/
+AssertionError: expected 'http://foo.com/bar//foo/' to be 'http://foo.com/bar/foo/' // Object.is equality
+Expected: "http://foo.com/bar/foo/"
+Received: "http://foo.com/bar//foo/"
+ ❯ test/double-slash.test.ts:15:41
+     15|       expect(cleanDoubleSlashes(input)).toBe(tests[input]);
+       |                                         ^
+
+ FAIL  test/double-slash.test.ts > cleanDoubleSlashes > http://example.com/analyze//http://localhost:3000//
+AssertionError: expected 'http://example.com/analyze//http://lo…' to be 'http://example.com/analyze/http://loc…' // Object.is equality
+Expected: "http://example.com/analyze/http://localhost:3000/"
+Received: "http://example.com/analyze//http://localhost:3000//"
+ ❯ test/double-slash.test.ts:15:41
+     15|       expect(cleanDoubleSlashes(input)).toBe(tests[input]);
+       |                                         ^
+
+ FAIL  test/encoding.test.ts > encodeQueryValue > a=1&b=2
+AssertionError: expected 'a=1&b=2' to strictly equal 'a=1%26b=2'
+Expected: "a=1%26b=2"
+Received: "a=1&b=2"
+ ❯ test/encoding.test.ts:104:52
+    104|       expect(encodeQueryValue(t.input.toString())).toStrictEqual(t.out…
+       |                                                    ^
+
+ FAIL  test/encoding.test.ts > encodeQueryValue > !@#$%^&*()_+{}[]|\:;<>,./?
+AssertionError: expected '!@%23$%25^&*()_%2B%7B%7D%5B%5D|%5C:;%…' to strictly equal '!@%23$%25^%26*()_%2B%7B%7D%5B%5D|%5C:…'
+Expected: "!@%23$%25^%26*()_%2B%7B%7D%5B%5D|%5C:;%3C%3E,.%2F?"
+Received: "!@%23$%25^&*()_%2B%7B%7D%5B%5D|%5C:;%3C%3E,.%2F?"
+ ❯ test/encoding.test.ts:104:52
+    104|       expect(encodeQueryValue(t.input.toString())).toStrictEqual(t.out…
+       |                                                    ^
+
+ FAIL  test/query.test.ts > withQuery > / with {"str":"&","str2":"%26"}
+AssertionError: expected '/?str=&&str2=%2526' to be '/?str=%26&str2=%2526' // Object.is equality
+Expected: "/?str=%26&str2=%2526"
+Received: "/?str=&&str2=%2526"
+ ❯ test/query.test.ts:70:43
+     70|       expect(withQuery(t.input, t.query)).toBe(t.out);
+       |                                           ^
+
+[10 passing files, 482 passing tests hidden]
+ Test Files  3 failed | 10 passed (13)
+      Tests  7 failed | 482 passed (489)
+   Duration  367ms (transform 509ms, setup 0ms, import 733ms, tests 73ms, environment 1ms)

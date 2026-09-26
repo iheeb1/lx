@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "./gradlew",
+    ":app:build"
+  ],
+  "exit_code": 1,
+  "description": "SYNTHETIC (hand-written in real Gradle 8.10 / Maven 3.9 format; the tool is not installed or not reachable offline on the capture machine): ./gradlew :app:build with Kotlin 2.0 compiler output: e:/w: lines with file:// URIs under the FAILED task, nested What went wrong causes, Try section, BUILD FAILED",
+  "cwd": "/home/user/src/app"
+}

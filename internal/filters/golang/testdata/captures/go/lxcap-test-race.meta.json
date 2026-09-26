@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-race",
+    "./race/"
+  ],
+  "shell": "go test -race ./race/",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -race on a counter incremented from two goroutines: WARNING: DATA RACE report, test fails with 'race detected during execution of test'",
+  "cwd": "/home/user/src/lxcap"
+}

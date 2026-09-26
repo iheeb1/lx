@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "npx",
+    "eslint",
+    "lib",
+    "examples",
+    "--rule",
+    "no-var: error",
+    "--rule",
+    "prefer-const: error",
+    "--rule",
+    "prefer-arrow-callback: warn"
+  ],
+  "shell": "npx eslint lib examples --rule 'no-var: error' --rule 'prefer-const: error' --rule 'prefer-arrow-callback: warn'",
+  "repo": "expressjs/express",
+  "exit_code": 1,
+  "description": "eslint 8 (stylish formatter) on express lib/ and examples/ while trialing stricter rules (no-var, prefer-const, prefer-arrow-callback): 529 problems across ~70 files",
+  "cwd": "repos/express"
+}

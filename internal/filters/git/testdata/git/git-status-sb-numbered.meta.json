@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "status",
+    "-sb"
+  ],
+  "exit_code": 0,
+  "cwd": "/home/user/src/cJSON",
+  "description": "git status -sb (combined short flags, not detected as machine-readable) in a cJSON clone: modified numbered test inputs and 20 new untracked tests/inputs/test12..test31 that the generic reducer folds into \"\u2026 18 similar lines \u2026\""
+}

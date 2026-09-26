@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "grep",
+    "-n",
+    "func (c \\*Context)",
+    "context.go"
+  ],
+  "shell": "grep -n func (c \\*Context) context.go",
+  "exit_code": 0,
+  "description": "grep -n in one file: no path prefix",
+  "cwd": "/home/user/src/gin"
+}

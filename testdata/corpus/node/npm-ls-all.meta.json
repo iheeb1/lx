@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npm",
+    "ls",
+    "--all"
+  ],
+  "shell": "npm ls --all",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "npm ls --all: full dependency tree of express dev setup (~400 packages, deduped markers)",
+  "cwd": "repos/express"
+}

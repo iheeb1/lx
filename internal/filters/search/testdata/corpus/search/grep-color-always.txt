@@ -1,0 +1,10 @@
+context.go:865:// [01;31m[KShouldBindJSON[m[K is a shortcut for c.ShouldBindWith(obj, binding.JSON).
+context.go:884://	if err := c.[01;31m[KShouldBindJSON[m[K(&user); err != nil {
+context.go:889:func (c *Context) [01;31m[KShouldBindJSON[m[K(obj any) error {
+context.go:894:// It works like [01;31m[KShouldBindJSON[m[K but binds the request body as XML data.
+context.go:900:// It works like [01;31m[KShouldBindJSON[m[K but binds query parameters from the URL.
+context.go:906:// It works like [01;31m[KShouldBindJSON[m[K but binds the request body as YAML data.
+context.go:912:// It works like [01;31m[KShouldBindJSON[m[K but binds the request body as TOML data.
+context.go:918:// It works like [01;31m[KShouldBindJSON[m[K but binds plain text data from the request body.
+context.go:924:// It works like [01;31m[KShouldBindJSON[m[K but binds values from HTTP headers.
+context.go:930:// It works like [01;31m[KShouldBindJSON[m[K but binds parameters from the URI.

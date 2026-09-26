@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--reporter=verbose"
+  ],
+  "shell": "npx vitest run --reporter=verbose",
+  "repo": "unjs/ufo",
+  "exit_code": 0,
+  "description": "vitest passing run with --reporter=verbose listing all 489 tests",
+  "cwd": "repos/ufo"
+}

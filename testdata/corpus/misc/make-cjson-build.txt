@@ -1,0 +1,11 @@
+gcc -std=c89 -c -fPIC -pedantic -Wall -Werror -Wstrict-prototypes -Wwrite-strings -Wshadow -Winit-self -Wcast-align -Wformat=2 -Wmissing-prototypes -Wstrict-overflow=2 -Wcast-qual -Wc++-compat -Wundef -Wswitch-default -Wconversion -fstack-protector cJSON.c
+gcc -std=c89 -shared -o libcjson.dylib.1.7.19 cJSON.o "" 
+ln -s libcjson.dylib.1.7.19 libcjson.dylib.1
+ln -s libcjson.dylib.1 libcjson.dylib
+gcc -std=c89 -c -fPIC -pedantic -Wall -Werror -Wstrict-prototypes -Wwrite-strings -Wshadow -Winit-self -Wcast-align -Wformat=2 -Wmissing-prototypes -Wstrict-overflow=2 -Wcast-qual -Wc++-compat -Wundef -Wswitch-default -Wconversion -fstack-protector cJSON_Utils.c
+gcc -std=c89 -shared -o libcjson_utils.dylib.1.7.19 cJSON_Utils.o cJSON.o "" 
+ln -s libcjson_utils.dylib.1.7.19 libcjson_utils.dylib.1
+ln -s libcjson_utils.dylib.1 libcjson_utils.dylib
+ar rcs libcjson.a cJSON.o
+ar rcs libcjson_utils.a cJSON_Utils.o
+gcc -std=c89 -fPIC -pedantic -Wall -Werror -Wstrict-prototypes -Wwrite-strings -Wshadow -Winit-self -Wcast-align -Wformat=2 -Wmissing-prototypes -Wstrict-overflow=2 -Wcast-qual -Wc++-compat -Wundef -Wswitch-default -Wconversion -fstack-protector cJSON.c test.c  -o cJSON_test -lm -I.

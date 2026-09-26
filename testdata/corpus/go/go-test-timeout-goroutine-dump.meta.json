@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-count=1",
+    "-timeout",
+    "150ms",
+    "."
+  ],
+  "shell": "go test -count=1 -timeout 150ms .",
+  "repo": "gin-gonic/gin",
+  "exit_code": 1,
+  "description": "go test with a too-short -timeout on gin: 'panic: test timed out' followed by a dump of all goroutine stacks (HTTP servers, timers, test runners)",
+  "cwd": "repos/gin"
+}

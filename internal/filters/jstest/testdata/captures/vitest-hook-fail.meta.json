@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "adv/hook.test.ts",
+    "adv/errtitles.test.ts"
+  ],
+  "shell": "npx vitest run adv/hook.test.ts adv/errtitles.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4: beforeAll throws inside describe('error handling')",
+  "cwd": "repos/vitproj"
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "audit"
+  ],
+  "shell": "npm audit",
+  "repo": "moment/luxon",
+  "exit_code": 1,
+  "description": "npm audit report with 29 vulnerabilities (advisories, dependency paths, fix suggestions)",
+  "cwd": "repos/luxon"
+}

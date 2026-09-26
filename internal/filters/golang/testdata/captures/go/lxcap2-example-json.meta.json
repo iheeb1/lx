@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-json",
+    "./example"
+  ],
+  "shell": "go test -json ./example",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -json over the failing example package (see lxcap2-example)",
+  "cwd": "/home/user/src/lxcap2"
+}

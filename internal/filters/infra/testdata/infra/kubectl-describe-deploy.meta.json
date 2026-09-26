@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "kubectl",
+    "describe",
+    "deploy",
+    "web",
+    "-n",
+    "shop"
+  ],
+  "shell": "kubectl describe deploy web -n shop",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of kubectl 1.31 `kubectl describe deployment`; the tool is not available on the capture host): a stuck rollout (ProgressDeadlineExceeded) with the last-applied-configuration annotation",
+  "cwd": "repos/shop"
+}

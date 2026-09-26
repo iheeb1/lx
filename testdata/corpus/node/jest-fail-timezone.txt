@@ -1,0 +1,1389 @@
+FAIL test/zones/local.test.js
+  ● SystemZone.instance provides valid ...
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "America/New_York"
+    Received: "UTC"
+
+      13 |
+      14 |   // todo: figure out how to test these without inadvertently testing IANAZone
+    > 15 |   expect(SystemZone.instance.name).toBe("America/New_York"); // this is true for the provided Docker container, what's the right way to test it?
+         |                                    ^
+      16 |   // expect(SystemZone.instance.offsetName()).toBe("UTC");
+      17 |   // expect(SystemZone.instance.formatOffset(0, "short")).toBe("+00:00");
+      18 |   // expect(SystemZone.instance.offset()).toBe(0);
+
+      at Object.toBe (test/zones/local.test.js:15:36)
+
+PASS test/datetime/format.test.js
+FAIL test/interval/parse.test.js
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      149 |   test("Gregorian, end just time", () => {
+      150 |     const i = Interval.fromISO("1988-04-15T09/15:30");
+    > 151 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      152 |     expect(i.end.toISO()).toBe("1988-04-15T15:30:00.000-04:00");
+      153 |   });
+      154 |   test("Gregorian, end just time and zone", () => {
+
+      at Object.toBe (test/interval/parse.test.js:151:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just time and zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      154 |   test("Gregorian, end just time and zone", () => {
+      155 |     const i = Interval.fromISO("1988-04-15T09/15:30-07:00");
+    > 156 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      157 |     expect(i.end.toISO()).toBe("1988-04-15T18:30:00.000-04:00");
+      158 |   });
+      159 |   test("Gregorian, end just day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:156:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      159 |   test("Gregorian, end just day", () => {
+      160 |     const i = Interval.fromISO("1988-04-15T09/17");
+    > 161 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      162 |     expect(i.end.toISO()).toBe("1988-04-17T00:00:00.000-04:00");
+      163 |   });
+      164 |   test("Gregorian, end day and time", () => {
+
+      at Object.toBe (test/interval/parse.test.js:161:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end day and time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      164 |   test("Gregorian, end day and time", () => {
+      165 |     const i = Interval.fromISO("1988-04-15T09/17T15:30");
+    > 166 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      167 |     expect(i.end.toISO()).toBe("1988-04-17T15:30:00.000-04:00");
+      168 |   });
+      169 |   test("Gregorian, end month and day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:166:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end month and day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      169 |   test("Gregorian, end month and day", () => {
+      170 |     const i = Interval.fromISO("1988-04-15T09/05-17");
+    > 171 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      172 |     expect(i.end.toISO()).toBe("1988-05-17T00:00:00.000-04:00");
+      173 |   });
+      174 |   test("Gregorian, end month, day and time", () => {
+
+      at Object.toBe (test/interval/parse.test.js:171:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end month, day and time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      174 |   test("Gregorian, end month, day and time", () => {
+      175 |     const i = Interval.fromISO("1988-04-15T09/05-17T15:30");
+    > 176 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      177 |     expect(i.end.toISO()).toBe("1988-05-17T15:30:00.000-04:00");
+      178 |   });
+      179 |   test("Gregorian with zone in options and partial date", () => {
+
+      at Object.toBe (test/interval/parse.test.js:176:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian with start zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T04:00:00.000-04:00"
+    Received: "1988-04-15T08:00:00.000+00:00"
+
+      207 |   test("Gregorian with start zone", () => {
+      208 |     const i = Interval.fromISO("1988-04-15T09:00:00+01:00/17T15:30");
+    > 209 |     expect(i.start.toISO()).toBe("1988-04-15T04:00:00.000-04:00");
+          |                             ^
+      210 |     expect(i.end.toISO()).toBe("1988-04-17T10:30:00.000-04:00");
+      211 |   });
+      212 |   test("Gregorian with start zone and zone in options", () => {
+
+      at Object.toBe (test/interval/parse.test.js:209:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian with two zones
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T04:00:00.000-04:00"
+    Received: "1988-04-15T08:00:00.000+00:00"
+
+      222 |   test("Gregorian with two zones", () => {
+      223 |     const i = Interval.fromISO("1988-04-15T09:00:00+01:00/15T16:00+02:00");
+    > 224 |     expect(i.start.toISO()).toBe("1988-04-15T04:00:00.000-04:00");
+          |                             ^
+      225 |     expect(i.end.toISO()).toBe("1988-04-15T10:00:00.000-04:00");
+      226 |   });
+      227 |   test("Gregorian with two zones and setZone", () => {
+
+      at Object.toBe (test/interval/parse.test.js:224:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week, end just time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      234 |   test("Week, end just time", () => {
+      235 |     const i = Interval.fromISO("2025-W20-1T09/15:30");
+    > 236 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      237 |     expect(i.end.toISO()).toBe("2025-05-12T15:30:00.000-04:00");
+      238 |   });
+      239 |   test("Week, end just time and zone", () => {
+
+      at Object.toBe (test/interval/parse.test.js:236:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week, end just time and zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      239 |   test("Week, end just time and zone", () => {
+      240 |     const i = Interval.fromISO("2025-W20-1T09/15:30-07:00");
+    > 241 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      242 |     expect(i.end.toISO()).toBe("2025-05-12T18:30:00.000-04:00");
+      243 |   });
+      244 |   test("Week, end week day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:241:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week, end week day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      244 |   test("Week, end week day", () => {
+      245 |     const i = Interval.fromISO("2025-W20-1T09/3T15:30");
+    > 246 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      247 |     expect(i.end.toISO()).toBe("2025-05-14T15:30:00.000-04:00");
+      248 |   });
+      249 |   test("Week, end week number and week day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:246:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week, end week number and week day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      249 |   test("Week, end week number and week day", () => {
+      250 |     const i = Interval.fromISO("2025-W20-1T09/W21-3T15:30");
+    > 251 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      252 |     expect(i.end.toISO()).toBe("2025-05-21T15:30:00.000-04:00");
+      253 |   });
+      254 |
+
+      at Object.toBe (test/interval/parse.test.js:251:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end just time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      256 |   test("Ordinal, end just time", () => {
+      257 |     const i = Interval.fromISO("2025-132T09/15:30");
+    > 258 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      259 |     expect(i.end.toISO()).toBe("2025-05-12T15:30:00.000-04:00");
+      260 |   });
+      261 |   test("Ordinal, end just time and zone", () => {
+
+      at Object.toBe (test/interval/parse.test.js:258:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end just time and zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      261 |   test("Ordinal, end just time and zone", () => {
+      262 |     const i = Interval.fromISO("2025-132T09/15:30-07:00");
+    > 263 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      264 |     expect(i.end.toISO()).toBe("2025-05-12T18:30:00.000-04:00");
+      265 |   });
+      266 |   test("Ordinal, end with ordinal", () => {
+
+      at Object.toBe (test/interval/parse.test.js:263:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end with ordinal
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      266 |   test("Ordinal, end with ordinal", () => {
+      267 |     const i = Interval.fromISO("2025-132T09/135T15:30");
+    > 268 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      269 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      270 |   });
+      271 |
+
+      at Object.toBe (test/interval/parse.test.js:268:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just weekday
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      273 |   test("Gregorian, end just weekday", () => {
+      274 |     const i = Interval.fromISO("2025-05-12T09/4T15:30");
+    > 275 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      276 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      277 |   });
+      278 |   test("Gregorian, end weekNumber and weekday", () => {
+
+      at Object.toBe (test/interval/parse.test.js:275:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end weekNumber and weekday
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      278 |   test("Gregorian, end weekNumber and weekday", () => {
+      279 |     const i = Interval.fromISO("2025-05-12T09/W21-1T15:30");
+    > 280 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      281 |     expect(i.end.toISO()).toBe("2025-05-19T15:30:00.000-04:00");
+      282 |   });
+      283 |   test("Gregorian, end just ordinal", () => {
+
+      at Object.toBe (test/interval/parse.test.js:280:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just ordinal
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      283 |   test("Gregorian, end just ordinal", () => {
+      284 |     const i = Interval.fromISO("2025-05-12T09/135T15:30");
+    > 285 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      286 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      287 |   });
+      288 |
+
+      at Object.toBe (test/interval/parse.test.js:285:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week date, end just day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      289 |   test("Week date, end just day", () => {
+      290 |     const i = Interval.fromISO("2025-W20-1T09/15T15:30");
+    > 291 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      292 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      293 |   });
+      294 |   test("Week date, end month and day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:291:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week date, end month and day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      294 |   test("Week date, end month and day", () => {
+      295 |     const i = Interval.fromISO("2025-W20-1T09/06-15T15:30");
+    > 296 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      297 |     expect(i.end.toISO()).toBe("2025-06-15T15:30:00.000-04:00");
+      298 |   });
+      299 |   test("Week date, end just ordinal", () => {
+
+      at Object.toBe (test/interval/parse.test.js:296:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week date, end just ordinal
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      299 |   test("Week date, end just ordinal", () => {
+      300 |     const i = Interval.fromISO("2025-W20-1T09/135T15:30");
+    > 301 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      302 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      303 |   });
+      304 |
+
+      at Object.toBe (test/interval/parse.test.js:301:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end just day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      305 |   test("Ordinal, end just day", () => {
+      306 |     const i = Interval.fromISO("2025-132T09/15T15:30");
+    > 307 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      308 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      309 |   });
+      310 |   test("Ordinal, end month and day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:307:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end month and day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      310 |   test("Ordinal, end month and day", () => {
+      311 |     const i = Interval.fromISO("2025-132T09/06-15T15:30");
+    > 312 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      313 |     expect(i.end.toISO()).toBe("2025-06-15T15:30:00.000-04:00");
+      314 |   });
+      315 |   test("Ordinal, end just weekday", () => {
+
+      at Object.toBe (test/interval/parse.test.js:312:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end just weekday
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      315 |   test("Ordinal, end just weekday", () => {
+      316 |     const i = Interval.fromISO("2025-132T09/4T15:30");
+    > 317 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      318 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      319 |   });
+      320 |   test("Ordinal, end weekNumber and weekday", () => {
+
+      at Object.toBe (test/interval/parse.test.js:317:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end weekNumber and weekday
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      320 |   test("Ordinal, end weekNumber and weekday", () => {
+      321 |     const i = Interval.fromISO("2025-132T09/W21-1T15:30");
+    > 322 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      323 |     expect(i.end.toISO()).toBe("2025-05-19T15:30:00.000-04:00");
+      324 |   });
+      325 | });
+
+      at Object.toBe (test/interval/parse.test.js:322:29)
+
+FAIL test/datetime/zone.test.js
+  ● The local zone does local stuff
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "Eastern Daylight Time"
+    Received: "Coordinated Universal Time"
+
+      309 |
+      310 | test("The local zone does local stuff", () => {
+    > 311 |   expect(DateTime.local(2016, 8, 6).offsetNameLong).toBe("Eastern Daylight Time");
+          |                                                     ^
+      312 |   expect(DateTime.local(2016, 8, 6).offsetNameShort).toBe("EDT");
+      313 | });
+      314 |
+
+      at Object.toBe (test/datetime/zone.test.js:311:53)
+
+PASS test/interval/many.test.js
+FAIL test/info/zones.test.js
+  ● Info.normalizeZone converts local to system Zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "America/New_York"
+    Received: "UTC"
+
+      113 |   expect(Info.normalizeZone("local")).toBe(Settings.defaultZone);
+      114 |   Helpers.withDefaultZone("America/New_York", () => {
+    > 115 |     expect(Info.normalizeZone("local").name).toBe("America/New_York");
+          |                                              ^
+      116 |   });
+      117 | });
+      118 |
+
+      at toBe (test/info/zones.test.js:115:46)
+      at Object.f [as withDefaultZone] (test/helpers.js:50:5)
+      at Object.withDefaultZone (test/info/zones.test.js:114:11)
+
+PASS test/info/listers.test.js
+PASS test/datetime/set.test.js
+FAIL test/datetime/tokenParse.test.js
+  ● DateTime.format() uses local zone when setZone is false and offset in input
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 11
+    Received: 12
+
+      710 |   expect(i.year).toBe(2021);
+      711 |   expect(i.month).toBe(11);
+    > 712 |   expect(i.day).toBe(11);
+          |                 ^
+      713 |   expect(i.hour).toBe(20);
+      714 |   expect(i.minute).toBe(7);
+      715 |   expect(i.second).toBe(13);
+
+      at Object.toBe (test/datetime/tokenParse.test.js:712:17)
+
+  ● DateTime.format() uses local zone when setZone is false and zone id in input
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 11
+    Received: 12
+
+      728 |   expect(i.year).toBe(2021);
+      729 |   expect(i.month).toBe(11);
+    > 730 |   expect(i.day).toBe(11);
+          |                 ^
+      731 |   expect(i.hour).toBe(20);
+      732 |   expect(i.minute).toBe(7);
+      733 |   expect(i.second).toBe(13);
+
+      at Object.toBe (test/datetime/tokenParse.test.js:730:17)
+
+PASS test/datetime/relative.test.js
+PASS test/datetime/math.test.js
+PASS test/datetime/create.test.js
+PASS test/datetime/toFormat.test.js
+PASS test/datetime/many.test.js
+PASS test/datetime/invalid.test.js
+PASS test/duration/set.test.js
+PASS test/interval/create.test.js
+PASS test/datetime/regexParse.test.js
+PASS test/duration/math.test.js
+PASS test/duration/parse.test.js
+PASS test/interval/getters.test.js
+PASS test/duration/units.test.js
+PASS test/duration/format.test.js
+PASS test/duration/create.test.js
+PASS test/interval/format.test.js
+PASS test/zones/IANA.test.js
+PASS test/duration/invalid.test.js
+PASS test/datetime/degrade.test.js
+PASS test/interval/setter.test.js
+PASS test/interval/info.test.js
+FAIL test/datetime/diff.test.js
+  ● DateTime#diff handles fractional days as fractions of those specific days
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "days": 1.96,
+    +   "days": 1.9583333333333335,
+      }
+
+      240 |       "days"
+      241 |     )
+    > 242 |   ).toEqual({ days: 1 + 24 / 25 });
+          |     ^
+      243 | });
+      244 |
+      245 | test("DateTime#diff is precise for lower order units", () => {
+
+      at Object.toEqual (test/datetime/diff.test.js:242:5)
+
+  ● DateTime#diff is precise for lower order units
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "hours": 2999,
+    +   "hours": 3000,
+      }
+
+      247 |   expect(
+      248 |     diffObjs({ year: 2016, month: 5, day: 5 }, { year: 2016, month: 1, day: 1 }, "hours")
+    > 249 |   ).toEqual({ hours: 2999 });
+          |     ^
+      250 | });
+      251 |
+      252 | test("DateTime#diff passes through options", () => {
+
+      at Object.toEqual (test/datetime/diff.test.js:249:5)
+
+PASS test/duration/info.test.js
+PASS test/datetime/localeWeek.test.js
+PASS test/duration/equality.test.js
+PASS test/interval/typecheck.test.js
+PASS test/interval/localeWeek.test.js
+PASS test/info/localeWeek.test.js
+PASS test/zones/zoneInterface.test.js
+PASS test/zones/fixedOffset.test.js
+PASS test/duration/typecheck.test.js
+PASS test/duration/getters.test.js
+PASS test/impl/english.test.js
+PASS test/datetime/misc.test.js
+PASS test/datetime/reconfigure.test.js
+FAIL test/datetime/dst.test.js
+  ● DateTime maintains the wasHole setting properly › is set on hole times
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      199 |
+      200 |   test("is set on hole times", () => {
+    > 201 |     expect(DateTime.fromObject({ year: 2017, month: 3, day: 12, hour: 2 }).wasHole).toBe(true);
+          |                                                                                     ^
+      202 |   });
+      203 |
+      204 |   test("is set on hole times with DateTime.local", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:201:85)
+
+  ● DateTime maintains the wasHole setting properly › is set on hole times with DateTime.local
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      203 |
+      204 |   test("is set on hole times with DateTime.local", () => {
+    > 205 |     expect(DateTime.local(2017, 3, 12, 2).wasHole).toBe(true);
+          |                                                    ^
+      206 |   });
+      207 |
+      208 |   test("is set on hole times with DateTime.fromISO", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:205:52)
+
+  ● DateTime maintains the wasHole setting properly › is set on hole times with DateTime.fromISO
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      207 |
+      208 |   test("is set on hole times with DateTime.fromISO", () => {
+    > 209 |     expect(DateTime.fromISO("2017-03-12T02:00:00").wasHole).toBe(true);
+          |                                                             ^
+      210 |   });
+      211 |
+      212 |   test("is false when setting to non-hole", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:209:61)
+
+  ● DateTime maintains the wasHole setting properly › is true when setting hole-time on time from hole
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      217 |   test("is true when setting hole-time on time from hole", () => {
+      218 |     const dt = DateTime.fromObject({ year: 2017, month: 3, day: 12, hour: 2 });
+    > 219 |     expect(dt.wasHole).toBe(true);
+          |                        ^
+      220 |     expect(dt.set({ hour: 2 }).wasHole).toBe(true);
+      221 |   });
+      222 |
+
+      at Object.toBe (test/datetime/dst.test.js:219:24)
+
+  ● DateTime maintains the wasHole setting properly › is true when setting hole-time on time from non-hole
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      224 |     const dt = DateTime.fromObject({ year: 2017, month: 3, day: 12, hour: 4 });
+      225 |     expect(dt.wasHole).toBe(false);
+    > 226 |     expect(dt.set({ hour: 2 }).wasHole).toBe(true);
+          |                                         ^
+      227 |   });
+      228 |
+      229 |   test("is dropped on math", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:226:41)
+
+  ● DateTime maintains the wasHole setting properly › is kept on reconfigure
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      238 |         locale: "es-ES",
+      239 |       }).wasHole
+    > 240 |     ).toBe(true);
+          |       ^
+      241 |   });
+      242 |
+      243 |   test("is dropped on rezoning", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:240:7)
+
+PASS test/datetime/info.test.js
+PASS test/datetime/equality.test.js
+PASS test/duration/customMatrix.test.js
+PASS test/datetime/proto.test.js
+PASS test/datetime/getters.test.js
+PASS test/duration/reconfigure.test.js
+PASS test/zones/invalid.test.js
+PASS test/duration/accuracy.test.js
+PASS test/datetime/typecheck.test.js
+PASS test/info/features.test.js
+PASS test/datetime/transform.test.js
+PASS test/duration/proto.test.js
+PASS test/interval/proto.test.js
+
+Summary of all failing tests
+FAIL test/zones/local.test.js
+  ● SystemZone.instance provides valid ...
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "America/New_York"
+    Received: "UTC"
+
+      13 |
+      14 |   // todo: figure out how to test these without inadvertently testing IANAZone
+    > 15 |   expect(SystemZone.instance.name).toBe("America/New_York"); // this is true for the provided Docker container, what's the right way to test it?
+         |                                    ^
+      16 |   // expect(SystemZone.instance.offsetName()).toBe("UTC");
+      17 |   // expect(SystemZone.instance.formatOffset(0, "short")).toBe("+00:00");
+      18 |   // expect(SystemZone.instance.offset()).toBe(0);
+
+      at Object.toBe (test/zones/local.test.js:15:36)
+
+FAIL test/interval/parse.test.js
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      149 |   test("Gregorian, end just time", () => {
+      150 |     const i = Interval.fromISO("1988-04-15T09/15:30");
+    > 151 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      152 |     expect(i.end.toISO()).toBe("1988-04-15T15:30:00.000-04:00");
+      153 |   });
+      154 |   test("Gregorian, end just time and zone", () => {
+
+      at Object.toBe (test/interval/parse.test.js:151:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just time and zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      154 |   test("Gregorian, end just time and zone", () => {
+      155 |     const i = Interval.fromISO("1988-04-15T09/15:30-07:00");
+    > 156 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      157 |     expect(i.end.toISO()).toBe("1988-04-15T18:30:00.000-04:00");
+      158 |   });
+      159 |   test("Gregorian, end just day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:156:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      159 |   test("Gregorian, end just day", () => {
+      160 |     const i = Interval.fromISO("1988-04-15T09/17");
+    > 161 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      162 |     expect(i.end.toISO()).toBe("1988-04-17T00:00:00.000-04:00");
+      163 |   });
+      164 |   test("Gregorian, end day and time", () => {
+
+      at Object.toBe (test/interval/parse.test.js:161:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end day and time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      164 |   test("Gregorian, end day and time", () => {
+      165 |     const i = Interval.fromISO("1988-04-15T09/17T15:30");
+    > 166 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      167 |     expect(i.end.toISO()).toBe("1988-04-17T15:30:00.000-04:00");
+      168 |   });
+      169 |   test("Gregorian, end month and day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:166:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end month and day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      169 |   test("Gregorian, end month and day", () => {
+      170 |     const i = Interval.fromISO("1988-04-15T09/05-17");
+    > 171 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      172 |     expect(i.end.toISO()).toBe("1988-05-17T00:00:00.000-04:00");
+      173 |   });
+      174 |   test("Gregorian, end month, day and time", () => {
+
+      at Object.toBe (test/interval/parse.test.js:171:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end month, day and time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T09:00:00.000-04:00"
+    Received: "1988-04-15T09:00:00.000+00:00"
+
+      174 |   test("Gregorian, end month, day and time", () => {
+      175 |     const i = Interval.fromISO("1988-04-15T09/05-17T15:30");
+    > 176 |     expect(i.start.toISO()).toBe("1988-04-15T09:00:00.000-04:00");
+          |                             ^
+      177 |     expect(i.end.toISO()).toBe("1988-05-17T15:30:00.000-04:00");
+      178 |   });
+      179 |   test("Gregorian with zone in options and partial date", () => {
+
+      at Object.toBe (test/interval/parse.test.js:176:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian with start zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T04:00:00.000-04:00"
+    Received: "1988-04-15T08:00:00.000+00:00"
+
+      207 |   test("Gregorian with start zone", () => {
+      208 |     const i = Interval.fromISO("1988-04-15T09:00:00+01:00/17T15:30");
+    > 209 |     expect(i.start.toISO()).toBe("1988-04-15T04:00:00.000-04:00");
+          |                             ^
+      210 |     expect(i.end.toISO()).toBe("1988-04-17T10:30:00.000-04:00");
+      211 |   });
+      212 |   test("Gregorian with start zone and zone in options", () => {
+
+      at Object.toBe (test/interval/parse.test.js:209:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian with two zones
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1988-04-15T04:00:00.000-04:00"
+    Received: "1988-04-15T08:00:00.000+00:00"
+
+      222 |   test("Gregorian with two zones", () => {
+      223 |     const i = Interval.fromISO("1988-04-15T09:00:00+01:00/15T16:00+02:00");
+    > 224 |     expect(i.start.toISO()).toBe("1988-04-15T04:00:00.000-04:00");
+          |                             ^
+      225 |     expect(i.end.toISO()).toBe("1988-04-15T10:00:00.000-04:00");
+      226 |   });
+      227 |   test("Gregorian with two zones and setZone", () => {
+
+      at Object.toBe (test/interval/parse.test.js:224:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week, end just time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      234 |   test("Week, end just time", () => {
+      235 |     const i = Interval.fromISO("2025-W20-1T09/15:30");
+    > 236 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      237 |     expect(i.end.toISO()).toBe("2025-05-12T15:30:00.000-04:00");
+      238 |   });
+      239 |   test("Week, end just time and zone", () => {
+
+      at Object.toBe (test/interval/parse.test.js:236:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week, end just time and zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      239 |   test("Week, end just time and zone", () => {
+      240 |     const i = Interval.fromISO("2025-W20-1T09/15:30-07:00");
+    > 241 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      242 |     expect(i.end.toISO()).toBe("2025-05-12T18:30:00.000-04:00");
+      243 |   });
+      244 |   test("Week, end week day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:241:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week, end week day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      244 |   test("Week, end week day", () => {
+      245 |     const i = Interval.fromISO("2025-W20-1T09/3T15:30");
+    > 246 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      247 |     expect(i.end.toISO()).toBe("2025-05-14T15:30:00.000-04:00");
+      248 |   });
+      249 |   test("Week, end week number and week day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:246:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week, end week number and week day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      249 |   test("Week, end week number and week day", () => {
+      250 |     const i = Interval.fromISO("2025-W20-1T09/W21-3T15:30");
+    > 251 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      252 |     expect(i.end.toISO()).toBe("2025-05-21T15:30:00.000-04:00");
+      253 |   });
+      254 |
+
+      at Object.toBe (test/interval/parse.test.js:251:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end just time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      256 |   test("Ordinal, end just time", () => {
+      257 |     const i = Interval.fromISO("2025-132T09/15:30");
+    > 258 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      259 |     expect(i.end.toISO()).toBe("2025-05-12T15:30:00.000-04:00");
+      260 |   });
+      261 |   test("Ordinal, end just time and zone", () => {
+
+      at Object.toBe (test/interval/parse.test.js:258:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end just time and zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      261 |   test("Ordinal, end just time and zone", () => {
+      262 |     const i = Interval.fromISO("2025-132T09/15:30-07:00");
+    > 263 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      264 |     expect(i.end.toISO()).toBe("2025-05-12T18:30:00.000-04:00");
+      265 |   });
+      266 |   test("Ordinal, end with ordinal", () => {
+
+      at Object.toBe (test/interval/parse.test.js:263:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end with ordinal
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      266 |   test("Ordinal, end with ordinal", () => {
+      267 |     const i = Interval.fromISO("2025-132T09/135T15:30");
+    > 268 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      269 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      270 |   });
+      271 |
+
+      at Object.toBe (test/interval/parse.test.js:268:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just weekday
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      273 |   test("Gregorian, end just weekday", () => {
+      274 |     const i = Interval.fromISO("2025-05-12T09/4T15:30");
+    > 275 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      276 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      277 |   });
+      278 |   test("Gregorian, end weekNumber and weekday", () => {
+
+      at Object.toBe (test/interval/parse.test.js:275:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end weekNumber and weekday
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      278 |   test("Gregorian, end weekNumber and weekday", () => {
+      279 |     const i = Interval.fromISO("2025-05-12T09/W21-1T15:30");
+    > 280 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      281 |     expect(i.end.toISO()).toBe("2025-05-19T15:30:00.000-04:00");
+      282 |   });
+      283 |   test("Gregorian, end just ordinal", () => {
+
+      at Object.toBe (test/interval/parse.test.js:280:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Gregorian, end just ordinal
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      283 |   test("Gregorian, end just ordinal", () => {
+      284 |     const i = Interval.fromISO("2025-05-12T09/135T15:30");
+    > 285 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      286 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      287 |   });
+      288 |
+
+      at Object.toBe (test/interval/parse.test.js:285:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week date, end just day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      289 |   test("Week date, end just day", () => {
+      290 |     const i = Interval.fromISO("2025-W20-1T09/15T15:30");
+    > 291 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      292 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      293 |   });
+      294 |   test("Week date, end month and day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:291:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week date, end month and day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      294 |   test("Week date, end month and day", () => {
+      295 |     const i = Interval.fromISO("2025-W20-1T09/06-15T15:30");
+    > 296 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      297 |     expect(i.end.toISO()).toBe("2025-06-15T15:30:00.000-04:00");
+      298 |   });
+      299 |   test("Week date, end just ordinal", () => {
+
+      at Object.toBe (test/interval/parse.test.js:296:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Week date, end just ordinal
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      299 |   test("Week date, end just ordinal", () => {
+      300 |     const i = Interval.fromISO("2025-W20-1T09/135T15:30");
+    > 301 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      302 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      303 |   });
+      304 |
+
+      at Object.toBe (test/interval/parse.test.js:301:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end just day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      305 |   test("Ordinal, end just day", () => {
+      306 |     const i = Interval.fromISO("2025-132T09/15T15:30");
+    > 307 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      308 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      309 |   });
+      310 |   test("Ordinal, end month and day", () => {
+
+      at Object.toBe (test/interval/parse.test.js:307:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end month and day
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      310 |   test("Ordinal, end month and day", () => {
+      311 |     const i = Interval.fromISO("2025-132T09/06-15T15:30");
+    > 312 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      313 |     expect(i.end.toISO()).toBe("2025-06-15T15:30:00.000-04:00");
+      314 |   });
+      315 |   test("Ordinal, end just weekday", () => {
+
+      at Object.toBe (test/interval/parse.test.js:312:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end just weekday
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      315 |   test("Ordinal, end just weekday", () => {
+      316 |     const i = Interval.fromISO("2025-132T09/4T15:30");
+    > 317 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      318 |     expect(i.end.toISO()).toBe("2025-05-15T15:30:00.000-04:00");
+      319 |   });
+      320 |   test("Ordinal, end weekNumber and weekday", () => {
+
+      at Object.toBe (test/interval/parse.test.js:317:29)
+
+  ● Interval.fromISO defaults missing values in end to start › Ordinal, end weekNumber and weekday
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "2025-05-12T09:00:00.000-04:00"
+    Received: "2025-05-12T09:00:00.000+00:00"
+
+      320 |   test("Ordinal, end weekNumber and weekday", () => {
+      321 |     const i = Interval.fromISO("2025-132T09/W21-1T15:30");
+    > 322 |     expect(i.start.toISO()).toBe("2025-05-12T09:00:00.000-04:00");
+          |                             ^
+      323 |     expect(i.end.toISO()).toBe("2025-05-19T15:30:00.000-04:00");
+      324 |   });
+      325 | });
+
+      at Object.toBe (test/interval/parse.test.js:322:29)
+
+FAIL test/datetime/zone.test.js
+  ● The local zone does local stuff
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "Eastern Daylight Time"
+    Received: "Coordinated Universal Time"
+
+      309 |
+      310 | test("The local zone does local stuff", () => {
+    > 311 |   expect(DateTime.local(2016, 8, 6).offsetNameLong).toBe("Eastern Daylight Time");
+          |                                                     ^
+      312 |   expect(DateTime.local(2016, 8, 6).offsetNameShort).toBe("EDT");
+      313 | });
+      314 |
+
+      at Object.toBe (test/datetime/zone.test.js:311:53)
+
+FAIL test/info/zones.test.js
+  ● Info.normalizeZone converts local to system Zone
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "America/New_York"
+    Received: "UTC"
+
+      113 |   expect(Info.normalizeZone("local")).toBe(Settings.defaultZone);
+      114 |   Helpers.withDefaultZone("America/New_York", () => {
+    > 115 |     expect(Info.normalizeZone("local").name).toBe("America/New_York");
+          |                                              ^
+      116 |   });
+      117 | });
+      118 |
+
+      at toBe (test/info/zones.test.js:115:46)
+      at Object.f [as withDefaultZone] (test/helpers.js:50:5)
+      at Object.withDefaultZone (test/info/zones.test.js:114:11)
+
+FAIL test/datetime/tokenParse.test.js
+  ● DateTime.format() uses local zone when setZone is false and offset in input
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 11
+    Received: 12
+
+      710 |   expect(i.year).toBe(2021);
+      711 |   expect(i.month).toBe(11);
+    > 712 |   expect(i.day).toBe(11);
+          |                 ^
+      713 |   expect(i.hour).toBe(20);
+      714 |   expect(i.minute).toBe(7);
+      715 |   expect(i.second).toBe(13);
+
+      at Object.toBe (test/datetime/tokenParse.test.js:712:17)
+
+  ● DateTime.format() uses local zone when setZone is false and zone id in input
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 11
+    Received: 12
+
+      728 |   expect(i.year).toBe(2021);
+      729 |   expect(i.month).toBe(11);
+    > 730 |   expect(i.day).toBe(11);
+          |                 ^
+      731 |   expect(i.hour).toBe(20);
+      732 |   expect(i.minute).toBe(7);
+      733 |   expect(i.second).toBe(13);
+
+      at Object.toBe (test/datetime/tokenParse.test.js:730:17)
+
+FAIL test/datetime/diff.test.js
+  ● DateTime#diff handles fractional days as fractions of those specific days
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "days": 1.96,
+    +   "days": 1.9583333333333335,
+      }
+
+      240 |       "days"
+      241 |     )
+    > 242 |   ).toEqual({ days: 1 + 24 / 25 });
+          |     ^
+      243 | });
+      244 |
+      245 | test("DateTime#diff is precise for lower order units", () => {
+
+      at Object.toEqual (test/datetime/diff.test.js:242:5)
+
+  ● DateTime#diff is precise for lower order units
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "hours": 2999,
+    +   "hours": 3000,
+      }
+
+      247 |   expect(
+      248 |     diffObjs({ year: 2016, month: 5, day: 5 }, { year: 2016, month: 1, day: 1 }, "hours")
+    > 249 |   ).toEqual({ hours: 2999 });
+          |     ^
+      250 | });
+      251 |
+      252 | test("DateTime#diff passes through options", () => {
+
+      at Object.toEqual (test/datetime/diff.test.js:249:5)
+
+FAIL test/datetime/dst.test.js
+  ● DateTime maintains the wasHole setting properly › is set on hole times
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      199 |
+      200 |   test("is set on hole times", () => {
+    > 201 |     expect(DateTime.fromObject({ year: 2017, month: 3, day: 12, hour: 2 }).wasHole).toBe(true);
+          |                                                                                     ^
+      202 |   });
+      203 |
+      204 |   test("is set on hole times with DateTime.local", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:201:85)
+
+  ● DateTime maintains the wasHole setting properly › is set on hole times with DateTime.local
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      203 |
+      204 |   test("is set on hole times with DateTime.local", () => {
+    > 205 |     expect(DateTime.local(2017, 3, 12, 2).wasHole).toBe(true);
+          |                                                    ^
+      206 |   });
+      207 |
+      208 |   test("is set on hole times with DateTime.fromISO", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:205:52)
+
+  ● DateTime maintains the wasHole setting properly › is set on hole times with DateTime.fromISO
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      207 |
+      208 |   test("is set on hole times with DateTime.fromISO", () => {
+    > 209 |     expect(DateTime.fromISO("2017-03-12T02:00:00").wasHole).toBe(true);
+          |                                                             ^
+      210 |   });
+      211 |
+      212 |   test("is false when setting to non-hole", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:209:61)
+
+  ● DateTime maintains the wasHole setting properly › is true when setting hole-time on time from hole
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      217 |   test("is true when setting hole-time on time from hole", () => {
+      218 |     const dt = DateTime.fromObject({ year: 2017, month: 3, day: 12, hour: 2 });
+    > 219 |     expect(dt.wasHole).toBe(true);
+          |                        ^
+      220 |     expect(dt.set({ hour: 2 }).wasHole).toBe(true);
+      221 |   });
+      222 |
+
+      at Object.toBe (test/datetime/dst.test.js:219:24)
+
+  ● DateTime maintains the wasHole setting properly › is true when setting hole-time on time from non-hole
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      224 |     const dt = DateTime.fromObject({ year: 2017, month: 3, day: 12, hour: 4 });
+      225 |     expect(dt.wasHole).toBe(false);
+    > 226 |     expect(dt.set({ hour: 2 }).wasHole).toBe(true);
+          |                                         ^
+      227 |   });
+      228 |
+      229 |   test("is dropped on math", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:226:41)
+
+  ● DateTime maintains the wasHole setting properly › is kept on reconfigure
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      238 |         locale: "es-ES",
+      239 |       }).wasHole
+    > 240 |     ).toBe(true);
+          |       ^
+      241 |   });
+      242 |
+      243 |   test("is dropped on rezoning", () => {
+
+      at Object.toBe (test/datetime/dst.test.js:240:7)
+
+
+Test Suites: 7 failed, 51 passed, 58 total
+Tests:       38 failed, 1184 passed, 1222 total
+Snapshots:   1 passed, 1 total
+Time:        1.566 s, estimated 7 s
+Ran all test suites.

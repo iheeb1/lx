@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rg",
+    "-n",
+    "--column",
+    "ShouldBindJSON"
+  ],
+  "shell": "rg -n --column ShouldBindJSON",
+  "exit_code": 0,
+  "description": "rg -n --column",
+  "cwd": "/home/user/src/gin"
+}

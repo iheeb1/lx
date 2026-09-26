@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "color.ui=always",
+    "status"
+  ],
+  "shell": "git -c color.ui=always status",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "same dirty git status with color forced (git -c color.ui=always)",
+  "cwd": "repos/gin"
+}

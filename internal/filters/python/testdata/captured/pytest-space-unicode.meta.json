@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_models.py"
+  ],
+  "shell": "pytest -p no:cacheprovider tests/test_models.py",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): pytest in a directory whose path has a space and a non-ASCII letter",
+  "cwd": "/home/user/src/space proj ü",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv: pytest 8.3.4, pytest-cov 4.1.0, pytest-xdist 3.8.0, pytest-timeout 2.4.0, pytest-rerunfailures 16.0.1, pip 21.2.4"
+}

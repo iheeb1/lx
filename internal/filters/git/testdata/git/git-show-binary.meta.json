@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "show",
+    "HEAD"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git show of a commit with binary, mode, rename, delete and add"
+}

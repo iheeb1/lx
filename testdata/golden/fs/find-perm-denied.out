@@ -1,0 +1,7 @@
+find: ./secret: Permission denied
+[8 paths · names without / may be directories]
+link.go  run.sh  secret
+docs/
+  readme.md
+src/
+  a.go  b.go

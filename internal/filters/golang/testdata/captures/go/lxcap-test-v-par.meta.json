@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-v",
+    "./par/"
+  ],
+  "shell": "go test -v ./par/",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -v with parallel subtests (=== PAUSE / CONT / NAME), one failing",
+  "cwd": "/home/user/src/lxcap"
+}

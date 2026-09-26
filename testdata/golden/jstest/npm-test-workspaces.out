@@ -1,0 +1,34 @@
+> @mono/a@1.0.0 test
+> jest
+
+FAIL test/a.test.js
+  ● a fails
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "y"
+    Received: "x"
+    > 2 | test("a fails", () => { expect("x").toBe("y"); });
+        |                                     ^
+      at Object.toBe (test/a.test.js:2:37)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 passed, 2 total
+Snapshots:   0 total
+Time:        0.244 s, estimated 1 s
+Ran all test suites.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /home/user/src/mono/packages/a
+npm error workspace @mono/a@1.0.0
+npm error location /home/user/src/mono/packages/a
+npm error command failed
+npm error command sh -c jest
+
+> @mono/b@1.0.0 test
+> jest
+
+[1 passing suite, 1 passing test hidden]
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.139 s, estimated 1 s
+Ran all test suites.

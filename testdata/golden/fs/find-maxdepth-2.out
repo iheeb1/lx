@@ -1,0 +1,21 @@
+[131 paths · names without / may be directories]
+.editorconfig  .oxfmtrc.json  CONTRIBUTING.md  LICENSE  README.md  eslint.config.js  netlify.toml  package.json  pnpm-lock.yaml  pnpm-workspace.yaml
+vitest.config.e2e.ts  vitest.config.ts
+docs/
+  .vitepress  _data  acknowledgements.md  blog  blog.md  changes  config  guide  images  index.md  live.md  package.json  plugins  public  releases.md  team.md
+  tsconfig.json
+packages/
+  create-vite  plugin-legacy  vite
+patches/
+  chokidar@3.6.0.patch  dotenv-expand@13.0.0.patch  sirv@3.0.2.patch
+playground/
+  alias  assets  assets-sanitize  backend-integration  base-conflict  build-old  chunk-importmap  cli  cli-module  client-reload  csp  css  css-codesplit
+  css-codesplit-cjs  css-dynamic-import  css-lightningcss  css-lightningcss-proxy  css-lightningcss-root  css-no-codesplit  css-sourcemap  data-uri  define
+  devtools  dynamic-import  dynamic-import-inline  env  env-nested  environment-react-ssr  extensions  external  forward-console  fs-serve  glob-import  hmr
+  hmr-full-bundle-mode  hmr-root  hmr-ssr  html  import-attribute  js-sourcemap  json  lazy-compilation  legacy  lib  minify  module-graph  multiple-entrypoints
+  nested-deps  object-hooks  optimize-deps  optimize-deps-no-discovery  optimize-missing-deps  package.json  preload  preserve-symlinks  proxy-bypass  proxy-hmr
+  resolve  resolve-linked  resolve-tsconfig-paths  shims.d.ts  ssr  ssr-alias  ssr-conditions  ssr-deps  ssr-html  ssr-noexternal  ssr-pug  ssr-resolve
+  ssr-wasm  ssr-webworker  tailwind  tailwind-sourcemap  tailwind-v3  test-utils.ts  transform-plugin  tsconfig-json  tsconfig-json-load-error  tsconfig.json
+  vitestGlobalSetup.ts  vitestSetup.ts  wasm  worker
+scripts/
+  detect-release.ts  docs-check.sh  extract-changelog.ts  mergeChangelog.ts  prepare-release.ts  publishCI.ts  releaseUtils.ts  tsconfig.json

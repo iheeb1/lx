@@ -1,0 +1,21 @@
+ CODE_OF_CONDUCT.md            | 46 -------------------------------------------
+ README.md                     |  9 +++++++++
+ context.go                    |  1 +
+ debug.go                      | 14 ++++++-------
+ debug_test.go                 |  8 ++++----
+ gin.go                        | 28 +++++++++++++-------------
+ go.mod                        | 42 +++++++++++++++++++--------------------
+ go.sum                        | 42 +++++++++++++++++++++++++++++++++++++++
+ render/data.go                |  2 +-
+ render/html.go                |  2 +-
+ render/json.go                |  2 +-
+ render/redirect.go            |  2 +-
+ render/render.go              |  2 +-
+ render/render_msgpack_test.go |  2 +-
+ render/render_test.go         |  2 +-
+ render/text.go                |  2 +-
+ render/xml.go                 |  2 +-
+ render/yaml.go                |  2 +-
+ response_writer.go            |  2 +-
+ utils.go                      |  4 ++--
+ 20 files changed, 111 insertions(+), 105 deletions(-)

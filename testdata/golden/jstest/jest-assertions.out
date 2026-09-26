@@ -1,0 +1,21 @@
+FAIL adv/assertions.test.js
+  ● expects two assertions
+    expect.assertions(2)
+    Expected two assertions to be called but received one assertion call.
+    > 2 |   expect.assertions(2);
+        |          ^
+      at Object.assertions (adv/assertions.test.js:2:10)
+
+  ● async error thrown later
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2
+    Received: 1
+    >  8 |       expect(1).toBe(2);
+         |                 ^
+      at Timeout.toBe [as _onTimeout] (adv/assertions.test.js:8:17)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 2 total
+Snapshots:   0 total
+Time:        0.222 s, estimated 1 s
+Ran all test suites matching /adv\/assertions.test.js/i.

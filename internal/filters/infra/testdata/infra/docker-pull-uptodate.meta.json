@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "docker",
+    "pull",
+    "alpine:3.20"
+  ],
+  "shell": "docker pull alpine:3.20",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL (docker 29.6 client, colima): pull of an image already present",
+  "cwd": "repos/app"
+}

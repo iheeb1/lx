@@ -1,0 +1,93 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0 -- /home/user/venv/bin/python3
+rootdir: /home/user/src/edge
+configfile: pyproject.toml
+plugins: xdist-3.8.0, timeout-2.4.0, cov-4.1.0, rerunfailures-16.0.1
+collecting ... collected 5 items
+
+tests/test_flaky.py::test_flaky RERUN                                    [ 20%]
+tests/test_flaky.py::test_flaky PASSED                                   [ 20%]
+tests/test_basic.py::test_div PASSED                                     [ 40%]
+tests/test_basic.py::test_div_zero RERUN                                 [ 60%]
+tests/test_basic.py::test_div_zero RERUN                                 [ 60%]
+tests/test_basic.py::test_div_zero FAILED                                [ 60%]
+tests/test_basic.py::test_uses_resource PASSED                           [ 80%]
+tests/test_basic.py::test_uses_resource RERUN                            [ 80%]
+tests/test_basic.py::test_uses_resource PASSED                           [ 80%]
+tests/test_basic.py::test_uses_resource RERUN                            [ 80%]
+tests/test_basic.py::test_uses_resource PASSED                           [ 80%]
+tests/test_basic.py::test_uses_resource ERROR                            [ 80%]
+tests/test_basic.py::test_prints_pytest_like_output RERUN                [100%]
+tests/test_basic.py::test_prints_pytest_like_output RERUN                [100%]
+tests/test_basic.py::test_prints_pytest_like_output FAILED               [100%]
+
+==================================== ERRORS ====================================
+___________________ ERROR at teardown of test_uses_resource ____________________
+
+    @pytest.fixture
+    def resource():
+        yield "r"
+>       raise RuntimeError("teardown failed: could not release resource")
+E       RuntimeError: teardown failed: could not release resource
+
+tests/test_basic.py:17: RuntimeError
+=================================== FAILURES ===================================
+________________________________ test_div_zero _________________________________
+
+    def test_div_zero():
+>       assert div(1, 0) == 0
+
+tests/test_basic.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = 1, b = 0
+
+    def div(a, b):
+>       return a / b
+E       ZeroDivisionError: division by zero
+
+app/__init__.py:2: ZeroDivisionError
+________________________ test_prints_pytest_like_output ________________________
+
+    def test_prints_pytest_like_output():
+        print("============================= test session starts ==============================")
+        print("collected 3 items")
+        print("")
+        print("inner.py .F.                                                            [100%]")
+        print("=================================== FAILURES ===================================")
+        print("E       assert 1 == 2")
+        print("========================= 1 failed, 2 passed in 0.01s ==========================")
+>       assert False, "outer failure after nested pytest output"
+E       AssertionError: outer failure after nested pytest output
+E       assert False
+
+tests/test_basic.py:32: AssertionError
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+collected 3 items
+
+inner.py .F.                                                            [100%]
+=================================== FAILURES ===================================
+E       assert 1 == 2
+========================= 1 failed, 2 passed in 0.01s ==========================
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+collected 3 items
+
+inner.py .F.                                                            [100%]
+=================================== FAILURES ===================================
+E       assert 1 == 2
+========================= 1 failed, 2 passed in 0.01s ==========================
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+collected 3 items
+
+inner.py .F.                                                            [100%]
+=================================== FAILURES ===================================
+E       assert 1 == 2
+========================= 1 failed, 2 passed in 0.01s ==========================
+=========================== short test summary info ============================
+FAILED tests/test_basic.py::test_div_zero - ZeroDivisionError: division by zero
+FAILED tests/test_basic.py::test_prints_pytest_like_output - AssertionError: ...
+ERROR tests/test_basic.py::test_uses_resource - RuntimeError: teardown failed...
+================ 2 failed, 5 passed, 1 error, 7 rerun in 0.26s =================

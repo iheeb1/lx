@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--coverage.enabled",
+    "--coverage.reporter=text",
+    "--coverage.thresholds.lines=95",
+    "--coverage.include=src",
+    "adv/passlog.test.ts"
+  ],
+  "shell": "npx vitest run --coverage.enabled --coverage.reporter=text --coverage.thresholds.lines=95 --coverage.include=src adv/passlog.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4: the only test passes but logs console.error; coverage threshold not met (exit 1)",
+  "cwd": "repos/vitproj"
+}

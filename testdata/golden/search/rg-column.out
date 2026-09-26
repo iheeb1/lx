@@ -1,0 +1,26 @@
+routes_test.go:100:24:require.NoError(t, c.ShouldBindJSON(&body))
+
+context.go
+865:4:// ShouldBindJSON is a shortcut for c.ShouldBindWith(obj, binding.JSON).
+884:16://	if err := c.ShouldBindJSON(&user); err != nil {
+889:19:func (c *Context) ShouldBindJSON(obj any) error {
+894:18:// It works like ShouldBindJSON but binds the request body as XML data.
+900:18:// It works like ShouldBindJSON but binds query parameters from the URL.
+906:18:// It works like ShouldBindJSON but binds the request body as YAML data.
+912:18:// It works like ShouldBindJSON but binds the request body as TOML data.
+918:18:// It works like ShouldBindJSON but binds plain text data from the request body.
+924:18:// It works like ShouldBindJSON but binds values from HTTP headers.
+930:18:// It works like ShouldBindJSON but binds parameters from the URI.
+
+CHANGELOG.md:602:234:…[+160 chars]… /github.com/gin-gonic/gin#Context.ShouldBindQuery) and [`func (*Context) ShouldBindJSON`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBindJSON), se …[+53 chars]…
+
+context_test.go
+2524:21:func TestContextAutoShouldBindJSON(t *testing.T) {
+2550:23:require.NoError(t, c.ShouldBindJSON(&obj))
+
+routergroup.go:175:11:// with c.ShouldBindJSON.
+
+docs/doc.md
+153:17:if err := c.ShouldBindJSON(&query); err != nil {
+871:34:- **Methods** - `ShouldBind`, `ShouldBindJSON`, `ShouldBindXML`, `ShouldBindQuery`, `ShouldBindYAML`, `ShouldBindHeader`, `ShouldBindTOML`,
+891:17:if err := c.ShouldBindJSON(&json); err != nil {

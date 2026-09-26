@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-i",
+    "https://api.github.com/repos/golang/go/issues?per_page=5"
+  ],
+  "shell": "curl -i https://api.github.com/repos/golang/go/issues?per_page=5",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -i: progress meter, HTTP/2 200 head with 27 headers (rate limits, link pagination), 5 GitHub issues as pretty JSON",
+  "cwd": "data/api"
+}

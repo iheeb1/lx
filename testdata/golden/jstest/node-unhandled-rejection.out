@@ -1,0 +1,12 @@
+fetching
+rejection.js:3
+  throw new TypeError("Cannot read properties of undefined (reading 'id')");
+        ^
+
+TypeError: Cannot read properties of undefined (reading 'id')
+    at main (rejection.js:3:9)
+    at Object.<anonymous> (rejection.js:5:1)
+    at Module._compile (node:internal/modules/cjs/loader:1871:14)
+    … 6 library frames (node:internal)
+
+Node.js v24.18.0

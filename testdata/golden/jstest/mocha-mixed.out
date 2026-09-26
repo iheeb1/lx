@@ -1,0 +1,65 @@
+some console output from a test
+
+[4 passing tests hidden]
+  4 passing (71ms)
+  2 pending
+  6 failing
+
+  1) misc
+       compares strings:
+      AssertionError [ERR_ASSERTION]: 'hello world' == 'hello there'
+      + expected - actual
+      -hello world
+      +hello there
+      at Context.<anonymous> (test/misc.js:10:12)
+      at process.processImmediate (node:internal/timers:504:21)
+
+  2) Store
+       #set
+         rejects non-string keys:
+     TypeError: key must be a string, got number
+      at Store.set (lib/store.js:10:13)
+      at Context.<anonymous> (test/store.js:14:9)
+      at process.processImmediate (node:internal/timers:504:21)
+
+  3) Store
+       #keys
+         returns sorted keys:
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+  [
++   'c',
++   'b',
+    'a',
+-   'b',
+-   'c'
+  ]
+      + expected - actual
+       [
+      -  "c"
+      -  "b"
+         "a"
+      +  "b"
+      +  "c"
+       ]
+      at Context.<anonymous> (test/store.js:23:14)
+      at process.processImmediate (node:internal/timers:504:21)
+
+  4) Store
+       async
+         times out:
+     Error: Timeout of 30ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (/home/user/src/mochaproj/test/store.js)
+      … 2 library frames (node:internal)
+
+  5) Store
+       async
+         rejects:
+     Error: upstream unavailable
+      at Context.<anonymous> (test/store.js:39:28)
+      at process.processImmediate (node:internal/timers:504:21)
+
+  6) hooks
+       "before all" hook for "never runs":
+     Error: database connection refused
+      at Context.<anonymous> (test/store.js:46:11)
+      at process.processImmediate (node:internal/timers:504:21)

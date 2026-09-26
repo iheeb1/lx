@@ -1,0 +1,15 @@
+Package              Current   Wanted   Latest  Location                          Depended by
+accepts                2.0.0    2.0.0    1.3.8  node_modules/accepts              express
+connect-redis          8.1.0    8.1.0   10.0.0  node_modules/connect-redis        express
+content-disposition    2.0.1    2.0.1    3.0.0  node_modules/content-disposition  express
+content-type           2.1.0    2.1.0    3.1.1  node_modules/content-type         express
+cookie                 0.7.2    0.7.2    2.0.1  node_modules/cookie               express
+ejs                   3.1.10   3.1.10    6.0.1  node_modules/ejs                  express
+eslint                8.47.0   8.47.0  10.11.0  node_modules/eslint               express
+fresh                  2.0.0    2.0.0    0.5.2  node_modules/fresh                express
+hbs                    4.3.0    4.3.0    4.3.1  node_modules/hbs                  express
+marked               15.0.12  15.0.12  18.0.13  node_modules/marked               express
+mocha                 11.8.0   11.8.0   12.0.2  node_modules/mocha                express
+morgan                1.12.0   1.12.0   1.12.1  node_modules/morgan               express
+nyc                   17.1.0   17.1.0   18.0.0  node_modules/nyc                  express
+supertest              6.3.4    6.3.4    7.2.2  node_modules/supertest            express

@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "npm",
+    "ci"
+  ],
+  "shell": "npm ci",
+  "exit_code": 1,
+  "description": "npm ci with package.json out of sync with the lock file: EUSAGE error followed by the whole usage text of npm ci as npm error lines",
+  "cwd": "/home/user/src/ws-ci"
+}

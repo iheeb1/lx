@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "cJSON.c"
+  ],
+  "shell": "cat cJSON.c",
+  "repo": "",
+  "exit_code": 0,
+  "description": "cat of cJSON.c (3,206 lines of C, 80 KB)",
+  "cwd": "repos/cJSON"
+}

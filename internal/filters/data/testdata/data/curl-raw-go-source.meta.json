@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-s",
+    "https://raw.githubusercontent.com/golang/go/master/src/strings/strings.go"
+  ],
+  "shell": "curl -s https://raw.githubusercontent.com/golang/go/master/src/strings/strings.go",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -s of a 35 KB Go source file (text/plain): source must never be rewritten; over budget it is windowed",
+  "cwd": "data/api"
+}

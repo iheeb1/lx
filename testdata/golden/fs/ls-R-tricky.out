@@ -1,0 +1,14 @@
+[ls -R: 8 files in 8 subdirectories]
+app.conf
+empty/
+logs/
+  12:30:00.log
+node_modules/ [1 file]
+src/
+  crlf.txt  main.go
+  sub/
+    a.go
+with space/
+  notes.md
+ünï-目录/
+  文件.txt

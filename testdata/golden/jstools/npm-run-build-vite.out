@@ -1,0 +1,8 @@
+> vite-react-app@0.0.0 build
+> tsc -b && vite build
+
+vite v8.3.1 building client environment for production...
+✓ 20 modules transformed.
+[6 asset lines hidden (252.95 kB, largest dist/assets/index-BRDr3nmD.js 222.52 kB)]
+
+✓ built in 76ms

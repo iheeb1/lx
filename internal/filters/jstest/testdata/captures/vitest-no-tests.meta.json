@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "nothing-matches"
+  ],
+  "shell": "-u CLAUDECODE -u AI_AGENT npx vitest run nothing-matches",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "no test files match the filter",
+  "cwd": "repos/vitproj"
+}

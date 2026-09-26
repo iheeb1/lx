@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "find",
+    "nosuchdir",
+    "render",
+    "-name",
+    "*.go"
+  ],
+  "shell": "find nosuchdir render -name *.go",
+  "exit_code": 1,
+  "description": "find with a missing root",
+  "cwd": "/home/user/src/gin"
+}

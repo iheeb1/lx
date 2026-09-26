@@ -1,0 +1,345 @@
+diff --git a/CODE_OF_CONDUCT.md b/CODE_OF_CONDUCT.md
+deleted file mode 100644
+[deleted file: 46 lines not shown]
+diff --git a/README.md b/README.md
+@@ -225,3 +225,12 @@ Gin is the work of hundreds of contributors from around the world. We welcome an
+ 2. Join our community discussions and ask questions
+
+ **All contributions are valued and help make Gin better for everyone!**
++
++## Rate limiting
++
++Gin does not ship a rate limiter in core. The `middleware/ratelimit` package
++provides a token-bucket limiter that can be attached per route group:
++
++```go
++api := r.Group("/api", ratelimit.New(100, time.Minute))
++```
+diff --git a/binding/binding.go b/binding/binding.go
+[same hunks also in 17 files: binding/{binding_test.go, form.go, form_mapping.go, json.go, protobuf.go, validate_test.go, xml.go},
+render/{data.go, html.go, json.go, redirect.go, render.go, render_msgpack_test.go, render_test.go, text.go, xml.go, yaml.go}]
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+
+diff --git a/codecov.yml b/codecov.yml
+deleted file mode 100644
+[deleted file: 14 lines not shown]
+diff --git a/context.go b/context.go
+@@ -650,7 +650,7 @@ func (c *Context) initFormCache() {
+ 		req := c.Request
+ 		if err := req.ParseMultipartForm(c.engine.MaxMultipartMemory); err != nil {
+ 			if !errors.Is(err, http.ErrNotMultipart) {
+-				debugPrint("error on parse multipart form array: %v", err)
++				debugPrintf("error on parse multipart form array: %v", err)
+ 			}
+ 		}
+ 		c.formCache = req.PostForm
+@@ -994,6 +994,7 @@ func (c *Context) ShouldBindBodyWithPlain(obj any) error {
+ // If it is it will then try to parse the headers defined in Engine.RemoteIPHeaders (defaulting to [X-Forwarded-For, X-Real-IP]).
+ // If the headers are not syntactically valid OR the remote IP does not correspond to a trusted proxy,
+ // the remote IP (coming from Request.RemoteAddr) is returned.
++// ClientIP is also used as the default key by the ratelimit middleware.
+ func (c *Context) ClientIP() string {
+ 	// Check if we're running on a trusted platform, continue running backwards if error
+ 	if c.engine.TrustedPlatform != "" {
+diff --git a/context_ratelimit.go b/context_ratelimit.go
+new file mode 100644
+@@ -0,0 +1,14 @@
++package gin
++
++// RateLimitKey is the context key under which rate limit metadata is stored.
++const RateLimitKey = "_gin-gonic/gin/ratelimit"
++
++// RateLimitRemaining returns the remaining request budget recorded by a rate limiting middleware.
++func (c *Context) RateLimitRemaining() (int, bool) {
++	v, ok := c.Get(RateLimitKey)
++	if !ok {
++		return 0, false
++	}
++	n, ok := v.(int)
++	return n, ok
++}
+diff --git a/debug.go b/debug.go
+@@ -34,7 +34,7 @@ func debugPrintRoute(httpMethod, absolutePath string, handlers HandlersChain) {
+ 		nuHandlers := len(handlers)
+ 		handlerName := nameOfFunction(handlers.Last())
+ 		if DebugPrintRouteFunc == nil {
+-			debugPrint("%-6s %-25s --> %s (%d handlers)\n", httpMethod, absolutePath, handlerName, nuHandlers)
++			debugPrintf("%-6s %-25s --> %s (%d handlers)\n", httpMethod, absolutePath, handlerName, nuHandlers)
+ 		} else {
+ 			DebugPrintRouteFunc(httpMethod, absolutePath, handlerName, nuHandlers)
+ 		}
+@@ -49,11 +49,11 @@ func debugPrintLoadTemplate(tmpl *template.Template) {
+ 			buf.WriteString(tmpl.Name())
+ 			buf.WriteString("\n")
+ 		}
+-		debugPrint("Loaded HTML Templates (%d): \n%s\n", len(tmpl.Templates()), buf.String())
++		debugPrintf("Loaded HTML Templates (%d): \n%s\n", len(tmpl.Templates()), buf.String())
+ 	}
+ }
+
+-func debugPrint(format string, values ...any) {
++func debugPrintf(format string, values ...any) {
+ 	if !IsDebugging() {
+ 		return
+ 	}
+@@ -80,17 +80,17 @@ func getMinVer(v string) (uint64, error) {
+
+ func debugPrintWARNINGDefault() {
+ 	if v, e := getMinVer(runtimeVersion); e == nil && v < ginSupportMinGoVer {
+-		debugPrint(`[WARNING] Now Gin requires Go 1.25+.
++		debugPrintf(`[WARNING] Now Gin requires Go 1.25+.
+
+ `)
+ 	}
+-	debugPrint(`[WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
++	debugPrintf(`[WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+ `)
+ }
+
+ func debugPrintWARNINGNew() {
+-	debugPrint(`[WARNING] Running in "debug" mode. Switch to "release" mode in production.
++	debugPrintf(`[WARNING] Running in "debug" mode. Switch to "release" mode in production.
+  - using env:	export GIN_MODE=release
+  - using code:	gin.SetMode(gin.ReleaseMode)
+
+@@ -98,7 +98,7 @@ func debugPrintWARNINGNew() {
+ }
+
+ func debugPrintWARNINGSetHTMLTemplate() {
+-	debugPrint(`[WARNING] Since SetHTMLTemplate() is NOT thread-safe. It should only be called
++	debugPrintf(`[WARNING] Since SetHTMLTemplate() is NOT thread-safe. It should only be called
+ at initialization. ie. before any route is registered or the router is listening in a socket:
+
+ 	router := gin.Default()
+diff --git a/debug_test.go b/debug_test.go
+@@ -33,11 +33,11 @@ func TestDebugPrint(t *testing.T) {
+ 	re := captureOutput(t, func() {
+ 		SetMode(DebugMode)
+ 		SetMode(ReleaseMode)
+-		debugPrint("DEBUG this!")
++		debugPrintf("DEBUG this!")
+ 		SetMode(TestMode)
+-		debugPrint("DEBUG this!")
++		debugPrintf("DEBUG this!")
+ 		SetMode(DebugMode)
+-		debugPrint("these are %d %s", 2, "error messages")
++		debugPrintf("these are %d %s", 2, "error messages")
+ 		SetMode(TestMode)
+ 	})
+ 	assert.Equal(t, "[GIN-debug] these are 2 error messages\n", re)
+@@ -49,7 +49,7 @@ func TestDebugPrintFunc(t *testing.T) {
+ 	}
+ 	re := captureOutput(t, func() {
+ 		SetMode(DebugMode)
+-		debugPrint("debug print func test: %d", 123)
++		debugPrintf("debug print func test: %d", 123)
+ 		SetMode(TestMode)
+ 	})
+ 	assert.Regexp(t, `^\[GIN-debug\] debug print func test: 123`, re)
+diff --git a/gin.go b/gin.go
+@@ -567,12 +567,12 @@ func (engine *Engine) Run(addr ...string) (err error) {
+ 	defer func() { debugPrintError(err) }()
+
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+ 	engine.updateRouteTrees()
+ 	address := resolveAddress(addr)
+-	debugPrint("Listening and serving HTTP on %s\n", address)
++	debugPrintf("Listening and serving HTTP on %s\n", address)
+ 	server := &http.Server{ // #nosec G112
+ 		Addr:              address,
+ 		Handler:           engine.Handler(),
+@@ -586,11 +586,11 @@ func (engine *Engine) Run(addr ...string) (err error) {
+ // It is a shortcut for http.ListenAndServeTLS(addr, certFile, keyFile, router)
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
+ func (engine *Engine) RunTLS(addr, certFile, keyFile string) (err error) {
+-	debugPrint("Listening and serving HTTPS on %s\n", addr)
++	debugPrintf("Listening and serving HTTPS on %s\n", addr)
+ 	defer func() { debugPrintError(err) }()
+
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+
+@@ -607,11 +607,11 @@ func (engine *Engine) RunTLS(addr, certFile, keyFile string) (err error) {
+ // through the specified unix socket (i.e. a file).
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
+ func (engine *Engine) RunUnix(file string) (err error) {
+-	debugPrint("Listening and serving HTTP on unix:/%s", file)
++	debugPrintf("Listening and serving HTTP on unix:/%s", file)
+ 	defer func() { debugPrintError(err) }()
+
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+
+@@ -633,11 +633,11 @@ func (engine *Engine) RunUnix(file string) (err error) {
+ // through the specified file descriptor.
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
+ func (engine *Engine) RunFd(fd int) (err error) {
+-	debugPrint("Listening and serving HTTP on fd@%d", fd)
++	debugPrintf("Listening and serving HTTP on fd@%d", fd)
+ 	defer func() { debugPrintError(err) }()
+
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+
+@@ -656,11 +656,11 @@ func (engine *Engine) RunFd(fd int) (err error) {
+ // It is a shortcut for http3.ListenAndServeQUIC(addr, certFile, keyFile, router)
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
+ func (engine *Engine) RunQUIC(addr, certFile, keyFile string) (err error) {
+-	debugPrint("Listening and serving QUIC on %s\n", addr)
++	debugPrintf("Listening and serving QUIC on %s\n", addr)
+ 	defer func() { debugPrintError(err) }()
+
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+
+@@ -671,11 +671,11 @@ func (engine *Engine) RunQUIC(addr, certFile, keyFile string) (err error) {
+ // RunListener attaches the router to a http.Server and starts listening and serving HTTP requests
+ // through the specified net.Listener
+ func (engine *Engine) RunListener(listener net.Listener) (err error) {
+-	debugPrint("Listening and serving HTTP on listener what's bind with address@%s", listener.Addr())
++	debugPrintf("Listening and serving HTTP on listener what's bind with address@%s", listener.Addr())
+ 	defer func() { debugPrintError(err) }()
+
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+
+@@ -800,7 +800,7 @@ func serveError(c *Context, code int, defaultMessage []byte) {
+ 		c.writermem.Header()["Content-Type"] = mimePlain
+ 		_, err := c.Writer.Write(defaultMessage)
+ 		if err != nil {
+-			debugPrint("cannot write message to writer during serve error: %v", err)
++			debugPrintf("cannot write message to writer during serve error: %v", err)
+ 		}
+ 		return
+ 	}
+@@ -855,7 +855,7 @@ func redirectRequest(c *Context) {
+ 	if req.Method != http.MethodGet {
+ 		code = http.StatusTemporaryRedirect
+ 	}
+-	debugPrint("redirecting request %d: %s --> %s", code, rPath, rURL)
++	debugPrintf("redirecting request %d: %s --> %s", code, rPath, rURL)
+ 	http.Redirect(c.Writer, req, rURL, code)
+ 	c.writermem.WriteHeaderNow()
+ }
+diff --git a/go.mod b/go.mod
+@@ -3,39 +3,39 @@ module github.com/gin-gonic/gin
+ go 1.26.0
+
+ require (
+-	github.com/bytedance/sonic v1.15.0
+-	github.com/gin-contrib/sse v1.1.0
+-	github.com/go-playground/validator/v10 v10.30.3
++	github.com/bytedance/sonic v1.15.4
++	github.com/gin-contrib/sse v1.1.2
++	github.com/go-playground/validator/v10 v10.30.5
+ 	github.com/goccy/go-json v0.10.6
+ 	github.com/goccy/go-yaml v1.19.2
+ 	github.com/json-iterator/go v1.1.12
+-	github.com/mattn/go-isatty v0.0.20
++	github.com/mattn/go-isatty v0.0.24
+ 	github.com/modern-go/reflect2 v1.0.2
+-	github.com/pelletier/go-toml/v2 v2.2.4
+-	github.com/quic-go/quic-go v0.60.0
++	github.com/pelletier/go-toml/v2 v2.4.3
++	github.com/quic-go/quic-go v0.63.0
+ 	github.com/stretchr/testify v1.12.1
+-	github.com/ugorji/go/codec v1.3.1
+-	go.mongodb.org/mongo-driver/v2 v2.5.0
+-	golang.org/x/net v0.57.0
+-	google.golang.org/protobuf v1.36.11
++	github.com/ugorji/go/codec v1.3.2
++	go.mongodb.org/mongo-driver/v2 v2.9.1
++	golang.org/x/net v0.59.0
++	google.golang.org/protobuf v1.36.12
+ )
+
+ require (
+-	github.com/bytedance/gopkg v0.1.3 // indirect
+-	github.com/bytedance/sonic/loader v0.5.0 // indirect
+-	github.com/cloudwego/base64x v0.1.6 // indirect
+-	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
++	github.com/bytedance/gopkg v0.1.4 // indirect
++	github.com/bytedance/sonic/loader v0.5.2 // indirect
++	github.com/cloudwego/base64x v0.1.7 // indirect
++	github.com/gabriel-vasile/mimetype v1.4.15 // indirect
+ 	github.com/go-playground/locales v0.14.1 // indirect
+-	github.com/go-playground/universal-translator v0.18.1 // indirect
+-	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
+-	github.com/leodido/go-urn v1.4.0 // indirect
++	github.com/go-playground/universal-translator v0.18.2 // indirect
++	github.com/klauspost/cpuid/v2 v2.4.0 // indirect
++	github.com/leodido/go-urn v1.5.0 // indirect
+ 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
+ 	github.com/quic-go/qpack v0.6.0 // indirect
+ 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
+ 	go.uber.org/mock v0.6.0 // indirect
+ 	go.yaml.in/yaml/v3 v3.0.5 // indirect
+-	golang.org/x/arch v0.25.0 // indirect
+-	golang.org/x/crypto v0.56.0 // indirect
+-	golang.org/x/sys v0.47.0 // indirect
+-	golang.org/x/text v0.41.0 // indirect
++	golang.org/x/arch v0.31.0 // indirect
++	golang.org/x/crypto v0.57.0 // indirect
++	golang.org/x/sys v0.48.0 // indirect
++	golang.org/x/text v0.42.0 // indirect
+ )
+diff --git a/go.sum b/go.sum
+[lockfile: +42 lines in 5 hunks not shown; package versions:
+  added (21): github.com/bytedance/gopkg@v0.1.4, github.com/bytedance/sonic@v1.15.4, github.com/bytedance/sonic/loader@v0.5.2,
+  github.com/cloudwego/base64x@v0.1.7, github.com/gabriel-vasile/mimetype@v1.4.15, github.com/gin-contrib/sse@v1.1.2,
+  github.com/go-playground/universal-translator@v0.18.2, github.com/go-playground/validator/v10@v10.30.5, github.com/klauspost/cpuid/v2@v2.4.0,
+  github.com/leodido/go-urn@v1.5.0, github.com/mattn/go-isatty@v0.0.24, github.com/pelletier/go-toml/v2@v2.4.3, github.com/quic-go/quic-go@v0.63.0,
+  github.com/ugorji/go/codec@v1.3.2, go.mongodb.org/mongo-driver/v2@v2.9.1, golang.org/x/arch@v0.31.0, golang.org/x/crypto@v0.57.0, golang.org/x/net@v0.59.0,
+  golang.org/x/sys@v0.48.0, golang.org/x/text@v0.42.0, google.golang.org/protobuf@v1.36.12]
+diff --git a/tree.go b/radix_tree.go
+similarity index 100%
+diff --git a/tree_test.go b/radix_tree_test.go
+similarity index 100%
+diff --git a/response_writer.go b/response_writer.go
+@@ -67,7 +67,7 @@ func (w *responseWriter) reset(writer http.ResponseWriter) {
+ func (w *responseWriter) WriteHeader(code int) {
+ 	if code > 0 && w.status != code {
+ 		if w.Written() {
+-			debugPrint("[WARNING] Headers were already written. Wanted to override status code %d with %d", w.status, code)
++			debugPrintf("[WARNING] Headers were already written. Wanted to override status code %d with %d", w.status, code)
+ 			return
+ 		}
+ 		w.status = code
+diff --git a/utils.go b/utils.go
+@@ -149,10 +149,10 @@ func resolveAddress(addr []string) string {
+ 	switch len(addr) {
+ 	case 0:
+ 		if port := os.Getenv("PORT"); port != "" {
+-			debugPrint("Environment variable PORT=\"%s\"", port)
++			debugPrintf("Environment variable PORT=\"%s\"", port)
+ 			return ":" + port
+ 		}
+-		debugPrint("Environment variable PORT is undefined. Using port :8080 by default")
++		debugPrintf("Environment variable PORT is undefined. Using port :8080 by default")
+ 		return ":8080"
+ 	case 1:
+ 		return addr[0]

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "go",
+    "vet",
+    "-json",
+    "./racepost",
+    "./coverfail"
+  ],
+  "shell": "go vet -json ./racepost ./coverfail",
+  "repo": "",
+  "exit_code": 0,
+  "description": "go vet -json over a package with a printf finding (machine output on stderr)",
+  "cwd": "/home/user/src/lxcap2"
+}

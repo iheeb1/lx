@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "outdated"
+  ],
+  "shell": "npm outdated",
+  "repo": "expressjs/express",
+  "exit_code": 1,
+  "description": "npm outdated table (current/wanted/latest) in express",
+  "cwd": "repos/express"
+}

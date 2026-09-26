@@ -1,0 +1,7 @@
+> express@5.2.1 test
+> mocha --require test/support/env --reporter spec --check-leaks test/ test/acceptance/
+
+(node:45975) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+
+[1261 passing tests hidden]
+  1261 passing (2s)

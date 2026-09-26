@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "du -sh packages/* playground/* | sort -rh | head -12"
+  ],
+  "shell": "bash -c du -sh packages/* playground/* | sort -rh | head -12",
+  "exit_code": 0,
+  "description": "du -sh sorted and cut by head",
+  "cwd": "/home/user/src/vite"
+}

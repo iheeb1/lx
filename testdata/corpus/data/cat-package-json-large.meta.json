@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "packages/vite/package.json"
+  ],
+  "shell": "cat packages/vite/package.json",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "cat of vite's packages/vite/package.json (~195 lines: exports map, deps, devDeps, scripts)",
+  "cwd": "repos/vite"
+}

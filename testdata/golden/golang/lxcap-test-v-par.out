@@ -1,0 +1,11 @@
+--- FAIL: TestParallel (0.00s)
+    --- FAIL: TestParallel/negative (0.01s)
+        par_test.go:23: adding -1 + -1
+        par_test.go:25: Add(-1, -1) = -2, want -3
+    --- FAIL: TestParallel/conflict (0.01s)
+        par_test.go:23: adding 2 + 2
+        par_test.go:25: Add(2, 2) = 4, want 5
+FAIL
+FAIL	example.com/lxcap/par	0.499s
+FAIL
+[3 passed, 3 failed (incl. subtests) · hidden: 21 === RUN/--- PASS lines, 3 lines of passing-test output]

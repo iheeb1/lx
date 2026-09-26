@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "branch",
+    "-a"
+  ],
+  "shell": "git branch -a",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "git branch -a in vite: local branch plus ~77 remote-tracking branches",
+  "cwd": "repos/vite"
+}

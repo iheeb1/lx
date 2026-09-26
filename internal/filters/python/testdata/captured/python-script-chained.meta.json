@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "python3",
+    "scripts/fetch.py"
+  ],
+  "shell": "python3 scripts/fetch.py",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter testdata): script with urllib3 warning, then a 4-deep chained exception (library causes, app RuntimeError on top)",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv with pytest 8.3.4, mypy 1.19.1, ruff 0.16.9, pip 26.0.1"
+}

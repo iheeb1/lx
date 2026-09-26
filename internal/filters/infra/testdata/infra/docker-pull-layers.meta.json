@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "docker",
+    "pull",
+    "node"
+  ],
+  "shell": "docker pull node",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of docker 27 `docker pull` (non-TTY: one line per layer state change); the tool is not available on the capture host): 9 layers, 2 already present",
+  "cwd": "repos/shop"
+}

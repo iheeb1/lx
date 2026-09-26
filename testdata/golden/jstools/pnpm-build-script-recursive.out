@@ -1,0 +1,14 @@
+> pnpm-ws@ build /home/user/src/pnpm-ws
+> pnpm -r build
+
+Scope: 2 of 3 workspace projects
+packages/core build$ tsc -p .
+packages/core build: Done
+packages/web build$ tsc -p .
+packages/web build: src/index.ts(1,7): error TS2322: Type 'number' is not assignable to type 'string'.
+packages/web build: src/index.ts(2,22): error TS2304: Cannot find name 'missing'.
+packages/web build: Failed
+/home/user/src/pnpm-ws/packages/web:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @ws/web@1.0.0 build: `tsc -p .`
+Exit status 2
+ ELIFECYCLE  Command failed with exit code 2.

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "docker",
+    "compose",
+    "logs",
+    "--no-color"
+  ],
+  "shell": "docker compose logs --no-color",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of docker compose v2 logs (service-N | prefixes, --no-color); the tool is not available on the capture host): 4 services interleaved: web request logs, worker jobs with SMTP failures, redis saves, a postgres unique-violation error",
+  "cwd": "repos/shop"
+}

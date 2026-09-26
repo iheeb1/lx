@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "tsc",
+    "--noEmit",
+    "--pretty"
+  ],
+  "shell": "npx tsc --noEmit --pretty",
+  "exit_code": 2,
+  "description": "npx tsc --noEmit --pretty: code frames, related information, a source line quoting 'Error', the Errors/Files table",
+  "cwd": "/home/user/src/eslint9-app"
+}

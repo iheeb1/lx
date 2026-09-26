@@ -1,0 +1,258 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< com.example:demo >--------------------------
+[INFO] Building demo 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ demo ---
+[INFO] skip non existing resourceDirectory /home/user/src/mvnapp/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ demo ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 2 source files with javac [debug release 17] to target/classes
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[6,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[6,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[6,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[6,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[7,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[7,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[7,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[7,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[8,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[8,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[8,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[8,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[9,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[9,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[9,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[9,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[10,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[10,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[10,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[10,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[11,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[11,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[11,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[11,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[12,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[12,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[12,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[12,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[13,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[13,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[13,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[13,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[14,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[14,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[14,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[14,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[15,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[15,26] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[15,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[15,57] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[16,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[16,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[16,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[16,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[17,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[17,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[17,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[17,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[18,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[18,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[18,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[18,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[19,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[19,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[19,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[19,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[20,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[20,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[20,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[20,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[21,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[21,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[21,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[21,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[22,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[22,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[22,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[22,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[23,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[23,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[23,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[23,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[24,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[24,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[24,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[24,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[25,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[25,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[25,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[25,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[26,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[26,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[26,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[26,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[27,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[27,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[27,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[27,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[28,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[28,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[28,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[28,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[29,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[29,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[29,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[29,58] unchecked call to add(E) as a member of the raw type java.util.List
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[30,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[30,27] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[30,40] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[30,58] unchecked call to add(E) as a member of the raw type java.util.List
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java: /home/user/src/mvnapp/src/main/java/com/example/Legacy.java uses or overrides a deprecated API.
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java: Recompile with -Xlint:deprecation for details.
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java: /home/user/src/mvnapp/src/main/java/com/example/Legacy.java has additional unchecked or unsafe operations.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ demo ---
+[INFO] skip non existing resourceDirectory /home/user/src/mvnapp/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ demo ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 2 source files with javac [debug release 17] to target/test-classes
+[WARNING] /home/user/src/mvnapp/src/test/java/com/example/CalcTest.java:[11,60] old() in com.example.Calc has been deprecated
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ demo ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.example.CalcTest
+[ERROR] Tests run: 5, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.037 s <<< FAILURE! -- in com.example.CalcTest
+[ERROR] com.example.CalcTest.addsWrong -- Time elapsed: 0.005 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: sum of 2 and 2 ==> expected: <5> but was: <4>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:563)
+	at com.example.CalcTest.addsWrong(CalcTest.java:8)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+
+[ERROR] com.example.CalcTest.dividesByZero -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.ArithmeticException: / by zero
+	at com.example.Calc.div(Calc.java:5)
+	at com.example.CalcTest.dividesByZero(CalcTest.java:10)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+
+[INFO] Running com.example.OtherTest
+hello from two
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in com.example.OtherTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   CalcTest.addsWrong:8 sum of 2 and 2 ==> expected: <5> but was: <4>
+[ERROR] Errors: 
+[ERROR]   CalcTest.dividesByZero:10 » Arithmetic / by zero
+[INFO] 
+[ERROR] Tests run: 8, Failures: 1, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.409 s
+[INFO] Finished at: 2026-09-26T04:03:20+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.1.2:test (default-test) on project demo: There are test failures.
+[ERROR] 
+[ERROR] Please refer to /home/user/src/mvnapp/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

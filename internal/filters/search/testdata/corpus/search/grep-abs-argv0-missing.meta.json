@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/usr/bin/grep",
+    "-rn",
+    "func Default",
+    "nosuchdir",
+    "binding"
+  ],
+  "shell": "/usr/bin/grep -rn func Default nosuchdir binding",
+  "exit_code": 2,
+  "description": "grep invoked by absolute path with a missing operand",
+  "cwd": "/home/user/src/gin"
+}

@@ -1,0 +1,11 @@
+Binary file playground/assets/asset/percent%.png matches
+Binary file playground/assets/import-meta-url/img.png matches
+Binary file playground/assets/import-meta-url/img-update.png matches
+Binary file playground/assets/static/icon.png matches
+Binary file playground/assets/nested/preload-asset.png matches
+Binary file playground/assets/nested/icon.png matches
+Binary file playground/assets/nested/with-single'quote.png matches
+Binary file playground/assets/nested/テスト-測試-white space.png matches
+Binary file playground/assets/nested/asset[small].png matches
+Binary file playground/assets/nested/asset.png matches
+Binary file playground/assets/nested/asset2.png matches

@@ -1,0 +1,8 @@
+--2026-09-26 02:12:40--  https://go.dev/dl/go1.26.5.linux-amd64.tar.gz
+HTTP request sent, awaiting response... 302 Found
+Location: https://dl.google.com/go/go1.26.5.linux-amd64.tar.gz [following]
+--2026-09-26 02:12:40--  https://dl.google.com/go/go1.26.5.linux-amd64.tar.gz
+HTTP request sent, awaiting response... 200 OK
+Length: 70254361 (67M) [application/x-gzip]
+Saving to: ‘go1.26.5.linux-amd64.tar.gz’
+2026-09-26 02:12:47 (9.71 MB/s) - ‘go1.26.5.linux-amd64.tar.gz’ saved [70254361/70254361]

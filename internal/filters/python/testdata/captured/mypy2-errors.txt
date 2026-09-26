@@ -1,0 +1,13 @@
+inventory/reports.py:5: error: Library stubs not installed for "yaml"  [import-untyped]
+inventory/reports.py:5: note: Hint: "python3 -m pip install types-PyYAML"
+inventory/reports.py:5: note: (or run "mypy --install-types" to install all missing stub packages)
+inventory/reports.py:5: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+inventory/reports.py:23: error: Item "None" of "Item | None" has no attribute "price"  [union-attr]
+inventory/reports.py:27: error: Incompatible types in assignment (expression has type "float", variable has type "int")  [assignment]
+inventory/reports.py:28: error: Unsupported operand types for + ("str" and "int")  [operator]
+inventory/reports.py:34: error: Unpacking a string is disallowed  [str-unpack]
+inventory/reports.py:39: error: Argument "timeout" to "get" has incompatible type "str"; expected "float | tuple[float | None, float | None] | None"  [arg-type]
+inventory/reports.py:47: error: Argument 2 to "add" of "Stock" has incompatible type "str"; expected "int"  [arg-type]
+inventory/reports.py:48: error: "Stock" has no attribute "missing_method"  [attr-defined]
+inventory/reports.py:52: error: List comprehension has incompatible type List[Callable[[], str]]; expected List[str]  [misc]
+Found 9 errors in 1 file (checked 7 source files)

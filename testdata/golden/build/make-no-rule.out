@@ -1,0 +1,2 @@
+cc    -c -o prog.o prog.c
+make: *** No rule to make target `missing.o', needed by `prog'.  Stop.

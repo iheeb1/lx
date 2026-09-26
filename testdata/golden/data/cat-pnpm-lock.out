@@ -1,0 +1,2 @@
+[lx: lockfile pnpm-lock.yaml (pnpm, lockfileVersion 9.0): 475 packages, 148.0 KB — content not shown; find one: grep -n '<name>@' pnpm-lock.yaml]
+direct dependencies (locked versions): @types/node 25.6.0, @vitest/coverage-v8 4.1.5, automd 0.4.3, changelogen 0.6.2, eslint 10.2.1, eslint-config-unjs 0.6.2, jiti 2.6.1, prettier 3.8.3, typescript 6.0.3, unbuild 3.6.1, untyped 2.0.0, vitest 4.1.5

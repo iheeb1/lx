@@ -1,0 +1,491 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0HTTP/2 200 
+date: Sat, 26 Sep 2026 02:00:08 GMT
+content-type: application/json; charset=utf-8
+cache-control: public, max-age=60, s-maxage=60
+vary: Accept,Accept-Encoding, Accept, X-Requested-With
+etag: W/"8cb34285d84481fcde00504c0aeab7502d0ae3cc42ab28f0dcc3786c224b6853"
+x-github-media-type: github.v3; format=json
+link: <https://api.github.com/repositories/23096959/issues?per_page=5&after=Y3Vyc29yOnYyOpLPAAABoNrc4gDPAAAAAU0qCLg%3D&page=2>; rel="next"
+x-github-api-version-selected: 2022-11-28
+access-control-expose-headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning
+access-control-allow-origin: *
+strict-transport-security: max-age=31536000; includeSubdomains; preload
+x-frame-options: deny
+x-content-type-options: nosniff
+x-xss-protection: 0
+referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
+content-security-policy: default-src 'none'
+server: github.com
+accept-ranges: bytes
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 58
+x-ratelimit-used: 2
+x-ratelimit-resource: core
+x-ratelimit-reset: 1790391607
+x-github-request-id: 05A4:5ABBC:1C20690:1C403F7:6AB72727
+x-github-edge-region: fra
+
+[
+  {
+    "url": "https://api.github.com/repos/golang/go/issues/81769",
+    "repository_url": "https://api.github.com/repos/golang/go",
+    "labels_url": "https://api.github.com/repos/golang/go/issues/81769/labels{/name}",
+    "comments_url": "https://api.github.com/repos/golang/go/issues/81769/comments",
+    "events_url": "https://api.github.com/repos/golang/go/issues/81769/events",
+    "html_url": "https://github.com/golang/go/pull/81769",
+    "id": 5590228050,
+    "node_id": "PR_kwDOAWBuf88AAAABFM7Ucg",
+    "number": 81769,
+    "title": "net/http: coalesce dials for HTTP/2 requests",
+    "user": {
+      "login": "wywywywycloud",
+      "id": 100153948,
+      "node_id": "U_kgDOBfg6XA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/100153948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/wywywywycloud",
+      "html_url": "https://github.com/wywywywycloud",
+      "followers_url": "https://api.github.com/users/wywywywycloud/followers",
+      "following_url": "https://api.github.com/users/wywywywycloud/following{/other_user}",
+      "gists_url": "https://api.github.com/users/wywywywycloud/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/wywywywycloud/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/wywywywycloud/subscriptions",
+      "organizations_url": "https://api.github.com/users/wywywywycloud/orgs",
+      "repos_url": "https://api.github.com/users/wywywywycloud/repos",
+      "events_url": "https://api.github.com/users/wywywywycloud/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/wywywywycloud/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 2,
+    "created_at": "2026-09-26T01:05:48Z",
+    "updated_at": "2026-09-26T01:38:06Z",
+    "closed_at": null,
+    "assignee": null,
+    "author_association": "NONE",
+    "issue_field_values": [
+
+    ],
+    "type": null,
+    "active_lock_reason": null,
+    "draft": false,
+    "pull_request": {
+      "url": "https://api.github.com/repos/golang/go/pulls/81769",
+      "html_url": "https://github.com/golang/go/pull/81769",
+      "diff_url": "https://github.com/golang/go/pull/81769.diff",
+      "patch_url": "https://github.com/golang/go/pull/81769.patch",
+      "merged_at": null
+    },
+    "body": "Concurrent requests currently start independent dials even when the\r\ntransport expects HTTP/2. In particular, the Go 1.27 x/net/http2 wrapper\r\nlost the dial coalescing provided by the legacy implementation.\r\n\r\nShare pending dials for HTTP/2-only transports and for x/net/http2 calls\r\nidentified by an optional UsesDialFromContext method. Publish each\r\nshared connection to the pool once and account for it once against\r\nMaxConnsPerHost. Keep ordinary HTTP/1-capable transport dials parallel,\r\nand do not share connections that fall back to HTTP/1.\r\n\r\nPreserve independent request cancellation and allow CloseIdleConnections\r\nto cancel a shared dial only when no request still needs it, including\r\nrequests queued by MaxConnsPerHost. A saturated HTTP/2 connection can\r\nstill cause another dial.\r\n\r\nAdd deterministic tests for TLS and unencrypted startup, shared dial\r\nerrors, cancellation, host isolation, connection limits, HTTP/1 fallback,\r\nand HTTP/2 stream limits.\r\n\r\nThe companion x/net change supplies the optional context method. Older\r\nx/net versions remain compatible, but require that companion change to\r\nrestore coalescing for their wrapper's default transport configuration.\r\nThe adapter and its tests are available in the companion draft PR:\r\nhttps://github.com/golang/net/pull/267\r\n\r\nA local TLS HTTP/2 reproducer with 100 simultaneous requests makes 100\r\ndials on the original transport, 1 with http2legacy, and 1 with both\r\nchanges applied, with no failed requests in any case.\r\n\r\nValidated on darwin/arm64 with go test -race net/http/...; 100\r\nrace-enabled runs of TestTransportPool; and an HTTP/1 smoke test with\r\nnethttpomithttp2. The companion x/net HTTP/2 suite passes, including its\r\nlegacy suite and 100 race-enabled runs of the new API regression tests.\r\nThe full Go all.bash suite and other platforms have not been tested.\r\n\r\nUpdates #81646",
+    "closed_by": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/golang/go/issues/81769/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/golang/go/issues/81769/timeline",
+    "performed_via_github_app": null,
+    "state_reason": null
+  },
+  {
+    "url": "https://api.github.com/repos/golang/go/issues/81768",
+    "repository_url": "https://api.github.com/repos/golang/go",
+    "labels_url": "https://api.github.com/repos/golang/go/issues/81768/labels{/name}",
+    "comments_url": "https://api.github.com/repos/golang/go/issues/81768/comments",
+    "events_url": "https://api.github.com/repos/golang/go/issues/81768/events",
+    "html_url": "https://github.com/golang/go/issues/81768",
+    "id": 5589966693,
+    "node_id": "I_kwDOAWBuf88AAAABTTAfZQ",
+    "number": 81768,
+    "title": "proposal: syscall: support core scheduling cookie on Linux",
+    "user": {
+      "login": "ianlancetaylor",
+      "id": 3194333,
+      "node_id": "MDQ6VXNlcjMxOTQzMzM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3194333?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ianlancetaylor",
+      "html_url": "https://github.com/ianlancetaylor",
+      "followers_url": "https://api.github.com/users/ianlancetaylor/followers",
+      "following_url": "https://api.github.com/users/ianlancetaylor/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ianlancetaylor/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ianlancetaylor/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ianlancetaylor/subscriptions",
+      "organizations_url": "https://api.github.com/users/ianlancetaylor/orgs",
+      "repos_url": "https://api.github.com/users/ianlancetaylor/repos",
+      "events_url": "https://api.github.com/users/ianlancetaylor/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ianlancetaylor/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "labels": [
+      {
+        "id": 236419512,
+        "node_id": "MDU6TGFiZWwyMzY0MTk1MTI=",
+        "url": "https://api.github.com/repos/golang/go/labels/Proposal",
+        "name": "Proposal",
+        "color": "ededed",
+        "default": false,
+        "description": null,
+        "archived_at": null,
+        "archived_by": null
+      }
+    ],
+    "state": "open",
+    "locked": false,
+    "assignees": [
+
+    ],
+    "milestone": {
+      "url": "https://api.github.com/repos/golang/go/milestones/30",
+      "html_url": "https://github.com/golang/go/milestone/30",
+      "labels_url": "https://api.github.com/repos/golang/go/milestones/30/labels",
+      "id": 1373555,
+      "node_id": "MDk6TWlsZXN0b25lMTM3MzU1NQ==",
+      "number": 30,
+      "title": "Proposal",
+      "description": "Proposals that are pending (not yet accepted/rejected).\r\nSee https://go.dev/s/proposal-process.\r\n",
+      "creator": {
+        "login": "rsc",
+        "id": 104030,
+        "node_id": "MDQ6VXNlcjEwNDAzMA==",
+        "avatar_url": "https://avatars.githubusercontent.com/u/104030?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/rsc",
+        "html_url": "https://github.com/rsc",
+        "followers_url": "https://api.github.com/users/rsc/followers",
+        "following_url": "https://api.github.com/users/rsc/following{/other_user}",
+        "gists_url": "https://api.github.com/users/rsc/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/rsc/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/rsc/subscriptions",
+        "organizations_url": "https://api.github.com/users/rsc/orgs",
+        "repos_url": "https://api.github.com/users/rsc/repos",
+        "events_url": "https://api.github.com/users/rsc/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/rsc/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "open_issues": 1041,
+      "closed_issues": 3735,
+      "state": "open",
+      "created_at": "2015-10-24T01:40:49Z",
+      "updated_at": "2026-09-26T00:26:07Z",
+      "due_on": null,
+      "closed_at": null
+    },
+    "comments": 1,
+    "created_at": "2026-09-26T00:22:33Z",
+    "updated_at": "2026-09-26T01:05:50Z",
+    "closed_at": null,
+    "assignee": null,
+    "author_association": "CONTRIBUTOR",
+    "issue_field_values": [
+
+    ],
+    "type": null,
+    "active_lock_reason": null,
+    "sub_issues_summary": {
+      "total": 0,
+      "completed": 0,
+      "percent_completed": 0
+    },
+    "issue_dependencies_summary": {
+      "blocked_by": 0,
+      "total_blocked_by": 0,
+      "blocking": 0,
+      "total_blocking": 0
+    },
+    "body": "### Proposal Details\n\nLinux has introduced yet another operation that can require tweaking in between fork and exec: core scheduling. Full docs are at https://docs.kernel.org/admin-guide/hw-vuln/core-scheduling.html. Relevant for Go is the equivalent to \"coresched new COMMAND\" or \"coresched copy -s PID COMMAND\" (see https://man7.org/linux/man-pages/man1/coresched.1.html).\n\nI propose adding the following to `syscall.SysProcAttr`:\n\n```Go\n    // CoreSchedNew, if true, sets a new core scheduling cookie for the child. \n    CoreSchedNew bool\n    // CoreSchedPID, if not zero, sets the child's core scheduling cookie to that of PID.\n    // If the PID does not exist, the operation will fail.\n    // It is an error to set both CoreSchedNew and CoreSchedPID.\n    CoreSchedPID int\n```",
+    "closed_by": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/golang/go/issues/81768/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/golang/go/issues/81768/timeline",
+    "performed_via_github_app": null,
+    "state_reason": null,
+    "pinned_comment": null
+  },
+  {
+    "url": "https://api.github.com/repos/golang/go/issues/81767",
+    "repository_url": "https://api.github.com/repos/golang/go",
+    "labels_url": "https://api.github.com/repos/golang/go/issues/81767/labels{/name}",
+    "comments_url": "https://api.github.com/repos/golang/go/issues/81767/comments",
+    "events_url": "https://api.github.com/repos/golang/go/issues/81767/events",
+    "html_url": "https://github.com/golang/go/issues/81767",
+    "id": 5589827677,
+    "node_id": "I_kwDOAWBuf88AAAABTS4AXQ",
+    "number": 81767,
+    "title": "cmd/compile: fix broken regalloc eviction of AVX-512 K mask values on amd64",
+    "user": {
+      "login": "9muir",
+      "id": 1180476,
+      "node_id": "MDQ6VXNlcjExODA0NzY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1180476?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/9muir",
+      "html_url": "https://github.com/9muir",
+      "followers_url": "https://api.github.com/users/9muir/followers",
+      "following_url": "https://api.github.com/users/9muir/following{/other_user}",
+      "gists_url": "https://api.github.com/users/9muir/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/9muir/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/9muir/subscriptions",
+      "organizations_url": "https://api.github.com/users/9muir/orgs",
+      "repos_url": "https://api.github.com/users/9muir/repos",
+      "events_url": "https://api.github.com/users/9muir/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/9muir/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "labels": [
+      {
+        "id": 4262323075,
+        "node_id": "LA_kwDOAWBuf87-DeOD",
+        "url": "https://api.github.com/repos/golang/go/labels/compiler/runtime",
+        "name": "compiler/runtime",
+        "color": "486AF7",
+        "default": false,
+        "description": "Issues related to the Go compiler and/or runtime.",
+        "archived_at": null,
+        "archived_by": null
+      }
+    ],
+    "state": "open",
+    "locked": false,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 2,
+    "created_at": "2026-09-26T00:01:18Z",
+    "updated_at": "2026-09-26T01:05:49Z",
+    "closed_at": null,
+    "assignee": null,
+    "author_association": "CONTRIBUTOR",
+    "issue_field_values": [
+
+    ],
+    "type": null,
+    "active_lock_reason": null,
+    "sub_issues_summary": {
+      "total": 0,
+      "completed": 0,
+      "percent_completed": 0
+    },
+    "issue_dependencies_summary": {
+      "blocked_by": 0,
+      "total_blocked_by": 0,
+      "blocking": 0,
+      "total_blocking": 0
+    },
+    "body": "### Go version\n\ngo version go1.28-devel_8190b02cec linux/amd64\n\n### Output of `go env` in your module/workspace:\n\n```shell\nAR='ar'\nCC='gcc'\nCGO_CFLAGS='-O2 -g'\nCGO_CPPFLAGS=''\nCGO_CXXFLAGS='-O2 -g'\nCGO_ENABLED='1'\nCGO_FFLAGS='-O2 -g'\nCGO_LDFLAGS='-O2 -g'\nCXX='g++'\nGCCGO='gccgo'\nGO111MODULE=''\nGOAMD64='v1'\nGOARCH='amd64'\nGOAUTH='netrc'\nGOBIN='/usr/local/google/home/sjmuir/go/bin'\nGOCACHE='/usr/local/google/home/sjmuir/.cache/go-build'\nGOCACHEPROG=''\nGODEBUG=''\nGOENV='/usr/local/google/home/sjmuir/.config/go/env'\nGOEXE=''\nGOEXPERIMENT='simd'\nGOFIPS140='off'\nGOFLAGS=''\nGOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build2210645409=/tmp/go-build -gno-record-gcc-switches'\nGOHOSTARCH='amd64'\nGOHOSTOS='linux'\nGOINSECURE=''\nGOMOD='/dev/null'\nGOMODCACHE='/usr/local/google/home/sjmuir/go/pkg/mod'\nGONOPROXY=''\nGONOSUMDB=''\nGOOS='linux'\nGOPACKAGESDRIVER=''\nGOPATH='/usr/local/google/home/sjmuir/go'\nGOPRIVATE=''\nGOPROXY='https://proxy.golang.org,direct'\nGOROOT='/usr/local/google/home/sjmuir/go/git/go-tip'\nGOSUMDB='sum.golang.org'\nGOTELEMETRY='local'\nGOTELEMETRYDIR='/usr/local/google/home/sjmuir/.config/go/telemetry'\nGOTMPDIR=''\nGOTOOLCHAIN='auto'\nGOTOOLDIR='/usr/local/google/home/sjmuir/go/git/go-tip/pkg/tool/linux_amd64'\nGOVCS=''\nGOVERSION='go1.28-devel_8190b02cec Thu Sep 24 15:49:11 2026 -0700'\nGOWORK=''\nPKG_CONFIG='pkg-config'\n```\n\n### What did you do?\n\nAttempting to generate a version of `bytes.IndexByte` by using the SIMD API, got very ambitious with loop unrolling and decided that 8-way unrolling would be desirable. This worked great in earlier versions of Go, but when rebasing the change onto tip we found out that 8-way unrolling causes a compiler panic.\n\n### What did you see happen?\n\nCompiler panic due to spilling >7 K mask registers on AMD64.\n\nProgram that reproduces the bug: [https://go.dev/play/p/kLfBd5L1DAS](https://go.dev/play/p/kLfBd5L1DAS)\n\n### What did you expect to see?\n\nCompiler not panicking.\n\n[potential fix CL](https://go-review.googlesource.com/c/go/+/838845)\n",
+    "closed_by": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/golang/go/issues/81767/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/golang/go/issues/81767/timeline",
+    "performed_via_github_app": null,
+    "state_reason": null,
+    "pinned_comment": null
+  },
+  {
+    "url": "https://api.github.com/repos/golang/go/issues/81766",
+    "repository_url": "https://api.github.com/repos/golang/go",
+    "labels_url": "https://api.github.com/repos/golang/go/issues/81766/labels{/name}",
+    "comments_url": "https://api.github.com/repos/golang/go/issues/81766/comments",
+    "events_url": "https://api.github.com/repos/golang/go/issues/81766/events",
+    "html_url": "https://github.com/golang/go/pull/81766",
+    "id": 5589795543,
+    "node_id": "PR_kwDOAWBuf88AAAABFMmQnQ",
+    "number": 81766,
+    "title": "cmd/compile: fix ice in simd lowering of methods",
+    "user": {
+      "login": "mauri870",
+      "id": 10168637,
+      "node_id": "MDQ6VXNlcjEwMTY4NjM3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10168637?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mauri870",
+      "html_url": "https://github.com/mauri870",
+      "followers_url": "https://api.github.com/users/mauri870/followers",
+      "following_url": "https://api.github.com/users/mauri870/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mauri870/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mauri870/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mauri870/subscriptions",
+      "organizations_url": "https://api.github.com/users/mauri870/orgs",
+      "repos_url": "https://api.github.com/users/mauri870/repos",
+      "events_url": "https://api.github.com/users/mauri870/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mauri870/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 7,
+    "created_at": "2026-09-25T23:56:16Z",
+    "updated_at": "2026-09-26T01:00:27Z",
+    "closed_at": null,
+    "assignee": null,
+    "author_association": "MEMBER",
+    "issue_field_values": [
+
+    ],
+    "type": null,
+    "active_lock_reason": null,
+    "draft": false,
+    "pull_request": {
+      "url": "https://api.github.com/repos/golang/go/pulls/81766",
+      "html_url": "https://github.com/golang/go/pull/81766",
+      "diff_url": "https://github.com/golang/go/pull/81766.diff",
+      "patch_url": "https://github.com/golang/go/pull/81766.patch",
+      "merged_at": null
+    },
+    "body": "The SIMD rewriter generates a dispatcher body that calls each `@simdN`\r\nvariant. For methods, the call was generated as a bare function\r\nexpression (Foo@simd0) rather than a selector on the receiver, leaving\r\nthe type entry unset after re-typechecking and crashing the noder.\r\n    \r\nFixes golang/go#80657",
+    "closed_by": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/golang/go/issues/81766/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/golang/go/issues/81766/timeline",
+    "performed_via_github_app": null,
+    "state_reason": null
+  },
+  {
+    "url": "https://api.github.com/repos/golang/go/issues/81765",
+    "repository_url": "https://api.github.com/repos/golang/go",
+    "labels_url": "https://api.github.com/repos/golang/go/issues/81765/labels{/name}",
+    "comments_url": "https://api.github.com/repos/golang/go/issues/81765/comments",
+    "events_url": "https://api.github.com/repos/golang/go/issues/81765/events",
+    "html_url": "https://github.com/golang/go/issues/81765",
+    "id": 5589567672,
+    "node_id": "I_kwDOAWBuf88AAAABTSoIuA",
+    "number": 81765,
+    "title": "io/fs: Sub.Glob interprets metacharacters in the directory name as a pattern",
+    "user": {
+      "login": "nnnkkk7",
+      "id": 68233204,
+      "node_id": "MDQ6VXNlcjY4MjMzMjA0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/68233204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nnnkkk7",
+      "html_url": "https://github.com/nnnkkk7",
+      "followers_url": "https://api.github.com/users/nnnkkk7/followers",
+      "following_url": "https://api.github.com/users/nnnkkk7/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nnnkkk7/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nnnkkk7/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nnnkkk7/subscriptions",
+      "organizations_url": "https://api.github.com/users/nnnkkk7/orgs",
+      "repos_url": "https://api.github.com/users/nnnkkk7/repos",
+      "events_url": "https://api.github.com/users/nnnkkk7/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nnnkkk7/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 1,
+    "created_at": "2026-09-25T23:18:24Z",
+    "updated_at": "2026-09-25T23:28:33Z",
+    "closed_at": null,
+    "assignee": null,
+    "author_association": "CONTRIBUTOR",
+    "issue_field_values": [
+
+    ],
+    "type": null,
+    "active_lock_reason": null,
+    "sub_issues_summary": {
+      "total": 0,
+      "completed": 0,
+      "percent_completed": 0
+    },
+    "issue_dependencies_summary": {
+      "blocked_by": 0,
+      "total_blocked_by": 0,
+      "blocking": 0,
+      "total_blocking": 0
+    },
+    "body": "### Go version\n\ngo version go1.27.1 darwin/arm64 (also present on tip, edd77e8488)\n\n\n### What did you do?\n\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\t\"io/fs\"\n\t\"testing/fstest\"\n)\n\nfunc main() {\n\tfsys := fstest.MapFS{\"site[1]/index.tmpl\": {Data: []byte(\"Hello\")}}\n\tsub, _ := fs.Sub(fsys, \"site[1]\")\n\tdata, err := fs.ReadFile(sub, \"index.tmpl\")\n\tfmt.Printf(\"ReadFile: %q, %v\\n\", data, err)\n\tnames, err := fs.Glob(sub, \"*.tmpl\")\n\tfmt.Printf(\"Glob: %q, %v\\n\", names, err)\n}\n```\n\n### What did you see happen?\n\n```\nReadFile: \"Hello\", <nil>\nGlob: [], <nil>\n```\n\nWith a directory named `site[`, Glob returns `syntax error in pattern` for the same pattern. With `site*` or `site?` and a sibling directory that also matches, it returns `invalid result from inner fsys Glob`. The same happens with `os.DirFS`, where `template.ParseFS(sub, \"*.tmpl\")` fails with `pattern matches no files`.\n\n### What did you expect to see?\n\n```\nGlob: [\"index.tmpl\"], <nil>\n```\n\n[`subFS.Glob`](https://github.com/golang/go/blob/edd77e8488f86768ab479ba7f03a597bff4a867d/src/io/fs/sub.go#L150) prepends the directory name to the pattern without escaping it, so `path.Match` treats the name as a pattern. The generic `fs.Glob` (used when the `GlobFS` method is not available) returns the expected result for the same Sub. `testing/fstest.TestFS`, which also exercises `fs.Sub`, reports it too: for a `MapFS` with `d[1/hello.txt` and `dz/hello.txt` it fails with `testing fs.Sub(fsys, d[1): Glob(`*a*`): syntax error in pattern`.\n",
+    "closed_by": null,
+    "reactions": {
+      "url": "https://api.gith100 23585    0 23585    0     0  31161      0 --:--:-- --:--:-- --:--:-- 31155
+ub.com/repos/golang/go/issues/81765/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/golang/go/issues/81765/timeline",
+    "performed_via_github_app": null,
+    "state_reason": null,
+    "pinned_comment": null
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "shell": "npm run build",
+  "exit_code": 1,
+  "description": "npm run build with next 16 failing: Module not found with code frame",
+  "cwd": "/home/user/src/next-app"
+}

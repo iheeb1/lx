@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-v",
+    "-run",
+    "TestLogs",
+    "./skip/"
+  ],
+  "shell": "go test -v -run TestLogs ./skip/",
+  "repo": "",
+  "exit_code": 0,
+  "description": "go test -v -run TestLogs on a passing test that logs three lines",
+  "cwd": "/home/user/src/lxcap"
+}

@@ -1,0 +1,11 @@
+collected 2 items
+crash/test_crash.py .Fatal Python error: Segmentation fault
+Thread 0x000000016ece7000 (most recent call first):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 293 in accept
+  … 4 library frames (pytest_rerunfailures, threading)
+Current thread 0x00000001f6149d80 (most recent call first):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ctypes/__init__.py", line 509 in string_at
+  File "crash/test_crash.py", line 9 in test_segfault
+  … 29 library frames (_pytest, pluggy)
+  File "~/venv/bin/pytest", line 8 in <module>
+[lx: pytest exited 139]

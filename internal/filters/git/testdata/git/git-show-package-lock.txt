@@ -1,0 +1,73 @@
+commit 4262a38ded7762e22608a9feb9f117b40d338ced
+Author: Take Weiland <diesieben07@gmail.com>
+Date:   Fri Sep 5 12:13:28 2025 +0200
+
+    Version 3.7.2
+
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index b9cb9a2a..e7907443 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,5 +1,8 @@
+ # Changelog
+ 
++# 3.7.2 (2025-07-09)
++- Fix ES6 packaging
++
+ # 3.7.1 (2025-07-09)
+ - Revert change in ES6 packaging
+ 
+diff --git a/package-lock.json b/package-lock.json
+index 7adbdb4d..a7a69442 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1,12 +1,12 @@
+ {
+   "name": "luxon",
+-  "version": "3.7.1",
++  "version": "3.7.2",
+   "lockfileVersion": 2,
+   "requires": true,
+   "packages": {
+     "": {
+       "name": "luxon",
+-      "version": "3.7.1",
++      "version": "3.7.2",
+       "license": "MIT",
+       "devDependencies": {
+         "@babel/core": "^7.18.6",
+diff --git a/package.json b/package.json
+index 873b8a42..f80269b1 100644
+--- a/package.json
++++ b/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "luxon",
+-  "version": "3.7.1",
++  "version": "3.7.2",
+   "description": "Immutable date wrapper",
+   "author": "Isaac Cambron",
+   "keywords": [
+diff --git a/src/luxon.js b/src/luxon.js
+index e0d4bfab..9cfd39f8 100644
+--- a/src/luxon.js
++++ b/src/luxon.js
+@@ -9,7 +9,7 @@ import InvalidZone from "./zones/invalidZone.js";
+ import SystemZone from "./zones/systemZone.js";
+ import Settings from "./settings.js";
+ 
+-const VERSION = "3.7.1";
++const VERSION = "3.7.2";
+ 
+ export {
+   VERSION,
+diff --git a/src/package.json b/src/package.json
+index 7e262a1f..10c2418a 100644
+--- a/src/package.json
++++ b/src/package.json
+@@ -1,4 +1,4 @@
+ {
+   "type": "module",
+-  "version": "3.7.1"
++  "version": "3.7.2"
+ }

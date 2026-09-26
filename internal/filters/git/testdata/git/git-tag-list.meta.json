@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "git",
+    "tag"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/express-shallow",
+  "description": "git tag in express (277 tags)"
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "make",
+    "vet"
+  ],
+  "shell": "make vet",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "make vet in gin: echoed go vet command over all packages (clean)",
+  "cwd": "repos/gin"
+}

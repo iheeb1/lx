@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "gradle",
+    "build"
+  ],
+  "exit_code": 1,
+  "description": "SYNTHETIC (hand-written in real Gradle 8.10 / Maven 3.9 format; the tool is not installed or not reachable offline on the capture machine): gradle build in a two-project build: javac errors (cannot find symbol with symbol/location lines, incompatible types) and a deprecation warning under a FAILED task, What went wrong, the 4-line Try section, the Gradle 9 deprecation notice with its help sentences, BUILD FAILED",
+  "cwd": "/home/user/src/app"
+}

@@ -1,0 +1,1 @@
+{"type":"assistant","cwd":"/Users/me/app","sessionId":"s1","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_Z","name":"Bash","input":{"command":"git log","description":"run"}}]}}

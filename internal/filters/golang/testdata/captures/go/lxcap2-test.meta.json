@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "./..."
+  ],
+  "shell": "go test ./...",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test ./... over lxcap2: a failing test then TestMain leak report after the final FAIL, log.Fatal in a later test after a failure (no final FAIL line), output without trailing newline glued to --- FAIL and to the final FAIL, a subtest with unicode names, 12 passing packages",
+  "cwd": "/home/user/src/lxcap2"
+}

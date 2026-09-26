@@ -1,0 +1,70 @@
+    Checking proc-macro2 v1.0.86
+    Checking unicode-ident v1.0.12
+    Checking libc v0.2.155
+    Checking cfg-if v1.0.0
+    Checking quote v1.0.36
+    Checking syn v2.0.72
+    Checking serde v1.0.204
+    Checking memchr v2.7.4
+    Checking demo v0.1.0 (/home/user/src/demo)
+warning: length comparison to zero
+  --> src/lib.rs:10:8
+   |
+10 |     if items.len() == 0 {
+   |        ^^^^^^^^^^^^^^^^ help: using `is_empty` is clearer and more explicit: `items.is_empty()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#len_zero
+   = note: `#[warn(clippy::len_zero)]` on by default
+
+warning: length comparison to zero
+  --> src/lib.rs:31:12
+   |
+31 |         if names.len() == 0 {
+   |            ^^^^^^^^^^^^^^^^ help: using `is_empty` is clearer and more explicit: `names.is_empty()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#len_zero
+
+warning: length comparison to zero
+  --> src/store.rs:55:8
+   |
+55 |     if self.rows.len() == 0 {
+   |        ^^^^^^^^^^^^^^^^^^^^ help: using `is_empty` is clearer and more explicit: `self.rows.is_empty()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#len_zero
+
+warning: unneeded `return` statement
+  --> src/lib.rs:18:5
+   |
+18 |     return total;
+   |     ^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+   = note: `#[warn(clippy::needless_return)]` on by default
+help: remove `return`
+   |
+18 -     return total;
+18 +     total
+   |
+
+warning: this `if` has identical blocks
+  --> src/store.rs:12:31
+   |
+12 |       let size = if compressed {
+   |  _______________________________^
+13 | |         raw.len()
+14 | |     } else {
+   | |_____^
+   |
+note: same as this
+  --> src/store.rs:14:12
+   |
+14 |       } else {
+   |  ____________^
+15 | |         raw.len()
+16 | |     };
+   | |_____^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#if_same_then_else
+   = note: `#[warn(clippy::if_same_then_else)]` on by default
+
+warning: `demo` (lib) generated 5 warnings (run `cargo clippy --fix --lib -p demo` to apply 4 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.17s

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "http",
+    "POST",
+    "https://api.github.com/repos/golang/go/issues",
+    "title=x"
+  ],
+  "shell": "http POST https://api.github.com/repos/golang/go/issues title=x",
+  "repo": "",
+  "exit_code": 1,
+  "description": "REAL httpie 3.2.4: stdin not a terminal, so key=value data is refused with an argparse usage block (\"usage:\" / \"error:\" / message) \u2014 an error the tool did print",
+  "cwd": "data/api"
+}

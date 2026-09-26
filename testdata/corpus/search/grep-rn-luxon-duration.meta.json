@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "Duration",
+    "src",
+    "test",
+    "docs"
+  ],
+  "shell": "grep -rn \"Duration\" src test docs",
+  "repo": "moment/luxon",
+  "exit_code": 0,
+  "description": "grep -rn Duration over luxon's src/, test/ and docs/ directories: ~700 matches mixing code, tests and markdown",
+  "cwd": "repos/luxon"
+}

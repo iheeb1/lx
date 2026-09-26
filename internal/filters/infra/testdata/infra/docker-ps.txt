@@ -1,0 +1,13 @@
+CONTAINER ID   IMAGE                  COMMAND                  CREATED      STATUS                  PORTS                                                                          NAMES
+79b14496bda6   shop/api:1.8.2         "/app/api serve"         3 days ago   Up 3 days (healthy)     0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp                                    shop-api-1
+cf400a99a3a2   shop/worker:1.8.2      "/app/worker --queue…"   3 days ago   Up 3 days                                                                                              shop-worker-1
+53b74fe209b9   shop/web:1.8.2         "docker-entrypoint.s…"   3 days ago   Up 3 days (healthy)     0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp                                    shop-web-1
+ac5f69b33a07   shop/scheduler:1.8.2   "/app/scheduler"         3 days ago   Up 3 days (healthy)                                                                                    shop-scheduler-1
+bdbdfe606f4b   shop/billing:1.8.2     "/app/billing"           3 days ago   Up 3 days (unhealthy)                                                                                  shop-billing-1
+591072a15a2c   shop/search:1.8.2      "/usr/share/elasti…"     3 days ago   Up 3 days (healthy)     9200/tcp, 9300/tcp                                                             shop-search-1
+6d850922b696   shop/notifier:1.8.2    "node dist/index.js"     3 days ago   Up 3 days (healthy)                                                                                    shop-notifier-1
+653a2142fc0a   shop/auth:1.8.2        "/app/auth"              3 days ago   Up 3 days (healthy)     8081/tcp                                                                       shop-auth-1
+37cc3bbdd5c1   shop/gateway:1.8.2     "/docker-entrypoint.…"   3 days ago   Up 3 days (healthy)     0.0.0.0:80->80/tcp, [::]:80->80/tcp, 0.0.0.0:443->443/tcp, [::]:443->443/tcp   shop-gateway-1
+acb24f373b50   shop/media:1.8.2       "/app/media"             3 days ago   Up 3 days (healthy)                                                                                    shop-media-1
+c5ac1e3dba6c   shop/reports:1.8.2     "python -m reports"      3 days ago   Up 3 days                                                                                              shop-reports-1
+3b1345450512   shop/ingest:1.8.2      "/app/ingest"            3 days ago   Up 3 days (healthy)                                                                                    shop-ingest-1

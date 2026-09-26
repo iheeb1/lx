@@ -1,0 +1,15 @@
+collecting ... collected 650 items
+tests/test_chain.py::test_multicommand_chaining XFAIL                    [ 16%]
+tests/test_termui.py::test_getchar_windows[True-h] SKIPPED (Tests us...) [ 69%]
+tests/test_termui.py::test_getchar_windows[True-H] SKIPPED (Tests us...) [ 70%]
+tests/test_termui.py::test_getchar_windows[True-\xe9] SKIPPED (Tests...) [ 70%]
+tests/test_termui.py::test_getchar_windows[True-\xc0] SKIPPED (Tests...) [ 70%]
+tests/test_termui.py::test_getchar_windows[True- ] SKIPPED (Tests us...) [ 70%]
+tests/test_termui.py::test_getchar_windows[True-\u5b57] SKIPPED (Tes...) [ 70%]
+tests/test_termui.py::test_getchar_windows[True-\xe0H] SKIPPED (Test...) [ 70%]
+tests/test_termui.py::test_getchar_windows[True-\xe0R] SKIPPED (Test...) [ 70%]
+tests/test_termui.py::test_getchar_windows[False-h] SKIPPED (Tests u...) [ 71%]
+tests/test_termui.py::test_getchar_windows[False-H] SKIPPED (Tests u...) [ 71%]
+[lx: +12 more SKIPPED lines]
+[lx: 627 PASSED lines hidden]
+================== 627 passed, 22 skipped, 1 xfailed in 0.79s ==================

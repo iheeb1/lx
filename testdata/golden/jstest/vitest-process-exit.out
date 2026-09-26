@@ -1,0 +1,15 @@
+ ❯ adv/exit.test.ts (2 tests | 1 failed) 3ms
+   × calls process.exit 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  adv/exit.test.ts > calls process.exit
+Error: process.exit unexpectedly called with "1"
+ ❯ adv/exit.test.ts:3:11
+      3|   process.exit(1);
+       |           ^
+
+[1 passing test hidden]
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Duration  129ms (transform 13ms, setup 0ms, import 20ms, tests 3ms, environment 0ms)

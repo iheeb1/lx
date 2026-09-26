@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "curl",
+    "-s",
+    "-i",
+    "-X",
+    "POST",
+    "-H",
+    "Content-Type: application/json",
+    "-d",
+    "{\"title\":\"x\"}",
+    "https://api.github.com/repos/golang/go/issues"
+  ],
+  "shell": "curl -s -i -X POST -H Content-Type: application/json -d {\"title\":\"x\"} https://api.github.com/repos/golang/go/issues",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -i POST without auth: 401 head (all headers kept) and JSON error body",
+  "cwd": "data/api"
+}

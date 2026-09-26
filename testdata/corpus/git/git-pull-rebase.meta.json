@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "git",
+    "pull",
+    "--rebase",
+    "backup",
+    "main"
+  ],
+  "shell": "git pull --rebase backup main",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "git pull --rebase after the rejected push: rebasing local commit on top of teammate's commit",
+  "cwd": "repos/cobra-merge"
+}

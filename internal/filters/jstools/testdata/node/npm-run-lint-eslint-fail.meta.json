@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "lint",
+    "--",
+    "--rule",
+    "no-var: error",
+    "--rule",
+    "prefer-arrow-callback: warn"
+  ],
+  "shell": "npm run lint -- --rule no-var: error --rule prefer-arrow-callback: warn",
+  "exit_code": 1,
+  "description": "npm run lint (eslint .) on express with no-var as error and prefer-arrow-callback as warning: 4277 problems (1751 errors, 2526 warnings), 330 KB",
+  "cwd": "/home/user/src/express"
+}

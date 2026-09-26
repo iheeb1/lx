@@ -1,0 +1,45 @@
+F811 [*] Redefinition of unused `os` from line 1
+ --> multi.py:2:8
+1 | import os
+  |        -- previous definition of `os` here
+2 | import os
+  |        ^^ `os` redefined here
+help: Remove definition: `os`
+
+F401 [*] `os` imported but unused
+ --> multi.py:2:8
+2 | import os
+  |        ^^
+help: Remove unused import: `os`
+
+E722 Do not use bare `except`
+  --> multi.py:9:5
+ 9 |     except:
+   |     ^^^^^^
+
+F841 Local variable `y` is assigned to but never used
+  --> multi.py:14:5
+14 |     y = 1
+   |     ^
+help: Remove assignment to unused variable `y`
+
+F841 Local variable `error_message` is assigned to but never used
+  --> multi.py:15:5
+15 |     error_message = "error: something failed"
+   |     ^^^^^^^^^^^^^
+help: Remove assignment to unused variable `error_message`
+
+F821 Undefined name `undefined_name`
+  --> multi.py:16:12
+16 |     return undefined_name
+   |            ^^^^^^^^^^^^^^
+
+F811 Redefinition of unused `f` from line 6
+  --> multi.py:19:5
+19 | def f():
+   |     ^ `f` redefined here
+  ::: multi.py:6:5
+ 6 | def f(x: List[int] = []):
+   |     - previous definition of `f` here
+help: Remove definition: `f`
+[lx: hid 2 fix diffs]

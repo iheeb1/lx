@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "pnpm",
+    "add",
+    "this-package-does-not-exist-lx-test"
+  ],
+  "shell": "pnpm add this-package-does-not-exist-lx-test",
+  "exit_code": 1,
+  "description": "pnpm add of a package that does not exist: ERR_PNPM_FETCH_404",
+  "cwd": "/home/user/src/pnpm-app"
+}

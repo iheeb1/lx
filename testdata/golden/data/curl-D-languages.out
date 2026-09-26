@@ -1,0 +1,24 @@
+HTTP/2 200
+content-type: application/json; charset=utf-8
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 54
+x-ratelimit-used: 6
+x-ratelimit-resource: core
+x-ratelimit-reset: 1790391607
+content-length: 231
+[lx: 19 more headers not shown: date, cache-control, vary, etag, last-modified, x-github-media-type, x-github-api-version-selected, access-control-expose-headers, access-control-allow-origin, strict-transport-security, x-frame-options, x-content-type-options, x-xss-protection, referrer-policy, content-security-policy, server, accept-ranges, x-github-request-id, x-github-edge-region]
+
+{
+  "Go": 56927980,
+  "Assembly": 3170497,
+  "HTML": 2633010,
+  "C": 98161,
+  "Shell": 67967,
+  "Perl": 31837,
+  "Python": 21296,
+  "JavaScript": 20759,
+  "Batchfile": 6101,
+  "Dockerfile": 3563,
+  "Makefile": 1854,
+  "Awk": 450
+}

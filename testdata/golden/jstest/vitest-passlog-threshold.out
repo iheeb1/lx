@@ -1,0 +1,16 @@
+stderr | adv/passlog.test.ts > passes but logs an error
+Error: something went wrong in the mock server
+
+[1 passing file, 1 passing test hidden]
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Duration  166ms (transform 15ms, setup 0ms, import 24ms, tests 2ms, environment 0ms)
+ % Coverage report from v8
+
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------|---------|----------|---------|---------|-------------------
+All files |      10 |        0 |      20 |    12.5 |
+ cart.ts  |      10 |        0 |      20 |    12.5 | 12-23
+----------|---------|----------|---------|---------|-------------------
+ERROR: Coverage for lines (12.5%) does not meet global threshold (95%)

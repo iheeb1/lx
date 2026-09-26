@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "show",
+    "--stat",
+    "HEAD~4"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/gin",
+  "description": "git show --stat on a multi-file commit"
+}

@@ -1,0 +1,15 @@
+[lx: hid 1 Obtaining/Processing lines]
+  DEPRECATION: A future pip version will change local packages to be built in-place without first copying to a temporary directory. We recommend you use --use-feature=in-tree-build to test your packages with this new behavior before it becomes the default.
+   pip 21.3 will remove support for this functionality. You can find discussion regarding this at https://github.com/pypa/pip/issues/7555.
+    ERROR: Command errored out with exit status 1:
+     command: ~/venv/bin/python3 -c 'import io, os, sys, setuptools, tokenize; sys.argv[0] = '"'"'/private/var/folders/80/4_lyj_vx2bl5xtz0k9hny73m0000gn/T/pip-req-build-afzyt663/setup.py'"'"'; __file__='"'"'/private/var/folders/80/4_lyj_vx2bl5xtz0k9hny73m0000gn/T/pip-req-build-afzyt663/setup.py'"'"';f = getattr(tokenize, '"'"'open'"'"', open)(__file__) if os.path.exists(__file__) else io.StringIO('"'"'from setuptools import setup; setup()'"'"');code = f.read().replace('"'"'\r\n'"'"', '"'"'\n'"'"');f.close();exec(compile(code, __file__, '"'"'exec'"'"'))' egg_info --egg-base /private/var/folders/80/4_lyj_vx2bl5xtz0k9hny73m0000gn/T/pip-pip-egg-info-0e_p3hpe
+         cwd: /private/var/folders/80/4_lyj_vx2bl5xtz0k9hny73m0000gn/T/pip-req-build-afzyt663/
+    Complete output (3 lines):
+    checking for libfoo... not found
+    error: libfoo >= 1.2 is required to build badpkg
+    running custom build step
+    ----------------------------------------
+WARNING: Discarding file:///home/user/src/badpkg. Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.
+ERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.
+WARNING: You are using pip version 21.2.4; however, version 26.0.1 is available.
+You should consider upgrading via the '~/venv/bin/python3 -m pip install --upgrade pip' command.

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "tsconfig.app.json"
+  ],
+  "shell": "cat tsconfig.app.json",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "cat of the create-vite react-ts tsconfig.app.json (JSONC with comments)",
+  "cwd": "repos/vite-react-app"
+}

@@ -1,0 +1,9 @@
+[ls: owner user · group wheel · mode -rwxr-xr-x@ files, drwxr-xr-x@ dirs unless shown · link counts dropped]
+total 8
+224 Sep 26 02:30 ./
+96 Sep 26 02:30 ../
+96 Sep 26 02:30 docs/
+8 Sep 26 02:30 link.go -> src/a.go
+18 Sep 26 02:30 run.sh
+d--------- 96 Sep 26 02:30 secret/
+128 Sep 26 02:30 src/

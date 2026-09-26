@@ -1,0 +1,39 @@
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Startup Error [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯⎯[39m
+Error: Failed to load custom Reporter from basic
+    at loadCustomReporterModule (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:11429:9)
+    at file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:11445:23
+    ... 3 lines matching cause stack trace ...
+    at _createServer (file:///home/user/src/vitproj/node_modules/vite/dist/node/chunks/node.js:24883:84)
+    at createViteServer (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:8902:17)
+    at createVitest (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:14288:18)
+    at prepareVitest (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:14655:14)
+    at startVitest (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:14598:14) {
+  [cause]: Error: Failed to load url basic (resolved id: basic). Does the file exist?
+      at reviveInvokeError (file:///home/user/src/vitproj/node_modules/vite/dist/node/module-runner.js:542:14)
+      at Object.invoke (file:///home/user/src/vitproj/node_modules/vite/dist/node/module-runner.js:558:33)
+      at ServerModuleRunner.getModuleInformation (file:///home/user/src/vitproj/node_modules/vite/dist/node/module-runner.js:1212:7)
+      at ServerModuleRunner.import (file:///home/user/src/vitproj/node_modules/vite/dist/node/module-runner.js:1133:23)
+      at loadCustomReporterModule (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:11427:26)
+      at file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:11445:23
+      at async Promise.all (index 0)
+      at Vitest._setServer (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:13244:138)
+      at BasicMinimalPluginContext.handler (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:14258:5)
+      at _createServer (file:///home/user/src/vitproj/node_modules/vite/dist/node/chunks/node.js:24883:84) {
+    code: 'ERR_LOAD_URL',
+    runnerError: Error: RunnerError
+        at reviveInvokeError (file:///home/user/src/vitproj/node_modules/vite/dist/node/module-runner.js:543:64)
+        at Object.invoke (file:///home/user/src/vitproj/node_modules/vite/dist/node/module-runner.js:558:33)
+        at ServerModuleRunner.getModuleInformation (file:///home/user/src/vitproj/node_modules/vite/dist/node/module-runner.js:1212:7)
+        at ServerModuleRunner.import (file:///home/user/src/vitproj/node_modules/vite/dist/node/module-runner.js:1133:23)
+        at loadCustomReporterModule (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:11427:26)
+        at file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:11445:23
+        at async Promise.all (index 0)
+        at Vitest._setServer (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:13244:138)
+        at BasicMinimalPluginContext.handler (file:///home/user/src/vitproj/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:14258:5)
+        at _createServer (file:///home/user/src/vitproj/node_modules/vite/dist/node/chunks/node.js:24883:84)
+  }
+}
+
+
+

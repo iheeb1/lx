@@ -1,0 +1,48 @@
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	[32mmodified:   binding/binding.go[m
+	[32mmodified:   binding/binding_test.go[m
+	[32mmodified:   binding/form.go[m
+	[32mmodified:   binding/form_mapping.go[m
+	[32mmodified:   binding/json.go[m
+	[32mmodified:   binding/protobuf.go[m
+	[32mmodified:   binding/validate_test.go[m
+	[32mmodified:   binding/xml.go[m
+	[32mdeleted:    codecov.yml[m
+	[32mmodified:   context.go[m
+	[32mnew file:   context_ratelimit.go[m
+	[32mrenamed:    tree.go -> radix_tree.go[m
+	[32mrenamed:    tree_test.go -> radix_tree_test.go[m
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	[31mdeleted:    CODE_OF_CONDUCT.md[m
+	[31mmodified:   README.md[m
+	[31mmodified:   context.go[m
+	[31mmodified:   debug.go[m
+	[31mmodified:   debug_test.go[m
+	[31mmodified:   gin.go[m
+	[31mmodified:   go.mod[m
+	[31mmodified:   go.sum[m
+	[31mmodified:   render/data.go[m
+	[31mmodified:   render/html.go[m
+	[31mmodified:   render/json.go[m
+	[31mmodified:   render/redirect.go[m
+	[31mmodified:   render/render.go[m
+	[31mmodified:   render/render_msgpack_test.go[m
+	[31mmodified:   render/render_test.go[m
+	[31mmodified:   render/text.go[m
+	[31mmodified:   render/xml.go[m
+	[31mmodified:   render/yaml.go[m
+	[31mmodified:   response_writer.go[m
+	[31mmodified:   utils.go[m
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	[31mdocs/rate-limiting.md[m
+	[31mmiddleware/[m
+

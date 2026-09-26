@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "docker",
+    "ps"
+  ],
+  "shell": "docker ps",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of docker 27 `docker ps`; the tool is not available on the capture host): 12 running containers of a compose project; CREATED is the same for all",
+  "cwd": "repos/shop"
+}

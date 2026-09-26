@@ -1,0 +1,4 @@
+Package  Current  Wanted  Latest  Depended by
+debug      4.3.4   4.3.4   4.4.3  a@npm:pkg-a@1.0.0
+debug      4.3.4   4.3.4   4.4.3  b@npm:pkg-b@1.0.0
+[every row: Location node_modules/<Package>]

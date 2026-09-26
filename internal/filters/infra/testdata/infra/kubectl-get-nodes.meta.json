@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "kubectl",
+    "get",
+    "nodes"
+  ],
+  "shell": "kubectl get nodes",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of kubectl 1.31 `kubectl get nodes`; the tool is not available on the capture host): 5 nodes, one NotReady, one cordoned",
+  "cwd": "repos/shop"
+}

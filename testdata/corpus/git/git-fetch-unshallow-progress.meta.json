@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "fetch",
+    "--unshallow",
+    "--progress"
+  ],
+  "shell": "git fetch --unshallow --progress",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "git fetch --unshallow --progress on a depth-20 clone: progress meters with carriage returns, then hundreds of '[new tag]' lines",
+  "cwd": "repos/express-shallow"
+}

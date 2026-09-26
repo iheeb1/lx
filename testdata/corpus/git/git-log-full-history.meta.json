@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "log"
+  ],
+  "shell": "git log",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "plain 'git log' with no limit in a non-TTY (no pager): the full 1100-commit history of cobra",
+  "cwd": "repos/cobra"
+}

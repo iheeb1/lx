@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "ls",
+    "-R",
+    "packages/vite/src"
+  ],
+  "shell": "ls -R packages/vite/src",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "ls -R packages/vite/src: recursive listing of the vite package source tree",
+  "cwd": "repos/vite"
+}

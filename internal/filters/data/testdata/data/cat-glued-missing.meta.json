@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "cat",
+    "cJSON.c",
+    "missing.h",
+    "cJSON.h"
+  ],
+  "shell": "cat cJSON.c missing.h cJSON.h",
+  "repo": "",
+  "exit_code": 1,
+  "description": "REAL: cJSON.c without its trailing newline, a missing file, cJSON.h; cat's \"No such file or directory\" is glued to the last line of cJSON.c (line 3206 of 3512), inside the omitted range",
+  "cwd": "data/work"
+}

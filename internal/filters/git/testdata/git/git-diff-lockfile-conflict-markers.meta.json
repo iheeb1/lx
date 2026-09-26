@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "diff",
+    "HEAD~1",
+    "HEAD"
+  ],
+  "exit_code": 0,
+  "cwd": "/home/user/src/luxon",
+  "description": "git diff HEAD~1 HEAD after a botched merge in a luxon clone: a large package-lock.json refresh whose committed result still contains conflict markers (<<<<<<< HEAD / ======= / >>>>>>> deps-refresh)"
+}

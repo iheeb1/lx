@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "make",
+    "test"
+  ],
+  "shell": "make test",
+  "repo": "DaveGamble/cJSON",
+  "exit_code": 0,
+  "description": "make test in cJSON: runs the bundled test binary",
+  "cwd": "repos/cJSON"
+}

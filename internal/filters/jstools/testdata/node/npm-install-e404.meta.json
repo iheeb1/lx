@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "install",
+    "this-package-does-not-exist-lx-review"
+  ],
+  "shell": "npm install this-package-does-not-exist-lx-review",
+  "exit_code": 1,
+  "description": "npm install of a package that does not exist: E404",
+  "cwd": "/home/user/src/ws-app"
+}

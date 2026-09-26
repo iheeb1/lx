@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-i",
+    "https://go.dev/nonexistent-page"
+  ],
+  "shell": "curl -i https://go.dev/nonexistent-page",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -i of a 404 HTML page (28 KB): all headers kept, HTML reduced to title + text",
+  "cwd": "data/api"
+}

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--ci",
+    "nothing-matches-this"
+  ],
+  "shell": "npx jest --ci nothing-matches-this",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "no test matches the pattern: jest exits 1",
+  "cwd": "repos/jestproj"
+}

@@ -1,0 +1,21 @@
+packages/vite/src/client:
+total 120
+-rw-r--r--@ 1 user  wheel   1842 Sep 26 00:31 bundledDevClient.ts
+-rw-r--r--@ 1 user  wheel  12908 Sep 26 00:31 bundledDevHmrClient.ts
+-rw-r--r--@ 1 user  wheel  20048 Sep 26 00:31 client.ts
+-rw-r--r--@ 1 user  wheel    360 Sep 26 00:31 clientEntry.ts
+-rw-r--r--@ 1 user  wheel    698 Sep 26 00:31 env.ts
+-rw-r--r--@ 1 user  wheel   7353 Sep 26 00:31 overlay.ts
+-rw-r--r--@ 1 user  wheel    236 Sep 26 00:31 tsconfig.json
+
+packages/vite/src/types:
+total 128
+-rw-r--r--@ 1 user  wheel   2525 Sep 26 00:31 alias.d.ts
+-rw-r--r--@ 1 user  wheel    214 Sep 26 00:31 anymatch.d.ts
+-rw-r--r--@ 1 user  wheel   7109 Sep 26 00:31 chokidar.d.ts
+-rw-r--r--@ 1 user  wheel  11059 Sep 26 00:31 commonjs.d.ts
+-rw-r--r--@ 1 user  wheel   3356 Sep 26 00:31 connect.d.ts
+-rw-r--r--@ 1 user  wheel    429 Sep 26 00:31 dynamicImportVars.d.ts
+-rw-r--r--@ 1 user  wheel    101 Sep 26 00:31 package.json
+-rw-r--r--@ 1 user  wheel    863 Sep 26 00:31 shims.d.ts
+-rw-r--r--@ 1 user  wheel  16508 Sep 26 00:31 ws.d.ts

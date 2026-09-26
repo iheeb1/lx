@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "lint"
+  ],
+  "shell": "npm run lint",
+  "exit_code": 1,
+  "description": "npm run lint where the script is oxlint (a linter lx does not parse): the filter must bail",
+  "cwd": "/home/user/src/vite-app"
+}

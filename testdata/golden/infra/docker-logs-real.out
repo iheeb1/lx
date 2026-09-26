@@ -1,0 +1,13 @@
+[log: 101 lines, 2 templates, 2 distinct error records, 2026-09-26T10:00:30.500Z … 2026-09-26T10:01:30.630Z]
+2026-09-26T10:00:30.500Z WARN  [db] slow query 1030ms [×3]
+    vars: query 1030ms ×1, 1060ms ×1, 1090ms ×1
+2026-09-26T10:01:11.900Z ERROR [orders] unhandled error in GET /api/orders/9812
+Traceback (most recent call last):
+  File "/app/orders/views.py", line 118, in get
+    return totals(order)
+  File "/app/orders/totals.py", line 41, in totals
+    return order["lines"][0]["total"]
+KeyError: 'lines'
+2026-09-26T10:01:30.000Z FATAL [main] shutting down: database connection lost
+2026-09-26T10:00:01.007Z INFO  [http] GET /api/orders?page=2 200 16ms [×90]
+    vars: GET ×5 distinct (/api/orders?page=2, …); #7 ×64+ distinct (16ms, …)

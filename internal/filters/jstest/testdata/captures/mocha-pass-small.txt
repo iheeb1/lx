@@ -1,0 +1,9 @@
+
+
+  misc
+some console output from a test
+    ✔ logs
+
+
+  1 passing (2ms)
+

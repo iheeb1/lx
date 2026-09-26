@@ -1,0 +1,6 @@
+[lx: hidden: 37 cargo status lines (Compiling ×33, Updating ×2, Downloaded, Locking)]
+  Downloaded 1 crate (228.4 KB) in 0.41s
+  Installing ripgrep v14.1.0
+    Finished `release` profile [optimized + debuginfo] target(s) in 41.87s
+  Installing /home/user/.cargo/bin/rg
+   Installed package `ripgrep v14.1.0` (executable `rg`)

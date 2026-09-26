@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "-p",
+    "-n",
+    "1",
+    "--",
+    "pnpm-lock.yaml"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/ufo",
+  "description": "git log -p -n 1 -- pnpm-lock.yaml (pnpm lockfile commit)"
+}

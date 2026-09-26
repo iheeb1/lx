@@ -1,0 +1,297 @@
+1bd0ecf 2026-09-25 [HazyLab] fix(context): load Keys under the mutex in Copy (#4854) [+6 body lines]
+diff --git a/context.go b/context.go
+@@ -132,9 +132,8 @@ func (c *Context) Copy() *Context {
+ 	cp.handlers = nil
+ 	cp.fullPath = c.fullPath
+
+-	cKeys := c.Keys
+ 	c.mu.RLock()
+-	cp.Keys = maps.Clone(cKeys)
++	cp.Keys = maps.Clone(c.Keys)
+ 	c.mu.RUnlock()
+
+ 	cParams := c.Params
+diff --git a/context_test.go b/context_test.go
+@@ -709,6 +709,30 @@ func TestContextGetStringMapStringSlice(t *testing.T) {
+ 	assert.Equal(t, []string{"foo"}, c.GetStringMapStringSlice("map")["foo"])
+ }
+
++func TestCopyConcurrentWithSet(t *testing.T) {
++	c := &Context{}
++	var wg sync.WaitGroup
++	wg.Add(2)
++	go func() {
++		defer wg.Done()
++		for i := 0; i < 100; i++ {
++			c.Set(i, i)
++		}
++	}()
++	go func() {
++		defer wg.Done()
++		for i := 0; i < 100; i++ {
++			cp := c.Copy()
++			for k, v := range cp.Keys {
++				if k != v {
++					t.Errorf("copied key %v = %v, want %v", k, v, k)
++				}
++			}
++		}
++	}()
++	wg.Wait()
++}
++
+ func TestContextCopy(t *testing.T) {
+ 	c, _ := CreateTestContext(httptest.NewRecorder())
+ 	c.index = 2
+3b08cd7 2026-09-19 [water] fix: reset skipped-nodes stack on getValue entry to prevent slice overflow panic [#4818] (#4819) [+6 body lines]
+diff --git a/routes_test.go b/routes_test.go
+@@ -844,3 +844,100 @@ func TestEngineHandleMethodNotAllowedCornerCase(t *testing.T) {
+ 	w := PerformRequest(r, http.MethodGet, "/base/v1/user/groups")
+ 	assert.Equal(t, http.StatusNotFound, w.Code)
+ }
++
++// TestIssue4818_skippedNodesOverflow_Panic reproduces the panic from issue #4818:
++// with HandleMethodNotAllowed enabled, getValue is called once per method tree
++// reusing the same c.skippedNodes stack without resetting it, so residue
++// accumulates until the reslice exceeds the capacity (engine.maxSections).
++// The request must not panic and must fall through to the normal 404 path
++// (the path genuinely matches no route, so 405 is not applicable here).
++func TestIssue4818_skippedNodesOverflow_Panic(t *testing.T) {
++	router := New()
++	router.HandleMethodNotAllowed = true
++
++	h := func(c *Context) {}
++	router.OPTIONS("/:p0/:p1/a/:p2", h)
++	router.GET("/:p0/:p1/a/:p2", h)
++	router.PATCH("/b/:p0/:p1/c", h)
++	router.DELETE("/b/:p0/:p1/d/:p3", h)
++	router.GET("/b/:p0/:p1/e/f", h)
++	router.POST("/b/:p0/:p1/g/:p4/h", h)
++	router.OPTIONS("/b/:p0/:p1/g/:p4/h", h)
++	router.DELETE("/b/cache", h)
++	router.GET("/b/clients/:p1/g", h)
++	router.POST("/b/clients/:p1/g", h)
++	router.PATCH("/b/clients/:p1/g/:p4", h)
++	router.OPTIONS("/b/clients/:p1/g/:p4", h)
++
++	req := httptest.NewRequest(http.MethodPost, "/b/clients/42", nil)
++	w := httptest.NewRecorder()
++	router.ServeHTTP(w, req)
++
++	// Must not panic; path matches no route, so 404 is the correct outcome.
++	if w.Code != http.StatusNotFound {
++		t.Fatalf("expected 404, got %d (a panic would have aborted the test)", w.Code)
++	}
++}
++
++// TestIssue4818_MethodNotAllowedStillWorks verifies the HandleMethodNotAllowed
++// loop still produces a correct 405 with an Allow header after the fix, i.e.
++// the reset does not break the loop across multiple method trees.
++func TestIssue4818_MethodNotAllowedStillWorks(t *testing.T) {
++	router := New()
++	router.HandleMethodNotAllowed = true
++
++	h := func(c *Context) {}
++	router.OPTIONS("/:p0/:p1/a/:p2", h)
++	router.GET("/:p0/:p1/a/:p2", h)
++	router.PATCH("/b/:p0/:p1/c", h)
++	router.DELETE("/b/:p0/:p1/d/:p3", h)
++	router.GET("/b/:p0/:p1/e/f", h)
++	router.POST("/b/:p0/:p1/g/:p4/h", h)
++	router.OPTIONS("/b/:p0/:p1/g/:p4/h", h)
++	router.DELETE("/b/cache", h)
++	router.GET("/b/clients/:p1/g", h)
++	router.POST("/b/clients/:p1/g", h)
++	router.PATCH("/b/clients/:p1/g/:p4", h)
++	router.OPTIONS("/b/clients/:p1/g/:p4", h)
++
++	// PATCH /b/clients/42/g is registered under GET but not under PATCH
++	// -> HandleMethodNotAllowed should yield 405 with an Allow header.
++	req := httptest.NewRequest(http.MethodPatch, "/b/clients/42/g", nil)
++	w := httptest.NewRecorder()
++	router.ServeHTTP(w, req)
++
++	if w.Code != http.StatusMethodNotAllowed {
++		t.Fatalf("expected 405, got %d", w.Code)
++	}
++	allow := w.Header().Get("Allow")
++	if allow == "" {
++		t.Fatal("expected Allow header to be set for 405")
++	}
++}
++
++// TestIssue4818_MethodNotAllowedManyTrees stresses the loop across many
++// method trees to make sure the skipped-nodes accumulator can never overflow.
++func TestIssue4818_MethodNotAllowedManyTrees(t *testing.T) {
++	router := New()
++	router.HandleMethodNotAllowed = true
++
++	h := func(c *Context) {}
++	for _, m := range []string{
++		http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete,
++		http.MethodPatch, http.MethodOptions, http.MethodHead, http.MethodConnect,
++		http.MethodTrace,
++	} {
++		router.Handle(m, "/:p0/:p1/a/:p2", h)
++		router.Handle(m, "/s/:p0/:p1/:p2/:p3/:p4/:p5/d", h)
++	}
++	// GET route so that a POST to a GET-only path yields 405
++	router.GET("/only-get", h)
++
++	req := httptest.NewRequest(http.MethodPost, "/only-get", nil)
++	w := httptest.NewRecorder()
++	router.ServeHTTP(w, req)
++
++	if w.Code != http.StatusMethodNotAllowed {
++		t.Fatalf("expected 405, got %d", w.Code)
++	}
++}
+diff --git a/tree.go b/tree.go
+@@ -418,6 +418,14 @@ type skippedNode struct {
+ func (n *node) getValue(path string, params *Params, skippedNodes *[]skippedNode, unescape bool) (value nodeValue) {
+ 	var globalParamsCount int16
+
++	// Reset the skipped-nodes stack on entry. getValue is called once per
++	// method tree (e.g. in the HandleMethodNotAllowed loop) reusing the same
++	// pooled Context stack, and the walk below grows it via a raw reslice that
++	// cannot exceed engine.maxSections. Without this reset the residue from a
++	// previous tree leaks into the next call and can panic with "slice bounds
++	// out of range" once the accumulated length passes the capacity.
++	*skippedNodes = (*skippedNodes)[:0]
++
+ walk: // Outer loop for walking the tree
+ 	for {
+ 		prefix := n.path
+d8f2d58 2026-09-19 [Ruben Pari] fix(engine): add default ReadHeaderTimeout to http.Server in Run methods (#4800) [+7 body lines]
+    Fixes #4760
+diff --git a/gin.go b/gin.go
+@@ -13,6 +13,7 @@ import (
+ 	"path"
+ 	"strings"
+ 	"sync"
++	"time"
+
+ 	"github.com/gin-gonic/gin/internal/bytesconv"
+ 	filesystem "github.com/gin-gonic/gin/internal/fs"
+@@ -29,6 +30,12 @@ const (
+ 	backslash              = "\\"
+ )
+
++// defaultReadHeaderTimeout is the default ReadHeaderTimeout applied to the
++// http.Server created by Run, RunTLS and RunListener. It protects against
++// slowloris-style resource exhaustion when the caller does not configure a
++// custom http.Server.
++const defaultReadHeaderTimeout = 10 * time.Second
++
+ var (
+ 	default404Body = []byte("404 page not found")
+ 	default405Body = []byte("405 method not allowed")
+@@ -166,6 +173,12 @@ type Engine struct {
+ 	// method call.
+ 	MaxMultipartMemory int64
+
++	// ReadHeaderTimeout is the maximum duration allowed for reading the request
++	// headers by the http.Server created through Run, RunTLS and RunListener.
++	// If zero or negative, a default of 10 seconds is used. Set to a positive
++	// value to customize, or use a custom http.Server directly to disable it.
++	ReadHeaderTimeout time.Duration
++
+ 	// UseH2C enable h2c support.
+ 	UseH2C bool
+
+@@ -219,6 +232,7 @@ func New(opts ...OptionFunc) *Engine {
+ 		RemoveExtraSlash:       false,
+ 		UnescapePathValues:     true,
+ 		MaxMultipartMemory:     defaultMultipartMemory,
++		ReadHeaderTimeout:      defaultReadHeaderTimeout,
+ 		trees:                  make(methodTrees, 0, 9),
+ 		delims:                 render.Delims{Left: "{{", Right: "}}"},
+ 		secureJSONPrefix:       "while(1);",
+@@ -255,6 +269,15 @@ func (engine *Engine) allocateContext(maxParams uint16) *Context {
+ 	return &Context{engine: engine, params: &v, skippedNodes: &skippedNodes}
+ }
+
++// getReadHeaderTimeout returns the configured ReadHeaderTimeout, or the
++// default if it is zero or negative.
++func (engine *Engine) getReadHeaderTimeout() time.Duration {
++	if engine.ReadHeaderTimeout <= 0 {
++		return defaultReadHeaderTimeout
++	}
++	return engine.ReadHeaderTimeout
++}
++
+ // Delims sets template left and right delims and returns an Engine instance.
+ func (engine *Engine) Delims(left, right string) *Engine {
+ 	engine.delims = render.Delims{Left: left, Right: right}
+@@ -537,6 +560,9 @@ func parseIP(ip string) net.IP {
+ // Run attaches the router to a http.Server and starts listening and serving HTTP requests.
+ // It is a shortcut for http.ListenAndServe(addr, router)
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
++// The created http.Server is configured with a default ReadHeaderTimeout of 10 seconds
++// (configurable via Engine.ReadHeaderTimeout) to mitigate slowloris attacks.
++// For full control over timeouts, create a custom http.Server and use ServeHTTP.
+ func (engine *Engine) Run(addr ...string) (err error) {
+ 	defer func() { debugPrintError(err) }()
+
+@@ -548,8 +574,9 @@ func (engine *Engine) Run(addr ...string) (err error) {
+ 	address := resolveAddress(addr)
+ 	debugPrint("Listening and serving HTTP on %s\n", address)
+ 	server := &http.Server{ // #nosec G112
+-		Addr:    address,
+-		Handler: engine.Handler(),
++		Addr:              address,
++		Handler:           engine.Handler(),
++		ReadHeaderTimeout: engine.getReadHeaderTimeout(),
+ 	}
+ 	err = server.ListenAndServe()
+ 	return
+@@ -568,8 +595,9 @@ func (engine *Engine) RunTLS(addr, certFile, keyFile string) (err error) {
+ 	}
+
+ 	server := &http.Server{ // #nosec G112
+-		Addr:    addr,
+-		Handler: engine.Handler(),
++		Addr:              addr,
++		Handler:           engine.Handler(),
++		ReadHeaderTimeout: engine.getReadHeaderTimeout(),
+ 	}
+ 	err = server.ListenAndServeTLS(certFile, keyFile)
+ 	return
+@@ -652,7 +680,8 @@ func (engine *Engine) RunListener(listener net.Listener) (err error) {
+ 	}
+
+ 	server := &http.Server{ // #nosec G112
+-		Handler: engine.Handler(),
++		Handler:           engine.Handler(),
++		ReadHeaderTimeout: engine.getReadHeaderTimeout(),
+ 	}
+ 	err = server.Serve(listener)
+ 	return
+diff --git a/gin_test.go b/gin_test.go
+@@ -1024,6 +1024,26 @@ func TestWithOptionFunc(t *testing.T) {
+ 	assertRoutePresent(t, routes, RouteInfo{Path: "/test2", Method: http.MethodGet, Handler: "github.com/gin-gonic/gin.handlerTest2"})
+ }
+
++func TestReadHeaderTimeoutDefault(t *testing.T) {
++	engine := New()
++	assert.Equal(t, defaultReadHeaderTimeout, engine.ReadHeaderTimeout)
++	assert.Equal(t, defaultReadHeaderTimeout, engine.getReadHeaderTimeout())
++}
++
++func TestReadHeaderTimeoutCustom(t *testing.T) {
++	engine := New(func(e *Engine) {
++		e.ReadHeaderTimeout = 30 * time.Second
++	})
++	assert.Equal(t, 30*time.Second, engine.ReadHeaderTimeout)
++	assert.Equal(t, 30*time.Second, engine.getReadHeaderTimeout())
++}
++
++func TestReadHeaderTimeoutZeroFallsBackToDefault(t *testing.T) {
++	engine := New()
++	engine.ReadHeaderTimeout = 0
++	assert.Equal(t, defaultReadHeaderTimeout, engine.getReadHeaderTimeout())
++}
++
+ type Birthday string
+
+ func (b *Birthday) UnmarshalParam(param string) error {

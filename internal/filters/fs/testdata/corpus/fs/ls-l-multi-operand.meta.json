@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "ls",
+    "-l",
+    "packages/vite/bin",
+    "packages/vite/misc"
+  ],
+  "shell": "ls -l packages/vite/bin packages/vite/misc",
+  "exit_code": 0,
+  "description": "ls -l with two directory operands",
+  "cwd": "/home/user/src/vite"
+}

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "ls",
+    "-la",
+    "nonexistent",
+    "go.mod"
+  ],
+  "shell": "ls -la nonexistent go.mod",
+  "exit_code": 1,
+  "description": "ls of a missing path next to a real one",
+  "cwd": "/home/user/src/gin"
+}

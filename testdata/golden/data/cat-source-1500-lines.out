@@ -1,0 +1,371 @@
+[lx: packages/vite/src/node/server/index.ts — 1,499 lines, ~11.5k tokens: first and last lines shown exactly; the omitted range, its outline and how to read it are marked below]
+import { execSync } from 'node:child_process'
+import fs from 'node:fs'
+import { get as httpGet } from 'node:http'
+import type * as http from 'node:http'
+import type { Http2SecureServer } from 'node:http2'
+import { get as httpsGet } from 'node:https'
+import type * as net from 'node:net'
+import path from 'node:path'
+import { performance } from 'node:perf_hooks'
+import { determineAgent } from '@vercel/detect-agent'
+import { disableCache } from '@voidzero-dev/vite-task-client'
+import chokidar from 'chokidar'
+import connect from 'connect'
+import corsMiddleware from 'cors'
+import launchEditorMiddleware from 'launch-editor-middleware'
+import colors from 'picocolors'
+import type { SourceMap } from 'rolldown'
+import type { ModuleRunner } from 'vite/module-runner'
+import type { FSWatcher } from '#dep-types/chokidar'
+import type { Connect } from '#dep-types/connect'
+import type {
+  ForwardConsoleOptions,
+  ResolvedForwardConsoleOptions,
+} from '../../shared/forwardConsole'
+import type { InlineConfig, ResolvedConfig } from '../config'
+import { isResolvedConfig, resolveConfig } from '../config'
+import {
+  CLIENT_DIR,
+  DEFAULT_DEV_PORT,
+  defaultAllowedOrigins,
+} from '../constants'
+import { warnFutureDeprecation } from '../deprecations'
+import { getEnvFilesForMode } from '../env'
+import type { CommonServerOptions } from '../http'
+import {
+  httpServerStart,
+  resolveHttpServer,
+  resolveHttpsConfig,
+  setClientErrorHandler,
+} from '../http'
+import type { Logger } from '../logger'
+import { printServerUrls } from '../logger'
+import type { MinimalPluginContextWithoutEnvironment } from '../plugin'
+import { reloadOnTsconfigChange } from '../plugins/esbuild'
+import { initPublicFiles } from '../publicDir'
+import { bindCLIShortcuts } from '../shortcuts'
+import type { BindCLIShortcutsOptions, ShortcutsState } from '../shortcuts'
+import { ssrLoadModule } from '../ssr/ssrModuleLoader'
+import { ssrFixStacktrace, ssrRewriteStacktrace } from '../ssr/ssrStacktrace'
+import { ssrTransform } from '../ssr/ssrTransform'
+import type { RequiredExceptFor } from '../typeUtils'
+import {
+  type Hostname,
+  diffDnsOrderChange,
+  getServerUrlByHost,
+  isInNodeModules,
+  isObject,
+  isParentDirectory,
+  mergeConfig,
+  mergeWithDefaults,
+  monotonicDateNow,
+  normalizePath,
+  resolveHostname,
+  resolveServerUrls,
+  setupHmrWsOptionCompat,
+  setupSIGTERMListener,
+  teardownSIGTERMListener,
+} from '../utils'
+import {
+  createNoopWatcher,
+  getResolvedOutDirs,
+  makeWatcherCloseFinal,
+  resolveChokidarOptions,
+  resolveEmptyOutDir,
+} from '../watch'
+import type { ServerWatchOptions } from '../watch'
+import type { DevEnvironment } from './environment'
+import type { HmrOptions, NormalizedHotChannel, WsOptions } from './hmr'
+import { handleHMRUpdate, updateModules } from './hmr'
+import { baseMiddleware } from './middlewares/base'
+import { errorMiddleware } from './middlewares/error'
+import { hostValidationMiddleware } from './middlewares/hostCheck'
+import { htmlFallbackMiddleware } from './middlewares/htmlFallback'
+import {
+  createDevHtmlTransformFn,
+  indexHtmlMiddleware,
+} from './middlewares/indexHtml'
+import { memoryFilesMiddleware } from './middlewares/memoryFiles'
+import { notFoundMiddleware } from './middlewares/notFound'
+import { proxyMiddleware } from './middlewares/proxy'
+import { rejectInvalidRequestMiddleware } from './middlewares/rejectInvalidRequest'
+import {
+  servePublicMiddleware,
+  serveRawFsMiddleware,
+  serveStaticMiddleware,
+} from './middlewares/static'
+import { timeMiddleware } from './middlewares/time'
+import {
+  cachedTransformMiddleware,
+  transformMiddleware,
+} from './middlewares/transform'
+import { triggerLazyBundlingMiddleware } from './middlewares/triggerLazyBundling'
+import { ModuleGraph } from './mixedModuleGraph'
+import type { ModuleNode } from './mixedModuleGraph'
+import { openBrowser as _openBrowser } from './openBrowser'
+import type { PluginContainer } from './pluginContainer'
+import {
+  BasicMinimalPluginContext,
+  basePluginContextMeta,
+  createPluginContainer,
+} from './pluginContainer'
+import { searchForPackageRoot, searchForWorkspaceRoot } from './searchRoot'
+import type { TransformOptions, TransformResult } from './transformRequest'
+import type { WebSocketServer } from './ws'
+import { createWebSocketServer } from './ws'
+
+const usedConfigs = new WeakSet<ResolvedConfig>()
+
+export interface ServerOptions extends CommonServerOptions {
+  /**
+   * Configure HMR-specific options (port, host, path & protocol)
+   */
+  hmr?: HmrOptions | boolean
+  /**
+   * Configure WebSocket connection options.
+   * Set to `false` to disable the WebSocket server and connection.
+   */
+  ws?: WsOptions | false
+  /**
+   * Warm-up files to transform and cache the results in advance. This improves the
+   * initial page load during server starts and prevents transform waterfalls.
+   */
+  warmup?: {
+    /**
+     * The files to be transformed and used on the client-side. Supports glob patterns.
+     */
+    clientFiles?: string[]
+    /**
+     * The files to be transformed and used in SSR. Supports glob patterns.
+     */
+    ssrFiles?: string[]
+  }
+  /**
+   * File system watcher options, or null to disable FS watching.
+   *
+   * Accepts chokidar options
+   * (https://github.com/paulmillr/chokidar/tree/3.6.0#api), which are used by
+   * the chokidar watcher, and Rolldown watch options, which are used by the
+   * Rolldown file watcher when bundled dev mode is enabled.
+   */
+  watch?: ServerWatchOptions | null
+  /**
+   * Create Vite dev server to be used as a middleware in an existing server
+   * @default false
+   */
+  middlewareMode?:
+    | boolean
+    | {
+        /**
+         * Parent server instance to attach to
+         *
+         * This is needed to proxy WebSocket connections to the parent server.
+         */
+        server: HttpServer
+      }
+  /**
+   * Options for files served via '/\@fs/'.
+   */
+  fs?: FileSystemServeOptions
+  /**
+   * Origin for the generated asset URLs.
+   *
+   * @example `http://127.0.0.1:8080`
+   */
+  origin?: string
+  /**
+   * Pre-transform known direct imports
+   * @default true
+   */
+  preTransformRequests?: boolean
+  /**
+   * Whether or not to ignore-list source files in the dev server sourcemap, used to populate
+   * the [`x_google_ignoreList` source map extension](https://developer.chrome.com/blog/devtools-better-angular-debugging/#the-x_google_ignorelist-source-map-extension).
+   *
+   * By default, it excludes all paths containing `node_modules`. You can pass `false` to
+   * disable this behavior, or, for full control, a function that takes the source path and
+   * sourcemap path and returns whether to ignore the source path.
+   */
+  sourcemapIgnoreList?:
+    | false
+    | ((sourcePath: string, sourcemapPath: string) => boolean)
+  /**
+   * Backward compatibility. The buildStart and buildEnd hooks were called only once for
+   * the client environment. This option enables per-environment buildStart and buildEnd hooks.
+   * @default false
+   * @experimental
+   */
+  perEnvironmentStartEndDuringDev?: boolean
+  /**
+   * Backward compatibility. The watchChange hook was called only once for the client environment.
+   * This option enables per-environment watchChange hooks.
+   * @default false
+   * @experimental
+   */
+  perEnvironmentWatchChangeDuringDev?: boolean
+  /**
+   * Run HMR tasks, by default the HMR propagation is done in parallel for all environments
+   * @experimental
+   */
+  hotUpdateEnvironments?: (
+    server: ViteDevServer,
+    hmr: (environment: DevEnvironment) => Promise<void>,
+  ) => Promise<void>
+
+  forwardConsole?: boolean | ForwardConsoleOptions
+}
+
+export interface ResolvedServerOptions extends Omit<
+  RequiredExceptFor<
+    ServerOptions,
+    | 'host'
+    | 'https'
+    | 'proxy'
+    | 'hmr'
+    | 'ws'
+    | 'watch'
+    | 'origin'
+    | 'hotUpdateEnvironments'
+  >,
+  'fs' | 'middlewareMode' | 'sourcemapIgnoreList' | 'forwardConsole'
+> {
+  fs: Required<FileSystemServeOptions>
+  middlewareMode: NonNullable<ServerOptions['middlewareMode']>
+  sourcemapIgnoreList: Exclude<
+    ServerOptions['sourcemapIgnoreList'],
+    false | undefined
+  >
+  forwardConsole: ResolvedForwardConsoleOptions
+}
+
+… lines 241-1388 omitted (1148 lines; read them: sed -n '241,1388p' packages/vite/src/node/server/index.ts)
+  outline of the omitted lines:
+  L241: export interface FileSystemServeOptions
+  L270: export type ServerHook = (
+  L275: export interface CloseServerHookContext
+  L284: export type CloseServerHook = (
+  L289: export type HttpServer = http.Server | Http2SecureServer
+  L291: export async function resolveForwardConsoleOptions(
+  L322: export interface ViteDevServer
+  L495: export interface ResolvedServerUrls
+  L507: export function createServer(
+  L513: export async function _createServer(
+  L1142: async function startServer(
+  L1172: export function createServerCloseFn(
+  L1210: function resolvedAllowDir(root: string, dir: string): string
+  L1214: const _serverConfigDefaults = Object.freeze(
+  L1252: export const serverConfigDefaults: Readonly<Partial<ServerOptions>> =
+  L1255: const RESERVED_ALLOWED_HOSTS_CHARACTERS_RE = /[\\"']/
+  L1257: export async function resolveServerOptions(
+async function restartServer(server: ViteDevServer) {
+  global.__vite_start_time = performance.now()
+
+  let inlineConfig = server.config.inlineConfig
+  if (server._forceOptimizeOnRestart) {
+    inlineConfig = mergeConfig(inlineConfig, {
+      forceOptimizeDeps: true,
+    })
+  }
+
+  // Reinit the server by creating a new instance using the same inlineConfig
+  // This will trigger a reload of the config file and re-create the plugins and
+  // middlewares. We then assign all properties of the new server to the existing
+  // server instance and set the user instance to be used in the new server.
+  // This allows us to keep the same server instance for the user.
+  {
+    let newServer: ViteDevServer | null = null
+    try {
+      // delay ws server listen
+      newServer = await _createServer(inlineConfig, {
+        listen: false,
+        previousEnvironments: server.environments,
+        previousShortcutsState: server._shortcutsState,
+        previousRestartPromise: server._restartPromise,
+        previousForceOptimizeOnRestart: server._forceOptimizeOnRestart,
+      })
+    } catch (err: any) {
+      server.config.logger.error(err.message, {
+        timestamp: true,
+      })
+      server.config.logger.error('server restart failed', { timestamp: true })
+      return
+    }
+
+    // Detach readline so close handler skips it. Reused to avoid stdin issues
+    server._shortcutsState = undefined
+
+    // Close with reason 'restart' so `closeServer` hooks can distinguish a
+    // restart from a real close.
+    await server._closeServer('restart')
+
+    // Assign new server props to existing server instance
+    const middlewares = server.middlewares
+    newServer._configServerPort = server._configServerPort
+    newServer._currentServerPort = server._currentServerPort
+    Object.assign(server, newServer)
+
+    // Keep the same connect instance so app.use(vite.middlewares) works
+    // after a restart in middlewareMode (.route is always '/')
+    middlewares.stack = newServer.middlewares.stack
+    server.middlewares = middlewares
+
+    // Rebind internal server variable so functions reference the user server
+    newServer._setInternalServer(server)
+  }
+
+  const {
+    logger,
+    server: { port, middlewareMode },
+  } = server.config
+  if (!middlewareMode) {
+    await server.listen(port, true)
+  } else {
+    await Promise.all(
+      Object.values(server.environments).map((e) => e.listen(server)),
+    )
+  }
+  logger.info('server restarted.', { timestamp: true })
+
+  if (
+    (server._shortcutsState as ShortcutsState<ViteDevServer> | undefined)
+      ?.options
+  ) {
+    bindCLIShortcuts(
+      server,
+      { print: false },
+      // Skip environment checks since shortcuts were bound before restart
+      true,
+    )
+  }
+}
+
+/**
+ * Internal function to restart the Vite server and print URLs if changed
+ */
+export async function restartServerWithUrls(
+  server: ViteDevServer,
+): Promise<void> {
+  if (server.config.server.middlewareMode) {
+    await server.restart()
+    return
+  }
+
+  const { port: prevPort, host: prevHost } = server.config.server
+  const prevUrls = server.resolvedUrls
+
+  await server.restart()
+
+  const {
+    logger,
+    server: { port, host },
+  } = server.config
+  if (
+    (port ?? DEFAULT_DEV_PORT) !== (prevPort ?? DEFAULT_DEV_PORT) ||
+    host !== prevHost ||
+    diffDnsOrderChange(prevUrls, server.resolvedUrls)
+  ) {
+    logger.info('')
+    server.printUrls()
+  }
+}

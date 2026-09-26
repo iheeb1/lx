@@ -1,0 +1,31 @@
+--- FAIL: TestFirst (0.00s)
+    r_test.go:12: first failed: got 0, want 1
+FAIL
+==================
+WARNING: DATA RACE
+Read at 0x000101320108 by goroutine 10:
+  example.com/lxcap2/racepost.bump()
+      /home/user/src/lxcap2/racepost/r_test.go:19 +0x64
+  example.com/lxcap2/racepost.TestMain.gowrap2()
+      /home/user/src/lxcap2/racepost/r_test.go:27 +0x2c
+
+Previous write at 0x000101320108 by goroutine 9:
+  example.com/lxcap2/racepost.bump()
+      /home/user/src/lxcap2/racepost/r_test.go:19 +0x7c
+  example.com/lxcap2/racepost.TestMain.gowrap1()
+      /home/user/src/lxcap2/racepost/r_test.go:26 +0x2c
+
+Goroutine 10 (running) created at:
+  example.com/lxcap2/racepost.TestMain()
+      /home/user/src/lxcap2/racepost/r_test.go:27 +0x118
+  main.main()
+      _testmain.go:50 +0x104
+
+Goroutine 9 (finished) created at:
+  example.com/lxcap2/racepost.TestMain()
+      /home/user/src/lxcap2/racepost/r_test.go:26 +0xb8
+  main.main()
+      _testmain.go:50 +0x104
+==================
+FAIL	example.com/lxcap2/racepost	0.492s
+FAIL

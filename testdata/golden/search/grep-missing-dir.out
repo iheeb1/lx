@@ -1,0 +1,80 @@
+grep: nosuchdir: No such file or directory
+render/render.go:12:Render(http.ResponseWriter) error
+render/bson.go:21:func (r BSON) Render(w http.ResponseWriter) error {
+render/msgpack.go:34:func (r MsgPack) Render(w http.ResponseWriter) error {
+render/pdf.go:17:func (r PDF) Render(w http.ResponseWriter) error {
+render/xml.go:20:func (r XML) Render(w http.ResponseWriter) error {
+render/html.go:92:func (r HTML) Render(w http.ResponseWriter) error {
+render/redirect.go:20:func (r Redirect) Render(w http.ResponseWriter) error {
+render/text.go:23:func (r String) Render(w http.ResponseWriter) error {
+render/reader.go:22:func (r Reader) Render(w http.ResponseWriter) (err error) {
+render/yaml.go:21:func (r YAML) Render(w http.ResponseWriter) error {
+render/reader_test.go:21:err := r.Render(httptest.NewRecorder())
+render/toml.go:21:func (r TOML) Render(w http.ResponseWriter) error {
+render/data.go:19:func (r Data) Render(w http.ResponseWriter) (err error) {
+
+render/json.go
+57:func (r JSON) Render(w http.ResponseWriter) error {
+78:func (r IndentedJSON) Render(w http.ResponseWriter) error {
+94:func (r SecureJSON) Render(w http.ResponseWriter) error {
+117:func (r JsonpJSON) Render(w http.ResponseWriter) (err error) {
+155:func (r AsciiJSON) Render(w http.ResponseWriter) error {
+184:func (r PureJSON) Render(w http.ResponseWriter) error {
+
+render/render_test.go
+36:err := (JSON{data}).Render(w)
+48:require.Error(t, (JSON{data}).Render(w))
+58:err := (IndentedJSON{data}).Render(w)
+70:err := (IndentedJSON{data}).Render(w)
+83:err1 := (SecureJSON{"while(1);", data}).Render(w1)
+96:err2 := (SecureJSON{"while(1);", datas}).Render(w2)
+107:err := (SecureJSON{"while(1);", data}).Render(w)
+120:err1 := (JsonpJSON{"x", data}).Render(w1)
+133:err2 := (JsonpJSON{"x", datas}).Render(w2)
+193:err := jsonpJSON.Render(ew)
+200:err = jsonpJSON.Render(ew)
+207:err = jsonpJSON.Render(ew)
+214:err = jsonpJSON.Render(ew)
+227:e := (JsonpJSON{"", data}).Render(w)
+239:err := (JsonpJSON{"x", data}).Render(w)
+250:err := (AsciiJSON{data1}).Render(w1)
+259:err = (AsciiJSON{data2}).Render(w2)
+269:require.Error(t, (AsciiJSON{data}).Render(w))
+278:err := (PureJSON{data}).Render(w)
+319:err := (YAML{data}).Render(w)
+341:err := (YAML{&fail{}}).Render(w)
+354:err := (TOML{data}).Render(w)
+362:err := (TOML{net.IPv4bcast}).Render(w)
+381:err = (ProtoBuf{data}).Render(w)
+391:err := (ProtoBuf{data}).Render(w)
+413:err = (BSON{data}).Render(w)
+424:err := (BSON{data}).Render(w)
+439:err := (BSON{data}).Render(ew)
+453:err := (XML{data}).Render(w)
+464:err := (XML{data}).Render(w)
+478:err := pdf.Render(w)
+496:err = data1.Render(w)
+507:err := data2.Render(w)
+518:err = data3.Render(w)
+532:}).Render(w)
+549:assert.NoError(t, data.Render(w))
+579:}).Render(ew)
+597:}).Render(w)
+610:}).Render(w)
+626:err := instance.Render(w)
+636:err := (HTML{}).Render(w)
+652:err := instance.Render(w)
+673:err := instance.Render(w)
+694:err := instance.Render(w)
+715:err := instance.Render(w)
+743:err := instance.Render(w)
+756:err := instance.Render(w)
+773:}).Render(w)
+796:}).Render(w)
+814:err := r.Render(ew)
+
+render/protobuf.go:21:func (r ProtoBuf) Render(w http.ResponseWriter) error {
+
+render/render_msgpack_test.go
+28:err := (MsgPack{data}).Render(w)
+77:err := (MsgPack{data}).Render(&failWriter{w})

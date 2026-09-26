@@ -1,0 +1,44 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/home/user/src/vitproj[39m
+
+[90mstdout[2m | test/ok.test.ts[2m > [22m[2mworks
+[22m[39mlog from passing test
+
+ [32m✓[39m test/ok.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+[90mstdout[2m | test/snap.test.ts[2m > [22m[2mrenders card
+[22m[39mrendering card for { id: [33m7[39m }
+
+ [31m❯[39m test/snap.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 23[2mms[22m[39m
+[31m   [31m×[31m renders card[39m[32m 13[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/snap.test.ts[2m > [22mrenders card
+[31m[1mError[22m: Snapshot `renders card 1` mismatched[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "count": [7m1[27m,[39m
+[31m+   "count": [7m2[27m,[39m
+[2m    "title": "Hello",[22m
+[2m  }[22m
+
+[36m [2m❯[22m test/snap.test.ts:[2m5:40[22m[39m
+    [90m  3|[39m [34mit[39m([32m"renders card"[39m[33m,[39m () [33m=>[39m {
+    [90m  4|[39m   console[33m.[39m[34mlog[39m([32m"rendering card for"[39m[33m,[39m { id[33m:[39m [34m7[39m })[33m;[39m
+    [90m  5|[39m   [34mexpect[39m({ title[33m:[39m [32m"Hello"[39m[33m,[39m count[33m:[39m [34m2[39m })[33m.[39m[34mtoMatchSnapshot[39m()[33m;[39m
+    [90m   |[39m                                        [31m^[39m
+    [90m  6|[39m })[33m;[39m
+    [90m  7|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m  Snapshots [22m [1m[31m1 failed[39m[22m
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 02:54:00
+[2m   Duration [22m 948ms[2m (transform 159ms, setup 0ms, import 349ms, tests 27ms, environment 0ms)[22m
+

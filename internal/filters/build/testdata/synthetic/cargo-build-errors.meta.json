@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "cargo",
+    "build"
+  ],
+  "exit_code": 101,
+  "description": "SYNTHETIC (hand-written in real cargo 1.8x/rustc format; cargo is not installed on the capture machine): cargo build with 3 type errors (E0308 with a multi-line note, E0425 with a suggestion, E0599 with a help sub-diagnostic and an elided span) and one warning; 17 Compiling lines including quick-error; could not compile",
+  "cwd": "/home/user/src/demo"
+}

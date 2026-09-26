@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "pnpm",
+    "-r",
+    "build"
+  ],
+  "shell": "pnpm -r build",
+  "exit_code": 2,
+  "description": "pnpm -r build in a pnpm workspace: tsc errors prefixed with 'packages/web build:', ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL",
+  "cwd": "/home/user/src/pnpm-ws"
+}

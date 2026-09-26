@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "npm",
+    "create",
+    "vite@latest",
+    "vite-react-app",
+    "--",
+    "--template",
+    "react-ts",
+    "--no-interactive"
+  ],
+  "shell": "npm create vite@latest vite-react-app -- --template react-ts --no-interactive",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "scaffolding a React+TS app with create-vite in non-interactive mode",
+  "cwd": "repos"
+}

@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "make",
+    "-w"
+  ],
+  "exit_code": 2,
+  "description": "make -w in a two-directory C project (GNU make 3.81, clang 21, macOS): recursive make with Entering/Leaving directory lines (backtick quoting), archive, then an undefined-symbol link failure",
+  "cwd": "/home/user/src/recur"
+}

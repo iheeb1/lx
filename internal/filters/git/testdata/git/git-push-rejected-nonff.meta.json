@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "push",
+    "origin",
+    "main"
+  ],
+  "exit_code": 1,
+  "cwd": "repos/app",
+  "description": "git push rejected (non-fast-forward, fetch first) with hints"
+}

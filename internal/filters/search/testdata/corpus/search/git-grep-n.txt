@@ -1,0 +1,153 @@
+CHANGELOG.md:151:- feat(bind): ShouldBindBodyWith shortcut and change doc (#3871) (@RedCrazyGhost)
+CHANGELOG.md:181:- chore(optimize): the ShouldBindUri method of the Context struct (#3911) (@1911860538)
+CHANGELOG.md:588:- [FIX] Add BindXML and ShouldBindXML [#1485](https://github.com/gin-gonic/gin/pull/1485)
+CHANGELOG.md:597:- [NEW] Add [`func (*Context) ShouldBindBodyWith`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBindBodyWith) allowing to call binding multiple times, see [#1341](https://github.com/gin-gonic/gin/pull/1341)
+CHANGELOG.md:602:- [NEW] Add [`func (*Context) ShouldBind`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBind), [`func (*Context) ShouldBindQuery`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBindQuery) and [`func (*Context) ShouldBindJSON`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBindJSON), see [#1047](https://github.com/gin-gonic/gin/pull/1047)
+CHANGELOG.md:626:- [NEW] Add \*context.ShouldBindWith()
+context.go:822:	if err := c.ShouldBindUri(obj); err != nil {
+context.go:833:	err := c.ShouldBindWith(obj, b)
+context.go:851:// ShouldBind checks the Method and Content-Type to select a binding engine automatically,
+context.go:860:func (c *Context) ShouldBind(obj any) error {
+context.go:862:	return c.ShouldBindWith(obj, b)
+context.go:865:// ShouldBindJSON is a shortcut for c.ShouldBindWith(obj, binding.JSON).
+context.go:884://	if err := c.ShouldBindJSON(&user); err != nil {
+context.go:889:func (c *Context) ShouldBindJSON(obj any) error {
+context.go:890:	return c.ShouldBindWith(obj, binding.JSON)
+context.go:893:// ShouldBindXML is a shortcut for c.ShouldBindWith(obj, binding.XML).
+context.go:894:// It works like ShouldBindJSON but binds the request body as XML data.
+context.go:895:func (c *Context) ShouldBindXML(obj any) error {
+context.go:896:	return c.ShouldBindWith(obj, binding.XML)
+context.go:899:// ShouldBindQuery is a shortcut for c.ShouldBindWith(obj, binding.Query).
+context.go:900:// It works like ShouldBindJSON but binds query parameters from the URL.
+context.go:901:func (c *Context) ShouldBindQuery(obj any) error {
+context.go:902:	return c.ShouldBindWith(obj, binding.Query)
+context.go:905:// ShouldBindYAML is a shortcut for c.ShouldBindWith(obj, binding.YAML).
+context.go:906:// It works like ShouldBindJSON but binds the request body as YAML data.
+context.go:907:func (c *Context) ShouldBindYAML(obj any) error {
+context.go:908:	return c.ShouldBindWith(obj, binding.YAML)
+context.go:911:// ShouldBindTOML is a shortcut for c.ShouldBindWith(obj, binding.TOML).
+context.go:912:// It works like ShouldBindJSON but binds the request body as TOML data.
+context.go:913:func (c *Context) ShouldBindTOML(obj any) error {
+context.go:914:	return c.ShouldBindWith(obj, binding.TOML)
+context.go:917:// ShouldBindPlain is a shortcut for c.ShouldBindWith(obj, binding.Plain).
+context.go:918:// It works like ShouldBindJSON but binds plain text data from the request body.
+context.go:919:func (c *Context) ShouldBindPlain(obj any) error {
+context.go:920:	return c.ShouldBindWith(obj, binding.Plain)
+context.go:923:// ShouldBindHeader is a shortcut for c.ShouldBindWith(obj, binding.Header).
+context.go:924:// It works like ShouldBindJSON but binds values from HTTP headers.
+context.go:925:func (c *Context) ShouldBindHeader(obj any) error {
+context.go:926:	return c.ShouldBindWith(obj, binding.Header)
+context.go:929:// ShouldBindUri binds the passed struct pointer using the specified binding engine.
+context.go:930:// It works like ShouldBindJSON but binds parameters from the URI.
+context.go:931:func (c *Context) ShouldBindUri(obj any) error {
+context.go:939:// ShouldBindWith binds the passed struct pointer using the specified binding engine.
+context.go:941:func (c *Context) ShouldBindWith(obj any, b binding.Binding) error {
+context.go:945:// ShouldBindBodyWith is similar with ShouldBindWith, but it stores the request
+context.go:949:// ShouldBindWith for better performance if you need to call only once.
+context.go:950:func (c *Context) ShouldBindBodyWith(obj any, bb binding.BindingBody) (err error) {
+context.go:967:// ShouldBindBodyWithJSON is a shortcut for c.ShouldBindBodyWith(obj, binding.JSON).
+context.go:968:func (c *Context) ShouldBindBodyWithJSON(obj any) error {
+context.go:969:	return c.ShouldBindBodyWith(obj, binding.JSON)
+context.go:972:// ShouldBindBodyWithXML is a shortcut for c.ShouldBindBodyWith(obj, binding.XML).
+context.go:973:func (c *Context) ShouldBindBodyWithXML(obj any) error {
+context.go:974:	return c.ShouldBindBodyWith(obj, binding.XML)
+context.go:977:// ShouldBindBodyWithYAML is a shortcut for c.ShouldBindBodyWith(obj, binding.YAML).
+context.go:978:func (c *Context) ShouldBindBodyWithYAML(obj any) error {
+context.go:979:	return c.ShouldBindBodyWith(obj, binding.YAML)
+context.go:982:// ShouldBindBodyWithTOML is a shortcut for c.ShouldBindBodyWith(obj, binding.TOML).
+context.go:983:func (c *Context) ShouldBindBodyWithTOML(obj any) error {
+context.go:984:	return c.ShouldBindBodyWith(obj, binding.TOML)
+context.go:987:// ShouldBindBodyWithPlain is a shortcut for c.ShouldBindBodyWith(obj, binding.Plain).
+context.go:988:func (c *Context) ShouldBindBodyWithPlain(obj any) error {
+context.go:989:	return c.ShouldBindBodyWith(obj, binding.Plain)
+context_test.go:2524:func TestContextAutoShouldBindJSON(t *testing.T) {
+context_test.go:2533:	require.NoError(t, c.ShouldBind(&obj))
+context_test.go:2539:func TestContextShouldBindWithJSON(t *testing.T) {
+context_test.go:2550:	require.NoError(t, c.ShouldBindJSON(&obj))
+context_test.go:2556:func TestContextShouldBindWithXML(t *testing.T) {
+context_test.go:2571:	require.NoError(t, c.ShouldBindXML(&obj))
+context_test.go:2577:func TestContextShouldBindPlain(t *testing.T) {
+context_test.go:2586:	require.NoError(t, c.ShouldBindPlain(&s))
+context_test.go:2596:	require.NoError(t, c.ShouldBindPlain(&bs))
+context_test.go:2601:func TestContextShouldBindHeader(t *testing.T) {
+context_test.go:2616:	require.NoError(t, c.ShouldBindHeader(&testHeader))
+context_test.go:2623:func TestContextShouldBindWithQuery(t *testing.T) {
+context_test.go:2635:	require.NoError(t, c.ShouldBindQuery(&obj))
+context_test.go:2643:func TestContextShouldBindWithYAML(t *testing.T) {
+context_test.go:2654:	require.NoError(t, c.ShouldBindYAML(&obj))
+context_test.go:2660:func TestContextShouldBindWithTOML(t *testing.T) {
+context_test.go:2671:	require.NoError(t, c.ShouldBindTOML(&obj))
+context_test.go:2677:func TestContextBadAutoShouldBind(t *testing.T) {
+context_test.go:2689:	require.Error(t, c.ShouldBind(&obj))
+context_test.go:2696:func TestContextShouldBindBodyWith(t *testing.T) {
+context_test.go:2750:			require.NoError(t, c.ShouldBindBodyWith(&objA, tt.bindingA))
+context_test.go:2753:			require.Error(t, c.ShouldBindBodyWith(&objB, tt.bindingB))
+context_test.go:2766:			require.Error(t, c.ShouldBindBodyWith(&objA, tt.bindingA))
+context_test.go:2769:			require.NoError(t, c.ShouldBindBodyWith(&objB, tt.bindingB))
+context_test.go:2775:func TestContextShouldBindBodyWithJSON(t *testing.T) {
+context_test.go:2818:			require.NoError(t, c.ShouldBindBodyWithJSON(&objJSON))
+context_test.go:2823:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+context_test.go:2828:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+context_test.go:2833:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+context_test.go:2839:func TestContextShouldBindBodyWithXML(t *testing.T) {
+context_test.go:2882:			require.Error(t, c.ShouldBindBodyWithXML(&objXML))
+context_test.go:2887:			require.NoError(t, c.ShouldBindBodyWithXML(&objXML))
+context_test.go:2892:			require.Error(t, c.ShouldBindBodyWithXML(&objXML))
+context_test.go:2897:			require.Error(t, c.ShouldBindBodyWithXML(&objXML))
+context_test.go:2903:func TestContextShouldBindBodyWithYAML(t *testing.T) {
+context_test.go:2947:			require.NoError(t, c.ShouldBindBodyWithYAML(&objYAML))
+context_test.go:2952:			require.Error(t, c.ShouldBindBodyWithYAML(&objYAML))
+context_test.go:2957:			require.NoError(t, c.ShouldBindBodyWithYAML(&objYAML))
+context_test.go:2962:			require.Error(t, c.ShouldBindBodyWithYAML(&objYAML))
+context_test.go:2968:func TestContextShouldBindBodyWithTOML(t *testing.T) {
+context_test.go:3011:			require.Error(t, c.ShouldBindBodyWithTOML(&objTOML))
+context_test.go:3016:			require.Error(t, c.ShouldBindBodyWithTOML(&objTOML))
+context_test.go:3021:			require.Error(t, c.ShouldBindBodyWithTOML(&objTOML))
+context_test.go:3026:			require.NoError(t, c.ShouldBindBodyWithTOML(&objTOML))
+context_test.go:3032:func TestContextShouldBindBodyWithPlain(t *testing.T) {
+context_test.go:3081:			require.NoError(t, c.ShouldBindBodyWithPlain(&body))
+context_test.go:3086:			require.NoError(t, c.ShouldBindBodyWithJSON(&objJSON))
+context_test.go:3091:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+context_test.go:3096:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+context_test.go:3101:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+deprecated.go:16:// Deprecated: Use MustBindWith or ShouldBindWith.
+deprecated.go:21:	ShouldBindWith() if you need to manage the error.`)
+docs/doc.md:153:    if err := c.ShouldBindJSON(&query); err != nil {
+docs/doc.md:869:  - **Behavior** - These methods use `MustBindWith` under the hood. If there is a binding error, the request is aborted with `c.AbortWithError(400, err).SetType(ErrorTypeBind)`. This sets the response status code to 400 and the `Content-Type` header is set to `text/plain; charset=utf-8`. Note that if you try to set the response code after this, it will result in a warning `[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 400 with 422`. If you wish to have greater control over the behavior, consider using the `ShouldBind` equivalent method.
+docs/doc.md:871:  - **Methods** - `ShouldBind`, `ShouldBindJSON`, `ShouldBindXML`, `ShouldBindQuery`, `ShouldBindYAML`, `ShouldBindHeader`, `ShouldBindTOML`,
+docs/doc.md:872:  - **Behavior** - These methods use `ShouldBindWith` under the hood. If there is a binding error, the error is returned and it is the developer's responsibility to handle the request and error appropriately.
+docs/doc.md:874:When using the Bind-method, Gin tries to infer the binder depending on the Content-Type header. If you are sure what you are binding, you can use `MustBindWith` or `ShouldBindWith`.
+docs/doc.md:891:    if err := c.ShouldBindJSON(&json); err != nil {
+docs/doc.md:912:    if err := c.ShouldBindXML(&xml); err != nil {
+docs/doc.md:929:    if err := c.ShouldBind(&form); err != nil {
+docs/doc.md:1018:  if err := c.ShouldBindWith(&b, binding.Query); err == nil {
+docs/doc.md:1042:`ShouldBindQuery` function only binds the query params and not the post data. See the [detail information](https://github.com/gin-gonic/gin/issues/742#issuecomment-315953017).
+docs/doc.md:1067:  if c.ShouldBindQuery(&person) == nil {
+docs/doc.md:1113:  if c.ShouldBind(&person) == nil {
+docs/doc.md:1158:    if err := c.ShouldBindQuery(&req); err != nil {
+docs/doc.md:1216:        if c.ShouldBind(&person) == nil {
+docs/doc.md:1255:    if err := c.ShouldBindUri(&person); err != nil {
+docs/doc.md:1404:    if err := c.ShouldBindHeader(&h); err != nil {
+docs/doc.md:1438:    c.ShouldBind(&fakeForm)
+docs/doc.md:1482:    // c.ShouldBindWith(&form, binding.Form)
+docs/doc.md:1483:    // or you can simply use autobinding with ShouldBind method:
+docs/doc.md:1486:    if err := c.ShouldBind(&form); err != nil {
+docs/doc.md:1602:  // Calling c.ShouldBind consumes c.Request.Body and it cannot be reused.
+docs/doc.md:1603:  if errA := c.ShouldBind(&objA); errA == nil {
+docs/doc.md:1606:  } else if errB := c.ShouldBind(&objB); errB == nil {
+docs/doc.md:1614:For this, you can use `c.ShouldBindBodyWith` or shortcuts.
+docs/doc.md:1616:- `c.ShouldBindBodyWithJSON` is a shortcut for c.ShouldBindBodyWith(obj, binding.JSON).
+docs/doc.md:1617:- `c.ShouldBindBodyWithXML` is a shortcut for c.ShouldBindBodyWith(obj, binding.XML).
+docs/doc.md:1618:- `c.ShouldBindBodyWithYAML` is a shortcut for c.ShouldBindBodyWith(obj, binding.YAML).
+docs/doc.md:1619:- `c.ShouldBindBodyWithTOML` is a shortcut for c.ShouldBindBodyWith(obj, binding.TOML).
+docs/doc.md:1626:  if errA := c.ShouldBindBodyWith(&objA, binding.Form); errA == nil {
+docs/doc.md:1629:  } else if errB := c.ShouldBindBodyWith(&objB, binding.JSON); errB == nil {
+docs/doc.md:1632:  } else if errB2 := c.ShouldBindBodyWithXML(&objB); errB2 == nil {
+docs/doc.md:1640:1. `c.ShouldBindBodyWith` stores body into the context before binding. This has
+docs/doc.md:1645:   can be called by `c.ShouldBind()` multiple times without any damage to
+githubapi_test.go:290:func TestShouldBindUri(t *testing.T) {
+githubapi_test.go:300:		require.NoError(t, c.ShouldBindUri(&person))
+githubapi_test.go:303:		c.String(http.StatusOK, "ShouldBindUri test OK")
+githubapi_test.go:308:	assert.Equal(t, "ShouldBindUri test OK", w.Body.String())
+routergroup.go:175:// with c.ShouldBindJSON.
+routes_test.go:100:		require.NoError(t, c.ShouldBindJSON(&body))

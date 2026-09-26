@@ -1,0 +1,20 @@
+[26 matches in 15 files · 12 matches in ./node_modules/ summarized at the end (not searched explicitly)]
+./test/support/env.js:2:process.env.NODE_ENV = 'test';
+
+./test/app.js
+76:this.env = process.env.NODE_ENV
+77:process.env.NODE_ENV = 'development'
+81:process.env.NODE_ENV = this.env
+92:this.env = process.env.NODE_ENV
+93:process.env.NODE_ENV = 'production'
+97:process.env.NODE_ENV = this.env
+108:this.env = process.env.NODE_ENV
+109:process.env.NODE_ENV = ''
+113:process.env.NODE_ENV = this.env
+
+./examples/error-pages/index.js:11:var silent = process.env.NODE_ENV === 'test'
+./examples/route-map/index.js:10:var verbose = process.env.NODE_ENV !== 'test'
+./examples/cookies/index.js:13:if (process.env.NODE_ENV !== 'test') app.use(logger(':method :url'))
+./lib/application.js:91:var env = process.env.NODE_ENV || 'development';
+
+./node_modules/: 12 matches in 9 files: @babel/core/lib/config/files/configuration.js (3), browserslist/node.js (2), formidable/src/Formidable.js (1), @babel/core/lib/config/files/configuration.js.map (1), @babel/core/lib/config/helpers/environment.js (1), …

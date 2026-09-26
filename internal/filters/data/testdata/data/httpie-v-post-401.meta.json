@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "http",
+    "--ignore-stdin",
+    "-v",
+    "POST",
+    "https://api.github.com/repos/golang/go/issues",
+    "title=flaky",
+    "labels:=[\"bug\"]"
+  ],
+  "shell": "http --ignore-stdin -v POST https://api.github.com/repos/golang/go/issues title=flaky labels:=[\"bug\"]",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL httpie 3.2.4: -v POST with a JSON request body, 401 response with every header",
+  "cwd": "data/api"
+}

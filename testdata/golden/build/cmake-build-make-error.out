@@ -1,0 +1,15 @@
+[lx: hidden: 8 build steps]
+[ 32%] Building C object CMakeFiles/netd.dir/src/server.c.o
+/home/user/src/netd/src/server.c: In function 'server_loop':
+/home/user/src/netd/src/server.c:133:23: error: passing argument 1 of 'queue_push' from incompatible pointer type [-Wincompatible-pointer-types]
+  133 |         queue_push(&conn, item);
+      |                    ^~~~~
+      |                    |
+      |                    struct conn **
+In file included from /home/user/src/netd/src/server.c:9:
+/home/user/src/netd/src/queue.h:21:29: note: expected 'struct queue *' but argument is of type 'struct conn **'
+   21 | void queue_push(struct queue *q, void *item);
+      |                 ~~~~~~~~~~~~~^
+gmake[2]: *** [CMakeFiles/netd.dir/build.make:90: CMakeFiles/netd.dir/src/server.c.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:111: CMakeFiles/netd.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "--pretty=fuller",
+    "-n",
+    "3"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/gin",
+  "description": "git log --pretty=fuller -n 3 (user format, kept as is)"
+}

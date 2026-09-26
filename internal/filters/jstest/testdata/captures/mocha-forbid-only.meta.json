@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "--forbid-only",
+    "adv/only.js"
+  ],
+  "shell": "npx mocha --forbid-only adv/only.js",
+  "repo": "scratch/mochaproj",
+  "exit_code": 1,
+  "description": "mocha 11 --forbid-only with it.only",
+  "cwd": "repos/mochaproj"
+}

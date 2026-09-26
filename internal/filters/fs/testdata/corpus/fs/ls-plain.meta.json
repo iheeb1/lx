@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "ls"
+  ],
+  "shell": "ls",
+  "exit_code": 0,
+  "description": "plain ls",
+  "cwd": "/home/user/src/gin"
+}

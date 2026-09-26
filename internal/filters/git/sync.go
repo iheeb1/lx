@@ -1,0 +1,302 @@
+package git
+
+import (
+	"fmt"
+	"regexp"
+	"strings"
+
+	"github.com/iheeb1/lx/internal/engine"
+)
+
+func init() {
+	engine.Register(syncFilter{})
+	engine.Register(mergeFilter{})
+}
+
+// syncFilter condenses push, pull, fetch and clone. It drops only what
+// carries no information once the command has finished: transfer progress
+// ("Receiving objects: 100% …"), "Total N (delta M)…" pack statistics and
+// blank lines. Everything else is kept verbatim: To/From lines, every
+// ref-update line (rejected ones always one per line), remote: messages
+// such as pull-request links, hint:/error:/fatal: lines, "Updating a..b",
+// "Fast-forward", "Everything up-to-date", CONFLICT lines. Runs of four or
+// more new tags/branches (or pruned refs) are listed on one line, and a
+// pull's diffstat is folded by directory with its exact counts. No verdict
+// is added: the exit code is the verdict.
+type syncFilter struct{}
+
+func (syncFilter) Name() string { return "git-sync" }
+
+func (syncFilter) Match(c *engine.Context) bool {
+	if !isGit(c) || engine.MachineReadable(c) {
+		return false
+	}
+	switch c.Sub() {
+	case "push", "pull", "fetch", "clone":
+		return true
+	}
+	return false
+}
+
+func (syncFilter) Apply(c *engine.Context, out string) (string, bool) {
+	return renderSync(c, out)
+}
+
+// mergeFilter condenses `git merge` with the same rules: every CONFLICT line
+// and "Automatic merge failed…" verbatim, "Auto-merging x" lines listed on
+// one line, the fast-forward/merge diffstat folded.
+type mergeFilter struct{}
+
+func (mergeFilter) Name() string { return "git-merge" }
+
+func (mergeFilter) Match(c *engine.Context) bool {
+	return isGit(c) && c.Sub() == "merge" && !engine.MachineReadable(c)
+}
+
+func (mergeFilter) Apply(c *engine.Context, out string) (string, bool) {
+	return renderSync(c, out)
+}
+
+var (
+	// packStatsRe: "Total 4557 (delta 2982), reused 4557 (delta 2982), pack-reused 0 (from 0)".
+	packStatsRe = regexp.MustCompile(`^(?:remote: )?Total \d+ \(delta \d+\), reused \d+ \(delta \d+\)`)
+	// syncNoiseRe: progress families engine.IsProgress does not know.
+	syncNoiseRe = regexp.MustCompile(`^(?:remote: )?(?:Unpacking objects|Checking out files|Filtering content|Checking connectivity|Updating files)[:.]|` +
+		`^Delta compression using up to \d+ threads\.?$|^remote:$`)
+	// refLineRe: " * [new tag]         v1.0       -> v1.0" and friends.
+	refLineRe  = regexp.MustCompile(`^ ([ +\-t*!=]) (\[[^\]]+\]|[0-9a-f]{4,}\.\.\.?[0-9a-f]{4,}) +(\S+) +-> +(\S+)(?: \(([^)]*)\))?$`)
+	modeLineRe = regexp.MustCompile(`^ (create|delete) mode (\d{6}) (.+)$`)
+)
+
+// matchRefLine is refLineRe.FindStringSubmatch with a cheap precheck.
+func matchRefLine(ln string) []string {
+	if len(ln) < 8 || ln[0] != ' ' || !strings.Contains(ln, "->") {
+		return nil
+	}
+	return refLineRe.FindStringSubmatch(ln)
+}
+
+// isModeLine reports whether ln is a " create mode …"/" delete mode …" line.
+func isModeLine(ln string) bool {
+	return (strings.HasPrefix(ln, " create mode ") || strings.HasPrefix(ln, " delete mode ")) && modeLineRe.MatchString(ln)
+}
+
+// minRefGroup: runs shorter than this stay one ref per line.
+const minRefGroup = 4
+
+// maxNames caps a grouped list of ref, branch or tag names.
+const maxNames = 400
+
+type refLine struct {
+	raw                     string
+	flag, summary, src, dst string
+	reason                  string
+}
+
+// groupKey says how refs of one run map: the same name on both sides, the
+// source under a remote prefix ("origin/"), or pruned (no source).
+func (r refLine) groupKey() (key, item string, ok bool) {
+	if r.reason != "" || r.flag == "!" || engine.IsError(r.raw) {
+		return "", "", false
+	}
+	switch {
+	case r.src == r.dst:
+		return r.flag + r.summary + "\x00same", r.src, true
+	case r.src == "(none)":
+		return r.flag + r.summary + "\x00none", r.dst, true
+	case strings.HasSuffix(r.dst, "/"+r.src):
+		prefix := strings.TrimSuffix(r.dst, r.src)
+		return r.flag + r.summary + "\x00" + prefix, r.src, true
+	}
+	return "", "", false
+}
+
+// renderSync condenses push/pull/fetch/clone/merge output. When the command
+// failed and its output ends in a progress line, that line is kept: it says
+// where an interrupted transfer stopped ("Receiving objects:  45% …").
+func renderSync(c *engine.Context, out string) (string, bool) {
+	lines := strings.Split(out, "\n")
+	last := len(lines) - 1
+	for last >= 0 && strings.TrimSpace(lines[last]) == "" {
+		last--
+	}
+	var res []string
+	var rows []statRow
+	var refs []refLine
+	var modes []string
+	var autos []string
+	autoAt := -1
+	recognized := false
+	noise := 0
+
+	flushRows := func() {
+		if len(rows) > 0 {
+			res = append(res, renderGitStat(rows, " ")...)
+			rows = nil
+		}
+	}
+	flushRefs := func() {
+		res = append(res, groupRefs(refs)...)
+		refs = nil
+	}
+	flushModes := func() {
+		res = append(res, groupModes(modes)...)
+		modes = nil
+	}
+	for i, ln := range lines {
+		if m := matchRefLine(ln); m != nil {
+			flushRows()
+			flushModes()
+			refs = append(refs, refLine{raw: ln, flag: m[1], summary: m[2], src: m[3], dst: m[4], reason: m[5]})
+			recognized = true
+			continue
+		}
+		flushRefs()
+		if r, ok := parseStatRow(ln); ok && !engine.IsError(ln) {
+			rows = append(rows, r)
+			continue
+		}
+		if strings.Contains(ln, " changed") && statSumRe.MatchString(ln) {
+			resolveStat(rows, ln)
+		}
+		flushRows()
+		if isModeLine(ln) && !engine.IsError(ln) {
+			modes = append(modes, ln)
+			continue
+		}
+		flushModes()
+		switch {
+		case strings.TrimSpace(ln) == "":
+		case len(ln) > len("Auto-merging ") && strings.HasPrefix(ln, "Auto-merging ") &&
+			!strings.Contains(ln[len("Auto-merging "):], " ") && !engine.IsError(ln):
+			if autoAt < 0 {
+				autoAt = len(res)
+				res = append(res, "")
+			}
+			autos = append(autos, ln[len("Auto-merging "):])
+		case engine.IsProgress(ln), strings.Contains(ln, "Total ") && packStatsRe.MatchString(ln), syncNoiseRe.MatchString(ln):
+			recognized = true
+			noise++
+			if c.Failed() && i == last {
+				res = append(res, ln)
+			}
+		default:
+			if isSyncLine(ln) {
+				recognized = true
+			}
+			res = append(res, ln)
+		}
+	}
+	flushRefs()
+	flushRows()
+	flushModes()
+	if autoAt >= 0 {
+		if len(autos) == 1 {
+			res[autoAt] = "Auto-merging " + autos[0]
+		} else {
+			res[autoAt] = fmt.Sprintf("Auto-merging (%d): %s", len(autos), strings.Join(capItems(autos, maxNames), " "))
+		}
+		recognized = true
+	}
+	if !recognized {
+		return "", false
+	}
+	if out := join(res); out != "" {
+		return out, true
+	}
+	// Nothing but transfer progress: say so rather than print nothing.
+	return fmt.Sprintf("[%s of transfer progress hidden]", engine.Plural(noise, "line", "lines")), true
+}
+
+// isSyncLine recognizes git's own transfer/merge messages, so that output
+// with none of them (a localized git, another tool's text) is left to the
+// generic reducer.
+func isSyncLine(ln string) bool {
+	for _, p := range []string{"To ", "From ", "Cloning into ", "Updating ", "Fast-forward", "Merge made by",
+		"Already up to date", "Everything up-to-date", "CONFLICT ", "Automatic merge failed", "branch '",
+		"Successfully rebased", "remote: ", "hint: ", "error: ", "fatal: ", "Fetching ", " * branch ",
+		"Already up-to-date", "Your branch "} {
+		if strings.HasPrefix(ln, p) {
+			return true
+		}
+	}
+	return statSumRe.MatchString(ln)
+}
+
+// groupRefs prints runs of at least minRefGroup ref updates of the same kind
+// on one (wrapped) line; everything else one per line, verbatim.
+func groupRefs(refs []refLine) []string {
+	if len(refs) == 0 {
+		return nil
+	}
+	// Each ref's group key, computed once (it classifies the line).
+	keys := make([]string, len(refs))
+	names := make([]string, len(refs))
+	oks := make([]bool, len(refs))
+	for i, r := range refs {
+		keys[i], names[i], oks[i] = r.groupKey()
+	}
+	var out []string
+	for i := 0; i < len(refs); {
+		key, ok := keys[i], oks[i]
+		j := i + 1
+		for ok && j < len(refs) && oks[j] && keys[j] == key {
+			j++
+		}
+		if !ok || j-i < minRefGroup {
+			for ; i < j; i++ {
+				out = append(out, refs[i].raw)
+			}
+			continue
+		}
+		r := refs[i]
+		items := append([]string(nil), names[i:j]...)
+		var label string
+		_, kind, _ := strings.Cut(key, "\x00")
+		switch kind {
+		case "same":
+			label = fmt.Sprintf(" %s %s (%d):", r.flag, r.summary, len(items))
+		case "none":
+			label = fmt.Sprintf(" %s %s (%d):", r.flag, r.summary, len(items))
+		default:
+			label = fmt.Sprintf(" %s %s (%d, each -> %s<name>):", r.flag, r.summary, len(items), kind)
+		}
+		items = capItems(items, maxNames)
+		if kind == "same" {
+			items = braceRuns(items) // tags: 4.17.{0,1,2,3}
+		}
+		wrapped := wrapItems("    ", items, " ", statWidth)
+		out = append(out, label)
+		out = append(out, wrapped...)
+		i = j
+	}
+	return out
+}
+
+// groupModes lists runs of create/delete mode lines with the same mode on
+// one line.
+func groupModes(modes []string) []string {
+	var out []string
+	for i := 0; i < len(modes); {
+		mi := modeLineRe.FindStringSubmatch(modes[i])
+		j := i + 1
+		var paths []string
+		paths = append(paths, mi[3])
+		for j < len(modes) {
+			mj := modeLineRe.FindStringSubmatch(modes[j])
+			if mj[1] != mi[1] || mj[2] != mi[2] {
+				break
+			}
+			paths = append(paths, mj[3])
+			j++
+		}
+		if j-i < minRefGroup {
+			out = append(out, modes[i:j]...)
+		} else {
+			out = append(out, fmt.Sprintf(" %s mode %s (%d):", mi[1], mi[2], j-i))
+			out = append(out, wrapItems("    ", capItems(paths, maxNames), "  ", statWidth)...)
+		}
+		i = j
+	}
+	return out
+}

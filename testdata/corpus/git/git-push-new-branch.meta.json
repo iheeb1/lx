@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "push",
+    "backup",
+    "feature/args-validation"
+  ],
+  "shell": "git push backup feature/args-validation",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "plain git push of a feature branch to a remote (non-TTY: no progress), '* [new branch]' line",
+  "cwd": "repos/cobra-merge"
+}

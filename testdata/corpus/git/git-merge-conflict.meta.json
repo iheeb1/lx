@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "merge",
+    "feature/args-validation"
+  ],
+  "shell": "git merge feature/args-validation",
+  "repo": "spf13/cobra",
+  "exit_code": 1,
+  "description": "git merge of a feature branch created 20 commits behind main that touched the same regions: 7 content conflicts plus a modify/delete conflict",
+  "cwd": "repos/cobra-merge"
+}

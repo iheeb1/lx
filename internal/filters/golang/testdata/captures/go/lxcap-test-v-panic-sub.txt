@@ -1,0 +1,28 @@
+=== RUN   TestTree
+=== RUN   TestTree/leaf
+=== RUN   TestTree/nil_next
+--- FAIL: TestTree (0.00s)
+    --- PASS: TestTree/leaf (0.00s)
+    --- FAIL: TestTree/nil_next (0.00s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal SIGSEGV: segmentation violation code=0x2 addr=0x0 pc=0x10465824c]
+
+goroutine 37 [running]:
+testing.tRunner.func1.2({0x10478ebe0, 0x1047d8cb0})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1974 +0x1a0
+testing.tRunner.func1()
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1977 +0x318
+panic({0x10478ebe0?, 0x1047d8cb0?})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/runtime/panic.go:860 +0x12c
+example.com/lxcap/sub.sum(0x0)
+	/home/user/src/lxcap/sub/sub_test.go:10 +0x1c
+example.com/lxcap/sub.sum(...)
+	/home/user/src/lxcap/sub/sub_test.go:10
+example.com/lxcap/sub.TestTree.func2(0xa1e18a686c8)
+	/home/user/src/lxcap/sub/sub_test.go:15 +0x2c
+testing.tRunner(0xa1e18a686c8, 0x1047b7f88)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4
+created by testing.(*T).Run in goroutine 35
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x3a8
+FAIL	example.com/lxcap/sub	0.491s
+FAIL

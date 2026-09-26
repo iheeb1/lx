@@ -1,0 +1,6 @@
+Using default tag: latest
+latest: Pulling from library/node
+[lx: 9 layers, 2 already existed; per-layer progress not shown]
+Digest: sha256:0895953fcb4434c0d4b2598d9c634a590dfbadf905361545d8b3ec7888a8350e
+Status: Downloaded newer image for node:latest
+docker.io/library/node:latest

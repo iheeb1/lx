@@ -1,0 +1,8 @@
+# github.com/gin-gonic/gin
+./auth.go:60:6: c.AbortWithStatus undefined (type *Context has no field or method AbortWithStatus)
+./auth.go:109:6: c.AbortWithStatus undefined (type *Context has no field or method AbortWithStatus)
+./context.go:248:4: c.AbortWithStatus undefined (type *Context has no field or method AbortWithStatus)
+./gin.go:692:2: declared and not used: requestStart
+./logger.go:299:20: cannot use c.ClientIP (value of type func() string) as string value in assignment
+./recovery.go:115:4: c.AbortWithStatus undefined (type *Context has no field or method AbortWithStatus)
+./utils.go:15:2: "strconv" imported and not used

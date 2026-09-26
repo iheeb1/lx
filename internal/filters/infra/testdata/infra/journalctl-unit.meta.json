@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "journalctl",
+    "-u",
+    "shop-api",
+    "-u",
+    "nginx",
+    "-u",
+    "cron",
+    "--since",
+    "today",
+    "--no-pager"
+  ],
+  "shell": "journalctl -u shop-api -u nginx -u cron --since today --no-pager",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of systemd 255 journalctl short format; the tool is not available on the capture host): 183 lines: request logs, cron runs, four nginx upstream connection failures and a service crash/restart",
+  "cwd": "repos/shop"
+}

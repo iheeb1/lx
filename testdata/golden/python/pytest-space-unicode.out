@@ -1,0 +1,39 @@
+collected 15 items
+[lx: 1 progress line hidden]
+==================================== ERRORS ====================================
+________________________ ERROR at setup of test_uses_db ________________________
+    def db_conn():
+>       raise ConnectionError("database fixture unavailable: connection to 127.0.0.1:5432 refused")
+E       ConnectionError: database fixture unavailable: connection to 127.0.0.1:5432 refused
+tests/conftest.py:16: ConnectionError
+=================================== FAILURES ===================================
+_____________________________ test_remove_unknown ______________________________
+    def test_remove_unknown(stock):
+>       assert stock.remove("ZZ") == 0
+tests/test_models.py:26:
+self = <inventory.models.Stock object at 0x10658c2b0>, sku = 'ZZ', qty = 1
+    def remove(self, sku: str, qty: int = 1) -> int:
+>       have = self.counts[sku]
+E       KeyError: 'ZZ'
+inventory/models.py:33: KeyError
+______________________________ test_load_corrupt _______________________________
+tmp_path = PosixPath('/private/var/folders/80/4_lyj_vx2bl5xtz0k9hny73m0000gn/T/pytest-of-user/pytest-30/test_load_corrupt0')
+    def test_load_corrupt(tmp_path):
+        p = tmp_path / "bad.json"
+        p.write_text('{"items": [')
+>       Stock.load(str(p))
+tests/test_models.py:47:
+inventory/models.py:52: in load
+    data = json.load(f)
+… 3 library frames (json)
+>           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 12 (char 11)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:355: JSONDecodeError
+=============================== warnings summary ===============================
+tests/test_models.py::test_legacy_total[1] (+4 more)
+  tests/test_models.py:32: DeprecationWarning: legacy_total() is deprecated, use total_price()
+=========================== short test summary info ============================
+FAILED tests/test_models.py::test_remove_unknown - KeyError: 'ZZ'
+FAILED tests/test_models.py::test_load_corrupt - json.decoder.JSONDecodeError...
+ERROR tests/test_models.py::test_uses_db - ConnectionError: database fixture ...
+=== 2 failed, 10 passed, 1 skipped, 1 xfailed, 5 warnings, 1 error in 0.18s ====

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "http",
+    "-v",
+    "POST",
+    "https://api.github.com/repos/golang/go/issues",
+    "title=cmd/go: flaky TestScript/list_std"
+  ],
+  "shell": "http -v POST https://api.github.com/repos/golang/go/issues title=cmd/go: flaky TestScript/list_std",
+  "repo": "",
+  "exit_code": 0,
+  "cwd": "data/api",
+  "description": "SYNTHETIC (hand-assembled in GNU Wget 1.24 / HTTPie 3.2 format; tool not installed on the capture host): http -v POST: request line, request headers and JSON body, then a 422 response (all headers kept) with a JSON error body"
+}

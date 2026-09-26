@@ -1,0 +1,12 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+Step 1/6 : FROM alpine:3.20
+Step 2/6 : WORKDIR /app
+Step 3/6 : RUN echo "installing deps" && for i in 1 2 3 4 5; do echo "fetched pkg-$i"; done && echo "npm warn deprecated inflight@1.0.6: not supported" >&2  [lx: 6 output lines not shown]
+npm warn deprecated inflight@1.0.6: not supported
+Step 4/6 : COPY app.txt /app/app.txt
+Step 5/6 : RUN echo "compiling..." && echo "src/main.c:12:5: error: expected ';' before 'return'" >&2 && echo "make: *** [Makefile:8: main.o] Error 1" >&2 && exit 2
+compiling...
+src/main.c:12:5: error: expected ';' before 'return'
+make: *** [Makefile:8: main.o] Error 1
+The command '/bin/sh -c echo "compiling..." && echo "src/main.c:12:5: error: expected ';' before 'return'" >&2 && echo "make: *** [Makefile:8: main.o] Error 1" >&2 && exit 2' returned a non-zero code: 2
+[lx: 5 of 6 steps ran; 12 intermediate container/image lines not shown]

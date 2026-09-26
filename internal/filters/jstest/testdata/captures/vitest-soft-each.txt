@@ -1,0 +1,64 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/home/user/src/vitproj[39m
+
+ [31m❯[39m adv/soft.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 6[2mms[22m[39m
+[31m   [31m×[31m soft assertions[39m[32m 4[2mms[22m[39m
+   [32m✓[39m handles error case 1[32m 0[2mms[22m[39m
+   [32m✓[39m handles error case 2[32m 0[2mms[22m[39m
+[31m   [31m×[31m handles error case 3[39m[32m 0[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m adv/soft.test.ts[2m > [22msoft assertions
+[31m[1mAssertionError[22m: expected 1 to be 2 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 2[39m
+[31m+ 1[39m
+
+[36m [2m❯[22m adv/soft.test.ts:[2m3:18[22m[39m
+    [90m  1|[39m [35mimport[39m { it[33m,[39m expect } [35mfrom[39m [32m"vitest"[39m[33m;[39m
+    [90m  2|[39m [34mit[39m([32m"soft assertions"[39m[33m,[39m () [33m=>[39m {
+    [90m  3|[39m   expect[33m.[39m[34msoft[39m([34m1[39m)[33m.[39m[34mtoBe[39m([34m2[39m)[33m;[39m
+    [90m   |[39m                  [31m^[39m
+    [90m  4|[39m   expect[33m.[39m[34msoft[39m([32m"a"[39m)[33m.[39m[34mtoBe[39m([32m"b"[39m)[33m;[39m
+    [90m  5|[39m })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m adv/soft.test.ts[2m > [22msoft assertions
+[31m[1mAssertionError[22m: expected 'a' to be 'b' // Object.is equality[39m
+
+Expected: [32m"b"[39m
+Received: [31m"a"[39m
+
+[36m [2m❯[22m adv/soft.test.ts:[2m4:20[22m[39m
+    [90m  2|[39m [34mit[39m([32m"soft assertions"[39m[33m,[39m () [33m=>[39m {
+    [90m  3|[39m   expect[33m.[39m[34msoft[39m([34m1[39m)[33m.[39m[34mtoBe[39m([34m2[39m)[33m;[39m
+    [90m  4|[39m   expect[33m.[39m[34msoft[39m([32m"a"[39m)[33m.[39m[34mtoBe[39m([32m"b"[39m)[33m;[39m
+    [90m   |[39m                    [31m^[39m
+    [90m  5|[39m })[33m;[39m
+    [90m  6|[39m it[33m.[39m[34meach[39m([[34m1[39m[33m,[39m [34m2[39m[33m,[39m [34m3[39m])([32m"handles error case %i"[39m[33m,[39m (n) [33m=>[39m {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m adv/soft.test.ts[2m > [22mhandles error case 3
+[31m[1mAssertionError[22m: expected 3 to be less than 3[39m
+[36m [2m❯[22m adv/soft.test.ts:[2m7:13[22m[39m
+    [90m  5|[39m })[33m;[39m
+    [90m  6|[39m it[33m.[39m[34meach[39m([[34m1[39m[33m,[39m [34m2[39m[33m,[39m [34m3[39m])([32m"handles error case %i"[39m[33m,[39m (n) [33m=>[39m {
+    [90m  7|[39m   [34mexpect[39m(n)[33m.[39m[34mtoBeLessThan[39m([34m3[39m)[33m;[39m
+    [90m   |[39m             [31m^[39m
+    [90m  8|[39m })[33m;[39m
+    [90m  9|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 13:18:24
+[2m   Duration [22m 125ms[2m (transform 11ms, setup 0ms, import 18ms, tests 6ms, environment 0ms)[22m
+

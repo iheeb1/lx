@@ -1,0 +1,3 @@
+package notests
+
+func N() {}

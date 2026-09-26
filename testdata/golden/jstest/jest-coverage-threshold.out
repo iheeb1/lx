@@ -1,0 +1,17 @@
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------|---------|----------|---------|---------|-------------------
+All files |      40 |       25 |      50 |      40 |
+ math.js  |      40 |       25 |      50 |      40 | 7,13-21
+----------|---------|----------|---------|---------|-------------------
+Jest: "global" coverage threshold for branches (90%) not met: 25%
+Jest: "global" coverage threshold for lines (95%) not met: 40%
+
+[1 passing suite, 3 passing tests hidden]
+Test Suites: 1 passed, 1 total
+Tests:       1 skipped, 1 todo, 3 passed, 5 total
+Snapshots:   0 total
+Time:        0.375 s, estimated 1 s
+Ran all test suites matching /test\/math.test.js/i.
+
+[lx: jest exited 1 but reported no failing test; see the lines above or the full output]

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 /home/user/src/ufo
+
+
+ Test Files  13 passed (13)
+      Tests  489 passed (489)
+   Start at  00:35:31
+   Duration  448ms (transform 503ms, setup 0ms, import 841ms, tests 61ms, environment 1ms)
+

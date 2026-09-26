@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "node",
+    "examples/search/index.js"
+  ],
+  "shell": "node examples/search/index.js",
+  "repo": "expressjs/express",
+  "exit_code": 1,
+  "description": "running an express example whose dependency is not installed: uncaught 'Cannot find module' error with require stack and Node.js version footer",
+  "cwd": "repos/express"
+}

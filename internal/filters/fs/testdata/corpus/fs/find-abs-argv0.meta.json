@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/usr/bin/find",
+    "./binding",
+    "nosuchdir",
+    "-name",
+    "*.go"
+  ],
+  "shell": "/usr/bin/find ./binding nosuchdir -name *.go",
+  "exit_code": 1,
+  "description": "find invoked by absolute path with a missing root",
+  "cwd": "/home/user/src/gin"
+}

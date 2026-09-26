@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "TZ=America/New_York",
+    "npx",
+    "jest",
+    "--verbose"
+  ],
+  "shell": "TZ=America/New_York npx jest --verbose",
+  "repo": "moment/luxon",
+  "exit_code": 0,
+  "description": "jest passing run with --verbose: every test name printed per suite",
+  "cwd": "repos/luxon"
+}

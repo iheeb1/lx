@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "http",
+    "--check-status",
+    "GET",
+    "https://api.github.com/repos/golang/go/nonexistent"
+  ],
+  "shell": "http --check-status GET https://api.github.com/repos/golang/go/nonexistent",
+  "repo": "",
+  "exit_code": 4,
+  "description": "REAL httpie 3.2.4 (macOS system Python: urllib3 NotOpenSSLWarning first): --check-status 404, \"http: warning: HTTP 404 Not Found\" before the body",
+  "cwd": "data/api"
+}

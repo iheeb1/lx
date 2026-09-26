@@ -1,0 +1,424 @@
+4b68a5f1 (thinkerou 2022-05-28) 1) // Copyright 2014 Manu Martinez-Almeida. All rights reserved.
+8e5397bf (Manu Mtz-Almeida 2014-08-29)
+   2) // Use of this source code is governed by a MIT style
+   3) // license that can be found in the LICENSE file.
+   4)
+^15216a0 (Manu Mtz-Almeida 2014-06-18)
+   5) package gin
+   6)
+   7) import (
+66b47a80 (Yoshiki Nakagawa 2018-11-06) 8) 	"fmt"
+^15216a0 9) 	"html/template"
+cd6e95f0 (Manu Mtz-Almeida 2015-05-19) 10) 	"net"
+^15216a0 11) 	"net/http"
+cd6e95f0 12) 	"os"
+ccb105db (Tudor Roman 2019-02-27) 13) 	"path"
+bfc8ca28 (Manu MA 2021-04-06) 14) 	"strings"
+3e403367 (Manu Mtz-Almeida 2014-07-06) 15) 	"sync"
+d8f2d588 (Ruben Pari 2026-09-19) 16) 	"time"
+615c62d7 (Manu Mtz-Almeida 2015-03-23) 17)
+982daeb1 (Andy Pan 2020-01-18) 18) 	"github.com/gin-gonic/gin/internal/bytesconv"
+71496abe (sunshineplan 2025-04-21) 19) 	filesystem "github.com/gin-gonic/gin/internal/fs"
+615c62d7 20) 	"github.com/gin-gonic/gin/render"
+3ac729dc (thinkerou 2024-05-09) 21) 	"github.com/quic-go/quic-go/http3"
+b40ded18 (涛叔 2022-02-05)
+  22) 	"golang.org/x/net/http2"
+  23) 	"golang.org/x/net/http2/h2c"
+^15216a0
+  24) )
+  25)
+93ff771e (Bo-Yi Wu 2025-11-15)
+  26) const (
+  27) 	defaultMultipartMemory = 32 << 20 // 32 MB
+  28) 	escapedColon           = "\\:"
+  29) 	colon                  = ":"
+  30) 	backslash              = "\\"
+  31) )
+66fa43f9 (Manu Mtz-Almeida 2015-05-22) 32)
+d8f2d588
+  33) // defaultReadHeaderTimeout is the default ReadHeaderTimeout applied to the
+  34) // http.Server created by Run, RunTLS and RunListener. It protects against
+  35) // slowloris-style resource exhaustion when the caller does not configure a
+  36) // custom http.Server.
+  37) const defaultReadHeaderTimeout = 10 * time.Second
+  38)
+f7376f7c (田欧 2017-09-28) 39) var (
+54175dbe (thinkerou 2020-05-04)
+  40) 	default404Body = []byte("404 page not found")
+  41) 	default405Body = []byte("405 method not allowed")
+f7376f7c 42) )
+^15216a0 43)
+dd8a27c0 (Alessandro (Ale) Segala 2021-06-23) 44) var defaultPlatform string
+54175dbe 45)
+0be805a6 (Notealot 2021-12-03)
+  46) var defaultTrustedCIDRs = []*net.IPNet{
+  47) 	{ // 0.0.0.0/0 (IPv4)
+  48) 		IP:   net.IP{0x0, 0x0, 0x0, 0x0},
+  49) 		Mask: net.IPMask{0x0, 0x0, 0x0, 0x0},
+  50) 	},
+  51) 	{ // ::/0 (IPv6)
+  52) 		IP:   net.IP{0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},
+  53) 		Mask: net.IPMask{0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},
+  54) 	},
+  55) }
+39181329 (Notealot 2021-10-06) 56)
+6db092f7 (田欧 2018-09-15) 57) // HandlerFunc defines the handler used by gin middleware as return value.
+9268afb1 (Manu Mtz-Almeida 2015-06-26) 58) type HandlerFunc func(*Context)
+6db092f7 59)
+ac5e84d9 (Flc゛ 2024-03-11)
+  60) // OptionFunc defines the function to change the default configuration
+  61) type OptionFunc func(*Engine)
+  62)
+fb5f0454 (jincheng9 2021-12-15) 63) // HandlersChain defines a HandlerFunc slice.
+9268afb1
+  64) type HandlersChain []HandlerFunc
+  65)
+ba7e5898 (jincheng9 2021-12-05) 66) // Last returns the last handler in the chain. i.e. the last handler is the main one.
+9268afb1 67) func (c HandlersChain) Last() HandlerFunc {
+e0fd6238 (田欧 2017-07-06) 68) 	if length := len(c); length > 0 {
+9268afb1
+  69) 		return c[length-1]
+  70) 	}
+  71) 	return nil
+  72) }
+  73)
+6db092f7 74) // RouteInfo represents a request route's specification which contains method and path and its handler.
+d535fcd5 (田欧 2017-07-05) 75) type RouteInfo struct {
+c65e5efc (Thomas Schaffer 2018-10-23)
+  76) 	Method      string
+  77) 	Path        string
+  78) 	Handler     string
+  79) 	HandlerFunc HandlerFunc
+d535fcd5 80) }
+^15216a0 81)
+ba7e5898 82) // RoutesInfo defines a RouteInfo slice.
+d535fcd5
+  83) type RoutesInfo []RouteInfo
+  84)
+dd8a27c0
+  85) // Trusted platforms
+  86) const (
+865fd560 (mstmdev 2022-03-23) 87) 	// PlatformGoogleAppEngine when running on Google App Engine. Trust X-Appengine-Remote-Addr
+dd8a27c0 88) 	// for determining the client's IP
+2d3d6d2f (Notealot 2021-10-24) 89) 	PlatformGoogleAppEngine = "X-Appengine-Remote-Addr"
+865fd560 90) 	// PlatformCloudflare when using Cloudflare's CDN. Trust CF-Connecting-IP for determining
+dd8a27c0 91) 	// the client's IP
+2d3d6d2f 92) 	PlatformCloudflare = "CF-Connecting-IP"
+bb3519d2 (Andy Brody 2024-02-07)
+  93) 	// PlatformFlyIO when running on Fly.io. Trust Fly-Client-IP for determining the client's IP
+  94) 	PlatformFlyIO = "Fly-Client-IP"
+dd8a27c0
+  95) )
+  96)
+d535fcd5
+  97) // Engine is the framework's instance, it contains the muxer, middleware and configuration settings.
+  98) // Create an instance of Engine, by using New() or Default()
+  99) type Engine struct {
+ 100) 	RouterGroup
+ 101)
+5fad976b (Pawan Kalyan 2025-11-16)
+ 102) 	// routeTreesUpdated ensures that the initialization or update of the route trees
+ 103) 	// (used for routing HTTP requests) happens only once, even if called multiple times concurrently.
+ 104) 	routeTreesUpdated sync.Once
+ 105)
+865fd560 106) 	// RedirectTrailingSlash enables automatic redirection if the current route can't be matched but a
+d535fcd5
+ 107) 	// handler for the path with (without) the trailing slash exists.
+ 108) 	// For example if /foo/ is requested but a route only exists for /foo, the
+ 109) 	// client is redirected to /foo with http status code 301 for GET requests
+ 110) 	// and 307 for all other request methods.
+ 111) 	RedirectTrailingSlash bool
+ 112)
+865fd560 113) 	// RedirectFixedPath if enabled, the router tries to fix the current request path, if no
+d535fcd5
+ 114) 	// handle is registered for it.
+ 115) 	// First superfluous path elements like ../ or // are removed.
+ 116) 	// Afterwards the router does a case-insensitive lookup of the cleaned path.
+ 117) 	// If a handle can be found for this route, the router makes a redirection
+ 118) 	// to the corrected path with status code 301 for GET requests and 307 for
+ 119) 	// all other request methods.
+ 120) 	// For example /FOO and /..//Foo could be redirected to /foo.
+ 121) 	// RedirectTrailingSlash is independent of this option.
+ 122) 	RedirectFixedPath bool
+ 123)
+865fd560 124) 	// HandleMethodNotAllowed if enabled, the router checks if another method is allowed for the
+d535fcd5
+ 125) 	// current route, if the current request can not be routed.
+ 126) 	// If this is the case, the request is answered with 'Method Not Allowed'
+ 127) 	// and HTTP status code 405.
+ 128) 	// If no other Method is allowed, the request is delegated to the NotFound
+ 129) 	// handler.
+ 130) 	HandleMethodNotAllowed bool
+ 131)
+865fd560 132) 	// ForwardedByClientIP if enabled, client IP will be parsed from the request's headers that
+bfc8ca28
+ 133) 	// match those stored at `(*gin.Engine).RemoteIPHeaders`. If no IP was
+ 134) 	// fetched, it falls back to the IP obtained from
+ 135) 	// `(*gin.Context).Request.RemoteAddr`.
+ 136) 	ForwardedByClientIP bool
+ 137)
+865fd560
+ 138) 	// AppEngine was deprecated.
+ 139) 	// Deprecated: USE `TrustedPlatform` WITH VALUE `gin.PlatformGoogleAppEngine` INSTEAD
+9c270532 (Lanco 2021-07-04)
+ 140) 	// #726 #755 If enabled, it will trust some headers starting with
+ 141) 	// 'X-AppEngine...' for better integration with that PaaS.
+ 142) 	AppEngine bool
+ 143)
+865fd560 144) 	// UseRawPath if enabled, the url.RawPath will be used to find parameters.
+771dcc64 (Aeddis Desauw 2025-11-27)
+ 145) 	// The RawPath is only a hint, EscapedPath() should be use instead. (https://pkg.go.dev/net/url@master#URL)
+ 146) 	// Only use RawPath if you know what you are doing.
+9c270532
+ 147) 	UseRawPath bool
+ 148)
+771dcc64
+ 149) 	// UseEscapedPath if enable, the url.EscapedPath() will be used to find parameters
+ 150) 	// It overrides UseRawPath
+ 151) 	UseEscapedPath bool
+ 152)
+865fd560 153) 	// UnescapePathValues if true, the path value will be unescaped.
+771dcc64 154) 	// If UseRawPath and UseEscapedPath are false (by default), the UnescapePathValues effectively is true,
+9c270532
+ 155) 	// as url.Path gonna be used, which is already unescaped.
+ 156) 	UnescapePathValues bool
+ 157)
+ 158) 	// RemoveExtraSlash a parameter can be parsed from the URL even with extra slashes.
+ 159) 	// See the PR #1817 and issue #1644
+ 160) 	RemoveExtraSlash bool
+ 161)
+865fd560 162) 	// RemoteIPHeaders list of headers used to obtain the client IP when
+bfc8ca28
+ 163) 	// `(*gin.Engine).ForwardedByClientIP` is `true` and
+ 164) 	// `(*gin.Context).Request.RemoteAddr` is matched by at least one of the
+39181329 165) 	// network origins of list defined by `(*gin.Engine).SetTrustedProxies()`.
+bfc8ca28
+ 166) 	RemoteIPHeaders []string
+ 167)
+865fd560 168) 	// TrustedPlatform if set to a constant of value gin.Platform*, trusts the headers set by
+dd8a27c0
+ 169) 	// that platform, for example to determine the client IP
+ 170) 	TrustedPlatform string
+ 171)
+865fd560 172) 	// MaxMultipartMemory value of 'maxMemory' param that is given to http.Request's ParseMultipartForm
+c9b34411 (Daniel M. Lambea 2017-09-07)
+ 173) 	// method call.
+ 174) 	MaxMultipartMemory int64
+6f94fd05 (Boris Borshevsky 2017-11-29) 175)
+d8f2d588
+ 176) 	// ReadHeaderTimeout is the maximum duration allowed for reading the request
+ 177) 	// headers by the http.Server created through Run, RunTLS and RunListener.
+ 178) 	// If zero or negative, a default of 10 seconds is used. Set to a positive
+ 179) 	// value to customize, or use a custom http.Server directly to disable it.
+ 180) 	ReadHeaderTimeout time.Duration
+ 181)
+865fd560 182) 	// UseH2C enable h2c support.
+b40ded18
+ 183) 	UseH2C bool
+ 184)
+f197a8ba (wei 2022-06-06)
+ 185) 	// ContextWithFallback enable fallback Context.Deadline(), Context.Done(), Context.Err() and Context.Value() when Context.Request.Context() is not nil.
+ 186) 	ContextWithFallback bool
+ 187)
+6f94fd05 188) 	delims           render.Delims
+6ac7f194 (thinkerou 2020-05-05) 189) 	secureJSONPrefix string
+6f94fd05
+ 190) 	HTMLRender       render.HTMLRender
+ 191) 	FuncMap          template.FuncMap
+ 192) 	allNoRoute       HandlersChain
+ 193) 	allNoMethod      HandlersChain
+ 194) 	noRoute          HandlersChain
+ 195) 	noMethod         HandlersChain
+ 196) 	pool             sync.Pool
+ 197) 	trees            methodTrees
+d17270dd (Bo-Yi Wu 2020-05-10) 198) 	maxParams        uint16
+3fe92899 (Zhu Xi 2021-10-23) 199) 	maxSections      uint16
+39181329 200) 	trustedProxies   []string
+bfc8ca28 201) 	trustedCIDRs     []*net.IPNet
+d535fcd5 202) }
+^15216a0 203)
+51aea73b (Jesse 2022-10-20) 204) var _ IRouter = (*Engine)(nil)
+9e440797 (Manu Mtz-Almeida 2015-06-26) 205)
+8f304781 (Manu Mtz-Almeida 2015-07-02) 206) // New returns a new blank Engine instance without any middleware attached.
+504ec594 (jincheng9 2021-12-03) 207) // By default, the configuration is:
+8f304781
+ 208) // - RedirectTrailingSlash:  true
+ 209) // - RedirectFixedPath:      false
+ 210) // - HandleMethodNotAllowed: false
+ 211) // - ForwardedByClientIP:    true
+b1872ec3 (Sergey Egorov 2017-02-28) 212) // - UseRawPath:             false
+771dcc64 213) // - UseEscapedPath: 		 false
+b1872ec3 214) // - UnescapePathValues:     true
+ac5e84d9 215) func New(opts ...OptionFunc) *Engine {
+8f304781 216) 	debugPrintWARNINGNew()
+2915fa0f (Manu Mtz-Almeida 2015-03-31) 217) 	engine := &Engine{
+1f6304ca (Manu Mtz-Almeida 2015-04-07) 218) 		RouterGroup: RouterGroup{
+3066c357 (Manu Mtz-Almeida 2015-05-16) 219) 			Handlers: nil,
+fc5e3557 (Manu Mtz-Almeida 2015-07-08) 220) 			basePath: "/",
+4998bc2b (Manu Mtz-Almeida 2015-06-11) 221) 			root:     true,
+1f6304ca 222) 		},
+e38c36ee (Thomas Boerger 2017-06-30) 223) 		FuncMap:                template.FuncMap{},
+2915fa0f 224) 		RedirectTrailingSlash:  true,
+835f66fd (Manu Mtz-Almeida 2015-05-30)
+ 225) 		RedirectFixedPath:      false,
+ 226) 		HandleMethodNotAllowed: false,
+58b5e158 (Manu Mtz-Almeida 2015-06-07) 227) 		ForwardedByClientIP:    true,
+bfc8ca28 228) 		RemoteIPHeaders:        []string{"X-Forwarded-For", "X-Real-IP"},
+dd8a27c0 229) 		TrustedPlatform:        defaultPlatform,
+b1872ec3 230) 		UseRawPath:             false,
+771dcc64 231) 		UseEscapedPath:         false,
+352d69c7 (Bo-Yi Wu 2019-11-29) 232) 		RemoveExtraSlash:       false,
+b1872ec3 233) 		UnescapePathValues:     true,
+c9b34411 234) 		MaxMultipartMemory:     defaultMultipartMemory,
+d8f2d588 235) 		ReadHeaderTimeout:      defaultReadHeaderTimeout,
+58b5e158 236) 		trees:                  make(methodTrees, 0, 9),
+4b54b862 (Eason Lin 2017-08-02) 237) 		delims:                 render.Delims{Left: "{{", Right: "}}"},
+6ac7f194 238) 		secureJSONPrefix:       "while(1);",
+87811a97 (Eric_Lee 2022-05-28) 239) 		trustedProxies:         []string{"0.0.0.0/0", "::/0"},
+39181329 240) 		trustedCIDRs:           defaultTrustedCIDRs,
+2915fa0f 241) 	}
+c4287b13 (Flc゛ 2025-05-23) 242) 	engine.engine = engine
+2bde1076 (thinkerou 2022-03-21) 243) 	engine.pool.New = func() any {
+55e27f12 (RoCry 2022-11-06) 244) 		return engine.allocateContext(engine.maxParams)
+10979dd8 (Manu Mtz-Almeida 2014-07-02) 245) 	}
+ac5e84d9 246) 	return engine.With(opts...)
+^15216a0
+ 247) }
+ 248)
+8f304781 249) // Default returns an Engine instance with the Logger and Recovery middleware already attached.
+ac5e84d9 250) func Default(opts ...OptionFunc) *Engine {
+0cb7c44a (田欧 2017-09-28) 251) 	debugPrintWARNINGDefault()
+^15216a0 252) 	engine := New()
+7afb3238 (Manu Mtz.-Almeida 2016-01-26) 253) 	engine.Use(Logger(), Recovery())
+ac5e84d9 254) 	return engine.With(opts...)
+^15216a0
+ 255) }
+ 256)
+b40ded18
+ 257) func (engine *Engine) Handler() http.Handler {
+ 258) 	if !engine.UseH2C {
+ 259) 		return engine
+ 260) 	}
+ 261)
+ 262) 	h2s := &http2.Server{}
+ 263) 	return h2c.NewHandler(engine, h2s)
+ 264) }
+ 265)
+55e27f12
+ 266) func (engine *Engine) allocateContext(maxParams uint16) *Context {
+ 267) 	v := make(Params, 0, maxParams)
+3fe92899
+ 268) 	skippedNodes := make([]skippedNode, 0, engine.maxSections)
+ 269) 	return &Context{engine: engine, params: &v, skippedNodes: &skippedNodes}
+1e417c7a (Manu Mtz-Almeida 2015-03-25)
+ 270) }
+ 271)
+d8f2d588
+ 272) // getReadHeaderTimeout returns the configured ReadHeaderTimeout, or the
+ 273) // default if it is zero or negative.
+ 274) func (engine *Engine) getReadHeaderTimeout() time.Duration {
+ 275) 	if engine.ReadHeaderTimeout <= 0 {
+ 276) 		return defaultReadHeaderTimeout
+ 277) 	}
+ 278) 	return engine.ReadHeaderTimeout
+ 279) }
+ 280)
+830a63d2 (jincheng9 2021-12-02) 281) // Delims sets template left and right delims and returns an Engine instance.
+35f5df63 (sope 2017-05-29) 282) func (engine *Engine) Delims(left, right string) *Engine {
+4b54b862 283) 	engine.delims = render.Delims{Left: left, Right: right}
+35f5df63
+ 284) 	return engine
+ 285) }
+ 286)
+6ac7f194 287) // SecureJsonPrefix sets the secureJSONPrefix used in Context.SecureJSON.
+75ed286c (Eason Lin 2017-07-08) 288) func (engine *Engine) SecureJsonPrefix(prefix string) *Engine {
+6ac7f194 289) 	engine.secureJSONPrefix = prefix
+75ed286c
+ 290) 	return engine
+ 291) }
+ 292)
+a712f77d (Weilin Shi 2017-12-29)
+ 293) // LoadHTMLGlob loads HTML files identified by glob pattern
+ 294) // and associates the result with HTML renderer.
+5ea7a922 (Manu Mtz-Almeida 2014-07-15) 295) func (engine *Engine) LoadHTMLGlob(pattern string) {
+f7376f7c
+ 296) 	left := engine.delims.Left
+ 297) 	right := engine.delims.Right
+1c4cbfae (田欧 2018-07-02) 298) 	templ := template.Must(template.New("").Delims(left, right).Funcs(engine.FuncMap).ParseGlob(pattern))
+f7376f7c 299)
+07a39619 (Manu Mtz-Almeida 2014-10-08) 300) 	if IsDebugging() {
+1c4cbfae 301) 		debugPrintLoadTemplate(templ)
+e38c36ee 302) 		engine.HTMLRender = render.HTMLDebug{Glob: pattern, FuncMap: engine.FuncMap, Delims: engine.delims}
+199bbf2a (田欧 2017-07-18) 303) 		return
+46225ea5 (Manu Mtz-Almeida 2014-08-21) 304) 	}
+7b508186 (田欧 2017-07-19) 305)
+199bbf2a 306) 	engine.SetHTMLTemplate(templ)
+5ea7a922
+ 307) }
+ 308)
+a712f77d
+ 309) // LoadHTMLFiles loads a slice of HTML files
+ 310) // and associates the result with HTML renderer.
+5ea7a922 311) func (engine *Engine) LoadHTMLFiles(files ...string) {
+07a39619 312) 	if IsDebugging() {
+e38c36ee 313) 		engine.HTMLRender = render.HTMLDebug{Files: files, FuncMap: engine.FuncMap, Delims: engine.delims}
+199bbf2a 314) 		return
+46225ea5 315) 	}
+7b508186 316)
+199bbf2a
+ 317) 	templ := template.Must(template.New("").Delims(engine.delims.Left, engine.delims.Right).Funcs(engine.FuncMap).ParseFiles(files...))
+ 318) 	engine.SetHTMLTemplate(templ)
+46225ea5
+ 319) }
+ 320)
+71496abe
+ 321) // LoadHTMLFS loads an http.FileSystem and a slice of patterns
+ 322) // and associates the result with HTML renderer.
+ 323) func (engine *Engine) LoadHTMLFS(fs http.FileSystem, patterns ...string) {
+ 324) 	if IsDebugging() {
+ 325) 		engine.HTMLRender = render.HTMLDebug{FileSystem: fs, Patterns: patterns, FuncMap: engine.FuncMap, Delims: engine.delims}
+ 326) 		return
+ 327) 	}
+ 328)
+ 329) 	templ := template.Must(template.New("").Delims(engine.delims.Left, engine.delims.Right).Funcs(engine.FuncMap).ParseFS(
+ 330) 		filesystem.FileSystem{FileSystem: fs}, patterns...))
+ 331) 	engine.SetHTMLTemplate(templ)
+ 332) }
+ 333)
+a712f77d 334) // SetHTMLTemplate associate a template with HTML renderer.
+46225ea5 335) func (engine *Engine) SetHTMLTemplate(templ *template.Template) {
+00b279c6 (Manu Mtz-Almeida 2015-06-12) 336) 	if len(engine.trees) > 0 {
+8f304781 337) 		debugPrintWARNINGSetHTMLTemplate()
+00b279c6 338) 	}
+35f5df63 339)
+e38c36ee
+ 340) 	engine.HTMLRender = render.HTMLProduction{Template: templ.Funcs(engine.FuncMap)}
+ 341) }
+ 342)
+a712f77d 343) // SetFuncMap sets the FuncMap used for template.FuncMap.
+e38c36ee
+ 344) func (engine *Engine) SetFuncMap(funcMap template.FuncMap) {
+ 345) 	engine.FuncMap = funcMap
+^15216a0
+ 346) }
+ 347)
+830a63d2 348) // NoRoute adds handlers for NoRoute. It returns a 404 code by default.
+4731e82b (Manu Mtz-Almeida 2014-07-17) 349) func (engine *Engine) NoRoute(handlers ...HandlerFunc) {
+d0fb4a6b (Manu Mtz-Almeida 2014-07-18) 350) 	engine.noRoute = handlers
+07a39619 351) 	engine.rebuild404Handlers()
+d0fb4a6b
+ 352) }
+ 353)
+6d75aba8 (Notealot 2021-09-29) 354) // NoMethod sets the handlers called when Engine.HandleMethodNotAllowed = true.
+a04d9e27 (Adonis 2015-03-08)
+ 355) func (engine *Engine) NoMethod(handlers ...HandlerFunc) {
+ 356) 	engine.noMethod = handlers
+ 357) 	engine.rebuild405Handlers()
+ 358) }
+ 359)
+830a63d2 360) // Use attaches a global middleware to the router. i.e. the middleware attached through Use() will be
+48633f70 (Manu Mtz-Almeida 2015-05-29)
+ 361) // included in the handlers chain for every single request. Even 404, 405, static files...
+ 362) // For example, this is the right place for a logger or error management middleware.
+e8bc8f48 (Manu Mtz-Almeida 2015-08-16) 363) func (engine *Engine) Use(middleware ...HandlerFunc) IRoutes {
+[… 498 more lines not shown (lines 364-861); add -L 364,861 to see them]

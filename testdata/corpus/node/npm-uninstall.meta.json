@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npm",
+    "uninstall",
+    "codecov"
+  ],
+  "shell": "npm uninstall codecov",
+  "repo": "moment/luxon",
+  "exit_code": 0,
+  "description": "npm uninstall of a deprecated devDependency (codecov): removed packages summary, audit, husky prepare",
+  "cwd": "repos/luxon"
+}

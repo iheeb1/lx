@@ -1,0 +1,31 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  3.072kB
+
+Step 1/6 : FROM alpine:3.20
+ ---> d9e853e87e55
+Step 2/6 : WORKDIR /app
+ ---> Running in 570ebd2dcaab
+ ---> Removed intermediate container 570ebd2dcaab
+ ---> e8db91a60104
+Step 3/6 : RUN echo "installing deps" && for i in 1 2 3 4 5; do echo "fetched pkg-$i"; done && echo "npm warn deprecated inflight@1.0.6: not supported" >&2
+ ---> Running in 248322460a60
+installing deps
+fetched pkg-1
+fetched pkg-2
+fetched pkg-3
+fetched pkg-4
+fetched pkg-5
+[91mnpm warn deprecated inflight@1.0.6: not supported
+[0m ---> Removed intermediate container 248322460a60
+ ---> 4a0d44c3845f
+Step 4/6 : COPY app.txt /app/app.txt
+ ---> 7fa04cd4dbc1
+Step 5/6 : RUN echo "compiling..." && echo "src/main.c:12:5: error: expected ';' before 'return'" >&2 && echo "make: *** [Makefile:8: main.o] Error 1" >&2 && exit 2
+ ---> Running in 928b87786a04
+compiling...
+[91msrc/main.c:12:5: error: expected ';' before 'return'
+make: *** [Makefile:8: main.o] Error 1
+[0mThe command '/bin/sh -c echo "compiling..." && echo "src/main.c:12:5: error: expected ';' before 'return'" >&2 && echo "make: *** [Makefile:8: main.o] Error 1" >&2 && exit 2' returned a non-zero code: 2

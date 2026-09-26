@@ -1,0 +1,31 @@
+[lx: hidden: 2 repeated include chains]
+In file included from lib/util.c:1:
+In file included from lib/util.h:3:
+lib/config.h:2:37: warning: unused variable 'tmp' [-Wunused-variable] [×2]
+    2 | static const char *name(void) { int tmp; return "x"; }
+      |                                     ^~~
+In file included from lib/util.c:1:
+lib/util.h:4:30: warning: unused parameter 'unused' [-Wunused-parameter] [×2]
+    4 | static int helper(int x, int unused) { return x * 2; }
+      |                              ^
+lib/util.c:2:52: warning: comparison of integers of different signs: 'int' and 'unsigned int' [-Wsign-compare]
+    2 | int util_add(int a, int b) { unsigned u = 3; if (a < u) return b; return a + b; }
+      |                                                  ~ ^ ~
+lib/config.h:2:20: warning: unused function 'name' [-Wunused-function]
+    2 | static const char *name(void) { int tmp; return "x"; }
+      |                    ^~~~
+lib/util.h:4:12: warning: unused function 'helper' [-Wunused-function]
+    4 | static int helper(int x, int unused) { return x * 2; }
+      |            ^~~~~~
+5 warnings generated.
+src/main.c:5:54: error: use of undeclared identifier 'missing_var'
+    5 |     for (int i = 0; i < n; i++) total += util_add(i, missing_var);
+      |                                                      ^~~~~~~~~~~
+src/main.c:3:24: warning: unused parameter 'flags' [-Wunused-parameter]
+    3 | int compute(int n, int flags) {
+      |                        ^
+src/main.c:8:56: error: call to undeclared function 'undefined_fn'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    8 | int main(void) { printf("%d\n", compute(3, 1)); return undefined_fn(2); }
+      |                                                        ^
+3 warnings and 2 errors generated.
+make: *** [src/main.o] Error 1

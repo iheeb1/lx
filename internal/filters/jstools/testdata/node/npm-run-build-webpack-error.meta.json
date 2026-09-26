@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "shell": "npm run build",
+  "exit_code": 1,
+  "description": "npm run build with webpack 5 failing: Module not found with a long resolve trace, and a parse error with code frame",
+  "cwd": "/home/user/src/webpack-app"
+}

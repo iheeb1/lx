@@ -1,0 +1,214 @@
+[1,023 matches in 32 files · showing 159 from the first 23 files, ≤15 per file; match counts for the other 9 files at the end]
+./gin_test.go
+44:router.GET("/test", func(c *Context) {
+47:router.GET("/raw", func(c *Context) {
+92:r.GET("/", func(c *Context) {
+439:router.addRoute(http.MethodGet, "/", HandlersChain{func(_ *Context) {}})
+445:router.addRoute(http.MethodPost, "/", HandlersChain{func(_ *Context) {}})
+451:router.addRoute(http.MethodPost, "/post", HandlersChain{func(_ *Context) {}})
+457:assert.Panics(t, func() { router.addRoute("", "/", HandlersChain{func(_ *Context) {}}) })
+458:assert.Panics(t, func() { router.addRoute(http.MethodGet, "a", HandlersChain{func(_ *Context) {}}) })
+461:router.addRoute(http.MethodPost, "/post", HandlersChain{func(_ *Context) {}})
+463:router.addRoute(http.MethodPost, "/post", HandlersChain{func(_ *Context) {}})
+473:var middleware0 HandlerFunc = func(c *Context) {}
+474:var middleware1 HandlerFunc = func(c *Context) {}
+495:var middleware0 HandlerFunc = func(c *Context) {}
+496:var middleware1 HandlerFunc = func(c *Context) {}
+497:var middleware2 HandlerFunc = func(c *Context) {}
+… +58 more in this file
+
+./middleware/ratelimit/ratelimit_test.go:16:r.GET("/", func(c *gin.Context) { c.String(http.StatusOK, "ok") })
+./middleware/ratelimit/ratelimit.go:21:return func(c *gin.Context) {
+./context_ratelimit.go:7:func (c *Context) RateLimitRemaining() (int, bool) {
+./utils_test.go:120:router.GET("/", Bind(bindTestStruct{}), func(c *Context) {
+
+./recovery.go
+32:type RecoveryFunc func(c *Context, err any)
+58:return func(c *Context) {
+109:func defaultHandleRecovery(c *Context, err any) {
+
+./auth_test.go
+88:router.GET("/login", func(c *Context) {
+106:router.GET("/login", func(c *Context) {
+126:router.GET("/login", func(c *Context) {
+145:router.Any("/*proxyPath", func(c *Context) {
+163:router.Any("/*proxyPath", func(c *Context) {
+
+./auth.go
+54:return func(c *Context) {
+104:return func(c *Context) {
+
+./gin_integration_test.go
+71:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+105:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+125:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+142:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+161:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+192:router.GET("/pusher", func(c *Context) {
+215:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+237:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+257:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+286:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+319:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+352:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+385:router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+393:func TestConcurrentHandleContext(t *testing.T) {
+395:router.GET("/", func(c *Context) {
+… +41 more in this file
+
+./context_file_test.go
+11:// TestContextFileSimple tests the Context.File() method with a simple case
+12:func TestContextFileSimple(t *testing.T) {
+16:c, _ := CreateTestContext(w)
+26:// TestContextFileNotFound tests serving a non-existent file
+27:func TestContextFileNotFound(t *testing.T) {
+29:c, _ := CreateTestContext(w)
+
+./middleware_test.go
+20:router.Use(func(c *Context) {
+25:router.Use(func(c *Context) {
+28:router.GET("/", func(c *Context) {
+31:router.NoRoute(func(c *Context) {
+34:router.NoMethod(func(c *Context) {
+48:router.Use(func(c *Context) {
+53:router.Use(func(c *Context) {
+61:router.NoRoute(func(c *Context) {
+65:}, func(c *Context) {
+70:router.NoMethod(func(c *Context) {
+85:router.Use(func(c *Context) {
+90:router.Use(func(c *Context) {
+95:router.NoMethod(func(c *Context) {
+99:}, func(c *Context) {
+104:router.NoRoute(func(c *Context) {
+… +19 more in this file
+
+./logger.go
+61:// Skipper is a function to skip logs based on provided Context
+62:type Skipper func(c *Context) bool
+77:// ClientIP equals Context's ClientIP method.
+213:return func(c *Context) {
+275:return func(c *Context) {
+
+./deprecated.go:17:func (c *Context) BindWith(obj any, b binding.Binding) error {
+
+./ginS/gins_test.go
+22:GET("/test", func(c *gin.Context) {
+35:QUERY("/query", func(c *gin.Context) {
+48:POST("/post", func(c *gin.Context) {
+61:PUT("/put", func(c *gin.Context) {
+74:DELETE("/delete", func(c *gin.Context) {
+87:PATCH("/patch", func(c *gin.Context) {
+100:OPTIONS("/options", func(c *gin.Context) {
+113:HEAD("/head", func(c *gin.Context) {
+125:Any("/any", func(c *gin.Context) {
+138:Handle(http.MethodGet, "/handle", func(c *gin.Context) {
+152:group.GET("/test", func(c *gin.Context) {
+166:Use(func(c *gin.Context) {
+171:GET("/middleware-test", func(c *gin.Context) {
+184:NoRoute(func(c *gin.Context) {
+197:NoMethod(func(c *gin.Context) {
+… +1 more in this file
+
+./routes_test.go
+40:r.Any("/test2", func(c *Context) {
+43:r.Handle(method, "/test", func(c *Context) {
+59:router.Handle(method, "/test_2", func(c *Context) {
+80:router.Handle(methodRoute, "/test", func(c *Context) {
+98:router.QUERY("/search", func(c *Context) {
+117:router.Any("/test", func(c *Context) {
+135:queryRoutes.QUERY("/search", func(c *Context) {
+146:router.PUT("/hey2", func(c *Context) {
+150:router.PUT("/hey", func(c *Context) {
+154:router.PUT("/hey3", func(c *Context) {
+204:router.GET("/path", func(c *Context) {})
+205:router.GET("/path2/", func(c *Context) {})
+206:router.POST("/path3", func(c *Context) {})
+207:router.PUT("/path4/", func(c *Context) {})
+309:router.GET("/path", func(c *Context) {})
+… +36 more in this file
+
+./routergroup.go
+206:return group.staticFileHandler(relativePath, func(c *Context) {
+215:return group.staticFileHandler(relativePath, func(c *Context) {
+260:return func(c *Context) {
+
+./context_test.go
+40:var _ context.Context = (*Context)(nil)
+45:// func (c *Context) File(filepath string) {
+46:// func (c *Context) Negotiate(code int, config Negotiate) {
+47:// BAD case: func (c *Context) Render(code int, render render.Render, obj ...any) {
+48:// test that information is not leaked when reusing Contexts (using the Pool)
+80:// TestContextFile tests the Context.File() method
+81:func TestContextFile(t *testing.T) {
+88:c, _ := CreateTestContext(w)
+101:c, _ := CreateTestContext(w)
+112:c, _ := CreateTestContext(w)
+126:c, _ := CreateTestContext(w)
+141:c, _ := CreateTestContext(w)
+153:func TestContextFormFile(t *testing.T) {
+161:c, _ := CreateTestContext(httptest.NewRecorder())
+171:func TestContextFormFileFailed(t *testing.T) {
+… +459 more in this file
+
+./routergroup_test.go
+22:group := router.Group("/hola", func(c *Context) {})
+23:group.Use(func(c *Context) {})
+30:group2.Use(func(c *Context) {}, func(c *Context) {})
+50:v1 := router.Group("v1", func(c *Context) {})
+53:login := v1.Group("/login/", func(c *Context) {}, func(c *Context) {})
+56:handler := func(c *Context) {
+183:handler := func(c *Context) {}
+
+./doc.go:14:r.GET("/ping", func(c *gin.Context) {
+
+./context.go
+49:// ContextKey is the key that a Context returns itself for.
+50:const ContextKey = "_gin-gonic/gin/contextkey"
+52:type ContextKeyType int
+54:const ContextRequestKey ContextKeyType = 0
+59:// Context is the most important part of gin. It allows us to pass variables between middleware,
+61:type Context struct {
+103:func (c *Context) reset() {
+122:func (c *Context) Copy() *Context {
+123:cp := Context{
+158:func (c *Context) HandlerName() string {
+164:func (c *Context) HandlerNames() []string {
+176:func (c *Context) Handler() HandlerFunc {
+183://	router.GET("/user/:id", func(c *gin.Context) {
+186:func (c *Context) FullPath() string {
+197:func (c *Context) Next() {
+… +160 more in this file
+
+./utils.go
+39:return func(c *Context) {
+49:return func(c *Context) {
+56:return func(c *Context) {
+
+./radix_tree_test.go:19:return HandlersChain{func(c *Context) {
+
+./recovery_test.go
+24:router.GET("/recovery", func(c *Context) {
+55:router.GET("/recovery", func(_ *Context) {
+82:router.GET("/recovery", func(c *Context) {
+113:router.GET("/recovery", func(c *Context) {
+139:router.GET("/recovery", func(c *Context) {
+179:router.Use(func(c *Context) {
+184:router.GET("/recovery", func(_ *Context) {
+203:handleRecovery := func(c *Context, err any) {
+208:router.GET("/recovery", func(_ *Context) {
+238:handleRecovery := func(c *Context, err any) {
+243:router.GET("/recovery", func(_ *Context) {
+273:handleRecovery := func(c *Context, err any) {
+278:router.GET("/recovery", func(_ *Context) {
+
+[9 more files, by match count]
+./logger_test.go: 27 matches
+./benchmarks_test.go: 25 matches
+./gin.go: 18 matches
+./githubapi_test.go: 8 matches
+./test_helpers.go: 6 matches
+./debug_test.go: 2 matches
+./errors.go: 2 matches
+./deprecated_test.go: 1 match
+./radix_tree.go: 1 match
+[narrow the search: add a path, --include='*.ext' / --exclude-dir=DIR, or a more specific pattern]

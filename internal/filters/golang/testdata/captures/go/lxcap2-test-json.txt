@@ -1,0 +1,182 @@
+{"Time":"2026-09-26T03:11:35.249553+01:00","Action":"start","Package":"example.com/lxcap2/coverfail"}
+{"Time":"2026-09-26T03:11:35.25195+01:00","Action":"start","Package":"example.com/lxcap2/fatal2"}
+{"Time":"2026-09-26T03:11:35.281185+01:00","Action":"start","Package":"example.com/lxcap2/glued"}
+{"Time":"2026-09-26T03:11:35.29051+01:00","Action":"start","Package":"example.com/lxcap2/leak"}
+{"Time":"2026-09-26T03:11:35.294265+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p1"}
+{"Time":"2026-09-26T03:11:35.337203+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p10"}
+{"Time":"2026-09-26T03:11:35.345911+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p11"}
+{"Time":"2026-09-26T03:11:35.346141+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p12"}
+{"Time":"2026-09-26T03:11:36.509332+01:00","Action":"run","Package":"example.com/lxcap2/coverfail","Test":"TestAdd"}
+{"Time":"2026-09-26T03:11:36.509654+01:00","Action":"output","Package":"example.com/lxcap2/coverfail","Test":"TestAdd","Output":"=== RUN   TestAdd\n"}
+{"Time":"2026-09-26T03:11:36.509698+01:00","Action":"output","Package":"example.com/lxcap2/coverfail","Test":"TestAdd","Output":"    c_test.go:7: Add(2, 2) = 4, want 5\n"}
+{"Time":"2026-09-26T03:11:36.509714+01:00","Action":"output","Package":"example.com/lxcap2/coverfail","Test":"TestAdd","Output":"--- FAIL: TestAdd (0.00s)\n"}
+{"Time":"2026-09-26T03:11:36.509718+01:00","Action":"fail","Package":"example.com/lxcap2/coverfail","Test":"TestAdd","Elapsed":0}
+{"Time":"2026-09-26T03:11:36.509724+01:00","Action":"output","Package":"example.com/lxcap2/coverfail","Output":"FAIL\n"}
+{"Time":"2026-09-26T03:11:36.510035+01:00","Action":"output","Package":"example.com/lxcap2/coverfail","Output":"FAIL\texample.com/lxcap2/coverfail\t1.260s\n"}
+{"Time":"2026-09-26T03:11:36.510059+01:00","Action":"fail","Package":"example.com/lxcap2/coverfail","Elapsed":1.2610000000000001}
+{"Time":"2026-09-26T03:11:36.510696+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p2"}
+{"Time":"2026-09-26T03:11:37.432916+01:00","Action":"run","Package":"example.com/lxcap2/fatal2","Test":"TestParse"}
+{"Time":"2026-09-26T03:11:37.432985+01:00","Action":"output","Package":"example.com/lxcap2/fatal2","Test":"TestParse","Output":"=== RUN   TestParse\n"}
+{"Time":"2026-09-26T03:11:37.432997+01:00","Action":"output","Package":"example.com/lxcap2/fatal2","Test":"TestParse","Output":"    f_test.go:10: Parse(\"12\") = 21, want 12\n"}
+{"Time":"2026-09-26T03:11:37.433011+01:00","Action":"output","Package":"example.com/lxcap2/fatal2","Test":"TestParse","Output":"--- FAIL: TestParse (0.00s)\n"}
+{"Time":"2026-09-26T03:11:37.433016+01:00","Action":"fail","Package":"example.com/lxcap2/fatal2","Test":"TestParse","Elapsed":0}
+{"Time":"2026-09-26T03:11:37.433022+01:00","Action":"run","Package":"example.com/lxcap2/fatal2","Test":"TestLoad"}
+{"Time":"2026-09-26T03:11:37.433025+01:00","Action":"output","Package":"example.com/lxcap2/fatal2","Test":"TestLoad","Output":"=== RUN   TestLoad\n"}
+{"Time":"2026-09-26T03:11:37.433029+01:00","Action":"output","Package":"example.com/lxcap2/fatal2","Test":"TestLoad","Output":"loading config from testdata/app.yaml\n"}
+{"Time":"2026-09-26T03:11:37.433034+01:00","Action":"output","Package":"example.com/lxcap2/fatal2","Test":"TestLoad","Output":"2026/09/26 03:11:37 open testdata/app.yaml: permission issue\n"}
+{"Time":"2026-09-26T03:11:37.433587+01:00","Action":"output","Package":"example.com/lxcap2/fatal2","Output":"FAIL\texample.com/lxcap2/fatal2\t2.181s\n"}
+{"Time":"2026-09-26T03:11:37.433626+01:00","Action":"fail","Package":"example.com/lxcap2/fatal2","Elapsed":2.182}
+{"Time":"2026-09-26T03:11:37.434225+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p3"}
+{"Time":"2026-09-26T03:11:37.639524+01:00","Action":"run","Package":"example.com/lxcap2/glued","Test":"TestNoNewline"}
+{"Time":"2026-09-26T03:11:37.639595+01:00","Action":"output","Package":"example.com/lxcap2/glued","Test":"TestNoNewline","Output":"=== RUN   TestNoNewline\n"}
+{"Time":"2026-09-26T03:11:37.639616+01:00","Action":"output","Package":"example.com/lxcap2/glued","Test":"TestNoNewline","Output":"progress: 3/5    g_test.go:10: stopped early\n"}
+{"Time":"2026-09-26T03:11:37.639644+01:00","Action":"output","Package":"example.com/lxcap2/glued","Test":"TestNoNewline","Output":"--- FAIL: TestNoNewline (0.00s)\n"}
+{"Time":"2026-09-26T03:11:37.639674+01:00","Action":"fail","Package":"example.com/lxcap2/glued","Test":"TestNoNewline","Elapsed":0}
+{"Time":"2026-09-26T03:11:37.639697+01:00","Action":"run","Package":"example.com/lxcap2/glued","Test":"TestOK"}
+{"Time":"2026-09-26T03:11:37.639702+01:00","Action":"output","Package":"example.com/lxcap2/glued","Test":"TestOK","Output":"=== RUN   TestOK\n"}
+{"Time":"2026-09-26T03:11:37.639721+01:00","Action":"output","Package":"example.com/lxcap2/glued","Test":"TestOK","Output":"ok-no-newline"}
+{"Time":"2026-09-26T03:11:37.639741+01:00","Action":"output","Package":"example.com/lxcap2/glued","Test":"TestOK","Output":"--- PASS: TestOK (0.00s)\n"}
+{"Time":"2026-09-26T03:11:37.639746+01:00","Action":"pass","Package":"example.com/lxcap2/glued","Test":"TestOK","Elapsed":0}
+{"Time":"2026-09-26T03:11:37.639749+01:00","Action":"output","Package":"example.com/lxcap2/glued","Output":"FAIL\n"}
+{"Time":"2026-09-26T03:11:37.640185+01:00","Action":"output","Package":"example.com/lxcap2/glued","Output":"FAIL\texample.com/lxcap2/glued\t2.359s\n"}
+{"Time":"2026-09-26T03:11:37.640204+01:00","Action":"fail","Package":"example.com/lxcap2/glued","Elapsed":2.359}
+{"Time":"2026-09-26T03:11:37.641281+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p4"}
+{"Time":"2026-09-26T03:11:37.838231+01:00","Action":"run","Package":"example.com/lxcap2/leak","Test":"TestStartsWorker"}
+{"Time":"2026-09-26T03:11:37.838288+01:00","Action":"output","Package":"example.com/lxcap2/leak","Test":"TestStartsWorker","Output":"=== RUN   TestStartsWorker\n"}
+{"Time":"2026-09-26T03:11:37.838315+01:00","Action":"output","Package":"example.com/lxcap2/leak","Test":"TestStartsWorker","Output":"--- PASS: TestStartsWorker (0.00s)\n"}
+{"Time":"2026-09-26T03:11:37.838321+01:00","Action":"pass","Package":"example.com/lxcap2/leak","Test":"TestStartsWorker","Elapsed":0}
+{"Time":"2026-09-26T03:11:37.838326+01:00","Action":"run","Package":"example.com/lxcap2/leak","Test":"TestBroken"}
+{"Time":"2026-09-26T03:11:37.83833+01:00","Action":"output","Package":"example.com/lxcap2/leak","Test":"TestBroken","Output":"=== RUN   TestBroken\n"}
+{"Time":"2026-09-26T03:11:37.838341+01:00","Action":"output","Package":"example.com/lxcap2/leak","Test":"TestBroken","Output":"    l_test.go:21: broken: status = \"down\", want \"up\"\n"}
+{"Time":"2026-09-26T03:11:37.83835+01:00","Action":"output","Package":"example.com/lxcap2/leak","Test":"TestBroken","Output":"--- FAIL: TestBroken (0.00s)\n"}
+{"Time":"2026-09-26T03:11:37.838353+01:00","Action":"fail","Package":"example.com/lxcap2/leak","Test":"TestBroken","Elapsed":0}
+{"Time":"2026-09-26T03:11:37.838357+01:00","Action":"run","Package":"example.com/lxcap2/leak","Test":"TestLater"}
+{"Time":"2026-09-26T03:11:37.83836+01:00","Action":"output","Package":"example.com/lxcap2/leak","Test":"TestLater","Output":"=== RUN   TestLater\n"}
+{"Time":"2026-09-26T03:11:37.838363+01:00","Action":"output","Package":"example.com/lxcap2/leak","Test":"TestLater","Output":"later test chatter\n"}
+{"Time":"2026-09-26T03:11:37.838366+01:00","Action":"output","Package":"example.com/lxcap2/leak","Test":"TestLater","Output":"--- PASS: TestLater (0.00s)\n"}
+{"Time":"2026-09-26T03:11:37.838369+01:00","Action":"pass","Package":"example.com/lxcap2/leak","Test":"TestLater","Elapsed":0}
+{"Time":"2026-09-26T03:11:37.838373+01:00","Action":"output","Package":"example.com/lxcap2/leak","Output":"FAIL\n"}
+{"Time":"2026-09-26T03:11:37.849054+01:00","Action":"output","Package":"example.com/lxcap2/leak","Output":"leakcheck: found unexpected goroutines:\n"}
+{"Time":"2026-09-26T03:11:37.849143+01:00","Action":"output","Package":"example.com/lxcap2/leak","Output":"goroutine 36 [chan receive]:\n"}
+{"Time":"2026-09-26T03:11:37.849157+01:00","Action":"output","Package":"example.com/lxcap2/leak","Output":"example.com/lxcap2/leak.worker(...)\n"}
+{"Time":"2026-09-26T03:11:37.849194+01:00","Action":"output","Package":"example.com/lxcap2/leak","Output":"\t/home/user/src/lxcap2/leak/l_test.go:13\n"}
+{"Time":"2026-09-26T03:11:37.849288+01:00","Action":"output","Package":"example.com/lxcap2/leak","Output":"created by example.com/lxcap2/leak.TestStartsWorker in goroutine 35\n"}
+{"Time":"2026-09-26T03:11:37.849369+01:00","Action":"output","Package":"example.com/lxcap2/leak","Output":"\t/home/user/src/lxcap2/leak/l_test.go:17 +0x6c\n"}
+{"Time":"2026-09-26T03:11:37.849383+01:00","Action":"output","Package":"example.com/lxcap2/leak","Output":"\n"}
+{"Time":"2026-09-26T03:11:37.849793+01:00","Action":"output","Package":"example.com/lxcap2/leak","Output":"FAIL\texample.com/lxcap2/leak\t2.559s\n"}
+{"Time":"2026-09-26T03:11:37.849849+01:00","Action":"fail","Package":"example.com/lxcap2/leak","Elapsed":2.559}
+{"Time":"2026-09-26T03:11:37.939157+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p5"}
+{"Time":"2026-09-26T03:11:38.054315+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p1","Test":"TestX"}
+{"Time":"2026-09-26T03:11:38.054383+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p1","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:38.054405+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p1","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:38.054413+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p1","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:38.05442+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p1","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:38.055433+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p1","Output":"ok  \texample.com/lxcap2/manyok/p1\t2.761s\n"}
+{"Time":"2026-09-26T03:11:38.056345+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p1","Elapsed":2.762}
+{"Time":"2026-09-26T03:11:38.172377+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p6"}
+{"Time":"2026-09-26T03:11:38.302577+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p10","Test":"TestX"}
+{"Time":"2026-09-26T03:11:38.302644+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p10","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:38.302671+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p10","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:38.302677+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p10","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:38.302681+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p10","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:38.303814+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p10","Output":"ok  \texample.com/lxcap2/manyok/p10\t2.966s\n"}
+{"Time":"2026-09-26T03:11:38.304921+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p10","Elapsed":2.968}
+{"Time":"2026-09-26T03:11:38.41335+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p7"}
+{"Time":"2026-09-26T03:11:38.528116+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p11","Test":"TestX"}
+{"Time":"2026-09-26T03:11:38.528185+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p11","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:38.528212+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p11","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:38.528218+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p11","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:38.528224+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p11","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:38.52871+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p11","Output":"ok  \texample.com/lxcap2/manyok/p11\t3.183s\n"}
+{"Time":"2026-09-26T03:11:38.529756+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p11","Elapsed":3.184}
+{"Time":"2026-09-26T03:11:38.608059+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p8"}
+{"Time":"2026-09-26T03:11:38.740902+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p12","Test":"TestX"}
+{"Time":"2026-09-26T03:11:38.740962+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p12","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:38.740996+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p12","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:38.741003+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p12","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:38.741009+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p12","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:38.741489+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p12","Output":"ok  \texample.com/lxcap2/manyok/p12\t3.395s\n"}
+{"Time":"2026-09-26T03:11:38.742513+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p12","Elapsed":3.396}
+{"Time":"2026-09-26T03:11:38.818906+01:00","Action":"start","Package":"example.com/lxcap2/manyok/p9"}
+{"Time":"2026-09-26T03:11:38.963766+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p2","Test":"TestX"}
+{"Time":"2026-09-26T03:11:38.963987+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p2","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:38.964033+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p2","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:38.964038+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p2","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:38.964044+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p2","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:38.965104+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p2","Output":"ok  \texample.com/lxcap2/manyok/p2\t2.454s\n"}
+{"Time":"2026-09-26T03:11:38.966197+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p2","Elapsed":2.456}
+{"Time":"2026-09-26T03:11:39.051101+01:00","Action":"start","Package":"example.com/lxcap2/racepost"}
+{"Time":"2026-09-26T03:11:39.187393+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p3","Test":"TestX"}
+{"Time":"2026-09-26T03:11:39.187449+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p3","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:39.187501+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p3","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:39.187507+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p3","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:39.187512+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p3","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:39.188133+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p3","Output":"ok  \texample.com/lxcap2/manyok/p3\t1.754s\n"}
+{"Time":"2026-09-26T03:11:39.188926+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p3","Elapsed":1.755}
+{"Time":"2026-09-26T03:11:39.264363+01:00","Action":"start","Package":"example.com/lxcap2/uni"}
+{"Time":"2026-09-26T03:11:39.423457+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p4","Test":"TestX"}
+{"Time":"2026-09-26T03:11:39.423523+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p4","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:39.423549+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p4","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:39.423554+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p4","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:39.423562+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p4","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:39.424212+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p4","Output":"ok  \texample.com/lxcap2/manyok/p4\t1.783s\n"}
+{"Time":"2026-09-26T03:11:39.425523+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p4","Elapsed":1.784}
+{"Time":"2026-09-26T03:11:39.66521+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p5","Test":"TestX"}
+{"Time":"2026-09-26T03:11:39.665257+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p5","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:39.665273+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p5","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:39.665278+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p5","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:39.665284+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p5","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:39.666443+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p5","Output":"ok  \texample.com/lxcap2/manyok/p5\t1.727s\n"}
+{"Time":"2026-09-26T03:11:39.667424+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p5","Elapsed":1.728}
+{"Time":"2026-09-26T03:11:39.89539+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p6","Test":"TestX"}
+{"Time":"2026-09-26T03:11:39.895438+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p6","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:39.895451+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p6","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:39.895457+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p6","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:39.895461+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p6","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:39.896027+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p6","Output":"ok  \texample.com/lxcap2/manyok/p6\t1.724s\n"}
+{"Time":"2026-09-26T03:11:39.897036+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p6","Elapsed":1.725}
+{"Time":"2026-09-26T03:11:40.140126+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p7","Test":"TestX"}
+{"Time":"2026-09-26T03:11:40.140172+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p7","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:40.140186+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p7","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:40.14019+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p7","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:40.140194+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p7","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:40.140717+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p7","Output":"ok  \texample.com/lxcap2/manyok/p7\t1.727s\n"}
+{"Time":"2026-09-26T03:11:40.141465+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p7","Elapsed":1.728}
+{"Time":"2026-09-26T03:11:40.885979+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p8","Test":"TestX"}
+{"Time":"2026-09-26T03:11:40.886192+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p8","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:40.886213+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p8","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:40.88622+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p8","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:40.886225+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p8","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:40.886354+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p8","Output":"ok  \texample.com/lxcap2/manyok/p8\t2.278s\n"}
+{"Time":"2026-09-26T03:11:40.887374+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p8","Elapsed":2.279}
+{"Time":"2026-09-26T03:11:41.135165+01:00","Action":"run","Package":"example.com/lxcap2/manyok/p9","Test":"TestX"}
+{"Time":"2026-09-26T03:11:41.135297+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p9","Test":"TestX","Output":"=== RUN   TestX\n"}
+{"Time":"2026-09-26T03:11:41.13534+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p9","Test":"TestX","Output":"--- PASS: TestX (0.00s)\n"}
+{"Time":"2026-09-26T03:11:41.135356+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p9","Test":"TestX","Elapsed":0}
+{"Time":"2026-09-26T03:11:41.135369+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p9","Output":"PASS\n"}
+{"Time":"2026-09-26T03:11:41.136593+01:00","Action":"output","Package":"example.com/lxcap2/manyok/p9","Output":"ok  \texample.com/lxcap2/manyok/p9\t2.318s\n"}
+{"Time":"2026-09-26T03:11:41.137964+01:00","Action":"pass","Package":"example.com/lxcap2/manyok/p9","Elapsed":2.319}
+{"Time":"2026-09-26T03:11:41.386631+01:00","Action":"run","Package":"example.com/lxcap2/racepost","Test":"TestFirst"}
+{"Time":"2026-09-26T03:11:41.386709+01:00","Action":"output","Package":"example.com/lxcap2/racepost","Test":"TestFirst","Output":"=== RUN   TestFirst\n"}
+{"Time":"2026-09-26T03:11:41.386721+01:00","Action":"output","Package":"example.com/lxcap2/racepost","Test":"TestFirst","Output":"    r_test.go:12: first failed: got 0, want 1\n"}
+{"Time":"2026-09-26T03:11:41.386729+01:00","Action":"output","Package":"example.com/lxcap2/racepost","Test":"TestFirst","Output":"--- FAIL: TestFirst (0.00s)\n"}
+{"Time":"2026-09-26T03:11:41.386734+01:00","Action":"fail","Package":"example.com/lxcap2/racepost","Test":"TestFirst","Elapsed":0}
+{"Time":"2026-09-26T03:11:41.386753+01:00","Action":"run","Package":"example.com/lxcap2/racepost","Test":"TestSecond"}
+{"Time":"2026-09-26T03:11:41.386757+01:00","Action":"output","Package":"example.com/lxcap2/racepost","Test":"TestSecond","Output":"=== RUN   TestSecond\n"}
+{"Time":"2026-09-26T03:11:41.38676+01:00","Action":"output","Package":"example.com/lxcap2/racepost","Test":"TestSecond","Output":"--- PASS: TestSecond (0.00s)\n"}
+{"Time":"2026-09-26T03:11:41.386764+01:00","Action":"pass","Package":"example.com/lxcap2/racepost","Test":"TestSecond","Elapsed":0}
+{"Time":"2026-09-26T03:11:41.386767+01:00","Action":"output","Package":"example.com/lxcap2/racepost","Output":"FAIL\n"}
+{"Time":"2026-09-26T03:11:41.387398+01:00","Action":"output","Package":"example.com/lxcap2/racepost","Output":"FAIL\texample.com/lxcap2/racepost\t2.336s\n"}
+{"Time":"2026-09-26T03:11:41.387423+01:00","Action":"fail","Package":"example.com/lxcap2/racepost","Elapsed":2.336}
+{"Time":"2026-09-26T03:11:41.763732+01:00","Action":"run","Package":"example.com/lxcap2/uni","Test":"TestÜnicode"}
+{"Time":"2026-09-26T03:11:41.763799+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode","Output":"=== RUN   TestÜnicode\n"}
+{"Time":"2026-09-26T03:11:41.76382+01:00","Action":"run","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case"}
+{"Time":"2026-09-26T03:11:41.763824+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Output":"=== RUN   TestÜnicode/naïve_case\n"}
+{"Time":"2026-09-26T03:11:41.763828+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Output":"    ü_test.go:7: got \"café\", want \"cafe\"\n"}
+{"Time":"2026-09-26T03:11:41.763834+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Output":"--- FAIL: TestÜnicode/naïve_case (0.00s)\n"}
+{"Time":"2026-09-26T03:11:41.763838+01:00","Action":"fail","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Elapsed":0}
+{"Time":"2026-09-26T03:11:41.763844+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode","Output":"--- FAIL: TestÜnicode (0.00s)\n"}
+{"Time":"2026-09-26T03:11:41.763848+01:00","Action":"fail","Package":"example.com/lxcap2/uni","Test":"TestÜnicode","Elapsed":0}
+{"Time":"2026-09-26T03:11:41.763851+01:00","Action":"output","Package":"example.com/lxcap2/uni","Output":"FAIL\n"}
+{"Time":"2026-09-26T03:11:41.764033+01:00","Action":"output","Package":"example.com/lxcap2/uni","Output":"FAIL\texample.com/lxcap2/uni\t2.500s\n"}
+{"Time":"2026-09-26T03:11:41.764145+01:00","Action":"fail","Package":"example.com/lxcap2/uni","Elapsed":2.5}

@@ -1,0 +1,9 @@
+syntax.js:4
+  y: 2,
+  ^
+
+SyntaxError: Unexpected identifier 'y'
+    at wrapSafe (node:internal/modules/cjs/loader:1804:18)
+    … 7 library frames (node:internal)
+
+Node.js v24.18.0

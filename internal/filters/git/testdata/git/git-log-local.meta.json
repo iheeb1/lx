@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "git",
+    "log"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git log in the playground repo (with a merge commit)"
+}

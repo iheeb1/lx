@@ -1,0 +1,144 @@
+103:func (c *Context) reset() {
+122:func (c *Context) Copy() *Context {
+158:func (c *Context) HandlerName() string {
+164:func (c *Context) HandlerNames() []string {
+176:func (c *Context) Handler() HandlerFunc {
+186:func (c *Context) FullPath() string {
+197:func (c *Context) Next() {
+208:func (c *Context) IsAborted() bool {
+216:func (c *Context) Abort() {
+222:func (c *Context) AbortWithStatus(code int) {
+231:func (c *Context) AbortWithStatusPureJSON(code int, jsonObj any) {
+239:func (c *Context) AbortWithStatusJSON(code int, jsonObj any) {
+247:func (c *Context) AbortWithError(code int, err error) *Error {
+261:func (c *Context) Error(err error) *Error {
+285:func (c *Context) Set(key any, value any) {
+297:func (c *Context) Get(key any) (value any, exists bool) {
+305:func (c *Context) MustGet(key any) any {
+320:func (c *Context) GetString(key any) string {
+325:func (c *Context) GetBool(key any) bool {
+330:func (c *Context) GetInt(key any) int {
+335:func (c *Context) GetInt8(key any) int8 {
+340:func (c *Context) GetInt16(key any) int16 {
+345:func (c *Context) GetInt32(key any) int32 {
+350:func (c *Context) GetInt64(key any) int64 {
+355:func (c *Context) GetUint(key any) uint {
+360:func (c *Context) GetUint8(key any) uint8 {
+365:func (c *Context) GetUint16(key any) uint16 {
+370:func (c *Context) GetUint32(key any) uint32 {
+375:func (c *Context) GetUint64(key any) uint64 {
+380:func (c *Context) GetFloat32(key any) float32 {
+385:func (c *Context) GetFloat64(key any) float64 {
+390:func (c *Context) GetTime(key any) time.Time {
+395:func (c *Context) GetDuration(key any) time.Duration {
+400:func (c *Context) GetError(key any) error {
+405:func (c *Context) GetIntSlice(key any) []int {
+410:func (c *Context) GetInt8Slice(key any) []int8 {
+415:func (c *Context) GetInt16Slice(key any) []int16 {
+420:func (c *Context) GetInt32Slice(key any) []int32 {
+425:func (c *Context) GetInt64Slice(key any) []int64 {
+430:func (c *Context) GetUintSlice(key any) []uint {
+435:func (c *Context) GetUint8Slice(key any) []uint8 {
+440:func (c *Context) GetUint16Slice(key any) []uint16 {
+445:func (c *Context) GetUint32Slice(key any) []uint32 {
+450:func (c *Context) GetUint64Slice(key any) []uint64 {
+455:func (c *Context) GetFloat32Slice(key any) []float32 {
+460:func (c *Context) GetFloat64Slice(key any) []float64 {
+465:func (c *Context) GetStringSlice(key any) []string {
+470:func (c *Context) GetErrorSlice(key any) []error {
+475:func (c *Context) GetStringMap(key any) map[string]any {
+480:func (c *Context) GetStringMapString(key any) map[string]string {
+485:func (c *Context) GetStringMapStringSlice(key any) map[string][]string {
+491:func (c *Context) Delete(key any) {
+512:func (c *Context) Param(key string) string {
+521:func (c *Context) AddParam(key, value string) {
+534:func (c *Context) Query(key string) (value string) {
+547:func (c *Context) DefaultQuery(key, defaultValue string) string {
+563:func (c *Context) GetQuery(key string) (string, bool) {
+572:func (c *Context) QueryArray(key string) (values []string) {
+577:func (c *Context) initQueryCache() {
+589:func (c *Context) GetQueryArray(key string) (values []string, ok bool) {
+596:func (c *Context) QueryMap(key string) (dicts map[string]string) {
+603:func (c *Context) GetQueryMap(key string) (map[string]string, bool) {
+610:func (c *Context) PostForm(key string) (value string) {
+618:func (c *Context) DefaultPostForm(key, defaultValue string) string {
+633:func (c *Context) GetPostForm(key string) (string, bool) {
+642:func (c *Context) PostFormArray(key string) (values []string) {
+647:func (c *Context) initFormCache() {
+662:func (c *Context) GetPostFormArray(key string) (values []string, ok bool) {
+669:func (c *Context) PostFormMap(key string) (dicts map[string]string) {
+676:func (c *Context) GetPostFormMap(key string) (map[string]string, bool) {
+707:func (c *Context) FormFile(name string) (*multipart.FileHeader, error) {
+722:func (c *Context) MultipartForm() (*multipart.Form, error) {
+733:func (c *Context) SaveUploadedFile(file *multipart.FileHeader, dst string, perm ...fs.FileMode) error {
+779:func (c *Context) Bind(obj any) error {
+785:func (c *Context) BindJSON(obj any) error {
+790:func (c *Context) BindXML(obj any) error {
+795:func (c *Context) BindQuery(obj any) error {
+800:func (c *Context) BindYAML(obj any) error {
+805:func (c *Context) BindTOML(obj any) error {
+810:func (c *Context) BindPlain(obj any) error {
+815:func (c *Context) BindHeader(obj any) error {
+821:func (c *Context) BindUri(obj any) error {
+832:func (c *Context) MustBindWith(obj any, b binding.Binding) error {
+860:func (c *Context) ShouldBind(obj any) error {
+889:func (c *Context) ShouldBindJSON(obj any) error {
+895:func (c *Context) ShouldBindXML(obj any) error {
+901:func (c *Context) ShouldBindQuery(obj any) error {
+907:func (c *Context) ShouldBindYAML(obj any) error {
+913:func (c *Context) ShouldBindTOML(obj any) error {
+919:func (c *Context) ShouldBindPlain(obj any) error {
+925:func (c *Context) ShouldBindHeader(obj any) error {
+931:func (c *Context) ShouldBindUri(obj any) error {
+941:func (c *Context) ShouldBindWith(obj any, b binding.Binding) error {
+950:func (c *Context) ShouldBindBodyWith(obj any, bb binding.BindingBody) (err error) {
+968:func (c *Context) ShouldBindBodyWithJSON(obj any) error {
+973:func (c *Context) ShouldBindBodyWithXML(obj any) error {
+978:func (c *Context) ShouldBindBodyWithYAML(obj any) error {
+983:func (c *Context) ShouldBindBodyWithTOML(obj any) error {
+988:func (c *Context) ShouldBindBodyWithPlain(obj any) error {
+998:func (c *Context) ClientIP() string {
+1050:func (c *Context) RemoteIP() string {
+1059:func (c *Context) ContentType() string {
+1065:func (c *Context) IsWebsocket() bool {
+1078:func (c *Context) Scheme() string {
+1100:func (c *Context) requestHeader(key string) string {
+1123:func (c *Context) Status(code int) {
+1130:func (c *Context) Header(key, value string) {
+1139:func (c *Context) GetHeader(key string) string {
+1144:func (c *Context) GetRawData() ([]byte, error) {
+1152:func (c *Context) SetSameSite(samesite http.SameSite) {
+1159:func (c *Context) SetCookie(name, value string, maxAge int, path, domain string, secure, httpOnly bool) {
+1178:func (c *Context) SetCookieData(cookie *http.Cookie) {
+1192:func (c *Context) Cookie(name string) (string, error) {
+1202:func (c *Context) Render(code int, r render.Render) {
+1221:func (c *Context) HTML(code int, name string, obj any) {
+1235:func (c *Context) IndentedJSON(code int, obj any) {
+1242:func (c *Context) SecureJSON(code int, obj any) {
+1249:func (c *Context) JSONP(code int, obj any) {
+1260:func (c *Context) JSON(code int, obj any) {
+1266:func (c *Context) AsciiJSON(code int, obj any) {
+1272:func (c *Context) PureJSON(code int, obj any) {
+1278:func (c *Context) XML(code int, obj any) {
+1284:func (c *Context) PDF(code int, data []byte) {
+1289:func (c *Context) YAML(code int, obj any) {
+1294:func (c *Context) TOML(code int, obj any) {
+1299:func (c *Context) ProtoBuf(code int, obj any) {
+1304:func (c *Context) BSON(code int, obj any) {
+1309:func (c *Context) String(code int, format string, values ...any) {
+1314:func (c *Context) Redirect(code int, location string) {
+1323:func (c *Context) Data(code int, contentType string, data []byte) {
+1331:func (c *Context) DataFromReader(code int, contentLength int64, contentType string, reader io.Reader, extraHeaders map[string]string) {
+1341:func (c *Context) File(filepath string) {
+1346:func (c *Context) FileFromFS(filepath string, fs http.FileSystem) {
+1364:func (c *Context) FileAttachment(filepath, filename string) {
+1374:func (c *Context) SSEvent(name string, message any) {
+1383:func (c *Context) Stream(step func(w io.Writer) bool) bool {
+1419:func (c *Context) Negotiate(code int, config Negotiate) {
+1455:func (c *Context) NegotiateFormat(offered ...string) string {
+1486:func (c *Context) SetAccepted(formats ...string) {
+1495:func (c *Context) hasRequestContext() bool {
+1502:func (c *Context) Deadline() (deadline time.Time, ok bool) {
+1510:func (c *Context) Done() <-chan struct{} {
+1518:func (c *Context) Err() error {
+1528:func (c *Context) Value(key any) any {

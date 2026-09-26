@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--no-fail-fast",
+    "config"
+  ],
+  "exit_code": 101,
+  "description": "SYNTHETIC (hand-written in real cargo 1.8x/libtest format; cargo is not installed on the capture machine): cargo test --no-fail-fast config: a filtered run with one failing unit test, an integration binary with every test filtered out, a doc-test that fails to compile, and the 2-targets-failed summary",
+  "cwd": "/home/user/src/demo"
+}

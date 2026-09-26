@@ -1,0 +1,28 @@
+{"Time":"2026-09-26T03:24:49.309514+01:00","Action":"start","Package":"example.com/lxcap2/example"}
+{"Time":"2026-09-26T03:24:50.082181+01:00","Action":"run","Package":"example.com/lxcap2/example","Test":"TestFirst"}
+{"Time":"2026-09-26T03:24:50.082268+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"TestFirst","Output":"=== RUN   TestFirst\n"}
+{"Time":"2026-09-26T03:24:50.082307+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"TestFirst","Output":"    e_test.go:9: first broke\n"}
+{"Time":"2026-09-26T03:24:50.082326+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"TestFirst","Output":"--- FAIL: TestFirst (0.00s)\n"}
+{"Time":"2026-09-26T03:24:50.082366+01:00","Action":"fail","Package":"example.com/lxcap2/example","Test":"TestFirst","Elapsed":0}
+{"Time":"2026-09-26T03:24:50.082376+01:00","Action":"run","Package":"example.com/lxcap2/example","Test":"TestAfter"}
+{"Time":"2026-09-26T03:24:50.082381+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"TestAfter","Output":"=== RUN   TestAfter\n"}
+{"Time":"2026-09-26T03:24:50.082385+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"TestAfter","Output":"after chatter\n"}
+{"Time":"2026-09-26T03:24:50.082391+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"TestAfter","Output":"--- PASS: TestAfter (0.00s)\n"}
+{"Time":"2026-09-26T03:24:50.082395+01:00","Action":"pass","Package":"example.com/lxcap2/example","Test":"TestAfter","Elapsed":0}
+{"Time":"2026-09-26T03:24:50.082398+01:00","Action":"run","Package":"example.com/lxcap2/example","Test":"Example_greeting"}
+{"Time":"2026-09-26T03:24:50.082401+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_greeting","Output":"=== RUN   Example_greeting\n"}
+{"Time":"2026-09-26T03:24:50.08261+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_greeting","Output":"--- FAIL: Example_greeting (0.00s)\n"}
+{"Time":"2026-09-26T03:24:50.082628+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_greeting","Output":"got:\n"}
+{"Time":"2026-09-26T03:24:50.082653+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_greeting","Output":"hello\n"}
+{"Time":"2026-09-26T03:24:50.082666+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_greeting","Output":"world\n"}
+{"Time":"2026-09-26T03:24:50.082675+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_greeting","Output":"want:\n"}
+{"Time":"2026-09-26T03:24:50.082683+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_greeting","Output":"hello\n"}
+{"Time":"2026-09-26T03:24:50.082693+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_greeting","Output":"there\n"}
+{"Time":"2026-09-26T03:24:50.082703+01:00","Action":"fail","Package":"example.com/lxcap2/example","Test":"Example_greeting","Elapsed":0}
+{"Time":"2026-09-26T03:24:50.082711+01:00","Action":"run","Package":"example.com/lxcap2/example","Test":"Example_ok"}
+{"Time":"2026-09-26T03:24:50.082718+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_ok","Output":"=== RUN   Example_ok\n"}
+{"Time":"2026-09-26T03:24:50.082755+01:00","Action":"output","Package":"example.com/lxcap2/example","Test":"Example_ok","Output":"--- PASS: Example_ok (0.00s)\n"}
+{"Time":"2026-09-26T03:24:50.082765+01:00","Action":"pass","Package":"example.com/lxcap2/example","Test":"Example_ok","Elapsed":0}
+{"Time":"2026-09-26T03:24:50.082773+01:00","Action":"output","Package":"example.com/lxcap2/example","Output":"FAIL\n"}
+{"Time":"2026-09-26T03:24:50.083319+01:00","Action":"output","Package":"example.com/lxcap2/example","Output":"FAIL\texample.com/lxcap2/example\t0.774s\n"}
+{"Time":"2026-09-26T03:24:50.083333+01:00","Action":"fail","Package":"example.com/lxcap2/example","Elapsed":0.774}

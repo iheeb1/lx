@@ -1,0 +1,26 @@
+#5 [build 1/6] FROM docker.io/library/golang:1.26-alpine@sha256:cd0aa9856147b6c5b4ff2b7dfee5da20aa38253099ef1b4a64aced233c9afe29  DONE 0.0s
+#6 [stage-1 1/3] FROM gcr.io/distroless/static-debian12:nonroot@sha256:18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4  DONE 0.0s
+#8 [build 2/6] WORKDIR /src  CACHED
+#9 [build 3/6] COPY go.mod go.sum ./  CACHED
+#10 [build 4/6] RUN go mod download  CACHED
+#11 [build 5/6] COPY . .  DONE 0.1s
+#12 [build 6/6] RUN CGO_ENABLED=0 go build -trimpath -o /out/api ./cmd/api
+#12 12.41 # github.com/shop/api/internal/orders
+#12 12.41 internal/orders/service.go:88:19: cannot use req.Total (variable of type float64) as int64 value in argument to s.repo.Create
+#12 12.41 internal/orders/service.go:141:2: undefined: validateCoupon
+#12 ERROR: process "/bin/sh -c CGO_ENABLED=0 go build -trimpath -o /out/api ./cmd/api" did not complete successfully: exit code: 1
+#13 [stage-1 2/3] COPY --from=build /out/api /api  CANCELED
+------
+ > [build 6/6] RUN CGO_ENABLED=0 go build -trimpath -o /out/api ./cmd/api:
+[lx: 3 lines of the step's output shown above]
+------
+Dockerfile:9
+--------------------
+   7 |     RUN go mod download
+   8 |     COPY . .
+   9 | >>> RUN CGO_ENABLED=0 go build -trimpath -o /out/api ./cmd/api
+  10 |
+  11 |     FROM gcr.io/distroless/static-debian12:nonroot
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c CGO_ENABLED=0 go build -trimpath -o /out/api ./cmd/api" did not complete successfully: exit code: 1
+[lx: 8 build steps (3 CACHED); 6 internal steps not shown; 3 progress lines not shown]

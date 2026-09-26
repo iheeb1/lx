@@ -1,0 +1,28 @@
+test_error (tests.test_unit.TestDiv) ... ERROR
+test_ok (tests.test_unit.TestDiv) ... ok
+test_skip (tests.test_unit.TestDiv) ... skipped 'later'
+test_wrong (tests.test_unit.TestDiv) ... FAIL
+
+======================================================================
+ERROR: test_error (tests.test_unit.TestDiv)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_unit.py", line 15, in test_error
+    json.loads("{not json")
+  … 2 library frames (json)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+======================================================================
+FAIL: test_wrong (tests.test_unit.TestDiv)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_unit.py", line 12, in test_wrong
+    self.assertEqual(div(3, 2), 1, "integer division expected")
+AssertionError: 1.5 != 1 : integer division expected
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+FAILED (failures=1, errors=1, skipped=1)

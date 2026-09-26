@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npm",
+    "install",
+    "--loglevel",
+    "verbose"
+  ],
+  "shell": "npm install --loglevel verbose",
+  "exit_code": 0,
+  "description": "npm install --loglevel verbose in a small workspace: npm verbose/info/http lines",
+  "cwd": "/home/user/src/ws-app"
+}

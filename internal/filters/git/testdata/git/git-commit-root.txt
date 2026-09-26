@@ -1,0 +1,11 @@
+[main (root-commit) 01ad149] initial import
+ 9 files changed, 35 insertions(+)
+ create mode 100644 a.go
+ create mode 100644 internal/util/f1.go
+ create mode 100644 internal/util/f2.go
+ create mode 100644 internal/util/f3.go
+ create mode 100644 internal/util/f4.go
+ create mode 100644 internal/util/f5.go
+ create mode 100644 logo.png
+ create mode 100644 notes.txt
+ create mode 100644 run.sh

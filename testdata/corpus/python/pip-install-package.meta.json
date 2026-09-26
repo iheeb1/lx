@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "pip",
+    "install",
+    "requests"
+  ],
+  "shell": "pip install requests",
+  "repo": null,
+  "exit_code": 0,
+  "description": "pip install requests in a venv: resolving transitive deps (urllib3, idna, certifi, charset-normalizer)",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

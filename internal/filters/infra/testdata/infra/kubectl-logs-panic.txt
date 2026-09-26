@@ -1,0 +1,130 @@
+W0926 10:00:00.000000       1 client.go:88] retrying request to payments (attempt 1): context deadline exceeded
+I0926 10:00:01.000037       1 reconciler.go:141] reconciled order ord_1 version=1
+I0926 10:00:02.000074       1 reconciler.go:142] reconciled order ord_2 version=2
+I0926 10:00:03.000111       1 reconciler.go:143] reconciled order ord_3 version=3
+I0926 10:00:04.000148       1 reconciler.go:144] reconciled order ord_4 version=4
+I0926 10:00:05.000185       1 reconciler.go:140] reconciled order ord_5 version=5
+I0926 10:00:06.000222       1 reconciler.go:141] reconciled order ord_6 version=6
+I0926 10:00:07.000259       1 reconciler.go:142] reconciled order ord_7 version=7
+I0926 10:00:08.000296       1 reconciler.go:143] reconciled order ord_8 version=8
+I0926 10:00:09.000333       1 reconciler.go:144] reconciled order ord_9 version=9
+I0926 10:00:10.000370       1 reconciler.go:140] reconciled order ord_10 version=10
+W0926 10:00:11.000407       1 client.go:88] retrying request to payments (attempt 4): context deadline exceeded
+I0926 10:00:12.000444       1 reconciler.go:142] reconciled order ord_12 version=12
+I0926 10:00:13.000481       1 reconciler.go:143] reconciled order ord_13 version=13
+I0926 10:00:14.000518       1 reconciler.go:144] reconciled order ord_14 version=14
+I0926 10:00:15.000555       1 reconciler.go:140] reconciled order ord_15 version=15
+I0926 10:00:16.000592       1 reconciler.go:141] reconciled order ord_16 version=16
+I0926 10:00:17.000629       1 reconciler.go:142] reconciled order ord_0 version=17
+I0926 10:00:18.000666       1 reconciler.go:143] reconciled order ord_1 version=18
+I0926 10:00:19.000703       1 reconciler.go:144] reconciled order ord_2 version=19
+I0926 10:00:20.000740       1 reconciler.go:140] reconciled order ord_3 version=20
+I0926 10:00:21.000777       1 reconciler.go:141] reconciled order ord_4 version=21
+W0926 10:00:22.000814       1 client.go:88] retrying request to payments (attempt 3): context deadline exceeded
+I0926 10:00:23.000851       1 reconciler.go:143] reconciled order ord_6 version=23
+I0926 10:00:24.000888       1 reconciler.go:144] reconciled order ord_7 version=24
+I0926 10:00:25.000925       1 reconciler.go:140] reconciled order ord_8 version=25
+I0926 10:00:26.000962       1 reconciler.go:141] reconciled order ord_9 version=26
+I0926 10:00:27.000999       1 reconciler.go:142] reconciled order ord_10 version=27
+I0926 10:00:28.001036       1 reconciler.go:143] reconciled order ord_11 version=28
+I0926 10:00:29.001073       1 reconciler.go:144] reconciled order ord_12 version=29
+I0926 10:00:30.001110       1 reconciler.go:140] reconciled order ord_13 version=30
+I0926 10:00:31.001147       1 reconciler.go:141] reconciled order ord_14 version=31
+I0926 10:00:32.001184       1 reconciler.go:142] reconciled order ord_15 version=32
+W0926 10:00:33.001221       1 client.go:88] retrying request to payments (attempt 2): context deadline exceeded
+I0926 10:00:34.001258       1 reconciler.go:144] reconciled order ord_0 version=34
+I0926 10:00:35.001295       1 reconciler.go:140] reconciled order ord_1 version=35
+I0926 10:00:36.001332       1 reconciler.go:141] reconciled order ord_2 version=36
+I0926 10:00:37.001369       1 reconciler.go:142] reconciled order ord_3 version=37
+I0926 10:00:38.001406       1 reconciler.go:143] reconciled order ord_4 version=38
+I0926 10:00:39.001443       1 reconciler.go:144] reconciled order ord_5 version=39
+I0926 10:00:40.001480       1 reconciler.go:140] reconciled order ord_6 version=40
+I0926 10:00:41.001517       1 reconciler.go:141] reconciled order ord_7 version=41
+I0926 10:00:42.001554       1 reconciler.go:142] reconciled order ord_8 version=42
+I0926 10:00:43.001591       1 reconciler.go:143] reconciled order ord_9 version=43
+W0926 10:00:44.001628       1 client.go:88] retrying request to payments (attempt 1): context deadline exceeded
+I0926 10:00:45.001665       1 reconciler.go:140] reconciled order ord_11 version=45
+I0926 10:00:46.001702       1 reconciler.go:141] reconciled order ord_12 version=46
+I0926 10:00:47.001739       1 reconciler.go:142] reconciled order ord_13 version=47
+I0926 10:00:48.001776       1 reconciler.go:143] reconciled order ord_14 version=48
+I0926 10:00:49.001813       1 reconciler.go:144] reconciled order ord_15 version=49
+I0926 10:00:50.001850       1 reconciler.go:140] reconciled order ord_16 version=50
+I0926 10:00:51.001887       1 reconciler.go:141] reconciled order ord_0 version=51
+I0926 10:00:52.001924       1 reconciler.go:142] reconciled order ord_1 version=52
+I0926 10:00:53.001961       1 reconciler.go:143] reconciled order ord_2 version=53
+I0926 10:00:54.001998       1 reconciler.go:144] reconciled order ord_3 version=54
+W0926 10:00:55.002035       1 client.go:88] retrying request to payments (attempt 4): context deadline exceeded
+I0926 10:00:56.002072       1 reconciler.go:141] reconciled order ord_5 version=56
+I0926 10:00:57.002109       1 reconciler.go:142] reconciled order ord_6 version=57
+I0926 10:00:58.002146       1 reconciler.go:143] reconciled order ord_7 version=58
+I0926 10:00:59.002183       1 reconciler.go:144] reconciled order ord_8 version=59
+I0926 10:01:00.002220       1 reconciler.go:140] reconciled order ord_9 version=60
+I0926 10:01:01.002257       1 reconciler.go:141] reconciled order ord_10 version=61
+I0926 10:01:02.002294       1 reconciler.go:142] reconciled order ord_11 version=62
+I0926 10:01:03.002331       1 reconciler.go:143] reconciled order ord_12 version=63
+I0926 10:01:04.002368       1 reconciler.go:144] reconciled order ord_13 version=64
+I0926 10:01:05.002405       1 reconciler.go:140] reconciled order ord_14 version=65
+W0926 10:01:06.002442       1 client.go:88] retrying request to payments (attempt 3): context deadline exceeded
+I0926 10:01:07.002479       1 reconciler.go:142] reconciled order ord_16 version=67
+I0926 10:01:08.002516       1 reconciler.go:143] reconciled order ord_0 version=68
+I0926 10:01:09.002553       1 reconciler.go:144] reconciled order ord_1 version=69
+I0926 10:01:10.002590       1 reconciler.go:140] reconciled order ord_2 version=70
+I0926 10:01:11.002627       1 reconciler.go:141] reconciled order ord_3 version=71
+I0926 10:01:12.002664       1 reconciler.go:142] reconciled order ord_4 version=72
+I0926 10:01:13.002701       1 reconciler.go:143] reconciled order ord_5 version=73
+I0926 10:01:14.002738       1 reconciler.go:144] reconciled order ord_6 version=74
+I0926 10:01:15.002775       1 reconciler.go:140] reconciled order ord_7 version=75
+I0926 10:01:16.002812       1 reconciler.go:141] reconciled order ord_8 version=76
+W0926 10:01:17.002849       1 client.go:88] retrying request to payments (attempt 2): context deadline exceeded
+I0926 10:01:18.002886       1 reconciler.go:143] reconciled order ord_10 version=78
+I0926 10:01:19.002923       1 reconciler.go:144] reconciled order ord_11 version=79
+I0926 10:01:20.002960       1 reconciler.go:140] reconciled order ord_12 version=80
+I0926 10:01:21.002997       1 reconciler.go:141] reconciled order ord_13 version=81
+I0926 10:01:22.003034       1 reconciler.go:142] reconciled order ord_14 version=82
+I0926 10:01:23.003071       1 reconciler.go:143] reconciled order ord_15 version=83
+I0926 10:01:24.003108       1 reconciler.go:144] reconciled order ord_16 version=84
+I0926 10:01:25.003145       1 reconciler.go:140] reconciled order ord_0 version=85
+I0926 10:01:26.003182       1 reconciler.go:141] reconciled order ord_1 version=86
+I0926 10:01:27.003219       1 reconciler.go:142] reconciled order ord_2 version=87
+W0926 10:01:28.003256       1 client.go:88] retrying request to payments (attempt 1): context deadline exceeded
+I0926 10:01:29.003293       1 reconciler.go:144] reconciled order ord_4 version=89
+I0926 10:01:30.003330       1 reconciler.go:140] reconciled order ord_5 version=90
+I0926 10:01:31.003367       1 reconciler.go:141] reconciled order ord_6 version=91
+I0926 10:01:32.003404       1 reconciler.go:142] reconciled order ord_7 version=92
+I0926 10:01:33.003441       1 reconciler.go:143] reconciled order ord_8 version=93
+I0926 10:01:34.003478       1 reconciler.go:144] reconciled order ord_9 version=94
+I0926 10:01:35.003515       1 reconciler.go:140] reconciled order ord_10 version=95
+I0926 10:01:36.003552       1 reconciler.go:141] reconciled order ord_11 version=96
+I0926 10:01:37.003589       1 reconciler.go:142] reconciled order ord_12 version=97
+I0926 10:01:38.003626       1 reconciler.go:143] reconciled order ord_13 version=98
+W0926 10:01:39.003663       1 client.go:88] retrying request to payments (attempt 4): context deadline exceeded
+I0926 10:01:40.003700       1 reconciler.go:140] reconciled order ord_15 version=100
+I0926 10:01:41.003737       1 reconciler.go:141] reconciled order ord_16 version=101
+I0926 10:01:42.003774       1 reconciler.go:142] reconciled order ord_0 version=102
+I0926 10:01:43.003811       1 reconciler.go:143] reconciled order ord_1 version=103
+I0926 10:01:44.003848       1 reconciler.go:144] reconciled order ord_2 version=104
+I0926 10:01:45.003885       1 reconciler.go:140] reconciled order ord_3 version=105
+I0926 10:01:46.003922       1 reconciler.go:141] reconciled order ord_4 version=106
+I0926 10:01:47.003959       1 reconciler.go:142] reconciled order ord_5 version=107
+I0926 10:01:48.003996       1 reconciler.go:143] reconciled order ord_6 version=108
+I0926 10:01:49.004033       1 reconciler.go:144] reconciled order ord_7 version=109
+W0926 10:01:50.004070       1 client.go:88] retrying request to payments (attempt 3): context deadline exceeded
+I0926 10:01:51.004107       1 reconciler.go:141] reconciled order ord_9 version=111
+I0926 10:01:52.004144       1 reconciler.go:142] reconciled order ord_10 version=112
+I0926 10:01:53.004181       1 reconciler.go:143] reconciled order ord_11 version=113
+I0926 10:01:54.004218       1 reconciler.go:144] reconciled order ord_12 version=114
+I0926 10:01:55.004255       1 reconciler.go:140] reconciled order ord_13 version=115
+I0926 10:01:56.004292       1 reconciler.go:141] reconciled order ord_14 version=116
+I0926 10:01:57.004329       1 reconciler.go:142] reconciled order ord_15 version=117
+I0926 10:01:58.004366       1 reconciler.go:143] reconciled order ord_16 version=118
+I0926 10:01:59.004403       1 reconciler.go:144] reconciled order ord_0 version=119
+panic: runtime error: invalid memory address or nil pointer dereference
+[signal SIGSEGV: segmentation violation code=0x1 addr=0x28 pc=0x1234567]
+
+goroutine 214 [running]:
+github.com/shop/orders/internal/reconcile.(*Reconciler).apply(0xc000482000, {0x1a2b3c0, 0xc0003f4000}, 0x0)
+	/src/internal/reconcile/reconciler.go:201 +0x4f
+github.com/shop/orders/internal/reconcile.(*Reconciler).Run.func1()
+	/src/internal/reconcile/reconciler.go:97 +0x1a5
+created by github.com/shop/orders/internal/reconcile.(*Reconciler).Run in goroutine 1
+	/src/internal/reconcile/reconciler.go:90 +0x2b8

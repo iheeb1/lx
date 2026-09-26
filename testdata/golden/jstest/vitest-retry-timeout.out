@@ -1,0 +1,47 @@
+ ❯ adv/retry.test.ts (1 test | 1 failed) 5ms
+   × flaky 4ms (retry x2)
+ ❯ adv/timeout.test.ts (1 test | 1 failed) 54ms
+   × times out 54ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  adv/retry.test.ts > flaky
+AssertionError: expected 1 to be 5 // Object.is equality
+- Expected
++ Received
+- 5
++ 1
+ ❯ adv/retry.test.ts:5:13
+      5|   expect(n).toBe(5);
+       |             ^
+
+ FAIL  adv/retry.test.ts > flaky
+AssertionError: expected 2 to be 5 // Object.is equality
+- Expected
++ Received
+- 5
++ 2
+ ❯ adv/retry.test.ts:5:13
+      5|   expect(n).toBe(5);
+       |             ^
+
+ FAIL  adv/retry.test.ts > flaky
+AssertionError: expected 3 to be 5 // Object.is equality
+- Expected
++ Received
+- 5
++ 3
+ ❯ adv/retry.test.ts:5:13
+      5|   expect(n).toBe(5);
+       |             ^
+
+ FAIL  adv/timeout.test.ts > times out
+Error: Test timed out in 50ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ adv/timeout.test.ts:2:1
+      2| it("times out", async () => {
+       | ^
+
+ Test Files  2 failed (2)
+      Tests  2 failed (2)
+   Duration  176ms (transform 23ms, setup 0ms, import 38ms, tests 60ms, environment 0ms)

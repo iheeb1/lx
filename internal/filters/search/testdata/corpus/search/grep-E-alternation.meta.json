@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "grep",
+    "-rnE",
+    "fromISO|toISO",
+    "src"
+  ],
+  "shell": "grep -rnE fromISO|toISO src",
+  "exit_code": 0,
+  "description": "grep -rnE with alternation",
+  "cwd": "/home/user/src/luxon"
+}

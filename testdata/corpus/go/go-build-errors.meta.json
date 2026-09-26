@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "build",
+    "./..."
+  ],
+  "shell": "go build ./...",
+  "repo": "gin-gonic/gin",
+  "exit_code": 1,
+  "description": "go build ./... in gin after a half-done refactor (AbortWithStatus renamed, ClientIP used as value, unused var and import): 7 compile errors in the root package",
+  "cwd": "repos/gin"
+}

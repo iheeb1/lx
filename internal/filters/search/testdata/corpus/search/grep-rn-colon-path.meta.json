@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "ERROR",
+    "logs"
+  ],
+  "shell": "grep -rn ERROR logs",
+  "exit_code": 0,
+  "description": "grep -rn where a file name holds :NN: (12:30:00.log)",
+  "cwd": "/home/user/scratch/tricky"
+}

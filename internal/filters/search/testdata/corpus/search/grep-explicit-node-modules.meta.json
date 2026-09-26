@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "setHeader",
+    "node_modules/send",
+    "node_modules/serve-static"
+  ],
+  "shell": "grep -rn setHeader node_modules/send node_modules/serve-static",
+  "exit_code": 0,
+  "description": "grep inside node_modules explicitly",
+  "cwd": "/home/user/src/express"
+}

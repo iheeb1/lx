@@ -1,0 +1,55 @@
+commit 1bd0ecf2d3e08da37efa270bb7be20c1eddb0d68
+Author:     HazyLab <hazyhaarlab@gmail.com>
+AuthorDate: Fri Sep 25 08:01:37 2026 +0200
+Commit:     GitHub <noreply@github.com>
+CommitDate: Fri Sep 25 14:01:37 2026 +0800
+
+    fix(context): load Keys under the mutex in Copy (#4854)
+    
+    Copy read c.Keys before RLock. Set stores that field under Lock when the
+    map is created. The race detector reports the unsynchronized access, and
+    the copy can observe a nil header and drop keys Set has already published.
+    
+    maps.Clone(nil) returns nil, so the load and the clone belong in the same
+    critical section. Map iteration was already under the mutex.
+    
+    Co-authored-by: hazyhaar <hazyhaarlabs@gmail.com>
+
+commit 3b08cd7235bd5ad2f055aa9e38135f111f6c5926
+Author:     water <672684719@qq.com>
+AuthorDate: Sat Sep 19 21:11:32 2026 +0800
+Commit:     GitHub <noreply@github.com>
+CommitDate: Sat Sep 19 21:11:32 2026 +0800
+
+    fix: reset skipped-nodes stack on getValue entry to prevent slice overflow panic [#4818] (#4819)
+    
+    * fix: reset skipped-nodes stack on getValue entry to prevent slice overflow panic [#4818]
+    
+    * test: add regression test for getValue skipped-nodes overflow panic [#4818]
+    
+    * test(gin): consolidate routing regression tests
+    
+    - Move skipped-node regression cases into the existing routing test suite without changing behavior.
+    
+    ---------
+    
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+commit d8f2d588d7573b3438cfc95b7a47f9ec8966273c
+Author:     Ruben Pari <73421813+RubenPari@users.noreply.github.com>
+AuthorDate: Sat Sep 19 08:41:53 2026 +0200
+Commit:     GitHub <noreply@github.com>
+CommitDate: Sat Sep 19 14:41:53 2026 +0800
+
+    fix(engine): add default ReadHeaderTimeout to http.Server in Run methods (#4800)
+    
+    Engine.Run, RunTLS, and RunListener created an http.Server without
+    ReadHeaderTimeout, leaving applications exposed to slowloris-style
+    resource exhaustion. A new Engine.ReadHeaderTimeout field (default
+    10s) is now applied to the http.Server created by these methods.
+    Users can customize the value or use a custom http.Server for full
+    control.
+    
+    Fixes #4760
+    
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "TZ=America/New_York",
+    "npx",
+    "jest"
+  ],
+  "shell": "TZ=America/New_York npx jest",
+  "repo": "moment/luxon",
+  "exit_code": 0,
+  "description": "jest 29 passing run: 58 suites, 1222 tests (default reporter, non-TTY)",
+  "cwd": "repos/luxon"
+}

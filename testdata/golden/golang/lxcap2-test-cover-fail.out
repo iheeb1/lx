@@ -1,0 +1,7 @@
+--- FAIL: TestAdd (0.00s)
+    c_test.go:7: Add(2, 2) = 4, want 5
+FAIL
+coverage: 50.0% of statements
+FAIL	example.com/lxcap2/coverfail	0.580s
+ok  	12 packages (coverage: [no statements]) under example.com/lxcap2/manyok
+FAIL

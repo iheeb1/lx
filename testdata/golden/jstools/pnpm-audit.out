@@ -1,0 +1,74 @@
+critical  form-data  Vulnerable versions: <2.5.4 · Patched versions: >=2.5.4
+  form-data uses unsafe random function in form-data for choosing boundary - GHSA-fjxv-7rqg-78g4
+  Paths: .>request>form-data
+high  body-parser  Vulnerable versions: <1.20.3 · Patched versions: >=1.20.3
+  body-parser vulnerable to denial of service when url encoding is enabled - GHSA-qwcr-r2fm-qrc7
+  Paths: .>express>body-parser
+high  path-to-regexp  Vulnerable versions: <0.1.10 · Patched versions: >=0.1.10
+  path-to-regexp outputs backtracking regular expressions - GHSA-9wv6-86v2-598j
+  Paths: .>express>path-to-regexp
+high  qs  Vulnerable versions: >=6.7.0 <6.7.3 · Patched versions: >=6.7.3
+  qs vulnerable to Prototype Pollution - GHSA-hrpp-h998-j3pp
+  Paths: .>express>qs
+high  path-to-regexp  Vulnerable versions: <0.1.12 · Patched versions: >=0.1.12
+  path-to-regexp contains a ReDoS - GHSA-rhx6-c78j-4q9w
+  Paths: .>express>path-to-regexp
+high  lodash  Vulnerable versions: <4.17.21 · Patched versions: >=4.17.21
+  Command Injection in lodash - GHSA-35jh-r3h4-6jhm
+  Paths: .>lodash
+high  path-to-regexp  Vulnerable versions: <0.1.13 · Patched versions: >=0.1.13
+  path-to-regexp vulnerable to Regular Expression Denial of Service via multiple route parameters - GHSA-37ch-88jc-xwx2
+  Paths: .>express>path-to-regexp
+high  lodash  Vulnerable versions: >=4.0.0 <=4.17.23 · Patched versions: >=4.18.0
+  lodash vulnerable to Code Injection via `_.template` imports key names - GHSA-r5fr-rjxr-66jc
+  Paths: .>lodash
+high  form-data  Vulnerable versions: <2.5.6 · Patched versions: >=2.5.6
+  form-data: CRLF injection in form-data via unescaped multipart field names and filenames - GHSA-hmw2-7cc7-3qxx
+  Paths: .>request>form-data
+moderate  request  Vulnerable versions: <=2.88.2 · Patched versions: <0.0.0
+  Server-Side Request Forgery in Request - GHSA-p8p7-x288-28g6
+  Paths: .>request
+moderate  tough-cookie  Vulnerable versions: <4.1.3 · Patched versions: >=4.1.3
+  tough-cookie Prototype Pollution vulnerability - GHSA-72xf-g2v4-qvf3
+  Paths: .>request>tough-cookie
+moderate  lodash  Vulnerable versions: >=4.0.0 <4.17.21 · Patched versions: >=4.17.21
+  Regular Expression Denial of Service (ReDoS) in lodash - GHSA-29mw-wpgm-hmr9
+  Paths: .>lodash
+moderate  express  Vulnerable versions: <4.19.2 · Patched versions: >=4.19.2
+  Express.js Open Redirect in malformed URLs - GHSA-rv95-896h-c2vc
+  Paths: .>express
+moderate  qs  Vulnerable versions: <6.14.1 · Patched versions: >=6.14.1
+  qs's arrayLimit bypass in its bracket notation allows DoS via memory exhaustion - GHSA-6rw7-vpxm-498p
+  Paths: .>express>qs, .>request>qs
+moderate  lodash  Vulnerable versions: <=4.17.23 · Patched versions: >=4.18.0
+  lodash vulnerable to Prototype Pollution via array path bypass in `_.unset` and `_.omit` - GHSA-f23m-r3pf-42rh
+  Paths: .>lodash
+moderate  uuid  Vulnerable versions: <11.1.1 · Patched versions: >=11.1.1
+  uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided - GHSA-w5hq-g745-h8pq
+  Paths: .>request>uuid
+moderate  lodash  Vulnerable versions: >=4.0.0 <=4.17.22 · Patched versions: >=4.17.23
+  Lodash has Prototype Pollution Vulnerability in `_.unset` and `_.omit` functions - GHSA-xxjr-mmjv-4gpg
+  Paths: .>lodash
+moderate  qs  Vulnerable versions: >=2.2.5 <6.16.0 · Patched versions: >=6.16.0
+  qs: Denial of Service via Attacker Controlled isBuffer - GHSA-4mjr-xmp4-gh2g
+  Paths: .>express>qs, .>request>qs
+low  serve-static  Vulnerable versions: <1.16.0 · Patched versions: >=1.16.0
+  serve-static vulnerable to template injection that can lead to XSS - GHSA-cm22-4g7w-348p
+  Paths: .>express>serve-static
+low  express  Vulnerable versions: <4.20.0 · Patched versions: >=4.20.0
+  express vulnerable to XSS via response.redirect() - GHSA-qw6h-vgh9-j6wx
+  Paths: .>express
+low  cookie  Vulnerable versions: <0.7.0 · Patched versions: >=0.7.0
+  cookie accepts cookie name, path, and domain with out of bounds characters - GHSA-pxg6-pf52-xh8x
+  Paths: .>express>cookie
+low  send  Vulnerable versions: <0.19.0 · Patched versions: >=0.19.0
+  send vulnerable to template injection that can lead to XSS - GHSA-m6fv-jmcg-4jfg
+  Paths: .>express>send
+low  qs  Vulnerable versions: >=6.7.0 <=6.14.1 · Patched versions: >=6.14.2
+  qs's arrayLimit bypass in comma parsing allows denial of service - GHSA-w7fw-mjwx-w883
+  Paths: .>express>qs
+low  body-parser  Vulnerable versions: <1.20.6 · Patched versions: >=1.20.6
+  body-parser vulnerable to denial of service when invalid limit value silently disables size enforcement - GHSA-v422-hmwv-36x6
+  Paths: .>express>body-parser
+26 vulnerabilities found
+Severity: 6 low | 11 moderate | 8 high | 1 critical

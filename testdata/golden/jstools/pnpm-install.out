@@ -1,0 +1,16 @@
+ WARN  deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+ WARN  deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
+
+ WARN  3 deprecated subdependencies found: har-validator@5.1.5, inflight@1.0.6, uuid@3.4.0
+Packages: +107
+Progress: resolved 107, reused 0, downloaded 107, added 107, done
+
+dependencies:
++ express 4.17.1 (5.2.1 is available)
++ request 2.88.2 deprecated
+
+devDependencies:
++ glob 7.2.3 (13.0.6 is available) deprecated
++ typescript 5.0.4 (7.0.2 is available)
+
+Done in 15.1s using pnpm v10.34.5

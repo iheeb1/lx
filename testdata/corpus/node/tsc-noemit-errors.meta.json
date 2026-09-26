@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "tsc",
+    "--noEmit"
+  ],
+  "shell": "npx tsc --noEmit",
+  "repo": "jquense/yup",
+  "exit_code": 2,
+  "description": "tsc --noEmit after a half-finished refactor (Schema.clone/isAbsent signature changes, StringLocale key rename): 48 errors across 11 files with multi-line elaborations",
+  "cwd": "repos/yup"
+}

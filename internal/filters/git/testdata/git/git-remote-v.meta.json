@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "remote",
+    "-v"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/gin",
+  "description": "git remote -v"
+}

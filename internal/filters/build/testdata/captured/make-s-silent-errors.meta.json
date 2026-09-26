@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "make",
+    "-s"
+  ],
+  "exit_code": 2,
+  "description": "make -s (silent, no command echoes; GNU make 3.81, clang 21, macOS): header warnings, undeclared identifier / implicit function errors, make error",
+  "cwd": "/home/user/src/cproj"
+}

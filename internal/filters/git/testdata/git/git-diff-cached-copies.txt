@@ -1,0 +1,42 @@
+diff --git a/lib/application.js b/lib/application.js
+index 310e6dfe..34c1fe51 100644
+--- a/lib/application.js
++++ b/lib/application.js
+@@ -59,7 +59,7 @@ var trustProxyDefaultSymbol = '@@symbol:trust_proxy_default';
+ app.init = function init() {
+   var router = null;
+ 
+-  this.cache = Object.create(null);
++  this.cacheStore = Object.create(null);
+   this.engines = Object.create(null);
+   this.settings = Object.create(null);
+ 
+diff --git a/lib/utils.js b/lib/helpers.js
+similarity index 100%
+rename from lib/utils.js
+rename to lib/helpers.js
+diff --git a/lib/view.js b/lib/view-copy.js
+similarity index 97%
+copy from lib/view.js
+copy to lib/view-copy.js
+index d66b4a2d..1c64cf09 100644
+--- a/lib/view.js
++++ b/lib/view-copy.js
+@@ -13,7 +13,7 @@
+  * @private
+  */
+ 
+-var debug = require('debug')('express:view');
++var debugLog = require('debug')('express:view');
+ var path = require('node:path');
+ var fs = require('node:fs');
+ 
+@@ -49,7 +49,7 @@ module.exports = View;
+  * @public
+  */
+ 
+-function View(name, options) {
++function View(name, options) { // copied
+   var opts = options || {};
+ 
+   this.defaultEngine = opts.defaultEngine;

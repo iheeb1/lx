@@ -1,0 +1,4 @@
+ERROR: file or directory not found: tests/test_missing.py
+collected 0 items
+============================ no tests ran in 0.00s =============================
+[lx: pytest exited 4 although the result line reports no failures; see the lines above]

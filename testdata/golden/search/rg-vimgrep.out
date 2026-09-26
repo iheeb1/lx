@@ -1,0 +1,11 @@
+packages/vite/src/client/bundledDevHmrClient.ts
+60:12:this.hotModulesMap.get(id)?.callbacks.some((c) => c.deps.includes(id)) ??
+67:12:this.hotModulesMap
+113:102:reason: `update propagated back to ${firstInvalidatedBy}, which already called \`import.meta.hot.invalidate()\``,
+303:47:`no importers to handle \`import.meta.hot.invalidate()\` called by \`${id}\``,
+344:16:this.hotModulesMap
+386:10:`hot updated: ${
+
+packages/vite/src/client/client.ts
+2:45:import type { ViteHotContext } from '#types/hot'
+261:41:console.debug(`[vite] css hot updated: ${searchUrl}`)

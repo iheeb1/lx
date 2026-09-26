@@ -1,0 +1,209 @@
+ 64K	packages/vite/src/types
+ 12K	packages/vite/src/shared/__tests__
+ 80K	packages/vite/src/shared
+136K	packages/vite/src/node/optimizer
+540K	packages/vite/src/node/plugins
+8.0K	packages/vite/src/node/server/environments
+4.0K	packages/vite/src/node/server/middlewares/__tests__/fixtures/root
+4.0K	packages/vite/src/node/server/middlewares/__tests__/fixtures/base-root/src
+8.0K	packages/vite/src/node/server/middlewares/__tests__/fixtures/base-root
+ 12K	packages/vite/src/node/server/middlewares/__tests__/fixtures
+ 28K	packages/vite/src/node/server/middlewares/__tests__
+120K	packages/vite/src/node/server/middlewares
+4.0K	packages/vite/src/node/server/__tests__/fixtures/deno/nested
+8.0K	packages/vite/src/node/server/__tests__/fixtures/deno
+4.0K	packages/vite/src/node/server/__tests__/fixtures/watcher/nested-root
+  0B	packages/vite/src/node/server/__tests__/fixtures/watcher/custom-env
+  0B	packages/vite/src/node/server/__tests__/fixtures/watcher/config-deps
+  0B	packages/vite/src/node/server/__tests__/fixtures/watcher/custom-public
+8.0K	packages/vite/src/node/server/__tests__/fixtures/watcher
+4.0K	packages/vite/src/node/server/__tests__/fixtures/pnpm/nested
+8.0K	packages/vite/src/node/server/__tests__/fixtures/pnpm
+4.0K	packages/vite/src/node/server/__tests__/fixtures/yarn/nested
+8.0K	packages/vite/src/node/server/__tests__/fixtures/yarn
+4.0K	packages/vite/src/node/server/__tests__/fixtures/lerna/nested
+4.0K	packages/vite/src/node/server/__tests__/fixtures/lerna
+4.0K	packages/vite/src/node/server/__tests__/fixtures/none/nested
+4.0K	packages/vite/src/node/server/__tests__/fixtures/none
+ 40K	packages/vite/src/node/server/__tests__/fixtures
+ 84K	packages/vite/src/node/server/__tests__
+476K	packages/vite/src/node/server
+ 28K	packages/vite/src/node/__tests_dts__
+ 16K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-reexport-race
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cjs-external
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test9
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test7/dom
+ 20K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test7
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test6
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test1
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test4
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test3
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test2
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test5
+108K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2
+4.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/with space
+4.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/invalid-package/deps/test-dep-invalid-exports
+4.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/invalid-package/deps
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/invalid-package
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/esm-external
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding/test1
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding/test4
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding/test3
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding/test2
+ 36K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/execution-order-re-export
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/circular
+ 12K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/tla-circular
+  0B	packages/vite/src/node/ssr/runtime/__tests__/fixtures/assets
+8.0K	packages/vite/src/node/ssr/runtime/__tests__/fixtures/no-this
+388K	packages/vite/src/node/ssr/runtime/__tests__/fixtures
+456K	packages/vite/src/node/ssr/runtime/__tests__
+464K	packages/vite/src/node/ssr/runtime
+4.0K	packages/vite/src/node/ssr/__tests__/fixtures/basic
+ 12K	packages/vite/src/node/ssr/__tests__/fixtures/named-overwrite-all
+4.0K	packages/vite/src/node/ssr/__tests__/fixtures/json
+8.0K	packages/vite/src/node/ssr/__tests__/fixtures/file-url
+8.0K	packages/vite/src/node/ssr/__tests__/fixtures/bundled-with-sourcemaps
+ 16K	packages/vite/src/node/ssr/__tests__/fixtures/errors
+4.0K	packages/vite/src/node/ssr/__tests__/fixtures/modules/with space
+ 16K	packages/vite/src/node/ssr/__tests__/fixtures/modules
+8.0K	packages/vite/src/node/ssr/__tests__/fixtures/global
+4.0K	packages/vite/src/node/ssr/__tests__/fixtures/multi-source-sourcemaps/nested-directory
+ 16K	packages/vite/src/node/ssr/__tests__/fixtures/multi-source-sourcemaps
+ 92K	packages/vite/src/node/ssr/__tests__/fixtures
+4.0K	packages/vite/src/node/ssr/__tests__/__snapshots__
+164K	packages/vite/src/node/ssr/__tests__
+684K	packages/vite/src/node/ssr
+ 28K	packages/vite/src/node/__tests__/optimizer
+4.0K	packages/vite/src/node/__tests__/plugins/modulePreloadPolyfill/__snapshots__
+8.0K	packages/vite/src/node/__tests__/plugins/modulePreloadPolyfill
+ 12K	packages/vite/src/node/__tests__/plugins/fixtures/license/dep-license-mit
+ 12K	packages/vite/src/node/__tests__/plugins/fixtures/license/dep-nested-license-isc
+ 12K	packages/vite/src/node/__tests__/plugins/fixtures/license/dep-licence-cc0
+8.0K	packages/vite/src/node/__tests__/plugins/fixtures/license/dep-license-type-marker/build/esm
+8.0K	packages/vite/src/node/__tests__/plugins/fixtures/license/dep-license-type-marker/build/devtools
+ 16K	packages/vite/src/node/__tests__/plugins/fixtures/license/dep-license-type-marker/build
+ 24K	packages/vite/src/node/__tests__/plugins/fixtures/license/dep-license-type-marker
+ 68K	packages/vite/src/node/__tests__/plugins/fixtures/license
+8.0K	packages/vite/src/node/__tests__/plugins/fixtures/worker-url
+ 12K	packages/vite/src/node/__tests__/plugins/fixtures/sass-package-resolution/node_modules/sass-pkg-with-index
+ 12K	packages/vite/src/node/__tests__/plugins/fixtures/sass-package-resolution/node_modules
+ 16K	packages/vite/src/node/__tests__/plugins/fixtures/sass-package-resolution
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/target-es2021
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/empty
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/jsx-complex-options
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/use-define-true
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/use-define-false
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/target-es2022
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/target-esnext
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/jsx-react-jsx
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/decorator-metadata
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs/jsx-preserve
+ 40K	packages/vite/src/node/__tests__/plugins/fixtures/oxc-tsconfigs
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/css-module-compose/css
+4.0K	packages/vite/src/node/__tests__/plugins/fixtures/css-module-compose
+136K	packages/vite/src/node/__tests__/plugins/fixtures
+4.0K	packages/vite/src/node/__tests__/plugins/importGlob/fixture-a/node_modules/framework/pages
+4.0K	packages/vite/src/node/__tests__/plugins/importGlob/fixture-a/node_modules/framework
+4.0K	packages/vite/src/node/__tests__/plugins/importGlob/fixture-a/node_modules
+4.0K	packages/vite/src/node/__tests__/plugins/importGlob/fixture-a/.foo
+ 12K	packages/vite/src/node/__tests__/plugins/importGlob/fixture-a/modules
+ 32K	packages/vite/src/node/__tests__/plugins/importGlob/fixture-a
+ 12K	packages/vite/src/node/__tests__/plugins/importGlob/fixture-b
+ 16K	packages/vite/src/node/__tests__/plugins/importGlob/__snapshots__
+ 80K	packages/vite/src/node/__tests__/plugins/importGlob
+8.0K	packages/vite/src/node/__tests__/plugins/dynamicImportVar/mods
+4.0K	packages/vite/src/node/__tests__/plugins/dynamicImportVar/__snapshots__
+ 16K	packages/vite/src/node/__tests__/plugins/dynamicImportVar
+4.0K	packages/vite/src/node/__tests__/plugins/__snapshots__
+384K	packages/vite/src/node/__tests__/plugins
+  0B	packages/vite/src/node/__tests__/utils/isFileReadable
+  0B	packages/vite/src/node/__tests__/utils
+ 24K	packages/vite/src/node/__tests__/env
+4.0K	packages/vite/src/node/__tests__/packages/module
+8.0K	packages/vite/src/node/__tests__/packages/parent
+4.0K	packages/vite/src/node/__tests__/packages/noname
+4.0K	packages/vite/src/node/__tests__/packages/name
+8.0K	packages/vite/src/node/__tests__/packages/build-project
+8.0K	packages/vite/src/node/__tests__/packages/child
+ 40K	packages/vite/src/node/__tests__/packages
+ 12K	packages/vite/src/node/__tests__/fixtures/test-dep-conditions-app
+8.0K	packages/vite/src/node/__tests__/fixtures/dynamic-import
+8.0K	packages/vite/src/node/__tests__/fixtures/config/shebang
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-import
+ 16K	packages/vite/src/node/__tests__/fixtures/config/entry
+4.0K	packages/vite/src/node/__tests__/fixtures/config/root-resolution/real
+4.0K	packages/vite/src/node/__tests__/fixtures/config/root-resolution
+ 20K	packages/vite/src/node/__tests__/fixtures/config/plugin-module-condition
+ 12K	packages/vite/src/node/__tests__/fixtures/config/shebang-crlf
+8.0K	packages/vite/src/node/__tests__/fixtures/config/import-meta
+4.0K	packages/vite/src/node/__tests__/fixtures/config/nested/.nested
+4.0K	packages/vite/src/node/__tests__/fixtures/config/nested
+  0B	packages/vite/src/node/__tests__/fixtures/config/loadConfigFromFile
+8.0K	packages/vite/src/node/__tests__/fixtures/config/cjs-module-vars-in-esm
+8.0K	packages/vite/src/node/__tests__/fixtures/config/siblings
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json-named-import
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/esm-in-commonjs-pkg
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/clean
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json
+4.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json-named-import-bare/node_modules/some-pkg
+4.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json-named-import-bare/node_modules
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json-named-import-bare
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/extensionless
+4.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json-named-import-ok/node_modules/some-pkg
+4.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json-named-import-ok/node_modules
+ 12K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json-named-import-ok
+4.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/directory-index/plugins
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/directory-index
+4.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/dirname
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/mts-config
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json-extensionless
+4.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/ts-syntax
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/json-ok
+8.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/cjs-imports-esm
+4.0K	packages/vite/src/node/__tests__/fixtures/config/native-compat/cjs
+116K	packages/vite/src/node/__tests__/fixtures/config/native-compat
+212K	packages/vite/src/node/__tests__/fixtures/config
+4.0K	packages/vite/src/node/__tests__/fixtures/public-dir-write-false/public
+4.0K	packages/vite/src/node/__tests__/fixtures/public-dir-write-false
+4.0K	packages/vite/src/node/__tests__/fixtures/css-entry-same-basename/a
+4.0K	packages/vite/src/node/__tests__/fixtures/css-entry-same-basename/b
+8.0K	packages/vite/src/node/__tests__/fixtures/css-entry-same-basename
+4.0K	packages/vite/src/node/__tests__/fixtures/scan-subpath-import-glob/src/foo
+4.0K	packages/vite/src/node/__tests__/fixtures/scan-subpath-import-glob/src
+ 12K	packages/vite/src/node/__tests__/fixtures/scan-subpath-import-glob
+8.0K	packages/vite/src/node/__tests__/fixtures/cjs-ssr-dep
+ 12K	packages/vite/src/node/__tests__/fixtures/environment-alias
+8.0K	packages/vite/src/node/__tests__/fixtures/test-dep-conditions/dir
+ 32K	packages/vite/src/node/__tests__/fixtures/test-dep-conditions
+4.0K	packages/vite/src/node/__tests__/fixtures/scan-build-input/src
+4.0K	packages/vite/src/node/__tests__/fixtures/scan-build-input
+  0B	packages/vite/src/node/__tests__/fixtures/glob-exports/node_modules/my-pkg/dist
+4.0K	packages/vite/src/node/__tests__/fixtures/glob-exports/node_modules/my-pkg
+4.0K	packages/vite/src/node/__tests__/fixtures/glob-exports/node_modules
+4.0K	packages/vite/src/node/__tests__/fixtures/glob-exports
+ 12K	packages/vite/src/node/__tests__/fixtures/emit-assets
+8.0K	packages/vite/src/node/__tests__/fixtures/file-url
+4.0K	packages/vite/src/node/__tests__/fixtures/optimizer-discover-before-listen
+8.0K	packages/vite/src/node/__tests__/fixtures/shared-config-build/emitAssets
+8.0K	packages/vite/src/node/__tests__/fixtures/shared-config-build
+ 12K	packages/vite/src/node/__tests__/fixtures/worker-dynamic
+ 28K	packages/vite/src/node/__tests__/fixtures/runner-import
+4.0K	packages/vite/src/node/__tests__/fixtures/input-option
+4.0K	packages/vite/src/node/__tests__/fixtures/scan-jsx-runtime/pages
+ 20K	packages/vite/src/node/__tests__/fixtures/scan-jsx-runtime
+ 12K	packages/vite/src/node/__tests__/fixtures/watch-rebuild-manifest
+4.0K	packages/vite/src/node/__tests__/fixtures/shared-plugins/minify
+ 12K	packages/vite/src/node/__tests__/fixtures/shared-plugins/chunk-import-map
+ 16K	packages/vite/src/node/__tests__/fixtures/shared-plugins
+440K	packages/vite/src/node/__tests__/fixtures
+ 12K	packages/vite/src/node/__tests__/__snapshots__
+1.2M	packages/vite/src/node/__tests__
+3.4M	packages/vite/src/node
+ 24K	packages/vite/src/module-runner/sourcemap
+8.0K	packages/vite/src/module-runner/__tests_dts__
+ 96K	packages/vite/src/module-runner
+ 60K	packages/vite/src/client
+3.7M	packages/vite/src

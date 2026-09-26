@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "PNG",
+    "playground/assets"
+  ],
+  "shell": "grep -rn PNG playground/assets",
+  "exit_code": 0,
+  "description": "grep hitting binary files",
+  "cwd": "/home/user/src/vite"
+}

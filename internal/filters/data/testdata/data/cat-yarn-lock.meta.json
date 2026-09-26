@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "yarn.lock"
+  ],
+  "shell": "cat yarn.lock",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL: a yarn v1 lockfile (yup's yarn.lock cut at an entry boundary, 1507 lines): lockfile summary",
+  "cwd": "repos/yup"
+}

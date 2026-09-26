@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "eslint",
+    "src/w.js",
+    "--max-warnings",
+    "0"
+  ],
+  "shell": "npx eslint src/w.js --max-warnings 0",
+  "exit_code": 1,
+  "description": "ESLint 9 --max-warnings 0 with one warning and no error: exit 1, the failure is only the 'too many warnings' line",
+  "cwd": "/home/user/src/eslint9-app"
+}

@@ -1,0 +1,6 @@
+setup/s_test.go:6:2: no required module provides package example.com/doesnotexist/pkg; to add it:
+	go get example.com/doesnotexist/pkg
+vetfail/v.go:5:60: fmt.Sprintf format %d has arg name of wrong type string
+# example.com/lxcap/buildfail
+# [example.com/lxcap/buildfail]
+vet: buildfail/b_test.go:6:5: undefined: Triple

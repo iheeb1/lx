@@ -1,0 +1,13 @@
+--- FAIL: TestFirst (0.00s)
+    e_test.go:9: first broke
+after chatter
+--- FAIL: Example_greeting (0.00s)
+got:
+hello
+world
+want:
+hello
+there
+FAIL
+FAIL	example.com/lxcap2/example	1.104s
+FAIL

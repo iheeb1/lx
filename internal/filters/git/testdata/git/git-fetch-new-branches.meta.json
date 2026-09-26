@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "git",
+    "fetch"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git fetch with 8 new branches and 4 new tags from a local remote"
+}

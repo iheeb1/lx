@@ -1,0 +1,44 @@
+[lx: hidden: 9 cargo status lines (Checking ×9)]
+warning: length comparison to zero
+  --> src/lib.rs:10:8
+   |
+10 |     if items.len() == 0 {
+   |        ^^^^^^^^^^^^^^^^ help: using `is_empty` is clearer and more explicit: `items.is_empty()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#len_zero
+[lx: same warning at 2 more locations: src/lib.rs:31:12, src/store.rs:55:8]
+
+warning: unneeded `return` statement
+  --> src/lib.rs:18:5
+   |
+18 |     return total;
+   |     ^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+help: remove `return`
+   |
+18 -     return total;
+18 +     total
+   |
+
+warning: this `if` has identical blocks
+  --> src/store.rs:12:31
+   |
+12 |       let size = if compressed {
+   |  _______________________________^
+13 | |         raw.len()
+14 | |     } else {
+   | |_____^
+   |
+note: same as this
+  --> src/store.rs:14:12
+   |
+14 |       } else {
+   |  ____________^
+15 | |         raw.len()
+16 | |     };
+   | |_____^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#if_same_then_else
+
+warning: `demo` (lib) generated 5 warnings (run `cargo clippy --fix --lib -p demo` to apply 4 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.17s

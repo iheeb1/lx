@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "vet",
+    "./..."
+  ],
+  "shell": "go vet ./...",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go vet ./... over the same module: printf verb mismatch, undefined in test file, setup failure",
+  "cwd": "/home/user/src/lxcap"
+}

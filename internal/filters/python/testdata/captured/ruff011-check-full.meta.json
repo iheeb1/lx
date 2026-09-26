@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "ruff",
+    "check",
+    "--select",
+    "E,F,W,I,UP,B,SIM",
+    "."
+  ],
+  "shell": "ruff check --select E,F,W,I,UP,B,SIM .",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): ruff 0.11.0: pre-0.12 full format ('path:l:c: CODE msg' + snippet with '= help:')",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.13.15 venv at /home/user/venv313: pytest 9.1.1, pytest-cov 7.1.0, pytest-xdist 3.8.0, mypy 2.3.1, ruff 0.11.0"
+}

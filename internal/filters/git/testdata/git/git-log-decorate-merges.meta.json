@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "--merges",
+    "--decorate",
+    "-n",
+    "6"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/cobra",
+  "description": "git log --merges --decorate -n 6 in cobra: Merge: headers and decorations"
+}

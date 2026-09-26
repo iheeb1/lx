@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "make",
+    "-j4",
+    "-k"
+  ],
+  "exit_code": 2,
+  "description": "make -j4 -k in a small C project (GNU make 3.81, clang 21, macOS): three translation units compiled in parallel, their warnings/errors interleaved with the command echoes, make errors for two targets",
+  "cwd": "/home/user/src/cproj"
+}

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "pytest",
+    "-v"
+  ],
+  "shell": "pytest -v",
+  "repo": "pallets/click",
+  "exit_code": 0,
+  "description": "passing pytest -v run on click: 650 lines of PASSED/SKIPPED/XFAIL with progress percentages",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

@@ -1,0 +1,24 @@
+make[1]: Entering directory '/home/user/src/netd/lib'
+gcc -Wall -Wextra -Werror -O2 -g -Iinclude -c -o buf.o buf.c
+gcc -Wall -Wextra -Werror -O2 -g -Iinclude -c -o log.o log.c
+gcc -Wall -Wextra -Werror -O2 -g -Iinclude -c -o parse.o parse.c
+In file included from parse.c:4:
+include/parse.h:12:13: warning: 'skip_ws' declared 'static' but never defined [-Wunused-function]
+   12 | static void skip_ws(const char **p);
+      |             ^~~~~~~
+parse.c: In function 'parse_header':
+parse.c:57:9: warning: unused variable 'len' [-Wunused-variable]
+   57 |     int len = 0;
+      |         ^~~
+parse.c:88:16: error: 'hdr_t' has no member named 'lenght'; did you mean 'length'?
+   88 |         if (h->lenght > MAX_HDR)
+      |                ^~~~~~
+      |                length
+parse.c: In function 'parse_body':
+parse.c:120:5: error: implicit declaration of function 'fail_hard' [-Wimplicit-function-declaration]
+  120 |     fail_hard("truncated body");
+      |     ^~~~~~~~~
+cc1: all warnings being treated as errors
+make[1]: *** [Makefile:14: parse.o] Error 1
+make[1]: Leaving directory '/home/user/src/netd/lib'
+make: *** [Makefile:9: lib] Error 2

@@ -1,0 +1,50 @@
+NAMESPACE       NAME                         READY   STATUS             RESTARTS      AGE
+default         api-d3e202e7da-169b5         1/1     Running            0             3d
+shop            web-5bffbb8b7a-f6455         1/1     Running            0             4d
+shop            worker-3b32bd40c3-3946c      1/1     Running            0             5d
+shop            search-6f117ad49d-43bb0      1/1     Running            0             6d
+monitoring      billing-681a445170-ab71f     1/1     Running            0             7d
+kube-system     notifier-4374ec72ef-536c3    1/1     Running            0             8d
+ingress-nginx   auth-e8f587cabc-7d087        1/1     Running            0             9d
+cert-manager    gateway-b28b2eeb19-03fbd     1/1     Running            0             10d
+default         media-799ae97d35-9b85c       1/1     Running            0             11d
+shop            reports-a26d8adb73-26148     1/1     Running            0             12d
+shop            ingest-fdb5ec97b0-88606      1/1     Running            0             13d
+shop            scheduler-0e2ba435f2-274c9   1/1     Running            0             14d
+monitoring      api-d3e202e7da-bdcfc         0/1     CrashLoopBackOff   9 (1m ago)    15d
+kube-system     web-5bffbb8b7a-dc925         1/1     Running            0             16d
+ingress-nginx   worker-3b32bd40c3-b11e9      1/1     Running            0             17d
+cert-manager    search-6f117ad49d-839dc      1/1     Running            0             18d
+default         billing-681a445170-63d6b     1/1     Running            0             19d
+shop            notifier-4374ec72ef-105f9    1/1     Running            0             20d
+shop            auth-e8f587cabc-f58f9        1/1     Running            0             21d
+shop            gateway-b28b2eeb19-a3313     1/1     Running            0             22d
+monitoring      media-799ae97d35-c1e2c       1/1     Running            0             3d
+kube-system     reports-a26d8adb73-68977     1/1     Running            0             4d
+ingress-nginx   ingest-fdb5ec97b0-e4e81      1/1     Running            0             5d
+cert-manager    scheduler-0e2ba435f2-3be1c   1/1     Running            0             6d
+default         api-d3e202e7da-d841f         1/1     Running            0             7d
+shop            web-5bffbb8b7a-666d9         1/1     Running            0             8d
+shop            worker-3b32bd40c3-925f2      1/1     Running            0             9d
+shop            search-6f117ad49d-bf72e      1/1     Running            0             10d
+monitoring      billing-681a445170-2a97e     1/1     Running            0             11d
+kube-system     notifier-4374ec72ef-b136c    1/1     Running            0             12d
+ingress-nginx   auth-e8f587cabc-e9266        1/1     Running            0             13d
+cert-manager    gateway-b28b2eeb19-57b83     1/1     Running            0             14d
+default         media-799ae97d35-9f4aa       1/1     Running            0             15d
+shop            reports-a26d8adb73-16d37     1/1     Running            0             16d
+shop            ingest-fdb5ec97b0-b4ef7      1/1     Running            0             17d
+shop            scheduler-0e2ba435f2-9f680   1/1     Running            0             18d
+monitoring      api-d3e202e7da-a077f         1/1     Running            0             19d
+kube-system     web-5bffbb8b7a-0d66e         1/1     Running            0             20d
+ingress-nginx   worker-3b32bd40c3-30ae8      1/1     Running            0             21d
+cert-manager    search-6f117ad49d-365c3      1/1     Running            0             22d
+[lx: rows 41-170: 123 healthy rows (running and ready with no restart in the last hour, or completed) not shown; the 7 other rows follow]
+kube-system     reports-a26d8adb73-5d7bf     0/1     CrashLoopBackOff   31 (4m ago)   8d
+kube-system     notifier-4374ec72ef-6a5d5    0/1     ImagePullBackOff   0             20d
+ingress-nginx   auth-e8f587cabc-b89b2        1/2     Running            4 (1h ago)    5d
+ingress-nginx   ingest-fdb5ec97b0-2f42d      0/1     Pending            0             21d
+kube-system     web-5bffbb8b7a-b2171         0/1     Error              2             16d
+ingress-nginx   auth-e8f587cabc-abe1a        0/1     OOMKilled          7 (10m ago)   13d
+shop            notifier-4374ec72ef-f8846    0/1     Evicted            0             4d
+[lx: 170 rows by STATUS: Running 160, Completed 3, CrashLoopBackOff 2, Error 1, Evicted 1, ImagePullBackOff 1, OOMKilled 1, Pending 1]

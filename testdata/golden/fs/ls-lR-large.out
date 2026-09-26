@@ -1,0 +1,97 @@
+[ls: 191 entries in 47 directories · owner user · group wheel · names only: modes, sizes and dates dropped (~3,391 tokens in long form)]
+packages/vite/src/node/ssr/
+  fetchModule.ts  index.ts  runnerImport.ts  ssrManifestPlugin.ts  ssrModuleLoader.ts  ssrStacktrace.ts  ssrTransform.ts
+  __tests__/
+    ssrLoadModule.spec.ts  ssrStacktrace.spec.ts  ssrTransform.spec.ts
+    __snapshots__/
+      ssrLoadModule.spec.ts.snap
+    fixtures/
+      basic/
+        file.js
+      bundled-with-sourcemaps/
+        bundle.js  bundle.js.map
+      errors/
+        syntax-error-dep.js  syntax-error-dep.ts  syntax-error.js  syntax-error.ts
+      file-url/
+        test space.js  test.js
+      global/
+        export.js  test.js
+      json/
+        test.json
+      modules/
+        has-error.js  has-invalid-import.js  import-meta.js
+        with space/
+          has-error.js
+      multi-source-sourcemaps/
+        dist.js  dist.js.map  entrypoint.js
+        nested-directory/
+          nested-file.js
+      named-overwrite-all/
+        dep1.js  dep2.js  main.js
+  runtime/
+    serverModuleRunner.ts
+    __tests__/
+      fixture-outside.js  package.json  server-hmr.spec.ts  server-no-hmr.spec.ts  server-runtime.spec.ts  server-source-maps.spec.ts
+      server-worker-runner.invoke.spec.ts  server-worker-runner.spec.ts  utils.ts
+      fixtures/
+        a.ts  assets.js  b.ts  basic.js  builtin-import.ts  c.ts  cjs-external-existing.js  cjs-external-non-existing.js  d.ts  default-string.ts
+        dynamic-import.js  esm-external-existing.js  esm-external-non-existing.js  has-error-deep.ts  has-error-first-comment.ts  has-error-first.js
+        has-error-toplevel-dep.js  has-error-toplevel.js  has-error.js  hmr.js  import-external.ts  installed.js  native.js  oxc-runtime-helper.ts
+        pre-source-mapped-file.js  simple.js  string-literal-sourcemap.ts  test.css  test.module.css  throws-error-method.ts  top-level-object.js  virtual.js
+        worker.invoke.mjs  worker.mjs
+        assets/
+          placeholder.mov  placeholder.png  placeholder.txt  placeholder.webp
+        circular/
+          circular-a.js  circular-b.js  circular-index.js
+        cjs-external/
+          index.cjs  package.json
+        cyclic/
+          action.js  entry-cyclic.js  entry.js
+        cyclic2/
+          README.md  package.json
+          test1/
+            dep1.js  dep2.js  index.js
+          test2/
+            dep1.js  dep2.js  index.js
+          test3/
+            dep1.js  dep2.js  index.js
+          test4/
+            dep1.js  dep2.js  index.js
+          test5/
+            dep1.js  dep2.js  index.js
+          test6/
+            dep1.js  dep2.js  index.js
+          test7/
+            Ion.js  IonTypes.js  README.md
+            dom/
+              Blob.js  index.js
+          test9/
+            dep.js  index.js
+        esm-external/
+          index.mjs  package.json
+        execution-order-re-export/
+          dep1.js  dep2.js  index.js
+        hmr-evaluated-import-race/
+          evaluated.js  shared.js
+        hmr-reexport-race/
+          core.js  entry-a.js  entry-b.js  shared.js
+        invalid-package/
+          test.js
+          deps/test-dep-invalid-exports/
+            package.json
+        live-binding/
+          package.json
+          test1/
+            dep.js  index.js
+          test2/
+            dep.js  index.js
+          test3/
+            dep.js  index.js
+          test4/
+            dep.js  index.js
+        no-this/
+          importee.js  importer.js
+        tla-circular/
+          a.js  b.js  index.js
+        with space/
+          has-error-deep.ts

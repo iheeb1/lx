@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "./gradlew",
+    "test"
+  ],
+  "exit_code": 1,
+  "description": "SYNTHETIC (hand-written in real Gradle 8.10 / Maven 3.9 format; the tool is not installed or not reachable offline on the capture machine): ./gradlew test in a Java project with buildSrc: 17 task lines (UP-TO-DATE/NO-SOURCE/executed), 3 failing tests in the SHORT exception format (one with a cause), test count, FAILURE, What went wrong, Try section, BUILD FAILED, actionable tasks",
+  "cwd": "/home/user/src/app"
+}

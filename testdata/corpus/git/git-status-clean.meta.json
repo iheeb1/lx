@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "status"
+  ],
+  "shell": "git status",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "git status on a clean working tree, up to date with origin",
+  "cwd": "repos/cobra"
+}

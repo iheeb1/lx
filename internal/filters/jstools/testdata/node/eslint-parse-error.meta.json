@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "eslint",
+    "--stdin",
+    "--stdin-filename",
+    "lib/broken.js"
+  ],
+  "shell": "printf 'var x = ;\\nconsole.log(x)\\n' | npx eslint --stdin --stdin-filename lib/broken.js",
+  "exit_code": 1,
+  "description": "eslint --stdin on a file with a syntax error: fatal 'Parsing error' without a rule id",
+  "cwd": "/home/user/src/express"
+}

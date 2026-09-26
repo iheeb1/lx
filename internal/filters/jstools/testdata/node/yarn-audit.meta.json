@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "yarn",
+    "audit"
+  ],
+  "shell": "yarn audit",
+  "exit_code": 30,
+  "description": "yarn 1 audit: one box-drawn table per advisory and path (31 vulnerabilities)",
+  "cwd": "/home/user/src/yarn-app"
+}

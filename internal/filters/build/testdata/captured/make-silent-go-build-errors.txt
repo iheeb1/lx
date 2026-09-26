@@ -1,0 +1,15 @@
+  GEN   version.go
+  GO    bin/app
+# example.com/gomk
+./main.go:11:11: undefined: lookup
+./main.go:12:11: undefined: lookup
+./main.go:13:11: undefined: lookup
+./main.go:14:11: undefined: lookup
+./main.go:15:11: undefined: lookup
+./main.go:16:11: undefined: lookup
+./main.go:17:11: undefined: lookup
+./main.go:18:11: undefined: lookup
+./main.go:19:11: undefined: lookup
+./main.go:20:11: undefined: lookup
+./main.go:20:11: too many errors
+make: *** [build] Error 1

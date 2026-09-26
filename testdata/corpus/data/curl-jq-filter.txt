@@ -1,0 +1,225 @@
+{
+  "number": 81765,
+  "title": "io/fs: Sub.Glob interprets metacharacters in the directory name as a pattern",
+  "user": "nnnkkk7",
+  "labels": []
+}
+{
+  "number": 81764,
+  "title": "cmd/go: pass response files through -toolexec for long tool commands",
+  "user": "luames",
+  "labels": []
+}
+{
+  "number": 81762,
+  "title": "cmd/api:racebench: BenchmarkAll failures",
+  "user": "gopherbot",
+  "labels": [
+    "Automation"
+  ]
+}
+{
+  "number": 81761,
+  "title": "runtime:mayMoreStackMove: TestFinalizerOrCleanupDeadlock/Cleanup/Panic failures",
+  "user": "gopherbot",
+  "labels": [
+    "compiler/runtime",
+    "Automation"
+  ]
+}
+{
+  "number": 81760,
+  "title": "x/tools: support for go1.28's rejection of string(int) conversions",
+  "user": "adonovan",
+  "labels": [
+    "Tools"
+  ]
+}
+{
+  "number": 81759,
+  "title": "runtime: stop-the-world never completes while goroutines are blocked in read(2) on a pipe (go1.26 regression)",
+  "user": "sb10",
+  "labels": [
+    "compiler/runtime"
+  ]
+}
+{
+  "number": 81757,
+  "title": "cmd/go: vet reports no diagnostics for a package that an earlier run vetted as a dependency",
+  "user": "vivere-dally",
+  "labels": []
+}
+{
+  "number": 81756,
+  "title": "cmd/compile: fix switch head position with -N",
+  "user": "subhramit",
+  "labels": []
+}
+{
+  "number": 81755,
+  "title": "cmd/compile: arm64 rematerializes multi-instruction 64-bit constants inside loops",
+  "user": "lizthegrey",
+  "labels": [
+    "compiler/runtime"
+  ]
+}
+{
+  "number": 81754,
+  "title": "x/build: solaris-amd64 builder remains offline",
+  "user": "rorth",
+  "labels": [
+    "Builders"
+  ]
+}
+{
+  "number": 81753,
+  "title": "cmd/vet: detect evaluation-order mistakes",
+  "user": "adonovan",
+  "labels": [
+    "help wanted"
+  ]
+}
+{
+  "number": 81752,
+  "title": "proposal: x/crypto/ssh: add ServerConfig.PreAuthUserCallback",
+  "user": "armenr",
+  "labels": [
+    "Proposal"
+  ]
+}
+{
+  "number": 81751,
+  "title": "net/http/internal/http2: cancel contexts before reporting conn errors",
+  "user": "fchimpan",
+  "labels": []
+}
+{
+  "number": 81750,
+  "title": "x/pkgsite: package removal request for github.com/erikwang2013/go-php",
+  "user": "erikwang2013",
+  "labels": [
+    "pkgsite"
+  ]
+}
+{
+  "number": 81749,
+  "title": "net: IPMask.MarshalText silently returns empty output for masks that are not 4 or 16 bytes long",
+  "user": "Sanjays2402",
+  "labels": []
+}
+{
+  "number": 81748,
+  "title": "os: open intermediate Root directories with O_PATH on Linux",
+  "user": "Sanjays2402",
+  "labels": []
+}
+{
+  "number": 81747,
+  "title": "cmd/compile/internal/syntax: report NUL byte read after buffer refill",
+  "user": "Sanjays2402",
+  "labels": []
+}
+{
+  "number": 81746,
+  "title": "net/http: ignore Range header with unknown range unit",
+  "user": "Sanjays2402",
+  "labels": []
+}
+{
+  "number": 81745,
+  "title": "internal/cgrouptest: skip when cpu.max is not available",
+  "user": "kraj",
+  "labels": []
+}
+{
+  "number": 81744,
+  "title": "security: fix CVE-2026-94439",
+  "user": "neild",
+  "labels": [
+    "Security",
+    "release-blocker"
+  ]
+}
+{
+  "number": 81743,
+  "title": "security: fix CVE-2026-78663",
+  "user": "neild",
+  "labels": [
+    "Security",
+    "release-blocker"
+  ]
+}
+{
+  "number": 81742,
+  "title": "security: fix CVE-2026-78669",
+  "user": "neild",
+  "labels": [
+    "Security",
+    "release-blocker"
+  ]
+}
+{
+  "number": 81741,
+  "title": "security: fix CVE-2026-94440",
+  "user": "neild",
+  "labels": [
+    "Security",
+    "release-blocker"
+  ]
+}
+{
+  "number": 81740,
+  "title": "security: fix CVE-2026-56866",
+  "user": "neild",
+  "labels": [
+    "Security",
+    "release-blocker"
+  ]
+}
+{
+  "number": 81739,
+  "title": "security: fix CVE-2026-56857",
+  "user": "neild",
+  "labels": [
+    "Security",
+    "release-blocker"
+  ]
+}
+{
+  "number": 81738,
+  "title": "encoding/json/v2: fix error message randomization with even spread",
+  "user": "camsteffen",
+  "labels": []
+}
+{
+  "number": 81736,
+  "title": "crypto/rand:gofips140-v1.0.0-c2097c7c: TestLinker failures",
+  "user": "gopherbot",
+  "labels": [
+    "Automation"
+  ]
+}
+{
+  "number": 81735,
+  "title": "crypto/rand:gofips140-v1.0.0: unrecognized failures [consistent failure]",
+  "user": "gopherbot",
+  "labels": [
+    "Automation"
+  ]
+}
+{
+  "number": 81734,
+  "title": "crypto/rand:gofips140-inprocess: TestLinker failures [consistent failure]",
+  "user": "gopherbot",
+  "labels": [
+    "Automation"
+  ]
+}
+{
+  "number": 81733,
+  "title": "crypto/rand:gofips140-certified: TestLinker failures [consistent failure]",
+  "user": "gopherbot",
+  "labels": [
+    "Automation"
+  ]
+}

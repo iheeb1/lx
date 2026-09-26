@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "cmake",
+    "--build",
+    "build"
+  ],
+  "exit_code": 2,
+  "description": "SYNTHETIC (hand-written in real GNU make 4.3 / gcc 13 / GNU ld / CMake 3.28 / ninja 1.11 format; the capture machine is macOS with clang only): cmake --build with the Unix Makefiles generator: [ NN%] progress steps, Built target, a gcc error with a labelled caret and a note in an included header, gmake[N] error chain",
+  "cwd": "/home/user/src/netd"
+}

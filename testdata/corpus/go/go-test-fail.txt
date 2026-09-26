@@ -1,0 +1,306 @@
+--- FAIL: TestMinimumNArgs_WithLessArgs (0.00s)
+    args_test.go:73: Expected "requires at least 2 arg(s), only received 1", got "requires at least 2 arg(s), received 1"
+--- FAIL: TestMinimumNArgs_WithLessArgs_WithValid (0.00s)
+    args_test.go:73: Expected "requires at least 2 arg(s), only received 1", got "requires at least 2 arg(s), received 1"
+--- FAIL: TestMinimumNArgs_WithLessArgs_WithValid_WithInvalidArgs (0.00s)
+    args_test.go:73: Expected "requires at least 2 arg(s), only received 1", got "requires at least 2 arg(s), received 1"
+--- FAIL: TestFind (0.00s)
+    --- FAIL: TestFind/[child_-f_child] (0.00s)
+        command_test.go:2876: Wrong args
+            Expected: [child -f child]
+            Got: [-f child]
+[Debug] [Error] Error while parsing flags from args [--localroot value]: unknown flag: --localroot
+Error: if any flags in the group [a b c] are set they must all be set; missing [b c]
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: at least one of the flags in the group [a b] is required
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: if any flags in the group [a b c] are set none of the others can be; [a b] were all set
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: if any flags in the group [a b c] are set they must all be set; missing [a b]
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: at least one of the flags in the group [a b] is required
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: if any flags in the group [a b c] are set none of the others can be; [a c] were all set
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: if any flags in the group [a b] are set they must all be set; missing [b]
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: at least one of the flags in the group [a b] is required
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: if any flags in the group [a b] are set none of the others can be; [a b] were all set
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: if any flags in the group [a e] are set they must all be set; missing [e]
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: at least one of the flags in the group [a b] is required
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: if any flags in the group [f g] are set none of the others can be; [f g] were all set
+Usage:
+  testcmd [flags]
+  testcmd [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  subcmd      
+
+Flags:
+      --a string   
+      --b string   
+      --c string   
+      --d string   
+      --e string   
+      --f string   
+      --g string   
+  -h, --help       help for testcmd
+
+Use "testcmd [command] --help" for more information about a command.
+
+Error: at least one of the flags in the group [e subonly] is required
+Usage:
+  testcmd subcmd [flags]
+
+Flags:
+  -h, --help             help for subcmd
+      --subonly string
+
+Global Flags:
+      --e string   
+      --f string   
+      --g string
+
+Error: if any flags in the group [e subonly] are set none of the others can be; [e subonly] were all set
+Usage:
+  testcmd subcmd [flags]
+
+Flags:
+  -h, --help             help for subcmd
+      --subonly string
+
+Global Flags:
+      --e string   
+      --f string   
+      --g string
+
+FAIL
+FAIL	github.com/spf13/cobra	0.655s
+ok  	github.com/spf13/cobra/doc	(cached)
+FAIL

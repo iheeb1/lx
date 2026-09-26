@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "ls",
+    "-la",
+    "node_modules/.bin"
+  ],
+  "shell": "ls -la node_modules/.bin",
+  "exit_code": 0,
+  "description": "ls -la of node_modules/.bin: symlinks",
+  "cwd": "/home/user/src/luxon"
+}

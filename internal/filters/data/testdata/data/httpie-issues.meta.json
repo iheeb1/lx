@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "http",
+    "GET",
+    "https://api.github.com/repos/golang/go/issues?per_page=30"
+  ],
+  "shell": "http GET https://api.github.com/repos/golang/go/issues?per_page=30",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL httpie 3.2.4 with stdout redirected: body only (minified JSON, 140 KB)",
+  "cwd": "data/api"
+}

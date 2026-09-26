@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--reporter=verbose",
+    "adv/hook.test.ts",
+    "adv/errtitles.test.ts",
+    "adv/soft.test.ts"
+  ],
+  "shell": "npx vitest run --reporter=verbose adv/hook.test.ts adv/errtitles.test.ts adv/soft.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4 --reporter=verbose with a hook failure and error-looking titles",
+  "cwd": "repos/vitproj"
+}

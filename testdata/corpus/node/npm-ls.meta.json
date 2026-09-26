@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "ls"
+  ],
+  "shell": "npm ls",
+  "repo": "moment/luxon",
+  "exit_code": 0,
+  "description": "npm ls (top-level dependencies) in luxon",
+  "cwd": "repos/luxon"
+}

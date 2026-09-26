@@ -1,0 +1,40 @@
+4b68a5f1 (thinkerou        2022-05-28 10:42:28 +0800  1) // Copyright 2014 Manu Martinez-Almeida. All rights reserved.
+8e5397bf (Manu Mtz-Almeida 2014-08-29 19:49:50 +0200  2) // Use of this source code is governed by a MIT style
+8e5397bf (Manu Mtz-Almeida 2014-08-29 19:49:50 +0200  3) // license that can be found in the LICENSE file.
+8e5397bf (Manu Mtz-Almeida 2014-08-29 19:49:50 +0200  4) 
+^15216a0 (Manu Mtz-Almeida 2014-06-18 01:42:34 +0200  5) package gin
+^15216a0 (Manu Mtz-Almeida 2014-06-18 01:42:34 +0200  6) 
+^15216a0 (Manu Mtz-Almeida 2014-06-18 01:42:34 +0200  7) import (
+66b47a80 (Yoshiki Nakagawa 2018-11-06 11:28:51 +0900  8) 	"fmt"
+^15216a0 (Manu Mtz-Almeida 2014-06-18 01:42:34 +0200  9) 	"html/template"
+cd6e95f0 (Manu Mtz-Almeida 2015-05-19 00:45:08 +0200 10) 	"net"
+^15216a0 (Manu Mtz-Almeida 2014-06-18 01:42:34 +0200 11) 	"net/http"
+cd6e95f0 (Manu Mtz-Almeida 2015-05-19 00:45:08 +0200 12) 	"os"
+ccb105db (Tudor Roman      2019-02-27 13:56:29 +0200 13) 	"path"
+bfc8ca28 (Manu MA          2021-04-06 05:37:25 +0200 14) 	"strings"
+3e403367 (Manu Mtz-Almeida 2014-07-06 21:09:23 +0200 15) 	"sync"
+d8f2d588 (Ruben Pari       2026-09-19 08:41:53 +0200 16) 	"time"
+615c62d7 (Manu Mtz-Almeida 2015-03-23 04:41:29 +0100 17) 
+982daeb1 (Andy Pan         2020-01-18 00:32:50 +0800 18) 	"github.com/gin-gonic/gin/internal/bytesconv"
+71496abe (sunshineplan     2025-04-21 00:11:16 +0800 19) 	filesystem "github.com/gin-gonic/gin/internal/fs"
+615c62d7 (Manu Mtz-Almeida 2015-03-23 04:41:29 +0100 20) 	"github.com/gin-gonic/gin/render"
+3ac729dc (thinkerou        2024-05-09 09:17:06 +0800 21) 	"github.com/quic-go/quic-go/http3"
+b40ded18 (涛叔             2022-02-05 21:13:20 +0800 22) 	"golang.org/x/net/http2"
+b40ded18 (涛叔             2022-02-05 21:13:20 +0800 23) 	"golang.org/x/net/http2/h2c"
+^15216a0 (Manu Mtz-Almeida 2014-06-18 01:42:34 +0200 24) )
+^15216a0 (Manu Mtz-Almeida 2014-06-18 01:42:34 +0200 25) 
+93ff771e (Bo-Yi Wu         2025-11-15 23:03:32 +0800 26) const (
+93ff771e (Bo-Yi Wu         2025-11-15 23:03:32 +0800 27) 	defaultMultipartMemory = 32 << 20 // 32 MB
+93ff771e (Bo-Yi Wu         2025-11-15 23:03:32 +0800 28) 	escapedColon           = "\\:"
+93ff771e (Bo-Yi Wu         2025-11-15 23:03:32 +0800 29) 	colon                  = ":"
+93ff771e (Bo-Yi Wu         2025-11-15 23:03:32 +0800 30) 	backslash              = "\\"
+93ff771e (Bo-Yi Wu         2025-11-15 23:03:32 +0800 31) )
+66fa43f9 (Manu Mtz-Almeida 2015-05-22 16:55:16 +0200 32) 
+d8f2d588 (Ruben Pari       2026-09-19 08:41:53 +0200 33) // defaultReadHeaderTimeout is the default ReadHeaderTimeout applied to the
+d8f2d588 (Ruben Pari       2026-09-19 08:41:53 +0200 34) // http.Server created by Run, RunTLS and RunListener. It protects against
+d8f2d588 (Ruben Pari       2026-09-19 08:41:53 +0200 35) // slowloris-style resource exhaustion when the caller does not configure a
+d8f2d588 (Ruben Pari       2026-09-19 08:41:53 +0200 36) // custom http.Server.
+d8f2d588 (Ruben Pari       2026-09-19 08:41:53 +0200 37) const defaultReadHeaderTimeout = 10 * time.Second
+d8f2d588 (Ruben Pari       2026-09-19 08:41:53 +0200 38) 
+f7376f7c (田欧             2017-09-28 09:54:37 -0500 39) var (
+54175dbe (thinkerou        2020-05-04 11:40:41 +0800 40) 	default404Body = []byte("404 page not found")

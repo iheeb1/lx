@@ -1,0 +1,142 @@
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lapi.o lapi.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lcode.o lcode.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lctype.o lctype.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o ldebug.o ldebug.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o ldo.o ldo.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o ldump.o ldump.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lfunc.o lfunc.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lgc.o lgc.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o llex.o llex.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lmem.o lmem.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lobject.o lobject.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lopcodes.o lopcodes.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lparser.o lparser.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lstate.o lstate.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lstring.o lstring.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o ltable.o ltable.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o ltm.o ltm.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lundump.o lundump.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lvm.o lvm.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lzio.o lzio.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o ltests.o ltests.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lauxlib.o lauxlib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lbaselib.o lbaselib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o ldblib.o ldblib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o liolib.o liolib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lmathlib.o lmathlib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o loslib.o loslib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o ltablib.o ltablib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lstrlib.o lstrlib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lutf8lib.o lutf8lib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o loadlib.o loadlib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lcorolib.o lcorolib.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o linit.o linit.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+ar rc liblua.a lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o ltests.o lauxlib.o lbaselib.o ldblib.o liolib.o lmathlib.o loslib.o ltablib.o lstrlib.o lutf8lib.o loadlib.o lcorolib.o linit.o
+ranlib liblua.a
+gcc -Wall -O2  -Wfatal-errors -Wextra -Wshadow -Wundef -Wwrite-strings -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion -Wmissing-declarations -Wconversion  -Wdeclaration-after-statement -Wmissing-prototypes -Wnested-externs -Wstrict-prototypes -Wc++-compat -Wold-style-definition  -Wlogical-op -Wno-aggressive-loop-optimizations  -std=c99 -DLUA_USE_LINUX -fno-stack-protector -fno-common   -c -o lua.o lua.c
+warning: unknown warning option '-Wlogical-op'; did you mean '-Wlong-long'? [-Wunknown-warning-option]
+warning: unknown warning option '-Wno-aggressive-loop-optimizations' [-Wunknown-warning-option]
+2 warnings generated.
+gcc -o lua -Wl,-E lua.o liblua.a -lm -ldl 
+ld: unknown options: -E 
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [lua] Error 1

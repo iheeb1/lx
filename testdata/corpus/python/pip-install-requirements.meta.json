@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "pip",
+    "install",
+    "-r",
+    "requirements/tests.txt",
+    "-e",
+    "."
+  ],
+  "shell": "pip install -r requirements/tests.txt -e .",
+  "repo": "pallets/click",
+  "exit_code": 0,
+  "description": "pip install -r requirements/tests.txt -e . in a venv with a cold cache: Collecting/Downloading lines, building editable wheel, Successfully installed",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run"
+  ],
+  "shell": "-u CLAUDECODE -u AI_AGENT npx vitest run",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4 full reporter (agent env vars unset): assertion, thrown errors, 2 files failing to load (missing import, syntax error), unhandled rejection, skip/todo, console output",
+  "cwd": "repos/vitproj"
+}

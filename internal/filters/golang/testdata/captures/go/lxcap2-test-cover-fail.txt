@@ -1,0 +1,18 @@
+--- FAIL: TestAdd (0.00s)
+    c_test.go:7: Add(2, 2) = 4, want 5
+FAIL
+coverage: 50.0% of statements
+FAIL	example.com/lxcap2/coverfail	0.580s
+ok  	example.com/lxcap2/manyok/p1	1.140s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p10	1.500s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p11	2.005s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p12	2.599s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p2	3.318s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p3	4.112s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p4	4.542s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p5	4.653s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p6	4.622s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p7	4.567s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p8	4.369s	coverage: [no statements]
+ok  	example.com/lxcap2/manyok/p9	4.025s	coverage: [no statements]
+FAIL

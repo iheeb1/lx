@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "test/snap.test.ts",
+    "test/ok.test.ts"
+  ],
+  "shell": "-u CLAUDECODE -u AI_AGENT CI=1 npx vitest run test/snap.test.ts test/ok.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest snapshot mismatch in a test that logs to stdout (full reporter)",
+  "cwd": "repos/vitproj"
+}

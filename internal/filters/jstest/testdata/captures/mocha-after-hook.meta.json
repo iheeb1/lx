@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "adv/afterhook.js"
+  ],
+  "shell": "npx mocha adv/afterhook.js",
+  "repo": "scratch/mochaproj",
+  "exit_code": 1,
+  "description": "mocha 11 spec: after() hook throws; the only test passes",
+  "cwd": "repos/mochaproj"
+}

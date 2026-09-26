@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "yarn",
+    "install"
+  ],
+  "shell": "yarn install",
+  "exit_code": 0,
+  "description": "yarn 1 install without lockfile: step lines, deprecation warnings during resolve",
+  "cwd": "/home/user/src/yarn-app"
+}

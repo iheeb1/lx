@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "--reporter",
+    "spec",
+    "test/misc.js",
+    "--grep",
+    "logs"
+  ],
+  "shell": "npx mocha --reporter spec test/misc.js --grep logs",
+  "repo": "scratch/mochaproj",
+  "exit_code": 0,
+  "description": "mocha run of a single passing spec",
+  "cwd": "repos/mochaproj"
+}

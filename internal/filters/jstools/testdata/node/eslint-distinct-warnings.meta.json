@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "npx",
+    "eslint",
+    "lib",
+    "examples",
+    "--rule",
+    "no-magic-numbers: warn",
+    "--rule",
+    "no-param-reassign: warn",
+    "--rule",
+    "no-var: error"
+  ],
+  "shell": "npx eslint lib examples --rule no-magic-numbers: warn --rule no-param-reassign: warn --rule no-var: error",
+  "exit_code": 1,
+  "description": "eslint with no-magic-numbers/no-param-reassign warnings (many distinct messages) plus no-var errors: 548 problems",
+  "cwd": "/home/user/src/express"
+}

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "find . -type f -not -path './.git/*'"
+  ],
+  "shell": "find . -type f -not -path './.git/*'",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "find . -type f excluding .git in a large monorepo (~2800 files: packages, playgrounds, docs)",
+  "cwd": "repos/vite"
+}

@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--reporter=tree",
+    "adv/errtitles.test.ts",
+    "test/ok.test.ts"
+  ],
+  "shell": "npx vitest run --reporter=tree adv/errtitles.test.ts test/ok.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 0,
+  "description": "vitest 4 --reporter=tree: passing files with describe groups",
+  "cwd": "repos/vitproj"
+}

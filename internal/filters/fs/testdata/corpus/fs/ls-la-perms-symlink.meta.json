@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "ls",
+    "-la"
+  ],
+  "shell": "ls -la",
+  "exit_code": 0,
+  "description": "ls -la with executable, symlink and unreadable dir",
+  "cwd": "/home/user/scratch/permtest/proj"
+}

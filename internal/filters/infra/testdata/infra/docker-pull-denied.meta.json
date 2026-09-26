@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "docker",
+    "pull",
+    "library/lx-nonexistent-image-zz:latest"
+  ],
+  "shell": "docker pull library/lx-nonexistent-image-zz:latest",
+  "repo": "",
+  "exit_code": 1,
+  "description": "REAL (docker 29.6): pull of a repository that does not exist",
+  "cwd": "repos/app"
+}

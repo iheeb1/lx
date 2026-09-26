@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "adv/empty.test.js",
+    "adv/errtitles.test.js"
+  ],
+  "shell": "npx jest adv/empty.test.js adv/errtitles.test.js",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "jest 29: a test file with no tests next to a passing one",
+  "cwd": "repos/jestproj"
+}

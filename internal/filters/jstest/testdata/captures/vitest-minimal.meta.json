@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--reporter=minimal",
+    "test/cart.test.ts",
+    "test/ok.test.ts"
+  ],
+  "shell": "npx vitest run --reporter=minimal test/cart.test.ts test/ok.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4 --reporter=minimal",
+  "cwd": "repos/vitproj"
+}

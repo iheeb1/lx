@@ -1,0 +1,708 @@
+src/duration.js:1:import { InvalidArgumentError, InvalidDurationError, InvalidUnitError } from "./errors.js";
+src/duration.js:5:import { parseISODuration, parseISOTimeOnly } from "./impl/regexParser.js";
+src/duration.js:18:const INVALID = "Invalid Duration";
+src/duration.js:136:  return new Duration(conf);
+src/duration.js:170: * A Duration object represents a period of time, like "2 months" or "1 day, 1 hour". Conceptually, it's just a map of units to their quantities, accompanied by some additional configuration and methods for creating, parsing, interrogating, transforming, and formatting them. They can be used on their own or in conjunction with other Luxon types; for example, you can use {@link DateTime#plus} to add a Duration object to a DateTime, producing another DateTime.
+src/duration.js:172: * Here is a brief overview of commonly used methods and getters in Duration:
+src/duration.js:174: * * **Creation** To create a Duration, use {@link Duration.fromMillis}, {@link Duration.fromObject}, or {@link Duration.fromISO}.
+src/duration.js:175: * * **Unit values** See the {@link Duration#years}, {@link Duration#months}, {@link Duration#weeks}, {@link Duration#days}, {@link Duration#hours}, {@link Duration#minutes}, {@link Duration#seconds}, {@link Duration#milliseconds} accessors.
+src/duration.js:176: * * **Configuration** See  {@link Duration#locale} and {@link Duration#numberingSystem} accessors.
+src/duration.js:177: * * **Transformation** To create new Durations out of old ones use {@link Duration#plus}, {@link Duration#minus}, {@link Duration#normalize}, {@link Duration#set}, {@link Duration#reconfigure}, {@link Duration#shiftTo}, and {@link Duration#negate}.
+src/duration.js:178: * * **Output** To convert the Duration into other representations, see {@link Duration#as}, {@link Duration#toISO}, {@link Duration#toFormat}, and {@link Duration#toJSON}
+src/duration.js:182:export default class Duration {
+src/duration.js:217:    this.isLuxonDuration = true;
+src/duration.js:221:   * Create Duration from a number of milliseconds.
+src/duration.js:227:   * @return {Duration}
+src/duration.js:230:    return Duration.fromObject({ milliseconds: count }, opts);
+src/duration.js:234:   * Create a Duration from a JavaScript object with keys like 'years' and 'hours'.
+src/duration.js:246:   * @param {Object} [opts=[]] - options for creating this Duration
+src/duration.js:251:   * @return {Duration}
+src/duration.js:256:        `Duration.fromObject: argument expected to be an object, got ${
+src/duration.js:262:    return new Duration({
+src/duration.js:263:      values: normalizeObject(obj, Duration.normalizeUnit),
+src/duration.js:271:   * Create a Duration from DurationLike.
+src/duration.js:273:   * @param {Object | number | Duration} durationLike
+src/duration.js:277:   * - Duration instance
+src/duration.js:278:   * @return {Duration}
+src/duration.js:280:  static fromDurationLike(durationLike) {
+src/duration.js:282:      return Duration.fromMillis(durationLike);
+src/duration.js:283:    } else if (Duration.isDuration(durationLike)) {
+src/duration.js:286:      return Duration.fromObject(durationLike);
+src/duration.js:295:   * Create a Duration from an ISO 8601 duration string.
+src/duration.js:302:   * @see https://en.wikipedia.org/wiki/ISO_8601#Durations
+src/duration.js:303:   * @example Duration.fromISO('P3Y6M1W4DT12H30M5S').toObject() //=> { years: 3, months: 6, weeks: 1, days: 4, hours: 12, minutes: 30, seconds: 5 }
+src/duration.js:304:   * @example Duration.fromISO('PT23H').toObject() //=> { hours: 23 }
+src/duration.js:305:   * @example Duration.fromISO('P5Y3M').toObject() //=> { years: 5, months: 3 }
+src/duration.js:306:   * @return {Duration}
+src/duration.js:309:    const [parsed] = parseISODuration(text);
+src/duration.js:311:      return Duration.fromObject(parsed, opts);
+src/duration.js:313:      return Duration.invalid("unparsable", `the input "${text}" can't be parsed as ISO 8601`);
+src/duration.js:318:   * Create a Duration from an ISO 8601 time string.
+src/duration.js:326:   * @example Duration.fromISOTime('11:22:33.444').toObject() //=> { hours: 11, minutes: 22, seconds: 33, milliseconds: 444 }
+src/duration.js:327:   * @example Duration.fromISOTime('11:00').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
+src/duration.js:328:   * @example Duration.fromISOTime('T11:00').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
+src/duration.js:329:   * @example Duration.fromISOTime('1100').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
+src/duration.js:330:   * @example Duration.fromISOTime('T1100').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
+src/duration.js:331:   * @return {Duration}
+src/duration.js:336:      return Duration.fromObject(parsed, opts);
+src/duration.js:338:      return Duration.invalid("unparsable", `the input "${text}" can't be parsed as ISO 8601`);
+src/duration.js:343:   * Create an invalid Duration.
+src/duration.js:346:   * @return {Duration}
+src/duration.js:350:      throw new InvalidArgumentError("need to specify a reason the Duration is invalid");
+src/duration.js:356:      throw new InvalidDurationError(invalid);
+src/duration.js:358:      return new Duration({ invalid });
+src/duration.js:393:   * Check if an object is a Duration. Works across context boundaries
+src/duration.js:397:  static isDuration(o) {
+src/duration.js:398:    return (o && o.isLuxonDuration) || false;
+src/duration.js:402:   * Get  the locale of a Duration, such 'en-GB'
+src/duration.js:410:   * Get the numbering system of a Duration, such 'beng'. The numbering system is used when formatting the Duration
+src/duration.js:419:   * Returns a string representation of this Duration formatted according to the specified format string. You may use these tokens:
+src/duration.js:431:   * * The duration will be converted to the set of units in the format string using {@link Duration#shiftTo} and the Durations's conversion accuracy setting.
+src/duration.js:436:   * @example Duration.fromObject({ years: 1, days: 6, seconds: 2 }).toFormat("y d s") //=> "1 6 2"
+src/duration.js:437:   * @example Duration.fromObject({ years: 1, days: 6, seconds: 2 }).toFormat("yy dd sss") //=> "01 06 002"
+src/duration.js:438:   * @example Duration.fromObject({ years: 1, days: 6, seconds: 2 }).toFormat("M S") //=> "12 518402000"
+src/duration.js:439:   * @example Duration.fromObject({ days: 6, seconds: 2 }).toFormat("d s", { signMode: "all" }) //=> "+6 +2"
+src/duration.js:440:   * @example Duration.fromObject({ days: -6, seconds: -2 }).toFormat("d s", { signMode: "all" }) //=> "-6 -2"
+src/duration.js:441:   * @example Duration.fromObject({ days: -6, seconds: -2 }).toFormat("d s", { signMode: "negativeLargestOnly" }) //=> "-6 2"
+src/duration.js:451:      ? Formatter.create(this.loc, fmtOpts).formatDurationFromString(this, fmt)
+src/duration.js:456:   * Returns a string representation of a Duration with all units included.
+src/duration.js:464:   * var dur = Duration.fromObject({ months: 1, weeks: 0, hours: 5, minutes: 6 })
+src/duration.js:502:   * Returns a JavaScript object with this Duration's values.
+src/duration.js:503:   * @example Duration.fromObject({ years: 1, days: 6, seconds: 2 }).toObject() //=> { years: 1, days: 6, seconds: 2 }
+src/duration.js:512:   * Returns an ISO 8601-compliant string representation of this Duration.
+src/duration.js:513:   * @see https://en.wikipedia.org/wiki/ISO_8601#Durations
+src/duration.js:514:   * @example Duration.fromObject({ years: 3, seconds: 45 }).toISO() //=> 'P3YT45S'
+src/duration.js:515:   * @example Duration.fromObject({ months: 4, seconds: 45 }).toISO() //=> 'P4MT45S'
+src/duration.js:516:   * @example Duration.fromObject({ months: 5 }).toISO() //=> 'P5M'
+src/duration.js:517:   * @example Duration.fromObject({ minutes: 5 }).toISO() //=> 'PT5M'
+src/duration.js:518:   * @example Duration.fromObject({ milliseconds: 6 }).toISO() //=> 'PT0.006S'
+src/duration.js:544:   * Returns an ISO 8601-compliant string representation of this Duration, formatted as a time of day.
+src/duration.js:552:   * @example Duration.fromObject({ hours: 11 }).toISOTime() //=> '11:00:00.000'
+src/duration.js:553:   * @example Duration.fromObject({ hours: 11 }).toISOTime({ suppressMilliseconds: true }) //=> '11:00:00'
+src/duration.js:554:   * @example Duration.fromObject({ hours: 11 }).toISOTime({ suppressSeconds: true }) //=> '11:00'
+src/duration.js:555:   * @example Duration.fromObject({ hours: 11 }).toISOTime({ includePrefix: true }) //=> 'T11:00:00.000'
+src/duration.js:556:   * @example Duration.fromObject({ hours: 11 }).toISOTime({ format: 'basic' }) //=> '110000.000'
+src/duration.js:579:   * Returns an ISO 8601 representation of this Duration appropriate for use in JSON.
+src/duration.js:587:   * Returns an ISO 8601 representation of this Duration appropriate for use in debugging.
+src/duration.js:595:   * Returns a string representation of this Duration appropriate for the REPL.
+src/duration.js:600:      return `Duration { values: ${JSON.stringify(this.values)} }`;
+src/duration.js:602:      return `Duration { Invalid, reason: ${this.invalidReason} }`;
+src/duration.js:607:   * Returns an milliseconds value of this Duration.
+src/duration.js:617:   * Returns an milliseconds value of this Duration. Alias of {@link toMillis}
+src/duration.js:625:   * Make this Duration longer by the specified amount. Return a newly-constructed Duration.
+src/duration.js:626:   * @param {Duration|Object|number} duration - The amount to add. Either a Luxon Duration, a number of milliseconds, the object argument to Duration.fromObject()
+src/duration.js:627:   * @return {Duration}
+src/duration.js:632:    const dur = Duration.fromDurationLike(duration),
+src/duration.js:645:   * Make this Duration shorter by the specified amount. Return a newly-constructed Duration.
+src/duration.js:646:   * @param {Duration|Object|number} duration - The amount to subtract. Either a Luxon Duration, a number of milliseconds, the object argument to Duration.fromObject()
+src/duration.js:647:   * @return {Duration}
+src/duration.js:652:    const dur = Duration.fromDurationLike(duration);
+src/duration.js:657:   * Scale this Duration by the specified amount. Return a newly-constructed Duration.
+src/duration.js:659:   * @example Duration.fromObject({ hours: 1, minutes: 30 }).mapUnits(x => x * 2) //=> { hours: 2, minutes: 60 }
+src/duration.js:660:   * @example Duration.fromObject({ hours: 1, minutes: 30 }).mapUnits((x, u) => u === "hours" ? x * 2 : x) //=> { hours: 2, minutes: 30 }
+src/duration.js:661:   * @return {Duration}
+src/duration.js:675:   * @example Duration.fromObject({years: 2, days: 3}).get('years') //=> 2
+src/duration.js:676:   * @example Duration.fromObject({years: 2, days: 3}).get('months') //=> 0
+src/duration.js:677:   * @example Duration.fromObject({years: 2, days: 3}).get('days') //=> 3
+src/duration.js:681:    return this[Duration.normalizeUnit(unit)];
+src/duration.js:685:   * "Set" the values of specified units. Return a newly-constructed Duration.
+src/duration.js:689:   * @return {Duration}
+src/duration.js:694:    const mixed = { ...this.values, ...normalizeObject(values, Duration.normalizeUnit) };
+src/duration.js:699:   * "Set" the locale and/or numberingSystem.  Returns a newly-constructed Duration.
+src/duration.js:701:   * @return {Duration}
+src/duration.js:712:   * @example Duration.fromObject({years: 1}).as('days') //=> 365
+src/duration.js:713:   * @example Duration.fromObject({years: 1}).as('months') //=> 12
+src/duration.js:714:   * @example Duration.fromObject({hours: 60}).as('days') //=> 2.5
+src/duration.js:722:   * Reduce this Duration to its canonical representation in its current units.
+src/duration.js:724:   * @example Duration.fromObject({ years: 2, days: 5000 }).normalize().toObject() //=> { years: 15, days: 255 }
+src/duration.js:725:   * @example Duration.fromObject({ days: 5000 }).normalize().toObject() //=> { days: 5000 }
+src/duration.js:726:   * @example Duration.fromObject({ hours: 12, minutes: -45 }).normalize().toObject() //=> { hours: 11, minutes: 15 }
+src/duration.js:727:   * @example Duration.fromObject({ years: 2.5, days: 0, hours: 0 }).normalize().toObject() //=> { years: 2, days: 182, hours: 12 }
+src/duration.js:728:   * @return {Duration}
+src/duration.js:737:   * @example Duration.fromObject({ milliseconds: 90000 }).rescale().toObject() //=> { minutes: 1, seconds: 30 }
+src/duration.js:738:   * @return {Duration}
+src/duration.js:747:   * Convert this Duration into its representation in a different set of units.
+src/duration.js:748:   * This is done by converting as much as possible into the largest possible units. At the end, the Duration will
+src/duration.js:750:   * Passing no units is equivalent to passing the Duration's current units, effectively normalizing the Duration.
+src/duration.js:751:   * @example Duration.fromObject({ hours: 1, seconds: 30 }).shiftTo('minutes', 'milliseconds').toObject() //=> { minutes: 60, milliseconds: 30000 }
+src/duration.js:752:   * @example Duration.fromObject({ days: 396 }).shiftTo('years', 'months', 'hours').toObject() //=> { years: 1, months: 1, hours: 24 }
+src/duration.js:753:   * @example Duration.fromObject({ years: 1, days: -1 }).shiftTo('months', 'days').toObject() //=> { months: 11, days: 29 }
+src/duration.js:754:   * @return {Duration}
+src/duration.js:762:      units = units.map((u) => Duration.normalizeUnit(u));
+src/duration.js:772:    //         Additionally, we accumulate the entire Duration in the smallest unit to determine
+src/duration.js:773:    //         the overall sign of the target Duration.
+src/duration.js:905:   * Shift this Duration to all available units.
+src/duration.js:907:   * @return {Duration}
+src/duration.js:924:   * Return the negative of this Duration.
+src/duration.js:925:   * @example Duration.fromObject({ hours: 1, seconds: 30 }).negate().toObject() //=> { hours: -1, seconds: -30 }
+src/duration.js:926:   * @return {Duration}
+src/duration.js:938:   * Removes all units with values equal to 0 from this Duration.
+src/duration.js:939:   * @example Duration.fromObject({ years: 2, days: 0, hours: 0, minutes: 0 }).removeZeros().toObject() //=> { years: 2 }
+src/duration.js:940:   * @return {Duration}
+src/duration.js:1021:   * Returns whether the Duration is invalid. Invalid durations are returned by diff operations
+src/duration.js:1030:   * Returns an error code if this Duration became invalid, or null if the Duration is valid
+src/duration.js:1038:   * Returns an explanation of why this Duration became invalid, or null if the Duration is valid
+src/duration.js:1047:   * Two Durations are equal iff they have the same units and the same values for each unit.
+src/duration.js:1048:   * @param {Duration} other
+src/impl/formatter.js:377:  formatDurationFromString(dur, fmt) {
+src/impl/formatter.js:405:            info.isNegativeDuration && mapped !== info.largestUnit ? invertLargest : 1;
+src/impl/formatter.js:424:            info.isNegativeDuration &&
+src/impl/formatter.js:441:        isNegativeDuration: collapsed < 0,
+src/impl/regexParser.js:130:const isoDuration =
+src/impl/regexParser.js:133:function extractISODuration(match) {
+src/impl/regexParser.js:344:export function parseISODuration(s) {
+src/impl/regexParser.js:345:  return parse(s, [isoDuration, extractISODuration]);
+src/impl/diff.js:1:import Duration from "../duration.js";
+src/impl/diff.js:6:  return Math.floor(Duration.fromMillis(ms).as("days"));
+src/impl/diff.js:86:  const duration = Duration.fromObject(results, opts);
+src/impl/diff.js:89:    return Duration.fromMillis(remainingMillis, opts)
+src/interval.js:2:import Duration from "./duration.js";
+src/interval.js:38: * * **Output** To convert the Interval into other representations, see {@link Interval#toString}, {@link Interval#toLocaleString}, {@link Interval#toISO}, {@link Interval#toISODate}, {@link Interval#toISOTime}, {@link Interval#toFormat}, and {@link Interval#toDuration}.
+src/interval.js:106:   * Create an Interval from a start DateTime and a Duration to extend to.
+src/interval.js:108:   * @param {Duration|Object|number} duration - the length of the Interval.
+src/interval.js:112:    const dur = Duration.fromDurationLike(duration),
+src/interval.js:118:   * Create an Interval from an end DateTime and a Duration to extend backwards to.
+src/interval.js:120:   * @param {Duration|Object|number} duration - the length of the Interval.
+src/interval.js:124:    const dur = Duration.fromDurationLike(duration),
+src/interval.js:133:   * @param {Object} [opts] - options to pass {@link DateTime#fromISO} and optionally {@link Duration#fromISO}
+src/interval.js:179:        const dur = Duration.fromISO(e, opts);
+src/interval.js:184:        const dur = Duration.fromISO(s, opts);
+src/interval.js:257:    return this.isValid ? this.toDuration(...[unit]).get(unit) : NaN;
+src/interval.js:373:   * @param {Duration|Object|number} duration - The length of each resulting interval.
+src/interval.js:377:    const dur = Duration.fromDurationLike(duration);
+src/interval.js:666:   * Return a Duration representing the time spanned by this interval.
+src/interval.js:668:   * @param {Object} opts - options that affect the creation of the Duration
+src/interval.js:670:   * @example Interval.fromDateTimes(dt1, dt2).toDuration().toObject() //=> { milliseconds: 88489257 }
+src/interval.js:671:   * @example Interval.fromDateTimes(dt1, dt2).toDuration('days').toObject() //=> { days: 1.0241812152777778 }
+src/interval.js:672:   * @example Interval.fromDateTimes(dt1, dt2).toDuration(['hours', 'minutes']).toObject() //=> { hours: 24, minutes: 34.82095 }
+src/interval.js:673:   * @example Interval.fromDateTimes(dt1, dt2).toDuration(['hours', 'minutes', 'seconds']).toObject() //=> { hours: 24, minutes: 34, seconds: 49.257 }
+src/interval.js:674:   * @example Interval.fromDateTimes(dt1, dt2).toDuration('seconds').toObject() //=> { seconds: 88489.257 }
+src/interval.js:675:   * @return {Duration}
+src/interval.js:677:  toDuration(unit, opts) {
+src/interval.js:679:      return Duration.invalid(this.invalidReason);
+src/datetime.js:1:import Duration from "./duration.js";
+src/datetime.js:166:    millisToAdd = Duration.fromObject({
+src/datetime.js:1705:   * @param {Duration|Object|number} duration - The amount to add. Either a Luxon Duration, a number of milliseconds, the object argument to Duration.fromObject()
+src/datetime.js:1711:   * @example DateTime.now().plus(Duration.fromObject({ hours: 3, minutes: 13 })) //~> in 3 hr, 13 min
+src/datetime.js:1716:    const dur = Duration.fromDurationLike(duration);
+src/datetime.js:1723:   * @param {Duration|Object|number} duration - The amount to subtract. Either a Luxon Duration, a number of milliseconds, the object argument to Duration.fromObject()
+src/datetime.js:1728:    const dur = Duration.fromDurationLike(duration).negate();
+src/datetime.js:1748:      normalizedUnit = Duration.normalizeUnit(unit);
+src/datetime.js:2180:   * Return the difference between two DateTimes as a Duration.
+src/datetime.js:2183:   * @param {Object} opts - options that affect the creation of the Duration
+src/datetime.js:2192:   * @return {Duration}
+src/datetime.js:2196:      return Duration.invalid("created by diffing an invalid DateTime");
+src/datetime.js:2201:    const units = maybeArray(unit).map(Duration.normalizeUnit),
+src/datetime.js:2214:   * @param {Object} opts - options that affect the creation of the Duration
+src/datetime.js:2216:   * @return {Duration}
+src/errors.js:29:export class InvalidDurationError extends LuxonError {
+src/errors.js:31:    super(`Invalid Duration: ${reason.toMessage()}`);
+src/luxon.js:2:import Duration from "./duration.js";
+src/luxon.js:17:  Duration,
+src/settings.js:155:   * Get whether Luxon will throw when it encounters invalid DateTimes, Durations, or Intervals
+src/settings.js:163:   * Set whether Luxon will throw when it encounters invalid DateTimes, Durations, or Intervals
+test/datetime/math.test.js:3:import { DateTime, Duration } from "../../src/luxon";
+test/datetime/math.test.js:83:test("DateTime#plus(Duration) adds the right amount of time", () => {
+test/datetime/math.test.js:85:    later = i.plus(Duration.fromObject({ day: 1, hour: 3, minute: 28 }));
+test/datetime/math.test.js:151:        milliseconds: Duration.fromObject({ [unit]: 0.7 }).as("milliseconds"),
+test/datetime/math.test.js:247:        milliseconds: Duration.fromObject({ [unit]: 0.7 }).as("milliseconds"),
+test/datetime/diff.test.js:261:test("DateTime#diff returns invalid Durations if the DateTimes are invalid", () => {
+test/datetime/diff.test.js:353:test("DateTime#diffNow returns invalid Durations if the DateTime is invalid", () => {
+test/datetime/invalid.test.js:69:test("Diffing invalid DateTimes creates invalid Durations", () => {
+test/interval/many.test.js:2:import { DateTime, Interval, Duration } from "../../src/luxon";
+test/interval/many.test.js:334:  const split = todayFrom(8, 13).splitBy(Duration.fromObject({ hours: 2 }));
+test/interval/many.test.js:347:  const split = todayFrom(8, 3).splitBy(Duration.invalid("because"));
+test/interval/many.test.js:352:  const split = todayFrom(8, 3).splitBy(Duration.fromObject({}));
+test/interval/many.test.js:362:    const months = interval.splitBy(Duration.fromISO("P1M"));
+test/interval/many.test.js:392:  const after = (i, m, s) => Interval.after(i, Duration.fromObject({ minutes: m, seconds: s })),
+test/interval/info.test.js:73:// #toDuration()
+test/interval/info.test.js:75:test("Interval#toDuration creates a duration in those units", () => {
+test/interval/info.test.js:78:  expect(int.toDuration().toObject()).toEqual({ milliseconds: 4 * 3600 * 1000 });
+test/interval/info.test.js:79:  expect(int.toDuration("milliseconds").toObject()).toEqual({ milliseconds: 4 * 3600 * 1000 });
+test/interval/info.test.js:80:  expect(int.toDuration("seconds").toObject()).toEqual({ seconds: 4 * 3600 });
+test/interval/info.test.js:81:  expect(int.toDuration("minutes").toObject()).toEqual({ minutes: 4 * 60 });
+test/interval/info.test.js:82:  expect(int.toDuration("hours").toObject()).toEqual({ hours: 4 });
+test/interval/info.test.js:83:  expect(int.toDuration("days").toObject()).toEqual({ days: 1 / 6 });
+test/interval/info.test.js:84:  expect(int.toDuration("weeks").toObject()).toEqual({ weeks: 1 / (6 * 7) });
+test/interval/info.test.js:87:test("Interval#toDuration accepts multiple units", () => {
+test/interval/info.test.js:93:  expect(int.toDuration(["hours", "minutes"]).toObject()).toEqual({ hours: 4, minutes: 44 });
+test/interval/info.test.js:96:test("Interval#toDuration accepts duration options", () => {
+test/interval/info.test.js:98:    dur = int.toDuration(["hours"], { conversionAccuracy: "longterm" });
+test/interval/info.test.js:102:test("Interval#toDuration returns an invalid duration for invalid intervals", () => {
+test/interval/info.test.js:104:    dur = int.toDuration(["hours"]);
+test/interval/create.test.js:2:import { DateTime, Interval, Duration, Settings } from "../../src/luxon";
+test/interval/create.test.js:79:    int = Interval.after(start, Duration.fromObject({ days: 3 }));
+test/interval/create.test.js:98:    int = Interval.before(end, Duration.fromObject({ days: 3 }));
+test/duration/typecheck.test.js:3:import { Duration } from "../../src/luxon";
+test/duration/typecheck.test.js:6:// #isDuration
+test/duration/typecheck.test.js:8:test("Duration#isDuration return true for valid duration", () => {
+test/duration/typecheck.test.js:9:  const dur = Duration.fromObject({ hours: 1, minutes: 4.5 });
+test/duration/typecheck.test.js:10:  expect(Duration.isDuration(dur)).toBe(true);
+test/duration/typecheck.test.js:13:test("Duration#isDuration return true for invalid duration", () => {
+test/duration/typecheck.test.js:14:  const dur = Duration.invalid("because");
+test/duration/typecheck.test.js:15:  expect(Duration.isDuration(dur)).toBe(true);
+test/duration/typecheck.test.js:18:test("Duration#isDuration return false for primitives", () => {
+test/duration/typecheck.test.js:19:  expect(Duration.isDuration({})).toBe(false);
+test/duration/typecheck.test.js:20:  expect(Duration.isDuration({ hours: 60 })).toBe(false);
+test/duration/typecheck.test.js:21:  expect(Duration.isDuration(1)).toBe(false);
+test/duration/typecheck.test.js:22:  expect(Duration.isDuration(1.1)).toBe(false);
+test/duration/typecheck.test.js:23:  expect(Duration.isDuration("")).toBe(false);
+test/duration/typecheck.test.js:24:  expect(Duration.isDuration(null)).toBe(false);
+test/duration/typecheck.test.js:25:  expect(Duration.isDuration()).toBe(false);
+test/duration/set.test.js:2:import { Duration } from "../../src/luxon";
+test/duration/set.test.js:8:  Duration.fromObject({
+test/duration/set.test.js:18:test("Duration#set() sets the values", () => {
+test/duration/set.test.js:29:test("Duration#set() throws for metadata", () => {
+test/duration/set.test.js:35:test("Duration#set maintains invalidity", () => {
+test/duration/set.test.js:36:  expect(Duration.invalid("because").set({ hours: 200 }).isValid).toBe(false);
+test/duration/proto.test.js:1:import { Duration } from "../../src/luxon";
+test/duration/proto.test.js:3:test("Duration prototype properties should not throw when addressed", () => {
+test/duration/proto.test.js:4:  const d = Duration.fromObject({ hours: 1 });
+test/duration/reconfigure.test.js:3:import { Duration } from "../../src/luxon";
+test/duration/reconfigure.test.js:5:const dur = Duration.fromObject(
+test/duration/reconfigure.test.js:22:test("Duration#reconfigure() sets the locale", () => {
+test/duration/reconfigure.test.js:29:test("Duration#reconfigure() sets the numberingSystem", () => {
+test/duration/reconfigure.test.js:36:test("Duration#reconfigure() sets the conversion accuracy", () => {
+test/duration/reconfigure.test.js:43:test("Duration#reconfigure() with no arguments does nothing", () => {
+test/duration/math.test.js:3:import { Duration } from "../../src/luxon";
+test/duration/math.test.js:8:test("Duration#plus add straightforward durations", () => {
+test/duration/math.test.js:9:  const first = Duration.fromObject({ hours: 4, minutes: 12, seconds: 2 }),
+test/duration/math.test.js:10:    second = Duration.fromObject({ hours: 1, seconds: 6, milliseconds: 14 }),
+test/duration/math.test.js:19:test("Duration#plus add fractional durations", () => {
+test/duration/math.test.js:20:  const first = Duration.fromObject({ hours: 4.2, minutes: 12, seconds: 2 }),
+test/duration/math.test.js:21:    second = Duration.fromObject({ hours: 1, seconds: 6.8, milliseconds: 14 }),
+test/duration/math.test.js:30:test("Duration#plus noops empty druations", () => {
+test/duration/math.test.js:31:  const first = Duration.fromObject({ hours: 4, minutes: 12, seconds: 2 }),
+test/duration/math.test.js:32:    second = Duration.fromObject({}),
+test/duration/math.test.js:40:test("Duration#plus adds negatives", () => {
+test/duration/math.test.js:41:  const first = Duration.fromObject({ hours: 4, minutes: -12, seconds: -2 }),
+test/duration/math.test.js:42:    second = Duration.fromObject({ hours: -5, seconds: 6, milliseconds: 14 }),
+test/duration/math.test.js:51:test("Duration#plus adds single values", () => {
+test/duration/math.test.js:52:  const first = Duration.fromObject({ hours: 4, minutes: 12, seconds: 2 }),
+test/duration/math.test.js:60:test("Duration#plus adds number as milliseconds", () => {
+test/duration/math.test.js:61:  const first = Duration.fromObject({ minutes: 11, seconds: 22 }),
+test/duration/math.test.js:69:test("Duration#plus maintains invalidity", () => {
+test/duration/math.test.js:70:  const dur = Duration.invalid("because").plus({ minutes: 5 });
+test/duration/math.test.js:75:test("Duration#plus results in the superset of units", () => {
+test/duration/math.test.js:76:  let dur = Duration.fromObject({ hours: 1, minutes: 0 }).plus({ seconds: 3, milliseconds: 0 });
+test/duration/math.test.js:79:  dur = Duration.fromObject({ hours: 1, minutes: 0 }).plus({});
+test/duration/math.test.js:83:test("Duration#plus throws with invalid parameter", () => {
+test/duration/math.test.js:84:  expect(() => Duration.fromObject({}).plus("123")).toThrow();
+test/duration/math.test.js:90:test("Duration#minus subtracts durations", () => {
+test/duration/math.test.js:91:  const first = Duration.fromObject({ hours: 4, minutes: 12, seconds: 2 }),
+test/duration/math.test.js:92:    second = Duration.fromObject({ hours: 1, seconds: 6, milliseconds: 14 }),
+test/duration/math.test.js:101:test("Duration#minus subtracts fractional durations", () => {
+test/duration/math.test.js:102:  const first = Duration.fromObject({ hours: 4.2, minutes: 12, seconds: 2 }),
+test/duration/math.test.js:103:    second = Duration.fromObject({ hours: 1, seconds: 6, milliseconds: 14 }),
+test/duration/math.test.js:112:test("Duration#minus subtracts single values", () => {
+test/duration/math.test.js:113:  const first = Duration.fromObject({ hours: 4, minutes: 12, seconds: 2 }),
+test/duration/math.test.js:121:test("Duration#minus maintains invalidity", () => {
+test/duration/math.test.js:122:  const dur = Duration.invalid("because").minus({ minutes: 5 });
+test/duration/math.test.js:131:test("Duration#negate flips all the signs", () => {
+test/duration/math.test.js:132:  const dur = Duration.fromObject({ hours: 4, minutes: -12, seconds: 2 }),
+test/duration/math.test.js:139:test("Duration#negate preserves invalidity", () => {
+test/duration/math.test.js:140:  const dur = Duration.invalid("because"),
+test/duration/math.test.js:146:test("Duration#negate doesn't mutate", () => {
+test/duration/math.test.js:147:  const orig = Duration.fromObject({ hours: 8 });
+test/duration/math.test.js:152:test("Duration#negate preserves conversionAccuracy", () => {
+test/duration/math.test.js:153:  const dur = Duration.fromObject(
+test/duration/math.test.js:171:test("Duration#units can multiply durations", () => {
+test/duration/math.test.js:172:  const dur = Duration.fromObject({ hours: 1, minutes: 2, seconds: -3, milliseconds: -4 }),
+test/duration/math.test.js:181:test("Duration#units can take the unit into account", () => {
+test/duration/math.test.js:182:  const dur = Duration.fromObject({ hours: 1, minutes: 2, seconds: -3, milliseconds: -4 }),
+test/duration/math.test.js:191:test("Duration#mapUnits maintains invalidity", () => {
+test/duration/math.test.js:192:  const dur = Duration.invalid("because").mapUnits((x) => x * 5);
+test/duration/math.test.js:197:test("Duration#mapUnits requires that fn return a number", () => {
+test/duration/math.test.js:198:  const dur = Duration.fromObject({ hours: 1, minutes: 2, seconds: -3, milliseconds: -4 });
+test/duration/units.test.js:2:import { Duration } from "../../src/luxon";
+test/duration/units.test.js:7:test("Duration#shiftTo rolls milliseconds up hours and minutes", () => {
+test/duration/units.test.js:8:  const dur = Duration.fromMillis(5760000);
+test/duration/units.test.js:15:test("Duration#shiftTo boils hours down milliseconds", () => {
+test/duration/units.test.js:16:  const dur = Duration.fromObject({ hours: 1 }).shiftTo("milliseconds");
+test/duration/units.test.js:20:test("Duration boils hours down shiftTo minutes and milliseconds", () => {
+test/duration/units.test.js:21:  const dur = Duration.fromObject({ hours: 1, seconds: 30 }).shiftTo("minutes", "milliseconds");
+test/duration/units.test.js:25:test("Duration#shiftTo boils down and then rolls up", () => {
+test/duration/units.test.js:26:  const dur = Duration.fromObject({ years: 2, hours: 5000 }).shiftTo("months", "days", "minutes");
+test/duration/units.test.js:30:test("Duration#shiftTo throws on invalid units", () => {
+test/duration/units.test.js:32:    Duration.fromObject({ years: 2, hours: 5000 }).shiftTo("months", "glorp");
+test/duration/units.test.js:36:test("Duration#shiftTo tacks decimals onto the end", () => {
+test/duration/units.test.js:37:  const dur = Duration.fromObject({ minutes: 73 }).shiftTo("hours");
+test/duration/units.test.js:42:test("Duration#shiftTo deconstructs decimal inputs", () => {
+test/duration/units.test.js:43:  const dur = Duration.fromObject({ hours: 2.3 }).shiftTo("hours", "minutes");
+test/duration/units.test.js:49:test("Duration#shiftTo deconstructs in cascade and tacks decimal onto the end", () => {
+test/duration/units.test.js:50:  const dur = Duration.fromObject({ hours: 1.17 }).shiftTo("hours", "minutes", "seconds");
+test/duration/units.test.js:57:test("Duration#shiftTo maintains invalidity", () => {
+test/duration/units.test.js:58:  const dur = Duration.invalid("because").shiftTo("years");
+test/duration/units.test.js:63:test("Duration#shiftTo without any units no-ops", () => {
+test/duration/units.test.js:64:  const dur = Duration.fromObject({ years: 3 }).shiftTo();
+test/duration/units.test.js:69:test("Duration#shiftTo accumulates when rolling up", () => {
+test/duration/units.test.js:71:    Duration.fromObject({ minutes: 59, seconds: 183 })
+test/duration/units.test.js:77:test("Duration#shiftTo keeps unnecessary higher-order negative units 0", () => {
+test/duration/units.test.js:79:    Duration.fromObject({ milliseconds: -100 }).shiftTo("hours", "minutes", "seconds").toObject()
+test/duration/units.test.js:83:test("Duration#shiftTo does not normalize values", () => {
+test/duration/units.test.js:87:    Duration.fromObject({ quarters: 0, months: 0, days: 400 }).shiftTo("days").toObject()
+test/duration/units.test.js:91:test("Duration#shiftTo boils hours down to hours and minutes", () => {
+test/duration/units.test.js:92:  const dur = Duration.fromObject({ hour: 2.4 });
+test/duration/units.test.js:99:test("Duration#shiftTo handles mixed units", () => {
+test/duration/units.test.js:100:  const dur = Duration.fromObject({ weeks: -1, days: 14 });
+test/duration/units.test.js:108:test("Duration#shiftTo does not produce unnecessary fractions in higher order units", () => {
+test/duration/units.test.js:109:  const duration = Duration.fromObject(
+test/duration/units.test.js:120:test("Duration#siftTo does not create intermediate units when lower order units can go directly into a higher one", () => {
+test/duration/units.test.js:121:  const duration = Duration.fromObject({
+test/duration/units.test.js:137:  "Duration#shiftTo can convert milliseconds directly into whole years correctly: %i",
+test/duration/units.test.js:139:    const duration = Duration.fromMillis(365 * 24 * 60 * 60 * 1000 * years);
+test/duration/units.test.js:156:test("Duration#shiftTo with no units normalizes", () => {
+test/duration/units.test.js:157:  expect(Duration.fromObject({ years: 0, days: 367 }).shiftTo().toObject()).toEqual({
+test/duration/units.test.js:166:test("Duration#shiftToAll shifts to all available units", () => {
+test/duration/units.test.js:167:  const dur = Duration.fromMillis(5760000).shiftToAll();
+test/duration/units.test.js:180:test("Duration#shiftToAll does not produce unnecessary fractions in higher order units", () => {
+test/duration/units.test.js:181:  const duration = Duration.fromObject(
+test/duration/units.test.js:196:test("Duration#shiftToAll maintains invalidity", () => {
+test/duration/units.test.js:197:  const dur = Duration.invalid("because").shiftToAll();
+test/duration/units.test.js:205:test("Duration#normalize rebalances negative units", () => {
+test/duration/units.test.js:206:  const dur = Duration.fromObject({ years: 2, days: -2 }).normalize();
+test/duration/units.test.js:210:test("Duration#normalize de-overflows", () => {
+test/duration/units.test.js:211:  const dur = Duration.fromObject({ years: 2, days: 5000 }).normalize();
+test/duration/units.test.js:217:test("Duration#normalize handles fully negative durations", () => {
+test/duration/units.test.js:218:  const dur = Duration.fromObject({ years: -2, days: -5000 }).normalize();
+test/duration/units.test.js:222:test("Duration#normalize handles the full grid partially negative durations", () => {
+test/duration/units.test.js:279:    expect(Duration.fromObject(from).normalize().toObject()).toEqual(to);
+test/duration/units.test.js:283:test("Duration#normalize maintains invalidity", () => {
+test/duration/units.test.js:284:  const dur = Duration.invalid("because").normalize();
+test/duration/units.test.js:289:test("Duration#normalize can convert all unit pairs", () => {
+test/duration/units.test.js:304:      const duration = Duration.fromObject({ [units[i]]: 1, [units[j]]: 2 });
+test/duration/units.test.js:305:      const normalizedDuration = duration.normalize().toObject();
+test/duration/units.test.js:306:      expect(normalizedDuration[units[i]]).not.toBe(NaN);
+test/duration/units.test.js:307:      expect(normalizedDuration[units[j]]).not.toBe(NaN);
+test/duration/units.test.js:309:      const accurateDuration = duration.reconfigure({ conversionAccuracy: "longterm" });
+test/duration/units.test.js:310:      const normalizedAccurateDuration = accurateDuration.normalize().toObject();
+test/duration/units.test.js:311:      expect(normalizedAccurateDuration[units[i]]).not.toBe(NaN);
+test/duration/units.test.js:312:      expect(normalizedAccurateDuration[units[j]]).not.toBe(NaN);
+test/duration/units.test.js:317:test("Duration#normalize moves fractions to lower-order units", () => {
+test/duration/units.test.js:318:  expect(Duration.fromObject({ years: 2.5, days: 0, hours: 0 }).normalize().toObject()).toEqual({
+test/duration/units.test.js:323:  expect(Duration.fromObject({ years: -2.5, days: 0, hours: 0 }).normalize().toObject()).toEqual({
+test/duration/units.test.js:328:  expect(Duration.fromObject({ years: 2.5, days: 12, hours: 0 }).normalize().toObject()).toEqual({
+test/duration/units.test.js:333:  expect(Duration.fromObject({ years: 2.5, days: 12.25, hours: 0 }).normalize().toObject()).toEqual(
+test/duration/units.test.js:338:test("Duration#normalize does not produce fractions in higher order units when rolling up negative lower order unit values", () => {
+test/duration/units.test.js:339:  const normalized = Duration.fromObject(
+test/duration/units.test.js:354:test("Duration#rescale normalizes, shifts to all units and remove units with a value of 0", () => {
+test/duration/units.test.js:365:    expect(Duration.fromObject(from).rescale().toObject()).toEqual(to);
+test/duration/units.test.js:369:test("Duration#rescale maintains invalidity", () => {
+test/duration/units.test.js:370:  const dur = Duration.invalid("because").rescale();
+test/duration/units.test.js:379:test("Duration#as shifts to one unit and returns it", () => {
+test/duration/units.test.js:380:  const dur = Duration.fromMillis(5760000);
+test/duration/units.test.js:384:test("Duration#as returns null for invalid durations", () => {
+test/duration/units.test.js:385:  expect(Duration.invalid("because").as("hours")).toBeFalsy();
+test/duration/units.test.js:392:test("Duration#valueOf value of zero duration", () => {
+test/duration/units.test.js:393:  const dur = Duration.fromObject({});
+test/duration/units.test.js:397:test("Duration#valueOf returns as millisecond value (lower order units)", () => {
+test/duration/units.test.js:398:  const dur = Duration.fromObject({ hours: 1, minutes: 36, seconds: 0 });
+test/duration/units.test.js:402:test("Duration#valueOf value of the duration with lower and higher order units", () => {
+test/duration/units.test.js:403:  const dur = Duration.fromObject({ days: 2, seconds: 1 });
+test/duration/units.test.js:411:test("Duration#removeZeros leaves empty object if everything was zero", () => {
+test/duration/units.test.js:412:  expect(Duration.fromObject({ years: 0, days: 0, hours: 0 }).removeZeros().toObject()).toEqual({});
+test/duration/units.test.js:415:test("Duration#removeZeros removes units with zero value", () => {
+test/duration/units.test.js:417:    Duration.fromObject({
+test/duration/units.test.js:437:test("Duration#removeZeros removes nothing if no value is zero", () => {
+test/duration/units.test.js:448:  expect(Duration.fromObject(dur).removeZeros().toObject()).toEqual(dur);
+test/duration/units.test.js:451:test("Duration#removeZeros maintains invalidity", () => {
+test/duration/units.test.js:452:  const dur = Duration.invalid("because").removeZeros();
+test/duration/info.test.js:3:import { Duration } from "../../src/luxon";
+test/duration/info.test.js:5:const dur = Duration.fromObject({
+test/duration/info.test.js:14:test("Duration#toObject returns the object", () => {
+test/duration/info.test.js:22:test("Duration#toObject returns an empty object for invalid durations", () => {
+test/duration/info.test.js:23:  expect(Duration.invalid("because").toObject()).toEqual({});
+test/duration/equality.test.js:2:import { Duration } from "../../src/luxon";
+test/duration/equality.test.js:5:  const l = Duration.fromObject({ years: 5, days: 6 });
+test/duration/equality.test.js:10:  const l1 = Duration.fromObject({ years: 5, days: 6 }),
+test/duration/equality.test.js:11:    l2 = Duration.fromObject({ years: 5, days: 6 });
+test/duration/equality.test.js:16:  const l1 = Duration.fromObject({ years: 5.5, days: 6 }),
+test/duration/equality.test.js:17:    l2 = Duration.fromObject({ years: 5.5, days: 6 });
+test/duration/equality.test.js:22:  const l1 = Duration.fromObject({ years: 5, days: 6 }),
+test/duration/equality.test.js:23:    l2 = Duration.fromObject({ years: "5", days: "6" });
+test/duration/equality.test.js:28:  const l1 = Duration.fromObject({ years: 5.5, days: 6 }),
+test/duration/equality.test.js:29:    l2 = Duration.fromObject({ years: "5.5", days: "6" });
+test/duration/equality.test.js:35:  const l1 = Duration.fromObject({ years: 5, days: 6 }),
+test/duration/equality.test.js:36:    l2 = Duration.fromObject({ years: 5, days: 6, minutes: 0, seconds: -0 });
+test/duration/equality.test.js:42:  const l1 = Duration.fromObject({ years: 5, days: 6 }),
+test/duration/equality.test.js:43:    l2 = Duration.invalid("because");
+test/duration/equality.test.js:48:  const l1 = Duration.fromObject({ years: 5, days: 6 }),
+test/duration/equality.test.js:49:    l2 = Duration.fromObject({ years: 5, days: 6 }).reconfigure({ locale: "fr" });
+test/duration/equality.test.js:54:  const l1 = Duration.fromObject({ years: 5, days: 6 }),
+test/duration/equality.test.js:55:    l2 = Duration.fromObject({ years: 5, days: 6 }).reconfigure({ numberingSystem: "beng" });
+test/duration/equality.test.js:60:  const l1 = Duration.fromObject({ years: 5, days: 6 }),
+test/duration/equality.test.js:61:    l2 = Duration.fromObject({ years: 5, months: 6 });
+test/duration/equality.test.js:66:  const l1 = Duration.fromObject({ years: 5, days: 6 }),
+test/duration/equality.test.js:67:    l2 = Duration.fromObject({ years: 5 });
+test/duration/equality.test.js:72:  const l1 = Duration.fromObject({ years: 5 }),
+test/duration/equality.test.js:73:    l2 = Duration.fromObject({ years: 5, days: 6 });
+test/duration/equality.test.js:78:  const l1 = Duration.fromObject({ years: 5, days: 6 }),
+test/duration/equality.test.js:79:    l2 = Duration.fromObject({ years: 5, days: 7 });
+test/duration/accuracy.test.js:3:import { Duration } from "../../src/luxon";
+test/duration/accuracy.test.js:6:  Duration.fromObject({ [from]: amt }, { conversionAccuracy: accuracy }).as(to);
+test/duration/getters.test.js:3:import { Duration } from "../../src/luxon";
+test/duration/getters.test.js:5:const dur = Duration.fromObject({
+test/duration/getters.test.js:16:  inv = Duration.invalid("because i say so");
+test/duration/getters.test.js:22:test("Duration#years returns the years", () => {
+test/duration/getters.test.js:27:test("Duration#quarters returns the quarters", () => {
+test/duration/getters.test.js:32:test("Duration#months returns the (1-indexed) months", () => {
+test/duration/getters.test.js:37:test("Duration#days returns the days", () => {
+test/duration/getters.test.js:42:test("Duration#hours returns the hours", () => {
+test/duration/getters.test.js:47:test("Duration#hours returns the fractional hours", () => {
+test/duration/getters.test.js:48:  const localDur = Duration.fromObject({
+test/duration/getters.test.js:59:    localInv = Duration.invalid("because i say so");
+test/duration/getters.test.js:65:test("Duration#minutes returns the minutes", () => {
+test/duration/getters.test.js:70:test("Duration#seconds returns the seconds", () => {
+test/duration/getters.test.js:75:test("Duration#milliseconds returns the milliseconds", () => {
+test/duration/getters.test.js:80:test("Duration#weeks returns the weeks", () => {
+test/duration/format.test.js:2:import { Duration } from "../../src/luxon";
+test/duration/format.test.js:5:  Duration.fromObject({
+test/duration/format.test.js:20:test("Duration#toISO fills out every field", () => {
+test/duration/format.test.js:24:test("Duration#toISO fills out every field with fractional", () => {
+test/duration/format.test.js:25:  const dur = Duration.fromObject({
+test/duration/format.test.js:38:test("Duration#toISO creates a minimal string", () => {
+test/duration/format.test.js:39:  expect(Duration.fromObject({ years: 3, seconds: 45 }).toISO()).toBe("P3YT45S");
+test/duration/format.test.js:40:  expect(Duration.fromObject({ months: 4, seconds: 45 }).toISO()).toBe("P4MT45S");
+test/duration/format.test.js:41:  expect(Duration.fromObject({ months: 5 }).toISO()).toBe("P5M");
+test/duration/format.test.js:42:  expect(Duration.fromObject({ minutes: 5 }).toISO()).toBe("PT5M");
+test/duration/format.test.js:45:test("Duration#toISO handles negative durations", () => {
+test/duration/format.test.js:46:  expect(Duration.fromObject({ years: -3, seconds: -45 }).toISO()).toBe("P-3YT-45S");
+test/duration/format.test.js:49:test("Duration#toISO handles mixed negative/positive durations", () => {
+test/duration/format.test.js:50:  expect(Duration.fromObject({ years: 3, seconds: -45 }).toISO()).toBe("P3YT-45S");
+test/duration/format.test.js:51:  expect(Duration.fromObject({ years: 0, seconds: -45 }).toISO()).toBe("PT-45S");
+test/duration/format.test.js:52:  expect(Duration.fromObject({ years: -5, seconds: 34 }).toISO()).toBe("P-5YT34S");
+test/duration/format.test.js:55:test("Duration#toISO handles zero durations", () => {
+test/duration/format.test.js:56:  expect(Duration.fromMillis(0).toISO()).toBe("PT0S");
+test/duration/format.test.js:59:test("Duration#toISO returns null for invalid durations", () => {
+test/duration/format.test.js:60:  expect(Duration.invalid("because").toISO()).toBe(null);
+test/duration/format.test.js:63:test("Duration#toISO handles milliseconds duration", () => {
+test/duration/format.test.js:64:  expect(Duration.fromObject({ milliseconds: 7 }).toISO()).toBe("PT0.007S");
+test/duration/format.test.js:67:test("Duration#toISO handles seconds/milliseconds duration", () => {
+test/duration/format.test.js:68:  expect(Duration.fromObject({ seconds: 17, milliseconds: 548 }).toISO()).toBe("PT17.548S");
+test/duration/format.test.js:71:test("Duration#toISO handles negative seconds/milliseconds duration", () => {
+test/duration/format.test.js:72:  expect(Duration.fromObject({ seconds: -17, milliseconds: -548 }).toISO()).toBe("PT-17.548S");
+test/duration/format.test.js:75:test("Duration#toISO handles mixed negative/positive numbers in seconds/milliseconds durations", () => {
+test/duration/format.test.js:76:  expect(Duration.fromObject({ seconds: 17, milliseconds: -548 }).toISO()).toBe("PT16.452S");
+test/duration/format.test.js:77:  expect(Duration.fromObject({ seconds: -17, milliseconds: 548 }).toISO()).toBe("PT-16.452S");
+test/duration/format.test.js:80:test("Duration#toISO does not use exponential notation for very small values", () => {
+test/duration/format.test.js:82:  // which is not valid ISO 8601 and which Duration.fromISO cannot parse.
+test/duration/format.test.js:83:  expect(Duration.fromObject({ years: 1e-7 }).toISO()).toBe("P0.0000001Y");
+test/duration/format.test.js:84:  expect(Duration.fromObject({ days: 1e-7 }).toISO()).toBe("P0.0000001D");
+test/duration/format.test.js:85:  expect(Duration.fromObject({ hours: 1e-7 }).toISO()).toBe("PT0.0000001H");
+test/duration/format.test.js:86:  expect(Duration.fromObject({ minutes: 1e-7 }).toISO()).toBe("PT0.0000001M");
+test/duration/format.test.js:89:test("Duration#toISO output round-trips small fractional values through fromISO", () => {
+test/duration/format.test.js:91:  const dur = Duration.fromObject({ milliseconds: 1 }).shiftTo("hours");
+test/duration/format.test.js:93:  expect(Duration.fromISO(dur.toISO()).isValid).toBe(true);
+test/duration/format.test.js:95:  const exact = Duration.fromObject({ hours: 1e-7 });
+test/duration/format.test.js:96:  expect(Duration.fromISO(exact.toISO()).hours).toBe(1e-7);
+test/duration/format.test.js:103:const hhmmssSSS = Duration.fromObject({ hours: 11, minutes: 22, seconds: 33, milliseconds: 444 });
+test/duration/format.test.js:104:const hhSSS = Duration.fromObject({ hours: 11, milliseconds: 444 });
+test/duration/format.test.js:105:const hhss = Duration.fromObject({ hours: 11, seconds: 33 });
+test/duration/format.test.js:106:const hh = Duration.fromObject({ hours: 11 });
+test/duration/format.test.js:108:test("Duration#toISOTime creates a correct extended string", () => {
+test/duration/format.test.js:112:test("Duration#toISOTime suppresses milliseconds correctly", () => {
+test/duration/format.test.js:118:test("Duration#toISOTime suppresses seconds correctly", () => {
+test/duration/format.test.js:124:test("Duration#toISOTime includes the prefix correctly", () => {
+test/duration/format.test.js:128:test("Duration#toISOTime creates a correct basic string", () => {
+test/duration/format.test.js:134:test("Duration#toISOTime returns null if the value is outside the range of one day", () => {
+test/duration/format.test.js:135:  expect(Duration.fromObject({ hours: 24 }).toISOTime()).toBe(null);
+test/duration/format.test.js:136:  expect(Duration.fromObject({ milliseconds: -1 }).toISOTime()).toBe(null);
+test/duration/format.test.js:139:test("Duration#toISOTime is not influenced by the locale", () => {
+test/duration/format.test.js:140:  expect(Duration.fromObject({ hours: 3, minutes: 10 }, { locale: "ar-QA" }).toISOTime()).toBe(
+test/duration/format.test.js:149:test("Duration#toMillis returns the value in milliseconds", () => {
+test/duration/format.test.js:150:  expect(Duration.fromMillis(1000).toMillis()).toBe(1000);
+test/duration/format.test.js:158:test("Duration#toJSON returns the ISO representation", () => {
+test/duration/format.test.js:166:test("Duration#toString returns the ISO representation", () => {
+test/duration/format.test.js:174:test("Duration#toFormat('S') returns milliseconds", () => {
+test/duration/format.test.js:177:  const lil = Duration.fromMillis(5);
+test/duration/format.test.js:183:test("Duration#toFormat('s') returns seconds", () => {
+test/duration/format.test.js:188:  const lil = Duration.fromObject({ seconds: 6 });
+test/duration/format.test.js:195:test("Duration#toFormat('m') returns minutes", () => {
+test/duration/format.test.js:201:  const lil = Duration.fromObject({ minutes: 6 });
+test/duration/format.test.js:208:test("Duration#toFormat('h') returns hours", () => {
+test/duration/format.test.js:214:  const lil = Duration.fromObject({ hours: 6 });
+test/duration/format.test.js:221:test("Duration#toFormat('d') returns days", () => {
+test/duration/format.test.js:227:  const lil = Duration.fromObject({ days: 6 });
+test/duration/format.test.js:234:test("Duration#toFormat('w') returns weeks", () => {
+test/duration/format.test.js:240:  const lil = Duration.fromObject({ weeks: 6 });
+test/duration/format.test.js:247:test("Duration#toFormat('M') returns months", () => {
+test/duration/format.test.js:253:  const lil = Duration.fromObject({ months: 6 });
+test/duration/format.test.js:260:test("Duration#toFormat('y') returns years", () => {
+test/duration/format.test.js:266:  const lil = Duration.fromObject({ years: 5 });
+test/duration/format.test.js:272:test("Duration#toFormat accepts the deprecated 'round' option", () => {
+test/duration/format.test.js:281:test("Duration#toFormat leaves in zeros", () => {
+test/duration/format.test.js:282:  const tiny = Duration.fromObject({ seconds: 5 });
+test/duration/format.test.js:287:test("Duration#toFormat rounds down", () => {
+test/duration/format.test.js:288:  const tiny = Duration.fromObject({ seconds: 5.7 });
+test/duration/format.test.js:291:  const unpromoted = Duration.fromObject({ seconds: 59.7 });
+test/duration/format.test.js:295:test("Duration#toFormat localizes the numbers", () => {
+test/duration/format.test.js:301:test("Duration#toFormat returns a lame string for invalid durations", () => {
+test/duration/format.test.js:302:  expect(Duration.invalid("because").toFormat("yy")).toBe("Invalid Duration");
+test/duration/format.test.js:307:test("Duration#toFormat shows negative sign on the largest unit when using signMode negativeLargestOnly", () => {
+test/duration/format.test.js:309:    Duration.fromObject({ years: -3, seconds: -45 }).toFormat("yyss", {
+test/duration/format.test.js:314:    Duration.fromObject({ years: -3, seconds: -45 }).toFormat("'before'yy'between'ss'after'", {
+test/duration/format.test.js:320:    Duration.fromObject({ seconds: -45, years: -3 }).toFormat("ssyy", {
+test/duration/format.test.js:326:test("Duration#toFormat shows no negative sign on the largest unit when using signMode negativeLargestOnly with positive Duration", () => {
+test/duration/format.test.js:328:    Duration.fromObject({ years: 3, seconds: 45 }).toFormat("yyss", {
+test/duration/format.test.js:333:    Duration.fromObject({ years: 3, seconds: 45 }).toFormat("'before'yy'between'ss'after'", {
+test/duration/format.test.js:339:    Duration.fromObject({ years: 3, seconds: 45 }).toFormat("ssyy", {
+test/duration/format.test.js:345:test("Duration#toFormat keeps the negative sign on the largest unit when it is zero with signMode negativeLargestOnly", () => {
+test/duration/format.test.js:350:    Duration.fromObject({ minutes: -30 }).toFormat("h:mm", {
+test/duration/format.test.js:355:    Duration.fromObject({ seconds: -30 }).toFormat("h:mm:ss", {
+test/duration/format.test.js:360:    Duration.fromObject({ minutes: -45 }).toFormat("d:h:m", {
+test/duration/format.test.js:366:    Duration.fromObject({ minutes: 30 }).toFormat("h:mm", {
+test/duration/format.test.js:374:test("Duration#toFormat with signMode all shows positive sign on positive durations", () => {
+test/duration/format.test.js:376:    Duration.fromObject({ years: 3, seconds: 45 }).toFormat("yyss", {
+test/duration/format.test.js:381:    Duration.fromObject({ years: 3, seconds: 45 }).toFormat("'before'yy'between'ss'after'", {
+test/duration/format.test.js:387:    Duration.fromObject({ years: 3, seconds: 45 }).toFormat("ssyy", {
+test/duration/format.test.js:393:test("Duration#toFormat with signMode all shows positive sign on negative durations", () => {
+test/duration/format.test.js:395:    Duration.fromObject({ years: -3, seconds: -45 }).toFormat("yyss", {
+test/duration/format.test.js:400:    Duration.fromObject({ years: -3, seconds: -45 }).toFormat("'before'yy'between'ss'after'", {
+test/duration/format.test.js:406:    Duration.fromObject({ years: -3, seconds: -45 }).toFormat("ssyy", {
+test/duration/format.test.js:416:test("Duration#toHuman formats out a list", () => {
+test/duration/format.test.js:422:test("Duration#toHuman only shows the units you have", () => {
+test/duration/format.test.js:423:  expect(Duration.fromObject({ years: 3, hours: 4 }).toHuman()).toEqual("3 years, 4 hours");
+test/duration/format.test.js:426:test("Duration#toHuman accepts a listStyle", () => {
+test/duration/format.test.js:432:test("Duration#toHuman accepts number format opts", () => {
+test/duration/format.test.js:438:test("Duration#toHuman accepts hiding of zero values", () => {
+test/duration/format.test.js:440:    Duration.fromObject({
+test/duration/format.test.js:453:test("Duration#toHuman handles undefined showZeros", () => {
+test/duration/format.test.js:455:    Duration.fromObject({
+test/duration/format.test.js:468:test("Duration#toHuman works in differt languages", () => {
+test/duration/format.test.js:474:test("Duration#toHuman handles quarters", () => {
+test/duration/format.test.js:476:    Duration.fromObject({
+test/duration/format.test.js:484:test("Duration#toHuman handles quarters and months together", () => {
+test/duration/format.test.js:486:    Duration.fromObject({
+test/duration/format.test.js:495:test("Duration#toHuman handles quarters and months with showZeros false", () => {
+test/duration/format.test.js:497:    Duration.fromObject({
+test/duration/format.test.js:505:    Duration.fromObject({
+test/duration/format.test.js:513:    Duration.fromObject({
+test/duration/format.test.js:521:    Duration.fromObject({
+test/duration/customMatrix.test.js:3:import { Duration } from "../../src/luxon";
+test/duration/customMatrix.test.js:32:  Duration.fromObject({ [from]: amt }, { matrix: businessMatrix }).as(to);
+test/duration/customMatrix.test.js:40:  const dur = Duration.fromObject({ weeks: 1.5 }, { matrix: businessMatrix }).shiftTo(
+test/duration/parse.test.js:3:import { Duration } from "../../src/luxon";
+test/duration/parse.test.js:10:  expect(Duration.fromISO(s).toObject()).toEqual(ob);
+test/duration/parse.test.js:13:test("Duration.fromISO can parse a variety of ISO formats", () => {
+test/duration/parse.test.js:23:test("Duration.fromISO can parse mixed or negative durations", () => {
+test/duration/parse.test.js:40:test("Duration.fromISO can parse fractions of seconds", () => {
+test/duration/parse.test.js:41:  expect(Duration.fromISO("PT54M32.5S").toObject()).toEqual({
+test/duration/parse.test.js:46:  expect(Duration.fromISO("PT54M32.53S").toObject()).toEqual({
+test/duration/parse.test.js:51:  expect(Duration.fromISO("PT54M32.534S").toObject()).toEqual({
+test/duration/parse.test.js:56:  expect(Duration.fromISO("PT54M32.5348S").toObject()).toEqual({
+test/duration/parse.test.js:61:  expect(Duration.fromISO("PT54M32.034S").toObject()).toEqual({
+test/duration/parse.test.js:68:test("Duration.fromISO can parse fractions", () => {
+test/duration/parse.test.js:69:  expect(Duration.fromISO("P1.5Y").toObject()).toEqual({
+test/duration/parse.test.js:72:  expect(Duration.fromISO("P1.5M").toObject()).toEqual({
+test/duration/parse.test.js:75:  expect(Duration.fromISO("P1.5W").toObject()).toEqual({
+test/duration/parse.test.js:78:  expect(Duration.fromISO("P1.5D").toObject()).toEqual({
+test/duration/parse.test.js:81:  expect(Duration.fromISO("PT9.5H").toObject()).toEqual({
+test/duration/parse.test.js:87:  expect(Duration.fromISO(s).isValid).toBe(false);
+test/duration/parse.test.js:90:test("Duration.fromISO rejects junk", () => {
+test/duration/parse.test.js:105:  expect(Duration.fromISOTime(s).toObject()).toEqual(ob);
+test/duration/parse.test.js:108:test("Duration.fromISOTime can parse a variety of extended ISO time formats", () => {
+test/duration/parse.test.js:115:test("Duration.fromISOTime can parse a variety of basic ISO time formats", () => {
+test/duration/parse.test.js:124:  expect(Duration.fromISOTime(s).isValid).toBe(false);
+test/duration/parse.test.js:127:test("Duration.fromISOTime rejects junk", () => {
+test/duration/invalid.test.js:3:import { Duration, DateTime, Settings } from "../../src/luxon";
+test/duration/invalid.test.js:6:  const dur = Duration.invalid("just because", "seriously, just because");
+test/duration/invalid.test.js:15:    expect(() => Duration.invalid("because")).toThrow();
+test/duration/invalid.test.js:21:test("Duration.invalid throws if you don't provide a reason", () => {
+test/duration/invalid.test.js:22:  expect(() => Duration.invalid()).toThrow();
+test/duration/invalid.test.js:25:test("Diffing invalid DateTimes creates invalid Durations", () => {
+test/duration/invalid.test.js:31:test("Duration.invalid produces invalid Intervals", () => {
+test/duration/invalid.test.js:32:  expect(Duration.invalid("because").isValid).toBe(false);
+test/duration/invalid.test.js:35:test("Duration.toMillis produces NaN on invalid Durations", () => {
+test/duration/invalid.test.js:36:  expect(Duration.invalid("because").toMillis()).toBe(NaN);
+test/duration/invalid.test.js:39:test("Duration.as produces NaN on invalid Durations", () => {
+test/duration/invalid.test.js:40:  expect(Duration.invalid("because").as("seconds")).toBe(NaN);
+test/duration/invalid.test.js:43:test("Duration.toHuman produces null on invalid Durations", () => {
+test/duration/invalid.test.js:44:  expect(Duration.invalid("because").toHuman()).toBe("Invalid Duration");
+test/duration/invalid.test.js:47:test("Duration.toISO produces null on invalid Durations", () => {
+test/duration/invalid.test.js:48:  expect(Duration.invalid("because").toISO()).toBeNull();
+test/duration/invalid.test.js:51:test("Duration.toFormat produces Invalid Duration on invalid Durations", () => {
+test/duration/invalid.test.js:52:  expect(Duration.invalid("because").toFormat("s")).toBe("Invalid Duration");
+test/duration/create.test.js:3:import { Duration } from "../../src/luxon";
+test/duration/create.test.js:8:test("Duration.fromObject sets all the values", () => {
+test/duration/create.test.js:9:  const dur = Duration.fromObject({
+test/duration/create.test.js:27:test("Duration.fromObject sets all the fractional values", () => {
+test/duration/create.test.js:28:  const dur = Duration.fromObject({
+test/duration/create.test.js:43:test("Duration.fromObject sets all the values from the object having string type values", () => {
+test/duration/create.test.js:44:  const dur = Duration.fromObject({
+test/duration/create.test.js:62:test("Duration.fromObject accepts a conversionAccuracy", () => {
+test/duration/create.test.js:63:  const dur = Duration.fromObject({ days: 1 }, { conversionAccuracy: "longterm" });
+test/duration/create.test.js:67:test("Duration.fromObject throws if the argument is not an object", () => {
+test/duration/create.test.js:68:  expect(() => Duration.fromObject()).toThrow();
+test/duration/create.test.js:69:  expect(() => Duration.fromObject(null)).toThrow();
+test/duration/create.test.js:70:  expect(() => Duration.fromObject("foo")).toThrow();
+test/duration/create.test.js:73:test("Duration.fromObject({}) constructs zero duration", () => {
+test/duration/create.test.js:74:  const dur = Duration.fromObject({});
+test/duration/create.test.js:84:test("Duration.fromObject throws if the initial object has invalid keys", () => {
+test/duration/create.test.js:85:  expect(() => Duration.fromObject({ foo: 0 })).toThrow();
+test/duration/create.test.js:86:  expect(() => Duration.fromObject({ years: 1, foo: 0 })).toThrow();
+test/duration/create.test.js:89:test("Duration.fromObject throws if the initial object has invalid values", () => {
+test/duration/create.test.js:90:  expect(() => Duration.fromObject({ years: {} })).toThrow();
+test/duration/create.test.js:91:  expect(() => Duration.fromObject({ months: "some" })).toThrow();
+test/duration/create.test.js:92:  expect(() => Duration.fromObject({ days: NaN })).toThrow();
+test/duration/create.test.js:93:  expect(() => Duration.fromObject({ hours: true })).toThrow();
+test/duration/create.test.js:94:  expect(() => Duration.fromObject({ minutes: false })).toThrow();
+test/duration/create.test.js:95:  expect(() => Duration.fromObject({ seconds: "" })).toThrow();
+test/duration/create.test.js:98:test("Duration.fromObject is valid if providing options only", () => {
+test/duration/create.test.js:99:  const dur = Duration.fromObject({}, { conversionAccuracy: "longterm" });
+test/duration/create.test.js:111:// .fromDurationLike()
+test/duration/create.test.js:114:it("Duration.fromDurationLike returns a Duration from millis", () => {
+test/duration/create.test.js:115:  const dur = Duration.fromDurationLike(1000);
+test/duration/create.test.js:116:  expect(dur).toBeInstanceOf(Duration);
+test/duration/create.test.js:120:it("Duration.fromDurationLike returns a Duration from object", () => {
+test/duration/create.test.js:121:  const dur = Duration.fromDurationLike({ hours: 1 });
+test/duration/create.test.js:122:  expect(dur).toBeInstanceOf(Duration);
+test/duration/create.test.js:126:it("Duration.fromDurationLike returns passed Duration", () => {
+test/duration/create.test.js:127:  const durFromObject = Duration.fromObject({ hours: 1 });
+test/duration/create.test.js:128:  const dur = Duration.fromDurationLike(durFromObject);
+test/duration/create.test.js:132:it("Duration.fromDurationLike throws for invalid inputs", () => {
+test/duration/create.test.js:133:  expect(() => Duration.fromDurationLike("foo")).toThrow();
+test/duration/create.test.js:134:  expect(() => Duration.fromDurationLike(null)).toThrow();
+test/duration/create.test.js:135:  expect(() => Duration.fromDurationLike(Infinity)).toThrow();
+test/duration/create.test.js:136:  expect(() => Duration.fromDurationLike(NaN)).toThrow();
+docs/math.md:136:## Duration math
+docs/math.md:140:`Durations` are quantities of time, like "3 days and 6 hours". Luxon has no idea *which* 3 days and 6 hours they represent; it's just how Luxon represents those quantities in abstract, unmoored from the timeline. This is both tremendously useful and occasionally confusing. I'm not going to give a detailed tour of their capabilities here (see the API docs for that), but I do want to clear up some of those confusions.
+docs/math.md:145:var dur = Duration.fromObject({ days: 3, hours: 6})
+docs/math.md:162:You can subtract one time from another to find out how much time there is between them. Luxon's `DateTime.diff` method does this and it returns a Duration. For example:
+docs/math.md:189:Durations represent bundles of time with specific units, but Luxon allows you to convert between them:
+docs/math.md:191: * `shiftTo` returns a new Duration denominated in the specified units.
+docs/math.md:195:var dur = Duration.fromObject({ months: 4, weeks: 2, days: 6 })
+docs/math.md:221:Duration.fromObject({ years:1 }).shiftTo('months').shiftTo('days').as('years') //=> 0.9863013698630136
+docs/math.md:227:var dur = Duration.fromObject({ years: 50000 });
+docs/math.md:242:Luxon methods that create Durations de novo accept an option called `conversionAccuracy`. You can set it to "casual" or "longterm". It's a property of the Duration itself, so any conversions you do use the rule you've picked, and any new Durations you derive from it will retain that property.
+docs/math.md:245:Duration.fromObject({ years: 23 }, { conversionAccuracy: 'longterm' });
+docs/math.md:246:Duration.fromISO('PY23', { conversionAccuracy: 'longterm' });
+docs/math.md:251:You can also create an accurate Duration out of an existing one:
+docs/math.md:254:var pedanticDuration = casualDuration.reconfigure({ conversionAccuracy: 'longterm' });
+docs/math.md:257:These Durations will do their conversions differently.
+docs/math.md:280:It's important to remember that diffs are Duration objects, and a Duration is just a dumb pile of time units our computation spat out. Unlike an Interval, a Duration doesn't "remember" what the inputs to the diff were. So we lost some information converting between units. This mistake is really common when rolling up:
+docs/math.md:311:Because the Interval stores its endpoints and computes `length` on the fly, it retakes the diff each time you query it. Of course, precisely because an Interval *isn't* an abstract bundle of time, it can't be used in places where Durations can. For example, you can't add them to DateTime via `plus()` because Luxon wouldn't know what units to do the math in (see "Calendar vs time math" above). But you can convert the interval into a Duration by picking the units:
+docs/math.md:314:i.toDuration('months').toObject(); //=> { months: 1 }
+docs/math.md:315:i.toDuration('days').toObject(); //=> { days: 28 }
+docs/math.md:323:i.toDuration(['years', 'months', 'days']).toObject(); //=> { years: 1, months: 3, days: 12 }
+docs/math.md:326:Of course, once you've converted to a Duration, you're back in the same spot you were with the diff case; *further* conversions will be lossy. So the point is to think carefully about what information you have when.
+docs/tour.md:170:## Durations
+docs/tour.md:172:The Duration class represents a quantity of time such as "2 hours and 7 minutes". You create them like this:
+docs/tour.md:175:var dur = Duration.fromObject({ hours: 2, minutes: 7 });
+docs/tour.md:200:You can also format, negate, and normalize them. See it all in the `Duration` API docs.
+docs/home.md:13: * Duration support (14 days, 5 minutes, 33 seconds)
+docs/intl.md:50:By default, the `locale` property of a new DateTime or Duration is the system locale. On a browser, that means whatever the user has their browser or OS language set to. On Node, that usually means en-US.
+docs/validity.md:78:## Invalid Durations
+docs/validity.md:80:Durations can be invalid too. The easiest way to get one is to diff an invalid DateTime.
+docs/validity.md:91:- It was created from invalid DateTime or Duration
+docs/upgrading.md:33:`DateTime.fromObject()` and `Duration.fromObject()` now accept two parameters: one for the object and one for the options.
+docs/upgrading.md:40:Duration.fromObject({ hours: 3, minutes: 2, conversionAccuracy: "casual", locale: "ru" });
+docs/upgrading.md:44:Duration.fromObject({ hours: 3, minutes: 2 }, { conversionAccuracy: "casual", locale: "ru" });
+docs/moment.md:29:1. Luxon has both a Duration type and an Interval type. The Interval type is like Twix.
+docs/moment.md:38:1. Luxon's Durations are a separate top-level class.
+docs/moment.md:147:| Duration         | `diff(Moment)` | `diff(DateTime)`            | Moment's diff returns a count of milliseconds, but Luxon's returns a Duration. To replicate the Moment behavior, use `dt1.diff(d2).milliseconds`. |
+docs/moment.md:161:## Durations
+docs/moment.md:163:Moment Durations and Luxon Durations are broadly similar in purpose and capabilities. The main differences are:
+docs/moment.md:165:1.  Luxon durations have more sophisticated conversion capabilities. They can convert from one set of units to another using `shiftTo`. They can also be configured to use different unit conversions. See [Duration Math](math.md?id=duration-math) for more.
+docs/moment.md:166:1.  Luxon does not (yet) have an equivalent of Moment's Duration `humanize` method. Luxon will add that when [Intl.UnitFormat](https://github.com/tc39/proposal-intl-unit-format) is supported by browsers.
+docs/moment.md:167:1.  Like DateTimes, Luxon Durations have separate methods for creating objects from different sources.
+docs/moment.md:169:See the `Duration` API docs for more.

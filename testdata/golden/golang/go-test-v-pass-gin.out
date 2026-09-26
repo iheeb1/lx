@@ -1,0 +1,6 @@
+--- SKIP: TestPathCleanMallocs (0.00s)
+    path_test.go:85: skipping malloc count; GOMAXPROCS>1
+ok  	github.com/gin-gonic/gin	0.657s
+?   	github.com/gin-gonic/gin/codec/json	[no test files]
+ok  	5 packages under github.com/gin-gonic/gin: binding, ginS, internal/bytesconv, internal/fs, render
+[731 passed, 1 skipped (incl. subtests) · hidden: 1463 === RUN/--- PASS lines, 47 lines of passing-test output]

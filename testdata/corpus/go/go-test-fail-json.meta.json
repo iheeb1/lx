@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-json",
+    "./..."
+  ],
+  "shell": "go test -json ./...",
+  "repo": "spf13/cobra",
+  "exit_code": 1,
+  "description": "go test -json output of the failing cobra suite (one JSON event per line; what CI tools and some agents consume)",
+  "cwd": "repos/cobra"
+}

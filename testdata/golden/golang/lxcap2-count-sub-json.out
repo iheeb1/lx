@@ -1,0 +1,9 @@
+--- FAIL: TestÜnicode (0.00s)
+    --- FAIL: TestÜnicode/naïve_case (0.00s)
+        ü_test.go:7: got "café", want "cafe"
+--- FAIL: TestÜnicode (0.00s)
+    --- FAIL: TestÜnicode/naïve_case (0.00s)
+        ü_test.go:7: got "café", want "cafe"
+FAIL
+FAIL	example.com/lxcap2/uni	0.601s
+[0 passed, 4 failed (incl. subtests) · hidden: 4 === RUN/--- PASS lines]

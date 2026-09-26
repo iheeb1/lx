@@ -1,0 +1,19 @@
+=== RUN   TestFirst
+    e_test.go:9: first broke
+--- FAIL: TestFirst (0.00s)
+=== RUN   TestAfter
+after chatter
+--- PASS: TestAfter (0.00s)
+=== RUN   Example_greeting
+--- FAIL: Example_greeting (0.00s)
+got:
+hello
+world
+want:
+hello
+there
+=== RUN   Example_ok
+--- PASS: Example_ok (0.00s)
+FAIL
+FAIL	example.com/lxcap2/example	0.981s
+FAIL

@@ -1,0 +1,142 @@
+diff --git a/binding/binding.go b/binding/binding.go
+index eced0ae..5cb6a44 100644
+--- a/binding/binding.go
++++ b/binding/binding.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/binding/binding_test.go b/binding/binding_test.go
+index f90488c..0d76439 100644
+--- a/binding/binding_test.go
++++ b/binding/binding_test.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/binding/form.go b/binding/form.go
+index 06732e9..09b28ad 100644
+--- a/binding/form.go
++++ b/binding/form.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/binding/form_mapping.go b/binding/form_mapping.go
+index 6982fd4..800e25e 100644
+--- a/binding/form_mapping.go
++++ b/binding/form_mapping.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/binding/json.go b/binding/json.go
+index f4ae921..554f485 100644
+--- a/binding/json.go
++++ b/binding/json.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/binding/protobuf.go b/binding/protobuf.go
+index 259ae8e..33eb13a 100644
+--- a/binding/protobuf.go
++++ b/binding/protobuf.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/binding/validate_test.go b/binding/validate_test.go
+index 792f64c..177df49 100644
+--- a/binding/validate_test.go
++++ b/binding/validate_test.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/binding/xml.go b/binding/xml.go
+index acd6f94..463c459 100644
+--- a/binding/xml.go
++++ b/binding/xml.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/codecov.yml b/codecov.yml
+deleted file mode 100644
+index f78e429..0000000
+--- a/codecov.yml
++++ /dev/null
+@@ -1,14 +0,0 @@
+-codecov:
+-  require_ci_to_pass: true
+-
+-coverage:
+-  status:
+-    project:
+-      default:
+-        target: 99%
+-        threshold: 99%
+-
+-    patch:
+-      default:
+-        target: 99%
+-        threshold: 95%
+\ No newline at end of file
+diff --git a/context.go b/context.go
+index a6add8a..20331d2 100644
+--- a/context.go
++++ b/context.go
+@@ -650,7 +650,7 @@ func (c *Context) initFormCache() {
+ 		req := c.Request
+ 		if err := req.ParseMultipartForm(c.engine.MaxMultipartMemory); err != nil {
+ 			if !errors.Is(err, http.ErrNotMultipart) {
+-				debugPrint("error on parse multipart form array: %v", err)
++				debugPrintf("error on parse multipart form array: %v", err)
+ 			}
+ 		}
+ 		c.formCache = req.PostForm
+diff --git a/context_ratelimit.go b/context_ratelimit.go
+new file mode 100644
+index 0000000..8e16d63
+--- /dev/null
++++ b/context_ratelimit.go
+@@ -0,0 +1,14 @@
++package gin
++
++// RateLimitKey is the context key under which rate limit metadata is stored.
++const RateLimitKey = "_gin-gonic/gin/ratelimit"
++
++// RateLimitRemaining returns the remaining request budget recorded by a rate limiting middleware.
++func (c *Context) RateLimitRemaining() (int, bool) {
++	v, ok := c.Get(RateLimitKey)
++	if !ok {
++		return 0, false
++	}
++	n, ok := v.(int)
++	return n, ok
++}
+diff --git a/tree.go b/radix_tree.go
+similarity index 100%
+rename from tree.go
+rename to radix_tree.go
+diff --git a/tree_test.go b/radix_tree_test.go
+similarity index 100%
+rename from tree_test.go
+rename to radix_tree_test.go

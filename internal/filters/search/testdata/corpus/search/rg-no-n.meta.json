@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "rg",
+    "createServer",
+    "packages/vite/src/node"
+  ],
+  "shell": "rg createServer packages/vite/src/node",
+  "exit_code": 0,
+  "description": "rg without -n (non-TTY: path:text, no numbers)",
+  "cwd": "/home/user/src/vite"
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "make",
+    "test"
+  ],
+  "shell": "make test",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "make test in gin: make echoes the whole multi-line shell loop, then go test -v -covermode=count output for 4 packages (thousands of RUN/PASS lines, GIN-debug logs)",
+  "cwd": "repos/gin"
+}

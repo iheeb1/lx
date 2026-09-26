@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "pnpm",
+    "install"
+  ],
+  "shell": "pnpm install",
+  "exit_code": 0,
+  "description": "pnpm 10 install (non-TTY): progress lines, deprecation warnings with thin-space WARN, update-available box, +++ bar, dependency summary",
+  "cwd": "/home/user/src/pnpm-app"
+}

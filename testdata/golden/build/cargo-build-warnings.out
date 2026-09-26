@@ -1,0 +1,35 @@
+[lx: hidden: 40 cargo status lines (Compiling ×26, Downloaded ×12, Updating, Locking), 2 code snippets of repeated warnings]
+  Downloaded 12 crates (1.9 MB) in 0.74s
+warning: unused import: `std::collections::HashMap`
+ --> src/main.rs:1:5
+  |
+1 | use std::collections::HashMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+[lx: same warning at 1 more location: src/parser.rs:3:5]
+
+warning: unused variable: `config`
+  --> src/main.rs:12:9
+   |
+12 |     let config = load_config();
+   |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_config`
+
+warning: unused variable: `line_no`
+  --> src/parser.rs:27:13
+   |
+27 |         let line_no = idx + 1;
+   |             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_line_no`
+
+warning: unused variable: `rest`
+  --> src/parser.rs:44:17
+
+warning: unused variable: `err`
+  --> src/parser.rs:58:21
+
+warning: function `legacy_parse` is never used
+  --> src/parser.rs:71:4
+   |
+71 | fn legacy_parse(input: &str) -> Option<u32> {
+   |    ^^^^^^^^^^^^
+
+warning: `demo` (bin "demo") generated 7 warnings (run `cargo fix --bin "demo"` to apply 6 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.41s

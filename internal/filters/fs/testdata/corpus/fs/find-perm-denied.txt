@@ -1,0 +1,10 @@
+.
+./link.go
+./docs
+./docs/readme.md
+./run.sh
+./secret
+find: ./secret: Permission denied
+./src
+./src/a.go
+./src/b.go

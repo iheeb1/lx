@@ -1,0 +1,138 @@
+> luxon@3.7.2 test
+> jest --coverage
+
+FAIL test/info/listers.test.js (5.21 s)
+  ● Info.months lists all the months
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+    > 28 |   expect(Info.months("short", { locale: "en" })).toEqual([
+         |                                                  ^
+      at Object.toEqual (test/info/listers.test.js:28:50)
+
+  ● Info.monthsFormat lists all the months
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+    > 231 |   expect(Info.monthsFormat("short", { locale: "en" })).toEqual([
+          |                                                        ^
+      at Object.toEqual (test/info/listers.test.js:231:56)
+
+FAIL test/datetime/format.test.js (5.41 s)
+  ● DateTime#toISO() handles negative years
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "-012345-05-25T09:23:54.123Z"
+    Received: "-12345-05-25T09:23:54.123Z"
+    > 126 |   expect(negativeYear.toISO()).toBe("-012345-05-25T09:23:54.123Z");
+          |                                ^
+      at Object.toBe (test/datetime/format.test.js:126:32)
+
+  ● DateTime#toISODate() correctly pads negative years
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "-000001-01-01"
+    Received: "0000-1-01-01"
+    > 207 |   expect(DateTime.fromObject({ year: -1, month: 1, day: 1 }, { zone: "utc" }).toISODate()).toBe(
+          |                                                                                            ^
+      at Object.toBe (test/datetime/format.test.js:207:92)
+
+FAIL test/datetime/tokenParse.test.js (5.708 s)
+  ● DateTime.fromFormat() defaults yy to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2060
+    Received: 1960
+    > 153 |   expect(DateTime.fromFormat("60", "yy").year).toBe(2060);
+          |                                                ^
+      at Object.toBe (test/datetime/tokenParse.test.js:153:48)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing yy to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2050
+    Received: 1950
+    > 163 |     expect(DateTime.fromFormat("50", "yy").year).toBe(2050);
+          |                                                  ^
+      at Object.toBe (test/datetime/tokenParse.test.js:163:50)
+
+  ● DateTime.fromFormat() parses standalone month names
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 1982
+    Received: NaN
+    > 262 |   expect(i.year).toBe(1982);
+          |                  ^
+      at Object.toBe (test/datetime/tokenParse.test.js:262:18)
+
+  ● DateTime.fromFormat() parses format month names
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 1982
+    Received: NaN
+    > 294 |   expect(i.year).toBe(1982);
+          |                  ^
+      at Object.toBe (test/datetime/tokenParse.test.js:294:18)
+
+  ● DateTime.fromFormat() defaults kk to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2060
+    Received: 1960
+    > 448 |   expect(DateTime.fromFormat("60", "kk").weekYear).toBe(2060);
+          |                                                    ^
+      at Object.toBe (test/datetime/tokenParse.test.js:448:52)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing two digit weekYear to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2050
+    Received: 1950
+    > 458 |     expect(DateTime.fromFormat("50", "kk").weekYear).toBe(2050);
+          |                                                      ^
+      at Object.toBe (test/datetime/tokenParse.test.js:458:54)
+
+---------------------|---------|----------|---------|---------|-------------------------------------------------------------------------------------------
+File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+---------------------|---------|----------|---------|---------|-------------------------------------------------------------------------------------------
+All files            |   96.67 |    94.58 |   95.31 |   96.68 |
+ src                 |   96.91 |     97.4 |   92.92 |   96.98 |
+  datetime.js        |   95.32 |    97.68 |   87.58 |    95.5 | 1460,1485,2094-2097,2130,2414,2435,2455,2471-2487,2503-2519,2535-2551,2567-2591,2607-2623
+  duration.js        |   98.56 |    97.97 |   98.18 |   98.78 | 599-602
+  interval.js        |   98.49 |    94.94 |   98.11 |   98.31 | 581-584
+ src/impl            |   96.56 |    91.13 |   98.26 |   96.55 |
+  conversions.js     |   96.11 |     88.4 |     100 |   95.95 | 156,169,181,203
+  english.js         |   98.64 |    97.14 |     100 |   98.64 | 57
+  formatter.js       |   99.42 |    92.52 |     100 |    99.4 | 279
+  locale.js          |   93.38 |    85.71 |   96.72 |   93.27 | 44-51,117-119,168,313,319,326-329
+  tokenParser.js     |   96.19 |    91.19 |   94.87 |   96.46 | 30,101,264,267,289,456,486
+  util.js            |   94.78 |    93.51 |     100 |   94.73 | 43,55,96,104,178,245
+  zoneUtil.js        |   83.33 |    77.77 |     100 |      80 | 27-32
+ src/zones           |   95.37 |    95.45 |   95.83 |   95.23 |
+  IANAZone.js        |   93.54 |    92.85 |   94.11 |   93.22 | 35-38
+  systemZone.js      |   91.66 |      100 |   88.88 |   91.66 | 44
+---------------------|---------|----------|---------|---------|-------------------------------------------------------------------------------------------
+[coverage: 11 files at 100% hidden]
+
+[55 passing suites hidden]
+Test Suites: 3 failed, 55 passed, 58 total
+Tests:       10 failed, 1212 passed, 1222 total
+Snapshots:   1 passed, 1 total
+Time:        7.226 s
+Ran all test suites.

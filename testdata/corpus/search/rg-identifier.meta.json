@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rg",
+    "-n",
+    "createServer"
+  ],
+  "shell": "rg -n createServer",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "rg -n createServer in the vite monorepo (ripgrep non-TTY format path:line:text, respects .gitignore)",
+  "cwd": "repos/vite"
+}

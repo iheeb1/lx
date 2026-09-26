@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "diff",
+    "--cached"
+  ],
+  "shell": "git diff --cached",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git diff --cached: staged header edits, rename with similarity, new file, deleted codecov.yml",
+  "cwd": "repos/gin"
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "mvn",
+    "-o",
+    "-B",
+    "package"
+  ],
+  "exit_code": 1,
+  "description": "mvn -B package (offline, Maven 3.9.16, javac -Xlint:all with showWarnings): about a hundred [WARNING] lines of rawtypes/unchecked/deprecation lints with [line,col] locations in one file, test failures from CalcTest, BUILD FAILURE",
+  "cwd": "/home/user/src/mvnapp"
+}

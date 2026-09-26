@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "-C2",
+    "func New",
+    "."
+  ],
+  "shell": "grep -rn -C2 func New .",
+  "exit_code": 0,
+  "description": "grep -rn -C2 across a Go repo (context lines, -- separators)",
+  "cwd": "/home/user/src/gin"
+}

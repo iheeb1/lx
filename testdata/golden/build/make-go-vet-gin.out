@@ -1,0 +1,1 @@
+go vet github.com/gin-gonic/gin github.com/gin-gonic/gin/binding github.com/gin-gonic/gin/codec/json github.com/gin-gonic/gin/ginS github.com/gin-gonic/gin/internal/bytesconv github.com/gin-gonic/gin/internal/fs github.com/gin-gonic/gin/middleware/ratelimit github.com/gin-gonic/gin/render

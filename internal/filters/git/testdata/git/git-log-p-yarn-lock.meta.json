@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "-p",
+    "-n",
+    "1",
+    "--",
+    "yarn.lock"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/yup",
+  "description": "git log -p -n 1 -- yarn.lock (yarn v1 lockfile commit)"
+}

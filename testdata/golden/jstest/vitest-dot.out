@@ -1,0 +1,112 @@
+stdout | test/snap.test.ts > renders card
+rendering card for { id: 7 }
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/broken-import.test.ts [ test/broken-import.test.ts ]
+Error: Cannot find module '../src/does-not-exist' imported from /home/user/src/vitproj/test/broken-import.test.ts
+ ❯ test/broken-import.test.ts:2:1
+      1| import { it, expect } from "vitest";
+      2| import { nothing } from "../src/does-not-exist";
+       | ^
+      3|
+      4| it("never runs", () => {
+
+ FAIL  test/syntax.test.ts [ test/syntax.test.ts ]
+Error: Transform failed with 1 error:
+[PARSE_ERROR] Expected `,` or `)` but found `;`
+   ╭─[ test/syntax.test.ts:4:23 ]
+   │
+ 4 │   expect(1 + 1).toBe(2;
+   │                     ┬ ┬
+   │                     ╰──── Opened here
+   │                       │
+   │                       ╰── `,` or `)` expected
+───╯
+  Plugin: vite:oxc
+  File: test/syntax.test.ts
+ … 4 library frames (vite)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cart.test.ts > total > handles fractional prices
+AssertionError: expected 0.30000000000000004 to be 0.3 // Object.is equality
+- Expected
++ Received
+- 0.3
++ 0.30000000000000004
+ ❯ test/cart.test.ts:12:56
+     12|     expect(total([{ name: "b", price: 0.1, qty: 3 }])).toBe(0.3);
+       |                                                        ^
+
+ FAIL  test/cart.test.ts > discount > rejects bad pct
+RangeError: invalid discount percentage: 150
+ ❯ discount src/cart.ts:13:11
+     13|     throw new RangeError(`invalid discount percentage: ${pct}`);
+       |           ^
+ ❯ test/cart.test.ts:23:12
+
+ FAIL  test/cart.test.ts > discount > deep equal
+AssertionError: expected { items: [ 1, 2, 3 ], …(1) } to deeply equal { items: [ 1, 2, 4 ], …(1) }
+- Expected
++ Received
+  {
+    "items": [
+      1,
+      2,
+-     4,
++     3,
+    ],
+    "meta": {
+-     "tag": "y",
++     "tag": "x",
+    },
+  }
+ ❯ test/cart.test.ts:26:54
+     26|     expect({ items: [1, 2, 3], meta: { tag: "x" } }).toEqual({ items: …
+       |                                                      ^
+
+ FAIL  test/cart.test.ts > fetchPrice > fails for missing
+Error: price not found for sku missing
+ ❯ fetchPrice src/cart.ts:21:11
+     21|     throw new Error(`price not found for sku ${sku}`);
+       |           ^
+ ❯ test/cart.test.ts:35:12
+
+ FAIL  test/snap.test.ts > renders card
+Error: Snapshot `renders card 1` mismatched
+- Expected
++ Received
+  {
+-   "count": 1,
++   "count": 2,
+    "title": "Hello",
+  }
+ ❯ test/snap.test.ts:5:40
+      5|   expect({ title: "Hello", count: 2 }).toMatchSnapshot();
+       |                                        ^
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+TypeError: background job failed: connection reset
+ ❯ Timeout._onTimeout test/unhandled.test.ts:5:20
+      3| it("leaks a rejection", () => {
+      4|   setTimeout(() => {
+      5|     Promise.reject(new TypeError("background job failed: connection re…
+       |                    ^
+      6|   }, 1);
+      7|   expect(true).toBe(true);
+ … 2 library frames (node:internal)
+This error originated in "test/unhandled.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "waits". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+[1 console block of passing tests hidden]
+  Snapshots  1 failed
+ Test Files  4 failed | 2 passed (6)
+      Tests  5 failed | 8 passed | 1 skipped | 1 todo (15)
+     Errors  1 error
+   Duration  1.56s (transform 685ms, setup 0ms, import 1.07s, tests 196ms, environment 3ms)

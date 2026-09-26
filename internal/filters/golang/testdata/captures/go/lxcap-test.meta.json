@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-timeout",
+    "5s",
+    "./..."
+  ],
+  "shell": "go test -timeout 5s ./...",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test ./... over a module with parallel, panicking, log.Fatal, deadlocking, skipped, build-failing, setup-failing and vet-failing packages",
+  "cwd": "/home/user/src/lxcap"
+}

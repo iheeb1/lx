@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "make",
+    "-k"
+  ],
+  "exit_code": 2,
+  "description": "make -k in a small C project (clang 21, macOS): header warnings repeated per translation unit via 'In file included from' chains (also as src/../lib paths), undeclared identifier / implicit function / int-conversion errors, make errors for two targets",
+  "cwd": "/home/user/src/cproj"
+}

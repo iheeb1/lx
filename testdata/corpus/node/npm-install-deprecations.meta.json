@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "install"
+  ],
+  "shell": "npm install",
+  "repo": "moment/luxon",
+  "exit_code": 0,
+  "description": "npm install in a real project with an old lockfile: deprecation warnings, audit summary, funding notice, husky prepare script",
+  "cwd": "repos/luxon"
+}

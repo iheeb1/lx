@@ -1,0 +1,40 @@
+LAST SEEN            TYPE      REASON             OBJECT                        MESSAGE
+31m (x14 over 58m)   Warning   FailedScheduling   pod/worker-5c6d7e8f9-rt9vb    0/5 nodes are available: 1 node(s) had untolerated taint {node.kubernetes.io/not-ready: }, 4 Insufficient memory. preemption: 0/5 nodes are available: 1 Preemption is not helpful for scheduling, 4 No preemption victims found for incoming pod.
+60m                  Normal    Scheduled          pod/worker-5c6d7e8f9-76203    Successfully assigned shop/worker-5c6d7e8f9-76203 to node-3
+54m                  Normal    Scheduled          pod/worker-5c6d7e8f9-d5bc1    Successfully assigned shop/worker-5c6d7e8f9-d5bc1 to node-1
+48m                  Normal    Scheduled          pod/worker-5c6d7e8f9-39297    Successfully assigned shop/worker-5c6d7e8f9-39297 to node-3
+42m                  Normal    Scheduled          pod/worker-5c6d7e8f9-31b47    Successfully assigned shop/worker-5c6d7e8f9-31b47 to node-1
+36m                  Normal    Scheduled          pod/worker-5c6d7e8f9-adaac    Successfully assigned shop/worker-5c6d7e8f9-adaac to node-3
+30m                  Normal    Scheduled          pod/worker-5c6d7e8f9-76203    Successfully assigned shop/worker-5c6d7e8f9-76203 to node-1 [×2 rows; others: 90m]
+29m                  Normal    Pulled             pod/worker-5c6d7e8f9-60c55    Container image "registry.example.com/shop/worker:1.8.2" already present on machine [×3 rows; others: 89m, 59m]
+28m                  Normal    Created            pod/worker-5c6d7e8f9-06f8f    Created container: worker [×3 rows; others: 88m, 58m]
+27m                  Normal    Started            pod/worker-5c6d7e8f9-55eae    Started container worker [×3 rows; others: 87m, 57m]
+26m                  Normal    Killing            pod/worker-5c6d7e8f9-879cc    Stopping container worker [×3 rows; others: 86m, 56m]
+25m                  Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-bb349 [×3 rows; others: 85m, 55m]
+24m                  Normal    Scheduled          pod/worker-5c6d7e8f9-d5bc1    Successfully assigned shop/worker-5c6d7e8f9-d5bc1 to node-3 [×2 rows; others: 84m]
+23m                  Normal    Pulled             pod/worker-5c6d7e8f9-c43a2    Container image "registry.example.com/shop/worker:1.8.2" already present on machine [×3 rows; others: 83m, 53m]
+22m                  Normal    Created            pod/worker-5c6d7e8f9-cbac2    Created container: worker [×3 rows; others: 82m, 52m]
+21m                  Normal    Started            pod/worker-5c6d7e8f9-f06dc    Started container worker [×3 rows; others: 81m, 51m]
+20m                  Normal    Killing            pod/worker-5c6d7e8f9-493ea    Stopping container worker [×3 rows; others: 80m, 50m]
+19m                  Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-eb83f [×3 rows; others: 79m, 49m]
+18m                  Normal    Scheduled          pod/worker-5c6d7e8f9-39297    Successfully assigned shop/worker-5c6d7e8f9-39297 to node-1 [×2 rows; others: 78m]
+5m                   Warning   BackOff            pod/api-7d9f8b6c5d-8vtzn      Back-off restarting failed container api in pod api-7d9f8b6c5d-8vtzn_shop(5b0d9e8a-4c1f-4e2b-9a7d-3f6e8c1b2a90) [×2 rows; others: 12m (x3 over 40m)]
+17m                  Normal    Pulled             pod/worker-5c6d7e8f9-593df    Container image "registry.example.com/shop/worker:1.8.2" already present on machine [×3 rows; others: 77m, 47m]
+16m                  Normal    Created            pod/worker-5c6d7e8f9-f520c    Created container: worker [×3 rows; others: 76m, 46m]
+15m                  Normal    Started            pod/worker-5c6d7e8f9-64892    Started container worker [×3 rows; others: 75m, 45m]
+14m                  Normal    Killing            pod/worker-5c6d7e8f9-46f84    Stopping container worker [×3 rows; others: 74m, 44m]
+13m                  Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-809d2 [×3 rows; others: 73m, 43m]
+12m                  Normal    Scheduled          pod/worker-5c6d7e8f9-31b47    Successfully assigned shop/worker-5c6d7e8f9-31b47 to node-3 [×2 rows; others: 72m]
+11m                  Normal    Pulled             pod/worker-5c6d7e8f9-7cefb    Container image "registry.example.com/shop/worker:1.8.2" already present on machine [×3 rows; others: 71m, 41m]
+10m                  Normal    Created            pod/worker-5c6d7e8f9-0079f    Created container: worker [×3 rows; others: 70m, 40m]
+9m                   Normal    Started            pod/worker-5c6d7e8f9-7872a    Started container worker [×3 rows; others: 69m, 39m]
+8m                   Normal    Killing            pod/worker-5c6d7e8f9-93fde    Stopping container worker [×3 rows; others: 68m, 38m]
+7m                   Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-746cb [×3 rows; others: 67m, 37m]
+6m                   Normal    Scheduled          pod/worker-5c6d7e8f9-adaac    Successfully assigned shop/worker-5c6d7e8f9-adaac to node-1 [×2 rows; others: 66m]
+5m                   Normal    Pulled             pod/worker-5c6d7e8f9-75f15    Container image "registry.example.com/shop/worker:1.8.2" already present on machine [×3 rows; others: 65m, 35m]
+4m                   Normal    Created            pod/worker-5c6d7e8f9-9014e    Created container: worker [×3 rows; others: 64m, 34m]
+3m                   Normal    Started            pod/worker-5c6d7e8f9-cba70    Started container worker [×3 rows; others: 63m, 33m]
+2m                   Normal    Killing            pod/worker-5c6d7e8f9-c5a2d    Stopping container worker [×3 rows; others: 62m, 32m]
+1m                   Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-0108d [×3 rows; others: 61m, 31m]
+2m                   Warning   Unhealthy          pod/api-7d9f8b6c5d-2xkqp      Liveness probe failed: Get "http://10.244.1.9:8080/healthz": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+[lx: 56 repeated event rows (same type, reason, object and message) merged into the last such row, marked ×N with the other rows' ages]

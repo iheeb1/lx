@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "cc",
+    "-Wall",
+    "-Wextra",
+    "-c",
+    "gen.c"
+  ],
+  "exit_code": 0,
+  "description": "cc -Wall -Wextra -c on a generated file: 40 functions each with unused parameters and an unused variable (120 distinct warnings of 2 flags) plus sign-compare warnings; exit 0",
+  "cwd": "/home/user/src/manywarn"
+}

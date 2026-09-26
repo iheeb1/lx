@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "http",
+    "GET",
+    "http://127.0.0.1:1/x"
+  ],
+  "shell": "http GET http://127.0.0.1:1/x",
+  "repo": "",
+  "exit_code": 1,
+  "description": "REAL httpie 3.2.4: connection refused, \"http: error: ConnectionError: \u2026\"",
+  "cwd": "data/api"
+}

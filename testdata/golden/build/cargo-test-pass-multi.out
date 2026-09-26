@@ -1,0 +1,14 @@
+[lx: hidden: 1 cargo status line (Compiling), 26 passing tests, 1 test binary that ran no tests]
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.61s
+     Running unittests src/lib.rs (target/debug/deps/demo-3b7e2c9a1f0d4e5b)
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/api.rs (target/debug/deps/api-0f1e2d3c4b5a6978)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests/errors.rs (target/debug/deps/errors-5a6b7c8d9e0f1a2b)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests demo
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+[lx: total of 5 test result lines: 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out]

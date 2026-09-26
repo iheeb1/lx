@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run"
+  ],
+  "shell": "npx vitest run",
+  "repo": "unjs/ufo",
+  "exit_code": 0,
+  "description": "vitest 4 passing run, default reporter, non-TTY (489 tests) Captured with Claude Code's agent env vars present (CLAUDECODE/AI_AGENT), so vitest auto-selected its compact agent reporter (only failing files listed).",
+  "cwd": "repos/ufo"
+}

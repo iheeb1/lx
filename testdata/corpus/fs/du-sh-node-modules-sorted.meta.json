@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "du -sh node_modules/* | sort -h | tail -40"
+  ],
+  "shell": "du -sh node_modules/* | sort -h | tail -40",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "du -sh node_modules/* | sort -h | tail -40: largest dependencies",
+  "cwd": "repos/express"
+}

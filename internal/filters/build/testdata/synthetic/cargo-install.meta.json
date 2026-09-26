@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "cargo",
+    "install",
+    "ripgrep"
+  ],
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-written in real cargo 1.8x/rustc format; cargo is not installed on the capture machine): cargo install ripgrep: index updates, download, 33 Compiling lines, Finished release, Installing/Installed lines",
+  "cwd": "/home/user/src/demo"
+}

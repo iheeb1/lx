@@ -1,0 +1,42 @@
+Starting a Gradle Daemon (subsequent builds will be faster)
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:compileJava UP-TO-DATE
+> Task :app:processResources NO-SOURCE
+> Task :app:classes UP-TO-DATE
+> Task :app:compileTestJava
+> Task :app:processTestResources NO-SOURCE
+> Task :app:testClasses
+
+> Task :app:test FAILED
+
+CalcTest > addsWrong() FAILED
+    org.opentest4j.AssertionFailedError at CalcTest.java:8
+
+CalcTest > dividesByZero() FAILED
+    java.lang.ArithmeticException at CalcTest.java:10
+
+ErrorHandlerTest > wrapsIoErrors() FAILED
+    java.lang.NullPointerException at ErrorHandlerTest.java:31
+        Caused by: java.io.IOException at ErrorHandlerTest.java:29
+
+14 tests completed, 3 failed
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:test'.
+> There were failing tests. See the report at: file:///home/user/src/app/app/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 6s
+7 actionable tasks: 2 executed, 5 up-to-date

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "tsc",
+    "--noEmit"
+  ],
+  "shell": "npx tsc --noEmit",
+  "repo": "jquense/yup",
+  "exit_code": 2,
+  "description": "tsc --noEmit (TypeScript 4.9) failing with 50 syntax errors inside node_modules/@types/node because npm resolved a newer @types/node than the repo's yarn.lock pinned",
+  "cwd": "repos/yup"
+}

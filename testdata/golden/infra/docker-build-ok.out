@@ -1,0 +1,14 @@
+#5 [1/7] FROM docker.io/library/node:20-alpine@sha256:ce915cd09dd0784b77f52305fcb4435d9b4fe31c82b81c6449d5de9f1c6b4ef6  DONE 4.1s
+#7 [2/7] WORKDIR /app  CACHED
+#8 [3/7] COPY package.json package-lock.json ./  CACHED
+#9 [4/7] RUN npm ci --no-audit --no-fund  DONE 10.4s  [lx: 20 output lines not shown]
+#9 0.412 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+#9 0.512 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#9 0.612 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+#10 [5/7] COPY . .  DONE 0.3s
+#11 [6/7] RUN npm run build  DONE 5.9s  [lx: 16 output lines not shown]
+#12 [7/7] RUN addgroup -S app && adduser -S app -G app  DONE 0.4s
+#13 exporting to image  DONE 2.0s
+#13 writing image sha256:b29814cf5792e684cd75d6a7fce7a67a11887e312f87ca2ac2496d81f365ff72 done
+#13 naming to docker.io/shop/web:1.8.2 done
+[lx: 7 build steps (2 CACHED); 6 internal steps not shown; 22 progress lines not shown]

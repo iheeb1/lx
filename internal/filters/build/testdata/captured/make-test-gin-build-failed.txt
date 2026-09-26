@@ -1,0 +1,29 @@
+echo "mode: count" > coverage.out
+for d in github.com/gin-gonic/gin github.com/gin-gonic/gin/binding github.com/gin-gonic/gin/ginS github.com/gin-gonic/gin/render; do \
+		if [ -n """" ]; then \
+			go test "" -v -covermode=count -coverprofile=profile.out $d > tmp.out; \
+		else \
+			go test -v -covermode=count -coverprofile=profile.out $d > tmp.out; \
+		fi; \
+		cat tmp.out; \
+		if grep -q "^--- FAIL" tmp.out; then \
+			rm tmp.out; \
+			exit 1; \
+		elif grep -q "build failed" tmp.out; then \
+			rm tmp.out; \
+			exit 1; \
+		elif grep -q "setup failed" tmp.out; then \
+			rm tmp.out; \
+			exit 1; \
+		fi; \
+		if [ -f profile.out ]; then \
+			cat profile.out | grep -v "mode:" >> coverage.out; \
+			rm profile.out; \
+		fi; \
+	done
+# github.com/gin-gonic/gin [github.com/gin-gonic/gin.test]
+./utils.go:152:4: undefined: debugPrint
+./utils.go:155:34: undefined: debugPrint
+FAIL	github.com/gin-gonic/gin [build failed]
+FAIL
+make: *** [test] Error 1

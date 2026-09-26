@@ -1,0 +1,26 @@
+npm verbose cli /usr/local/bin/node /usr/local/bin/npm
+npm info using npm@11.16.0
+npm info using node@v24.18.0
+npm verbose title npm install
+npm verbose argv "install" "--loglevel" "verbose" "--prefer-offline"
+npm verbose logfile logs-max:10 dir:/home/user/.npm/_logs/2026-09-26T03_02_38_373Z-
+npm verbose logfile /home/user/.npm/_logs/2026-09-26T03_02_38_373Z-debug-0.log
+[npm http: 1085 fetch/cache lines (status 2xx/304) hidden]
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated superagent@8.1.2, @humanwhocodes/object-schema@2.0.3, @humanwhocodes/config-array@0.11.14, supertest@6.3.4 [4 deprecated packages, messages hidden]
+npm warn deprecated uuid@8.3.2: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+npm warn deprecated glob@10.5.0, glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated eslint@8.47.0: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 403 packages, and audited 404 packages in 27s
+
+6 vulnerabilities (1 low, 4 moderate, 1 high)
+
+Run `npm audit` for details.
+npm verbose cwd /home/user/src/express-copy
+npm verbose os Darwin 25.5.0
+npm verbose node v24.18.0
+npm verbose npm  v11.16.0
+npm verbose exit 0
+npm info ok

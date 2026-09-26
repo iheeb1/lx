@@ -1,0 +1,7 @@
+binding/form_mapping.go:230:26: fmt.Errorf format %w has arg cfTag of wrong type string
+binding/binding_test.go:44:2: struct field tag `msgpack:"bar" json:"bar" form:"bar" xml:bar binding:"required"` not compatible with reflect.StructTag.Get: bad syntax for struct tag value
+context.go:1138:9: GetHeader passes lock by value: github.com/gin-gonic/gin.Context contains sync.RWMutex
+gin_test.go:77:8: using res before checking for errors
+errors.go:167:38: fmt.Fprintf format %s has arg i + 1 of wrong type int
+recovery.go:134:24: fmt.Fprintf format %s has arg line of wrong type int
+test_helpers.go:56:61: fmt.Errorf format %d reads arg #2, but call has 1 arg

@@ -1,0 +1,51 @@
+stderr | adv/errtitles.test.ts > error handling > returns error 500 on failure
+Error: simulated failure log from a passing test
+
+ × adv/soft.test.ts > soft assertions 5ms
+   → expected 1 to be 2 // Object.is equality
+   → expected 'a' to be 'b' // Object.is equality
+ × adv/soft.test.ts > handles error case 3 0ms
+   → expected 3 to be less than 3
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  adv/hook.test.ts > error handling
+Error: database connection refused
+ ❯ adv/hook.test.ts:4:11
+      2| describe("error handling", () => {
+      3|   beforeAll(() => {
+      4|     throw new Error("database connection refused");
+       |           ^
+      5|   });
+      6|   it("returns 503 on failure", () => {
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  adv/soft.test.ts > soft assertions
+AssertionError: expected 1 to be 2 // Object.is equality
+- Expected
++ Received
+- 2
++ 1
+ ❯ adv/soft.test.ts:3:18
+      3|   expect.soft(1).toBe(2);
+       |                  ^
+
+ FAIL  adv/soft.test.ts > soft assertions
+AssertionError: expected 'a' to be 'b' // Object.is equality
+Expected: "b"
+Received: "a"
+ ❯ adv/soft.test.ts:4:20
+      4|   expect.soft("a").toBe("b");
+       |                    ^
+
+ FAIL  adv/soft.test.ts > handles error case 3
+AssertionError: expected 3 to be less than 3
+ ❯ adv/soft.test.ts:7:13
+      7|   expect(n).toBeLessThan(3);
+       |             ^
+
+[4 passing tests hidden]
+ Test Files  2 failed | 1 passed (3)
+      Tests  2 failed | 4 passed | 2 skipped (8)
+   Duration  131ms (transform 34ms, setup 0ms, import 57ms, tests 11ms, environment 0ms)

@@ -1,0 +1,10 @@
+  ●  process.exit called with "1"
+
+      1 | test("calls process.exit", () => {
+    > 2 |   process.exit(1);
+        |           ^
+      3 | });
+      4 | test("never reached", () => {
+      5 |   expect(1).toBe(1);
+
+      at Object.exit (adv/exit.test.js:2:11)

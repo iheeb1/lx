@@ -1,0 +1,5 @@
+--- FAIL: TestFlaky (0.00s)
+    f_test.go:14: first run: got 1, want 2
+FAIL
+FAIL	example.com/lxcap2/flaky	0.250s
+[3 passed, 1 failed · hidden: 7 === RUN/--- PASS lines, 1 line of passing-test output]

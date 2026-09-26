@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "./..."
+  ],
+  "shell": "go test ./...",
+  "repo": "spf13/cobra",
+  "exit_code": 1,
+  "description": "go test ./... in cobra with 4 failing tests (3 from a changed MinimumNArgs error message in args.go, 1 table-driven subtest TestFind/[child_-f_child]); the failing package dumps all captured test stdout (usage/help noise)",
+  "cwd": "repos/cobra"
+}

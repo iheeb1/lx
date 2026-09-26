@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "pip",
+    "install",
+    "--upgrade",
+    "pip"
+  ],
+  "shell": "pip install --upgrade pip",
+  "repo": null,
+  "exit_code": 0,
+  "description": "pip install --upgrade pip inside a venv: download, uninstall old, install new",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

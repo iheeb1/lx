@@ -1,0 +1,12 @@
+4.2M	packages/vite
+1.7M	packages/create-vite
+884K	playground/assets
+704K	playground/css
+576K	playground/optimize-deps
+496K	playground/resolve
+456K	playground/hmr
+364K	playground/hmr-ssr
+320K	playground/worker
+260K	playground/html
+256K	playground/ssr-deps
+180K	packages/plugin-legacy

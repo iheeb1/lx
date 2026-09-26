@@ -1,0 +1,82 @@
+[184 matches in 53 files · 126 matches in ./node_modules/ summarized at the end (not searched explicitly)]
+./test/express.json.js
+519:res.setHeader('x-store-foo', String(local.foo))
+529:res.setHeader('x-store-foo', String(local.foo))
+
+./test/res.sendFile.js:322:res.setHeader('x-store-foo', String(local.foo))
+
+./test/express.urlencoded.js
+622:res.setHeader('x-store-foo', String(local.foo))
+632:res.setHeader('x-store-foo', String(local.foo))
+
+./test/express.raw.js
+344:res.setHeader('x-store-foo', String(local.foo))
+354:res.setHeader('x-store-foo', String(local.foo))
+
+./test/express.text.js
+376:res.setHeader('x-store-foo', String(local.foo))
+386:res.setHeader('x-store-foo', String(local.foo))
+
+./test/middleware.basic.js:25:res.setHeader('Content-Type', 'application/json');
+./test/res.download.js:134:res.setHeader('x-store-foo', String(local.foo))
+
+./test/express.static.js
+541:describe('setHeaders', function () {
+544:this.app.use(express.static(fixtures, { 'setHeaders': function (res) {
+545:res.setHeader('x-custom', 'set')
+550:assert.throws(express.static.bind(null, fixtures, { 'setHeaders': 3 }), /setHeaders.*function/)
+
+./test/app.router.js
+17:res.setHeader('x-user-id', String(req.params.id));
+26:res.setHeader('x-router', String(req.params.id));
+71:res.setHeader('X-Method-Altered', '1');
+457:res.setHeader('x-middleware', 'true');
+477:res.setHeader('x-middleware', 'true');
+1166:res.setHeader('old', 'foo');
+1193:res.setHeader('new', 'bar');
+
+./test/app.use.js
+93:res.setHeader('x-fn-1', 'hit');
+98:res.setHeader('x-fn-2', 'hit');
+130:res.setHeader('x-fn-1', 'hit');
+135:res.setHeader('x-fn-2', 'hit');
+140:res.setHeader('x-fn-3', 'hit');
+177:res.setHeader('x-fn-1', 'hit');
+182:res.setHeader('x-fn-2', 'hit');
+187:res.setHeader('x-fn-3', 'hit');
+205:res.setHeader('x-fn-1', 'hit');
+210:res.setHeader('x-fn-2', 'hit');
+215:res.setHeader('x-fn-3', 'hit');
+233:res.setHeader('x-fn-1', 'hit');
+238:res.setHeader('x-fn-2', 'hit');
+243:res.setHeader('x-fn-3', 'hit');
+300:res.setHeader('x-fn-1', 'hit');
+305:res.setHeader('x-fn-2', 'hit');
+310:res.setHeader('x-fn-3', 'hit');
+368:res.setHeader('x-fn-1', 'hit');
+373:res.setHeader('x-fn-2', 'hit');
+378:res.setHeader('x-fn-3', 'hit');
+396:res.setHeader('x-fn-1', 'hit');
+401:res.setHeader('x-fn-2', 'hit');
+406:res.setHeader('x-fn-3', 'hit');
+424:res.setHeader('x-fn-1', 'hit');
+429:res.setHeader('x-fn-2', 'hit');
+434:res.setHeader('x-fn-3', 'hit');
+474:res.setHeader('x-fn-1', 'hit');
+479:res.setHeader('x-fn-2', 'hit');
+484:res.setHeader('x-fn-3', 'hit');
+
+./test/app.options.js:41:res.setHeader('x-hit', '1');
+./test/res.get.js:12:res.setHeader('Content-Type', 'text/x-foo');
+
+./History.md
+1575:- Add `setHeaders` option
+2449:- fix `res.setHeader()` patch to work with get -> append -> set pattern
+
+./lib/response.js
+684:this.setHeader(field, value);
+1004:res.setHeader(k, obj[k]);
+
+./lib/application.js:161:res.setHeader('X-Powered-By', 'Express');
+
+./node_modules/: 126 matches in 38 files: send/index.js (22), serve-static/index.js (12), router/README.md (10), on-headers/index.js (7), superagent/lib/node/index.js (7), …

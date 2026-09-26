@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "curl -s \"https://api.github.com/repos/golang/go/issues?per_page=30\""
+  ],
+  "shell": "curl -s \"https://api.github.com/repos/golang/go/issues?per_page=30\"",
+  "repo": "golang/go",
+  "exit_code": 0,
+  "description": "unauthenticated GitHub REST API: 30 open issues of golang/go as pretty-printed JSON (deeply nested user/label/reactions objects, many URL fields)",
+  "cwd": "data/api"
+}

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "mod",
+    "tidy"
+  ],
+  "shell": "go mod tidy",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "go mod tidy in gin with an empty module cache: 'go: downloading' lines for every module in the graph",
+  "cwd": "repos/gin"
+}

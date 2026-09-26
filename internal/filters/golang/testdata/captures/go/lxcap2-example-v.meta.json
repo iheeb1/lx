@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-v",
+    "./example"
+  ],
+  "shell": "go test -v ./example",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -v over the failing example package (see lxcap2-example)",
+  "cwd": "/home/user/src/lxcap2"
+}

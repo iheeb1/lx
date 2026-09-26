@@ -1,0 +1,37 @@
+Name:                   web
+Namespace:              shop
+CreationTimestamp:      Mon, 26 Feb 2026 08:00:00 +0000
+Labels:                 app=web
+Annotations:            deployment.kubernetes.io/revision: 14
+                        kubectl.kubernetes.io/last-applied-configuration:
+                          {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"web"},"name":"web","namespace":"shop"},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"web"}},"template":{"metadata":{"labels":{"app":"web"}},"spec":{"containers":[{"image":"registry.example.com/shop/web:1.8.2","name":"web","ports":[{"containerPort":3000}],"resources":{"limits":{"memory":"256Mi"}}}]}}}}
+Selector:               app=web
+Replicas:               2 desired | 2 updated | 1 total | 1 available | 1 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=web
+  Containers:
+   web:
+    Image:      registry.example.com/shop/web:1.8.2
+    Port:       3000/TCP
+    Host Port:  0/TCP
+    Limits:
+      memory:     256Mi
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+  Node-Selectors: <none>
+  Tolerations:    <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      False   MinimumReplicasUnavailable
+  Progressing    False   ProgressDeadlineExceeded
+OldReplicaSets:  web-6b8f7c9d4 (1/1 replicas created)
+NewReplicaSet:   web-58d9c7b6f5 (1/1 replicas created)
+Events:
+  Type     Reason             Age   From                   Message
+  ----     ------             ----  ----                   -------
+  Normal   ScalingReplicaSet  12m   deployment-controller  Scaled up replica set web-58d9c7b6f5 from 0 to 1

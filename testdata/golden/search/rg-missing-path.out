@@ -1,0 +1,23 @@
+rg: nosuchdir: No such file or directory (os error 2)
+render/render.go
+9:// Render interface is to be implemented by JSON, XML, HTML, YAML and so on.
+10:type Render interface {
+11:// Render writes data with custom ContentType.
+12:Render(http.ResponseWriter) error
+18:_ Render     = (*JSON)(nil)
+19:_ Render     = (*IndentedJSON)(nil)
+20:_ Render     = (*SecureJSON)(nil)
+21:_ Render     = (*JsonpJSON)(nil)
+22:_ Render     = (*XML)(nil)
+23:_ Render     = (*String)(nil)
+24:_ Render     = (*Redirect)(nil)
+25:_ Render     = (*Data)(nil)
+26:_ Render     = (*HTML)(nil)
+27:_ HTMLRender = (*HTMLDebug)(nil)
+28:_ HTMLRender = (*HTMLProduction)(nil)
+29:_ Render     = (*YAML)(nil)
+30:_ Render     = (*Reader)(nil)
+31:_ Render     = (*AsciiJSON)(nil)
+32:_ Render     = (*ProtoBuf)(nil)
+33:_ Render     = (*TOML)(nil)
+34:_ Render     = (*PDF)(nil)

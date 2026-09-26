@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "pytest",
+    "--color=yes"
+  ],
+  "shell": "pytest --color=yes",
+  "repo": "pallets/click",
+  "exit_code": 1,
+  "description": "same failing pytest run with --color=yes (ANSI colors)",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

@@ -1,0 +1,6 @@
+From /home/user/src/origin
+ - [deleted]         (none)     -> origin/chore/deps
+ - [deleted]         (none)     -> origin/docs/readme
+ - [deleted]         (none)     -> origin/feat/login
+ - [deleted]         (none)     -> origin/feat/signup
+ - [deleted]         (none)     -> origin/fix/typo

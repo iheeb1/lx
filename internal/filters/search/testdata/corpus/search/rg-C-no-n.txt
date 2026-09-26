@@ -1,0 +1,468 @@
+./githubapi_test.go-
+./githubapi_test.go:func TestShouldBindUri(t *testing.T) {
+./githubapi_test.go-	DefaultWriter = os.Stdout
+--
+./githubapi_test.go-		var person Person
+./githubapi_test.go:		require.NoError(t, c.ShouldBindUri(&person))
+./githubapi_test.go-		assert.NotEmpty(t, person.Name)
+./githubapi_test.go-		assert.NotEmpty(t, person.ID)
+./githubapi_test.go:		c.String(http.StatusOK, "ShouldBindUri test OK")
+./githubapi_test.go-	})
+--
+./githubapi_test.go-	w := PerformRequest(router, http.MethodGet, path)
+./githubapi_test.go:	assert.Equal(t, "ShouldBindUri test OK", w.Body.String())
+./githubapi_test.go-	assert.Equal(t, http.StatusOK, w.Code)
+--
+./context.go-func (c *Context) BindUri(obj any) error {
+./context.go:	if err := c.ShouldBindUri(obj); err != nil {
+./context.go-		c.AbortWithError(http.StatusBadRequest, err).SetType(ErrorTypeBind) //nolint: errcheck
+--
+./context.go-func (c *Context) MustBindWith(obj any, b binding.Binding) error {
+./context.go:	err := c.ShouldBindWith(obj, b)
+./context.go-	if err != nil {
+--
+./context.go-
+./context.go:// ShouldBind checks the Method and Content-Type to select a binding engine automatically,
+./context.go-// Depending on the "Content-Type" header different bindings are used, for example:
+--
+./context.go-// Like c.Bind() but this method does not set the response status code to 400 or abort if input is not valid.
+./context.go:func (c *Context) ShouldBind(obj any) error {
+./context.go-	b := binding.Default(c.Request.Method, c.ContentType())
+./context.go:	return c.ShouldBindWith(obj, b)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindJSON is a shortcut for c.ShouldBindWith(obj, binding.JSON).
+./context.go-//
+--
+./context.go-//	var user User
+./context.go://	if err := c.ShouldBindJSON(&user); err != nil {
+./context.go-//		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+./context.go-//	c.JSON(http.StatusOK, user)
+./context.go:func (c *Context) ShouldBindJSON(obj any) error {
+./context.go:	return c.ShouldBindWith(obj, binding.JSON)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindXML is a shortcut for c.ShouldBindWith(obj, binding.XML).
+./context.go:// It works like ShouldBindJSON but binds the request body as XML data.
+./context.go:func (c *Context) ShouldBindXML(obj any) error {
+./context.go:	return c.ShouldBindWith(obj, binding.XML)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindQuery is a shortcut for c.ShouldBindWith(obj, binding.Query).
+./context.go:// It works like ShouldBindJSON but binds query parameters from the URL.
+./context.go:func (c *Context) ShouldBindQuery(obj any) error {
+./context.go:	return c.ShouldBindWith(obj, binding.Query)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindYAML is a shortcut for c.ShouldBindWith(obj, binding.YAML).
+./context.go:// It works like ShouldBindJSON but binds the request body as YAML data.
+./context.go:func (c *Context) ShouldBindYAML(obj any) error {
+./context.go:	return c.ShouldBindWith(obj, binding.YAML)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindTOML is a shortcut for c.ShouldBindWith(obj, binding.TOML).
+./context.go:// It works like ShouldBindJSON but binds the request body as TOML data.
+./context.go:func (c *Context) ShouldBindTOML(obj any) error {
+./context.go:	return c.ShouldBindWith(obj, binding.TOML)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindPlain is a shortcut for c.ShouldBindWith(obj, binding.Plain).
+./context.go:// It works like ShouldBindJSON but binds plain text data from the request body.
+./context.go:func (c *Context) ShouldBindPlain(obj any) error {
+./context.go:	return c.ShouldBindWith(obj, binding.Plain)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindHeader is a shortcut for c.ShouldBindWith(obj, binding.Header).
+./context.go:// It works like ShouldBindJSON but binds values from HTTP headers.
+./context.go:func (c *Context) ShouldBindHeader(obj any) error {
+./context.go:	return c.ShouldBindWith(obj, binding.Header)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindUri binds the passed struct pointer using the specified binding engine.
+./context.go:// It works like ShouldBindJSON but binds parameters from the URI.
+./context.go:func (c *Context) ShouldBindUri(obj any) error {
+./context.go-	m := make(map[string][]string, len(c.Params))
+--
+./context.go-
+./context.go:// ShouldBindWith binds the passed struct pointer using the specified binding engine.
+./context.go-// See the binding package.
+./context.go:func (c *Context) ShouldBindWith(obj any, b binding.Binding) error {
+./context.go-	return b.Bind(c.Request, obj)
+--
+./context.go-
+./context.go:// ShouldBindBodyWith is similar with ShouldBindWith, but it stores the request
+./context.go-// body into the context, and reuse when it is called again.
+--
+./context.go-// NOTE: This method reads the body before binding. So you should use
+./context.go:// ShouldBindWith for better performance if you need to call only once.
+./context.go:func (c *Context) ShouldBindBodyWith(obj any, bb binding.BindingBody) (err error) {
+./context.go-	var body []byte
+--
+./context.go-
+./context.go:// ShouldBindBodyWithJSON is a shortcut for c.ShouldBindBodyWith(obj, binding.JSON).
+./context.go:func (c *Context) ShouldBindBodyWithJSON(obj any) error {
+./context.go:	return c.ShouldBindBodyWith(obj, binding.JSON)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindBodyWithXML is a shortcut for c.ShouldBindBodyWith(obj, binding.XML).
+./context.go:func (c *Context) ShouldBindBodyWithXML(obj any) error {
+./context.go:	return c.ShouldBindBodyWith(obj, binding.XML)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindBodyWithYAML is a shortcut for c.ShouldBindBodyWith(obj, binding.YAML).
+./context.go:func (c *Context) ShouldBindBodyWithYAML(obj any) error {
+./context.go:	return c.ShouldBindBodyWith(obj, binding.YAML)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindBodyWithTOML is a shortcut for c.ShouldBindBodyWith(obj, binding.TOML).
+./context.go:func (c *Context) ShouldBindBodyWithTOML(obj any) error {
+./context.go:	return c.ShouldBindBodyWith(obj, binding.TOML)
+./context.go-}
+./context.go-
+./context.go:// ShouldBindBodyWithPlain is a shortcut for c.ShouldBindBodyWith(obj, binding.Plain).
+./context.go:func (c *Context) ShouldBindBodyWithPlain(obj any) error {
+./context.go:	return c.ShouldBindBodyWith(obj, binding.Plain)
+./context.go-}
+--
+./routergroup.go-// query in the request body. The body is read like any other body, for example
+./routergroup.go:// with c.ShouldBindJSON.
+./routergroup.go-func (group *RouterGroup) QUERY(relativePath string, handlers ...HandlerFunc) IRoutes {
+--
+./context_test.go-
+./context_test.go:func TestContextAutoShouldBindJSON(t *testing.T) {
+./context_test.go-	c, _ := CreateTestContext(httptest.NewRecorder())
+--
+./context_test.go-	}
+./context_test.go:	require.NoError(t, c.ShouldBind(&obj))
+./context_test.go-	assert.Equal(t, "foo", obj.Bar)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindWithJSON(t *testing.T) {
+./context_test.go-	w := httptest.NewRecorder()
+--
+./context_test.go-	}
+./context_test.go:	require.NoError(t, c.ShouldBindJSON(&obj))
+./context_test.go-	assert.Equal(t, "foo", obj.Bar)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindWithXML(t *testing.T) {
+./context_test.go-	w := httptest.NewRecorder()
+--
+./context_test.go-	}
+./context_test.go:	require.NoError(t, c.ShouldBindXML(&obj))
+./context_test.go-	assert.Equal(t, "FOO", obj.Foo)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindPlain(t *testing.T) {
+./context_test.go-	// string
+--
+./context_test.go-
+./context_test.go:	require.NoError(t, c.ShouldBindPlain(&s))
+./context_test.go-	assert.Equal(t, "test string", s)
+--
+./context_test.go-
+./context_test.go:	require.NoError(t, c.ShouldBindPlain(&bs))
+./context_test.go-	assert.Equal(t, []byte("test []byte"), bs)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindHeader(t *testing.T) {
+./context_test.go-	w := httptest.NewRecorder()
+--
+./context_test.go-
+./context_test.go:	require.NoError(t, c.ShouldBindHeader(&testHeader))
+./context_test.go-	assert.Equal(t, 8000, testHeader.Rate)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindWithQuery(t *testing.T) {
+./context_test.go-	w := httptest.NewRecorder()
+--
+./context_test.go-	}
+./context_test.go:	require.NoError(t, c.ShouldBindQuery(&obj))
+./context_test.go-	assert.Equal(t, "foo", obj.Bar)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindWithYAML(t *testing.T) {
+./context_test.go-	w := httptest.NewRecorder()
+--
+./context_test.go-	}
+./context_test.go:	require.NoError(t, c.ShouldBindYAML(&obj))
+./context_test.go-	assert.Equal(t, "foo", obj.Bar)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindWithTOML(t *testing.T) {
+./context_test.go-	w := httptest.NewRecorder()
+--
+./context_test.go-	}
+./context_test.go:	require.NoError(t, c.ShouldBindTOML(&obj))
+./context_test.go-	assert.Equal(t, "foo", obj.Bar)
+--
+./context_test.go-
+./context_test.go:func TestContextBadAutoShouldBind(t *testing.T) {
+./context_test.go-	w := httptest.NewRecorder()
+--
+./context_test.go-	assert.False(t, c.IsAborted())
+./context_test.go:	require.Error(t, c.ShouldBind(&obj))
+./context_test.go-
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindBodyWith(t *testing.T) {
+./context_test.go-	type typeA struct {
+--
+./context_test.go-			objA := typeA{}
+./context_test.go:			require.NoError(t, c.ShouldBindBodyWith(&objA, tt.bindingA))
+./context_test.go-			assert.Equal(t, typeA{"FOO"}, objA)
+./context_test.go-			objB := typeB{}
+./context_test.go:			require.Error(t, c.ShouldBindBodyWith(&objB, tt.bindingB))
+./context_test.go-			assert.NotEqual(t, typeB{"BAR"}, objB)
+--
+./context_test.go-			objA := typeA{}
+./context_test.go:			require.Error(t, c.ShouldBindBodyWith(&objA, tt.bindingA))
+./context_test.go-			assert.NotEqual(t, typeA{"FOO"}, objA)
+./context_test.go-			objB := typeB{}
+./context_test.go:			require.NoError(t, c.ShouldBindBodyWith(&objB, tt.bindingB))
+./context_test.go-			assert.Equal(t, typeB{"BAR"}, objB)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindBodyWithJSON(t *testing.T) {
+./context_test.go-	for _, tt := range []struct {
+--
+./context_test.go-		if tt.bindingBody == binding.JSON {
+./context_test.go:			require.NoError(t, c.ShouldBindBodyWithJSON(&objJSON))
+./context_test.go-			assert.Equal(t, typeJSON{"FOO"}, objJSON)
+--
+./context_test.go-		if tt.bindingBody == binding.XML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+./context_test.go-			assert.Equal(t, typeJSON{}, objJSON)
+--
+./context_test.go-		if tt.bindingBody == binding.YAML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+./context_test.go-			assert.Equal(t, typeJSON{}, objJSON)
+--
+./context_test.go-		if tt.bindingBody == binding.TOML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+./context_test.go-			assert.Equal(t, typeJSON{}, objJSON)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindBodyWithXML(t *testing.T) {
+./context_test.go-	for _, tt := range []struct {
+--
+./context_test.go-		if tt.bindingBody == binding.JSON {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithXML(&objXML))
+./context_test.go-			assert.Equal(t, typeXML{}, objXML)
+--
+./context_test.go-		if tt.bindingBody == binding.XML {
+./context_test.go:			require.NoError(t, c.ShouldBindBodyWithXML(&objXML))
+./context_test.go-			assert.Equal(t, typeXML{"FOO"}, objXML)
+--
+./context_test.go-		if tt.bindingBody == binding.YAML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithXML(&objXML))
+./context_test.go-			assert.Equal(t, typeXML{}, objXML)
+--
+./context_test.go-		if tt.bindingBody == binding.TOML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithXML(&objXML))
+./context_test.go-			assert.Equal(t, typeXML{}, objXML)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindBodyWithYAML(t *testing.T) {
+./context_test.go-	for _, tt := range []struct {
+--
+./context_test.go-		if tt.bindingBody == binding.JSON {
+./context_test.go:			require.NoError(t, c.ShouldBindBodyWithYAML(&objYAML))
+./context_test.go-			assert.Equal(t, typeYAML{"FOO"}, objYAML)
+--
+./context_test.go-		if tt.bindingBody == binding.XML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithYAML(&objYAML))
+./context_test.go-			assert.Equal(t, typeYAML{}, objYAML)
+--
+./context_test.go-		if tt.bindingBody == binding.YAML {
+./context_test.go:			require.NoError(t, c.ShouldBindBodyWithYAML(&objYAML))
+./context_test.go-			assert.Equal(t, typeYAML{"FOO"}, objYAML)
+--
+./context_test.go-		if tt.bindingBody == binding.TOML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithYAML(&objYAML))
+./context_test.go-			assert.Equal(t, typeYAML{}, objYAML)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindBodyWithTOML(t *testing.T) {
+./context_test.go-	for _, tt := range []struct {
+--
+./context_test.go-		if tt.bindingBody == binding.JSON {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithTOML(&objTOML))
+./context_test.go-			assert.Equal(t, typeTOML{}, objTOML)
+--
+./context_test.go-		if tt.bindingBody == binding.XML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithTOML(&objTOML))
+./context_test.go-			assert.Equal(t, typeTOML{}, objTOML)
+--
+./context_test.go-		if tt.bindingBody == binding.YAML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithTOML(&objTOML))
+./context_test.go-			assert.Equal(t, typeTOML{}, objTOML)
+--
+./context_test.go-		if tt.bindingBody == binding.TOML {
+./context_test.go:			require.NoError(t, c.ShouldBindBodyWithTOML(&objTOML))
+./context_test.go-			assert.Equal(t, typeTOML{"FOO"}, objTOML)
+--
+./context_test.go-
+./context_test.go:func TestContextShouldBindBodyWithPlain(t *testing.T) {
+./context_test.go-	for _, tt := range []struct {
+--
+./context_test.go-			body := ""
+./context_test.go:			require.NoError(t, c.ShouldBindBodyWithPlain(&body))
+./context_test.go-			assert.Equal(t, "foo=FOO", body)
+--
+./context_test.go-		if tt.bindingBody == binding.JSON {
+./context_test.go:			require.NoError(t, c.ShouldBindBodyWithJSON(&objJSON))
+./context_test.go-			assert.Equal(t, typeJSON{"FOO"}, objJSON)
+--
+./context_test.go-		if tt.bindingBody == binding.XML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+./context_test.go-			assert.Equal(t, typeJSON{}, objJSON)
+--
+./context_test.go-		if tt.bindingBody == binding.YAML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+./context_test.go-			assert.Equal(t, typeJSON{}, objJSON)
+--
+./context_test.go-		if tt.bindingBody == binding.TOML {
+./context_test.go:			require.Error(t, c.ShouldBindBodyWithJSON(&objJSON))
+./context_test.go-			assert.Equal(t, typeJSON{}, objJSON)
+--
+./routes_test.go-		var body search
+./routes_test.go:		require.NoError(t, c.ShouldBindJSON(&body))
+./routes_test.go-		c.String(http.StatusOK, body.Term)
+--
+./CHANGELOG.md-- feat(auth): add proxy-server authentication (#3877) (@EndlessParadox1)
+./CHANGELOG.md:- feat(bind): ShouldBindBodyWith shortcut and change doc (#3871) (@RedCrazyGhost)
+./CHANGELOG.md-- feat(binding): Support custom BindUnmarshaler for binding. (#3933) (@dkkb)
+--
+./CHANGELOG.md-- chore(http): use white color for HTTP 1XX (#3741) (@viralparmarme)
+./CHANGELOG.md:- chore(optimize): the ShouldBindUri method of the Context struct (#3911) (@1911860538)
+./CHANGELOG.md-- chore(perf): Optimize the Copy method of the Context struct (#3859) (@1911860538)
+--
+./CHANGELOG.md-- [NEW] Set default time format in form binding [#1487](https://github.com/gin-gonic/gin/pull/1487)
+./CHANGELOG.md:- [FIX] Add BindXML and ShouldBindXML [#1485](https://github.com/gin-gonic/gin/pull/1485)
+./CHANGELOG.md-- [NEW] Upgrade dependency libraries [#1491](https://github.com/gin-gonic/gin/pull/1491)
+--
+./CHANGELOG.md-- [NEW] Add [`func (*Context) DataFromReader`](https://godoc.org/github.com/gin-gonic/gin#Context.DataFromReader) for serving dynamic data, see [#1304](https://github.com/gin-gonic/gin/pull/1304)
+./CHANGELOG.md:- [NEW] Add [`func (*Context) ShouldBindBodyWith`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBindBodyWith) allowing to call binding multiple times, see [#1341](https://github.com/gin-gonic/gin/pull/1341)
+./CHANGELOG.md-- [NEW] Support pointers in form binding, see [#1336](https://github.com/gin-gonic/gin/pull/1336)
+--
+./CHANGELOG.md-- [NEW] Expose validator engine in [`type StructValidator`](https://godoc.org/github.com/gin-gonic/gin/binding#StructValidator), see [#1277](https://github.com/gin-gonic/gin/pull/1277)
+./CHANGELOG.md:- [NEW] Add [`func (*Context) ShouldBind`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBind), [`func (*Context) ShouldBindQuery`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBindQuery) and [`func (*Context) ShouldBindJSON`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBindJSON), see [#1047](https://github.com/gin-gonic/gin/pull/1047)
+./CHANGELOG.md-- [NEW] Add support for `time.Time` location in form binding, see [#1117](https://github.com/gin-gonic/gin/pull/1117)
+--
+./CHANGELOG.md-- [NEW] Add \*context.Keys type cast helpers
+./CHANGELOG.md:- [NEW] Add \*context.ShouldBindWith()
+./CHANGELOG.md-- [NEW] Add \*context.MustBindWith()
+--
+./deprecated.go-//
+./deprecated.go:// Deprecated: Use MustBindWith or ShouldBindWith.
+./deprecated.go-func (c *Context) BindWith(obj any, b binding.Binding) error {
+--
+./deprecated.go-	want HTTP 400 to be automatically returned if any error occur, or use
+./deprecated.go:	ShouldBindWith() if you need to manage the error.`)
+./deprecated.go-	return c.MustBindWith(obj, b)
+--
+./docs/doc.md-    }
+./docs/doc.md:    if err := c.ShouldBindJSON(&query); err != nil {
+./docs/doc.md-      c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+./docs/doc.md-  - **Methods** - `Bind`, `BindJSON`, `BindXML`, `BindQuery`, `BindYAML`, `BindHeader`, `BindTOML`
+./docs/doc.md:  - **Behavior** - These methods use `MustBindWith` under the hood. If there is a binding error, the request is aborted with `c.AbortWithError(400, err).SetType(ErrorTypeBind)`. This sets the response status code to 400 and the `Content-Type` header is set to `text/plain; charset=utf-8`. Note that if you try to set the response code after this, it will result in a warning `[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 400 with 422`. If you wish to have greater control over the behavior, consider using the `ShouldBind` equivalent method.
+./docs/doc.md-- **Type** - Should bind
+./docs/doc.md:  - **Methods** - `ShouldBind`, `ShouldBindJSON`, `ShouldBindXML`, `ShouldBindQuery`, `ShouldBindYAML`, `ShouldBindHeader`, `ShouldBindTOML`,
+./docs/doc.md:  - **Behavior** - These methods use `ShouldBindWith` under the hood. If there is a binding error, the error is returned and it is the developer's responsibility to handle the request and error appropriately.
+./docs/doc.md-
+./docs/doc.md:When using the Bind-method, Gin tries to infer the binder depending on the Content-Type header. If you are sure what you are binding, you can use `MustBindWith` or `ShouldBindWith`.
+./docs/doc.md-
+--
+./docs/doc.md-    var json Login
+./docs/doc.md:    if err := c.ShouldBindJSON(&json); err != nil {
+./docs/doc.md-      c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+./docs/doc.md-    var xml Login
+./docs/doc.md:    if err := c.ShouldBindXML(&xml); err != nil {
+./docs/doc.md-      c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+./docs/doc.md-    // This will infer what binder to use depending on the content-type header.
+./docs/doc.md:    if err := c.ShouldBind(&form); err != nil {
+./docs/doc.md-      c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+./docs/doc.md-  var b Booking
+./docs/doc.md:  if err := c.ShouldBindWith(&b, binding.Query); err == nil {
+./docs/doc.md-    c.JSON(http.StatusOK, gin.H{"message": "Booking dates are valid!"})
+--
+./docs/doc.md-
+./docs/doc.md:`ShouldBindQuery` function only binds the query params and not the post data. See the [detail information](https://github.com/gin-gonic/gin/issues/742#issuecomment-315953017).
+./docs/doc.md-
+--
+./docs/doc.md-  var person Person
+./docs/doc.md:  if c.ShouldBindQuery(&person) == nil {
+./docs/doc.md-    log.Println("====== Only Bind By Query String ======")
+--
+./docs/doc.md-  // See more at https://github.com/gin-gonic/gin/blob/master/binding/binding.go#L88
+./docs/doc.md:  if c.ShouldBind(&person) == nil {
+./docs/doc.md-    log.Println(person.Name)
+--
+./docs/doc.md-    var req Person
+./docs/doc.md:    if err := c.ShouldBindQuery(&req); err != nil {
+./docs/doc.md-      c.JSON(http.StatusBadRequest, err)
+--
+./docs/doc.md-  // See more at https://github.com/gin-gonic/gin/blob/master/binding/binding.go#L48
+./docs/doc.md:        if c.ShouldBind(&person) == nil {
+./docs/doc.md-                log.Println(person.Name)
+--
+./docs/doc.md-    var person Person
+./docs/doc.md:    if err := c.ShouldBindUri(&person); err != nil {
+./docs/doc.md-      c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+--
+./docs/doc.md-
+./docs/doc.md:    if err := c.ShouldBindHeader(&h); err != nil {
+./docs/doc.md-      c.JSON(http.StatusOK, err)
+--
+./docs/doc.md-    var fakeForm myForm
+./docs/doc.md:    c.ShouldBind(&fakeForm)
+./docs/doc.md-    c.JSON(http.StatusOK, gin.H{"color": fakeForm.Colors})
+--
+./docs/doc.md-    // you can bind multipart form with explicit binding declaration:
+./docs/doc.md:    // c.ShouldBindWith(&form, binding.Form)
+./docs/doc.md:    // or you can simply use autobinding with ShouldBind method:
+./docs/doc.md-    var form ProfileForm
+./docs/doc.md-    // in this case proper binding will be automatically selected
+./docs/doc.md:    if err := c.ShouldBind(&form); err != nil {
+./docs/doc.md-      c.String(http.StatusBadRequest, "bad request")
+--
+./docs/doc.md-  objB := formB{}
+./docs/doc.md:  // Calling c.ShouldBind consumes c.Request.Body and it cannot be reused.
+./docs/doc.md:  if errA := c.ShouldBind(&objA); errA == nil {
+./docs/doc.md-    c.String(http.StatusOK, `the body should be formA`)
+./docs/doc.md-  // Always an error is occurred by this because c.Request.Body is EOF now.
+./docs/doc.md:  } else if errB := c.ShouldBind(&objB); errB == nil {
+./docs/doc.md-    c.String(http.StatusOK, `the body should be formB`)
+--
+./docs/doc.md-
+./docs/doc.md:For this, you can use `c.ShouldBindBodyWith` or shortcuts.
+./docs/doc.md-
+./docs/doc.md:- `c.ShouldBindBodyWithJSON` is a shortcut for c.ShouldBindBodyWith(obj, binding.JSON).
+./docs/doc.md:- `c.ShouldBindBodyWithXML` is a shortcut for c.ShouldBindBodyWith(obj, binding.XML).
+./docs/doc.md:- `c.ShouldBindBodyWithYAML` is a shortcut for c.ShouldBindBodyWith(obj, binding.YAML).
+./docs/doc.md:- `c.ShouldBindBodyWithTOML` is a shortcut for c.ShouldBindBodyWith(obj, binding.TOML).
+./docs/doc.md-
+--
+./docs/doc.md-  // This reads c.Request.Body and stores the result into the context.
+./docs/doc.md:  if errA := c.ShouldBindBodyWith(&objA, binding.Form); errA == nil {
+./docs/doc.md-    c.String(http.StatusOK, `the body should be formA`)
+./docs/doc.md-  // At this time, it reuses body stored in the context.
+./docs/doc.md:  } else if errB := c.ShouldBindBodyWith(&objB, binding.JSON); errB == nil {
+./docs/doc.md-    c.String(http.StatusOK, `the body should be formB JSON`)
+./docs/doc.md-  // And it can accepts other formats
+./docs/doc.md:  } else if errB2 := c.ShouldBindBodyWithXML(&objB); errB2 == nil {
+./docs/doc.md-    c.String(http.StatusOK, `the body should be formB XML`)
+--
+./docs/doc.md-
+./docs/doc.md:1. `c.ShouldBindBodyWith` stores body into the context before binding. This has
+./docs/doc.md-   a slight impact to performance, so you should not use this method if you are
+--
+./docs/doc.md-   `ProtoBuf`. For other formats, `Query`, `Form`, `FormPost`, `FormMultipart`,
+./docs/doc.md:   can be called by `c.ShouldBind()` multiple times without any damage to
+./docs/doc.md-   performance (See [#1341](https://github.com/gin-gonic/gin/pull/1341)).

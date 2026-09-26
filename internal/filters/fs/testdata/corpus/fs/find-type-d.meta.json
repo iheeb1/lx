@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "find",
+    "packages/vite/src",
+    "-type",
+    "d"
+  ],
+  "shell": "find packages/vite/src -type d",
+  "exit_code": 0,
+  "description": "find -type d in a package",
+  "cwd": "/home/user/src/vite"
+}

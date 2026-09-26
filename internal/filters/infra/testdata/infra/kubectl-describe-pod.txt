@@ -1,0 +1,108 @@
+Name:             api-7d9f8b6c5d-8vtzn
+Namespace:        shop
+Priority:         0
+Service Account:  api
+Node:             node-2/10.0.1.12
+Start Time:       Sat, 26 Sep 2026 09:12:03 +0000
+Labels:           app=api
+                  pod-template-hash=7d9f8b6c5d
+                  version=1.8.2
+Annotations:      kubectl.kubernetes.io/restartedAt: 2026-09-26T09:11:58Z
+Status:           Running
+IP:               10.244.2.17
+IPs:
+  IP:           10.244.2.17
+Controlled By:  ReplicaSet/api-7d9f8b6c5d
+Init Containers:
+  migrate:
+    Container ID:  containerd://62c66a7a5dd70c3146618063c344e531e6d4b59e379808443ce962b3abd63c5a
+    Image:         registry.example.com/shop/api:1.8.2
+    Image ID:      registry.example.com/shop/api@sha256:de7d1b721a1e0632b7cf04edf5032c8ecffa9f9a08492152b926f1a5a7e765d7
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      /app/api
+      migrate
+      --up
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Sat, 26 Sep 2026 09:12:05 +0000
+      Finished:     Sat, 26 Sep 2026 09:12:07 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      DATABASE_URL:  <set to the key 'url' in secret 'api-db'>  Optional: false
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-x7k2p (ro)
+Containers:
+  api:
+    Container ID:   containerd://ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb
+    Image:          registry.example.com/shop/api:1.8.2
+    Image ID:       registry.example.com/shop/api@sha256:de7d1b721a1e0632b7cf04edf5032c8ecffa9f9a08492152b926f1a5a7e765d7
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    Args:
+      serve
+      --config=/etc/shop/api.yaml
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Sat, 26 Sep 2026 09:57:10 +0000
+      Finished:     Sat, 26 Sep 2026 09:57:12 +0000
+    Ready:          False
+    Restart Count:  12
+    Limits:
+      memory:  512Mi
+    Requests:
+      cpu:      100m
+      memory:   256Mi
+    Liveness:   http-get http://:8080/healthz delay=10s timeout=1s period=10s #success=1 #failure=3
+    Readiness:  http-get http://:8080/ready delay=5s timeout=1s period=5s #success=1 #failure=3
+    Environment:
+      DATABASE_URL:  <set to the key 'url' in secret 'api-db'>  Optional: false
+      REDIS_ADDR:    redis.shop.svc.cluster.local:6379
+      LOG_LEVEL:     info
+    Mounts:
+      /etc/shop from config (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-x7k2p (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       False
+  ContainersReady             False
+  PodScheduled                True
+Volumes:
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      api-config
+    Optional:  false
+  kube-api-access-x7k2p:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                   From               Message
+  ----     ------     ----                  ----               -------
+  Normal   Scheduled  47m                   default-scheduler  Successfully assigned shop/api-7d9f8b6c5d-8vtzn to node-2
+  Normal   Pulled     47m                   kubelet            Container image "registry.example.com/shop/api:1.8.2" already present on machine
+  Normal   Created    47m                   kubelet            Created container: migrate
+  Normal   Started    47m                   kubelet            Started container migrate
+  Normal   Pulled     45m (x5 over 47m)     kubelet            Container image "registry.example.com/shop/api:1.8.2" already present on machine
+  Normal   Created    45m (x5 over 47m)     kubelet            Created container: api
+  Normal   Started    45m (x5 over 47m)     kubelet            Started container api
+  Warning  Unhealthy  44m (x9 over 47m)     kubelet            Readiness probe failed: Get "http://10.244.2.17:8080/ready": dial tcp 10.244.2.17:8080: connect: connection refused
+  Normal   Pulled     20m (x4 over 40m)     kubelet            Container image "registry.example.com/shop/api:1.8.2" already present on machine
+  Normal   Created    20m (x4 over 40m)     kubelet            Created container: api
+  Normal   Started    20m (x4 over 40m)     kubelet            Started container api
+  Warning  Unhealthy  19m (x6 over 40m)     kubelet            Readiness probe failed: Get "http://10.244.2.17:8080/ready": dial tcp 10.244.2.17:8080: connect: connection refused
+  Warning  BackOff    2m14s (x210 over 47m)  kubelet            Back-off restarting failed container api in pod api-7d9f8b6c5d-8vtzn_shop(5b0d9e8a-4c1f-4e2b-9a7d-3f6e8c1b2a90)

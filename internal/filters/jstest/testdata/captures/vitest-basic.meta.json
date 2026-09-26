@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--reporter=basic",
+    "test/ok.test.ts"
+  ],
+  "shell": "npx vitest run --reporter=basic test/ok.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4 --reporter=basic (removed in v3+?)",
+  "cwd": "repos/vitproj"
+}

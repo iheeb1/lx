@@ -1,0 +1,16 @@
+NAME                       READY   STATUS             RESTARTS         AGE
+pod/api-7d9f8b6c5d-2xkqp   1/1     Running            0                3d4h
+pod/api-7d9f8b6c5d-8vtzn   0/1     CrashLoopBackOff   12 (2m14s ago)   47m
+pod/web-6b8f7c9d4-h2k8s    1/1     Running            1 (2d ago)       3d4h
+
+NAME          TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)                      AGE
+service/api   ClusterIP      10.96.12.40   <none>         8080/TCP                     212d
+service/web   LoadBalancer   10.96.80.2    203.0.113.10   80:31080/TCP,443:31443/TCP   212d
+
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/api   2/3     3            2           212d
+deployment.apps/web   1/1     1            1           212d
+
+NAME                             DESIRED   CURRENT   READY   AGE
+replicaset.apps/api-7d9f8b6c5d   3         3         2       47m
+replicaset.apps/web-6b8f7c9d4    1         1         1       3d4h

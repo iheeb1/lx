@@ -1,0 +1,6 @@
+Package           Current  Latest
+request           2.88.2   Deprecated
+lodash            4.17.20  4.18.1
+express           4.17.1   5.2.1
+glob (dev)        7.2.3    13.0.6
+typescript (dev)  5.0.4    7.0.2

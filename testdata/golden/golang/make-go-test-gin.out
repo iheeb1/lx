@@ -1,0 +1,30 @@
+echo "mode: count" > coverage.out
+for d in github.com/gin-gonic/gin github.com/gin-gonic/gin/binding github.com/gin-gonic/gin/ginS github.com/gin-gonic/gin/render; do \
+		if [ -n """" ]; then \
+			go test "" -v -covermode=count -coverprofile=profile.out $d > tmp.out; \
+		else \
+			go test -v -covermode=count -coverprofile=profile.out $d > tmp.out; \
+		fi; \
+		cat tmp.out; \
+		if grep -q "^--- FAIL" tmp.out; then \
+			rm tmp.out; \
+			exit 1; \
+		elif grep -q "build failed" tmp.out; then \
+			rm tmp.out; \
+			exit 1; \
+		elif grep -q "setup failed" tmp.out; then \
+			rm tmp.out; \
+			exit 1; \
+		fi; \
+		if [ -f profile.out ]; then \
+			cat profile.out | grep -v "mode:" >> coverage.out; \
+			rm profile.out; \
+		fi; \
+	done
+--- SKIP: TestPathCleanMallocs (0.00s)
+    path_test.go:85: skipping malloc count; GOMAXPROCS>1
+ok  	github.com/gin-gonic/gin	0.800s	coverage: 98.4% of statements
+ok  	github.com/gin-gonic/gin/binding	0.504s	coverage: 99.8% of statements
+ok  	github.com/gin-gonic/gin/ginS	0.462s	coverage: 74.1% of statements
+ok  	github.com/gin-gonic/gin/render	0.503s	coverage: 100.0% of statements
+[725 passed, 1 skipped (incl. subtests) · hidden: 1451 === RUN/--- PASS lines, 51 lines of passing-test output]

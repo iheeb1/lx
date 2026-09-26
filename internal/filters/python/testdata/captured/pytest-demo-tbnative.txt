@@ -1,0 +1,220 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0
+rootdir: /home/user/src/demo
+configfile: pyproject.toml
+collected 15 items
+
+tests/test_models.py ....F......FEsx                                     [100%]
+
+==================================== ERRORS ====================================
+________________________ ERROR at setup of test_uses_db ________________________
+Traceback (most recent call last):
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 341, in from_call
+    result: TResult | None = func()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 242, in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/unraisableexception.py", line 90, in pytest_runtest_setup
+    yield from unraisable_exception_runtest_hook()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/unraisableexception.py", line 70, in unraisable_exception_runtest_hook
+    yield
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/logging.py", line 840, in pytest_runtest_setup
+    yield from self._runtest_for(item, "setup")
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/logging.py", line 829, in _runtest_for
+    yield
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/capture.py", line 875, in pytest_runtest_setup
+    return (yield)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/threadexception.py", line 87, in pytest_runtest_setup
+    yield from thread_exception_runtest_hook()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/threadexception.py", line 68, in thread_exception_runtest_hook
+    yield
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 160, in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 514, in setup
+    col.setup()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/python.py", line 1630, in setup
+    self._request._fillfixtures()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/fixtures.py", line 697, in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/fixtures.py", line 532, in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/fixtures.py", line 617, in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/fixtures.py", line 1091, in execute
+    result = ihook.pytest_fixture_setup(fixturedef=self, request=request)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/setuponly.py", line 36, in pytest_fixture_setup
+    return (yield)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/fixtures.py", line 1140, in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/fixtures.py", line 898, in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+  File "/home/user/src/demo/tests/conftest.py", line 16, in db_conn
+    raise ConnectionError("database fixture unavailable: connection to 127.0.0.1:5432 refused")
+ConnectionError: database fixture unavailable: connection to 127.0.0.1:5432 refused
+=================================== FAILURES ===================================
+_____________________________ test_remove_unknown ______________________________
+Traceback (most recent call last):
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 341, in from_call
+    result: TResult | None = func()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 242, in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/threadexception.py", line 92, in pytest_runtest_call
+    yield from thread_exception_runtest_hook()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/threadexception.py", line 68, in thread_exception_runtest_hook
+    yield
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/unraisableexception.py", line 95, in pytest_runtest_call
+    yield from unraisable_exception_runtest_hook()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/unraisableexception.py", line 70, in unraisable_exception_runtest_hook
+    yield
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/logging.py", line 846, in pytest_runtest_call
+    yield from self._runtest_for(item, "call")
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/logging.py", line 829, in _runtest_for
+    yield
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/capture.py", line 880, in pytest_runtest_call
+    return (yield)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/skipping.py", line 257, in pytest_runtest_call
+    return (yield)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 174, in pytest_runtest_call
+    item.runtest()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/python.py", line 1627, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/python.py", line 159, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "/home/user/src/demo/tests/test_models.py", line 26, in test_remove_unknown
+    assert stock.remove("ZZ") == 0
+  File "/home/user/src/demo/inventory/models.py", line 33, in remove
+    have = self.counts[sku]
+KeyError: 'ZZ'
+______________________________ test_load_corrupt _______________________________
+Traceback (most recent call last):
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 341, in from_call
+    result: TResult | None = func()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 242, in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/threadexception.py", line 92, in pytest_runtest_call
+    yield from thread_exception_runtest_hook()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/threadexception.py", line 68, in thread_exception_runtest_hook
+    yield
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/unraisableexception.py", line 95, in pytest_runtest_call
+    yield from unraisable_exception_runtest_hook()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/unraisableexception.py", line 70, in unraisable_exception_runtest_hook
+    yield
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/logging.py", line 846, in pytest_runtest_call
+    yield from self._runtest_for(item, "call")
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/logging.py", line 829, in _runtest_for
+    yield
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/capture.py", line 880, in pytest_runtest_call
+    return (yield)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/skipping.py", line 257, in pytest_runtest_call
+    return (yield)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/runner.py", line 174, in pytest_runtest_call
+    item.runtest()
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/python.py", line 1627, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/home/user/venv/lib/python3.9/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/user/venv/lib/python3.9/site-packages/_pytest/python.py", line 159, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "/home/user/src/demo/tests/test_models.py", line 47, in test_load_corrupt
+    Stock.load(str(p))
+  File "/home/user/src/demo/inventory/models.py", line 52, in load
+    data = json.load(f)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 12 (char 11)
+=============================== warnings summary ===============================
+tests/test_models.py::test_legacy_total[1]
+tests/test_models.py::test_legacy_total[2]
+tests/test_models.py::test_legacy_total[3]
+tests/test_models.py::test_legacy_total[4]
+tests/test_models.py::test_legacy_total[5]
+  /home/user/src/demo/tests/test_models.py:32: DeprecationWarning: legacy_total() is deprecated, use total_price()
+    assert stock.legacy_total() == 16 + qty
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_models.py::test_remove_unknown - KeyError: 'ZZ'
+FAILED tests/test_models.py::test_load_corrupt - json.decoder.JSONDecodeError...
+ERROR tests/test_models.py::test_uses_db - ConnectionError: database fixture ...
+=== 2 failed, 10 passed, 1 skipped, 1 xfailed, 5 warnings, 1 error in 0.07s ====

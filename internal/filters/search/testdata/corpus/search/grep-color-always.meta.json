@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "grep",
+    "--color=always",
+    "-rn",
+    "ShouldBindJSON",
+    "binding",
+    "context.go"
+  ],
+  "shell": "grep --color=always -rn ShouldBindJSON binding context.go",
+  "exit_code": 0,
+  "description": "grep --color=always: ANSI escapes around path, number and match",
+  "cwd": "/home/user/src/gin"
+}

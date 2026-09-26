@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "shell": "npm run build",
+  "exit_code": 0,
+  "description": "npm run build with next 16 (turbopack): progress lines and the app route table with static, dynamic and SSG routes",
+  "cwd": "/home/user/src/next-app"
+}

@@ -1,0 +1,112 @@
+  console.log
+    fetching user { id: 3 }
+
+      at Object.log (test/user.test.js:16:13)
+
+  console.warn
+    deprecated lookup path
+
+      15 |   test("logs while failing", () => {
+      16 |     console.log("fetching user", { id: 3 });
+    > 17 |     console.warn("deprecated lookup path");
+         |             ^
+      18 |     const svc = new UserService({ find: () => ({ name: "bob" }) });
+      19 |     expect(svc.getName(3)).toEqual("Bob");
+      20 |   });
+
+      at Object.warn (test/user.test.js:17:13)
+
+FAIL test/user.test.js
+  UserService
+    ✓ returns upper-cased name (1 ms)
+    ✕ handles missing user
+    ✕ logs while failing (20 ms)
+  config
+    ✓ parses level
+    ✕ rejects bad json
+    ✕ object equality (1 ms)
+
+  ● UserService › handles missing user
+
+    TypeError: Cannot read properties of undefined (reading 'name')
+
+       5 |   getName(id) {
+       6 |     const row = this.db.find(id);
+    >  7 |     return row.name.toUpperCase();
+         |                ^
+       8 |   }
+       9 | }
+      10 | module.exports = { UserService };
+
+      at UserService.name [as getName] (src/user.js:7:16)
+      at Object.getName (test/user.test.js:12:16)
+
+  ● UserService › logs while failing
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: "Bob"
+    Received: "BOB"
+
+      17 |     console.warn("deprecated lookup path");
+      18 |     const svc = new UserService({ find: () => ({ name: "bob" }) });
+    > 19 |     expect(svc.getName(3)).toEqual("Bob");
+         |                            ^
+      20 |   });
+      21 | });
+      22 |
+
+      at Object.toEqual (test/user.test.js:19:28)
+
+  ● config › rejects bad json
+
+    SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+        at JSON.parse (<anonymous>)
+
+      11 |
+      12 | function parseConfig(text) {
+    > 13 |   const cfg = JSON.parse(text);
+         |                    ^
+      14 |   return cfg.settings.level;
+      15 | }
+      16 |
+
+      at parse (src/math.js:13:20)
+      at Object.parseConfig (test/user.test.js:28:12)
+
+  ● config › object equality
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+        "a": 1,
+        "b": Array [
+          1,
+          2,
+    -     4,
+    +     3,
+        ],
+        "c": Object {
+    -     "d": "y",
+    +     "d": "x",
+        },
+      }
+
+      29 |   });
+      30 |   test("object equality", () => {
+    > 31 |     expect({ a: 1, b: [1, 2, 3], c: { d: "x" } }).toEqual({ a: 1, b: [1, 2, 4], c: { d: "y" } });
+         |                                                   ^
+      32 |   });
+      33 | });
+      34 |
+
+      at Object.toEqual (test/user.test.js:31:51)
+
+Test Suites: 1 failed, 1 total
+Tests:       4 failed, 2 passed, 6 total
+Snapshots:   0 total
+Time:        0.22 s, estimated 1 s
+Ran all test suites matching /test\/user.test.js/i.

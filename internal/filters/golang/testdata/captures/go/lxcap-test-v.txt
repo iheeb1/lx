@@ -1,0 +1,143 @@
+# example.com/lxcap/setup
+setup/s_test.go:6:2: no required module provides package example.com/doesnotexist/pkg; to add it:
+	go get example.com/doesnotexist/pkg
+FAIL	example.com/lxcap/setup [setup failed]
+# example.com/lxcap/buildfail [example.com/lxcap/buildfail.test]
+buildfail/b_test.go:6:5: undefined: Triple
+buildfail/b_test.go:9:6: declared and not used: unused
+FAIL	example.com/lxcap/buildfail [build failed]
+# example.com/lxcap/vetfail
+# [example.com/lxcap/vetfail]
+vetfail/v.go:5:60: fmt.Sprintf format %d has arg name of wrong type string
+=== RUN   TestDeadlock
+panic: test timed out after 5s
+	running tests:
+		TestDeadlock (5s)
+
+goroutine 8 [running]:
+testing.(*M).startAlarm.func1()
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2802 +0x2cc
+created by time.goFunc
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/time/sleep.go:215 +0x38
+
+goroutine 1 [chan receive]:
+testing.(*T).Run(0x23d235a68008, {0x100c0fddb?, 0x38184a6000bca9e0?}, 0x100d63ef8)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2109 +0x3bc
+testing.runTests.func1(0x23d235a68008)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2585 +0x40
+testing.tRunner(0x23d235a68008, 0x23d235a34c48)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4
+testing.runTests({0x100c1137d, 0x11}, {0x100c12c67, 0x16}, 0x23d2359c0030, {0x100d85100, 0x1, 0x1}, {0x8080806c532b0a53?, 0x100c10b0f?, ...})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2583 +0x3f0
+testing.(*M).Run(0x23d235a38140)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2443 +0x578
+main.main()
+	_testmain.go:46 +0x80
+
+goroutine 7 [chan send]:
+example.com/lxcap/dead.TestDeadlock(0x23d235a68248?)
+	/home/user/src/lxcap/dead/dead_test.go:7 +0x34
+testing.tRunner(0x23d235a68248, 0x100d63ef8)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4
+created by testing.(*T).Run in goroutine 1
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x3a8
+FAIL	example.com/lxcap/dead	5.957s
+=== RUN   TestLoadConfig
+2026/09/26 02:48:12 config file testdata/app.yaml missing
+FAIL	example.com/lxcap/exit	1.368s
+?   	example.com/lxcap/notests	[no test files]
+=== RUN   TestOK
+--- PASS: TestOK (0.00s)
+PASS
+ok  	example.com/lxcap/ok1	(cached)
+=== RUN   TestOK
+--- PASS: TestOK (0.00s)
+PASS
+ok  	example.com/lxcap/ok2	(cached)
+=== RUN   TestOK
+--- PASS: TestOK (0.00s)
+PASS
+ok  	example.com/lxcap/ok3	(cached)
+=== RUN   TestOK
+--- PASS: TestOK (0.00s)
+PASS
+ok  	example.com/lxcap/ok4	(cached)
+=== RUN   TestParallel
+=== RUN   TestParallel/small
+=== PAUSE TestParallel/small
+=== RUN   TestParallel/conflict
+=== PAUSE TestParallel/conflict
+=== RUN   TestParallel/large
+=== PAUSE TestParallel/large
+=== RUN   TestParallel/negative
+=== PAUSE TestParallel/negative
+=== CONT  TestParallel/small
+=== CONT  TestParallel/conflict
+=== CONT  TestParallel/large
+=== CONT  TestParallel/negative
+    par_test.go:23: adding -1 + -1
+=== NAME  TestParallel/large
+    par_test.go:23: adding 100 + 200
+=== NAME  TestParallel/conflict
+    par_test.go:23: adding 2 + 2
+    par_test.go:25: Add(2, 2) = 4, want 5
+=== NAME  TestParallel/small
+    par_test.go:23: adding 1 + 2
+=== NAME  TestParallel/negative
+    par_test.go:25: Add(-1, -1) = -2, want -3
+--- FAIL: TestParallel (0.00s)
+    --- FAIL: TestParallel/conflict (0.01s)
+    --- PASS: TestParallel/large (0.01s)
+    --- PASS: TestParallel/small (0.01s)
+    --- FAIL: TestParallel/negative (0.01s)
+=== RUN   TestSequential
+    par_test.go:32: sequential runs fine
+--- PASS: TestSequential (0.00s)
+FAIL
+FAIL	example.com/lxcap/par	1.927s
+=== RUN   TestRace
+--- PASS: TestRace (0.00s)
+PASS
+ok  	example.com/lxcap/race	(cached)
+=== RUN   TestNeedsDocker
+    skip_test.go:5: docker not available
+--- SKIP: TestNeedsDocker (0.00s)
+=== RUN   TestNeedsNetwork
+    skip_test.go:6: set LX_NET=1 to run
+--- SKIP: TestNeedsNetwork (0.00s)
+=== RUN   TestLogs
+    skip_test.go:9: step 0 ok
+    skip_test.go:9: step 1 ok
+    skip_test.go:9: step 2 ok
+--- PASS: TestLogs (0.00s)
+PASS
+ok  	example.com/lxcap/skip	(cached)
+=== RUN   TestTree
+=== RUN   TestTree/leaf
+=== RUN   TestTree/nil_next
+--- FAIL: TestTree (0.00s)
+    --- PASS: TestTree/leaf (0.00s)
+    --- FAIL: TestTree/nil_next (0.00s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal SIGSEGV: segmentation violation code=0x2 addr=0x0 pc=0x104cc824c]
+
+goroutine 9 [running]:
+testing.tRunner.func1.2({0x104dfebe0, 0x104e48cb0})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1974 +0x1a0
+testing.tRunner.func1()
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1977 +0x318
+panic({0x104dfebe0?, 0x104e48cb0?})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/runtime/panic.go:860 +0x12c
+example.com/lxcap/sub.sum(0x0)
+	/home/user/src/lxcap/sub/sub_test.go:10 +0x1c
+example.com/lxcap/sub.sum(...)
+	/home/user/src/lxcap/sub/sub_test.go:10
+example.com/lxcap/sub.TestTree.func2(0x72cde15b26c8)
+	/home/user/src/lxcap/sub/sub_test.go:15 +0x2c
+testing.tRunner(0x72cde15b26c8, 0x104e27f88)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4
+created by testing.(*T).Run in goroutine 7
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x3a8
+FAIL	example.com/lxcap/sub	2.603s
+FAIL	example.com/lxcap/vetfail [build failed]
+FAIL

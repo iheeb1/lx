@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "find",
+    "packages",
+    "-name",
+    "*test*",
+    "-not",
+    "-path",
+    "*/node_modules/*"
+  ],
+  "shell": "find packages -name *test* -not -path */node_modules/*",
+  "exit_code": 0,
+  "description": "find -name matching directories as well as files (leaf directories)",
+  "cwd": "/home/user/src/vite"
+}

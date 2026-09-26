@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "rg",
+    "-n",
+    "-C2",
+    "hmr",
+    "packages/vite/src/node"
+  ],
+  "shell": "rg -n -C2 hmr packages/vite/src/node",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "rg -n -C2 hmr in vite's node sources: matches with 2 lines of context and -- separators",
+  "cwd": "repos/vite"
+}

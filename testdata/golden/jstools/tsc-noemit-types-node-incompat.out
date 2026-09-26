@@ -1,0 +1,50 @@
+node_modules/@types/node/ffi.d.ts(94,21): error TS1139: Type parameter declaration expected.
+node_modules/@types/node/ffi.d.ts(94,29): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(95,13): error TS1005: ')' expected.
+node_modules/@types/node/ffi.d.ts(95,22): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(96,21): error TS1109: Expression expected.
+node_modules/@types/node/ffi.d.ts(97,5): error TS1109: Expression expected.
+node_modules/@types/node/ffi.d.ts(97,6): error TS1128: Declaration or statement expected.
+node_modules/@types/node/ffi.d.ts(206,21): error TS1139: Type parameter declaration expected.
+node_modules/@types/node/ffi.d.ts(206,27): error TS1434: Unexpected keyword or identifier.
+node_modules/@types/node/ffi.d.ts(206,29): error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+node_modules/@types/node/ffi.d.ts(206,37): error TS1434: Unexpected keyword or identifier.
+node_modules/@types/node/ffi.d.ts(206,54): error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+node_modules/@types/node/ffi.d.ts(206,60): error TS1005: ')' expected.
+node_modules/@types/node/ffi.d.ts(206,79): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(206,81): error TS1434: Unexpected keyword or identifier.
+node_modules/@types/node/ffi.d.ts(206,82): error TS1128: Declaration or statement expected.
+node_modules/@types/node/ffi.d.ts(206,83): error TS1128: Declaration or statement expected.
+node_modules/@types/node/ffi.d.ts(214,23): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(214,34): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(214,43): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(215,22): error TS1109: Expression expected.
+node_modules/@types/node/ffi.d.ts(215,30): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(215,57): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(215,70): error TS1005: ')' expected.
+node_modules/@types/node/ffi.d.ts(215,72): error TS1434: Unexpected keyword or identifier.
+node_modules/@types/node/ffi.d.ts(215,73): error TS1128: Declaration or statement expected.
+node_modules/@types/node/ffi.d.ts(215,74): error TS1128: Declaration or statement expected.
+node_modules/@types/node/ffi.d.ts(219,23): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(219,32): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(223,21): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(256,34): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(256,46): error TS1109: Expression expected.
+node_modules/@types/node/ffi.d.ts(256,47): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(257,26): error TS1109: Expression expected.
+node_modules/@types/node/ffi.d.ts(257,34): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(257,59): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(258,22): error TS1005: ')' expected.
+node_modules/@types/node/ffi.d.ts(259,21): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(260,9): error TS1109: Expression expected.
+node_modules/@types/node/ffi.d.ts(260,10): error TS1128: Declaration or statement expected.
+node_modules/@types/node/ffi.d.ts(273,35): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(273,44): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(273,50): error TS1109: Expression expected.
+node_modules/@types/node/ffi.d.ts(277,28): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(277,37): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(277,43): error TS1109: Expression expected.
+node_modules/@types/node/ffi.d.ts(285,30): error TS1005: ',' expected.
+node_modules/@types/node/ffi.d.ts(285,39): error TS1005: ';' expected.
+node_modules/@types/node/ffi.d.ts(285,45): error TS1109: Expression expected.
+node_modules/@types/node/ffi.d.ts(500,1): error TS1128: Declaration or statement expected.

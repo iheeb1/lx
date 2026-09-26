@@ -1,0 +1,496 @@
+
+> luxon@3.7.2 test
+> jest --coverage
+
+PASS test/zones/local.test.js (5.101 s)
+PASS test/interval/parse.test.js (5.158 s)
+PASS test/info/zones.test.js (5.169 s)
+FAIL test/info/listers.test.js (5.21 s)
+  ● Info.months lists all the months
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+
+      26 |   ]);
+      27 |
+    > 28 |   expect(Info.months("short", { locale: "en" })).toEqual([
+         |                                                  ^
+      29 |     "Jan",
+      30 |     "Feb",
+      31 |     "Mar",
+
+      at Object.toEqual (test/info/listers.test.js:28:50)
+
+  ● Info.monthsFormat lists all the months
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+
+      229 |   ]);
+      230 |
+    > 231 |   expect(Info.monthsFormat("short", { locale: "en" })).toEqual([
+          |                                                        ^
+      232 |     "Jan",
+      233 |     "Feb",
+      234 |     "Mar",
+
+      at Object.toEqual (test/info/listers.test.js:231:56)
+
+PASS test/datetime/zone.test.js (5.141 s)
+FAIL test/datetime/format.test.js (5.41 s)
+  ● DateTime#toISO() handles negative years
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "-012345-05-25T09:23:54.123Z"
+    Received: "-12345-05-25T09:23:54.123Z"
+
+      124 | test("DateTime#toISO() handles negative years", () => {
+      125 |   const negativeYear = dt.set({ year: -12345 });
+    > 126 |   expect(negativeYear.toISO()).toBe("-012345-05-25T09:23:54.123Z");
+          |                                ^
+      127 | });
+      128 |
+      129 | test("DateTime#toISO() default to Z when timezone is 00:00", () => {
+
+      at Object.toBe (test/datetime/format.test.js:126:32)
+
+  ● DateTime#toISODate() correctly pads negative years
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "-000001-01-01"
+    Received: "0000-1-01-01"
+
+      205 |
+      206 | test("DateTime#toISODate() correctly pads negative years", () => {
+    > 207 |   expect(DateTime.fromObject({ year: -1, month: 1, day: 1 }, { zone: "utc" }).toISODate()).toBe(
+          |                                                                                            ^
+      208 |     "-000001-01-01"
+      209 |   );
+      210 |   expect(DateTime.fromObject({ year: -10, month: 1, day: 1 }, { zone: "utc" }).toISODate()).toBe(
+
+      at Object.toBe (test/datetime/format.test.js:207:92)
+
+PASS test/datetime/toFormat.test.js
+PASS test/datetime/relative.test.js
+PASS test/datetime/set.test.js
+PASS test/datetime/math.test.js
+FAIL test/datetime/tokenParse.test.js (5.708 s)
+  ● DateTime.fromFormat() defaults yy to the right century
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2060
+    Received: 1960
+
+      151 |
+      152 | test("DateTime.fromFormat() defaults yy to the right century", () => {
+    > 153 |   expect(DateTime.fromFormat("60", "yy").year).toBe(2060);
+          |                                                ^
+      154 |   expect(DateTime.fromFormat("61", "yy").year).toBe(1961);
+      155 |   expect(DateTime.fromFormat("1960", "yy").year).toBe(1960);
+      156 | });
+
+      at Object.toBe (test/datetime/tokenParse.test.js:153:48)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing yy to the right century
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2050
+    Received: 1950
+
+      161 |   try {
+      162 |     Settings.twoDigitCutoffYear = 50;
+    > 163 |     expect(DateTime.fromFormat("50", "yy").year).toBe(2050);
+          |                                                  ^
+      164 |     expect(DateTime.fromFormat("51", "yy").year).toBe(1951);
+      165 |     expect(DateTime.fromFormat("1950", "yy").year).toBe(1950);
+      166 |   } finally {
+
+      at Object.toBe (test/datetime/tokenParse.test.js:163:50)
+
+  ● DateTime.fromFormat() parses standalone month names
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1982
+    Received: NaN
+
+      260 |
+      261 |   i = DateTime.fromFormat("Sep 25 1982", "LLL dd yyyy");
+    > 262 |   expect(i.year).toBe(1982);
+          |                  ^
+      263 |   expect(i.month).toBe(9);
+      264 |   expect(i.day).toBe(25);
+      265 |
+
+      at Object.toBe (test/datetime/tokenParse.test.js:262:18)
+
+  ● DateTime.fromFormat() parses format month names
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1982
+    Received: NaN
+
+      292 |
+      293 |   i = DateTime.fromFormat("Sep 25 1982", "MMM dd yyyy");
+    > 294 |   expect(i.year).toBe(1982);
+          |                  ^
+      295 |   expect(i.month).toBe(9);
+      296 |   expect(i.day).toBe(25);
+      297 |
+
+      at Object.toBe (test/datetime/tokenParse.test.js:294:18)
+
+  ● DateTime.fromFormat() defaults kk to the right century
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2060
+    Received: 1960
+
+      446 |
+      447 | test("DateTime.fromFormat() defaults kk to the right century", () => {
+    > 448 |   expect(DateTime.fromFormat("60", "kk").weekYear).toBe(2060);
+          |                                                    ^
+      449 |   expect(DateTime.fromFormat("61", "kk").weekYear).toBe(1961);
+      450 |   expect(DateTime.fromFormat("1960", "kk").weekYear).toBe(1960);
+      451 | });
+
+      at Object.toBe (test/datetime/tokenParse.test.js:448:52)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing two digit weekYear to the right century
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2050
+    Received: 1950
+
+      456 |   try {
+      457 |     Settings.twoDigitCutoffYear = 50;
+    > 458 |     expect(DateTime.fromFormat("50", "kk").weekYear).toBe(2050);
+          |                                                      ^
+      459 |     expect(DateTime.fromFormat("51", "kk").weekYear).toBe(1951);
+      460 |     expect(DateTime.fromFormat("1950", "kk").weekYear).toBe(1950);
+      461 |   } finally {
+
+      at Object.toBe (test/datetime/tokenParse.test.js:458:54)
+
+PASS test/datetime/create.test.js
+PASS test/interval/many.test.js
+PASS test/datetime/invalid.test.js
+PASS test/datetime/diff.test.js
+PASS test/zones/IANA.test.js
+PASS test/duration/units.test.js
+PASS test/duration/format.test.js
+PASS test/interval/create.test.js
+PASS test/datetime/many.test.js
+PASS test/datetime/equality.test.js
+PASS test/datetime/regexParse.test.js
+PASS test/duration/equality.test.js
+PASS test/duration/create.test.js
+PASS test/duration/math.test.js
+PASS test/zones/fixedOffset.test.js
+PASS test/impl/english.test.js
+PASS test/duration/invalid.test.js
+PASS test/interval/info.test.js
+PASS test/datetime/localeWeek.test.js
+PASS test/datetime/dst.test.js
+PASS test/zones/zoneInterface.test.js
+PASS test/interval/format.test.js
+PASS test/datetime/proto.test.js
+PASS test/zones/invalid.test.js
+PASS test/datetime/misc.test.js
+PASS test/datetime/getters.test.js
+PASS test/datetime/typecheck.test.js
+PASS test/duration/accuracy.test.js
+PASS test/duration/getters.test.js
+PASS test/duration/typecheck.test.js
+PASS test/interval/typecheck.test.js
+PASS test/info/features.test.js
+PASS test/interval/localeWeek.test.js
+PASS test/interval/setter.test.js
+PASS test/interval/getters.test.js
+PASS test/duration/parse.test.js
+PASS test/datetime/degrade.test.js
+PASS test/duration/set.test.js
+PASS test/interval/proto.test.js
+PASS test/datetime/transform.test.js
+PASS test/duration/proto.test.js
+PASS test/duration/customMatrix.test.js
+PASS test/info/localeWeek.test.js
+PASS test/datetime/info.test.js
+PASS test/duration/info.test.js
+PASS test/duration/reconfigure.test.js
+PASS test/datetime/reconfigure.test.js
+---------------------|---------|----------|---------|---------|-------------------------------------------------------------------------------------------
+File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                                                         
+---------------------|---------|----------|---------|---------|-------------------------------------------------------------------------------------------
+All files            |   96.67 |    94.58 |   95.31 |   96.68 |                                                                                           
+ src                 |   96.91 |     97.4 |   92.92 |   96.98 |                                                                                           
+  datetime.js        |   95.32 |    97.68 |   87.58 |    95.5 | 1460,1485,2094-2097,2130,2414,2435,2455,2471-2487,2503-2519,2535-2551,2567-2591,2607-2623 
+  duration.js        |   98.56 |    97.97 |   98.18 |   98.78 | 599-602                                                                                   
+  errors.js          |     100 |      100 |     100 |     100 |                                                                                           
+  info.js            |     100 |      100 |     100 |     100 |                                                                                           
+  interval.js        |   98.49 |    94.94 |   98.11 |   98.31 | 581-584                                                                                   
+  luxon.js           |     100 |      100 |     100 |     100 |                                                                                           
+  settings.js        |     100 |      100 |     100 |     100 |                                                                                           
+ src/impl            |   96.56 |    91.13 |   98.26 |   96.55 |                                                                                           
+  conversions.js     |   96.11 |     88.4 |     100 |   95.95 | 156,169,181,203                                                                           
+  diff.js            |     100 |      100 |     100 |     100 |                                                                                           
+  digits.js          |     100 |      100 |     100 |     100 |                                                                                           
+  english.js         |   98.64 |    97.14 |     100 |   98.64 | 57                                                                                        
+  formats.js         |     100 |      100 |     100 |     100 |                                                                                           
+  formatter.js       |   99.42 |    92.52 |     100 |    99.4 | 279                                                                                       
+  invalid.js         |     100 |      100 |     100 |     100 |                                                                                           
+  locale.js          |   93.38 |    85.71 |   96.72 |   93.27 | 44-51,117-119,168,313,319,326-329                                                         
+  regexParser.js     |     100 |      100 |     100 |     100 |                                                                                           
+  tokenParser.js     |   96.19 |    91.19 |   94.87 |   96.46 | 30,101,264,267,289,456,486                                                                
+  util.js            |   94.78 |    93.51 |     100 |   94.73 | 43,55,96,104,178,245                                                                      
+  zoneUtil.js        |   83.33 |    77.77 |     100 |      80 | 27-32                                                                                     
+ src/zones           |   95.37 |    95.45 |   95.83 |   95.23 |                                                                                           
+  IANAZone.js        |   93.54 |    92.85 |   94.11 |   93.22 | 35-38                                                                                     
+  fixedOffsetZone.js |     100 |      100 |     100 |     100 |                                                                                           
+  invalidZone.js     |     100 |      100 |     100 |     100 |                                                                                           
+  systemZone.js      |   91.66 |      100 |   88.88 |   91.66 | 44                                                                                        
+---------------------|---------|----------|---------|---------|-------------------------------------------------------------------------------------------
+
+Summary of all failing tests
+FAIL test/info/listers.test.js (5.21 s)
+  ● Info.months lists all the months
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+
+      26 |   ]);
+      27 |
+    > 28 |   expect(Info.months("short", { locale: "en" })).toEqual([
+         |                                                  ^
+      29 |     "Jan",
+      30 |     "Feb",
+      31 |     "Mar",
+
+      at Object.toEqual (test/info/listers.test.js:28:50)
+
+  ● Info.monthsFormat lists all the months
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+
+      229 |   ]);
+      230 |
+    > 231 |   expect(Info.monthsFormat("short", { locale: "en" })).toEqual([
+          |                                                        ^
+      232 |     "Jan",
+      233 |     "Feb",
+      234 |     "Mar",
+
+      at Object.toEqual (test/info/listers.test.js:231:56)
+
+FAIL test/datetime/format.test.js (5.41 s)
+  ● DateTime#toISO() handles negative years
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "-012345-05-25T09:23:54.123Z"
+    Received: "-12345-05-25T09:23:54.123Z"
+
+      124 | test("DateTime#toISO() handles negative years", () => {
+      125 |   const negativeYear = dt.set({ year: -12345 });
+    > 126 |   expect(negativeYear.toISO()).toBe("-012345-05-25T09:23:54.123Z");
+          |                                ^
+      127 | });
+      128 |
+      129 | test("DateTime#toISO() default to Z when timezone is 00:00", () => {
+
+      at Object.toBe (test/datetime/format.test.js:126:32)
+
+  ● DateTime#toISODate() correctly pads negative years
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "-000001-01-01"
+    Received: "0000-1-01-01"
+
+      205 |
+      206 | test("DateTime#toISODate() correctly pads negative years", () => {
+    > 207 |   expect(DateTime.fromObject({ year: -1, month: 1, day: 1 }, { zone: "utc" }).toISODate()).toBe(
+          |                                                                                            ^
+      208 |     "-000001-01-01"
+      209 |   );
+      210 |   expect(DateTime.fromObject({ year: -10, month: 1, day: 1 }, { zone: "utc" }).toISODate()).toBe(
+
+      at Object.toBe (test/datetime/format.test.js:207:92)
+
+FAIL test/datetime/tokenParse.test.js (5.708 s)
+  ● DateTime.fromFormat() defaults yy to the right century
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2060
+    Received: 1960
+
+      151 |
+      152 | test("DateTime.fromFormat() defaults yy to the right century", () => {
+    > 153 |   expect(DateTime.fromFormat("60", "yy").year).toBe(2060);
+          |                                                ^
+      154 |   expect(DateTime.fromFormat("61", "yy").year).toBe(1961);
+      155 |   expect(DateTime.fromFormat("1960", "yy").year).toBe(1960);
+      156 | });
+
+      at Object.toBe (test/datetime/tokenParse.test.js:153:48)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing yy to the right century
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2050
+    Received: 1950
+
+      161 |   try {
+      162 |     Settings.twoDigitCutoffYear = 50;
+    > 163 |     expect(DateTime.fromFormat("50", "yy").year).toBe(2050);
+          |                                                  ^
+      164 |     expect(DateTime.fromFormat("51", "yy").year).toBe(1951);
+      165 |     expect(DateTime.fromFormat("1950", "yy").year).toBe(1950);
+      166 |   } finally {
+
+      at Object.toBe (test/datetime/tokenParse.test.js:163:50)
+
+  ● DateTime.fromFormat() parses standalone month names
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1982
+    Received: NaN
+
+      260 |
+      261 |   i = DateTime.fromFormat("Sep 25 1982", "LLL dd yyyy");
+    > 262 |   expect(i.year).toBe(1982);
+          |                  ^
+      263 |   expect(i.month).toBe(9);
+      264 |   expect(i.day).toBe(25);
+      265 |
+
+      at Object.toBe (test/datetime/tokenParse.test.js:262:18)
+
+  ● DateTime.fromFormat() parses format month names
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1982
+    Received: NaN
+
+      292 |
+      293 |   i = DateTime.fromFormat("Sep 25 1982", "MMM dd yyyy");
+    > 294 |   expect(i.year).toBe(1982);
+          |                  ^
+      295 |   expect(i.month).toBe(9);
+      296 |   expect(i.day).toBe(25);
+      297 |
+
+      at Object.toBe (test/datetime/tokenParse.test.js:294:18)
+
+  ● DateTime.fromFormat() defaults kk to the right century
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2060
+    Received: 1960
+
+      446 |
+      447 | test("DateTime.fromFormat() defaults kk to the right century", () => {
+    > 448 |   expect(DateTime.fromFormat("60", "kk").weekYear).toBe(2060);
+          |                                                    ^
+      449 |   expect(DateTime.fromFormat("61", "kk").weekYear).toBe(1961);
+      450 |   expect(DateTime.fromFormat("1960", "kk").weekYear).toBe(1960);
+      451 | });
+
+      at Object.toBe (test/datetime/tokenParse.test.js:448:52)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing two digit weekYear to the right century
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2050
+    Received: 1950
+
+      456 |   try {
+      457 |     Settings.twoDigitCutoffYear = 50;
+    > 458 |     expect(DateTime.fromFormat("50", "kk").weekYear).toBe(2050);
+          |                                                      ^
+      459 |     expect(DateTime.fromFormat("51", "kk").weekYear).toBe(1951);
+      460 |     expect(DateTime.fromFormat("1950", "kk").weekYear).toBe(1950);
+      461 |   } finally {
+
+      at Object.toBe (test/datetime/tokenParse.test.js:458:54)
+
+
+Test Suites: 3 failed, 55 passed, 58 total
+Tests:       10 failed, 1212 passed, 1222 total
+Snapshots:   1 passed, 1 total
+Time:        7.226 s
+Ran all test suites.

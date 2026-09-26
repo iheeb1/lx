@@ -1,0 +1,13 @@
+=== RUN   TestFlaky
+    f_test.go:14: first run: got 1, want 2
+--- FAIL: TestFlaky (0.00s)
+=== RUN   TestStable
+--- PASS: TestStable (0.00s)
+=== RUN   TestFlaky
+    f_test.go:17: second run ok
+--- PASS: TestFlaky (0.00s)
+=== RUN   TestStable
+--- PASS: TestStable (0.00s)
+FAIL
+FAIL	example.com/lxcap2/flaky	0.384s
+FAIL

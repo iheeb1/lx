@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rg",
+    "-C1",
+    "ShouldBind",
+    "."
+  ],
+  "shell": "rg -C1 ShouldBind .",
+  "exit_code": 0,
+  "description": "rg -C1 without -n",
+  "cwd": "/home/user/src/gin"
+}

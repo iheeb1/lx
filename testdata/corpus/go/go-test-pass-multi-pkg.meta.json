@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "./..."
+  ],
+  "shell": "go test ./...",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "go test ./... in gin: multi-package run including '[no test files]' lines",
+  "cwd": "repos/gin"
+}

@@ -1,0 +1,21 @@
+[1 passing test hidden]
+  1 passing (8ms)
+  1 failing
+
+  1) async leak
+       waits:
+     Uncaught Error: uncaught boom after test
+      at Timeout._onTimeout (adv/uncaught.js:4:30)
+      … 2 library frames (node:internal)
+
+node_modules/mocha/lib/runner.js:1120
+    throw err;
+    ^
+Error: done() called multiple times in test <async leak waits> of file /home/user/src/mochaproj/adv/uncaught.js
+    … 5 library frames (mocha, node:internal)
+    at process.processTimers (node:internal/timers:541:7) {
+  code: 'ERR_MOCHA_MULTIPLE_DONE',
+  valueType: 'undefined',
+  value: undefined
+}
+Node.js v24.18.0

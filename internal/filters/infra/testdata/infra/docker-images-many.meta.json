@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "docker",
+    "images"
+  ],
+  "shell": "docker images",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of docker 27 `docker images`; the tool is not available on the capture host): 77 images including 10 dangling <none> ones",
+  "cwd": "repos/shop"
+}

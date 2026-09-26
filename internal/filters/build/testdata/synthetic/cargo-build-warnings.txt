@@ -1,0 +1,91 @@
+    Updating crates.io index
+     Locking 26 packages to latest compatible versions
+  Downloaded proc-macro2 v1.0.86
+  Downloaded unicode-ident v1.0.12
+  Downloaded libc v0.2.155
+  Downloaded cfg-if v1.0.0
+  Downloaded quote v1.0.36
+  Downloaded syn v2.0.72
+  Downloaded serde v1.0.204
+  Downloaded memchr v2.7.4
+  Downloaded itoa v1.0.11
+  Downloaded ryu v1.0.18
+  Downloaded serde_derive v1.0.204
+  Downloaded serde_json v1.0.120
+  Downloaded 12 crates (1.9 MB) in 0.74s
+   Compiling proc-macro2 v1.0.86
+   Compiling unicode-ident v1.0.12
+   Compiling libc v0.2.155
+   Compiling cfg-if v1.0.0
+   Compiling quote v1.0.36
+   Compiling syn v2.0.72
+   Compiling serde v1.0.204
+   Compiling memchr v2.7.4
+   Compiling itoa v1.0.11
+   Compiling ryu v1.0.18
+   Compiling serde_derive v1.0.204
+   Compiling serde_json v1.0.120
+   Compiling autocfg v1.3.0
+   Compiling once_cell v1.19.0
+   Compiling log v0.4.22
+   Compiling quick-error v2.0.1
+   Compiling thiserror-impl v1.0.63
+   Compiling thiserror v1.0.63
+   Compiling anyhow v1.0.86
+   Compiling regex-syntax v0.8.4
+   Compiling aho-corasick v1.1.3
+   Compiling regex-automata v0.4.7
+   Compiling regex v1.10.5
+   Compiling bitflags v2.6.0
+   Compiling smallvec v1.13.2
+   Compiling demo v0.1.0 (/home/user/src/demo)
+warning: unused import: `std::collections::HashMap`
+ --> src/main.rs:1:5
+  |
+1 | use std::collections::HashMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `std::collections::HashMap`
+ --> src/parser.rs:3:5
+  |
+3 | use std::collections::HashMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `config`
+  --> src/main.rs:12:9
+   |
+12 |     let config = load_config();
+   |         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_config`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: unused variable: `line_no`
+  --> src/parser.rs:27:13
+   |
+27 |         let line_no = idx + 1;
+   |             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_line_no`
+
+warning: unused variable: `rest`
+  --> src/parser.rs:44:17
+   |
+44 |             let rest = &input[pos..];
+   |                 ^^^^ help: if this is intentional, prefix it with an underscore: `_rest`
+
+warning: unused variable: `err`
+  --> src/parser.rs:58:21
+   |
+58 |                 Err(err) => return None,
+   |                     ^^^ help: if this is intentional, prefix it with an underscore: `_err`
+
+warning: function `legacy_parse` is never used
+  --> src/parser.rs:71:4
+   |
+71 | fn legacy_parse(input: &str) -> Option<u32> {
+   |    ^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `demo` (bin "demo") generated 7 warnings (run `cargo fix --bin "demo"` to apply 6 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.41s

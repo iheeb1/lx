@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "make"
+  ],
+  "shell": "make",
+  "repo": "DaveGamble/cJSON",
+  "exit_code": 0,
+  "description": "make (all: shared, static, tests) in cJSON: compiler invocations, shared library symlinks, test binary",
+  "cwd": "repos/cJSON"
+}

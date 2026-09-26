@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "shell": "npm run build",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "npm run build in a fresh create-vite react-ts template: tsc -b then vite 8 production build with asset size table",
+  "cwd": "repos/vite-react-app"
+}

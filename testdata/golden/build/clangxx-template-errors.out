@@ -1,0 +1,71 @@
+[lx: hidden: 58 repeated notes, 8 repeated include chains, 31 source excerpts from system headers]
+tmpl.cpp:11:4: error: no viable overloaded operator[] for type 'std::map<std::string, int>' (aka 'map<basic_string<char>, int>')
+   11 |   m[3] = 4;
+      |   ~^~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/map:1035:38: note: candidate function not viable: no known conversion from 'int' to 'const key_type' (aka 'const std::string') for 1st argument
+ 1035 |   _LIBCPP_HIDE_FROM_ABI mapped_type& operator[](const key_type& __k);
+      |                                      ^          ~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/map:1037:38: note: candidate function not viable: no known conversion from 'int' to 'key_type' (aka 'std::string') for 1st argument
+ 1037 |   _LIBCPP_HIDE_FROM_ABI mapped_type& operator[](key_type&& __k);
+      |                                      ^          ~~~~~~~~~~~~~~
+tmpl.cpp:6:93: error: invalid operands to binary expression ('Point' and 'const Point')
+    6 | template <typename T> T sum(const std::vector<T>& v) { T acc{}; for (auto& e : v) acc = acc + e; return acc; }
+      |                                                                                         ~~~ ^ ~
+tmpl.cpp:9:13: note: in instantiation of function template specialization 'sum<Point>' requested here
+    9 |   Point p = sum(pts);
+      |             ^
+In file included from tmpl.cpp:1:
+… 2 more include lines …
+In file included from /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/make_heap.h:15:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:47:32: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+   47 |   if ((__child + 1) < __len && __comp(*__child_i, *(__child_i + difference_type(1)))) {
+      |                                ^~~~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/make_heap.h:39:12: note: in instantiation of function template specialization 'std::__sift_down<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33) &, int *>' requested here
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/partial_sort.h:41:8: note: in instantiation of function template specialization 'std::__make_heap<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33) &, int *>' requested here
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/partial_sort.h:65:12: note: in instantiation of function template specialization 'std::__partial_sort_impl<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33) &, int *, int *>' requested here
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:934:10: note: in instantiation of function template specialization 'std::__partial_sort<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33), int *, int *>' requested here
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:945:8: note: in instantiation of function template specialization 'std::__sort_impl<std::_ClassicAlgPolicy, std::__wrap_iter<int *>, (lambda at tmpl.cpp:13:33)>' requested here
+tmpl.cpp:13:8: note: in instantiation of function template specialization 'std::sort<std::__wrap_iter<int *>, (lambda at tmpl.cpp:13:33)>' requested here
+   13 |   std::sort(v.begin(), v.end(), [](int a) { return a; });
+      |        ^
+tmpl.cpp:13:33: note: candidate function not viable: requires single argument 'a', but 2 arguments were provided
+   13 |   std::sort(v.begin(), v.end(), [](int a) { return a; });
+      |                                 ^  ~~~~~
+tmpl.cpp:13:33: note: conversion candidate of type 'int (*)(int)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:54:7: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:71:34: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+In file included from tmpl.cpp:1:
+… 3 more include lines …
+In file included from /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:17:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/partial_sort.h:46:9: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sift_down.h:98:34: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/pop_heap.h:47:41: note: in instantiation of function template specialization 'std::__floyd_sift_down<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33) &, int *>' requested here
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort_heap.h:40:10: note: in instantiation of function template specialization 'std::__pop_heap<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33), int *>' requested here
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/partial_sort.h:51:8: note: in instantiation of function template specialization 'std::__sort_heap<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33) &, int *>' requested here
+In file included from tmpl.cpp:1:
+… 6 more include lines …
+In file included from /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/pop_heap.h:15:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/push_heap.h:42:9: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/pop_heap.h:56:12: note: in instantiation of function template specialization 'std::__sift_up<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33) &, int *>' requested here
+In file included from tmpl.cpp:1:
+… 2 more include lines …
+In file included from /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/nth_element.h:15:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:736:11: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:872:8: note: in instantiation of function template specialization 'std::__introsort<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33) &, int *, false>' requested here
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:937:10: note: in instantiation of function template specialization 'std::__sort_dispatch<std::_ClassicAlgPolicy, int *, (lambda at tmpl.cpp:13:33)>' requested here
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:115:8: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:740:12: note: in instantiation of function template specialization 'std::__sort3<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33) &, int *, 0>' requested here
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:125:7: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:132:7: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:776:9: error: no matching function for call to '__sort3'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:101:1: note: candidate template ignored: requirement '__use_branchless_sort<(lambda at tmpl.cpp:13:33) &, int *>' was not satisfied [with $0 = std::_ClassicAlgPolicy, _Compare = (lambda at tmpl.cpp:13:33) &, _RandomAccessIterator = int *]
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:112:1: note: candidate template ignored: substitution failure [with _AlgPolicy = std::_ClassicAlgPolicy, _Compare = (lambda at tmpl.cpp:13:33) &, _RandomAccessIterator = int *, $3 = 0]
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:777:9: error: no matching function for call to '__sort3'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:779:9: error: no matching function for call to '__sort3'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:781:9: error: no matching function for call to '__sort3'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:785:9: error: no matching function for call to '__sort3'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:796:25: error: no matching function for call to object of type '(lambda at tmpl.cpp:13:33)'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:167:3: error: no matching function for call to '__sort3'
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/sort.h:743:12: note: in instantiation of function template specialization 'std::__sort4<std::_ClassicAlgPolicy, (lambda at tmpl.cpp:13:33) &, int *, 0>' requested here
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.

@@ -1,0 +1,16 @@
+[lx: hidden: 59 [INFO] progress lines, 2 SUCCESS rows of the Reactor Summary, 8 lines of Maven's help footer]
+[ERROR] COMPILATION ERROR :
+[ERROR] /home/user/src/mvnmulti/api/src/main/java/com/example/api/Api.java:[1,90] cannot find symbol
+  symbol:   method value()
+  location: class com.example.core.Core
+[INFO] 1 error
+[INFO] Reactor Summary for parent 1.0:
+[INFO] api ................................................ FAILURE [  0.207 s]
+[INFO] web ................................................ SKIPPED
+[INFO] BUILD FAILURE
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project api: Compilation failure
+[ERROR] /home/user/src/mvnmulti/api/src/main/java/com/example/api/Api.java:[1,90] cannot find symbol
+[ERROR]   symbol:   method value()
+[ERROR]   location: class com.example.core.Core
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :api

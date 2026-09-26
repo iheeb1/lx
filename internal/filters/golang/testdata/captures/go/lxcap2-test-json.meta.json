@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-json",
+    "./..."
+  ],
+  "shell": "go test -json ./...",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -json ./... over lxcap2 (see lxcap2-test): partial output split from framing lines by test2json",
+  "cwd": "/home/user/src/lxcap2"
+}

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-sv",
+    "http://127.0.0.1:18766/issues"
+  ],
+  "shell": "curl -sv http://127.0.0.1:18766/issues",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL curl 8.7.1 -sv of a 34.9 KB minified JSON body with no trailing newline: \"* Connection #0 to host 127.0.0.1 left intact\" landed inside the JSON line at the 32 KB stdout flush, splitting it in two",
+  "cwd": "data/api"
+}

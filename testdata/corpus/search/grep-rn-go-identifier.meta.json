@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "grep -rn \"Context\" --include=*.go ."
+  ],
+  "shell": "grep -rn \"Context\" --include=*.go .",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "grep -rn for a very common identifier (Context) across a Go repo: ~1000 matches",
+  "cwd": "repos/gin"
+}

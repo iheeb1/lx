@@ -1,0 +1,17 @@
+inventory/reports.py:4: error: Library stubs not installed for "requests"  [import-untyped]
+inventory/reports.py:4: note: Hint: "python3 -m pip install types-requests"
+inventory/reports.py:4: note: (or run "mypy --install-types" to install all missing stub packages)
+inventory/reports.py:4: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+inventory/reports.py:5: error: Library stubs not installed for "yaml"  [import-untyped]
+inventory/reports.py:5: note: Hint: "python3 -m pip install types-PyYAML"
+inventory/reports.py:23: error: Item "None" of "Optional[Item]" has no attribute "price"  [union-attr]
+inventory/reports.py:27: error: Incompatible types in assignment (expression has type "float", variable has type "int")  [assignment]
+inventory/reports.py:28: error: Unsupported operand types for + ("str" and "int")  [operator]
+inventory/reports.py:34: error: Unpacking a string is disallowed  [misc]
+inventory/reports.py:35: error: Cannot determine type of "sku"  [has-type]
+inventory/reports.py:35: error: Cannot determine type of "count"  [has-type]
+inventory/reports.py:47: error: Argument 2 to "add" of "Stock" has incompatible type "str"; expected "int"  [arg-type]
+inventory/reports.py:48: error: "Stock" has no attribute "missing_method"  [attr-defined]
+inventory/reports.py:52: error: List comprehension has incompatible type List[Callable[[], str]]; expected List[str]  [misc]
+scripts/fetch.py:1: error: Library stubs not installed for "requests"  [import-untyped]
+Found 12 errors in 2 files (checked 7 source files)

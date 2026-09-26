@@ -1,0 +1,52 @@
+[ls: 469 entries: 468 dirs (marked /), 1 file · owner user · group wheel · names only: modes, link counts, sizes and dates dropped (~5,796 tokens in long form)]
+.bin/  .package-lock.json  @ampproject/  @babel/  @bcoe/  @istanbuljs/  @jest/  @jridgewell/  @rollup/  @sinclair/  @sinonjs/  @tootallnate/  @types/  @vue/
+acorn/  aggregate-error/  ansi-escapes/  ansi-regex/  ansi-styles/  anymatch/  argparse/  array.prototype.reduce/  astral-regex/  async/  babel-jest/
+babel-plugin-istanbul/  babel-plugin-jest-hoist/  babel-plugin-polyfill-corejs2/  babel-plugin-polyfill-corejs3/  babel-plugin-polyfill-regenerator/
+babel-preset-current-node-syntax/  babel-preset-jest/  bail/  balanced-match/  basic-auth/  benchmark/  binary-extensions/  brace-expansion/  braces/
+browserslist/  bser/  buffer-from/  builtin-modules/  call-bind/  callsites/  camelcase/  caniuse-lite/  ccount/  chalk/  char-regex/  character-entities/
+character-entities-html4/  character-entities-legacy/  chokidar/  ci-info/  cjs-module-lexer/  clean-stack/  cli-cursor/  cli-truncate/  cliui/  clone-deep/
+co/  collect-v8-coverage/  color-convert/  color-name/  colorette/  comma-separated-tokens/  commander/  commondir/  concat-map/  convert-source-map/  core-js/
+core-js-compat/  corser/  cross-spawn/  de-indent/  debug/  decode-named-character-reference/  dedent/  deepmerge/  define-properties/  dequal/  detect-newline/
+diff/  diff-sequences/  doctrine-temporary-fork/  documentation/  eastasianwidth/  electron-to-chromium/  emittery/  emoji-regex/  error-ex/  es-abstract/
+es-array-method-boxes-properly/  es-to-primitive/  escalade/  escape-string-regexp/  esprima/  estree-walker/  esutils/  eventemitter3/  execa/  exit/  expect/
+extend/  fast-json-stable-stringify/  fb-watchman/  fill-range/  find-cache-dir/  find-up/  follow-redirects/  fs-extra/  fs.realpath/  fsevents/
+function-bind/  function.prototype.name/  functions-have-names/  gensync/  get-caller-file/  get-intrinsic/  get-package-type/  get-stream/
+get-symbol-description/  git-up/  git-url-parse/  github-slugger/  glob/  glob-parent/  globals/  globals-docs/  gopd/  graceful-fs/  has/  has-bigints/
+has-flag/  has-property-descriptors/  has-symbols/  has-tostringtag/  hast-util-is-element/  hast-util-sanitize/  hast-util-to-html/  hast-util-whitespace/  he/
+highlight.js/  homedir-polyfill/  hosted-git-info/  html-encoding-sniffer/  html-escaper/  html-void-elements/  http-proxy/  http-server/  human-signals/
+husky/  iconv-lite/  import-local/  imurmurhash/  indent-string/  inflight/  inherits/  ini/  internal-slot/  is-absolute/  is-arrayish/  is-bigint/
+is-binary-path/  is-boolean-object/  is-buffer/  is-builtin-module/  is-callable/  is-core-module/  is-date-object/  is-extglob/  is-fullwidth-code-point/
+is-generator-fn/  is-glob/  is-module/  is-negative-zero/  is-number/  is-number-object/  is-plain-obj/  is-plain-object/  is-reference/  is-regex/
+is-relative/  is-shared-array-buffer/  is-ssh/  is-stream/  is-string/  is-symbol/  is-unc-path/  is-weakref/  is-windows/  isexe/  isobject/
+istanbul-lib-coverage/  istanbul-lib-instrument/  istanbul-lib-report/  istanbul-lib-source-maps/  istanbul-reports/  jest/  jest-changed-files/  jest-circus/
+jest-cli/  jest-config/  jest-diff/  jest-docblock/  jest-each/  jest-environment-node/  jest-get-type/  jest-haste-map/  jest-leak-detector/
+jest-matcher-utils/  jest-message-util/  jest-mock/  jest-pnp-resolver/  jest-regex-util/  jest-resolve/  jest-resolve-dependencies/  jest-runner/
+jest-runtime/  jest-snapshot/  jest-util/  jest-validate/  jest-watcher/  jest-worker/  js-tokens/  js-yaml/  jsesc/  json-parse-even-better-errors/  json5/
+jsonfile/  kind-of/  kleur/  konan/  leven/  lilconfig/  lines-and-columns/  lint-staged/  listr2/  locate-path/  lodash/  lodash.debounce/  log-update/
+longest-streak/  lru-cache/  magic-string/  make-dir/  makeerror/  map-cache/  markdown-table/  mdast-util-definitions/  mdast-util-find-and-replace/
+mdast-util-from-markdown/  mdast-util-gfm/  mdast-util-gfm-autolink-literal/  mdast-util-gfm-footnote/  mdast-util-gfm-strikethrough/  mdast-util-gfm-table/
+mdast-util-gfm-task-list-item/  mdast-util-inject/  mdast-util-to-hast/  mdast-util-to-markdown/  mdast-util-to-string/  mdast-util-toc/  merge-stream/
+micromark/  micromark-core-commonmark/  micromark-extension-gfm/  micromark-extension-gfm-autolink-literal/  micromark-extension-gfm-footnote/
+micromark-extension-gfm-strikethrough/  micromark-extension-gfm-table/  micromark-extension-gfm-tagfilter/  micromark-extension-gfm-task-list-item/
+micromark-factory-destination/  micromark-factory-label/  micromark-factory-space/  micromark-factory-title/  micromark-factory-whitespace/
+micromark-util-character/  micromark-util-chunked/  micromark-util-classify-character/  micromark-util-combine-extensions/
+micromark-util-decode-numeric-character-reference/  micromark-util-decode-string/  micromark-util-encode/  micromark-util-html-tag-name/
+micromark-util-normalize-identifier/  micromark-util-resolve-all/  micromark-util-sanitize-uri/  micromark-util-subtokenize/  micromark-util-symbol/
+micromark-util-types/  micromatch/  mime/  mimic-fn/  minimatch/  minimist/  mkdirp/  mri/  ms/  nanoid/  natural-compare/  node-environment-flags/  node-int64/
+node-releases/  normalize-package-data/  normalize-path/  npm-run-path/  object-inspect/  object-keys/  object.assign/  object.getownpropertydescriptors/  once/
+onetime/  opener/  p-limit/  p-locate/  p-map/  p-try/  parse-filepath/  parse-json/  parse-passwd/  parse-path/  parse-url/  path-exists/  path-is-absolute/
+path-key/  path-parse/  path-root/  path-root-regex/  picocolors/  picomatch/  pidtree/  pify/  pirates/  pkg-dir/  platform/  portfinder/  postcss/  prettier/
+pretty-format/  prompts/  property-information/  protocols/  qs/  randombytes/  react-is/  read-pkg/  read-pkg-up/  readdirp/  regenerate/
+regenerate-unicode-properties/  regenerator-runtime/  regenerator-transform/  regexp.prototype.flags/  regexpu-core/  regjsgen/  regjsparser/  remark/
+remark-gfm/  remark-html/  remark-parse/  remark-reference-links/  remark-stringify/  remark-toc/  require-directory/  requires-port/  resolve/  resolve-cwd/
+resolve-from/  resolve.exports/  restore-cursor/  rfdc/  rollup/  rxjs/  sade/  safe-buffer/  safe-regex-test/  safer-buffer/  secure-compare/  semver/
+serialize-javascript/  shallow-clone/  shebang-command/  shebang-regex/  side-channel/  signal-exit/  sisteransi/  slash/  slice-ansi/  smob/  source-map/
+source-map-js/  source-map-support/  sourcemap-codec/  space-separated-tokens/  spdx-correct/  spdx-exceptions/  spdx-expression-parse/  spdx-license-ids/
+sprintf-js/  stack-utils/  string-argv/  string-length/  string-width/  string.prototype.trimend/  string.prototype.trimstart/  stringify-entities/  strip-ansi/
+strip-bom/  strip-final-newline/  strip-json-comments/  supports-color/  supports-preserve-symlinks-flag/  terser/  test-exclude/  through/  tmpl/
+to-fast-properties/  to-regex-range/  trim-lines/  trough/  tslib/  type-detect/  type-fest/  uglify-js/  unbox-primitive/  unc-path-regex/
+unicode-canonical-property-names-ecmascript/  unicode-match-property-ecmascript/  unicode-match-property-value-ecmascript/  unicode-property-aliases-ecmascript/
+unified/  union/  unist-builder/  unist-util-generated/  unist-util-is/  unist-util-position/  unist-util-stringify-position/  unist-util-visit/
+unist-util-visit-parents/  universalify/  update-browserslist-db/  url-join/  uvu/  v8-to-istanbul/  v8flags/  validate-npm-package-license/  vfile/
+vfile-message/  vfile-reporter/  vfile-sort/  vfile-statistics/  vue-template-compiler/  walker/  whatwg-encoding/  which/  which-boxed-primitive/  wrap-ansi/
+wrappy/  write-file-atomic/  y18n/  yallist/  yaml/  yargs/  yargs-parser/  yocto-queue/  zwitch/

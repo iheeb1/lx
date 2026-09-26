@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "head",
+    "-n",
+    "200",
+    "lvm.c"
+  ],
+  "shell": "head -n 200 lvm.c",
+  "repo": "",
+  "exit_code": 0,
+  "description": "head -n 200 of lua's lvm.c: within budget, unchanged",
+  "cwd": "repos/lua"
+}

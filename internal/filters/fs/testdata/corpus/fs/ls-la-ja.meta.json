@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "ls",
+    "-la"
+  ],
+  "shell": "ls -la",
+  "exit_code": 0,
+  "description": "ls -la under a Japanese locale",
+  "cwd": "/home/user/src/gin"
+}

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "pull",
+    "upstream",
+    "main"
+  ],
+  "shell": "git pull upstream main",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "git pull from GitHub on a branch 30 commits behind: 'From', 'Updating a..b', 'Fast-forward' and full diffstat",
+  "cwd": "repos/cobra-merge"
+}

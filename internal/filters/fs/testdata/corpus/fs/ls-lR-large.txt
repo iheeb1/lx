@@ -1,0 +1,330 @@
+total 112
+drwxr-xr-x@ 7 user  wheel    224 Sep 26 00:31 __tests__
+-rw-r--r--@ 1 user  wheel   4333 Sep 26 00:31 fetchModule.ts
+-rw-r--r--@ 1 user  wheel   2122 Sep 26 00:31 index.ts
+-rw-r--r--@ 1 user  wheel   1930 Sep 26 00:31 runnerImport.ts
+drwxr-xr-x@ 4 user  wheel    128 Sep 26 00:31 runtime
+-rw-r--r--@ 1 user  wheel   4318 Sep 26 00:31 ssrManifestPlugin.ts
+-rw-r--r--@ 1 user  wheel   3052 Sep 26 00:31 ssrModuleLoader.ts
+-rw-r--r--@ 1 user  wheel   3545 Sep 26 00:31 ssrStacktrace.ts
+-rw-r--r--@ 1 user  wheel  24510 Sep 26 00:31 ssrTransform.ts
+
+packages/vite/src/node/ssr/__tests__:
+total 136
+drwxr-xr-x@  3 user  wheel     96 Sep 26 00:31 __snapshots__
+drwxr-xr-x@ 11 user  wheel    352 Sep 26 00:31 fixtures
+-rw-r--r--@  1 user  wheel  11449 Sep 26 00:31 ssrLoadModule.spec.ts
+-rw-r--r--@  1 user  wheel   1867 Sep 26 00:31 ssrStacktrace.spec.ts
+-rw-r--r--@  1 user  wheel  49525 Sep 26 00:31 ssrTransform.spec.ts
+
+packages/vite/src/node/ssr/__tests__/__snapshots__:
+total 8
+-rw-r--r--@ 1 user  wheel  1546 Sep 26 00:31 ssrLoadModule.spec.ts.snap
+
+packages/vite/src/node/ssr/__tests__/fixtures:
+total 0
+drwxr-xr-x@ 3 user  wheel   96 Sep 26 00:31 basic
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 00:31 bundled-with-sourcemaps
+drwxr-xr-x@ 6 user  wheel  192 Sep 26 00:31 errors
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 00:31 file-url
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 00:31 global
+drwxr-xr-x@ 3 user  wheel   96 Sep 26 00:31 json
+drwxr-xr-x@ 6 user  wheel  192 Sep 26 00:31 modules
+drwxr-xr-x@ 6 user  wheel  192 Sep 26 00:31 multi-source-sourcemaps
+drwxr-xr-x@ 5 user  wheel  160 Sep 26 00:31 named-overwrite-all
+
+packages/vite/src/node/ssr/__tests__/fixtures/basic:
+total 8
+-rw-r--r--@ 1 user  wheel  20 Sep 26 00:31 file.js
+
+packages/vite/src/node/ssr/__tests__/fixtures/bundled-with-sourcemaps:
+total 16
+-rw-r--r--@ 1 user  wheel  464 Sep 26 00:31 bundle.js
+-rw-r--r--@ 1 user  wheel  682 Sep 26 00:31 bundle.js.map
+
+packages/vite/src/node/ssr/__tests__/fixtures/errors:
+total 32
+-rw-r--r--@ 1 user  wheel  27 Sep 26 00:31 syntax-error-dep.js
+-rw-r--r--@ 1 user  wheel  27 Sep 26 00:31 syntax-error-dep.ts
+-rw-r--r--@ 1 user  wheel  13 Sep 26 00:31 syntax-error.js
+-rw-r--r--@ 1 user  wheel  13 Sep 26 00:31 syntax-error.ts
+
+packages/vite/src/node/ssr/__tests__/fixtures/file-url:
+total 16
+-rw-r--r--@ 1 user  wheel  27 Sep 26 00:31 test space.js
+-rw-r--r--@ 1 user  wheel  27 Sep 26 00:31 test.js
+
+packages/vite/src/node/ssr/__tests__/fixtures/global:
+total 16
+-rw-r--r--@ 1 user  wheel  27 Sep 26 00:31 export.js
+-rw-r--r--@ 1 user  wheel  22 Sep 26 00:31 test.js
+
+packages/vite/src/node/ssr/__tests__/fixtures/json:
+total 8
+-rw-r--r--@ 1 user  wheel  30 Sep 26 00:31 test.json
+
+packages/vite/src/node/ssr/__tests__/fixtures/modules:
+total 24
+-rw-r--r--@ 1 user  wheel  18 Sep 26 00:31 has-error.js
+-rw-r--r--@ 1 user  wheel  70 Sep 26 00:31 has-invalid-import.js
+-rw-r--r--@ 1 user  wheel  88 Sep 26 00:31 import-meta.js
+drwxr-xr-x@ 3 user  wheel  96 Sep 26 00:31 with space
+
+packages/vite/src/node/ssr/__tests__/fixtures/modules/with space:
+total 8
+-rw-r--r--@ 1 user  wheel  47 Sep 26 00:31 has-error.js
+
+packages/vite/src/node/ssr/__tests__/fixtures/multi-source-sourcemaps:
+total 24
+-rw-r--r--@ 1 user  wheel  297 Sep 26 00:31 dist.js
+-rw-r--r--@ 1 user  wheel  629 Sep 26 00:31 dist.js.map
+-rw-r--r--@ 1 user  wheel  297 Sep 26 00:31 entrypoint.js
+drwxr-xr-x@ 3 user  wheel   96 Sep 26 00:31 nested-directory
+
+packages/vite/src/node/ssr/__tests__/fixtures/multi-source-sourcemaps/nested-directory:
+total 8
+-rw-r--r--@ 1 user  wheel  82 Sep 26 00:31 nested-file.js
+
+packages/vite/src/node/ssr/__tests__/fixtures/named-overwrite-all:
+total 24
+-rw-r--r--@ 1 user  wheel  104 Sep 26 00:31 dep1.js
+-rw-r--r--@ 1 user  wheel   26 Sep 26 00:31 dep2.js
+-rw-r--r--@ 1 user  wheel  104 Sep 26 00:31 main.js
+
+packages/vite/src/node/ssr/runtime:
+total 16
+drwxr-xr-x@ 12 user  wheel   384 Sep 26 00:31 __tests__
+-rw-r--r--@  1 user  wheel  4146 Sep 26 00:31 serverModuleRunner.ts
+
+packages/vite/src/node/ssr/runtime/__tests__:
+total 136
+-rw-r--r--@  1 user  wheel     23 Sep 26 00:31 fixture-outside.js
+drwxr-xr-x@ 50 user  wheel   1600 Sep 26 00:31 fixtures
+-rw-r--r--@  1 user  wheel    423 Sep 26 00:31 package.json
+-rw-r--r--@  1 user  wheel   7393 Sep 26 00:31 server-hmr.spec.ts
+-rw-r--r--@  1 user  wheel    588 Sep 26 00:31 server-no-hmr.spec.ts
+-rw-r--r--@  1 user  wheel  19756 Sep 26 00:31 server-runtime.spec.ts
+-rw-r--r--@  1 user  wheel  11152 Sep 26 00:31 server-source-maps.spec.ts
+-rw-r--r--@  1 user  wheel   3763 Sep 26 00:31 server-worker-runner.invoke.spec.ts
+-rw-r--r--@  1 user  wheel   4551 Sep 26 00:31 server-worker-runner.spec.ts
+-rw-r--r--@  1 user  wheel   3697 Sep 26 00:31 utils.ts
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures:
+total 272
+-rw-r--r--@  1 user  wheel    21 Sep 26 00:31 a.ts
+drwxr-xr-x@  6 user  wheel   192 Sep 26 00:31 assets
+-rw-r--r--@  1 user  wheel   234 Sep 26 00:31 assets.js
+-rw-r--r--@  1 user  wheel    21 Sep 26 00:31 b.ts
+-rw-r--r--@  1 user  wheel    61 Sep 26 00:31 basic.js
+-rw-r--r--@  1 user  wheel    82 Sep 26 00:31 builtin-import.ts
+-rw-r--r--@  1 user  wheel    91 Sep 26 00:31 c.ts
+drwxr-xr-x@  5 user  wheel   160 Sep 26 00:31 circular
+drwxr-xr-x@  4 user  wheel   128 Sep 26 00:31 cjs-external
+-rw-r--r--@  1 user  wheel    76 Sep 26 00:31 cjs-external-existing.js
+-rw-r--r--@  1 user  wheel    77 Sep 26 00:31 cjs-external-non-existing.js
+drwxr-xr-x@  5 user  wheel   160 Sep 26 00:31 cyclic
+drwxr-xr-x@ 12 user  wheel   384 Sep 26 00:31 cyclic2
+-rw-r--r--@  1 user  wheel    91 Sep 26 00:31 d.ts
+-rw-r--r--@  1 user  wheel    54 Sep 26 00:31 default-string.ts
+-rw-r--r--@  1 user  wheel   807 Sep 26 00:31 dynamic-import.js
+drwxr-xr-x@  4 user  wheel   128 Sep 26 00:31 esm-external
+-rw-r--r--@  1 user  wheel    76 Sep 26 00:31 esm-external-existing.js
+-rw-r--r--@  1 user  wheel    77 Sep 26 00:31 esm-external-non-existing.js
+drwxr-xr-x@  5 user  wheel   160 Sep 26 00:31 execution-order-re-export
+-rw-r--r--@  1 user  wheel   114 Sep 26 00:31 has-error-deep.ts
+-rw-r--r--@  1 user  wheel    39 Sep 26 00:31 has-error-first-comment.ts
+-rw-r--r--@  1 user  wheel    28 Sep 26 00:31 has-error-first.js
+-rw-r--r--@  1 user  wheel    55 Sep 26 00:31 has-error-toplevel-dep.js
+-rw-r--r--@  1 user  wheel    61 Sep 26 00:31 has-error-toplevel.js
+-rw-r--r--@  1 user  wheel    43 Sep 26 00:31 has-error.js
+drwxr-xr-x@  4 user  wheel   128 Sep 26 00:31 hmr-evaluated-import-race
+drwxr-xr-x@  6 user  wheel   192 Sep 26 00:31 hmr-reexport-race
+-rw-r--r--@  1 user  wheel    35 Sep 26 00:31 hmr.js
+-rw-r--r--@  1 user  wheel    20 Sep 26 00:31 import-external.ts
+-rw-r--r--@  1 user  wheel    24 Sep 26 00:31 installed.js
+drwxr-xr-x@  4 user  wheel   128 Sep 26 00:31 invalid-package
+drwxr-xr-x@  7 user  wheel   224 Sep 26 00:31 live-binding
+-rw-r--r--@  1 user  wheel   173 Sep 26 00:31 native.js
+drwxr-xr-x@  4 user  wheel   128 Sep 26 00:31 no-this
+-rw-r--r--@  1 user  wheel   164 Sep 26 00:31 oxc-runtime-helper.ts
+-rw-r--r--@  1 user  wheel   924 Sep 26 00:31 pre-source-mapped-file.js
+-rw-r--r--@  1 user  wheel    66 Sep 26 00:31 simple.js
+-rw-r--r--@  1 user  wheel   319 Sep 26 00:31 string-literal-sourcemap.ts
+-rw-r--r--@  1 user  wheel    24 Sep 26 00:31 test.css
+-rw-r--r--@  1 user  wheel    24 Sep 26 00:31 test.module.css
+-rw-r--r--@  1 user  wheel   115 Sep 26 00:31 throws-error-method.ts
+drwxr-xr-x@  5 user  wheel   160 Sep 26 00:31 tla-circular
+-rw-r--r--@  1 user  wheel    45 Sep 26 00:31 top-level-object.js
+-rw-r--r--@  1 user  wheel   101 Sep 26 00:31 virtual.js
+drwxr-xr-x@  3 user  wheel    96 Sep 26 00:31 with space
+-rw-r--r--@  1 user  wheel  1121 Sep 26 00:31 worker.invoke.mjs
+-rw-r--r--@  1 user  wheel  1076 Sep 26 00:31 worker.mjs
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/assets:
+total 0
+-rw-r--r--@ 1 user  wheel  0 Sep 26 00:31 placeholder.mov
+-rw-r--r--@ 1 user  wheel  0 Sep 26 00:31 placeholder.png
+-rw-r--r--@ 1 user  wheel  0 Sep 26 00:31 placeholder.txt
+-rw-r--r--@ 1 user  wheel  0 Sep 26 00:31 placeholder.webp
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/circular:
+total 24
+-rw-r--r--@ 1 user  wheel   54 Sep 26 00:31 circular-a.js
+-rw-r--r--@ 1 user  wheel   54 Sep 26 00:31 circular-b.js
+-rw-r--r--@ 1 user  wheel  201 Sep 26 00:31 circular-index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cjs-external:
+total 16
+-rw-r--r--@ 1 user  wheel   45 Sep 26 00:31 index.cjs
+-rw-r--r--@ 1 user  wheel  123 Sep 26 00:31 package.json
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic:
+total 24
+-rw-r--r--@ 1 user  wheel   32 Sep 26 00:31 action.js
+-rw-r--r--@ 1 user  wheel   70 Sep 26 00:31 entry-cyclic.js
+-rw-r--r--@ 1 user  wheel  199 Sep 26 00:31 entry.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2:
+total 16
+-rw-r--r--@ 1 user  wheel  389 Sep 26 00:31 README.md
+-rw-r--r--@ 1 user  wheel   23 Sep 26 00:31 package.json
+drwxr-xr-x@ 5 user  wheel  160 Sep 26 00:31 test1
+drwxr-xr-x@ 5 user  wheel  160 Sep 26 00:31 test2
+drwxr-xr-x@ 5 user  wheel  160 Sep 26 00:31 test3
+drwxr-xr-x@ 5 user  wheel  160 Sep 26 00:31 test4
+drwxr-xr-x@ 5 user  wheel  160 Sep 26 00:31 test5
+drwxr-xr-x@ 5 user  wheel  160 Sep 26 00:31 test6
+drwxr-xr-x@ 6 user  wheel  192 Sep 26 00:31 test7
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 00:31 test9
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test1:
+total 24
+-rw-r--r--@ 1 user  wheel  33 Sep 26 00:31 dep1.js
+-rw-r--r--@ 1 user  wheel  70 Sep 26 00:31 dep2.js
+-rw-r--r--@ 1 user  wheel  99 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test2:
+total 24
+-rw-r--r--@ 1 user  wheel  33 Sep 26 00:31 dep1.js
+-rw-r--r--@ 1 user  wheel  70 Sep 26 00:31 dep2.js
+-rw-r--r--@ 1 user  wheel  66 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test3:
+total 24
+-rw-r--r--@ 1 user  wheel  33 Sep 26 00:31 dep1.js
+-rw-r--r--@ 1 user  wheel  70 Sep 26 00:31 dep2.js
+-rw-r--r--@ 1 user  wheel  98 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test4:
+total 24
+-rw-r--r--@ 1 user  wheel  33 Sep 26 00:31 dep1.js
+-rw-r--r--@ 1 user  wheel  70 Sep 26 00:31 dep2.js
+-rw-r--r--@ 1 user  wheel  52 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test5:
+total 24
+-rw-r--r--@ 1 user  wheel  33 Sep 26 00:31 dep1.js
+-rw-r--r--@ 1 user  wheel  70 Sep 26 00:31 dep2.js
+-rw-r--r--@ 1 user  wheel  99 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test6:
+total 24
+-rw-r--r--@ 1 user  wheel  69 Sep 26 00:31 dep1.js
+-rw-r--r--@ 1 user  wheel  69 Sep 26 00:31 dep2.js
+-rw-r--r--@ 1 user  wheel  49 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test7:
+total 24
+-rw-r--r--@ 1 user  wheel   94 Sep 26 00:31 Ion.js
+-rw-r--r--@ 1 user  wheel   44 Sep 26 00:31 IonTypes.js
+-rw-r--r--@ 1 user  wheel   91 Sep 26 00:31 README.md
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 00:31 dom
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test7/dom:
+total 16
+-rw-r--r--@ 1 user  wheel  71 Sep 26 00:31 Blob.js
+-rw-r--r--@ 1 user  wheel  33 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/cyclic2/test9:
+total 16
+-rw-r--r--@ 1 user  wheel  48 Sep 26 00:31 dep.js
+-rw-r--r--@ 1 user  wheel  46 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/esm-external:
+total 16
+-rw-r--r--@ 1 user  wheel   35 Sep 26 00:31 index.mjs
+-rw-r--r--@ 1 user  wheel  121 Sep 26 00:31 package.json
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/execution-order-re-export:
+total 24
+-rw-r--r--@ 1 user  wheel  30 Sep 26 00:31 dep1.js
+-rw-r--r--@ 1 user  wheel  30 Sep 26 00:31 dep2.js
+-rw-r--r--@ 1 user  wheel  45 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race:
+total 16
+-rw-r--r--@ 1 user  wheel  222 Sep 26 00:31 evaluated.js
+-rw-r--r--@ 1 user  wheel  121 Sep 26 00:31 shared.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-reexport-race:
+total 32
+-rw-r--r--@ 1 user  wheel  113 Sep 26 00:31 core.js
+-rw-r--r--@ 1 user  wheel  109 Sep 26 00:31 entry-a.js
+-rw-r--r--@ 1 user  wheel  109 Sep 26 00:31 entry-b.js
+-rw-r--r--@ 1 user  wheel   49 Sep 26 00:31 shared.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/invalid-package:
+total 8
+drwxr-xr-x@ 3 user  wheel   96 Sep 26 00:31 deps
+-rw-r--r--@ 1 user  wheel  193 Sep 26 00:31 test.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/invalid-package/deps:
+total 0
+drwxr-xr-x@ 3 user  wheel  96 Sep 26 00:31 test-dep-invalid-exports
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/invalid-package/deps/test-dep-invalid-exports:
+total 8
+-rw-r--r--@ 1 user  wheel  60 Sep 26 00:31 package.json
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding:
+total 8
+-rw-r--r--@ 1 user  wheel   23 Sep 26 00:31 package.json
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 00:31 test1
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 00:31 test2
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 00:31 test3
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 00:31 test4
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding/test1:
+total 16
+-rw-r--r--@ 1 user  wheel  113 Sep 26 00:31 dep.js
+-rw-r--r--@ 1 user  wheel   97 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding/test2:
+total 16
+-rw-r--r--@ 1 user  wheel  116 Sep 26 00:31 dep.js
+-rw-r--r--@ 1 user  wheel   97 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding/test3:
+total 16
+-rw-r--r--@ 1 user  wheel  123 Sep 26 00:31 dep.js
+-rw-r--r--@ 1 user  wheel   97 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/live-binding/test4:
+total 16
+-rw-r--r--@ 1 user  wheel  191 Sep 26 00:31 dep.js
+-rw-r--r--@ 1 user  wheel  101 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/no-this:
+total 16
+-rw-r--r--@ 1 user  wheel  40 Sep 26 00:31 importee.js
+-rw-r--r--@ 1 user  wheel  65 Sep 26 00:31 importer.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/tla-circular:
+total 24
+-rw-r--r--@ 1 user  wheel  102 Sep 26 00:31 a.js
+-rw-r--r--@ 1 user  wheel  102 Sep 26 00:31 b.js
+-rw-r--r--@ 1 user  wheel   95 Sep 26 00:31 index.js
+
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/with space:
+total 8
+-rw-r--r--@ 1 user  wheel  114 Sep 26 00:31 has-error-deep.ts

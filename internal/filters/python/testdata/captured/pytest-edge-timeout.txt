@@ -1,0 +1,36 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0
+rootdir: /home/user/src/edge
+configfile: pyproject.toml
+plugins: xdist-3.8.0, timeout-2.4.0, cov-4.1.0, rerunfailures-16.0.1
+timeout: 1.0s
+timeout method: signal
+timeout func_only: False
+collected 1 item
+
+tests/test_slow.py +++++++++++++++++++++++++++++++++++ Timeout ++++++++++++++++++++++++++++++++++++
+~~~~~~~~~~~~~~~~~~~~~~~~ Stack of Thread-1 (6184464384) ~~~~~~~~~~~~~~~~~~~~~~~~
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/threading.py", line 930, in _bootstrap
+    self._bootstrap_inner()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/user/venv/lib/python3.9/site-packages/pytest_rerunfailures.py", line 438, in run_server
+    conn, _ = self.sock.accept()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 293, in accept
+    fd, addr = self._accept()
++++++++++++++++++++++++++++++++++++ Timeout ++++++++++++++++++++++++++++++++++++
+F                                                                        [100%]
+
+=================================== FAILURES ===================================
+_________________________________ test_sleeps __________________________________
+
+    def test_sleeps():
+>       time.sleep(5)
+E       Failed: Timeout (>1.0s) from pytest-timeout.
+
+tests/test_slow.py:5: Failed
+=========================== short test summary info ============================
+FAILED tests/test_slow.py::test_sleeps - Failed: Timeout (>1.0s) from pytest-...
+============================== 1 failed in 1.06s ===============================

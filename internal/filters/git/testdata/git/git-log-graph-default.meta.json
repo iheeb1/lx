@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "--graph",
+    "-n",
+    "8"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/cobra",
+  "description": "git log --graph -n 8 (default format with graph prefix)"
+}

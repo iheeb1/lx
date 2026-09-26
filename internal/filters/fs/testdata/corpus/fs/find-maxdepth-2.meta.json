@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "find",
+    ".",
+    "-maxdepth",
+    "2",
+    "-not",
+    "-path",
+    "./.git*"
+  ],
+  "shell": "find . -maxdepth 2 -not -path ./.git*",
+  "exit_code": 0,
+  "description": "find -maxdepth 2 without -type: leaf directories are not marked",
+  "cwd": "/home/user/src/vite"
+}

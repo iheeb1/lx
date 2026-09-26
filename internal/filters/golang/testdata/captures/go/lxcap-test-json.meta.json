@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-json",
+    "-timeout",
+    "5s",
+    "./..."
+  ],
+  "shell": "go test -json -timeout 5s ./...",
+  "repo": "",
+  "exit_code": 1,
+  "description": "same module with -json (Go 1.26: build-output events)",
+  "cwd": "/home/user/src/lxcap"
+}

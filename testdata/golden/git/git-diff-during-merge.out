@@ -1,0 +1,432 @@
+diff --cc Makefile
+@@@ -21,11 -21,11 +21,19 @@@ lint
+
+  test: install_deps
+  	$(info ******************** running tests ********************)
+++<<<<<<< HEAD
+ +	go test -v $(GO_TEST_FLAGS) ./...
+ +
+ +richtest: install_deps
+ +	$(info ******************** running tests with kyoh86/richgo ********************)
+ +	richgo test -v $(GO_TEST_FLAGS) ./...
+++=======
++ 	go test -v ./... # args-validation
++
++ richtest: install_deps
++ 	$(info ******************** running tests with kyoh86/richgo ********************)
++ 	richgo test -v ./... # args-validation
+++>>>>>>> feature/args-validation
+
+  install_deps:
+  	$(info ******************** downloading dependencies ********************)
+diff --cc README.md
+@@@ -1,14 -1,8 +1,22 @@@
+++<<<<<<< HEAD
+ +<div align="center">
+ +<a href="https://cobra.dev">
+ +<img width="512" height="535" alt="cobra-logo" src="https://github.com/user-attachments/assets/c8bf9aad-b5ae-41d3-8899-d83baec10af8" />
+ +</a>
+ +</div>
+ +
+ +Cobra is a library for creating powerful modern CLI applications.
+ +
+ +<a href="https://cobra.dev">Visit Cobra.dev for extensive documentation</a>
+ +
+ +
+++=======
++ <!-- args-validation -->
++ ![cobra logo](https://github.com/user-attachments/assets/cbc3adf8-0dff-46e9-a88d-5e2d971c169e)
++
++ Cobra is a library for creating powerful modern CLI applications.
++ <!-- args-validation -->
+++>>>>>>> feature/args-validation
+  Cobra is used in many Go projects such as [Kubernetes](https://kubernetes.io/),
+  [Hugo](https://gohugo.io), and [GitHub CLI](https://github.com/cli/cli) to
+  name a few. [This list](site/content/projects_using_cobra.md) contains a more extensive list of projects using Cobra.
+diff --cc args.go
+@@@ -64,20 -64,7 +64,24 @@@ func OnlyValidArgs(cmd *Command, args [
+  	}
+  	return nil
+  }
+++<<<<<<< HEAD
+ +
+ +// NoDuplicateArgs returns an error if there are any duplicate positional args.
+ +func NoDuplicateArgs(cmd *Command, args []string) error {
+ +	seen := make(map[string]struct{}, len(args))
+ +	for _, arg := range args {
+ +		if _, ok := seen[arg]; ok {
+ +			return fmt.Errorf("duplicate argument %q for %q", arg, cmd.CommandPath())
+ +		}
+ +		seen[arg] = struct{}{}
+ +	}
+ +
+ +	return nil
+ +}
+ +
+++=======
++ // NOTE: validated by ValidateArgs in feature/args-validation
+++>>>>>>> feature/args-validation
+  // ArbitraryArgs never returns an error.
+  func ArbitraryArgs(cmd *Command, args []string) error {
+  	return nil
+diff --cc command.go
+@@@ -39,7 -39,7 +39,11 @@@ const
+  )
+
+  // FParseErrWhitelist configures Flag parse errors to be ignored
+++<<<<<<< HEAD
+ +type FParseErrWhitelist flag.ParseErrorsAllowlist
+++=======
++ type FParseErrWhitelist flag.ParseErrorsWhitelist // args-validation
+++>>>>>>> feature/args-validation
+
+  // Group Structure to manage groups for commands
+  type Group struct {
+@@@ -189,9 -189,7 +193,13 @@@ type Command struct
+  	completionCommandGroupID string
+
+  	// versionTemplate is the version template defined by user.
+++<<<<<<< HEAD
+ +	versionTemplate *tmplFunc
+ +	// versionFunc is the version func defined by user.
+ +	versionFunc func(*Command) error
+++=======
++ 	versionTemplate *tmplFunc // args-validation
+++>>>>>>> feature/args-validation
+
+  	// errPrefix is the error message prefix defined by user.
+  	errPrefix string
+@@@ -364,15 -362,7 +372,19 @@@ func (c *Command) SetHelpTemplate(s str
+  	}
+  	c.helpTemplate = tmpl(s)
+  }
+++<<<<<<< HEAD
+ +
+ +// SetVersionFunc sets version function. Can be defined by Application.
+ +//
+ +// Setting this means that [Command.SetVersionTemplate] will not have any
+ +// effect any more.
+ +func (c *Command) SetVersionFunc(f func(*Command) error) {
+ +	c.versionFunc = f
+ +}
+ +
+++=======
++ // NOTE: validated by ValidateArgs in feature/args-validation
+++>>>>>>> feature/args-validation
+  // SetVersionTemplate sets version template to be used. Application can use it to set custom template.
+  func (c *Command) SetVersionTemplate(s string) {
+  	if s == "" {
+@@@ -567,7 -557,7 +579,11 @@@ func (c *Command) FlagErrorFunc() (f fu
+  	}
+  }
+
+++<<<<<<< HEAD
+ +const minUsagePadding = 25
+++=======
++ var minUsagePadding = 25 // args-validation
+++>>>>>>> feature/args-validation
+
+  // UsagePadding return padding for the usage.
+  func (c *Command) UsagePadding() int {
+@@@ -577,7 -567,7 +593,11 @@@
+  	return c.parent.commandsMaxUseLen
+  }
+
+++<<<<<<< HEAD
+ +const minCommandPathPadding = 11
+++=======
++ var minCommandPathPadding = 11 // args-validation
+++>>>>>>> feature/args-validation
+
+  // CommandPathPadding return padding for the command path.
+  func (c *Command) CommandPathPadding() int {
+@@@ -587,7 -577,7 +607,11 @@@
+  	return c.parent.commandsMaxCommandPathLen
+  }
+
+++<<<<<<< HEAD
+ +const minNamePadding = 11
+++=======
++ var minNamePadding = 11 // args-validation
+++>>>>>>> feature/args-validation
+
+  // NamePadding returns padding for the name.
+  func (c *Command) NamePadding() int {
+@@@ -648,19 -638,7 +672,23 @@@ func (c *Command) getVersionTemplateFun
+  	}
+  	return defaultVersionFunc
+  }
+++<<<<<<< HEAD
+ +
+ +// getVersionFunc returns the version function for the command going up the
+ +// command tree if necessary.
+ +func (c *Command) getVersionFunc() func(*Command) error {
+ +	if c.versionFunc != nil {
+ +		return c.versionFunc
+ +	}
+ +	if c.HasParent() {
+ +		return c.parent.getVersionFunc()
+ +	}
+ +	return nil
+ +}
+ +
+++=======
++ // NOTE: validated by ValidateArgs in feature/args-validation
+++>>>>>>> feature/args-validation
+  // ErrPrefix return error message prefix for the command
+  func (c *Command) ErrPrefix() string {
+  	if c.errPrefix != "" {
+@@@ -964,10 -942,7 +992,14 @@@ func (c *Command) execute(a []string) (
+  			c.Println("\"version\" flag declared as non-bool. Please correct your code")
+  			return err
+  		}
+++<<<<<<< HEAD
+ +		if versionVal {
+ +			if fn := c.getVersionFunc(); fn != nil {
+ +				return fn(c)
+ +			}
+++=======
++ 		if versionVal { // args-validation: keep in sync
+++>>>>>>> feature/args-validation
+  			fn := c.getVersionTemplateFunc()
+  			err := fn(c.OutOrStdout(), c)
+  			if err != nil {
+@@@ -1123,11 -1098,7 +1155,15 @@@ func (c *Command) ExecuteC() (cmd *Comm
+
+  	// initialize help at the last point to allow for user overriding
+  	c.InitDefaultHelpCmd()
+++<<<<<<< HEAD
+ +
+ +	// Now that all commands have been created, let's make sure all groups
+ +	// are properly created also
+ +	c.checkCommandGroups()
+ +
+++=======
++ // NOTE: validated by ValidateArgs in feature/args-validation
+++>>>>>>> feature/args-validation
+  	args := c.args
+
+  	// Workaround FAIL with "go test -v" or "cobra.test -test.v", see #155
+@@@ -1906,7 -1877,7 +1942,11 @@@ func (c *Command) ParseFlags(args []str
+  	c.mergePersistentFlags()
+
+  	// do it here after merging all flags and just before parse
+++<<<<<<< HEAD
+ +	c.Flags().ParseErrorsAllowlist = flag.ParseErrorsAllowlist(c.FParseErrWhitelist)
+++=======
++ 	c.Flags().ParseErrorsWhitelist = flag.ParseErrorsWhitelist(c.FParseErrWhitelist) // args-validation: keep in sync
+++>>>>>>> feature/args-validation
+
+  	err := c.Flags().Parse(args)
+  	// Print warnings if they occurred (e.g. deprecated flag messages).
+@@@ -1968,7 -1939,7 +2008,11 @@@ type tmplFunc struct
+  	fn   func(io.Writer, interface{}) error
+  }
+
+++<<<<<<< HEAD
+ +const defaultUsageTemplate = `Usage:{{if .Runnable}}
+++=======
++ var defaultUsageTemplate = `Usage:{{if .Runnable}} // args-validation
+++>>>>>>> feature/args-validation
+    {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
+    {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
+
+@@@ -2068,7 -2039,7 +2112,11 @@@ func defaultUsageFunc(w io.Writer, in i
+  	return nil
+  }
+
+++<<<<<<< HEAD
+ +const defaultHelpTemplate = `{{with (or .Long .Short)}}{{. | trimTrailingWhitespaces}}
+++=======
++ var defaultHelpTemplate = `{{with (or .Long .Short)}}{{. | trimTrailingWhitespaces}} // args-validation
+++>>>>>>> feature/args-validation
+
+  {{end}}{{if or .Runnable .HasSubCommands}}{{.UsageString}}{{end}}`
+
+@@@ -2090,7 -2061,7 +2138,11 @@@ func defaultHelpFunc(w io.Writer, in in
+  	return nil
+  }
+
+++<<<<<<< HEAD
+ +const defaultVersionTemplate = `{{with .DisplayName}}{{printf "%s " .}}{{end}}{{printf "version %s" .Version}}
+++=======
++ var defaultVersionTemplate = `{{with .DisplayName}}{{printf "%s " .}}{{end}}{{printf "version %s" .Version}} // args-validation
+++>>>>>>> feature/args-validation
+  `
+
+  // defaultVersionFunc is equivalent to executing defaultVersionTemplate. The two should be changed in sync.
+diff --cc completions.go
+@@@ -114,14 -114,7 +114,18 @@@ type CompletionOptions struct
+  	// that support them
+  	DisableDescriptions bool
+  	// HiddenDefaultCmd makes the default 'completion' command hidden
+++<<<<<<< HEAD
+ +	HiddenDefaultCmd bool
+ +	// DefaultShellCompDirective sets the ShellCompDirective that is returned
+ +	// if no special directive can be determined
+ +	DefaultShellCompDirective *ShellCompDirective
+ +}
+ +
+ +func (receiver *CompletionOptions) SetDefaultShellCompDirective(directive ShellCompDirective) {
+ +	receiver.DefaultShellCompDirective = &directive
+++=======
++ 	HiddenDefaultCmd bool // args-validation
+++>>>>>>> feature/args-validation
+  }
+
+  // Completion is a string that can be used for completions
+@@@ -317,10 -310,7 +321,14 @@@ func (c *Command) getCompletions(args [
+  	// The last argument, which is not completely typed by the user,
+  	// should not be part of the list of arguments
+  	toComplete := args[len(args)-1]
+++<<<<<<< HEAD
+ +	// Copy trimmedArgs to a new slice to avoid mutating the caller's
+ +	// backing array (which may be os.Args) when later appending "--".
+ +	trimmedArgs := make([]string, len(args)-1)
+ +	copy(trimmedArgs, args[:len(args)-1])
+++=======
++ 	trimmedArgs := args[:len(args)-1] // args-validation
+++>>>>>>> feature/args-validation
+
+  	var finalCmd *Command
+  	var finalArgs []string
+@@@ -489,15 -479,7 +497,19 @@@
+  			return finalCmd, completions, directive, nil
+  		}
+  	} else {
+++<<<<<<< HEAD
+ +		directive = ShellCompDirectiveDefault
+ +		// check current and parent commands for a custom DefaultShellCompDirective
+ +		for cmd := finalCmd; cmd != nil; cmd = cmd.parent {
+ +			if cmd.CompletionOptions.DefaultShellCompDirective != nil {
+ +				directive = *cmd.CompletionOptions.DefaultShellCompDirective
+ +				break
+ +			}
+ +		}
+ +
+++=======
++ 		directive = ShellCompDirectiveDefault // args-validation
+++>>>>>>> feature/args-validation
+  		if flag == nil {
+  			foundLocalNonPersistentFlag := false
+  			// If TraverseChildren is true on the root command we don't check for
+@@@ -957,8 -939,7 +969,12 @@@ func CompDebug(msg string, printToStdEr
+
+  	// Such logs are only printed when the user has set the environment
+  	// variable BASH_COMP_DEBUG_FILE to the path of some file to be used.
+++<<<<<<< HEAD
+ +	if path := os.Getenv("BASH_COMP_DEBUG_FILE"); path != "" {
+ +		//nolint:gosec // G703:BASH_COMP_DEBUG_FILE intentionally user-controlled for completion debug logging.
+++=======
++ 	if path := os.Getenv("BASH_COMP_DEBUG_FILE"); path != "" { // args-validation: keep in sync
+++>>>>>>> feature/args-validation
+  		f, err := os.OpenFile(path,
+  			os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+  		if err == nil {
+diff --cc go.mod
+@@@ -5,6 -5,6 +5,11 @@@ go 1.1
+  require (
+  	github.com/cpuguy83/go-md2man/v2 v2.0.6
+  	github.com/inconshreveable/mousetrap v1.1.0
+++<<<<<<< HEAD
+ +	github.com/spf13/pflag v1.0.9
+ +	go.yaml.in/yaml/v3 v3.0.4
+++=======
++ 	github.com/spf13/pflag v1.0.7
++ 	gopkg.in/yaml.v3 v3.0.1
+++>>>>>>> feature/args-validation
+  )
+diff --cc site/content/user_guide.md
+@@@ -365,74 -365,7 +365,78 @@@ In these cases
+      - **NOTE:** the group is only enforced on commands where every flag is defined
+    - a flag may appear in multiple groups
+    - a group may contain any number of flags
+++<<<<<<< HEAD
+ +
+ +### Repeated Flags
+ +
+ +Cobra supports two types of repeated flags, useful for implementing SSH-like verbose flags (`-v`, `-vv`, `-vvv`) or collecting multiple values.
+ +
+ +#### Count Flags
+ +
+ +For implementing verbose-style flags where repeated usage increases a counter (like SSH's `-v`, `-vv`, `-vvv`):
+ +
+ +```go
+ +var verbose int
+ +
+ +func init() {
+ +  // CountVarP allows the flag to be repeated to increment the counter
+ +  rootCmd.PersistentFlags().CountVarP(&verbose, "verbose", "v", "verbose output (can be repeated: -v, -vv, -vvv)")
+ +}
+ +```
+ +
+ +Usage examples:
+ +- `myapp -v` → verbose = 1 (info level)
+ +- `myapp -vv` or `myapp -v -v` → verbose = 2 (debug level)
+ +- `myapp -vvv` or `myapp -v -v -v` → verbose = 3 (trace level)
+ +
+ +Then in your command logic:
+ +```go
+ +Run: func(cmd *cobra.Command, args []string) {
+ +  switch verbose {
+ +  case 0:
+ +    // Default: no verbose output
+ +  case 1:
+ +    // Info level logging
+ +    log.SetLevel(log.InfoLevel)
+ +  case 2:
+ +    // Debug level logging
+ +    log.SetLevel(log.DebugLevel)
+ +  case 3:
+ +    // Trace level logging
+ +    log.SetLevel(log.TraceLevel)
+ +  default:
+ +    // Maximum verbosity
+ +    log.SetLevel(log.TraceLevel)
+ +  }
+ +},
+ +```
+ +
+ +#### Array/Slice Flags
+ +
+ +For collecting multiple values of the same flag:
+ +
+ +```go
+ +var inputFiles []string
+ +
+ +func init() {
+ +  // StringArrayVarP allows multiple values: --input file1.txt --input file2.txt
+ +  rootCmd.Flags().StringArrayVarP(&inputFiles, "input", "i", []string{}, "input files (can be repeated)")
+ +
+ +  // Alternative: StringSliceVarP for comma-separated values
+ +  // rootCmd.Flags().StringSliceVarP(&inputFiles, "input", "i", []string{}, "input files (comma-separated or repeated)")
+ +}
+ +```
+ +
+ +Usage examples:
+ +- `myapp --input file1.txt --input file2.txt`
+ +- `myapp -i file1.txt -i file2.txt`
+ +- With StringSlice: `myapp --input file1.txt,file2.txt,file3.txt`
+ +
+ +**Note**: Both `CountVar` and array flags leverage the underlying [pflag](https://github.com/spf13/pflag) library's support for repeated flags.
+ +
+++=======
++ <!-- args-validation -->
+++>>>>>>> feature/args-validation
+  ## Positional and Custom Arguments
+
+  Validation of positional arguments can be specified using the `Args` field of `Command`.
+@@@ -446,8 -379,7 +450,12 @@@ The following validators are built in
+    - `ExactArgs(int)` - report an error if there are not exactly N positional args.
+    - `RangeArgs(min, max)` - report an error if the number of args is not between `min` and `max`.
+  - Content of the arguments:
+++<<<<<<< HEAD
+ +  - `OnlyValidArgs` - report an error if there are any positional args not specified in the `ValidArgs` field of `Command`, which can optionally be set to a list of valid values for positional args.
+ +  - `NoDuplicateArgs` - report an error if any positional argument value is provided more than once.
+++=======
++   - `OnlyValidArgs` - report an error if there are any positional args not specified in the `ValidArgs` field of `Command`, which can optionally be set to a list of valid values for positional args. (see also: argument validation)
+++>>>>>>> feature/args-validation
+
+  If `Args` is undefined or `nil`, it defaults to `ArbitraryArgs`.
+
+* Unmerged path fish_completions.go

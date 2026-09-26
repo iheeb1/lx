@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-v",
+    "-count=2",
+    "./flaky"
+  ],
+  "shell": "go test -v -count=2 ./flaky",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -v -count=2: TestFlaky fails on its first run and passes on the second",
+  "cwd": "/home/user/src/lxcap2"
+}

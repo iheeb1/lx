@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rg",
+    "--vimgrep",
+    "hot",
+    "packages/vite/src/client"
+  ],
+  "shell": "rg --vimgrep hot packages/vite/src/client",
+  "exit_code": 0,
+  "description": "rg --vimgrep",
+  "cwd": "/home/user/src/vite"
+}

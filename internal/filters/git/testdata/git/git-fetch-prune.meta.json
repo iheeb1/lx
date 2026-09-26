@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "fetch",
+    "--prune"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git fetch --prune after 5 remote branches were deleted"
+}

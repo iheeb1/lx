@@ -1,0 +1,42 @@
+Using default tag: latest
+latest: Pulling from library/node
+4fbec69b9411: Already exists
+77ea7eee3d80: Already exists
+95cf1a2e1698: Pulling fs layer
+a0e70458d19e: Pulling fs layer
+6613a3c187ef: Pulling fs layer
+eb41a8797959: Pulling fs layer
+6b0cdd6de4cf: Pulling fs layer
+d0ab8e524514: Pulling fs layer
+e8297fcb4347: Pulling fs layer
+95cf1a2e1698: Waiting
+a0e70458d19e: Waiting
+6613a3c187ef: Waiting
+eb41a8797959: Waiting
+6b0cdd6de4cf: Waiting
+d0ab8e524514: Waiting
+e8297fcb4347: Waiting
+95cf1a2e1698: Verifying Checksum
+95cf1a2e1698: Download complete
+a0e70458d19e: Verifying Checksum
+a0e70458d19e: Download complete
+6613a3c187ef: Verifying Checksum
+6613a3c187ef: Download complete
+eb41a8797959: Verifying Checksum
+eb41a8797959: Download complete
+6b0cdd6de4cf: Verifying Checksum
+6b0cdd6de4cf: Download complete
+d0ab8e524514: Verifying Checksum
+d0ab8e524514: Download complete
+e8297fcb4347: Verifying Checksum
+e8297fcb4347: Download complete
+95cf1a2e1698: Pull complete
+a0e70458d19e: Pull complete
+6613a3c187ef: Pull complete
+eb41a8797959: Pull complete
+6b0cdd6de4cf: Pull complete
+d0ab8e524514: Pull complete
+e8297fcb4347: Pull complete
+Digest: sha256:0895953fcb4434c0d4b2598d9c634a590dfbadf905361545d8b3ec7888a8350e
+Status: Downloaded newer image for node:latest
+docker.io/library/node:latest

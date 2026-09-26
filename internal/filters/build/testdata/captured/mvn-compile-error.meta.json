@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "mvn",
+    "-o",
+    "-B",
+    "compile"
+  ],
+  "exit_code": 1,
+  "description": "mvn -B compile (offline, Maven 3.9.16, maven-compiler-plugin 3.11.0, JDK 26): two javac errors (cannot find symbol, incompatible types) plus an unchecked-call note",
+  "cwd": "/home/user/src/mvnapp"
+}

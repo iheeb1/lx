@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "ls",
+    "-la"
+  ],
+  "shell": "ls -la",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "ls -la at the root of a Go repo (dotfiles, dirs, source files)",
+  "cwd": "repos/gin"
+}

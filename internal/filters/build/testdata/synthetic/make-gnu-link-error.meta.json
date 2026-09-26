@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "make"
+  ],
+  "exit_code": 2,
+  "description": "SYNTHETIC (hand-written in real GNU make 4.3 / gcc 13 / GNU ld / CMake 3.28 / ninja 1.11 format; the capture machine is macOS with clang only): GNU make 4.3 link step with GNU ld undefined references (with and without debug line info) and collect2",
+  "cwd": "/home/user/src/netd"
+}

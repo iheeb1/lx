@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "ls",
+    "--all"
+  ],
+  "shell": "npm ls --all",
+  "exit_code": 1,
+  "description": "npm ls --all with the same problems: deduped entries and many UNMET OPTIONAL DEPENDENCY lines",
+  "cwd": "/home/user/src/vite-app"
+}

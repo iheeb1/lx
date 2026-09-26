@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "yarn",
+    "typecheck"
+  ],
+  "shell": "yarn typecheck",
+  "exit_code": 2,
+  "description": "yarn 1 typecheck (tsc --noEmit) failing: plain diagnostics, 'error Command failed with exit code 2.'",
+  "cwd": "/home/user/src/eslint9-app"
+}

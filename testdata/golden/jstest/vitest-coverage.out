@@ -1,0 +1,67 @@
+ ❯ test/cart.test.ts (10 tests | 4 failed | 1 skipped | 1 todo) 26ms
+     × handles fractional prices 7ms
+     × rejects bad pct 0ms
+     × deep equal 2ms
+     × fails for missing 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cart.test.ts > total > handles fractional prices
+AssertionError: expected 0.30000000000000004 to be 0.3 // Object.is equality
+- Expected
++ Received
+- 0.3
++ 0.30000000000000004
+ ❯ test/cart.test.ts:12:56
+     12|     expect(total([{ name: "b", price: 0.1, qty: 3 }])).toBe(0.3);
+       |                                                        ^
+
+ FAIL  test/cart.test.ts > discount > rejects bad pct
+RangeError: invalid discount percentage: 150
+ ❯ discount src/cart.ts:13:11
+     13|     throw new RangeError(`invalid discount percentage: ${pct}`);
+       |           ^
+ ❯ test/cart.test.ts:23:12
+
+ FAIL  test/cart.test.ts > discount > deep equal
+AssertionError: expected { items: [ 1, 2, 3 ], …(1) } to deeply equal { items: [ 1, 2, 4 ], …(1) }
+- Expected
++ Received
+  {
+    "items": [
+      1,
+      2,
+-     4,
++     3,
+    ],
+    "meta": {
+-     "tag": "y",
++     "tag": "x",
+    },
+  }
+ ❯ test/cart.test.ts:26:54
+     26|     expect({ items: [1, 2, 3], meta: { tag: "x" } }).toEqual({ items: …
+       |                                                      ^
+
+ FAIL  test/cart.test.ts > fetchPrice > fails for missing
+Error: price not found for sku missing
+ ❯ fetchPrice src/cart.ts:21:11
+     21|     throw new Error(`price not found for sku ${sku}`);
+       |           ^
+ ❯ test/cart.test.ts:35:12
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  4 failed | 6 passed | 1 skipped | 1 todo (12)
+   Duration  358ms (transform 67ms, setup 0ms, import 95ms, tests 30ms, environment 0ms)
+ % Coverage report from v8
+
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------|---------|----------|---------|---------|-------------------
+----------|---------|----------|---------|---------|-------------------
+=============================== Coverage summary ===============================
+Statements   : 100% ( 10/10 )
+Branches     : 100% ( 6/6 )
+Functions    : 100% ( 5/5 )
+Lines        : 100% ( 8/8 )
+================================================================================

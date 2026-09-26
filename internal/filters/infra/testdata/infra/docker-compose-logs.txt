@@ -1,0 +1,156 @@
+db-1     | PostgreSQL init process complete; ready for start up.
+db-1     | 2026-09-26 10:00:00.412 UTC [1] LOG:  starting PostgreSQL 16.4 on aarch64-unknown-linux-musl
+db-1     | 2026-09-26 10:00:00.418 UTC [1] LOG:  database system is ready to accept connections
+web-1    | 2026-09-26T05:20:00.000Z info: GET /products/100 200 5ms
+worker-1 | 2026-09-26T05:20:02.001Z info: job thumbnail.render #3001 done in 41ms
+web-1    | 2026-09-26T05:20:04.002Z info: GET /products/102 200 7ms
+redis-1  | 1:M 26 Sep 2026 10:00:03.003 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:20:08.004Z info: GET /products/104 200 9ms
+worker-1 | 2026-09-26T05:20:10.005Z error: job email.send #3005 failed: SMTP 421 4.7.0 Try again later (attempt 3/5)
+web-1    | 2026-09-26T05:20:12.006Z info: GET /products/106 200 11ms
+redis-1  | 1:M 26 Sep 2026 10:00:07.007 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:20:16.008Z info: GET /products/108 200 13ms
+worker-1 | 2026-09-26T05:20:18.009Z info: job thumbnail.render #3009 done in 49ms
+web-1    | 2026-09-26T05:20:20.010Z info: GET /products/110 200 15ms
+redis-1  | 1:M 26 Sep 2026 10:00:11.011 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:20:24.012Z info: GET /products/112 200 17ms
+worker-1 | 2026-09-26T05:20:26.013Z info: job thumbnail.render #3013 done in 53ms
+web-1    | 2026-09-26T05:20:28.014Z info: GET /products/114 200 19ms
+redis-1  | 1:M 26 Sep 2026 10:00:15.015 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:20:32.016Z info: GET /products/116 200 21ms
+worker-1 | 2026-09-26T05:20:34.017Z info: job thumbnail.render #3017 done in 57ms
+web-1    | 2026-09-26T05:20:36.018Z info: GET /products/101 200 23ms
+redis-1  | 1:M 26 Sep 2026 10:00:19.019 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:20:40.020Z info: GET /products/103 200 25ms
+worker-1 | 2026-09-26T05:20:42.021Z info: job thumbnail.render #3021 done in 61ms
+web-1    | 2026-09-26T05:20:44.022Z info: GET /products/105 200 27ms
+redis-1  | 1:M 26 Sep 2026 10:00:23.023 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:20:48.024Z info: GET /products/107 200 29ms
+worker-1 | 2026-09-26T05:20:50.025Z error: job email.send #3025 failed: SMTP 421 4.7.0 Try again later (attempt 2/5)
+web-1    | 2026-09-26T05:20:52.026Z info: GET /products/109 200 31ms
+redis-1  | 1:M 26 Sep 2026 10:00:27.027 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:20:56.028Z info: GET /products/111 200 33ms
+worker-1 | 2026-09-26T05:20:58.029Z info: job thumbnail.render #3029 done in 69ms
+web-1    | 2026-09-26T05:21:00.030Z info: GET /products/113 200 5ms
+redis-1  | 1:M 26 Sep 2026 10:00:31.031 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:21:04.032Z info: GET /products/115 200 7ms
+worker-1 | 2026-09-26T05:21:06.033Z info: job thumbnail.render #3033 done in 73ms
+web-1    | 2026-09-26T05:21:08.034Z info: GET /products/100 200 9ms
+redis-1  | 1:M 26 Sep 2026 10:00:35.035 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:21:12.036Z info: GET /products/102 200 11ms
+worker-1 | 2026-09-26T05:21:14.037Z info: job thumbnail.render #3037 done in 77ms
+web-1    | 2026-09-26T05:21:16.038Z info: GET /products/104 200 13ms
+redis-1  | 1:M 26 Sep 2026 10:00:39.039 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:21:20.040Z info: GET /products/106 200 15ms
+worker-1 | 2026-09-26T05:21:22.041Z info: job thumbnail.render #3041 done in 81ms
+web-1    | 2026-09-26T05:21:24.042Z info: GET /products/108 200 17ms
+redis-1  | 1:M 26 Sep 2026 10:00:43.043 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:21:28.044Z info: GET /products/110 200 19ms
+worker-1 | 2026-09-26T05:21:30.045Z error: job email.send #3045 failed: SMTP 421 4.7.0 Try again later (attempt 1/5)
+web-1    | 2026-09-26T05:21:32.046Z info: GET /products/112 200 21ms
+redis-1  | 1:M 26 Sep 2026 10:00:47.047 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:21:36.048Z info: GET /products/114 200 23ms
+worker-1 | 2026-09-26T05:21:38.049Z info: job thumbnail.render #3049 done in 89ms
+web-1    | 2026-09-26T05:21:40.050Z info: GET /products/116 200 25ms
+redis-1  | 1:M 26 Sep 2026 10:00:51.051 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:21:44.052Z info: GET /products/101 200 27ms
+worker-1 | 2026-09-26T05:21:46.053Z info: job thumbnail.render #3053 done in 93ms
+web-1    | 2026-09-26T05:21:48.054Z info: GET /products/103 200 29ms
+redis-1  | 1:M 26 Sep 2026 10:00:55.055 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:21:52.056Z info: GET /products/105 200 31ms
+worker-1 | 2026-09-26T05:21:54.057Z info: job thumbnail.render #3057 done in 97ms
+web-1    | 2026-09-26T05:21:56.058Z info: GET /products/107 200 33ms
+redis-1  | 1:M 26 Sep 2026 10:00:59.059 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:22:00.060Z info: GET /products/109 200 5ms
+worker-1 | 2026-09-26T05:22:02.061Z info: job thumbnail.render #3061 done in 101ms
+web-1    | 2026-09-26T05:22:04.062Z info: GET /products/111 200 7ms
+redis-1  | 1:M 26 Sep 2026 10:01:03.063 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:22:08.064Z info: GET /products/113 200 9ms
+worker-1 | 2026-09-26T05:22:10.065Z error: job email.send #3065 failed: SMTP 421 4.7.0 Try again later (attempt 3/5)
+web-1    | 2026-09-26T05:22:12.066Z info: GET /products/115 200 11ms
+redis-1  | 1:M 26 Sep 2026 10:01:07.067 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:22:16.068Z info: GET /products/100 200 13ms
+worker-1 | 2026-09-26T05:22:18.069Z info: job thumbnail.render #3069 done in 109ms
+web-1    | 2026-09-26T05:22:20.070Z info: GET /products/102 200 15ms
+redis-1  | 1:M 26 Sep 2026 10:01:11.071 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:22:24.072Z info: GET /products/104 200 17ms
+worker-1 | 2026-09-26T05:22:26.073Z info: job thumbnail.render #3073 done in 113ms
+web-1    | 2026-09-26T05:22:28.074Z info: GET /products/106 200 19ms
+redis-1  | 1:M 26 Sep 2026 10:01:15.075 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:22:32.076Z info: GET /products/108 200 21ms
+worker-1 | 2026-09-26T05:22:34.077Z info: job thumbnail.render #3077 done in 117ms
+web-1    | 2026-09-26T05:22:36.078Z info: GET /products/110 200 23ms
+redis-1  | 1:M 26 Sep 2026 10:01:19.079 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:22:40.080Z info: GET /products/112 200 25ms
+worker-1 | 2026-09-26T05:22:42.081Z info: job thumbnail.render #3081 done in 121ms
+web-1    | 2026-09-26T05:22:44.082Z info: GET /products/114 200 27ms
+redis-1  | 1:M 26 Sep 2026 10:01:23.083 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:22:48.084Z info: GET /products/116 200 29ms
+worker-1 | 2026-09-26T05:22:50.085Z error: job email.send #3085 failed: SMTP 421 4.7.0 Try again later (attempt 2/5)
+web-1    | 2026-09-26T05:22:52.086Z info: GET /products/101 200 31ms
+redis-1  | 1:M 26 Sep 2026 10:01:27.087 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:22:56.088Z info: GET /products/103 200 33ms
+worker-1 | 2026-09-26T05:22:58.089Z info: job thumbnail.render #3089 done in 129ms
+web-1    | 2026-09-26T05:23:00.090Z info: GET /products/105 200 5ms
+redis-1  | 1:M 26 Sep 2026 10:01:31.091 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:23:04.092Z info: GET /products/107 200 7ms
+worker-1 | 2026-09-26T05:23:06.093Z info: job thumbnail.render #3093 done in 133ms
+web-1    | 2026-09-26T05:23:08.094Z info: GET /products/109 200 9ms
+redis-1  | 1:M 26 Sep 2026 10:01:35.095 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:23:12.096Z info: GET /products/111 200 11ms
+worker-1 | 2026-09-26T05:23:14.097Z info: job thumbnail.render #3097 done in 137ms
+web-1    | 2026-09-26T05:23:16.098Z info: GET /products/113 200 13ms
+redis-1  | 1:M 26 Sep 2026 10:01:39.099 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:23:20.100Z info: GET /products/115 200 15ms
+worker-1 | 2026-09-26T05:23:22.101Z info: job thumbnail.render #3101 done in 141ms
+web-1    | 2026-09-26T05:23:24.102Z info: GET /products/100 200 17ms
+redis-1  | 1:M 26 Sep 2026 10:01:43.103 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:23:28.104Z info: GET /products/102 200 19ms
+worker-1 | 2026-09-26T05:23:30.105Z error: job email.send #3105 failed: SMTP 421 4.7.0 Try again later (attempt 1/5)
+web-1    | 2026-09-26T05:23:32.106Z info: GET /products/104 200 21ms
+redis-1  | 1:M 26 Sep 2026 10:01:47.107 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:23:36.108Z info: GET /products/106 200 23ms
+worker-1 | 2026-09-26T05:23:38.109Z info: job thumbnail.render #3109 done in 149ms
+web-1    | 2026-09-26T05:23:40.110Z info: GET /products/108 200 25ms
+redis-1  | 1:M 26 Sep 2026 10:01:51.111 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:23:44.112Z info: GET /products/110 200 27ms
+worker-1 | 2026-09-26T05:23:46.113Z info: job thumbnail.render #3113 done in 153ms
+web-1    | 2026-09-26T05:23:48.114Z info: GET /products/112 200 29ms
+redis-1  | 1:M 26 Sep 2026 10:01:55.115 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:23:52.116Z info: GET /products/114 200 31ms
+worker-1 | 2026-09-26T05:23:54.117Z info: job thumbnail.render #3117 done in 157ms
+web-1    | 2026-09-26T05:23:56.118Z info: GET /products/116 200 33ms
+redis-1  | 1:M 26 Sep 2026 10:01:59.119 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:24:00.120Z info: GET /products/101 200 5ms
+worker-1 | 2026-09-26T05:24:02.121Z info: job thumbnail.render #3121 done in 161ms
+web-1    | 2026-09-26T05:24:04.122Z info: GET /products/103 200 7ms
+redis-1  | 1:M 26 Sep 2026 10:02:03.123 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:24:08.124Z info: GET /products/105 200 9ms
+worker-1 | 2026-09-26T05:24:10.125Z error: job email.send #3125 failed: SMTP 421 4.7.0 Try again later (attempt 3/5)
+web-1    | 2026-09-26T05:24:12.126Z info: GET /products/107 200 11ms
+redis-1  | 1:M 26 Sep 2026 10:02:07.127 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:24:16.128Z info: GET /products/109 200 13ms
+worker-1 | 2026-09-26T05:24:18.129Z info: job thumbnail.render #3129 done in 169ms
+web-1    | 2026-09-26T05:24:20.130Z info: GET /products/111 200 15ms
+redis-1  | 1:M 26 Sep 2026 10:02:11.131 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:24:24.132Z info: GET /products/113 200 17ms
+worker-1 | 2026-09-26T05:24:26.133Z info: job thumbnail.render #3133 done in 173ms
+web-1    | 2026-09-26T05:24:28.134Z info: GET /products/115 200 19ms
+redis-1  | 1:M 26 Sep 2026 10:02:15.135 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:24:32.136Z info: GET /products/100 200 21ms
+worker-1 | 2026-09-26T05:24:34.137Z info: job thumbnail.render #3137 done in 177ms
+web-1    | 2026-09-26T05:24:36.138Z info: GET /products/102 200 23ms
+redis-1  | 1:M 26 Sep 2026 10:02:19.139 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:24:40.140Z info: GET /products/104 200 25ms
+worker-1 | 2026-09-26T05:24:42.141Z info: job thumbnail.render #3141 done in 181ms
+web-1    | 2026-09-26T05:24:44.142Z info: GET /products/106 200 27ms
+redis-1  | 1:M 26 Sep 2026 10:02:23.143 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:24:48.144Z info: GET /products/108 200 29ms
+worker-1 | 2026-09-26T05:24:50.145Z error: job email.send #3145 failed: SMTP 421 4.7.0 Try again later (attempt 2/5)
+web-1    | 2026-09-26T05:24:52.146Z info: GET /products/110 200 31ms
+redis-1  | 1:M 26 Sep 2026 10:02:27.147 * 100 changes in 300 seconds. Saving...
+web-1    | 2026-09-26T05:24:56.148Z info: GET /products/112 200 33ms
+worker-1 | 2026-09-26T05:24:58.149Z info: job thumbnail.render #3149 done in 189ms
+db-1     | 2026-09-26 10:05:01.002 UTC [812] ERROR:  duplicate key value violates unique constraint "orders_pkey"
+db-1     | 2026-09-26 10:05:01.002 UTC [812] DETAIL:  Key (id)=(ord_1234) already exists.
+db-1     | 2026-09-26 10:05:01.002 UTC [812] STATEMENT:  INSERT INTO orders (id, total) VALUES ($1, $2)

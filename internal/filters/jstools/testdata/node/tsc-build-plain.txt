@@ -1,0 +1,11 @@
+src/App.tsx(7,25): error TS2307: Cannot find module './utils/missing' or its corresponding type declarations.
+src/App.tsx(9,7): error TS2322: Type 'string' is not assignable to type 'number'.
+src/App.tsx(9,23): error TS2554: Expected 2 arguments, but got 1.
+src/App.tsx(10,34): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/App.tsx(10,47): error TS2551: Property 'maxx' does not exist on type '{ min: number; max: number; }'. Did you mean 'max'?
+src/App.tsx(19,22): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/App.tsx(25,7): error TS2345: Argument of type '(n: number) => string' is not assignable to parameter of type '(n: number) => number'.
+  Type 'string' is not assignable to type 'number'.
+src/App.tsx(56,35): error TS2345: Argument of type '(count: number) => string' is not assignable to parameter of type 'SetStateAction<number>'.
+  Type '(count: number) => string' is not assignable to type '(prevState: number) => number'.
+    Type 'string' is not assignable to type 'number'.

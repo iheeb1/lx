@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "pytest",
+    "tests/test_missing.py"
+  ],
+  "shell": "pytest tests/test_missing.py",
+  "repo": null,
+  "exit_code": 4,
+  "description": "REAL capture (lx python filter testdata): exit 4: file or directory not found",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv with pytest 8.3.4, mypy 1.19.1, ruff 0.16.9, pip 26.0.1"
+}

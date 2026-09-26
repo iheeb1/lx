@@ -1,0 +1,40 @@
+collected 4 items
+[lx: 1 progress line hidden]
+==================================== ERRORS ====================================
+___________________ ERROR at teardown of test_uses_resource ____________________
+    def resource():
+        yield "r"
+>       raise RuntimeError("teardown failed: could not release resource")
+E       RuntimeError: teardown failed: could not release resource
+tests/test_basic.py:17: RuntimeError
+=================================== FAILURES ===================================
+________________________________ test_div_zero _________________________________
+    def test_div_zero():
+>       assert div(1, 0) == 0
+tests/test_basic.py:11:
+a = 1, b = 0
+    def div(a, b):
+>       return a / b
+E       ZeroDivisionError: division by zero
+app/__init__.py:2: ZeroDivisionError
+________________________ test_prints_pytest_like_output ________________________
+        print("=================================== FAILURES ===================================")
+        print("E       assert 1 == 2")
+        print("========================= 1 failed, 2 passed in 0.01s ==========================")
+>       assert False, "outer failure after nested pytest output"
+E       AssertionError: outer failure after nested pytest output
+E       assert False
+tests/test_basic.py:32: AssertionError
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+collected 3 items
+
+inner.py .F.                                                            [100%]
+=================================== FAILURES ===================================
+E       assert 1 == 2
+========================= 1 failed, 2 passed in 0.01s ==========================
+=========================== short test summary info ============================
+FAILED tests/test_basic.py::test_div_zero - ZeroDivisionError: division by zero
+FAILED tests/test_basic.py::test_prints_pytest_like_output - AssertionError: ...
+ERROR tests/test_basic.py::test_uses_resource - RuntimeError: teardown failed...
+===================== 2 failed, 2 passed, 1 error in 0.08s =====================

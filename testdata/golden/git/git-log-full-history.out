@@ -1,0 +1,222 @@
+adbc881 2026-07-11 [Shudhanshu Singh] fix: resolve macOS test link failure and update lint rules (#2429) [+3 body lines]
+ad460ea 2026-04-25 [takanuva15] Add cobra unique args validator (#2397)
+746ef07 2026-04-24 [Varun Chawla] fix: prevent completions from mutating os.Args via append side effect (#2356) [+13 body lines]
+    Fixes #2257
+f2878ba 2026-04-15 [Marc Khouzam] Ignore the linter error (#2390)
+85c12c2 2026-04-16 [Artur Aronov] projects_using_cobra: add Ollama (#2389)
+61968e8 2025-12-10 [Niklas Vogel] fix: quote args in fish shell completion (#2285) [+10 body lines]
+10d4b48 2025-12-06 [Jeffrey Faer] perf: Loop over the bash variable directly instead of starting subprocesses. (#2333) [+3 body lines]
+88b30ab 2025-12-03 [Davanum Srinivas] chore: Migrate from gopkg.in/yaml.v3 to go.yaml.in/yaml/v3 (#2336) [+4 body lines]
+346d408 2025-12-03 [John McBride] fix: actions/setup-go v6 (#2337) [+1 body line]
+fc81d20 2025-11-17 [SamareshSingh] refactor: change minUsagePadding from var to const (#2325)
+117698a 2025-11-17 [htoyoda18] refactor: replace several vars with consts (#2328)
+e2dd29d 2025-11-17 [Ron Vergis] Add documentation for repeated flags functionality (#2316) [+7 body lines]
+    Resolves #2298
+0629892 2025-11-14 [Marc Khouzam] Fix linter (#2327) [+3 body lines]
+7da941c 2025-09-01 [John McBride] chore: Bump pflag to v1.0.9 (#2305) [+1 body line]
+51d6751 2025-09-01 [Tomas Aschan] Bump pflag to 1.0.8 (#2303)
+    In pflag, we recently made a breaking change in naming to be more inclusive. This change, while doing nothing to address the same uninclusive naming in cobra itself, adjusts to those changes to ensure automatic bumps (if you do them) can continue uninterrupted.
+3f3b818 2025-08-11 [Steve Francia] Update README.md with new logo
+dcaf42e 2025-08-03 [Anish Athalye] Add Periscope to the list of projects using Cobra (#2299)
+6dec1ae 2025-05-31 [Harald Albers] The default ShellCompDirective can be customized for a command and its subcommands (#2238)
+c8289c1 2025-05-28 [Ville Skyttä] chore(golangci-lint): add some exclusion presets [+1 body line]
+4af7b64 2025-03-27 [Ville Skyttä] refactor: apply golangci-lint autofixes, work around false positives
+75790e4 2025-03-27 [Ville Skyttä] chore(golangci-lint): upgrade to v2
+db3ddb5 2025-05-05 [Steve Francia] Adding sponsorship to README.md [merge ceb39ab 67171d6]
+67171d6 2025-05-05 [Steve Francia] putting sponsorship below header
+0ed70dc 2025-04-15 [Eric Chen] Update README.md
+0846d16 2025-04-11 [Eric Chen] Update README.md
+73f7846 2025-04-11 [Eric Chen] Update README.md
+ba5108a 2025-04-11 [Eric Chen] Update README.md
+ceb39ab 2025-03-11 [John McBride] chore: Rm GitHub Action PR size labeler (#2256) [+1 body line]
+c25b598 2025-03-10 [John McBride] feat: Add security policy (#2253) [+1 body line]
+4f9ef8c 2025-03-07 [styee] Update command.go (#2248) [+2 body lines]
+1995054 2025-02-21 [Fraser Waters] Flow context to command in SetHelpFunc (#2241)
+    Fixes https://github.com/spf13/cobra/issues/2240
+f98cf42 2025-02-17 [Yedaya Katsman] Remove traling curlybrace (#2237)
+0d417d8 2025-02-17 [Chongyi Zheng] Test with Go 1.24 (#2236)
+40b5bc1 2025-02-16 [Marc Khouzam] Revert "Make detection for test-binary more universal (#2173)" (#2235) [+2 body lines]
+    This reverts commit d1e9d85fcf592461f3bc2f4b6d5e140c4c0aabf8.
+    Ref: https://github.com/spf13/cobra/pull/2173#issuecomment-2661544195
+a97f9fd 2025-02-16 [ccoVeille] fix CompletionFunc implementation (#2234) [+6 body lines]
+5f9c408 2025-02-15 [John McBride] chore: Upgrade dependencies for v1.9.0 (#2233) [+1 body line]
+24ada7f 2025-02-15 [Marc Khouzam] Remove the default "completion" cmd if it is alone (#1559) [+9 body lines]
+680936a 2025-02-11 [Steve Francia] New logo
+8cb30f9 2025-02-09 [ccoVeille] feat: add CompletionWithDesc helper (#2231) [+3 body lines]
+    Using a type alias is a non-breaking change and it makes the code more readable and easier to understand.
+17b6dca 2025-02-06 [Raúl Barroso] doc: add Conduit (#2230) [+2 body lines]
+ab5cadc 2025-02-06 [Marc Khouzam] Allow to reset the templates to the default (#2229) [+4 body lines]
+4ba5566 2025-02-01 [Ville Skyttä] fix(bash): nounset unbound file filter variable on empty extension (#2228) [+2 body lines]
+41b26ec 2025-01-29 [Marc Khouzam] Print ActiveHelp for bash along other completions (#2076) [+39 body lines]
+611e16c 2025-01-27 [Alessandro Arzilli] Allow linker to perform deadcode elimination for program using Cobra (#1956) [+20 body lines]
+09d5664 2025-01-23 [Toni Kangas] Add similar whitespace escape logic to bash v2 completions than in other completions (#1743) [+4 body lines]
+6c3c116 2025-01-22 [ccoVeille] feat: add CompletionFunc type to help with completions (#2220) [+1 body line]
+01ffff4 2025-01-12 [ZhuHaiCheng] chore: fix function name in comment (#2216) [+1 body line]
+0745e55 2024-12-28 [Sebastiaan van Stijn] completion: improve detection for flags that accept multiple values (#2210) [+28 body lines]
+d1e9d85 2024-12-28 [Sebastiaan van Stijn] Make detection for test-binary more universal (#2173) [+33 body lines]
+9f90567 2024-12-17 [Sebastiaan van Stijn] build(deps): bump github.com/cpuguy83/go-md2man/v2 from 2.0.5 to 2.0.6 (#2206) [+3 body lines]
+8519630 2024-12-11 [Mikel Olasagasti Uranga] Update to latest go-md2man (#2201) [+10 body lines]
+02326d5 2024-11-05 [Vui Lam] Fix broken links in active_help.md (#2202) [+2 body lines]
+5a138f1 2024-11-04 [Leonhard Stemplinger] Make Powershell completion script work in constrained mode (#2196) [+3 body lines]
+3a5efae 2024-10-16 [Maxwel Mazur] doc: azion project added to the list of CLIs that use cobra (#2198)
+5bef9d8 2024-10-12 [Nir Soffer] Fix --version help and output for plugins (#2180) [+20 body lines]
+ff7c561 2024-10-12 [Nir Soffer] Improve site formatting (#2183) [+12 body lines]
+11ab621 2024-10-11 [Ikko Eltociear Ashimine] docs: update README.md (#2197) [+1 body line]
+78bfc83 2024-08-25 [Nir Soffer] Test also with go 1.23 (#2182)
+511af59 2024-08-24 [Nir Soffer] Replace deprecated ioutil usage (#2181) [+6 body lines]
+        Error: SA1019: "io/ioutil" has been deprecated since Go 1.19: As of
+756ba6d 2024-07-28 [Gabe Cook] fix(completions): Complete map flags multiple times (#2174)
+371ae25 2024-07-17 [Sebastiaan van Stijn] Fix deprecation comment for Command.SetOutput (#2172) [+6 body lines]
+    Deprecation comments should be at the start of a paragraph [1], and because
+    > doc comment that begins with Deprecated: followed by some information
+    > about the deprecation (...)
+    detect it to be deprecated.
+    [1]: https://go.dev/wiki/Deprecated
+e94f6d0 2024-06-01 [Ville Skyttä] Address golangci-lint deprecation warnings, enable some more linters (#2152) [+2 body lines]
+    * Address golangci-lint linter deprecation warnings
+    WARN [lintersdb] The name "gas" is deprecated. The linter has been renamed to: gosec.
+    WARN [lintersdb] The linter named "megacheck" is deprecated. It has been split into: gosimple, staticcheck, unused.
+8003b74 2024-05-19 [Nir Soffer] Remove fully inactivated linters (#2148) [+17 body lines]
+5c2c1d6 2024-05-18 [Nir Soffer] Consistent annotation names (#2140) [+12 body lines]
+5a1acea 2024-04-13 [dependabot[bot]] build(deps): bump github.com/cpuguy83/go-md2man/v2 from 2.0.3 to 2.0.4 (#2127)
+0fc86c2 2024-04-08 [Xinwei Xiong] docs: update user guide (#2128)
+6b5f577 2024-04-01 [Ville Skyttä] More linting (#2099) [+2 body lines]
+bd914e5 2024-03-12 [Pedro Mota] fix: remove deprecated io/ioutils package (#2120) [+2 body lines]
+    ioutils.ReadAll is deprecated since Go 1.16. This commit replaces it with
+1f80fa2 2024-03-12 [racerole] chore: remove repetitive words (#2122) [+1 body line]
+c69ae4c 2024-03-12 [damas] ci: test golang 1.22 (#2113)
+a30cee5 2024-03-11 [dependabot[bot]] build(deps): bump actions/cache from 3 to 4 (#2102) [+12 body lines]
+f34069c 2024-03-11 [dependabot[bot]] build(deps): bump golangci/golangci-lint-action from 3.7.0 to 4.0.0 (#2108) [+11 body lines]
+bd2655e 2024-03-08 [montag451] Add Incus to the list of projects using Cobra (#2118)
+bcfcff7 2024-01-15 [Radek Smid] Add Taikun CloudWorks to list of projects (#2098)
+4fb0a66 2024-01-06 [Dmytro Milinevskyi] flags: clarify documentation that LocalFlags related function do not modify the state (#2064)
+0dec88e 2023-12-30 [Denis] Add tests for funcs in cobra.go (#2094)
+cbcf75e 2023-12-27 [Case Wylie] [chore]: update projects using cobra (#2093) [+1 body line]
+199b7ab 2023-12-23 [dependabot[bot]] build(deps): bump actions/labeler from 4 to 5 (#2086) [+15 body lines]
+531ce79 2023-12-23 [Marc Khouzam] Remove extra actions/checkout [+1 body line]
+c054701 2023-12-11 [dependabot[bot]] build(deps): bump actions/setup-go from 4 to 5 [+10 body lines]
+4122785 2023-11-12 [Nir Soffer] Document how to create a plugin [+2 body lines]
+a73b9c3 2023-11-12 [Nir Soffer] Fix help text for runnable plugin command [+9 body lines]
+df547f5 2023-11-12 [Nir Soffer] Fix help text for plugins [+15 body lines]
+e63925d 2023-12-17 [Ville Skyttä] Add env variable to suppress completion descriptions on create (#1938) [+4 body lines]
+236f3c0 2023-12-12 [Marcus Kohlberg] Update projects_using_cobra.md (#2089) [+1 body line]
+3d8ac43 2023-11-23 [Ville Skyttä] Micro-optimizations (#1957) [+13 body lines]
+283e32d 2023-11-13 [SwagPack] Add LXC to the list of projects using cobra (#2071)
+a0a6ae0 2023-11-02 [Marc Khouzam] Improve API to get flag completion function (#2063) [+8 body lines]
+890302a 2023-11-02 [Nir Soffer] Support usage as plugin for tools like kubectl (#2018) [+17 body lines]
+    Fixes: #2017
+48cea5c 2023-10-30 [dependabot[bot]] build(deps): bump actions/checkout from 3 to 4 (#2028)
+22953d8 2023-10-29 [Ville Skyttä] Replace all non-alphanumerics in active help env var program prefix (#1940) [+5 body lines]
+00b68a1 2023-10-28 [Marc Khouzam] Add tests for flag completion registration (#2053) [+7 body lines]
+b711e87 2023-10-28 [Marc Khouzam] Don't complete --help flag when flag parsing disabled (#2061) [+8 body lines]
+    Fixes #2060
+8b1eba4 2023-10-27 [Marc Khouzam] Fix linter errors (#2052) [+2 body lines]
+4cafa37 2023-10-22 [vkhoroz] Allow running persistent run hooks of all parents (#2044) [+12 body lines]
+5c962a2 2023-10-16 [dependabot[bot]] build(deps): bump github.com/cpuguy83/go-md2man/v2 from 2.0.2 to 2.0.3 (#2047)
+efe8fa3 2023-10-15 [dependabot[bot]] build(deps): bump actions/setup-go from 3 to 4 (#1934)
+95d8a1e 2023-10-09 [Haoming Meng] Add notes to doc on preRun and postRun condition (#2041)
+bd4d165 2023-09-26 [Alexandru-Claudius Virtopeanu] feat: add getters for flag completions (#1943)
+0c72800 2023-09-09 [Souma] Customizable error message prefix (#2023)
+c5dacb3 2023-09-08 [Nuno Adrego] ci: test golang 1.21 (#2024)
+285460d 2023-08-29 [Unai Martinez-Corral] command: temporarily disable G602 due to securego/gosec#1005 (#2022)
+4955da7 2023-08-28 [dependabot[bot]] build(deps): bump golangci/golangci-lint-action from 3.6.0 to 3.7.0 (#2021)
+fd865a4 2023-07-23 [Jun Nishimura] minor corrections to unit tests (#2003)
+60d056d 2023-07-20 [gocurr] doc: fix typo, Deperecated -> Deprecated (#2000)
+66b215b 2023-07-18 [Unai Martinez-Corral] golangci: enable 'unused' and disable deprecated replaced by it (#1983)
+c81c46a 2023-07-16 [Martijn Evers] Add 'one required flag' group (#1952)
+dcb405a 2023-06-20 [Unai Martinez-Corral] Move documentation sources to site/content (#1428)
+cbe4865 2023-06-20 [dependabot[bot]] build(deps): bump golangci/golangci-lint-action from 3.5.0 to 3.6.0 (#1976)
+fdee73b 2023-06-19 [Paul Holzinger] powershell: escape variable with curly brackets (#1960) [+3 body lines]
+    Fixes #1853
+988bd76 2023-06-16 [Branch Vincent] test: make fish_completions_test more robust (#1980) [+4 body lines]
+2246fa8 2023-06-13 [Taavi Väänänen] Fix grammar: 'allows to' (#1978) [+3 body lines]
+0e3a0bf 2023-06-12 [dependabot[bot]] build(deps): bump golangci/golangci-lint-action from 3.4.0 to 3.5.0 (#1971)
+284f410 2023-04-08 [Tom Payne] Fix typo in fish completions (#1945)
+4dd4b25 2023-03-22 [Marc Khouzam] Update main image to better handle dark background (#1883) [+2 body lines]
+    Fixes #1880
+45360a5 2023-03-22 [Marc Khouzam] Allow sourcing zsh completion script (#1917) [+6 body lines]
+c8a20a1 2023-03-16 [Luiz Carvalho] Document suggested layout for subcommands (#1930) [+1 body line]
+b197a24 2023-03-14 [Florent Poinsard] Update projects_using_cobra.md (#1932) [+1 body line]
+9e6b58a 2023-03-06 [Unai Martinez-Corral] update copyright year (#1927)
+fb36524 2023-03-06 [Unai Martinez-Corral] ci: test Golang 1.20 (#1925)
+c7300f0 2023-03-06 [Unai Martinez-Corral] ci: deprecate go 1.16 (#1926)
+567ea8e 2023-02-25 [Oldřich Jedlička] Add support for PowerShell 7.2+ (#1916) [+6 body lines]
+    Fixes #1849
+3daa4b9 2023-02-25 [Gyanendra Mishra] Add keeporder to shell completion (#1903) [+1 body line]
+a516d41 2023-02-13 [John McBride] Removes stale bot from GitHub action (#1908) [+1 body line]
+e839bb3 2023-02-12 [dependabot[bot]] build(deps): bump golangci/golangci-lint-action from 3.3.1 to 3.4.0 (#1902)
+87ebcd8 2023-02-09 [Ggg6542] Update shell_completions.md (#1907) [+1 body line]
+8b8ee87 2023-02-06 [janhn] Improve MarkFlagsMutuallyExclusive example in User Guide (#1904)
+d022c0f 2023-01-31 [Shihta Kuan] Add documentation about disabling completion descriptions (#1901)
+4fa4fdf 2023-01-03 [dependabot[bot]] build(deps): bump github.com/inconshreveable/mousetrap (#1872)
+b4f979a 2023-01-03 [Dominik Roos] completions: do not detect arguments with dash as 2nd char as flag (#1817) [+3 body lines]
+    Fixes #1816
+bf11ab6 2022-12-26 [Yash Ladha] fix: func name in doc strings (#1885) [+2 body lines]
+fdffa5a 2022-12-24 [Seonghyeon Cho] Update badge route (#1884) [+2 body lines]
+f25a3c6 2022-12-15 [Yash Ladha] fix: conflict import name with variable (#1879) [+2 body lines]
+9235920 2022-12-09 [Unai Martinez-Corral] ci: deprecate go 1.15 (#1866) [+1 body line]
+a6f198b 2022-12-06 [David Wertenteil] Update kubescape org (#1874) [+1 body line]
+7bb1440 2022-11-26 [dependabot[bot]] build(deps): bump golangci/golangci-lint-action from 3.2.0 to 3.3.1 (#1851) [+11 body lines]
+6200c8e 2022-11-25 [Unai Martinez-Corral] Makefile: add target richtest (#1865) [+1 body line]
+c6b9971 2022-11-25 [Norman Dankert] fix: force ForEach-Object to return array in pwsh completion (#1850)
+    Fixes #1847
+4305498 2022-11-22 [Enrico Candino] Update stale.yml (#1863)
+ad6db7f 2022-11-14 [Brian Pursley] Create unit test illustrating unknown flag bug (#1854) [+3 body lines]
+6b0bd30 2022-11-07 [Brian Pursley] fix: don't remove flag value that matches subcommand name (#1781) [+6 body lines]
+cc7e235 2022-11-01 [mike76-dev] Add Sia to projects using Cobra (#1844)
+10cf7be 2022-10-24 [Marc Khouzam] Check for group presence after full initialization (#1839) [+5 body lines]
+    Fixes #1831
+4b9d00d 2022-10-20 [doniacld] Replace deprecated ExactValidArgs with MatchAll in user_guide and shell_completions example (#1836)
+badcce1 2022-10-17 [Ville Skyttä] style(bash-v2): various cleanups (#1702) [+13 body lines]
+1424b7b 2022-10-13 [Fabian Kammel] Add Constellation to projects using cobra. (#1829)
+8607918 2022-10-11 [Gustavo Bazan] feat: make InitDefaultCompletionCmd public (#1467) [+4 body lines]
+2169adb 2022-10-10 [aawsome] Add groups for commands in help (#1003) [+4 body lines]
+212ea40 2022-10-04 [Marc Khouzam] Include --help and --version flag in completion (#1813) [+7 body lines]
+    Fixes #1786
+d4040ad 2022-10-03 [Marc Khouzam] Allow user to add completion for powershell alias (#1621) [+9 body lines]
+23fc5e0 2022-10-03 [Varun Sharma] ci: add minimum GitHub token permissions for workflows (#1792) [+1 body line]
+93d1913 2022-10-03 [Yann Soubeyrand] Add OnFinalize method (#1788) [+3 body lines]
+07034fe 2022-10-03 [dependabot[bot]] build(deps): bump actions/stale from 5 to 6 (#1815) [+13 body lines]
+3dc9761 2022-10-03 [Dima Brusilovsky] Add allero to list of projects using cobra (#1819)
+7039e1f 2022-09-30 [Francis Nickels III] Add '--version' flag to Help output (#1707)
+fce8d8a 2022-09-27 [Skeet WU] Expose ValidateRequiredFlags and ValidateFlagGroups (#1760)
+a281c8b 2022-09-16 [Marc Khouzam] Document option to hide the default completion cmd (#1779) [+2 body lines]
+459fc5f 2022-09-16 [Unai Martinez-Corral] ci: add workflow_dispatch (#1387)
+6d978a9 2022-09-16 [Unai Martinez-Corral] add missing license headers (#1809)
+4065a33 2022-09-14 [Unai Martinez-Corral] ci: use action/setup-go's cache (#1783) [+1 body line]
+    * ci: deprecate Golang 1.14
+7e289f4 2022-09-11 [Marc Khouzam] Adjustments to documentation (#1656) [+1 body line]
+fe08012 2022-09-11 [Marc Khouzam] Rename Powershell completion tests (#1803) [+3 body lines]
+d689184 2022-09-11 [Yuval Goldberg] Support for case-insensitive command names (#1802) [+3 body lines]
+    Resolves #1382
+70e53f6 2022-09-10 [Unai Martinez-Corral] Deprecate ExactValidArgs() and test combinations of args validators (#1643) [+2 body lines]
+    * deprecate ExactValidArgs in favour of MatchAll(OnlyValidArgs, ...)
+2e8ba6f 2022-09-07 [John McBride] Use correct stale action `exempt-` yaml keys (#1800) [+1 body line]
+0580724 2022-08-30 [Marc Khouzam] With go 1.18, we must use go install for a binary (#1726) [+7 body lines]
+2a7647f 2022-08-30 [Paul Meyer] Clarify SetContext documentation (#1748)
+7045405 2022-08-30 [Unai Martinez-Corral] ci: test on Golang 1.19 (#1782) [+7 body lines]
+22b6179 2022-08-28 [Brian Pursley] fix: show flags that shadow parent persistent flag in child help (#1776) [+7 body lines]
+dbf85f6 2022-08-14 [Tobias Klauser] Update gopkg.in/yaml.v2 to gopkg.in/yaml.v3 (#1766) [+2 body lines]
+    the packages's use needed and no breaking changes expected.
+f911c0b 2022-08-14 [Ville Skyttä] fix(bash-v2): activeHelp length check syntax (#1762) [+9 body lines]
+7790bf9 2022-08-13 [Zoran Regvart] fix: correct command path in see_also for YAML doc (#1771) [+3 body lines]
+6bf8cd8 2022-08-13 [dependabot[bot]] build(deps): bump github.com/inconshreveable/mousetrap (#1774)
+965924a 2022-08-04 [Florian Forster] docs: add zitadel to the list (#1772)
+162534f 2022-07-20 [Javier López Barba] doc: Add Okteto for projects using Cobra (#1759) [+1 body line]
+a0aadc6 2022-07-07 [Ikko Ashimine] Spelling for GitHub CLI (#1744)
+69083f8 2022-06-28 [Tobias Klauser] Add Cilium to projects using Cobra (#1745)
+bba9331 2022-06-25 [Yevgeny Pats] doc: Add CloudQuery for projects using Cobra (#1742)
+3d38d18 2022-06-23 [Miguel Duarte Barroso] Add KubeVirt as a project using cobra (#1741) [+3 body lines]
+06b06a9 2022-06-20 [dependabot[bot]] Bump golangci/golangci-lint-action from 3.1.0 to 3.2.0 (#1697) [+11 body lines]
+5f2ec3c 2022-06-20 [Marc Khouzam] Update shell completion to respect flag groups (#1659) [+2 body lines]
+b9ca594 2022-06-21 [Paul Holzinger] use errors.Is() to check for errors (#1730) [+6 body lines]
+ea94a3d 2022-06-21 [Unai Martinez-Corral] undefined or nil Args default to ArbitraryArgs (#1612)
+7c9831d 2022-06-20 [Marc Khouzam] Fix handling of descriptions for bash v3 (#1735) [+3 body lines]
+    Fixes #1734
+ed7bb9d 2022-06-20 [kida] Add unit test for fish completion (#1515)
+f464d6c 2022-06-15 [Marc Khouzam] Add Active Help support (#1482)
+7dc8b00 2022-06-15 [dependabot[bot]] Bump actions/setup-go from 2 to 3 (#1660) [+11 body lines]
+87ea180 2022-06-13 [xuwu] Modify brew prefix path in macOS system (#1719)
+ca8e3c2 2022-06-08 [Ian Wahbe] Add Pulumi as a project using cobra (#1720) [+1 body line]
+37d481d 2022-06-05 [Tom Payne] fix: Don't complete _command on zsh (#1690) [+11 body lines]
+[… +916 more commits not shown (1106 total); oldest shown: 37d481d]

@@ -1,0 +1,22 @@
+{"Time":"2026-09-26T03:34:17.192306+01:00","Action":"start","Package":"example.com/lxcap2/uni"}
+{"Time":"2026-09-26T03:34:17.792681+01:00","Action":"run","Package":"example.com/lxcap2/uni","Test":"TestÜnicode"}
+{"Time":"2026-09-26T03:34:17.792782+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode","Output":"=== RUN   TestÜnicode\n"}
+{"Time":"2026-09-26T03:34:17.792823+01:00","Action":"run","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case"}
+{"Time":"2026-09-26T03:34:17.792895+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Output":"=== RUN   TestÜnicode/naïve_case\n"}
+{"Time":"2026-09-26T03:34:17.792935+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Output":"    ü_test.go:7: got \"café\", want \"cafe\"\n"}
+{"Time":"2026-09-26T03:34:17.792944+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Output":"--- FAIL: TestÜnicode/naïve_case (0.00s)\n"}
+{"Time":"2026-09-26T03:34:17.792949+01:00","Action":"fail","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Elapsed":0}
+{"Time":"2026-09-26T03:34:17.792955+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode","Output":"--- FAIL: TestÜnicode (0.00s)\n"}
+{"Time":"2026-09-26T03:34:17.792969+01:00","Action":"fail","Package":"example.com/lxcap2/uni","Test":"TestÜnicode","Elapsed":0}
+{"Time":"2026-09-26T03:34:17.792977+01:00","Action":"run","Package":"example.com/lxcap2/uni","Test":"TestÜnicode"}
+{"Time":"2026-09-26T03:34:17.792981+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode","Output":"=== RUN   TestÜnicode\n"}
+{"Time":"2026-09-26T03:34:17.792989+01:00","Action":"run","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case"}
+{"Time":"2026-09-26T03:34:17.792992+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Output":"=== RUN   TestÜnicode/naïve_case\n"}
+{"Time":"2026-09-26T03:34:17.793052+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Output":"    ü_test.go:7: got \"café\", want \"cafe\"\n"}
+{"Time":"2026-09-26T03:34:17.793066+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Output":"--- FAIL: TestÜnicode/naïve_case (0.00s)\n"}
+{"Time":"2026-09-26T03:34:17.793071+01:00","Action":"fail","Package":"example.com/lxcap2/uni","Test":"TestÜnicode/naïve_case","Elapsed":0}
+{"Time":"2026-09-26T03:34:17.793077+01:00","Action":"output","Package":"example.com/lxcap2/uni","Test":"TestÜnicode","Output":"--- FAIL: TestÜnicode (0.00s)\n"}
+{"Time":"2026-09-26T03:34:17.793081+01:00","Action":"fail","Package":"example.com/lxcap2/uni","Test":"TestÜnicode","Elapsed":0}
+{"Time":"2026-09-26T03:34:17.793085+01:00","Action":"output","Package":"example.com/lxcap2/uni","Output":"FAIL\n"}
+{"Time":"2026-09-26T03:34:17.793771+01:00","Action":"output","Package":"example.com/lxcap2/uni","Output":"FAIL\texample.com/lxcap2/uni\t0.601s\n"}
+{"Time":"2026-09-26T03:34:17.793789+01:00","Action":"fail","Package":"example.com/lxcap2/uni","Elapsed":0.601}

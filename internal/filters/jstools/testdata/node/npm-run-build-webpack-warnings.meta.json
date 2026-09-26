@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "shell": "npm run build",
+  "exit_code": 0,
+  "description": "npm run build with webpack 5 production build: [big] asset and three size-limit warnings",
+  "cwd": "/home/user/src/webpack-app"
+}

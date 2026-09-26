@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "curl -s \"https://api.github.com/repos/golang/go/issues?per_page=30\" | jq '.[] | {number, title, user: .user.login, labels: [.labels[].name]}'"
+  ],
+  "shell": "curl -s \"https://api.github.com/repos/golang/go/issues?per_page=30\" | jq '.[] | {number, title, user: .user.login, labels: [.labels[].name]}'",
+  "repo": "golang/go",
+  "exit_code": 0,
+  "description": "same GitHub issues API call piped through jq to project number/title/author/labels",
+  "cwd": "data/api"
+}

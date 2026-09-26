@@ -1,0 +1,35 @@
+## master...origin/master
+ D CODE_OF_CONDUCT.md
+ M README.md
+M  binding/binding.go
+M  binding/binding_test.go
+M  binding/form.go
+M  binding/form_mapping.go
+M  binding/json.go
+M  binding/protobuf.go
+M  binding/validate_test.go
+M  binding/xml.go
+D  codecov.yml
+MM context.go
+A  context_ratelimit.go
+ M debug.go
+ M debug_test.go
+ M gin.go
+ M go.mod
+ M go.sum
+ M render/data.go
+ M render/html.go
+ M render/json.go
+ M render/redirect.go
+ M render/render.go
+ M render/render_msgpack_test.go
+ M render/render_test.go
+ M render/text.go
+ M render/xml.go
+ M render/yaml.go
+ M response_writer.go
+R  tree.go -> radix_tree.go
+R  tree_test.go -> radix_tree_test.go
+ M utils.go
+?? docs/rate-limiting.md
+?? middleware/

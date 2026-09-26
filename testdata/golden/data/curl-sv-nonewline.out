@@ -1,0 +1,30 @@
+> GET /issues HTTP/1.1
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+< Content-Length: 34900
+[lx: JSON body condensed from ~12.6k tokens: error fields first, tables for arrays of objects, long arrays cut; not valid JSON — use jq for exact values]
+[table: 300 items]
+keys: id, title, labels, comments
+all: state=open
+0 | issue 0: flaky test in package 0 | [] | 0
+1 | issue 1: flaky test in package 1 | ["bug"] | 1
+2 | issue 2: flaky test in package 2 | ["bug","NeedsInvestigation"] | 2
+3 | issue 3: flaky test in package 3 | [] | 3
+4 | issue 4: flaky test in package 4 | ["bug"] | 4
+5 | issue 5: flaky test in package 5 | ["bug","NeedsInvestigation"] | 5
+6 | issue 6: flaky test in package 6 | [] | 6
+7 | issue 7: flaky test in package 7 | ["bug"] | 7
+8 | issue 8: flaky test in package 8 | ["bug","NeedsInvestigation"] | 8
+9 | issue 9: flaky test in package 0 | [] | 9
+10 | issue 10: flaky test in package 1 | ["bug"] | 10
+11 | issue 11: flaky test in package 2 | ["bug","NeedsInvestigation"] | 11
+12 | issue 12: flaky test in package 3 | [] | 12
+13 | issue 13: flaky test in package 4 | ["bug"] | 13
+14 | issue 14: flaky test in package 5 | ["bug","NeedsInvestigation"] | 14
+15 | issue 15: flaky test in package 6 | [] | 15
+16 | issue 16: flaky test in package 7 | ["bug"] | 16
+17 | issue 17: flaky test in package 8 | ["bug","NeedsInvestigation"] | 0
+18 | issue 18: flaky test in package 0 | [] | 1
+19 | issue 19: flaky test in package 1 | ["bug"] | 2
+… +280 more items
+[lx: -v output not shown: 4 "* " lines (connection, TLS, HTTP/2 stream), 3 request header lines]

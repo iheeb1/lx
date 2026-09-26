@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "docker",
+    "build",
+    "."
+  ],
+  "shell": "docker build .",
+  "repo": "",
+  "exit_code": 1,
+  "description": "SYNTHETIC (hand-built in the exact layout of docker 27 BuildKit plain progress; the tool is not available on the capture host): npm install fails after 420 fetch lines; the failing step's output is over 300 lines",
+  "cwd": "repos/shop"
+}

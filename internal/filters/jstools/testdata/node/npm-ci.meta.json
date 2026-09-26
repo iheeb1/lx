@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "npm",
+    "ci"
+  ],
+  "shell": "npm ci",
+  "exit_code": 0,
+  "description": "npm ci in a small vite app: added, funding, found 0 vulnerabilities, allow-scripts warning",
+  "cwd": "/home/user/src/vite-app"
+}

@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "--tb=no",
+    "-rN"
+  ],
+  "shell": "pytest -p no:cacheprovider --tb=no -rN",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): --tb=no -rN: no FAILURES section and no short test summary; the F/E progress lines are the only record of which files failed",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv: pytest 8.3.4, pytest-cov 4.1.0, pytest-xdist 3.8.0, pytest-timeout 2.4.0, pytest-rerunfailures 16.0.1, pip 21.2.4"
+}

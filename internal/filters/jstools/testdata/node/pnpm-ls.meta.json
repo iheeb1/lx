@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "pnpm",
+    "ls"
+  ],
+  "shell": "pnpm ls",
+  "exit_code": 0,
+  "description": "pnpm ls: legend, sections, top-level packages",
+  "cwd": "/home/user/src/pnpm-app"
+}

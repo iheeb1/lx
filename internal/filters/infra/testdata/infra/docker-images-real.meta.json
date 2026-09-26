@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "docker",
+    "images",
+    "--filter",
+    "reference=alpine"
+  ],
+  "shell": "docker images --filter reference=alpine",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL docker 29.5.2: the new images layout (IMAGE, ID, DISK USAGE, CONTENT SIZE, EXTRA), trailing spaces after the EXTRA column",
+  "cwd": "repos/shop"
+}

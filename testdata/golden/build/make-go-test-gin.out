@@ -1,0 +1,10 @@
+echo "mode: count" > coverage.out
+for d in github.com/gin-gonic/gin github.com/gin-gonic/gin/binding github.com/gin-gonic/gin/ginS github.com/gin-gonic/gin/render; do \
+[lx: 21 more lines of this echoed recipe hidden]
+--- SKIP: TestPathCleanMallocs (0.00s)
+    path_test.go:85: skipping malloc count; GOMAXPROCS>1
+ok  	github.com/gin-gonic/gin	0.800s	coverage: 98.4% of statements
+ok  	github.com/gin-gonic/gin/binding	0.504s	coverage: 99.8% of statements
+ok  	github.com/gin-gonic/gin/ginS	0.462s	coverage: 74.1% of statements
+ok  	github.com/gin-gonic/gin/render	0.503s	coverage: 100.0% of statements
+[725 passed, 1 skipped (incl. subtests) · hidden: 1451 === RUN/--- PASS lines, 51 lines of passing-test output]

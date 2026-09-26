@@ -1,0 +1,36 @@
+#3 [1/4] FROM docker.io/library/node:20@sha256:1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9  CACHED
+#5 [2/4] COPY . /app  DONE 0.4s
+#6 [3/4] RUN cd /app && npm install --foreground-scripts
+#6 0.550 npm http fetch GET 200 https://registry.npmjs.org/dep-0 20ms (cache miss)
+#6 0.600 npm http fetch GET 200 https://registry.npmjs.org/dep-1 21ms (cache miss)
+#6 0.650 npm http fetch GET 200 https://registry.npmjs.org/dep-2 22ms (cache miss)
+#6 0.700 npm http fetch GET 200 https://registry.npmjs.org/dep-3 23ms (cache miss)
+#6 0.750 npm http fetch GET 200 https://registry.npmjs.org/dep-4 24ms (cache miss)
+#6 0.800 npm http fetch GET 200 https://registry.npmjs.org/dep-5 25ms (cache miss)
+#6 0.850 npm http fetch GET 200 https://registry.npmjs.org/dep-6 26ms (cache miss)
+#6 0.900 npm http fetch GET 200 https://registry.npmjs.org/dep-7 27ms (cache miss)
+#6 0.950 npm http fetch GET 200 https://registry.npmjs.org/dep-8 28ms (cache miss)
+#6 1.000 npm http fetch GET 200 https://registry.npmjs.org/dep-9 29ms (cache miss)
+#6 1.050 npm http fetch GET 200 https://registry.npmjs.org/dep-10 30ms (cache miss)
+  … 408 similar lines …
+#6 21.500 npm http fetch GET 200 https://registry.npmjs.org/dep-419 39ms (cache miss)
+#6 22.500 npm error code 1
+#6 22.500 npm error path /app/node_modules/sharp
+#6 22.500 npm error command failed
+#6 22.500 npm error command sh -c node install/check
+#6 22.500 npm error sharp: Installation error: Could not load the "sharp" module using the linux-arm64 runtime
+#6 22.5000 npm error A complete log of this run can be found in: /root/.npm/_logs/2026-09-26T10_01_02_123Z-debug-0.log
+#6 ERROR: process "/bin/sh -c cd /app && npm install --foreground-scripts" did not complete successfully: exit code: 1
+------
+ > [3/4] RUN cd /app && npm install --foreground-scripts:
+[lx: 6 lines of the step's output shown above]
+------
+Dockerfile:3
+--------------------
+   1 |     FROM node:20
+   2 |     COPY . /app
+   3 | >>> RUN cd /app && npm install --foreground-scripts
+   4 |     CMD ["node", "/app/server.js"]
+--------------------
+ERROR: failed to solve: process "/bin/sh -c cd /app && npm install --foreground-scripts" did not complete successfully: exit code: 1
+[lx: 3 build steps (1 CACHED); 4 internal steps not shown; 2 progress lines not shown]

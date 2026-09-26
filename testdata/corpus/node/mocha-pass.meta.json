@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "test"
+  ],
+  "shell": "npm test",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "npm test in express: mocha spec reporter listing all 1261 passing tests",
+  "cwd": "repos/express"
+}

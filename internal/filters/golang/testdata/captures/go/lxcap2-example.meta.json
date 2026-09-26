@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "./example"
+  ],
+  "shell": "go test ./example",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test over a package whose Example_greeting fails: got/want printed unindented after its --- FAIL line; a passing test prints chatter",
+  "cwd": "/home/user/src/lxcap2"
+}

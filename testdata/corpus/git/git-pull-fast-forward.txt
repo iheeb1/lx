@@ -1,0 +1,30 @@
+From https://github.com/spf13/cobra
+ * branch            main       -> FETCH_HEAD
+Updating 40b5bc1..adbc881
+Fast-forward
+ .github/workflows/size-labeler.yml   |  33 ---------
+ .github/workflows/test.yml           |  12 +++-
+ .golangci.yml                        |  50 ++++++++++----
+ Makefile                             |   4 +-
+ README.md                            |  24 ++++++-
+ SECURITY.md                          | 105 +++++++++++++++++++++++++++++
+ args.go                              |  13 ++++
+ args_test.go                         |  37 +++++++++++
+ bash_completionsV2.go                |   4 +-
+ command.go                           |  23 ++++---
+ command_test.go                      |  31 +++++++++
+ completions.go                       |  25 ++++++-
+ completions_test.go                  | 125 +++++++++++++++++++++++++++++++++--
+ doc/man_docs.go                      |   4 +-
+ doc/md_docs.go                       |   8 +--
+ doc/rest_docs.go                     |   8 +--
+ doc/yaml_docs.go                     |   4 +-
+ fish_completions.go                  |   4 +-
+ go.mod                               |   4 +-
+ go.sum                               |   8 +--
+ site/content/completions/_index.md   |  32 ++++++++-
+ site/content/projects_using_cobra.md |   2 +
+ site/content/user_guide.md           |  68 +++++++++++++++++++
+ 23 files changed, 533 insertions(+), 95 deletions(-)
+ delete mode 100644 .github/workflows/size-labeler.yml
+ create mode 100644 SECURITY.md

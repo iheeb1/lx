@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "ie"
+  ],
+  "shell": "pytest -p no:cacheprovider ie",
+  "repo": null,
+  "exit_code": 3,
+  "description": "REAL capture (lx python filter review): a conftest hook raises: INTERNALERROR> traceback through 35 pluggy/_pytest frames, then '2 passed' with exit 3",
+  "cwd": "/home/user/src/edge",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv: pytest 8.3.4, pytest-cov 4.1.0, pytest-xdist 3.8.0, pytest-timeout 2.4.0, pytest-rerunfailures 16.0.1, pip 21.2.4"
+}

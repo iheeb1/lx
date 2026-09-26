@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npx",
+    "vite",
+    "build"
+  ],
+  "shell": "npx vite build",
+  "exit_code": 1,
+  "description": "npx vite build (vite 8 / rolldown) failing on a syntax error: code frame and a library stack trace",
+  "cwd": "/home/user/src/vite-app"
+}

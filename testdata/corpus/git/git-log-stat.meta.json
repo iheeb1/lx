@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "--stat",
+    "-n",
+    "25"
+  ],
+  "shell": "git log --stat -n 25",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git log --stat -n 25 in gin",
+  "cwd": "repos/gin"
+}

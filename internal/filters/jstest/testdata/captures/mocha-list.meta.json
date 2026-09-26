@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "--reporter",
+    "list",
+    "test/"
+  ],
+  "shell": "npx mocha --reporter list test/",
+  "repo": "scratch/mochaproj",
+  "exit_code": 6,
+  "description": "mocha 11 --reporter list over the mixed suite",
+  "cwd": "repos/mochaproj"
+}

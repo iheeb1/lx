@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "-p",
+    "-n",
+    "3"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/gin",
+  "description": "git log -p -n 3 in gin: default format with patches"
+}

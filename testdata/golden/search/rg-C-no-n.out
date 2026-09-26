@@ -1,0 +1,223 @@
+[153 matches in 8 files · showing 59, ≤15 per file]
+./githubapi_test.go
+-
+:func TestShouldBindUri(t *testing.T) {
+-	DefaultWriter = os.Stdout
+--
+-	var person Person
+:	require.NoError(t, c.ShouldBindUri(&person))
+-	assert.NotEmpty(t, person.Name)
+-	assert.NotEmpty(t, person.ID)
+:	c.String(http.StatusOK, "ShouldBindUri test OK")
+-})
+--
+-w := PerformRequest(router, http.MethodGet, path)
+:assert.Equal(t, "ShouldBindUri test OK", w.Body.String())
+-assert.Equal(t, http.StatusOK, w.Code)
+
+./context.go
+-func (c *Context) BindUri(obj any) error {
+:	if err := c.ShouldBindUri(obj); err != nil {
+-		c.AbortWithError(http.StatusBadRequest, err).SetType(ErrorTypeBind) //nolint: errcheck
+--
+-func (c *Context) MustBindWith(obj any, b binding.Binding) error {
+:	err := c.ShouldBindWith(obj, b)
+-	if err != nil {
+--
+-
+:// ShouldBind checks the Method and Content-Type to select a binding engine automatically,
+-// Depending on the "Content-Type" header different bindings are used, for example:
+--
+-// Like c.Bind() but this method does not set the response status code to 400 or abort if input is not valid.
+:func (c *Context) ShouldBind(obj any) error {
+-	b := binding.Default(c.Request.Method, c.ContentType())
+:	return c.ShouldBindWith(obj, b)
+-}
+-
+:// ShouldBindJSON is a shortcut for c.ShouldBindWith(obj, binding.JSON).
+-//
+--
+-//	var user User
+://	if err := c.ShouldBindJSON(&user); err != nil {
+-//		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+-//	c.JSON(http.StatusOK, user)
+:func (c *Context) ShouldBindJSON(obj any) error {
+:	return c.ShouldBindWith(obj, binding.JSON)
+-}
+-
+:// ShouldBindXML is a shortcut for c.ShouldBindWith(obj, binding.XML).
+:// It works like ShouldBindJSON but binds the request body as XML data.
+:func (c *Context) ShouldBindXML(obj any) error {
+:	return c.ShouldBindWith(obj, binding.XML)
+-}
+-
+:// ShouldBindQuery is a shortcut for c.ShouldBindWith(obj, binding.Query).
+:// It works like ShouldBindJSON but binds query parameters from the URL.
+… +41 more in this file
+
+./routergroup.go
+-// query in the request body. The body is read like any other body, for example
+:// with c.ShouldBindJSON.
+-func (group *RouterGroup) QUERY(relativePath string, handlers ...HandlerFunc) IRoutes {
+
+./context_test.go
+-
+:func TestContextAutoShouldBindJSON(t *testing.T) {
+-	c, _ := CreateTestContext(httptest.NewRecorder())
+--
+-}
+:require.NoError(t, c.ShouldBind(&obj))
+-assert.Equal(t, "foo", obj.Bar)
+--
+-
+:func TestContextShouldBindWithJSON(t *testing.T) {
+-	w := httptest.NewRecorder()
+--
+-}
+:require.NoError(t, c.ShouldBindJSON(&obj))
+-assert.Equal(t, "foo", obj.Bar)
+--
+-
+:func TestContextShouldBindWithXML(t *testing.T) {
+-	w := httptest.NewRecorder()
+--
+-}
+:require.NoError(t, c.ShouldBindXML(&obj))
+-assert.Equal(t, "FOO", obj.Foo)
+--
+-
+:func TestContextShouldBindPlain(t *testing.T) {
+-	// string
+--
+-
+:require.NoError(t, c.ShouldBindPlain(&s))
+-assert.Equal(t, "test string", s)
+--
+-
+:require.NoError(t, c.ShouldBindPlain(&bs))
+-assert.Equal(t, []byte("test []byte"), bs)
+--
+-
+:func TestContextShouldBindHeader(t *testing.T) {
+-	w := httptest.NewRecorder()
+--
+-
+:require.NoError(t, c.ShouldBindHeader(&testHeader))
+-assert.Equal(t, 8000, testHeader.Rate)
+--
+-
+:func TestContextShouldBindWithQuery(t *testing.T) {
+-	w := httptest.NewRecorder()
+--
+-}
+:require.NoError(t, c.ShouldBindQuery(&obj))
+-assert.Equal(t, "foo", obj.Bar)
+--
+-
+:func TestContextShouldBindWithYAML(t *testing.T) {
+-	w := httptest.NewRecorder()
+--
+-}
+:require.NoError(t, c.ShouldBindYAML(&obj))
+-assert.Equal(t, "foo", obj.Bar)
+--
+-
+… +35 more in this file
+
+./routes_test.go
+-var body search
+:require.NoError(t, c.ShouldBindJSON(&body))
+-c.String(http.StatusOK, body.Term)
+
+./CHANGELOG.md
+-- feat(auth): add proxy-server authentication (#3877) (@EndlessParadox1)
+:- feat(bind): ShouldBindBodyWith shortcut and change doc (#3871) (@RedCrazyGhost)
+-- feat(binding): Support custom BindUnmarshaler for binding. (#3933) (@dkkb)
+--
+-- chore(http): use white color for HTTP 1XX (#3741) (@viralparmarme)
+:- chore(optimize): the ShouldBindUri method of the Context struct (#3911) (@1911860538)
+-- chore(perf): Optimize the Copy method of the Context struct (#3859) (@1911860538)
+--
+-- [NEW] Set default time format in form binding [#1487](https://github.com/gin-gonic/gin/pull/1487)
+:- [FIX] Add BindXML and ShouldBindXML [#1485](https://github.com/gin-gonic/gin/pull/1485)
+-- [NEW] Upgrade dependency libraries [#1491](https://github.com/gin-gonic/gin/pull/1491)
+--
+-- [NEW] Add [`func (*Context) DataFromReader`](https://godoc.org/github.com/gin-gonic/gin#Context.DataFromReader) for serving dynamic data, see [#1304](https://github.com/gin-gonic/gin/pull/1304)
+:- [NEW] Add [`func (*Context) ShouldBindBodyWith`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBindBodyWith) allowing to call binding multiple time …[+58 chars]…
+-- [NEW] Support pointers in form binding, see [#1336](https://github.com/gin-gonic/gin/pull/1336)
+--
+-- [NEW] Expose validator engine in [`type StructValidator`](https://godoc.org/github.com/gin-gonic/gin/binding#StructValidator), see [#1277](https://github.com/gin-gonic/gin/pull/1277)
+:- [NEW] Add [`func (*Context) ShouldBind`](https://godoc.org/github.com/gin-gonic/gin#Context.ShouldBind), [`func (*Context) ShouldBindQuery`](https://godoc.org …[+213 chars]…
+-- [NEW] Add support for `time.Time` location in form binding, see [#1117](https://github.com/gin-gonic/gin/pull/1117)
+--
+-- [NEW] Add \*context.Keys type cast helpers
+:- [NEW] Add \*context.ShouldBindWith()
+-- [NEW] Add \*context.MustBindWith()
+
+./deprecated.go
+-//
+:// Deprecated: Use MustBindWith or ShouldBindWith.
+-func (c *Context) BindWith(obj any, b binding.Binding) error {
+--
+-want HTTP 400 to be automatically returned if any error occur, or use
+:ShouldBindWith() if you need to manage the error.`)
+-return c.MustBindWith(obj, b)
+
+./docs/doc.md
+-}
+:if err := c.ShouldBindJSON(&query); err != nil {
+-  c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+-  - **Methods** - `Bind`, `BindJSON`, `BindXML`, `BindQuery`, `BindYAML`, `BindHeader`, `BindTOML`
+:…[+419 chars]… written. Wanted to override status code 400 with 422`. If you wish to have greater control over the behavior, consider using the `ShouldBind` equivalent method.
+-- **Type** - Should bind
+:  - **Methods** - `ShouldBind`, `ShouldBindJSON`, `ShouldBindXML`, `ShouldBindQuery`, `ShouldBindYAML`, `ShouldBindHeader`, `ShouldBindTOML`,
+:  - **Behavior** - These methods use `ShouldBindWith` under the hood. If there is a binding error, the error is returned and it is the developer's responsibilit …[+48 chars]…
+-
+:When using the Bind-method, Gin tries to infer the binder depending on the Content-Type header. If you are sure what you are binding, you can use `MustBindWith` or `ShouldBindWith`.
+-
+--
+-var json Login
+:if err := c.ShouldBindJSON(&json); err != nil {
+-  c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+-var xml Login
+:if err := c.ShouldBindXML(&xml); err != nil {
+-  c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+-// This will infer what binder to use depending on the content-type header.
+:if err := c.ShouldBind(&form); err != nil {
+-  c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+--
+-var b Booking
+:if err := c.ShouldBindWith(&b, binding.Query); err == nil {
+-  c.JSON(http.StatusOK, gin.H{"message": "Booking dates are valid!"})
+--
+-
+:`ShouldBindQuery` function only binds the query params and not the post data. See the [detail information](https://github.com/gin-gonic/gin/issues/742#issuecomment-315953017).
+-
+--
+-var person Person
+:if c.ShouldBindQuery(&person) == nil {
+-  log.Println("====== Only Bind By Query String ======")
+--
+-// See more at https://github.com/gin-gonic/gin/blob/master/binding/binding.go#L88
+:if c.ShouldBind(&person) == nil {
+-  log.Println(person.Name)
+--
+-var req Person
+:if err := c.ShouldBindQuery(&req); err != nil {
+-  c.JSON(http.StatusBadRequest, err)
+--
+-// See more at https://github.com/gin-gonic/gin/blob/master/binding/binding.go#L48
+:      if c.ShouldBind(&person) == nil {
+-              log.Println(person.Name)
+--
+-var person Person
+:if err := c.ShouldBindUri(&person); err != nil {
+-  c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+--
+-
+… +18 more in this file
+[narrow the search: add a path, -g '*.ext' or -t TYPE, or a more specific pattern]

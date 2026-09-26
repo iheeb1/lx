@@ -1,0 +1,1354 @@
+PASS test/datetime/dst.test.js
+  DateTime.fromObject
+    ✓ Hole dates are bumped forward (38 ms)
+    ✓ Ambiguous dates pick the one with the current offset
+    ✓ Adding an hour to land on the Spring Forward springs forward (1 ms)
+    ✓ Subtracting an hour to land on the Spring Forward springs forward (1 ms)
+    ✓ Adding an hour to land on the Fall Back falls back
+    ✓ Subtracting an hour to land on the Fall Back falls back
+    ✓ Changing a calendar date to land on a hole bumps forward
+    ✓ Changing a calendar date to land on an ambiguous time chooses the closest one (1 ms)
+    ✓ Start of a 0:00->1:00 DST day is 1:00
+    ✓ End of a 0:00->1:00 DST day is 23:59 (1 ms)
+  DateTime.local
+    ✓ Hole dates are bumped forward
+    ✓ Ambiguous dates pick the one with the cached offset (1 ms)
+    ✓ Adding an hour to land on the Spring Forward springs forward
+    ✓ Subtracting an hour to land on the Spring Forward springs forward
+    ✓ Adding an hour to land on the Fall Back falls back (1 ms)
+    ✓ Subtracting an hour to land on the Fall Back falls back
+    ✓ Changing a calendar date to land on a hole bumps forward (1 ms)
+    ✓ Changing a calendar date to land on an ambiguous time chooses the closest one (8 ms)
+    ✓ Start of a 0:00->1:00 DST day is 1:00
+    ✓ End of a 0:00->1:00 DST day is 23:59 (1 ms)
+  DateTime.local() with offset caching
+    ✓ cache = EDT, now = EDT, date = EDT (2 ms)
+    ✓ cache = EDT, now = EDT, date = EST (1 ms)
+    ✓ cache = EDT, now = EST, date = EDT (1 ms)
+    ✓ cache = EDT, now = EST, date = EST
+    ✓ cache = EST, now = EDT, date = EDT
+    ✓ cache = EST, now = EDT, date = EST (1 ms)
+    ✓ cache = EST, now = EST, date = EDT
+    ✓ cache = EST, now = EST, date = EST (2 ms)
+  DateTime maintains the wasHole setting properly
+    ✓ is false by default (1 ms)
+    ✓ is set on hole times
+    ✓ is set on hole times with DateTime.local
+    ✓ is set on hole times with DateTime.fromISO (1 ms)
+    ✓ is false when setting to non-hole
+    ✓ is true when setting hole-time on time from hole
+    ✓ is true when setting hole-time on time from non-hole
+    ✓ is dropped on math (1 ms)
+    ✓ is kept on reconfigure
+    ✓ is dropped on rezoning
+
+PASS test/datetime/diff.test.js
+  ✓ DateTime#diff defaults to milliseconds (19 ms)
+  ✓ DateTime#diff makes simple diffs (3 ms)
+  ✓ DateTime#diff accepts multiple units (1 ms)
+  ✓ DateTime#diff handles unmatched units (1 ms)
+  ✓ DateTime#diff sets all its units to 0 if the duration is empty (1 ms)
+  ✓ DateTime#diff sets units to 0 if second object is slightly larger
+  ✓ DateTime#diff puts fractional parts in the lowest order unit
+  ✓ DateTime#diff returns the fractional parts even when it can't find a whole unit (1 ms)
+  ✓ DateTime#diff is calendary for years, months, day
+  ✓ DateTime#diff handles fractional years as fractions of those specific years
+  ✓ DateTime#diff handles fractional months as fractions of those specific months (1 ms)
+  ✓ DateTime#diff handles fractional weeks as fractions of those specific weeks
+  ✓ DateTime#diff handles fractional days as fractions of those specific days (4 ms)
+  ✓ DateTime#diff is precise for lower order units (1 ms)
+  ✓ DateTime#diff passes through options (1 ms)
+  ✓ DateTime#diff returns invalid Durations if the DateTimes are invalid
+  ✓ DateTime#diff results in a duration with the same locale
+  ✓ DateTime#diff results works when needing to backtrack months
+  ✓ DateTime#diff handles Feb-29 edge case logic for higher order units in a manner consistent with DateTime#plus (1 ms)
+  ✓ DateTime#diff handles datetimes whose dayDiff is off by 2 days instead of the usual 1 due to zone differences (1 ms)
+  ✓ DateTime#diffNow defaults to milliseconds (1 ms)
+  ✓ DateTime#diffNow accepts units
+  ✓ DateTime#diffNow passes through options
+  ✓ DateTime#diffNow returns invalid Durations if the DateTime is invalid
+
+PASS test/zones/local.test.js
+  ✓ SystemZone.instance returns a singleton (1 ms)
+  ✓ SystemZone.instance provides valid ... (21 ms)
+
+PASS test/info/zones.test.js
+  ✓ Info.hasDST returns true for America/New_York (2 ms)
+  ✓ Info.hasDST returns false for America/Aruba
+  ✓ Info.hasDST returns false for America/Cancun (1 ms)
+  ✓ Info.hasDST returns true for Europe/Andora
+  ✓ Info.hasDST defaults to the global zone
+  ✓ Info.isValidIANAZone returns true for valid zones (1 ms)
+  ✓ Info.isValidIANAZone returns true for single-section zones
+  ✓ Info.isValidIANAZone returns false for junk
+  ✓ Info.isValidIANAZone returns false for well-specified but invalid zones
+  ✓ Info.isValidIANAZone returns true for valid zones like America/Indiana/Indianapolis
+  ✓ Info.isValidIANAZone returns false for well-specified but invalid zones like America/Indiana/Blork
+  ✓ Info.normalizeZone returns Zone objects unchanged (1 ms)
+  ✓ Info.normalizeZone converts valid input "Local" into valid Zone instance
+  ✓ Info.normalizeZone converts valid input "System" into valid Zone instance
+  ✓ Info.normalizeZone converts valid input "UTC" into valid Zone instance
+  ✓ Info.normalizeZone converts valid input "GMT" into valid Zone instance
+  ✓ Info.normalizeZone converts valid input "Etc/GMT+5" into valid Zone instance (1 ms)
+  ✓ Info.normalizeZone converts valid input "Etc/GMT-10" into valid Zone instance
+  ✓ Info.normalizeZone converts valid input "Europe/Paris" into valid Zone instance
+  ✓ Info.normalizeZone converts valid input 0 into valid Zone instance
+  ✓ Info.normalizeZone converts valid input 3 into valid Zone instance
+  ✓ Info.normalizeZone converts valid input -11 into valid Zone instance
+  ✓ Info.normalizeZone converts unknown name to invalid Zone
+  ✓ Info.normalizeZone converts null and undefined to default Zone
+  ✓ Info.normalizeZone converts local to system Zone (1 ms)
+
+PASS test/datetime/zone.test.js
+  ✓ setZone defaults to local (21 ms)
+  ✓ DateTime#utc() puts the dt in UTC 'mode'
+  ✓ DateTime#utc(offset) sets dt in UTC+offset 'mode'
+  ✓ DateTime#utc maintains invalidity (1 ms)
+  ✓ DateTime#toLocal() sets the calendar back to local
+  ✓ DateTime#toLocal() accepts the default locale (1 ms)
+  ✓ DateTime#setZone setZone sets the TZ to the specified zone (4 ms)
+  ✓ DateTime#setZone accepts "system"
+  ✓ DateTime#setZone accepts "local"
+  ✓ DateTime#setZone accepts "system" and uses the system zone
+  ✓ DateTime#setZone accepts "default" and uses the default zone
+  ✓ DateTime#setZone accepts "utc"
+  ✓ DateTime#setZone accepts "gmt"
+  ✓ DateTime#setZone accepts "utc+3" (6 ms)
+  ✓ DateTime#setZone accepts "utc-3" (1 ms)
+  ✓ DateTime#setZone accepts "utc-3:30" (7 ms)
+  ✓ DateTime#setZone does not accept dumb things (1 ms)
+  ✓ DateTime#setZone accepts IANA zone names
+  ✓ DateTime#setZone accepts whacky zone "PST8PDT" (1 ms)
+  ✓ DateTime#setZone accepts whacky zone "EST5EDT"
+  ✓ DateTime#setZone accepts whacky zone "GMT+0" (1 ms)
+  ✓ DateTime#setZone accepts whacky zone "GMT0"
+  ✓ DateTime#setZone accepts a keepLocalTime option (6 ms)
+  ✓ DateTime#setZone with keepLocalTime can span wacky offsets (1 ms)
+  ✓ DateTime#setZone with keepLocalTime handles zones with very different offsets than the current one (3 ms)
+  ✓ DateTime#setZone rejects jibberish
+  ✓ DateTime#setZone works for dates before 1970 with milliseconds
+  ✓ DateTime#setZone handles negative years (1 ms)
+  ✓ DateTime#isInDST() returns false for pre-DST times
+  ✓ DateTime#isInDST() returns true for during-DST times
+  ✓ DateTime#isInDST() returns false for post-DST times
+  ✓ DateTime#isInDST() returns true for 1974 whole year in USA- from January 6th to October 27th (1 ms)
+  ✓ DateTime#getPossibleOffsets() returns the same DateTime for fixed zones
+  ✓ DateTime#getPossibleOffsets() returns the same DateTime when not at an ambiguous local time (1 ms)
+  ✓ DateTime#getPossibleOffsets() returns the possible DateTimes when at an ambiguous local time
+  ✓ DateTime#offset returns NaN for invalid times
+  ✓ DateTime#offsetNameLong returns null for invalid times
+  ✓ DateTime#offsetNameShort returns null for invalid times
+  ✓ Etc/GMTx zones now work natively (1 ms)
+  ✓ Etc/GMTx zones now work natively
+  ✓ Etc/GMTx zones now work natively
+  ✓ Etc/GMTx zones now work natively
+  ✓ Etc/GMTx zones now work natively
+  ✓ The local zone does local stuff (1 ms)
+  ✓ Setting the default zone results in a different creation zone
+  ✓ Setting the default zone to 'system' gives you back the system zone
+  ✓ invalid DateTimes have no zone
+  ✓ can parse zones with special JS keywords as invalid
+  ✓ Special JS keywords produce invalid Zone
+  ✓ Invalid Zones named after special JS keywords produce NaN offset
+  ✓ Invalid zones produce NaN offset (1 ms)
+
+PASS test/interval/parse.test.js
+  ✓ Interval.fromISO can parse a variety of ISO formats (25 ms)
+  ✓ Interval.fromISO accepts a zone argument (2 ms)
+  ✓ Interval.fromISO works with Settings.throwOnInvalid (1 ms)
+  ✓ Interval.fromISO will return invalid for [null]
+  ✓ Interval.fromISO will return invalid for [] (11 ms)
+  ✓ Interval.fromISO will return invalid for [hello]
+  ✓ Interval.fromISO will return invalid for [foo/bar]
+  ✓ Interval.fromISO will return invalid for [R5/2008-03-01T13:00:00Z/P1Y2M10DT2H30M] (1 ms)
+  Interval.fromISO defaults missing values in end to start
+    ✓ Gregorian, end just time
+    ✓ Gregorian, end just time and zone
+    ✓ Gregorian, end just day (1 ms)
+    ✓ Gregorian, end day and time
+    ✓ Gregorian, end month and day
+    ✓ Gregorian, end month, day and time
+    ✓ Gregorian with zone in options and partial date
+    ✓ Gregorian with zone in options and partial date and time (5 ms)
+    ✓ Gregorian with zone in options and full date and time (9 ms)
+    ✓ Gregorian with zone in options and end zone
+    ✓ Gregorian with zone in options, setZone and end zone (1 ms)
+    ✓ Gregorian with start zone (4 ms)
+    ✓ Gregorian with start zone and zone in options
+    ✓ Gregorian with start zone and setZone
+    ✓ Gregorian with two zones (1 ms)
+    ✓ Gregorian with two zones and setZone
+    ✓ Week, end just time
+    ✓ Week, end just time and zone
+    ✓ Week, end week day
+    ✓ Week, end week number and week day (1 ms)
+    ✓ Ordinal, end just time
+    ✓ Ordinal, end just time and zone
+    ✓ Ordinal, end with ordinal
+    ✓ Gregorian, end just weekday
+    ✓ Gregorian, end weekNumber and weekday
+    ✓ Gregorian, end just ordinal (1 ms)
+    ✓ Week date, end just day
+    ✓ Week date, end month and day
+    ✓ Week date, end just ordinal
+    ✓ Ordinal, end just day
+    ✓ Ordinal, end month and day
+    ✓ Ordinal, end just weekday (1 ms)
+    ✓ Ordinal, end weekNumber and weekday
+
+PASS test/datetime/math.test.js
+  ✓ DateTime#plus({ years: 1 }) adds a year (1 ms)
+  ✓ DateTime#plus({quarter: 1}) adds a quarter (1 ms)
+  ✓ DateTime#plus({ months: 1 }) at the end of the month
+  ✓ DateTime#plus({ months: 1 }) at the end of the month in a leap year
+  ✓ DateTime#plus({ months: 13 }) at the end of the month (1 ms)
+  ✓ DateTime#plus({ days: 1 }) keeps the same time across a DST (9 ms)
+  ✓ DateTime#plus({ hours: 24 }) gains an hour to spring forward
+  ✓ DateTime#plus({ days:0, hours: 24 }) gains an hour to spring forward (1 ms)
+  ✓ DateTime#plus(Duration) adds the right amount of time
+  ✓ DateTime#plus(multiple) adds the right amount of time
+  ✓ DateTime#plus maintains invalidity
+  ✓ DateTime#plus works across the 100 barrier
+  ✓ DateTime#plus works across the 100 barrier when passing through February
+  ✓ DateTime#plus renders invalid when out of max. datetime range using days (1 ms)
+  ✓ DateTime#plus renders invalid when out of max. datetime range using seconds
+  ✓ DateTime#plus renders invalid when out of max. datetime range using IANAZone
+  ✓ DateTime#plus handles fractional days
+  ✓ DateTime#plus handles fractional large units
+  ✓ DateTime#plus supports positive and negative duration units (1 ms)
+  ✓ DateTime#minus({ years: 1 }) subtracts a year
+  ✓ DateTime#minus({ quarters: 1 }) subtracts a quarter
+  ✓ DateTime#minus({ months: 1 }) at the end of the month
+  ✓ DateTime#minus({ months: 1 }) at the end of the month in a leap year (1 ms)
+  ✓ DateTime#minus({ months: 13 }) at the end of the month
+  ✓ DateTime#minus maintains invalidity
+  ✓ DateTime#minus works across the 100 barrier
+  ✓ DateTime#minus renders invalid when out of max. datetime range using days
+  ✓ DateTime#minus renders invalid when out of max. datetime range using seconds
+  ✓ DateTime#plus renders invalid when out of max. datetime range using IANAZone
+  ✓ DateTime#minus handles fractional days (1 ms)
+  ✓ DateTime#minus handles fractional large units
+  ✓ DateTime#minus supports positive and negative duration units (1 ms)
+  ✓ DateTime#startOf('year') goes to the start of the year
+  ✓ DateTime#startOf('quarter') goes to the start of the quarter (2 ms)
+  ✓ DateTime#startOf('month') goes to the start of the month (1 ms)
+  ✓ DateTime#startOf('day') goes to the start of the day
+  ✓ DateTime#startOf('hour') goes to the start of the hour
+  ✓ DateTime#startOf('minute') goes to the start of the minute
+  ✓ DateTime#startOf('second') goes to the start of the second (1 ms)
+  ✓ DateTime#startOf('week') goes to the start of the week
+  ✓ DateTime#startOf maintains invalidity
+  ✓ DateTime#startOf throws on invalid units (41 ms)
+  ✓ DateTime#endOf('year') goes to the start of the year
+  ✓ DateTime#endOf('quarter') goes to the end of the quarter
+  ✓ DateTime#endOf('quarter') goes to the end of the quarter in December (4 ms)
+  ✓ DateTime#endOf('month') goes to the start of the month (1 ms)
+  ✓ DateTime#endOf('day') goes to the start of the day
+  ✓ DateTime#endOf('hour') goes to the start of the hour
+  ✓ DateTime#endOf('minute') goes to the start of the minute (1 ms)
+  ✓ DateTime#endOf('second') goes to the start of the second
+  ✓ DateTime#endOf('week') goes to the end of the week
+  ✓ DateTime#endOf maintains invalidity
+  ✓ DateTime#endOf throws on invalid units (2 ms)
+
+PASS test/datetime/tokenParse.test.js
+  ✓ DateTime.fromFormat() parses basic times (30 ms)
+  ✓ DateTime.fromFormat() yields Invalid reason 'unparseable' for incompatible formats (1 ms)
+  ✓ DateTime.fromFormat() parses with variable-length input (1 ms)
+  ✓ DateTime.fromFormat() parses meridiems (16 ms)
+  ✓ DateTime.fromFormat() throws if you specify meridiem with 24-hour time (31 ms)
+  ✓ DateTime.fromFormat() rejects 12-hour values outside [1, 12] with a meridiem (1 ms)
+  ✓ DateTime.fromFormat() makes dots optional and handles non breakable spaces (3 ms)
+  ✓ DateTime.fromFormat() parses variable-digit years (1 ms)
+  ✓ DateTime.fromFormat() with yyyyy optionally parses extended years
+  ✓ DateTime.fromFormat() with yyyyyy strictly parses extended years
+  ✓ DateTime.fromFormat() defaults yy to the right century
+  ✓ DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing yy to the right century (1 ms)
+  ✓ DateTime.fromFormat() parses hours
+  ✓ DateTime.fromFormat() parses milliseconds (1 ms)
+  ✓ DateTime.fromFormat() parses fractional seconds
+  ✓ DateTime.fromFormat() parses weekdays (1 ms)
+  ✓ DateTime.fromFormat() parses eras (1 ms)
+  ✓ DateTime.fromFormat() parses variable-length days
+  ✓ DateTime.fromFormat() parses fixed-length days
+  ✓ DateTime.fromFormat() parses standalone month names (2 ms)
+  ✓ DateTime.fromFormat() parses format month names (2 ms)
+  ✓ DateTime.fromFormat() parses quarters
+  ✓ DateTime.fromFormat() makes trailing periods in month names optional (1 ms)
+  ✓ DateTime.fromFormat() does not match arbitrary stuff with those periods
+  ✓ DateTime.fromFormat() uses case-insensitive matching
+  ✓ DateTime.fromFormat() parses offsets
+  ✓ DateTime.fromFormat() validates weekday numbers (1 ms)
+  ✓ DateTime.fromFormat() validates weekday names
+  ✓ DateTime.fromFormat() defaults weekday to this week (1 ms)
+  ✓ DateTime.fromFormat() parses ordinals (26 ms)
+  ✓ DateTime.fromFormat() throws on mixed units (2 ms)
+  ✓ DateTime.fromFormat() accepts weekYear by itself
+  ✓ DateTime.fromFormat() defaults kk to the right century (1 ms)
+  ✓ DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing two digit weekYear to the right century
+  ✓ DateTime.fromFormat() accepts weekNumber by itself
+  ✓ DateTime.fromFormat() accepts weekYear/weekNumber/weekday
+  ✓ DateTime.fromFormat() allows regex content (1 ms)
+  ✓ DateTime.fromFormat() allows literals
+  ✓ DateTime.fromFormat() returns invalid when unparsed
+  ✓ DateTime.fromFormat() returns invalid when quarter value is not valid
+  ✓ DateTime.fromFormat() returns invalid for out-of-range values (1 ms)
+  ✓ DateTime.fromFormat() accepts a zone argument (1 ms)
+  ✓ DateTime.fromFormat() parses IANA zones (1 ms)
+  ✓ DateTime.fromFormat() with setZone parses IANA zones and sets it
+  ✓ DateTime.fromFormat() parses fixed offsets (2 ms)
+  ✓ DateTime.fromFormat() with setZone parses fixed offsets and sets it (1 ms)
+  ✓ DateTime.fromFormat() prefers IANA zone id
+  ✓ DateTime.fromFormat() ignores numerical offsets when they conflict with the zone (1 ms)
+  ✓ DateTime.fromFormat() ignores numerical offsets when they are are wrong right now
+  ✓ DateTime.fromFormat() maintains offset that belongs to time zone during overlap (3 ms)
+  ✓ DateTime.format() uses local zone when setZone is false and offset in input (1 ms)
+  ✓ DateTime.format() uses local zone when setZone is false and zone id in input (15 ms)
+  ✓ DateTime.fromFormat() parses localized macro tokens (45 ms)
+  ✓ DateTime.fromFormat() allows non-breaking white-space to be substituted inside macro-tokens (1 ms)
+  ✓ DateTime.fromFormat() throws if you don't provide a format
+  ✓ DateTime.fromFormat validates weekdays (1 ms)
+  ✓ DateTime.fromFormat containing special regex token (1 ms)
+  ✓ DateTime.fromFormat only an offset
+  ✓ DateTime.fromFormatExplain() explains success
+  ✓ DateTime.fromFormatExplain() explains a bad match (1 ms)
+  ✓ DateTime.fromFormatExplain() parses zone correctly
+  ✓ DateTime.fromFormatExplain() parses localized string with numberingSystem correctly (19 ms)
+  ✓ DateTime.fromFormatExplain() takes the same options as fromFormat
+  ✓ DateTime.fromStringExplain is an alias for DateTime.fromFormatExplain (1 ms)
+  ✓ DateTime.fromString is an alias for DateTime.fromFormat
+  ✓ DateTime.parseFormatForOpts returns a parsing format
+  ✓ DateTime.parseFormatForOpts returns a parsing format
+  ✓ DateTime.parseFormatForOpts respects the hour cycle (1 ms)
+  ✓ DateTime.parseFormatForOpts respects the hour cycle when forced by the options
+  ✓ DateTime.expandFormat works with the default locale
+  ✓ DateTime.expandFormat works with other locales
+  ✓ DateTime.expandFormat respects the hour cycle
+  ✓ DateTime.expandFormat respects the hour cycle when forced by the macro token (8 ms)
+  ✓ DateTime.fromFormatParser behaves equivalently to DateTime.fromFormat
+  ✓ DateTime.fromFormatParser throws error when used with a different locale than it was created with (1 ms)
+
+PASS test/datetime/relative.test.js
+  ✓ DateTime#toRelative works down through the units (7 ms)
+  ✓ DateTime#toRelative allows padding (1 ms)
+  ✓ DateTime#toRelative takes a round argument (1 ms)
+  ✓ DateTime#toRelative takes a rounding argument (6 ms)
+  ✓ DateTime#toRelative takes a round and a rounding argument (6 ms)
+  ✓ DateTime#toRelative takes a unit argument (2 ms)
+  ✓ DateTime#toRelative always rounds toward 0 (1 ms)
+  ✓ DateTime#toRelative uses the absolute time
+  ✓ With no RelativeTimeFormat support, DateTime#toRelative works without RTF (1 ms)
+  ✓ With no RelativeTimeFormat support, DateTime#toRelative falls back to English (1 ms)
+  ✓ DateTime#toRelative returns null when used on an invalid date
+  ✓ DateTime#toRelativeCalendar uses the calendar (1 ms)
+  ✓ DateTime#toRelativeCalendar picks the correct unit with no options
+  ✓ DateTime#toRelativeCalendar picks the correct unit with no options at last day of month
+  ✓ DateTime#toRelativeCalendar picks the correct unit with no options at least day of year (1 ms)
+  ✓ DateTime#toRelativeCalendar returns null when used on an invalid date
+  ✓ DateTime#toRelativeCalendar works down through the units (4 ms)
+  ✓ DateTime#toRelativeCalendar takes a unit argument (1 ms)
+  ✓ With no RelativeTimeFormat support, DateTime#toRelativeCalendar works without RTF
+  ✓ With no RelativeTimeFormat support, DateTime#toRelativeCalendar falls back to English
+  ✓ DateTime#toRelativeCalendar works down through the units for different zone than local (1 ms)
+  ✓ DateTime#toRelative works down through the units for different zone than local (2 ms)
+
+PASS test/interval/many.test.js
+  ✓ Interval#equals returns true iff the times are the same (1 ms)
+  ✓ Interval#equals returns false for invalid intervals (1 ms)
+  ✓ Interval#union returns an interval spanning a later interval
+  ✓ Interval#union returns an interval spanning a earlier interval (1 ms)
+  ✓ Interval#union returns an interval spanning a partially later interval
+  ✓ Interval#union returns an interval spanning a partially earlier interval
+  ✓ Interval#union returns an interval no-ops when applied to an engulfed interval (1 ms)
+  ✓ Interval#union expands to an engulfing interval
+  ✓ Interval#union spans adjacent intervals
+  ✓ Interval#union returns invalid for invalid intervals
+  ✓ Interval#intersection returns null if there's no intersection (1 ms)
+  ✓ Interval#intersection returns the intersection for overlapping intervals
+  ✓ Interval#intersection returns null for adjacent intervals
+  ✓ Interval#intersection returns invalid for invalid intervals (1 ms)
+  ✓ Interval.merge returns the minimal set of intervals
+  ✓ Interval.merge returns empty for an empty input (1 ms)
+  ✓ Interval.xor returns non-overlapping intervals as-is
+  ✓ Interval.xor returns empty for an empty input
+  ✓ Interval.xor returns empty for a fully overlapping set of intervals
+  ✓ Interval.xor returns the non-overlapping parts of intervals (2 ms)
+  ✓ Interval.xor handles funny adjacency cases (2 ms)
+  ✓ Interval#difference returns self for non-overlapping intervals
+  ✓ Interval#difference returns the non-overlapping parts of intervals (17 ms)
+  ✓ Interval#difference returns the empty for fully subtracted intervals (2 ms)
+  ✓ Interval#difference returns the outside parts when engulfing another interval (8 ms)
+  ✓ Interval#difference allows holes
+  ✓ Interval#engulfs (1 ms)
+  ✓ Interval#engulfs returns false for invalid intervals
+  ✓ Interval#abutsStart (9 ms)
+  ✓ Interval#abutsStart returns false for invalid intervals (1 ms)
+  ✓ Interval#abutsEnd (2 ms)
+  ✓ Interval#abutsEnd returns false for invalid intervals
+  ✓ Interval#splitAt breaks up the interval
+  ✓ Interval#splitAt returns [] for invalid intervals (1 ms)
+  ✓ Interval#splitAt ignores times outside the interval (7 ms)
+  ✓ Interval#splitAt handles DST shifts
+  ✓ Interval#splitBy accepts an object (2 ms)
+  ✓ Interval#splitBy accepts a duration
+  ✓ Interval#splitBy returns [] for invalid intervals
+  ✓ Interval#split by returns [] for invalid durations
+  ✓ Interval#split by returns [] for durations of length 0 (1 ms)
+  ✓ Interval#split by works across varying length months (10 ms)
+  ✓ Interval#divideEqually should split a 4 hour period into 4 contiguous 1-hour parts (1 ms)
+  ✓ Interval#divideEqually should split a 1m30s into 3 30-second parts (1 ms)
+  ✓ Interval#divideEqually always gives you the right number of parts
+  ✓ Interval#divideEqually returns [] for invalid intervals
+  ✓ Interval#mapEndpoints returns a new Interval with the mapped endpoints (1 ms)
+
+PASS test/interval/create.test.js
+  ✓ Interval.fromDateTimes creates an interval from datetimes
+  ✓ Interval.fromDateTimes creates an interval from objects
+  ✓ Interval.fromDateTimes creates an interval from Dates
+  ✓ Interval.fromDateTimes results in an invalid Interval if the endpoints are invalid (1 ms)
+  ✓ Interval.fromDateTimes throws with invalid input (44 ms)
+  ✓ Interval.fromDateTimes throws with start date coming after end date (1 ms)
+  ✓ Interval.after takes a duration
+  ✓ Interval.after an object
+  ✓ Interval.before takes a duration (1 ms)
+  ✓ Interval.before takes a number and unit
+  ✓ Interval.invalid produces invalid Intervals
+  ✓ Interval.invalid throws if throwOnInvalid is set (1 ms)
+  ✓ Interval.invalid throws if no reason is specified
+
+PASS test/datetime/create.test.js
+  ✓ DateTime.now has today's date
+  ✓ DateTime.now accepts the default locale
+  ✓ DateTime.now accepts the default numbering system (1 ms)
+  ✓ DateTime.now accepts the default output calendar
+  ✓ DateTime.now accepts the default time zone
+  ✓ DateTime.local() has today's date
+  ✓ DateTime.local(2017) is the beginning of the year
+  ✓ DateTime.local(2017, 6) is the beginning of the month (1 ms)
+  ✓ DateTime.local(2017, 6, 12) is the beginning of 6/12
+  ✓ DateTime.local(2017, 6, 12, 5) is the beginning of the hour
+  ✓ DateTime.local(2017, 6, 12, 5, 25) is the beginning of the minute
+  ✓ DateTime.local(2017, 6, 12, 5, 25, 16) is the beginning of the second (1 ms)
+  ✓ DateTime.local(2017, 6, 12, 5, 25, 16, 255) is right down to the millisecond
+  ✓ DateTime.local accepts the default locale
+  ✓ DateTime.local accepts the default numbering system
+  ✓ DateTime.local accepts the default output calendar
+  ✓ DateTime.local does not accept non-integer values
+  ✓ DateTime.local accepts the default time zone
+  ✓ DateTime.local accepts an options hash in any position (1 ms)
+  ✓ DateTime.utc() is in utc (1 ms)
+  ✓ DateTime.utc(2017) is the beginning of the year
+  ✓ DateTime.utc(2017, 6) is the beginning of the month
+  ✓ DateTime.utc(2017, 6, 12) is the beginning of 6/12
+  ✓ DateTime.utc(2017, 6, 12, 5) is the beginning of the hour (1 ms)
+  ✓ DateTime.utc(2017, 6, 12, 5, 25) is the beginning of the minute
+  ✓ DateTime.utc(2017, 6, 12, 5, 25, 16) is the beginning of the second
+  ✓ DateTime.utc(2017, 6, 12, 5, 25, 16, 255) is right down to the millisecond
+  ✓ DateTime.utc accepts the default locale
+  ✓ DateTime.utc accepts an options hash in any position (2 ms)
+  ✓ DateTime.fromJSDate(date) clones the date
+  ✓ DateTime.fromJSDate(date) accepts a zone option
+  ✓ DateTime.fromJSDate(date) returns invalid for invalid values
+  ✓ DateTime.fromJSDate accepts the default locale
+  ✓ DateTime.fromJSDate(date) throw errors for invalid values when throwOnInvalid is true (28 ms)
+  ✓ DateTime.fromMillis(ms) has a value of ms
+  ✓ DateTime.fromMillis(ms) accepts a zone option (1 ms)
+  ✓ DateTime.fromMillis accepts the default locale
+  ✓ DateTime.fromMillis(ms) throws InvalidArgumentError for non-numeric input
+  ✓ DateTime.fromMillis(ms) does not accept out-of-bounds numbers
+  ✓ DateTime.fromMillis(ms) does not accept non-finite numbers
+  ✓ DateTime.fromSeconds(seconds) has a value of 1000 * seconds
+  ✓ DateTime.fromSeconds(ms) accepts a zone option
+  ✓ DateTime.fromSeconds accepts the default locale
+  ✓ DateTime.fromSeconds(seconds) throws InvalidArgumentError for non-numeric input (1 ms)
+  ✓ DateTime.fromSeconds(seconds) does not accept out-of-bounds numbers
+  ✓ DateTime.fromSeconds(seconds) does not accept non-finite numbers
+  ✓ DateTime.fromObject() sets all the fields
+  ✓ DateTime.fromObject() accepts a zone option of "utc" (1 ms)
+  ✓ DateTime.fromObject() accepts "utc-8" as the zone option
+  ✓ DateTime.fromObject() accepts "America/Los_Angeles" as the zone option
+  ✓ DateTime.fromObject() accepts a Zone as the zone option (1 ms)
+  ✓ DateTime.fromObject() rejects invalid zones
+  ✓ DateTime.fromObject() ignores the case of object keys (1 ms)
+  ✓ DateTime.fromObject() throws with invalid object key (2 ms)
+  ✓ DateTime.fromObject() throws with invalid value types (1 ms)
+  ✓ DateTime.fromObject() reject invalid values (1 ms)
+  ✓ DateTime.fromObject() defaults high-order values to the current date
+  ✓ DateTime.fromObject() defaults lower-order values to their minimums if a high-order value is set (5 ms)
+  ✓ DateTime.fromObject() w/weeks handles fully specified dates
+  ✓ DateTime.fromObject() w/weekYears handles skew with Gregorian years (18 ms)
+  ✓ DateTime.fromObject() w/weeks defaults high-order values to the current date (13 ms)
+  ✓ DateTime.fromObject() w/weeks defaults low-order values to their minimums (18 ms)
+  ✓ DateTime.fromObject() w/locale weeks defaults low-order values to their minimums (1 ms)
+  ✓ DateTime.fromObject() w/locale weeks defaults high-order values to the current date
+  ✓ DateTime.fromObject() w/locale weeks handles fully specified dates (8 ms)
+  ✓ DateTime.fromObject() w/locale weeks handles fully specified dates with custom week settings
+  ✓ DateTime.fromObject() w/localWeekYears handles skew with Gregorian years (14 ms)
+  ✓ DateTime.fromObject() w/localWeekYears handles skew with Gregorian years and custom week settings
+  ✓ DateTime.fromObject throws when both locale based weeks and ISO-weeks are specified (2 ms)
+  ✓ DateTime.fromObject() w/ordinals handles fully specified dates (1 ms)
+  ✓ DateTime.fromObject() w/ordinal defaults to the current year
+  ✓ DateTime.fromObject() returns invalid for invalid values
+  ✓ DateTime.fromObject accepts the default locale
+  ✓ DateTime.fromObject accepts really low year numbers
+  ✓ DateTime.fromObject accepts really low year numbers with IANA zones (4 ms)
+  ✓ DateTime.fromObject accepts plurals and weird capitalization
+  ✓ DateTime.fromObject validates weekdays (1 ms)
+  ✓ DateTime.fromObject accepts a locale
+  ✓ DateTime.fromObject accepts a locale with calendar and numbering identifiers
+  ✓ DateTime.fromObject accepts a locale string with weird junk in it (1 ms)
+  ✓ DateTime.fromObject overrides the locale string with explicit settings
+  ✓ DateTime.fromObject handles null as a language tag
+  ✓ DateTime.fromRFC2822 parses GMT correctly (1 ms)
+  ✓ DateTime.fromRFC2822 parses Zulu correctly
+  ✓ DateTime.fromRFC2822 parses offset correctly (1 ms)
+  ✓ DateTime.fromRFC2822 is invalid when weekday is not consistent
+  ✓ DateTime.fromHTTP parses rfc1123 (10 ms)
+  ✓ DateTime.fromHTTP parses rfc850 (1 ms)
+  ✓ DateTime.fromHTTP parses ascii (9 ms)
+  ✓ DateTime.fromHTTP is invalid when weekday is not consistent
+  ✓ DateTime.fromObject takes a undefined to mean {}
+  ✓ private language subtags don't break unicode subtags
+  ✓ DateTime.local works even after time zone change (1 ms)
+
+PASS test/datetime/format.test.js
+  ✓ DateTime#toJSON() just does toISO
+  ✓ DateTime#toISO() shows 'Z' for UTC
+  ✓ DateTime#toISO() shows the offset, unless explicitly asked (1 ms)
+  ✓ DateTime#toISO() supports the 'basic' format
+  ✓ DateTime#toISO() suppresses [milli]seconds (1 ms)
+  ✓ DateTime#toISO() returns null for invalid DateTimes
+  ✓ DateTime#toISO() rounds fractional timezone minute offsets (38 ms)
+  ✓ DateTime#toISO() handles long gregorian format
+  ✓ DateTime#toISO() handles negative years
+  ✓ DateTime#toISO() default to Z when timezone is 00:00
+  ✓ DateTime#toISO() renders 00:00 for non-offset but non utc datetimes
+  ✓ DateTime#toISO() supports the extendedZone option (1 ms)
+  ✓ DateTime#toISO({precision}) truncates time to desired precision
+  ✓ DateTime#toISO({precision}) throws when the precision is invalid (71 ms)
+  ✓ DateTime#toISODate() returns ISO 8601 date
+  ✓ DateTime#toISODate() is local to the zone
+  ✓ DateTime#toISODate() can output the basic format
+  ✓ DateTime#toISODate() returns null for invalid DateTimes
+  ✓ DateTime#toISODate() returns ISO 8601 date in format [±YYYYY]
+  ✓ DateTime#toISODate() correctly pads negative years (1 ms)
+  ✓ DateTime#toISODate({precision}) truncates time to desired precision
+  ✓ DateTime#toISODate({precision}) throws when the precision is invalid
+  ✓ DateTime#toISOWeekDate() returns ISO 8601 date (1 ms)
+  ✓ DateTime#toISOWeekDate() returns null for invalid DateTimes
+  ✓ DateTime#toISOTime() returns an ISO 8601 date
+  ✓ DateTime#toISOTime() won't suppress seconds by default
+  ✓ DateTime#toISOTime() won't suppress milliseconds by default
+  ✓ DateTime#toISOTime({suppressMilliseconds: true}) won't suppress milliseconds if they're nonzero (1 ms)
+  ✓ DateTime#toISOTime({suppressMilliseconds: true}) will suppress milliseconds if they're zero
+  ✓ DateTime#toISOTime({suppressSeconds: true}) won't suppress milliseconds if they're nonzero
+  ✓ DateTime#toISOTime({suppressSeconds: true}) will suppress milliseconds if they're zero
+  ✓ DateTime#toISOTime() handles other offsets
+  ✓ DateTime#toISOTime() can omit the offset
+  ✓ DateTime#toISOTime() can output the basic format
+  ✓ DateTime#toISOTime can include the prefix
+  ✓ DateTime#toISOTime() returns null for invalid DateTimes (1 ms)
+  ✓ DateTime#toISOTime({precision}) truncates time to desired precision
+  ✓ DateTime#toISOTime({precision}) throws when the precision is invalid
+  ✓ DateTime#toISOTime({precision, suppressSeconds}) suppresses when precision is > 'hour'
+  ✓ DateTime#toISOTime({precision, suppressMilliseconds}) suppresses when precision is > 'minute' (1 ms)
+  ✓ DateTime#toRFC2822() returns an RFC 2822 date
+  ✓ DateTime#toRFC2822() returns null for invalid DateTimes
+  ✓ DateTime#toHTTP() returns an RFC 1123 date (1 ms)
+  ✓ DateTime#toHTTP() returns null for invalid DateTimes
+  ✓ DateTime#toSQLDate() returns SQL date
+  ✓ DateTime#toSQLDate() returns null for invalid DateTimes
+  ✓ DateTime#toSQLTime() returns SQL time
+  ✓ DateTime#toSQLTime() accepts an includeOffset option (1 ms)
+  ✓ DateTime#toSQLTime() accepts an includeOffsetSpace option
+  ✓ DateTime#toSQLTime() accepts an includeZone option
+  ✓ DateTime#toSQLTime() returns null for invalid DateTimes
+  ✓ DateTime#toSQL() returns SQL date time
+  ✓ DateTime#toSQL() accepts space option
+  ✓ DateTime#toSQL() accepts an includeOffset option
+  ✓ DateTime#toSQL() accepts an includeZone option
+  ✓ DateTime#toSQL() returns null for invalid DateTimes
+  ✓ DateTime#toString() returns the ISO time
+  ✓ DateTime#toString() returns something different for invalid DateTimes
+  ✓ DateTime#toLocaleString returns a sensible string by default (1 ms)
+  ✓ DateTime#toLocaleString lets the locale set the numbering system (9 ms)
+  ✓ DateTime#toLocaleString accepts locale settings from the dateTime (2 ms)
+  ✓ DateTime#toLocaleString accepts numbering system settings from the dateTime (1 ms)
+  ✓ DateTime#toLocaleString accepts output calendar settings from the dateTime
+  ✓ DateTime#toLocaleString accepts options to the formatter (1 ms)
+  ✓ DateTime#toLocaleString can override the dateTime's locale
+  ✓ DateTime#toLocaleString can override the dateTime's numbering system
+  ✓ DateTime#toLocaleString can override the dateTime's output calendar (1 ms)
+  ✓ DateTime#toLocaleString() returns something different for invalid DateTimes
+  ✓ DateTime#toLocaleString() shows things in the right IANA zone
+  ✓ DateTime#toLocaleString() shows things in the right fixed-offset zone
+  ✓ DateTime#toLocaleString() shows things in the right fixed-offset zone when showing the zone (1 ms)
+  ✓ DateTime#toLocaleString() shows things with UTC if fixed-offset zone with 0 offset is used
+  ✓ DateTime#toLocaleString() does the best it can with unsupported fixed-offset zone when showing the zone
+  ✓ DateTime#toLocaleString() does the best it can with unsupported fixed-offset zone with timeStyle full
+  ✓ DateTime#toLocaleString() shows things in the right custom zone (1 ms)
+  ✓ DateTime#toLocaleString() shows things in the right custom zone when showing the zone
+  ✓ DateTime#toLocaleString() shows things in the right custom zone with timeStyle full
+  ✓ DateTime#toLocaleString uses locale-appropriate time formats (1 ms)
+  ✓ DateTime#toLocaleString() respects language tags (1 ms)
+  ✓ DateTime#toLocaleString() accepts a zone even when the zone is set
+  ✓ DateTime#resolvedLocaleOpts returns a thing
+  ✓ DateTime#resolvedLocaleOpts reflects changes to the locale (1 ms)
+  ✓ DateTime#resolvedLocaleOpts can override with options
+  ✓ DateTime#toLocaleParts returns a en-US by default
+  ✓ DateTime#toLocaleParts accepts locale settings from the dateTime (1 ms)
+  ✓ DateTime#toLocaleParts can override the dateTime's locale
+  ✓ DateTime#toLocaleParts accepts date formatting options
+  ✓ DateTime#toLocaleParts returns empty for invalid DateTimes
+
+PASS test/datetime/regexParse.test.js
+  ✓ DateTime.fromISO() parses as local by default (1 ms)
+  ✓ DateTime.fromISO() uses the offset provided, but keeps the dateTime as local
+  ✓ DateTime.fromISO() uses the Z if provided, but keeps the dateTime as local
+  ✓ DateTime.fromISO() optionally adopts the UTC offset provided (1 ms)
+  ✓ DateTime.fromISO() can optionally specify a zone (1 ms)
+  ✓ DateTime.fromISO() accepts both capital T and lowercase t
+  ✓ DateTime.fromISO() accepts both capital Z and lowercase z
+  ✓ DateTime.fromISO() accepts just the year
+  ✓ DateTime.fromISO() accepts year-month
+  ✓ DateTime.fromISO() accepts yearmonth
+  ✓ DateTime.fromISO() accepts year-month-day
+  ✓ DateTime.fromISO() accepts yearmonthday
+  ✓ DateTime.fromISO() accepts extend years
+  ✓ DateTime.fromISO() accepts year-month-dayThour
+  ✓ DateTime.fromISO() accepts year-month-dayThour:minute
+  ✓ DateTime.fromISO() accepts year-month-dayThour:minute:second
+  ✓ DateTime.fromISO() accepts year-month-dayThour:minute:second.millisecond (1 ms)
+  ✓ DateTime.fromISO() accepts year-week (1 ms)
+  ✓ DateTime.fromISO() accepts year-week-day
+  ✓ DateTime.fromISO() accepts year-week-dayTtime
+  ✓ DateTime.fromISO() accepts year-ordinal (1 ms)
+  ✓ DateTime.fromISO() accepts year-ordinalTtime
+  ✓ DateTime.fromISO() accepts year-ordinalTtime+offset
+  ✓ DateTime.fromISO() accepts hour:minute:second.millisecond
+  ✓ DateTime.fromISO() accepts hour:minute:second,millisecond
+  ✓ DateTime.fromISO() accepts hour:minute:second (1 ms)
+  ✓ DateTime.fromISO() accepts hour:minute
+  ✓ DateTime.fromISO() accepts hour:minute
+  ✓ DateTime.fromISO() accepts 24:00
+  ✓ DateTime.fromISO() doesn't accept 24:23
+  ✓ DateTime.fromISO() accepts extended zones (1 ms)
+  ✓ DateTime.fromISO() accepts extended zones and offsets
+  ✓ DateTime.fromISO() accepts extended zones on bare times (1 ms)
+  ✓ DateTime.fromISO() accepts extended zones on bare times when UTC and zone are in different days
+  ✓ DateTime.fromISO() accepts some technically incorrect stuff
+  ✓ DateTime.fromISO() rejects poop (1 ms)
+  ✓ DateTime.fromRFC2822() accepts full format
+  ✓ DateTime.fromRFC2822 parses a range of dates (2 ms)
+  ✓ DateTime.fromRFC2822() rejects incorrect days of the week
+  ✓ DateTime.fromRFC2822() can elide the day of the week
+  ✓ DateTime.fromRFC2822() can elide seconds
+  ✓ DateTime.fromRFC2822() can use Z (4 ms)
+  ✓ DateTime.fromRFC2822() can use a weird subset of offset abbreviations
+  ✓ DateTime.fromRFC2822() can use the obsolete UT zone
+  ✓ DateTime.fromHTTP() can parse RFC 1123 (1 ms)
+  ✓ DateTime.fromHTTP() can parse RFC 850
+  ✓ DateTime.fromHTTP() can parse RFC 850 on Wednesday
+  ✓ DateTime.fromHTTP() can parse ASCII dates with one date digit (1 ms)
+  ✓ DateTime.fromHTTP() can parse ASCII dates with two date digits
+  ✓ DateTime.fromSQL() can parse SQL dates
+  ✓ DateTime.fromSQL() can parse SQL times (1 ms)
+  ✓ DateTime.fromSQL() handles times without fractional seconds
+  ✓ DateTime.fromSQL() can parse SQL datetimes with sub-millisecond precision
+  ✓ DateTime.fromSQL() handles deciseconds in SQL datetimes
+  ✓ DateTime.fromSQL() handles datetimes without fractional seconds
+  ✓ DateTime.fromSQL() accepts a zone to default to (1 ms)
+  ✓ DateTime.fromSQL() can parse an optional offset
+  ✓ DateTime.fromSQL() can parse an optional zone
+
+PASS test/duration/format.test.js
+  ✓ Duration#toISO fills out every field
+  ✓ Duration#toISO fills out every field with fractional
+  ✓ Duration#toISO creates a minimal string (1 ms)
+  ✓ Duration#toISO handles negative durations
+  ✓ Duration#toISO handles mixed negative/positive durations
+  ✓ Duration#toISO handles zero durations (1 ms)
+  ✓ Duration#toISO returns null for invalid durations (1 ms)
+  ✓ Duration#toISO handles milliseconds duration
+  ✓ Duration#toISO handles seconds/milliseconds duration (1 ms)
+  ✓ Duration#toISO handles negative seconds/milliseconds duration (3 ms)
+  ✓ Duration#toISO handles mixed negative/positive numbers in seconds/milliseconds durations (21 ms)
+  ✓ Duration#toISO does not use exponential notation for very small values
+  ✓ Duration#toISO output round-trips small fractional values through fromISO (1 ms)
+  ✓ Duration#toISOTime creates a correct extended string
+  ✓ Duration#toISOTime suppresses milliseconds correctly
+  ✓ Duration#toISOTime suppresses seconds correctly (1 ms)
+  ✓ Duration#toISOTime includes the prefix correctly
+  ✓ Duration#toISOTime creates a correct basic string
+  ✓ Duration#toISOTime returns null if the value is outside the range of one day
+  ✓ Duration#toISOTime is not influenced by the locale
+  ✓ Duration#toMillis returns the value in milliseconds
+  ✓ Duration#toJSON returns the ISO representation
+  ✓ Duration#toString returns the ISO representation
+  ✓ Duration#toFormat('S') returns milliseconds (3 ms)
+  ✓ Duration#toFormat('s') returns seconds (1 ms)
+  ✓ Duration#toFormat('m') returns minutes (1 ms)
+  ✓ Duration#toFormat('h') returns hours
+  ✓ Duration#toFormat('d') returns days (1 ms)
+  ✓ Duration#toFormat('w') returns weeks
+  ✓ Duration#toFormat('M') returns months (1 ms)
+  ✓ Duration#toFormat('y') returns years
+  ✓ Duration#toFormat accepts the deprecated 'round' option
+  ✓ Duration#toFormat leaves in zeros (1 ms)
+  ✓ Duration#toFormat rounds down
+  ✓ Duration#toFormat localizes the numbers
+  ✓ Duration#toFormat returns a lame string for invalid durations
+  ✓ Duration#toFormat shows negative sign on the largest unit when using signMode negativeLargestOnly (1 ms)
+  ✓ Duration#toFormat shows no negative sign on the largest unit when using signMode negativeLargestOnly with positive Duration
+  ✓ Duration#toFormat keeps the negative sign on the largest unit when it is zero with signMode negativeLargestOnly
+  ✓ Duration#toFormat with signMode all shows positive sign on positive durations (1 ms)
+  ✓ Duration#toFormat with signMode all shows positive sign on negative durations
+  ✓ Duration#toHuman formats out a list (2 ms)
+  ✓ Duration#toHuman only shows the units you have (1 ms)
+  ✓ Duration#toHuman accepts a listStyle
+  ✓ Duration#toHuman accepts number format opts
+  ✓ Duration#toHuman accepts hiding of zero values (1 ms)
+  ✓ Duration#toHuman handles undefined showZeros
+  ✓ Duration#toHuman works in differt languages
+  ✓ Duration#toHuman handles quarters
+  ✓ Duration#toHuman handles quarters and months together
+  ✓ Duration#toHuman handles quarters and months with showZeros false
+
+PASS test/datetime/many.test.js
+  ✓ DateTime.min returns the only dateTime if solo (1 ms)
+  ✓ DateTime.min returns the min dateTime
+  ✓ DateTime.min returns undefined if no argument
+  ✓ DateTime.min is stable
+  ✓ DateTime.min throws if you don't pass it DateTimes (16 ms)
+  ✓ DateTime.max returns the only dateTime if solo (1 ms)
+  ✓ DateTime.max returns the max dateTime
+  ✓ DateTime.max returns undefined if no argument
+  ✓ DateTime.max is stable
+  ✓ DateTime.max throws if you don't pass it DateTimes (1 ms)
+
+PASS test/duration/units.test.js
+  ✓ Duration#shiftTo rolls milliseconds up hours and minutes
+  ✓ Duration#shiftTo boils hours down milliseconds
+  ✓ Duration boils hours down shiftTo minutes and milliseconds (1 ms)
+  ✓ Duration#shiftTo boils down and then rolls up
+  ✓ Duration#shiftTo throws on invalid units (45 ms)
+  ✓ Duration#shiftTo tacks decimals onto the end
+  ✓ Duration#shiftTo deconstructs decimal inputs
+  ✓ Duration#shiftTo deconstructs in cascade and tacks decimal onto the end (1 ms)
+  ✓ Duration#shiftTo maintains invalidity
+  ✓ Duration#shiftTo without any units no-ops
+  ✓ Duration#shiftTo accumulates when rolling up
+  ✓ Duration#shiftTo keeps unnecessary higher-order negative units 0
+  ✓ Duration#shiftTo does not normalize values
+  ✓ Duration#shiftTo boils hours down to hours and minutes
+  ✓ Duration#shiftTo handles mixed units
+  ✓ Duration#shiftTo does not produce unnecessary fractions in higher order units
+  ✓ Duration#siftTo does not create intermediate units when lower order units can go directly into a higher one (1 ms)
+  ✓ Duration#shiftTo can convert milliseconds directly into whole years correctly: 1
+  ✓ Duration#shiftTo can convert milliseconds directly into whole years correctly: 5
+  ✓ Duration#shiftTo can convert milliseconds directly into whole years correctly: -12
+  ✓ Duration#shiftTo with no units normalizes
+  ✓ Duration#shiftToAll shifts to all available units
+  ✓ Duration#shiftToAll does not produce unnecessary fractions in higher order units
+  ✓ Duration#shiftToAll maintains invalidity (1 ms)
+  ✓ Duration#normalize rebalances negative units
+  ✓ Duration#normalize de-overflows
+  ✓ Duration#normalize handles fully negative durations
+  ✓ Duration#normalize handles the full grid partially negative durations
+  ✓ Duration#normalize maintains invalidity (1 ms)
+  ✓ Duration#normalize can convert all unit pairs (4 ms)
+  ✓ Duration#normalize moves fractions to lower-order units (1 ms)
+  ✓ Duration#normalize does not produce fractions in higher order units when rolling up negative lower order unit values
+  ✓ Duration#rescale normalizes, shifts to all units and remove units with a value of 0
+  ✓ Duration#rescale maintains invalidity
+  ✓ Duration#as shifts to one unit and returns it
+  ✓ Duration#as returns null for invalid durations (1 ms)
+  ✓ Duration#valueOf value of zero duration
+  ✓ Duration#valueOf returns as millisecond value (lower order units)
+  ✓ Duration#valueOf value of the duration with lower and higher order units
+  ✓ Duration#removeZeros leaves empty object if everything was zero
+  ✓ Duration#removeZeros removes units with zero value
+  ✓ Duration#removeZeros removes nothing if no value is zero
+  ✓ Duration#removeZeros maintains invalidity
+
+PASS test/datetime/set.test.js
+  ✓ DateTime#set() sets Gregorian fields (1 ms)
+  ✓ DateTime#set({ month }) doesn't go to the wrong month
+  ✓ DateTime#set({ year }) doesn't wrap leap years
+  ✓ DateTime#set({ weekYear }) sets the date to the same weekNumber/weekday of the target weekYear (1 ms)
+  ✓ DateTime#set({ weekNumber }) sets the date to the same weekday of the target weekNumber
+  ✓ DateTime#set({ weekday }) sets the weekday to this week's matching day
+  ✓ DateTime#set({ weekday }) handles week year edge cases (2 ms)
+  ✓ DateTime#set({ localWeekday }) sets the weekday to this week's matching day based on the locale (en-US)
+  ✓ DateTime#set({ localWeekday }) sets the weekday to this week's matching day based on the locale (de-DE) (1 ms)
+  ✓ DateTime#set({ localWeekday }) handles crossing over into the previous year
+  ✓ DateTime#set({ localWeekday }) handles crossing over into the previous year (1 ms)
+  ✓ DateTime#set({ localWeekNumber }) sets the date to the same weekday of the target weekNumber (en-US)
+  ✓ DateTime#set({ localWeekNumber }) sets the date to the same weekday of the target weekNumber (de-DE)
+  ✓ DateTime#set({ localWeekNumber }) sets the date to the same weekday of the target weekNumber (custom weekSettings) (1 ms)
+  ✓ DateTime#set({ localWeekYear }) sets the date to the same weekNumber/weekday of the target weekYear (en-US)
+  ✓ DateTime#set({ localWeekNumber }) sets the date to the same weekday of the target weekNumber (custom weekSettings) (1 ms)
+  ✓ DateTime#set({ localWeekYear }) sets the date to the same weekNumber/weekday of the target weekYear (de-DE)
+  ✓ DateTime#set({ ordinal }) sets the date to the ordinal within the current year
+  ✓ DateTime.set does units in increasing size (1 ms)
+  ✓ DateTime#set throws for invalid units (28 ms)
+  ✓ DateTime#set throws for metadata (1 ms)
+  ✓ DateTime#set throws for mixing incompatible units (35 ms)
+  ✓ DateTime#set maintains invalidity
+
+PASS test/duration/invalid.test.js
+  ✓ Explicitly invalid durations are invalid (1 ms)
+  ✓ throwOnInvalid throws (33 ms)
+  ✓ Duration.invalid throws if you don't provide a reason
+  ✓ Diffing invalid DateTimes creates invalid Durations (1 ms)
+  ✓ Duration.invalid produces invalid Intervals
+  ✓ Duration.toMillis produces NaN on invalid Durations
+  ✓ Duration.as produces NaN on invalid Durations
+  ✓ Duration.toHuman produces null on invalid Durations
+  ✓ Duration.toISO produces null on invalid Durations
+  ✓ Duration.toFormat produces Invalid Duration on invalid Durations
+
+PASS test/datetime/toFormat.test.js
+  ✓ DateTime#toFormat accepts the locale from the DateTime or the options (9 ms)
+  ✓ DateTime#toFormat('u') returns fractional seconds (1 ms)
+  ✓ DateTime#toFormat('uu') returns fractional seconds as two digits
+  ✓ DateTime#toFormat('uuu') returns fractional seconds as one digit
+  ✓ DateTime#toFormat('S') returns the millisecond (3 ms)
+  ✓ DateTime#toFormat('SSS') returns padded the millisecond (1 ms)
+  ✓ DateTime#toFormat('s') returns the second
+  ✓ DateTime#toFormat('ss') returns the padded second
+  ✓ DateTime#toFormat('m') returns the minute
+  ✓ DateTime#toFormat('mm') returns the padded minute (1 ms)
+  ✓ DateTime#toFormat('h') returns the hours
+  ✓ DateTime#toFormat('hh') returns the padded hour (12-hour time)
+  ✓ DateTime#toFormat('H') returns the hour (24-hour time) (1 ms)
+  ✓ DateTime#toFormat('HH') returns the padded hour (24-hour time)
+  ✓ DateTime#toFormat('Z') returns the narrow offset
+  ✓ DateTime#toFormat('ZZ') returns the padded offset (1 ms)
+  ✓ DateTime#toFormat('ZZZ') returns a numerical offset
+  ✓ DateTime#toFormat('ZZZZ') returns the short offset name (1 ms)
+  ✓ DateTime#toFormat('ZZZZZ') returns the full offset name
+  ✓ DateTime#toFormat('z') returns the zone name
+  ✓ DateTime#toFormat('a') returns the meridiem (1 ms)
+  ✓ DateTime#toFormat('d') returns the day
+  ✓ DateTime#toFormat('dd') returns the padded day (1 ms)
+  ✓ DateTime#toFormat('E' || 'c') returns weekday number
+  ✓ DateTime#toFormat('EEE') returns short format weekday name (1 ms)
+  ✓ DateTime#toFormat('ccc') returns short standalone weekday name (1 ms)
+  ✓ DateTime#toFormat('EEEE') returns the full format weekday name
+  ✓ DateTime#toFormat('cccc') returns the full standalone weekday name
+  ✓ DateTime#toFormat('EEEEE' || 'ccccc') returns narrow weekday name
+  ✓ DateTime#toFormat('M' || 'L') return the month number
+  ✓ DateTime#toFormat('MM' || 'LL') return the padded month number
+  ✓ DateTime#toFormat('MMM') returns the short format month name (1 ms)
+  ✓ DateTime#toFormat('LLL') returns the short standalone month name
+  ✓ DateTime#toFormat('MMMM') returns the full format month name (1 ms)
+  ✓ DateTime#toFormat('LLLL') returns the full standalone month name
+  ✓ DateTime#toFormat('MMMMM' || 'LLLLL') returns the narrow month name
+  ✓ DateTime#toFormat('y') returns the full year
+  ✓ DateTime#toFormat('yy') returns the two-digit year (1 ms)
+  ✓ DateTime#toFormat('yyyy') returns the padded full year
+  ✓ DateTime#toFormat('yyyy') returns the padded full year
+  ✓ DateTime#toFormat('yyyyyy') returns the padded extended year
+  ✓ DateTime#toFormat('G') returns the short era (1 ms)
+  ✓ DateTime#toFormat('GG') returns the full era
+  ✓ DateTime#toFormat('GGGGG') returns the narrow era
+  ✓ DateTime#toFormat('W') returns the week number
+  ✓ DateTime#toFormat('WW') returns the padded week number
+  ✓ DateTime#toFormat('kk') returns the abbreviated week year
+  ✓ DateTime#toFormat('kkkk') returns the full week year
+  ✓ DateTime#toFormat('o') returns an unpadded ordinal (1 ms)
+  ✓ DateTime#toFormat('ooo') returns an unpadded ordinal
+  ✓ DateTime#toFormat('q') returns an unpadded quarter
+  ✓ DateTime#toFormat('qq') returns a padded quarter
+  ✓ DateTime#toFormat('D') returns a short date representation (1 ms)
+  ✓ DateTime#toFormat('DD') returns a medium date representation
+  ✓ DateTime#toFormat('DDD') returns a long date representation
+  ✓ DateTime#toFormat('DDDD') returns a long date representation (1 ms)
+  ✓ DateTime#toFormat('t') returns a short time representation
+  ✓ DateTime#toFormat('T') returns a short 24-hour time representation (1 ms)
+  ✓ DateTime#toFormat('tt') returns a medium time representation
+  ✓ DateTime#toFormat('TT') returns a medium 24-hour time representation
+  ✓ DateTime#toFormat('ttt') returns a medium time representation
+  ✓ DateTime#toFormat('TTT') returns a medium time representation
+  ✓ DateTime#toFormat('f') returns a short date/time representation without seconds (1 ms)
+  ✓ DateTime#toFormat('ff') returns a medium date/time representation without seconds
+  ✓ DateTime#toFormat('fff') returns a medium date/time representation without seconds (1 ms)
+  ✓ DateTime#toFormat('ffff') returns a long date/time representation without seconds (1 ms)
+  ✓ DateTime#toFormat('F') returns a short date/time representation with seconds (1 ms)
+  ✓ DateTime#toFormat('FF') returns a medium date/time representation with seconds
+  ✓ DateTime#toFormat('FFF') returns a medium date/time representation without seconds (1 ms)
+  ✓ DateTime#toFormat('FFFF') returns a long date/time representation without seconds
+  ✓ DateTime#toFormat returns a full formatted string (1 ms)
+  ✓ DateTime#toFormat() accepts literals in single quotes
+  ✓ DateTime#toFormat allows escaping of single quotes
+  ✓ DateTime#toFormat() uses the numbering system
+  ✓ DateTime#toFormat() uses the output calendar (1 ms)
+  ✓ DateTime#toFormat() returns something different for invalid DateTimes
+  ✓ DateTime#toFormat('X') returns a Unix timestamp in seconds
+  ✓ DateTime#toFormat('X') rounds down
+  ✓ DateTime#toFormat('x') returns a Unix timestamp in milliseconds
+  ✓ DateTime#toFormat('n') (2 ms)
+  ✓ DateTime#toFormat('nn')
+  ✓ DateTime#toFormat('ii')
+  ✓ DateTime#toFormat('iiii') (27 ms)
+
+PASS test/interval/info.test.js
+  ✓ Interval#length defaults to milliseconds (1 ms)
+  ✓ Interval#length('days') returns 1 for yesterday (1 ms)
+  ✓ Interval#length('months') returns the right number of months (2 ms)
+  ✓ Interval#length('years') returns the right number of years
+  ✓ Interval#length() returns NaN for invalid intervals
+  ✓ Interval#count('days') returns 1 inside a day (1 ms)
+  ✓ Interval#count('days') returns 2 if the interval crosses midnight
+  ✓ Interval#count('years') returns 1 inside a year
+  ✓ Interval#count('years') returns 2 if the interval crosses the new year (1 ms)
+  ✓ Interval#count() does not count the endpoint of the interval
+  ✓ Interval#count() uses milliseconds by default
+  ✓ Interval#count() returns NaN for invalid intervals
+  ✓ Interval#toDuration creates a duration in those units (1 ms)
+  ✓ Interval#toDuration accepts multiple units
+  ✓ Interval#toDuration accepts duration options (1 ms)
+  ✓ Interval#toDuration returns an invalid duration for invalid intervals
+  ✓ Interval#contains returns true for DateTimes in the interval
+  ✓ Interval#contains returns false for DateTimes after the interval
+  ✓ Interval#contains returns false for DateTimes before the interval
+  ✓ Interval#contains returns true for the start endpoint
+  ✓ Interval#contains returns false for the end endpoint
+  ✓ Interval#contains returns false for invalid intervals
+  ✓ Interval#isEmpty returns true for empty intervals
+  ✓ Interval#isEmpty returns false for non-empty intervals
+  ✓ Interval#isBefore returns true for intervals fully before the input
+  ✓ Interval#isBefore returns false for intervals containing the input
+  ✓ Interval#isBefore returns false for intervals fully after the input 
+  ✓ Interval#isBefore returns true for intervals ending at the input
+  ✓ Interval#isBefore returns false for intervals just inside the input (1 ms)
+  ✓ Interval#isBefore returns false for invalid intervals
+  ✓ Interval#isAfter returns true for intervals fully after the input
+  ✓ Interval#isAfter returns false for intervals containing the input
+  ✓ Interval#isAfter returns false for fully before the input 
+  ✓ Interval#isAfter returns false for intervals beginning at the input
+  ✓ Interval#isAfter returns false for invalid intervals
+  ✓ Interval#hasSame('day') returns true for durations on the same day (1 ms)
+  ✓ Interval#hasSame('day') returns true for durations that last until the next day
+  ✓ Interval#hasSame('day') returns true for durations durations ending at midnight
+  ✓ Interval#hasSame returns false for invalid intervals
+  ✓ Interval#hasSame returns true for empty intervals
+  ✓ Interval#hasSame returns true for empty intervals (1 ms)
+  ✓ Interval#hasSame returns true for empty intervals (1 ms)
+  ✓ Interval#hasSame returns true for empty intervals (1 ms)
+  ✓ Interval#hasSame returns true for empty intervals
+  ✓ Interval#hasSame respects the zones of an empty interval's endpoints
+
+PASS test/datetime/degrade.test.js
+  ✓ With no RelativeTimeFormat support, calling toRelative falls back to English (2 ms)
+
+PASS test/duration/create.test.js
+  ✓ Duration.fromObject sets all the values
+  ✓ Duration.fromObject sets all the fractional values (1 ms)
+  ✓ Duration.fromObject sets all the values from the object having string type values
+  ✓ Duration.fromObject accepts a conversionAccuracy
+  ✓ Duration.fromObject throws if the argument is not an object (13 ms)
+  ✓ Duration.fromObject({}) constructs zero duration
+  ✓ Duration.fromObject throws if the initial object has invalid keys (3 ms)
+  ✓ Duration.fromObject throws if the initial object has invalid values (1 ms)
+  ✓ Duration.fromObject is valid if providing options only
+  ✓ Duration.fromDurationLike returns a Duration from millis (1 ms)
+  ✓ Duration.fromDurationLike returns a Duration from object
+  ✓ Duration.fromDurationLike returns passed Duration
+  ✓ Duration.fromDurationLike throws for invalid inputs (1 ms)
+
+PASS test/info/listers.test.js
+  ✓ Info.months lists all the months (1 ms)
+  ✓ Info.months respects the numbering system (2 ms)
+  ✓ Info.months respects the calendar
+  ✓ Info.months respects the locale (9 ms)
+  ✓ Info.months defaults to long names
+  ✓ Info.monthsFormat lists all the months (1 ms)
+  ✓ Info.monthsFormat defaults to long names
+  ✓ Info.weekdays lists all the weekdays (2 ms)
+  ✓ Info.weekdays defaults to long names
+  ✓ Info.weekdaysFormat lists all the weekdays (1 ms)
+  ✓ Info.weekdaysFormat defaults to long names
+  ✓ Info.meridiems lists the meridiems (1 ms)
+  ✓ Info.meridiems defaults to the current locale
+  ✓ Info.eras lists both eras (3 ms)
+  ✓ Info English lists are not mutable
+
+PASS test/datetime/info.test.js
+  ✓ DateTime#toObject returns the object
+  ✓ DateTime#toObject accepts a flag to return config (1 ms)
+  ✓ DateTime#toObject returns an empty object for invalid DateTimes
+
+PASS test/duration/math.test.js
+  ✓ Duration#plus add straightforward durations
+  ✓ Duration#plus add fractional durations (1 ms)
+  ✓ Duration#plus noops empty druations
+  ✓ Duration#plus adds negatives
+  ✓ Duration#plus adds single values
+  ✓ Duration#plus adds number as milliseconds
+  ✓ Duration#plus maintains invalidity
+  ✓ Duration#plus results in the superset of units (1 ms)
+  ✓ Duration#plus throws with invalid parameter (16 ms)
+  ✓ Duration#minus subtracts durations
+  ✓ Duration#minus subtracts fractional durations (1 ms)
+  ✓ Duration#minus subtracts single values
+  ✓ Duration#minus maintains invalidity
+  ✓ Duration#negate flips all the signs
+  ✓ Duration#negate preserves invalidity
+  ✓ Duration#negate doesn't mutate
+  ✓ Duration#negate preserves conversionAccuracy
+  ✓ Duration#units can multiply durations
+  ✓ Duration#units can take the unit into account (1 ms)
+  ✓ Duration#mapUnits maintains invalidity
+  ✓ Duration#mapUnits requires that fn return a number (2 ms)
+
+PASS test/interval/typecheck.test.js
+  ✓ Interval.isInterval return true for valid duration
+  ✓ Interval.isInterval return true for invalid duration
+  ✓ Interval.isInterval return false for primitives
+
+PASS test/zones/invalid.test.js
+  ✓ InvalidZone
+
+PASS test/datetime/typecheck.test.js
+  ✓ DateTime#isDateTime return true for valid DateTime (2 ms)
+  ✓ DateTime#isDateTime return true for invalid DateTime
+  ✓ DateTime#isDateTime return false for primitives
+
+PASS test/impl/english.test.js
+  ✓ today
+  ✓ tomorrow
+  ✓ yesterday
+  ✓ in 0.5 days
+  ✓ 0.5 days ago (1 ms)
+  ✓ 2 days ago
+  ✓ this month
+  ✓ next month
+  ✓ last month
+  ✓ in 3 months
+  ✓ in 1 hour (1 ms)
+  ✓ in 1 hour
+  ✓ 1 hour ago
+  ✓ formatString (1 ms)
+  ✓ weekdays (1 ms)
+  ✓ eras
+
+PASS test/interval/localeWeek.test.js
+  ✓ count(weeks) with useLocaleWeeks adheres to the locale (2 ms)
+  ✓ count(weeks) with useLocaleWeeks uses the start locale
+
+PASS test/duration/set.test.js
+  ✓ Duration#set() sets the values (1 ms)
+  ✓ Duration#set() throws for metadata (2 ms)
+  ✓ Duration#set maintains invalidity
+
+PASS test/interval/format.test.js
+  ✓ Interval#toString returns a simple range format
+  ✓ Interval#toString returns an unfriendly string for invalid intervals (1 ms)
+  ✓ Interval#toLocaleString defaults to the DATE_SHORT format
+  ✓ Interval#toLocaleString returns an unfriendly string for invalid intervals
+  ✓ Interval#toLocaleString lets the locale set the numbering system (1 ms)
+  ✓ Interval#toLocaleString accepts locale settings from the start DateTime (1 ms)
+  ✓ Interval#toLocaleString accepts numbering system settings from the start DateTime (1 ms)
+  ✓ Interval#toLocaleString accepts ouptput calendar settings from the start DateTime (10 ms)
+  ✓ Interval#toLocaleString accepts options to the formatter (1 ms)
+  ✓ Interval#toLocaleString can override the start DateTime's locale
+  ✓ Interval#toLocaleString can override the start DateTime's numbering system (1 ms)
+  ✓ Interval#toLocaleString can override the start DateTime's output calendar (1 ms)
+  ✓ Interval#toLocaleString shows things in the right IANA zone (1 ms)
+  ✓ Interval#toLocaleString shows things in the right fixed-offset zone
+  ✓ Interval#toLocaleString shows things in the right fixed-offset zone when showing the zone (1 ms)
+  ✓ Interval#toLocaleString shows things with UTC if fixed-offset with 0 offset is used
+  ✓ Interval#toLocaleString does the best it can with unsupported fixed-offset zone when showing the zone (1 ms)
+  ✓ Interval#toLocaleString uses locale-appropriate time formats (3 ms)
+  ✓ Interval#toLocaleString sets the separator between days for same-month dates (1 ms)
+  ✓ Interval#toISO returns a simple ISO format
+  ✓ Interval#toISO accepts ISO options
+  ✓ Interval#toISO returns an unfriendly string for invalid intervals
+  ✓ Interval#toISODate returns a simple ISO date interval format
+  ✓ Interval#toISODate returns an unfriendly string for invalid intervals
+  ✓ Interval#toISOTime returns a simple ISO time interval format
+  ✓ Interval#toISOTime returns an unfriendly string for invalid intervals
+  ✓ Interval#toISOTime accepts ISO options
+  ✓ Interval#toFormat accepts date formats (1 ms)
+  ✓ Interval#toFormat accepts date formats
+  ✓ Interval#toFormat returns an unfriendly string for invalid intervals
+
+PASS test/datetime/invalid.test.js
+  ✓ Explicitly invalid dates are invalid (1 ms)
+  ✓ Invalid creations are invalid
+  ✓ invalid zones result in invalid dates (1 ms)
+  ✓ Invalid DateTimes tell you why
+  ✓ Invalid DateTimes can provide an extended explanation
+  ✓ Invalid DateTimes return invalid Dates
+  ✓ Diffing invalid DateTimes creates invalid Durations
+  ✓ throwOnInvalid throws (17 ms)
+  ✓ DateTime.invalid throws if you don't provide a reason
+  ✓ throwOnInvalid throws if year is too big
+
+PASS test/zones/IANA.test.js
+  ✓ IANAZone.create returns a singleton per zone name (1 ms)
+  ✓ IANAZone.create should return IANAZone instance
+  ✓ IANAZone.isValidSpecifier (1 ms)
+  ✓ IANAZone.isValidZone (1 ms)
+  ✓ IANAZone.type returns a static string (1 ms)
+  ✓ IANAZone.name returns the zone name passed to the constructor (1 ms)
+  ✓ IANAZone is not universal
+  ✓ IANAZone.offsetName with a long format
+  ✓ IANAZone.offsetName with a short format (1 ms)
+  ✓ IANAZone.formatOffset with a short format
+  ✓ IANAZone.formatOffset with a narrow format
+  ✓ IANAZone.formatOffset with a techie format
+  ✓ IANAZone.formatOffset throws for an invalid format (11 ms)
+  ✓ IANAZone.equals requires both zones to be iana
+  ✓ IANAZone.equals returns false even if the two share offsets
+  ✓ IANAZone.isValid returns true for valid zone names
+  ✓ IANAZone.isValid returns false for invalid zone names (1 ms)
+  ✓ IANAZone.normalize normalizes the zone name
+  ✓ IANAZone returns canonical zone name regardless of input casing (1 ms)
+
+PASS test/duration/parse.test.js
+  ✓ Duration.fromISO can parse a variety of ISO formats (2 ms)
+  ✓ Duration.fromISO can parse mixed or negative durations (1 ms)
+  ✓ Duration.fromISO can parse fractions of seconds
+  ✓ Duration.fromISO can parse fractions
+  ✓ Duration.fromISO rejects junk (1 ms)
+  ✓ Duration.fromISOTime can parse a variety of extended ISO time formats
+  ✓ Duration.fromISOTime can parse a variety of basic ISO time formats (1 ms)
+  ✓ Duration.fromISOTime rejects junk
+
+PASS test/datetime/localeWeek.test.js
+  ✓ startOf(week) with useLocaleWeeks adheres to the locale (1 ms)
+  ✓ startOf(week) with useLocaleWeeks handles crossing into the previous year
+  ✓ endOf(week) with useLocaleWeeks adheres to the locale
+  ✓ endOf(week) with useLocaleWeeks handles crossing into the next year (1 ms)
+  ✓ hasSame(week) with useLocaleWeeks adheres to the locale
+  ✓ hasSame(week) with useLocaleWeeks ignores the locale of otherDateTime (1 ms)
+  ✓ isWeekend in locale en-US reports Saturday and Sunday as weekend
+  ✓ isWeekend in locale he reports Friday and Saturday as weekend
+  localWeekNumber in locale de-DE
+    ✓ Jan  1 2012 should be week 52, year 2011 (1 ms)
+    ✓ Jan  2 2012 should be week 1, year 2012
+    ✓ Jan  8 2012 should be week 1, year 2012
+    ✓ Jan  9 2012 should be week 2, year 2012
+    ✓ Jan  15 2012 should be week 2, year 2012
+  localWeekNumber in locale en-US
+    ✓ Jan  1 2012 should be week 1, year 2012
+    ✓ Jan  7 2012 should be week 1, year 2012 (1 ms)
+    ✓ Jan  8 2012 should be week 2, year 2012
+    ✓ Jan  14 2012 should be week 2, year 2012
+    ✓ Jan  15 2012 should be week 3, year 2012
+  localWeekday in locale en-US
+    ✓ Sunday should be reported as the 1st day of the week
+    ✓ Monday should be reported as the 2nd day of the week
+    ✓ Tuesday should be reported as the 3rd day of the week
+    ✓ Wednesday should be reported as the 4th day of the week
+    ✓ Thursday should be reported as the 5th day of the week (1 ms)
+    ✓ Friday should be reported as the 6th day of the week
+    ✓ Saturday should be reported as the 7th day of the week
+  localWeekday in locale de-DE
+    ✓ Monday should be reported as the 1st day of the week
+    ✓ Tuesday should be reported as the 2nd day of the week
+    ✓ Wednesday should be reported as the 3rd day of the week
+    ✓ Thursday should be reported as the 4th day of the week
+    ✓ Friday should be reported as the 5th day of the week
+    ✓ Saturday should be reported as the 6th day of the week
+    ✓ Sunday should be reported as the 7th day of the week
+  weeksInLocalWeekYear
+    ✓ 2018 should have 53 weeks in en-US
+    ✓ 2022 should have 53 weeks in en-US (1 ms)
+    ✓ 2022 should have 52 weeks in de-DE
+    ✓ 2020 should have 53 weeks in de-DE
+    ✓ 2018 should have 52 weeks with minDays 1, start 7
+    ✓ 2022 should have 53 weeks with minDays 1, start 7
+  Week settings can be overridden
+    ✓ Overridden week info should be reported by Info
+    ✓ Overridden week info should be reported by DateTime#isWeekend
+    ✓ Overridden week info should be respected by DateTime accessors (1 ms)
+    ✓ Overridden week info should be respected by DateTime#set
+
+PASS test/duration/info.test.js
+  ✓ Duration#toObject returns the object
+  ✓ Duration#toObject returns an empty object for invalid durations (1 ms)
+
+PASS test/duration/typecheck.test.js
+  ✓ Duration#isDuration return true for valid duration
+  ✓ Duration#isDuration return true for invalid duration
+  ✓ Duration#isDuration return false for primitives (1 ms)
+
+PASS test/info/features.test.js
+  ✓ Info.features shows this environment supports all the features
+  ✓ With no RelativeTimeFormat support, Info.features shows no support
+  ✓ With no Intl.Locale.weekInfo support, Info.features shows no support
+
+PASS test/interval/getters.test.js
+  ✓ Interval.start gets the start (1 ms)
+  ✓ Interval.start returns null for invalid intervals
+  ✓ Interval.end gets the end
+  ✓ Interval.end returns null for invalid intervals
+
+PASS test/duration/customMatrix.test.js
+  ✓ One day is made of 7 hours
+  ✓ One and a half week is made of 7 days 3 hours and 30 minutes (1 ms)
+
+PASS test/datetime/getters.test.js
+  ✓ DateTime#year returns the year
+  ✓ DateTime#month returns the (1-indexed) month
+  ✓ DateTime#day returns the day
+  ✓ DateTime#hour returns the hour (1 ms)
+  ✓ DateTime#minute returns the minute
+  ✓ DateTime#second returns the second
+  ✓ DateTime#millisecond returns the millisecond
+  ✓ DateTime#weekYear returns the weekYear (1 ms)
+  ✓ DateTime#weekNumber returns the weekNumber
+  ✓ DateTime#weekday returns the weekday
+  ✓ DateTime#weekday returns the weekday for older dates
+  ✓ DateTime#weekdayShort returns the short human readable weekday for en-US locale
+  ✓ DateTime#weekdayLong returns the human readable weekday for en-US locale
+  ✓ DateTime#weekdayShort returns the short human readable weekday for fr locale (1 ms)
+  ✓ DateTime#weekdayLong returns the human readable weekday for fr locale (1 ms)
+  ✓ DateTime#weekdayShort returns null for invalid DateTimes
+  ✓ DateTime#weekdayLong returns null for invalid DateTimes
+  ✓ DateTime#monthShort returns the short human readable month
+  ✓ DateTime#monthLong returns the human readable month
+  ✓ DateTime#monthShort returns the short human readable month
+  ✓ DateTime#monthLong returns the human readable month
+  ✓ DateTime#monthShort returns the short human readable month for fr locale (3 ms)
+  ✓ DateTime#monthLong returns the human readable month for fr locale (1 ms)
+  ✓ DateTime#monthLong returns null for invalid DateTimes
+  ✓ DateTime#monthShort returns null for invalid DateTimes
+  ✓ DateTime#ordinal returns the ordinal
+  ✓ DateTime#ordinal returns NaN for invalid DateTimes
+  ✓ DateTime#get can retrieve any unit
+  ✓ DateTime#get returns undefined for invalid units (1 ms)
+  ✓ DateTime#locale returns the locale
+  ✓ DateTime#zone returns the time zone
+  ✓ DateTime#zoneName returns the name of the time zone
+  ✓ Invalid DateTimes have unhelpful getters
+
+PASS test/info/localeWeek.test.js
+  ✓ Info.getStartOfWeek reports the correct start of the week
+  ✓ With no Intl.Locale.weekInfo support, Info.getStartOfWeek reports Monday as the start of the week
+  ✓ Info.getMinimumDaysInFirstWeek reports the correct value
+  ✓ With no Intl.Locale.weekInfo support, Info.getMinimumDaysInFirstWeek reports 4
+  ✓ Info.getWeekendWeekdays reports the correct value
+  ✓ With no Intl.Locale.weekInfo support, Info.getWeekendWeekdays reports [6, 7]
+  ✓ Info.getStartOfWeek honors the default locale (1 ms)
+
+PASS test/datetime/transform.test.js
+  ✓ DateTime#toMillis() returns milliseconds for valid DateTimes
+  ✓ DateTime#toMillis() returns NaN for invalid DateTimes (1 ms)
+  ✓ DateTime#toSeconds() returns seconds for valid DateTimes (3 ms)
+  ✓ DateTime#toSeconds() returns NaN for invalid DateTimes
+  ✓ DateTime#valueOf() just does toMillis()
+  ✓ DateTime#toJSDate() returns a native Date equivalent
+  ✓ DateTime#toBSON() return a BSON serializable equivalent
+
+PASS test/duration/proto.test.js
+  ✓ Duration prototype properties should not throw when addressed (1 ms)
+
+PASS test/zones/fixedOffset.test.js
+  ✓ FixedOffsetZone.utcInstance returns a singleton
+  ✓ FixedOffsetZone.utcInstance provides valid UTC data (1 ms)
+  ✓ FixedOffsetZone.parseSpecifier returns a valid instance from a UTC offset string
+  ✓ FixedOffsetZone.parseSpecifier returns null for invalid data
+  ✓ FixedOffsetZone.formatOffset is consistent despite the provided timestamp (1 ms)
+  ✓ FixedOffsetZone.formatOffset prints the correct sign before the offset
+  ✓ FixedOffsetZone is valid when constructed with a numeric offset
+  ✓ FixedOffsetZone is invalid when constructed with a non-numeric offset
+  ✓ A DateTime in an invalid FixedOffsetZone is itself invalid (1 ms)
+  ✓ FixedOffsetZone.equals requires both zones to be fixed
+  ✓ FixedOffsetZone.equals compares fixed offset values
+
+PASS test/datetime/misc.test.js
+  ✓ DateTime#hasSame() can use milliseconds for exact comparisons (4 ms)
+  ✓ DateTime#hasSame() checks the unit
+  ✓ DateTime#hasSame() checks high-order units (1 ms)
+  ✓ DateTime#hasSame() ignores time offsets and is symmetric (3 ms)
+  ✓ DateTime#hasSame() returns false for invalid DateTimes
+  ✓ DateTime#until() creates an Interval
+  ✓ DateTime#until() creates an invalid Interval out of an invalid DateTime
+  ✓ DateTime#isInLeapYear returns the whether the DateTime's year is in a leap year (1 ms)
+  ✓ DateTime#isInLeapYear returns false for invalid DateTimes
+  ✓ DateTime#daysInYear returns the number of days in the DateTime's year
+  ✓ DateTime#daysInYear returns NaN for invalid DateTimes
+  ✓ DateTime#daysInMonth returns the number of days in the DateTime's month
+  ✓ DateTime#daysInMonth returns NaN for invalid DateTimes
+  ✓ DateTime#weeksInWeekYear returns the number of days in the DateTime's year (1 ms)
+  ✓ DateTime#weeksInWeekYear returns NaN for invalid DateTimes
+
+PASS test/datetime/proto.test.js
+  ✓ DateTime prototype properties should not throw when accessed (1 ms)
+
+PASS test/zones/zoneInterface.test.js
+  ✓ You can instantiate Zone directly (5 ms)
+
+PASS test/duration/getters.test.js
+  ✓ Duration#years returns the years
+  ✓ Duration#quarters returns the quarters
+  ✓ Duration#months returns the (1-indexed) months
+  ✓ Duration#days returns the days
+  ✓ Duration#hours returns the hours
+  ✓ Duration#hours returns the fractional hours
+  ✓ Duration#minutes returns the minutes
+  ✓ Duration#seconds returns the seconds
+  ✓ Duration#milliseconds returns the milliseconds
+  ✓ Duration#weeks returns the weeks (1 ms)
+
+PASS test/duration/accuracy.test.js
+  ✓ There are slightly more than 365 days in a year
+  ✓ There are slightly more than 30 days in a month (1 ms)
+  ✓ There are slightly more than 91 days in a quarter
+
+PASS test/interval/setter.test.js
+  ✓ Interval.set can set the start (1 ms)
+  ✓ Interval.set can set the end
+  ✓ Interval.set preserves invalidity
+
+PASS test/duration/reconfigure.test.js
+  ✓ Duration#reconfigure() sets the locale
+  ✓ Duration#reconfigure() sets the numberingSystem (1 ms)
+  ✓ Duration#reconfigure() sets the conversion accuracy
+  ✓ Duration#reconfigure() with no arguments does nothing
+
+PASS test/datetime/equality.test.js
+  ✓ equals self (1 ms)
+  ✓ equals identically constructed (1 ms)
+  ✓ does not equal a different zone
+  ✓ does not equal an invalid DateTime (1 ms)
+  ✓ does not equal a different locale
+  ✓ does not equal a different numbering system
+  ✓ does not equal a different output calendar
+
+PASS test/duration/equality.test.js
+  ✓ equals self (1 ms)
+  ✓ equals identically constructed
+  ✓ equals identically constructed with fractional values
+  ✓ equals identically constructed but one has string type values
+  ✓ equals identically constructed but one has fractional string type values
+  ✓ equals with extra zero units
+  ✓ does not equal an invalid duration
+  ✓ does not equal a different locale
+  ✓ does not equal a different numbering system (1 ms)
+  ✓ does not equal a different set of units
+  ✓ does not equal a subset of units
+  ✓ does not equal a superset of units
+  ✓ does not equal a different unit values
+
+PASS test/datetime/reconfigure.test.js
+  ✓ DateTime#reconfigure() sets the locale (1 ms)
+  ✓ DateTime#reconfigure() sets the outputCalendar
+  ✓ DateTime#reconfigure() sets the numberingSystem
+  ✓ DateTime#reconfigure() with no arguments no opts
+  ✓ DateTime#reconfigure() sets the weekSettings (1 ms)
+  ✓ DateTime#reconfigure() preserves weekSettings when setting other options
+
+PASS test/interval/proto.test.js
+  ✓ Interval prototype properties should not throw when addressed (1 ms)
+
+Test Suites: 58 passed, 58 total
+Tests:       1222 passed, 1222 total
+Snapshots:   1 passed, 1 total
+Time:        1.406 s, estimated 2 s
+Ran all test suites.

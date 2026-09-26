@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "wget",
+    "https://go.dev/dl/go1.26.5.linux-amd64.tar.gz"
+  ],
+  "shell": "wget https://go.dev/dl/go1.26.5.linux-amd64.tar.gz",
+  "repo": "",
+  "exit_code": 0,
+  "cwd": "data/api",
+  "description": "SYNTHETIC (hand-assembled in GNU Wget 1.24 / HTTPie 3.2 format; tool not installed on the capture host): wget of a 67 MB tarball to a file after a 302 redirect: ~1,370 dot-progress lines"
+}

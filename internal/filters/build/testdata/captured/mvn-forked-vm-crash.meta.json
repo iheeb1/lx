@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "mvn",
+    "-o",
+    "-B",
+    "test"
+  ],
+  "exit_code": 1,
+  "description": "mvn -B test (offline, Maven 3.9.16, surefire 3.1.2): a test calls System.exit(3), so the forked JVM dies: surefire reports 'The forked VM terminated without properly saying goodbye' with the crashed command line, no per-class failure lines for the crashed class",
+  "cwd": "/home/user/src/mvnapp"
+}

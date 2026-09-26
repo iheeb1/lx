@@ -1,0 +1,58 @@
+   Compiling demo v0.1.0 (/home/user/src/demo)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.61s
+     Running unittests src/lib.rs (target/debug/deps/demo-3b7e2c9a1f0d4e5b)
+
+running 16 tests
+test parser::tests::parses_empty ... ok
+test parser::tests::parses_ints ... ok
+test parser::tests::parses_floats ... ok
+test parser::tests::parses_negative ... ok
+test parser::tests::rejects_garbage ... ok
+test parser::tests::error_messages_are_stable ... ok
+test store::tests::insert_and_get ... ok
+test store::tests::delete_missing ... ok
+test store::tests::overwrite ... ok
+test store::tests::iter_order ... ok
+test store::tests::large_values ... ok
+test store::tests::concurrent_writers ... ok
+test config::tests::defaults ... ok
+test config::tests::env_override ... ok
+test config::tests::fails_on_bad_port ... ok
+test util::tests::slugify ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running unittests src/main.rs (target/debug/deps/demo-9c1d0e2f3a4b5c6d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/api.rs (target/debug/deps/api-0f1e2d3c4b5a6978)
+
+running 5 tests
+test get_missing_returns_404 ... ok
+test put_then_get ... ok
+test rejects_oversized_body ... ok
+test health ... ok
+test list_paginates ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests/errors.rs (target/debug/deps/errors-5a6b7c8d9e0f1a2b)
+
+running 3 tests
+test error_display ... ok
+test error_source_chain ... ok
+test failure_is_send_sync ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests demo
+
+running 2 tests
+test src/lib.rs - parser::parse (line 12) ... ok
+test src/lib.rs - store::Store::insert (line 48) ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+

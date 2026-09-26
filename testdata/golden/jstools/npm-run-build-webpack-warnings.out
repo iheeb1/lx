@@ -1,0 +1,22 @@
+> webpack-app@1.0.0 build
+> webpack --mode production
+
+asset main.js 507 KiB [emitted] [minimized] [big] (name: main)
+[2 module lines hidden]
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets:
+  main.js (507 KiB)
+    Largest modules: ./src/index.js + 2 modules (511 KiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  main (507 KiB)
+      main.js
+
+WARNING in webpack performance recommendations:
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+webpack 5.111.1 compiled with 3 warnings in 279 ms

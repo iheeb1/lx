@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "merge",
+    "topic"
+  ],
+  "exit_code": 1,
+  "cwd": "repos/app",
+  "description": "git merge with one content conflict"
+}

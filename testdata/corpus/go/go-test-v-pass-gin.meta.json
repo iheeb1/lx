@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-v",
+    "./..."
+  ],
+  "shell": "go test -v ./...",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "go test -v ./... in gin: very large verbose output interleaved with [GIN-debug] route logs and warnings",
+  "cwd": "repos/gin"
+}

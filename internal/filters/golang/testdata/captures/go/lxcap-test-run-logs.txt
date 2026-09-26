@@ -1,0 +1,7 @@
+=== RUN   TestLogs
+    skip_test.go:9: step 0 ok
+    skip_test.go:9: step 1 ok
+    skip_test.go:9: step 2 ok
+--- PASS: TestLogs (0.00s)
+PASS
+ok  	example.com/lxcap/skip	(cached)

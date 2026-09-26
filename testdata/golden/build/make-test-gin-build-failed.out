@@ -1,0 +1,9 @@
+echo "mode: count" > coverage.out
+for d in github.com/gin-gonic/gin github.com/gin-gonic/gin/binding github.com/gin-gonic/gin/ginS github.com/gin-gonic/gin/render; do \
+[lx: 21 more lines of this echoed recipe hidden]
+# github.com/gin-gonic/gin [github.com/gin-gonic/gin.test]
+./utils.go:152:4: undefined: debugPrint
+./utils.go:155:34: undefined: debugPrint
+FAIL	github.com/gin-gonic/gin [build failed]
+FAIL
+make: *** [test] Error 1

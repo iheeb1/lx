@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "commit",
+    "-m",
+    "nothing"
+  ],
+  "exit_code": 1,
+  "cwd": "repos/app",
+  "description": "git commit with nothing to commit (exit 1)"
+}

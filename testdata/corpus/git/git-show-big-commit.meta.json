@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "show",
+    "HEAD"
+  ],
+  "shell": "git show HEAD",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git show HEAD where HEAD is a real feature commit (gin 688a429 'support custom json codec at runtime'): 19 files, ~620 changed lines incl. new files",
+  "cwd": "repos/gin-json-codec"
+}

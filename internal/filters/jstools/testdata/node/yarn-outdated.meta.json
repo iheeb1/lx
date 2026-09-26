@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "yarn",
+    "outdated"
+  ],
+  "shell": "yarn outdated",
+  "exit_code": 1,
+  "description": "yarn 1 outdated: color legend and table",
+  "cwd": "/home/user/src/yarn-app"
+}

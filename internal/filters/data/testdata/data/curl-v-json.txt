@@ -1,0 +1,226 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Host api.github.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 140.82.121.6
+*   Trying 140.82.121.6:443...
+* Connected to api.github.com (140.82.121.6) port 443
+* ALPN: curl offers h2,http/1.1
+* (304) (OUT), TLS handshake, Client hello (1):
+} [319 bytes data]
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* (304) (IN), TLS handshake, Server hello (2):
+{ [122 bytes data]
+* (304) (IN), TLS handshake, Unknown (8):
+{ [19 bytes data]
+* (304) (IN), TLS handshake, Certificate (11):
+{ [2742 bytes data]
+* (304) (IN), TLS handshake, CERT verify (15):
+{ [80 bytes data]
+* (304) (IN), TLS handshake, Finished (20):
+{ [36 bytes data]
+* (304) (OUT), TLS handshake, Finished (20):
+} [36 bytes data]
+* SSL connection using TLSv1.3 / AEAD-CHACHA20-POLY1305-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.github.com
+*  start date: Aug 30 00:00:00 2026 GMT
+*  expire date: Nov 27 23:59:59 2026 GMT
+*  subjectAltName: host "api.github.com" matched cert's "*.github.com"
+*  issuer: C=GB; O=Sectigo Limited; CN=Sectigo Public Server Authentication CA DV E36
+*  SSL certificate verify ok.
+* using HTTP/2
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* [HTTP/2] [1] OPENED stream for https://api.github.com/repos/golang/go
+* [HTTP/2] [1] [:method: GET]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: api.github.com]
+* [HTTP/2] [1] [:path: /repos/golang/go]
+* [HTTP/2] [1] [user-agent: curl/8.7.1]
+* [HTTP/2] [1] [accept: */*]
+> GET /repos/golang/go HTTP/2
+> Host: api.github.com
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/2 200 
+< date: Sat, 26 Sep 2026 02:00:07 GMT
+< content-type: application/json; charset=utf-8
+< cache-control: public, max-age=60, s-maxage=60
+< vary: Accept,Accept-Encoding, Accept, X-Requested-With
+< etag: W/"6f94379d84d8ed3d7161feb451a8bbfce7215b7033a35f187cb0d54f4a59a6fb"
+< last-modified: Sat, 26 Sep 2026 01:00:46 GMT
+< x-github-media-type: github.v3; format=json
+< x-github-api-version-selected: 2022-11-28
+< access-control-expose-headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning
+< access-control-allow-origin: *
+< strict-transport-security: max-age=31536000; includeSubdomains; preload
+< x-frame-options: deny
+< x-content-type-options: nosniff
+< x-xss-protection: 0
+< referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
+< content-security-policy: default-src 'none'
+< server: github.com
+< accept-ranges: bytes
+< x-ratelimit-limit: 60
+< x-ratelimit-remaining: 59
+< x-ratelimit-used: 1
+< x-ratelimit-resource: core
+< x-ratelimit-reset: 1790391607
+< content-length: 6805
+< x-github-request-id: 052F:2D6014:1C26C03:1C49D1A:6AB72727
+< x-github-edge-region: fra
+< 
+{ [215 bytes data]
+{
+  "id": 23096959,
+  "node_id": "MDEwOlJlcG9zaXRvcnkyMzA5Njk1OQ==",
+  "name": "go",
+  "full_name": "golang/go",
+  "private": false,
+  "owner": {
+    "login": "golang",
+    "id": 4314092,
+    "node_id": "MDEyOk9yZ2FuaXphdGlvbjQzMTQwOTI=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/4314092?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/golang",
+    "html_url": "https://github.com/golang",
+    "followers_url": "https://api.github.com/users/golang/followers",
+    "following_url": "https://api.github.com/users/golang/following{/other_user}",
+    "gists_url": "https://api.github.com/users/golang/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/golang/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/golang/subscriptions",
+    "organizations_url": "https://api.github.com/users/golang/orgs",
+    "repos_url": "https://api.github.com/users/golang/repos",
+    "events_url": "https://api.github.com/users/golang/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/golang/received_events",
+    "type": "Organization",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "html_url": "https://github.com/golang/go",
+  "description": "The Go programming language",
+  "fork": false,
+  "url": "https://api.github.com/repos/golang/go",
+  "forks_url": "https://api.github.com/repos/golang/go/forks",
+  "keys_url": "https://api.github.com/repos/golang/go/keys{/key_id}",
+  "collaborators_url": "https://api.github.com/repos/golang/go/collaborators{/collaborator}",
+  "teams_url": "https://api.github.com/repos/golang/go/teams",
+  "hooks_url": "https://api.github.com/repos/golang/go/hooks",
+  "issue_events_url": "https://api.github.com/repos/golang/go/issues/events{/number}",
+  "events_url": "https://api.github.com/repos/golang/go/events",
+  "assignees_url": "https://api.github.com/repos/golang/go/assignees{/user}",
+  "branches_url": "https://api.github.com/repos/golang/go/branches{/branch}",
+  "tags_url": "https://api.github.com/repos/golang/go/tags",
+  "blobs_url": "https://api.github.com/repos/golang/go/git/blobs{/sha}",
+  "git_tags_url": "https://api.github.com/repos/golang/go/git/tags{/sha}",
+  "git_refs_url": "https://api.github.com/repos/golang/go/git/refs{/sha}",
+  "trees_url": "https://api.github.com/repos/golang/go/git/trees{/sha}",
+  "statuses_url": "https://api.github.com/repos/golang/go/statuses/{sha}",
+  "languages_url": "https://api.github.com/repos/golang/go/languages",
+  "stargazers_url": "https://api.github.com/repos/golang/go/stargazers",
+  "contributors_url": "https://api.github.com/repos/golang/go/contributors",
+  "subscribers_url": "https://api.github.com/repos/golang/go/subscribers",
+  "subscription_url": "https://api.github.com/repos/golang/go/subscription",
+  "commits_url": "https://api.github.com/repos/golang/go/commits{/sha}",
+  "git_commits_url": "https://api.github.com/repos/golang/go/git/commits{/sha}",
+  "comments_url": "https://api.github.com/repos/golang/go/comments{/number}",
+  "issue_comment_url": "https://api.github.com/repos/golang/go/issues/comments{/number}",
+  "contents_url": "https://api.github.com/repos/golang/go/contents/{+path}",
+  "compare_url": "https://api.github.com/repos/golang/go/compare/{base}...{head}",
+  "merges_url": "https://api.github.com/repos/golang/go/merges",
+  "archive_url": "https://api.github.com/repos/golang/go/{archive_format}{/ref}",
+  "downloads_url": "https://api.github.com/repos/golang/go/downloads",
+  "issues_url": "https://api.github.com/repos/golang/go/issues{/number}",
+  "pulls_url": "https://api.github.com/repos/golang/go/pulls{/number}",
+  "milestones_url": "https://api.github.com/repos/golang/go/milestones{/number}",
+  "notifications_url": "https://api.github.com/repos/golang/go/notifications{?since,all,participating}",
+  "labels_url": "https://api.github.com/repos/golang/go/labels{/name}",
+  "releases_url": "https://api.github.com/repos/golang/go/releases{/id}",
+  "deployments_url": "https://api.github.com/repos/golang/go/deployments",
+  "created_at": "2014-08100  6805  100  6805    0     0   6595      0  0:00:01  0:00:01 --:--:--  6600
+* Connection #0 to host api.github.com left intact
+-19T04:33:40Z",
+  "updated_at": "2026-09-26T01:00:46Z",
+  "pushed_at": "2026-09-25T20:56:46Z",
+  "git_url": "git://github.com/golang/go.git",
+  "ssh_url": "git@github.com:golang/go.git",
+  "clone_url": "https://github.com/golang/go.git",
+  "svn_url": "https://github.com/golang/go",
+  "homepage": "https://go.dev",
+  "size": 457640,
+  "stargazers_count": 139013,
+  "watchers_count": 139013,
+  "language": "Go",
+  "has_issues": true,
+  "has_projects": true,
+  "has_downloads": false,
+  "has_wiki": true,
+  "has_pages": false,
+  "has_discussions": true,
+  "forks_count": 20467,
+  "mirror_url": null,
+  "archived": false,
+  "disabled": false,
+  "open_issues_count": 10234,
+  "license": {
+    "key": "bsd-3-clause",
+    "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+    "spdx_id": "BSD-3-Clause",
+    "url": "https://api.github.com/licenses/bsd-3-clause",
+    "node_id": "MDc6TGljZW5zZTU="
+  },
+  "allow_forking": true,
+  "is_template": false,
+  "web_commit_signoff_required": false,
+  "has_pull_requests": true,
+  "pull_request_creation_policy": "all",
+  "topics": [
+    "go",
+    "golang",
+    "language",
+    "programming-language"
+  ],
+  "visibility": "public",
+  "forks": 20467,
+  "open_issues": 10234,
+  "watchers": 139013,
+  "default_branch": "master",
+  "temp_clone_token": null,
+  "custom_properties": {
+    "ai_agent_config_bypass": "false",
+    "ghss-action-scanning-disabled": "false",
+    "ghss-action-scanning-optin": "false",
+    "ghss_scan_exemption": [
+      "direct-push"
+    ],
+    "requires_action_scanning": "false",
+    "requires_two_party_review": "false"
+  },
+  "organization": {
+    "login": "golang",
+    "id": 4314092,
+    "node_id": "MDEyOk9yZ2FuaXphdGlvbjQzMTQwOTI=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/4314092?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/golang",
+    "html_url": "https://github.com/golang",
+    "followers_url": "https://api.github.com/users/golang/followers",
+    "following_url": "https://api.github.com/users/golang/following{/other_user}",
+    "gists_url": "https://api.github.com/users/golang/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/golang/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/golang/subscriptions",
+    "organizations_url": "https://api.github.com/users/golang/orgs",
+    "repos_url": "https://api.github.com/users/golang/repos",
+    "events_url": "https://api.github.com/users/golang/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/golang/received_events",
+    "type": "Organization",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "network_count": 20467,
+  "subscribers_count": 3347
+}

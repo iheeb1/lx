@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "TODO",
+    "."
+  ],
+  "shell": "grep -rn TODO .",
+  "exit_code": 0,
+  "description": "grep -rn over files with CRLF line endings, spaces and unicode in paths",
+  "cwd": "/home/user/scratch/tricky"
+}

@@ -1,0 +1,16 @@
+ ❯ test/broken-import.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/broken-import.test.ts [ test/broken-import.test.ts ]
+Error: Cannot find module '../src/does-not-exist' imported from /home/user/src/vitproj/test/broken-import.test.ts
+ ❯ test/broken-import.test.ts:2:1
+      1| import { it, expect } from "vitest";
+      2| import { nothing } from "../src/does-not-exist";
+       | ^
+      3|
+      4| it("never runs", () => {
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Duration  442ms (transform 146ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)

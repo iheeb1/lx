@@ -1,0 +1,10 @@
+ WARN  deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
+ WARN  deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+ WARN  3 deprecated subdependencies found: har-validator@5.1.5, inflight@1.0.6, uuid@3.4.0
+Packages: +1
+Progress: resolved 108, reused 107, downloaded 1, added 1, done
+
+dependencies:
++ lodash 4.17.20 (4.18.1 is available)
+
+Done in 5.2s using pnpm v10.34.5

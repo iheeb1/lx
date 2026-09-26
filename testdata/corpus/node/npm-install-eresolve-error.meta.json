@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "install"
+  ],
+  "shell": "npm install",
+  "repo": "unjs/ufo",
+  "exit_code": 1,
+  "description": "npm install fails with ERESOLVE peer dependency conflict (typescript 6 vs unbuild peerOptional ^5.9.2)",
+  "cwd": "repos/ufo"
+}

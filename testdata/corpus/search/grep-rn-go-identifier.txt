@@ -1,0 +1,1023 @@
+./gin_test.go:44:		router.GET("/test", func(c *Context) {
+./gin_test.go:47:		router.GET("/raw", func(c *Context) {
+./gin_test.go:92:	r.GET("/", func(c *Context) {
+./gin_test.go:439:	router.addRoute(http.MethodGet, "/", HandlersChain{func(_ *Context) {}})
+./gin_test.go:445:	router.addRoute(http.MethodPost, "/", HandlersChain{func(_ *Context) {}})
+./gin_test.go:451:	router.addRoute(http.MethodPost, "/post", HandlersChain{func(_ *Context) {}})
+./gin_test.go:457:	assert.Panics(t, func() { router.addRoute("", "/", HandlersChain{func(_ *Context) {}}) })
+./gin_test.go:458:	assert.Panics(t, func() { router.addRoute(http.MethodGet, "a", HandlersChain{func(_ *Context) {}}) })
+./gin_test.go:461:	router.addRoute(http.MethodPost, "/post", HandlersChain{func(_ *Context) {}})
+./gin_test.go:463:		router.addRoute(http.MethodPost, "/post", HandlersChain{func(_ *Context) {}})
+./gin_test.go:473:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:474:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:495:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:496:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:497:	var middleware2 HandlerFunc = func(c *Context) {}
+./gin_test.go:526:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:527:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:548:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:549:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:574:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:575:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:576:	var middleware2 HandlerFunc = func(c *Context) {}
+./gin_test.go:654:func TestEngineHandleContext(t *testing.T) {
+./gin_test.go:656:	r.GET("/", func(c *Context) {
+./gin_test.go:658:		r.HandleContext(c)
+./gin_test.go:662:		v2.GET("/", func(c *Context) {})
+./gin_test.go:671:func TestEngineHandleContextManyReEntries(t *testing.T) {
+./gin_test.go:677:	r.Use(func(c *Context) {
+./gin_test.go:680:	r.GET("/:count", func(c *Context) {
+./gin_test.go:692:			r.HandleContext(c)
+./gin_test.go:694:	}, func(c *Context) {
+./gin_test.go:708:func TestEngineHandleContextPreventsMiddlewareReEntry(t *testing.T) {
+./gin_test.go:715:		v1.Use(func(c *Context) {
+./gin_test.go:718:		v1.GET("/test", func(c *Context) {
+./gin_test.go:726:		v2.GET("/test", func(c *Context) {
+./gin_test.go:728:			r.HandleContext(c)
+./gin_test.go:729:		}, func(c *Context) {
+./gin_test.go:746:func TestEngineHandleContextNoRouteWithGroupMiddleware(t *testing.T) {
+./gin_test.go:751:	// - NoRoute handler that redirects via HandleContext
+./gin_test.go:752:	// The group middleware should run exactly once per HandleContext call,
+./gin_test.go:758:	grp := r.Group("", func(c *Context) {
+./gin_test.go:762:	grp.GET("/target", func(c *Context) {
+./gin_test.go:767:	r.NoRoute(func(c *Context) {
+./gin_test.go:769:		r.HandleContext(c)
+./gin_test.go:772:	// Access a non-existent route to trigger NoRoute -> HandleContext
+./gin_test.go:781:func TestEngineHandleContextNoRouteWithEngineMiddleware(t *testing.T) {
+./gin_test.go:782:	// When engine middleware exists and NoRoute redirects via HandleContext,
+./gin_test.go:788:	r.Use(func(c *Context) {
+./gin_test.go:793:	grp := r.Group("", func(c *Context) {
+./gin_test.go:797:	grp.GET("/target", func(c *Context) {
+./gin_test.go:802:	r.NoRoute(func(c *Context) {
+./gin_test.go:804:		r.HandleContext(c)
+./gin_test.go:810:	// Handler and group middleware should each run once (from HandleContext)
+./gin_test.go:813:	// Engine middleware runs twice: once for the NoRoute chain, once for the HandleContext chain
+./gin_test.go:814:	// This is expected behavior since HandleContext re-enters the full handler chain
+./gin_test.go:818:func TestEngineHandleContextUseEscapedPathPercentEncoded(t *testing.T) {
+./gin_test.go:823:	r.GET("/v1/:path", func(c *Context) {
+./gin_test.go:834:func TestEngineHandleContextUseRawPathPercentEncoded(t *testing.T) {
+./gin_test.go:839:	r.GET("/v1/:path", func(c *Context) {
+./gin_test.go:850:func TestEngineHandleContextUseEscapedPathOverride(t *testing.T) {
+./gin_test.go:856:	r.GET("/v1/:path", func(c *Context) {
+./gin_test.go:990:func handlerTest1(c *Context) {}
+./gin_test.go:991:func handlerTest2(c *Context) {}
+./gin_test.go:998:		e.Use(func(c *Context) {
+./gin_test.go:1017:		e.Use(func(c *Context) {
+./gin_test.go:1059:	route.GET("/test", func(ctx *Context) {
+./gin_test.go:1086:	router.GET(`/test\:action`, func(c *Context) {
+./gin_test.go:1105:	router.GET(`/test\:action`, func(c *Context) {
+./gin_test.go:1121:	router.GET(`/test\:action`, func(c *Context) {
+./gin_test.go:1139:	router.GET(`/test\:action`, func(c *Context) {
+./gin_test.go:1143:	router.GET("/test/:param", func(c *Context) {
+./gin_test.go:1167:	router.GET(`/test\:action`, func(c *Context) {
+./gin_test.go:1182:	router.QUERY("/test", func(c *Context) {
+./middleware/ratelimit/ratelimit_test.go:16:	r.GET("/", func(c *gin.Context) { c.String(http.StatusOK, "ok") })
+./middleware/ratelimit/ratelimit.go:21:	return func(c *gin.Context) {
+./context_ratelimit.go:7:func (c *Context) RateLimitRemaining() (int, bool) {
+./utils_test.go:120:	router.GET("/", Bind(bindTestStruct{}), func(c *Context) {
+./recovery.go:32:type RecoveryFunc func(c *Context, err any)
+./recovery.go:58:	return func(c *Context) {
+./recovery.go:109:func defaultHandleRecovery(c *Context, err any) {
+./auth_test.go:88:	router.GET("/login", func(c *Context) {
+./auth_test.go:106:	router.GET("/login", func(c *Context) {
+./auth_test.go:126:	router.GET("/login", func(c *Context) {
+./auth_test.go:145:	router.Any("/*proxyPath", func(c *Context) {
+./auth_test.go:163:	router.Any("/*proxyPath", func(c *Context) {
+./auth.go:54:	return func(c *Context) {
+./auth.go:104:	return func(c *Context) {
+./gin_integration_test.go:71:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:105:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:125:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:142:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:161:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:192:		router.GET("/pusher", func(c *Context) {
+./gin_integration_test.go:215:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:237:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:257:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:286:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:319:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:352:		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:385:	router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:393:func TestConcurrentHandleContext(t *testing.T) {
+./gin_integration_test.go:395:	router.GET("/", func(c *Context) {
+./gin_integration_test.go:397:		router.HandleContext(c)
+./gin_integration_test.go:399:	router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:422:// 	router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+./gin_integration_test.go:437:	router.GET("/aa/*xx", func(c *Context) { c.String(http.StatusOK, "/aa/*xx") })
+./gin_integration_test.go:438:	router.GET("/ab/*xx", func(c *Context) { c.String(http.StatusOK, "/ab/*xx") })
+./gin_integration_test.go:439:	router.GET("/", func(c *Context) { c.String(http.StatusOK, "home") })
+./gin_integration_test.go:440:	router.GET("/:cc", func(c *Context) { c.String(http.StatusOK, "/:cc") })
+./gin_integration_test.go:441:	router.GET("/c1/:dd/e", func(c *Context) { c.String(http.StatusOK, "/c1/:dd/e") })
+./gin_integration_test.go:442:	router.GET("/c1/:dd/e1", func(c *Context) { c.String(http.StatusOK, "/c1/:dd/e1") })
+./gin_integration_test.go:443:	router.GET("/c1/:dd/f1", func(c *Context) { c.String(http.StatusOK, "/c1/:dd/f1") })
+./gin_integration_test.go:444:	router.GET("/c1/:dd/f2", func(c *Context) { c.String(http.StatusOK, "/c1/:dd/f2") })
+./gin_integration_test.go:445:	router.GET("/:cc/cc", func(c *Context) { c.String(http.StatusOK, "/:cc/cc") })
+./gin_integration_test.go:446:	router.GET("/:cc/:dd/ee", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/ee") })
+./gin_integration_test.go:447:	router.GET("/:cc/:dd/f", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/f") })
+./gin_integration_test.go:448:	router.GET("/:cc/:dd/:ee/ff", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/:ee/ff") })
+./gin_integration_test.go:449:	router.GET("/:cc/:dd/:ee/:ff/gg", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/:ee/:ff/gg") })
+./gin_integration_test.go:450:	router.GET("/:cc/:dd/:ee/:ff/:gg/hh", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/:ee/:ff/:gg/hh") })
+./gin_integration_test.go:451:	router.GET("/get/test/abc/", func(c *Context) { c.String(http.StatusOK, "/get/test/abc/") })
+./gin_integration_test.go:452:	router.GET("/get/:param/abc/", func(c *Context) { c.String(http.StatusOK, "/get/:param/abc/") })
+./gin_integration_test.go:453:	router.GET("/something/:paramname/thirdthing", func(c *Context) { c.String(http.StatusOK, "/something/:paramname/thirdthing") })
+./gin_integration_test.go:454:	router.GET("/something/secondthing/test", func(c *Context) { c.String(http.StatusOK, "/something/secondthing/test") })
+./gin_integration_test.go:455:	router.GET("/get/abc", func(c *Context) { c.String(http.StatusOK, "/get/abc") })
+./gin_integration_test.go:456:	router.GET("/get/:param", func(c *Context) { c.String(http.StatusOK, "/get/:param") })
+./gin_integration_test.go:457:	router.GET("/get/abc/123abc", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc") })
+./gin_integration_test.go:458:	router.GET("/get/abc/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/:param") })
+./gin_integration_test.go:459:	router.GET("/get/abc/123abc/xxx8", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8") })
+./gin_integration_test.go:460:	router.GET("/get/abc/123abc/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/:param") })
+./gin_integration_test.go:461:	router.GET("/get/abc/123abc/xxx8/1234", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234") })
+./gin_integration_test.go:462:	router.GET("/get/abc/123abc/xxx8/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/:param") })
+./gin_integration_test.go:463:	router.GET("/get/abc/123abc/xxx8/1234/ffas", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234/ffas") })
+./gin_integration_test.go:464:	router.GET("/get/abc/123abc/xxx8/1234/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234/:param") })
+./gin_integration_test.go:465:	router.GET("/get/abc/123abc/xxx8/1234/kkdd/12c", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234/kkdd/12c") })
+./gin_integration_test.go:466:	router.GET("/get/abc/123abc/xxx8/1234/kkdd/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234/kkdd/:param") })
+./gin_integration_test.go:467:	router.GET("/get/abc/:param/test", func(c *Context) { c.String(http.StatusOK, "/get/abc/:param/test") })
+./gin_integration_test.go:468:	router.GET("/get/abc/123abd/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abd/:param") })
+./gin_integration_test.go:469:	router.GET("/get/abc/123abddd/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abddd/:param") })
+./gin_integration_test.go:470:	router.GET("/get/abc/123/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123/:param") })
+./gin_integration_test.go:471:	router.GET("/get/abc/123abg/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abg/:param") })
+./gin_integration_test.go:472:	router.GET("/get/abc/123abf/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abf/:param") })
+./gin_integration_test.go:473:	router.GET("/get/abc/123abfff/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abfff/:param") })
+./gin_integration_test.go:588:		router.GET(u, func(c *Context) { c.String(http.StatusOK, u) })
+./context_file_test.go:11:// TestContextFileSimple tests the Context.File() method with a simple case
+./context_file_test.go:12:func TestContextFileSimple(t *testing.T) {
+./context_file_test.go:16:	c, _ := CreateTestContext(w)
+./context_file_test.go:26:// TestContextFileNotFound tests serving a non-existent file
+./context_file_test.go:27:func TestContextFileNotFound(t *testing.T) {
+./context_file_test.go:29:	c, _ := CreateTestContext(w)
+./middleware_test.go:20:	router.Use(func(c *Context) {
+./middleware_test.go:25:	router.Use(func(c *Context) {
+./middleware_test.go:28:	router.GET("/", func(c *Context) {
+./middleware_test.go:31:	router.NoRoute(func(c *Context) {
+./middleware_test.go:34:	router.NoMethod(func(c *Context) {
+./middleware_test.go:48:	router.Use(func(c *Context) {
+./middleware_test.go:53:	router.Use(func(c *Context) {
+./middleware_test.go:61:	router.NoRoute(func(c *Context) {
+./middleware_test.go:65:	}, func(c *Context) {
+./middleware_test.go:70:	router.NoMethod(func(c *Context) {
+./middleware_test.go:85:	router.Use(func(c *Context) {
+./middleware_test.go:90:	router.Use(func(c *Context) {
+./middleware_test.go:95:	router.NoMethod(func(c *Context) {
+./middleware_test.go:99:	}, func(c *Context) {
+./middleware_test.go:104:	router.NoRoute(func(c *Context) {
+./middleware_test.go:107:	router.POST("/", func(c *Context) {
+./middleware_test.go:125:	router.Use(func(c *Context) {
+./middleware_test.go:130:	router.Use(func(c *Context) {
+./middleware_test.go:135:	router.NoMethod(func(c *Context) {
+./middleware_test.go:139:	}, func(c *Context) {
+./middleware_test.go:144:	router.NoRoute(func(c *Context) {
+./middleware_test.go:147:	router.POST("/", func(c *Context) {
+./middleware_test.go:162:	router.Use(func(c *Context) {
+./middleware_test.go:165:	router.Use(func(c *Context) {
+./middleware_test.go:171:	router.GET("/", func(c *Context) {
+./middleware_test.go:188:	router.Use(func(c *Context) {
+./middleware_test.go:194:	router.GET("/", func(c *Context) {
+./middleware_test.go:212:	router.Use(func(context *Context) {
+./middleware_test.go:216:	router.Use(func(context *Context) {
+./middleware_test.go:231:	router.Use(func(c *Context) {
+./middleware_test.go:234:	router.Use(func(c *Context) {
+./middleware_test.go:237:	router.Use(func(c *Context) {
+./middleware_test.go:240:	router.GET("/", func(c *Context) {
+./middleware_test.go:242:	}, func(c *Context) {
+./logger.go:61:// Skipper is a function to skip logs based on provided Context
+./logger.go:62:type Skipper func(c *Context) bool
+./logger.go:77:	// ClientIP equals Context's ClientIP method.
+./logger.go:213:	return func(c *Context) {
+./logger.go:275:	return func(c *Context) {
+./deprecated.go:17:func (c *Context) BindWith(obj any, b binding.Binding) error {
+./ginS/gins_test.go:22:	GET("/test", func(c *gin.Context) {
+./ginS/gins_test.go:35:	QUERY("/query", func(c *gin.Context) {
+./ginS/gins_test.go:48:	POST("/post", func(c *gin.Context) {
+./ginS/gins_test.go:61:	PUT("/put", func(c *gin.Context) {
+./ginS/gins_test.go:74:	DELETE("/delete", func(c *gin.Context) {
+./ginS/gins_test.go:87:	PATCH("/patch", func(c *gin.Context) {
+./ginS/gins_test.go:100:	OPTIONS("/options", func(c *gin.Context) {
+./ginS/gins_test.go:113:	HEAD("/head", func(c *gin.Context) {
+./ginS/gins_test.go:125:	Any("/any", func(c *gin.Context) {
+./ginS/gins_test.go:138:	Handle(http.MethodGet, "/handle", func(c *gin.Context) {
+./ginS/gins_test.go:152:	group.GET("/test", func(c *gin.Context) {
+./ginS/gins_test.go:166:	Use(func(c *gin.Context) {
+./ginS/gins_test.go:171:	GET("/middleware-test", func(c *gin.Context) {
+./ginS/gins_test.go:184:	NoRoute(func(c *gin.Context) {
+./ginS/gins_test.go:197:	NoMethod(func(c *gin.Context) {
+./ginS/gins_test.go:207:	GET("/routes-test", func(c *gin.Context) {})
+./routes_test.go:40:	r.Any("/test2", func(c *Context) {
+./routes_test.go:43:	r.Handle(method, "/test", func(c *Context) {
+./routes_test.go:59:	router.Handle(method, "/test_2", func(c *Context) {
+./routes_test.go:80:	router.Handle(methodRoute, "/test", func(c *Context) {
+./routes_test.go:98:	router.QUERY("/search", func(c *Context) {
+./routes_test.go:117:	router.Any("/test", func(c *Context) {
+./routes_test.go:135:	queryRoutes.QUERY("/search", func(c *Context) {
+./routes_test.go:146:	router.PUT("/hey2", func(c *Context) {
+./routes_test.go:150:	router.PUT("/hey", func(c *Context) {
+./routes_test.go:154:	router.PUT("/hey3", func(c *Context) {
+./routes_test.go:204:	router.GET("/path", func(c *Context) {})
+./routes_test.go:205:	router.GET("/path2/", func(c *Context) {})
+./routes_test.go:206:	router.POST("/path3", func(c *Context) {})
+./routes_test.go:207:	router.PUT("/path4/", func(c *Context) {})
+./routes_test.go:309:	router.GET("/path", func(c *Context) {})
+./routes_test.go:310:	router.GET("/Path2", func(c *Context) {})
+./routes_test.go:311:	router.POST("/PATH3", func(c *Context) {})
+./routes_test.go:312:	router.POST("/Path4/", func(c *Context) {})
+./routes_test.go:337:	router.GET("/test/:name/:last_name/*wild", func(c *Context) {
+./routes_test.go:370:	router.GET("/test/:name/:last_name/*wild", func(c *Context) {
+./routes_test.go:409:	router.GET("/test/:name/:last_name/*wild", func(c *Context) {
+./routes_test.go:529:	static := router.Group("/", func(c *Context) {
+./routes_test.go:551:	router.POST("/path", func(c *Context) {})
+./routes_test.go:555:	router.NoMethod(func(c *Context) {
+./routes_test.go:567:	router.addRoute(http.MethodPost, "/", HandlersChain{func(_ *Context) {}})
+./routes_test.go:568:	router.GET("/path2", func(c *Context) {})
+./routes_test.go:576:	router.GET("/path", func(c *Context) {})
+./routes_test.go:577:	router.POST("/path", func(c *Context) {})
+./routes_test.go:588:	router.POST("/path", func(c *Context) {})
+./routes_test.go:592:	router.NoMethod(func(c *Context) {
+./routes_test.go:603:	router.GET("/path", func(c *Context) {})
+./routes_test.go:604:	router.GET("/", func(c *Context) {})
+./routes_test.go:626:	router.GET("/path", func(c *Context) {})
+./routes_test.go:627:	router.GET("/dir/", func(c *Context) {})
+./routes_test.go:628:	router.GET("/", func(c *Context) {})
+./routes_test.go:654:	router.NoRoute(func(c *Context) {
+./routes_test.go:663:	router.PATCH("/path", func(c *Context) {})
+./routes_test.go:670:	router.GET("/a", func(c *Context) {})
+./routes_test.go:676:	router.NoRoute(func(c *Context) {
+./routes_test.go:681:	router.GET("/logout", func(c *Context) {
+./routes_test.go:693:	router.NoRoute(func(c *Context) {
+./routes_test.go:720:	router.Use(func(c *Context) {
+./routes_test.go:739:	route.POST("/project/:name/build/:num", func(c *Context) {
+./routes_test.go:759:	route.POST("/project/:name/build/:num", func(c *Context) {
+./routes_test.go:776:	route.Use(func(c *Context) {
+./routes_test.go:786:func TestRouteContextHoldsFullPath(t *testing.T) {
+./routes_test.go:807:		router.GET(route, func(c *Context) {
+./routes_test.go:820:	router.Use(func(c *Context) {
+./routes_test.go:858:	h := func(c *Context) {}
+./routes_test.go:889:	h := func(c *Context) {}
+./routes_test.go:924:	h := func(c *Context) {}
+./routergroup.go:206:	return group.staticFileHandler(relativePath, func(c *Context) {
+./routergroup.go:215:	return group.staticFileHandler(relativePath, func(c *Context) {
+./routergroup.go:260:	return func(c *Context) {
+./context_test.go:40:var _ context.Context = (*Context)(nil)
+./context_test.go:45:// func (c *Context) File(filepath string) {
+./context_test.go:46:// func (c *Context) Negotiate(code int, config Negotiate) {
+./context_test.go:47:// BAD case: func (c *Context) Render(code int, render render.Render, obj ...any) {
+./context_test.go:48:// test that information is not leaked when reusing Contexts (using the Pool)
+./context_test.go:80:// TestContextFile tests the Context.File() method
+./context_test.go:81:func TestContextFile(t *testing.T) {
+./context_test.go:88:		c, _ := CreateTestContext(w)
+./context_test.go:101:		c, _ := CreateTestContext(w)
+./context_test.go:112:		c, _ := CreateTestContext(w)
+./context_test.go:126:		c, _ := CreateTestContext(w)
+./context_test.go:141:		c, _ := CreateTestContext(w)
+./context_test.go:153:func TestContextFormFile(t *testing.T) {
+./context_test.go:161:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:171:func TestContextFormFileFailed(t *testing.T) {
+./context_test.go:175:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:184:func TestContextMultipartForm(t *testing.T) {
+./context_test.go:193:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:208:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:226:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:244:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:266:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:293:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:321:func TestContextReset(t *testing.T) {
+./context_test.go:323:	c := router.allocateContext(0)
+./context_test.go:344:func TestContextHandlers(t *testing.T) {
+./context_test.go:345:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:353:	f := func(c *Context) {}
+./context_test.go:354:	g := func(c *Context) {}
+./context_test.go:363:// TestContextSetGet tests that a parameter is set correctly on the
+./context_test.go:365:func TestContextSetGet(t *testing.T) {
+./context_test.go:366:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:383:func TestContextSetGetAnyKey(t *testing.T) {
+./context_test.go:384:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:410:func TestContextSetGetPanicsWhenKeyNotComparable(t *testing.T) {
+./context_test.go:411:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:420:func TestContextSetGetValues(t *testing.T) {
+./context_test.go:421:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:440:func TestContextGetString(t *testing.T) {
+./context_test.go:441:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:446:func TestContextSetGetBool(t *testing.T) {
+./context_test.go:447:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:453:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:465:func TestContextGetInt(t *testing.T) {
+./context_test.go:466:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:471:func TestContextGetInt8(t *testing.T) {
+./context_test.go:472:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:479:func TestContextGetInt16(t *testing.T) {
+./context_test.go:480:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:487:func TestContextGetInt32(t *testing.T) {
+./context_test.go:488:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:495:func TestContextGetInt64(t *testing.T) {
+./context_test.go:496:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:501:func TestContextGetUint(t *testing.T) {
+./context_test.go:502:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:507:func TestContextGetUint8(t *testing.T) {
+./context_test.go:508:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:515:func TestContextGetUint16(t *testing.T) {
+./context_test.go:516:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:523:func TestContextGetUint32(t *testing.T) {
+./context_test.go:524:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:531:func TestContextGetUint64(t *testing.T) {
+./context_test.go:532:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:537:func TestContextGetFloat32(t *testing.T) {
+./context_test.go:538:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:545:func TestContextGetFloat64(t *testing.T) {
+./context_test.go:546:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:551:func TestContextGetTime(t *testing.T) {
+./context_test.go:552:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:558:func TestContextGetDuration(t *testing.T) {
+./context_test.go:559:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:564:func TestContextGetError(t *testing.T) {
+./context_test.go:565:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:572:func TestContextGetIntSlice(t *testing.T) {
+./context_test.go:573:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:580:func TestContextGetInt8Slice(t *testing.T) {
+./context_test.go:581:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:588:func TestContextGetInt16Slice(t *testing.T) {
+./context_test.go:589:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:596:func TestContextGetInt32Slice(t *testing.T) {
+./context_test.go:597:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:604:func TestContextGetInt64Slice(t *testing.T) {
+./context_test.go:605:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:612:func TestContextGetUintSlice(t *testing.T) {
+./context_test.go:613:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:620:func TestContextGetUint8Slice(t *testing.T) {
+./context_test.go:621:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:628:func TestContextGetUint16Slice(t *testing.T) {
+./context_test.go:629:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:636:func TestContextGetUint32Slice(t *testing.T) {
+./context_test.go:637:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:644:func TestContextGetUint64Slice(t *testing.T) {
+./context_test.go:645:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:652:func TestContextGetFloat32Slice(t *testing.T) {
+./context_test.go:653:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:660:func TestContextGetFloat64Slice(t *testing.T) {
+./context_test.go:661:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:668:func TestContextGetStringSlice(t *testing.T) {
+./context_test.go:669:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:674:func TestContextGetErrorSlice(t *testing.T) {
+./context_test.go:675:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:682:func TestContextGetStringMap(t *testing.T) {
+./context_test.go:683:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:692:func TestContextGetStringMapString(t *testing.T) {
+./context_test.go:693:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:702:func TestContextGetStringMapStringSlice(t *testing.T) {
+./context_test.go:703:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:713:	c := &Context{}
+./context_test.go:736:func TestContextCopy(t *testing.T) {
+./context_test.go:737:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:740:	c.handlers = HandlersChain{func(c *Context) {}}
+./context_test.go:759:func TestContextCopyCopiesErrors(t *testing.T) {
+./context_test.go:760:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:778:func TestContextCopyCopiesAccepted(t *testing.T) {
+./context_test.go:779:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:793:func TestContextCopyNilErrorsAndAccepted(t *testing.T) {
+./context_test.go:794:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:803:func TestContextHandlerName(t *testing.T) {
+./context_test.go:804:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:805:	c.handlers = HandlersChain{func(c *Context) {}, handlerNameTest}
+./context_test.go:810:func TestContextHandlerNames(t *testing.T) {
+./context_test.go:811:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:812:	c.handlers = HandlersChain{func(c *Context) {}, nil, handlerNameTest, func(c *Context) {}, handlerNameTest2}
+./context_test.go:818:		assert.Regexp(t, `^(.*/vendor/)?(github\.com/gin-gonic/gin\.){1}(TestContextHandlerNames\.func.*){0,1}(handlerNameTest.*){0,1}`, name)
+./context_test.go:822:func handlerNameTest(c *Context) {
+./context_test.go:825:func handlerNameTest2(c *Context) {
+./context_test.go:828:var handlerTest HandlerFunc = func(c *Context) {
+./context_test.go:831:func TestContextHandler(t *testing.T) {
+./context_test.go:832:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:833:	c.handlers = HandlersChain{func(c *Context) {}, handlerTest}
+./context_test.go:838:func TestContextQuery(t *testing.T) {
+./context_test.go:839:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:873:func TestContextInitQueryCache(t *testing.T) {
+./context_test.go:879:		testContext        *Context
+./context_test.go:884:			testContext: &Context{
+./context_test.go:892:			testContext:        &Context{Request: nil}, // explicit nil for readability
+./context_test.go:897:			testContext:        &Context{Request: &http.Request{URL: nil}}, // explicit nil for readability
+./context_test.go:902:			testContext:        &Context{Request: &http.Request{URL: validURL}}, // explicit nil for readability
+./context_test.go:909:			test.testContext.initQueryCache()
+./context_test.go:910:			assert.Equal(t, test.expectedQueryCache, test.testContext.queryCache)
+./context_test.go:915:func TestContextDefaultQueryOnEmptyRequest(t *testing.T) {
+./context_test.go:916:	c, _ := CreateTestContext(httptest.NewRecorder()) // here c.Request == nil
+./context_test.go:930:func TestContextQueryAndPostForm(t *testing.T) {
+./context_test.go:931:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1028:func TestContextPostFormMultipart(t *testing.T) {
+./context_test.go:1029:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1120:func TestContextSetCookie(t *testing.T) {
+./context_test.go:1121:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1127:func TestContextSetCookiePathEmpty(t *testing.T) {
+./context_test.go:1128:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1134:func TestContextGetCookie(t *testing.T) {
+./context_test.go:1135:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1145:func TestContextBodyAllowedForStatus(t *testing.T) {
+./context_test.go:1161:func TestContextRenderIfErr(t *testing.T) {
+./context_test.go:1163:	c, _ := CreateTestContext(w)
+./context_test.go:1173:func TestContextRenderJSON(t *testing.T) {
+./context_test.go:1175:	c, _ := CreateTestContext(w)
+./context_test.go:1186:func TestContextRenderJSONP(t *testing.T) {
+./context_test.go:1188:	c, _ := CreateTestContext(w)
+./context_test.go:1200:func TestContextRenderJSONPWithoutCallback(t *testing.T) {
+./context_test.go:1202:	c, _ := CreateTestContext(w)
+./context_test.go:1213:func TestContextRenderNoContentJSON(t *testing.T) {
+./context_test.go:1215:	c, _ := CreateTestContext(w)
+./context_test.go:1226:func TestContextRenderAPIJSON(t *testing.T) {
+./context_test.go:1228:	c, _ := CreateTestContext(w)
+./context_test.go:1239:func TestContextRenderNoContentAPIJSON(t *testing.T) {
+./context_test.go:1241:	c, _ := CreateTestContext(w)
+./context_test.go:1253:func TestContextRenderIndentedJSON(t *testing.T) {
+./context_test.go:1255:	c, _ := CreateTestContext(w)
+./context_test.go:1265:func TestContextRenderNoContentIndentedJSON(t *testing.T) {
+./context_test.go:1267:	c, _ := CreateTestContext(w)
+./context_test.go:1276:func TestContextClientIPWithMultipleHeaders(t *testing.T) {
+./context_test.go:1277:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1293:func TestContextClientIPWithSingleHeader(t *testing.T) {
+./context_test.go:1294:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1309:func TestContextRenderSecureJSON(t *testing.T) {
+./context_test.go:1311:	c, router := CreateTestContext(w)
+./context_test.go:1322:func TestContextRenderNoContentSecureJSON(t *testing.T) {
+./context_test.go:1324:	c, _ := CreateTestContext(w)
+./context_test.go:1333:func TestContextRenderNoContentAsciiJSON(t *testing.T) {
+./context_test.go:1335:	c, _ := CreateTestContext(w)
+./context_test.go:1347:func TestContextRenderPureJSON(t *testing.T) {
+./context_test.go:1349:	c, _ := CreateTestContext(w)
+./context_test.go:1358:func TestContextRenderHTML(t *testing.T) {
+./context_test.go:1360:	c, router := CreateTestContext(w)
+./context_test.go:1372:func TestContextRenderHTMLWithoutRenderer(t *testing.T) {
+./context_test.go:1418:				func(c *Context) {
+./context_test.go:1423:				func(_ *Context) {
+./context_test.go:1448:func TestContextRenderHTML2(t *testing.T) {
+./context_test.go:1450:	c, router := CreateTestContext(w)
+./context_test.go:1453:	router.addRoute(http.MethodGet, "/", HandlersChain{func(_ *Context) {}})
+./context_test.go:1473:func TestContextRenderNoContentHTML(t *testing.T) {
+./context_test.go:1475:	c, router := CreateTestContext(w)
+./context_test.go:1486:// TestContextRenderXML tests that the response is serialized as XML
+./context_test.go:1488:func TestContextRenderXML(t *testing.T) {
+./context_test.go:1490:	c, _ := CreateTestContext(w)
+./context_test.go:1500:func TestContextRenderNoContentXML(t *testing.T) {
+./context_test.go:1502:	c, _ := CreateTestContext(w)
+./context_test.go:1511:// TestContextRenderPDF tests that the response is serialized as PDF
+./context_test.go:1513:func TestContextRenderPDF(t *testing.T) {
+./context_test.go:1515:	c, _ := CreateTestContext(w)
+./context_test.go:1526:func TestContextRenderNoContentPDF(t *testing.T) {
+./context_test.go:1528:	c, _ := CreateTestContext(w)
+./context_test.go:1538:// TestContextRenderString tests that the response is returned
+./context_test.go:1540:func TestContextRenderString(t *testing.T) {
+./context_test.go:1542:	c, _ := CreateTestContext(w)
+./context_test.go:1552:func TestContextRenderNoContentString(t *testing.T) {
+./context_test.go:1554:	c, _ := CreateTestContext(w)
+./context_test.go:1563:// TestContextRenderHTMLString tests that the response is returned
+./context_test.go:1565:func TestContextRenderHTMLString(t *testing.T) {
+./context_test.go:1567:	c, _ := CreateTestContext(w)
+./context_test.go:1578:func TestContextRenderNoContentHTMLString(t *testing.T) {
+./context_test.go:1580:	c, _ := CreateTestContext(w)
+./context_test.go:1590:// TestContextRenderData tests that the response can be written from `bytestring`
+./context_test.go:1592:func TestContextRenderData(t *testing.T) {
+./context_test.go:1594:	c, _ := CreateTestContext(w)
+./context_test.go:1604:func TestContextRenderNoContentData(t *testing.T) {
+./context_test.go:1606:	c, _ := CreateTestContext(w)
+./context_test.go:1615:func TestContextRenderSSE(t *testing.T) {
+./context_test.go:1617:	c, _ := CreateTestContext(w)
+./context_test.go:1632:func TestContextRenderFile(t *testing.T) {
+./context_test.go:1634:	c, _ := CreateTestContext(w)
+./context_test.go:1646:func TestContextRenderFileFromFS(t *testing.T) {
+./context_test.go:1648:	c, _ := CreateTestContext(w)
+./context_test.go:1661:func TestContextRenderAttachment(t *testing.T) {
+./context_test.go:1663:	c, _ := CreateTestContext(w)
+./context_test.go:1674:func TestContextRenderAndEscapeAttachment(t *testing.T) {
+./context_test.go:1676:	c, _ := CreateTestContext(w)
+./context_test.go:1688:func TestContextRenderUTF8Attachment(t *testing.T) {
+./context_test.go:1690:	c, _ := CreateTestContext(w)
+./context_test.go:1701:// TestContextRenderYAML tests that the response is serialized as YAML
+./context_test.go:1703:func TestContextRenderYAML(t *testing.T) {
+./context_test.go:1705:	c, _ := CreateTestContext(w)
+./context_test.go:1714:// TestContextRenderTOML tests that the response is serialized as TOML
+./context_test.go:1716:func TestContextRenderTOML(t *testing.T) {
+./context_test.go:1718:	c, _ := CreateTestContext(w)
+./context_test.go:1727:// TestContextRenderProtoBuf tests that the response is serialized as ProtoBuf
+./context_test.go:1730:func TestContextRenderProtoBuf(t *testing.T) {
+./context_test.go:1732:	c, _ := CreateTestContext(w)
+./context_test.go:1751:func TestContextHeaders(t *testing.T) {
+./context_test.go:1752:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1768:func TestContextRenderRedirectWithRelativePath(t *testing.T) {
+./context_test.go:1770:	c, _ := CreateTestContext(w)
+./context_test.go:1782:func TestContextRenderRedirectWithAbsolutePath(t *testing.T) {
+./context_test.go:1784:	c, _ := CreateTestContext(w)
+./context_test.go:1794:func TestContextRenderRedirectWith201(t *testing.T) {
+./context_test.go:1796:	c, _ := CreateTestContext(w)
+./context_test.go:1806:func TestContextRenderRedirectAll(t *testing.T) {
+./context_test.go:1807:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1817:func TestContextNegotiationWithJSON(t *testing.T) {
+./context_test.go:1819:	c, _ := CreateTestContext(w)
+./context_test.go:1832:func TestContextNegotiationWithXML(t *testing.T) {
+./context_test.go:1834:	c, _ := CreateTestContext(w)
+./context_test.go:1847:func TestContextNegotiationWithYAML(t *testing.T) {
+./context_test.go:1849:	c, _ := CreateTestContext(w)
+./context_test.go:1862:func TestContextNegotiationWithTOML(t *testing.T) {
+./context_test.go:1864:	c, _ := CreateTestContext(w)
+./context_test.go:1877:func TestContextNegotiationWithHTML(t *testing.T) {
+./context_test.go:1879:	c, router := CreateTestContext(w)
+./context_test.go:1895:func TestContextNegotiationWithPROTOBUF(t *testing.T) {
+./context_test.go:1897:	c, _ := CreateTestContext(w)
+./context_test.go:1921:func TestContextNegotiationWithBSON(t *testing.T) {
+./context_test.go:1923:	c, _ := CreateTestContext(w)
+./context_test.go:1938:func TestContextNegotiationNotSupport(t *testing.T) {
+./context_test.go:1940:	c, _ := CreateTestContext(w)
+./context_test.go:1952:func TestContextNegotiationFormat(t *testing.T) {
+./context_test.go:1953:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1961:func TestContextNegotiationFormatWithAccept(t *testing.T) {
+./context_test.go:1962:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1971:func TestContextNegotiationFormatWithWildcardAccept(t *testing.T) {
+./context_test.go:1972:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:1983:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:1995:func TestContextNegotiationFormatCustom(t *testing.T) {
+./context_test.go:1996:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:2008:func TestContextNegotiationFormat2(t *testing.T) {
+./context_test.go:2009:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:2016:func TestContextIsAborted(t *testing.T) {
+./context_test.go:2017:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:2030:// TestContextAbortWithStatus tests that the response can be written from `bytestring`
+./context_test.go:2032:func TestContextAbortWithStatus(t *testing.T) {
+./context_test.go:2034:	c, _ := CreateTestContext(w)
+./context_test.go:2050:func TestContextAbortWithStatusJSON(t *testing.T) {
+./context_test.go:2052:	c, _ := CreateTestContext(w)
+./context_test.go:2076:func TestContextAbortWithStatusPureJSON(t *testing.T) {
+./context_test.go:2078:	c, _ := CreateTestContext(w)
+./context_test.go:2102:func TestContextError(t *testing.T) {
+./context_test.go:2103:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:2137:func TestContextTypedError(t *testing.T) {
+./context_test.go:2138:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:2151:func TestContextAbortWithError(t *testing.T) {
+./context_test.go:2153:	c, _ := CreateTestContext(w)
+./context_test.go:2162:func TestContextClientIP(t *testing.T) {
+./context_test.go:2163:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:2166:	resetContextForClientIPTests(c)
+./context_test.go:2170:	c.Request = c.Request.WithContext(context.WithValue(c.Request.Context(), http.LocalAddrContextKey, addr))
+./context_test.go:2175:	c.Request = c.Request.WithContext(context.Background())
+./context_test.go:2176:	resetContextForClientIPTests(c)
+./context_test.go:2201:	resetContextForClientIPTests(c)
+./context_test.go:2207:	resetContextForClientIPTests(c)
+./context_test.go:2303:func resetContextForClientIPTests(c *Context) {
+./context_test.go:2315:func TestContextContentType(t *testing.T) {
+./context_test.go:2316:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:2323:func TestContextBindRequestTooLarge(t *testing.T) {
+./context_test.go:2336:	c, _ := CreateTestContext(w)
+./context_test.go:2354:func TestContextAutoBindJSON(t *testing.T) {
+./context_test.go:2355:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:2369:func TestContextBindWithJSON(t *testing.T) {
+./context_test.go:2371:	c, _ := CreateTestContext(w)
+./context_test.go:2386:func TestContextBindWithXML(t *testing.T) {
+./context_test.go:2388:	c, _ := CreateTestContext(w)
+./context_test.go:2407:func TestContextBindPlain(t *testing.T) {
+./context_test.go:2410:	c, _ := CreateTestContext(w)
+./context_test.go:2431:func TestContextBindHeader(t *testing.T) {
+./context_test.go:2433:	c, _ := CreateTestContext(w)
+./context_test.go:2453:func TestContextBindWithQuery(t *testing.T) {
+./context_test.go:2455:	c, _ := CreateTestContext(w)
+./context_test.go:2469:func TestContextBindWithYAML(t *testing.T) {
+./context_test.go:2471:	c, _ := CreateTestContext(w)
+./context_test.go:2486:func TestContextBindWithTOML(t *testing.T) {
+./context_test.go:2488:	c, _ := CreateTestContext(w)
+./context_test.go:2503:func TestContextBadAutoBind(t *testing.T) {
+./context_test.go:2505:	c, _ := CreateTestContext(w)
+./context_test.go:2524:func TestContextAutoShouldBindJSON(t *testing.T) {
+./context_test.go:2525:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:2539:func TestContextShouldBindWithJSON(t *testing.T) {
+./context_test.go:2541:	c, _ := CreateTestContext(w)
+./context_test.go:2556:func TestContextShouldBindWithXML(t *testing.T) {
+./context_test.go:2558:	c, _ := CreateTestContext(w)
+./context_test.go:2577:func TestContextShouldBindPlain(t *testing.T) {
+./context_test.go:2580:	c, _ := CreateTestContext(w)
+./context_test.go:2601:func TestContextShouldBindHeader(t *testing.T) {
+./context_test.go:2603:	c, _ := CreateTestContext(w)
+./context_test.go:2623:func TestContextShouldBindWithQuery(t *testing.T) {
+./context_test.go:2625:	c, _ := CreateTestContext(w)
+./context_test.go:2643:func TestContextShouldBindWithYAML(t *testing.T) {
+./context_test.go:2645:	c, _ := CreateTestContext(w)
+./context_test.go:2660:func TestContextShouldBindWithTOML(t *testing.T) {
+./context_test.go:2662:	c, _ := CreateTestContext(w)
+./context_test.go:2677:func TestContextBadAutoShouldBind(t *testing.T) {
+./context_test.go:2679:	c, _ := CreateTestContext(w)
+./context_test.go:2696:func TestContextShouldBindBodyWith(t *testing.T) {
+./context_test.go:2743:			c, _ := CreateTestContext(w)
+./context_test.go:2761:			c, _ := CreateTestContext(w)
+./context_test.go:2775:func TestContextShouldBindBodyWithJSON(t *testing.T) {
+./context_test.go:2808:		c, _ := CreateTestContext(w)
+./context_test.go:2839:func TestContextShouldBindBodyWithXML(t *testing.T) {
+./context_test.go:2872:		c, _ := CreateTestContext(w)
+./context_test.go:2903:func TestContextShouldBindBodyWithYAML(t *testing.T) {
+./context_test.go:2936:		c, _ := CreateTestContext(w)
+./context_test.go:2968:func TestContextShouldBindBodyWithTOML(t *testing.T) {
+./context_test.go:3001:		c, _ := CreateTestContext(w)
+./context_test.go:3032:func TestContextShouldBindBodyWithPlain(t *testing.T) {
+./context_test.go:3070:		c, _ := CreateTestContext(w)
+./context_test.go:3107:func TestContextGolangContext(t *testing.T) {
+./context_test.go:3108:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3115:	assert.Equal(t, c.Value(ContextRequestKey), c.Request)
+./context_test.go:3116:	assert.Equal(t, c.Value(ContextKey), c)
+./context_test.go:3126:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3139:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3146:func TestContextScheme(t *testing.T) {
+./context_test.go:3148:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3154:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3159:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3165:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3171:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3176:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3182:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3188:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3193:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3198:	c, _ = CreateTestContext(httptest.NewRecorder())
+./context_test.go:3206:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3214:func TestContextGetRawData(t *testing.T) {
+./context_test.go:3215:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3225:func TestContextGetRawDataNilBody(t *testing.T) {
+./context_test.go:3226:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3235:func TestContextRenderDataFromReader(t *testing.T) {
+./context_test.go:3237:	c, _ := CreateTestContext(w)
+./context_test.go:3254:func TestContextRenderDataFromReaderNoHeaders(t *testing.T) {
+./context_test.go:3256:	c, _ := CreateTestContext(w)
+./context_test.go:3291:func TestContextStream(t *testing.T) {
+./context_test.go:3293:	c, _ := CreateTestContext(w)
+./context_test.go:3310:func TestContextStreamWithClientGone(t *testing.T) {
+./context_test.go:3312:	c, _ := CreateTestContext(w)
+./context_test.go:3328:func TestContextResetInHandler(t *testing.T) {
+./context_test.go:3330:	c, _ := CreateTestContext(w)
+./context_test.go:3333:		func(c *Context) { c.reset() },
+./context_test.go:3340:func TestRaceParamsContextCopy(t *testing.T) {
+./context_test.go:3347:		nameGroup.GET("/api", func(c *Context) {
+./context_test.go:3348:			go func(c *Context, param string) {
+./context_test.go:3361:func TestContextWithKeysMutex(t *testing.T) {
+./context_test.go:3362:	c := &Context{}
+./context_test.go:3375:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3384:func TestHasRequestContext(t *testing.T) {
+./context_test.go:3385:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3386:	assert.False(t, c.hasRequestContext(), "no request, no fallback")
+./context_test.go:3387:	c.engine.ContextWithFallback = true
+./context_test.go:3388:	assert.False(t, c.hasRequestContext(), "no request, has fallback")
+./context_test.go:3390:	assert.True(t, c.hasRequestContext(), "has request, has fallback")
+./context_test.go:3391:	c.Request, _ = http.NewRequestWithContext(nil, "", "", nil) //nolint:staticcheck
+./context_test.go:3392:	assert.False(t, c.hasRequestContext(), "has request with nil ctx, has fallback")
+./context_test.go:3393:	c.engine.ContextWithFallback = false
+./context_test.go:3394:	assert.False(t, c.hasRequestContext(), "has request, no fallback")
+./context_test.go:3396:	c = &Context{}
+./context_test.go:3397:	assert.False(t, c.hasRequestContext(), "no request, no engine")
+./context_test.go:3399:	assert.False(t, c.hasRequestContext(), "has request, no engine")
+./context_test.go:3402:func TestContextWithFallbackDeadlineFromRequestContext(t *testing.T) {
+./context_test.go:3403:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3404:	// enable ContextWithFallback feature flag
+./context_test.go:3405:	c.engine.ContextWithFallback = true
+./context_test.go:3411:	c2, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3412:	// enable ContextWithFallback feature flag
+./context_test.go:3413:	c2.engine.ContextWithFallback = true
+./context_test.go:3419:	c2.Request = c2.Request.WithContext(ctx)
+./context_test.go:3425:func TestContextWithFallbackDoneFromRequestContext(t *testing.T) {
+./context_test.go:3426:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3427:	// enable ContextWithFallback feature flag
+./context_test.go:3428:	c.engine.ContextWithFallback = true
+./context_test.go:3432:	c2, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3433:	// enable ContextWithFallback feature flag
+./context_test.go:3434:	c2.engine.ContextWithFallback = true
+./context_test.go:3438:	c2.Request = c2.Request.WithContext(ctx)
+./context_test.go:3443:func TestContextWithFallbackErrFromRequestContext(t *testing.T) {
+./context_test.go:3444:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3445:	// enable ContextWithFallback feature flag
+./context_test.go:3446:	c.engine.ContextWithFallback = true
+./context_test.go:3450:	c2, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3451:	// enable ContextWithFallback feature flag
+./context_test.go:3452:	c2.engine.ContextWithFallback = true
+./context_test.go:3456:	c2.Request = c2.Request.WithContext(ctx)
+./context_test.go:3462:func TestContextWithFallbackValueFromRequestContext(t *testing.T) {
+./context_test.go:3467:		getContextAndKey func() (*Context, any)
+./context_test.go:3472:			getContextAndKey: func() (*Context, any) {
+./context_test.go:3475:				c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3476:				// enable ContextWithFallback feature flag
+./context_test.go:3477:				c.engine.ContextWithFallback = true
+./context_test.go:3479:				c.Request = c.Request.WithContext(context.WithValue(context.TODO(), key, "value"))
+./context_test.go:3486:			getContextAndKey: func() (*Context, any) {
+./context_test.go:3487:				c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3488:				// enable ContextWithFallback feature flag
+./context_test.go:3489:				c.engine.ContextWithFallback = true
+./context_test.go:3491:				c.Request = c.Request.WithContext(context.WithValue(context.TODO(), contextKey("key"), "value"))
+./context_test.go:3498:			getContextAndKey: func() (*Context, any) {
+./context_test.go:3499:				c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3500:				// enable ContextWithFallback feature flag
+./context_test.go:3501:				c.engine.ContextWithFallback = true
+./context_test.go:3508:			name: "c with nil http.Request.Context()",
+./context_test.go:3509:			getContextAndKey: func() (*Context, any) {
+./context_test.go:3510:				c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3511:				// enable ContextWithFallback feature flag
+./context_test.go:3512:				c.engine.ContextWithFallback = true
+./context_test.go:3521:			c, key := tt.getContextAndKey()
+./context_test.go:3527:func TestContextCopyShouldNotCancel(t *testing.T) {
+./context_test.go:3538:	r.GET("/", func(ginctx *Context) {
+./context_test.go:3549:			req, err := http.NewRequestWithContext(ginctx, http.MethodGet, srv.URL, nil)
+./context_test.go:3591:func TestContextAddParam(t *testing.T) {
+./context_test.go:3592:	c := &Context{}
+./context_test.go:3602:func TestCreateTestContextWithRouteParams(t *testing.T) {
+./context_test.go:3605:	engine.GET("/:action/:name", func(ctx *Context) {
+./context_test.go:3608:	c := CreateTestContextOnly(w, engine)
+./context_test.go:3610:	engine.HandleContext(c)
+./context_test.go:3628:	c, r := CreateTestContext(w)
+./context_test.go:3630:	r.Use(func(c *Context) {
+./context_test.go:3640:	r.GET("/", func(c *Context) {
+./context_test.go:3646:	r.HandleContext(c)
+./context_test.go:3655:func TestContextNext(t *testing.T) {
+./context_test.go:3656:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3664:	c.handlers = HandlersChain{func(c *Context) {
+./context_test.go:3675:		func(c *Context) {
+./context_test.go:3681:		func(c *Context) {
+./context_test.go:3699:func TestContextSetCookieData(t *testing.T) {
+./context_test.go:3700:	c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3792:		c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3809:		c, _ := CreateTestContext(httptest.NewRecorder())
+./context_test.go:3826:		c, _ := CreateTestContext(httptest.NewRecorder())
+./routergroup_test.go:22:	group := router.Group("/hola", func(c *Context) {})
+./routergroup_test.go:23:	group.Use(func(c *Context) {})
+./routergroup_test.go:30:	group2.Use(func(c *Context) {}, func(c *Context) {})
+./routergroup_test.go:50:	v1 := router.Group("v1", func(c *Context) {})
+./routergroup_test.go:53:	login := v1.Group("/login/", func(c *Context) {}, func(c *Context) {})
+./routergroup_test.go:56:	handler := func(c *Context) {
+./routergroup_test.go:183:	handler := func(c *Context) {}
+./doc.go:14:		r.GET("/ping", func(c *gin.Context) {
+./context.go:49:// ContextKey is the key that a Context returns itself for.
+./context.go:50:const ContextKey = "_gin-gonic/gin/contextkey"
+./context.go:52:type ContextKeyType int
+./context.go:54:const ContextRequestKey ContextKeyType = 0
+./context.go:59:// Context is the most important part of gin. It allows us to pass variables between middleware,
+./context.go:61:type Context struct {
+./context.go:103:func (c *Context) reset() {
+./context.go:122:func (c *Context) Copy() *Context {
+./context.go:123:	cp := Context{
+./context.go:158:func (c *Context) HandlerName() string {
+./context.go:164:func (c *Context) HandlerNames() []string {
+./context.go:176:func (c *Context) Handler() HandlerFunc {
+./context.go:183://	router.GET("/user/:id", func(c *gin.Context) {
+./context.go:186:func (c *Context) FullPath() string {
+./context.go:197:func (c *Context) Next() {
+./context.go:208:func (c *Context) IsAborted() bool {
+./context.go:216:func (c *Context) Abort() {
+./context.go:222:func (c *Context) AbortWithStatus(code int) {
+./context.go:231:func (c *Context) AbortWithStatusPureJSON(code int, jsonObj any) {
+./context.go:239:func (c *Context) AbortWithStatusJSON(code int, jsonObj any) {
+./context.go:246:// See Context.Error() for more details.
+./context.go:247:func (c *Context) AbortWithError(code int, err error) *Error {
+./context.go:261:func (c *Context) Error(err error) *Error {
+./context.go:285:func (c *Context) Set(key any, value any) {
+./context.go:297:func (c *Context) Get(key any) (value any, exists bool) {
+./context.go:305:func (c *Context) MustGet(key any) any {
+./context.go:312:func getTyped[T any](c *Context, key any) (res T) {
+./context.go:320:func (c *Context) GetString(key any) string {
+./context.go:325:func (c *Context) GetBool(key any) bool {
+./context.go:330:func (c *Context) GetInt(key any) int {
+./context.go:335:func (c *Context) GetInt8(key any) int8 {
+./context.go:340:func (c *Context) GetInt16(key any) int16 {
+./context.go:345:func (c *Context) GetInt32(key any) int32 {
+./context.go:350:func (c *Context) GetInt64(key any) int64 {
+./context.go:355:func (c *Context) GetUint(key any) uint {
+./context.go:360:func (c *Context) GetUint8(key any) uint8 {
+./context.go:365:func (c *Context) GetUint16(key any) uint16 {
+./context.go:370:func (c *Context) GetUint32(key any) uint32 {
+./context.go:375:func (c *Context) GetUint64(key any) uint64 {
+./context.go:380:func (c *Context) GetFloat32(key any) float32 {
+./context.go:385:func (c *Context) GetFloat64(key any) float64 {
+./context.go:390:func (c *Context) GetTime(key any) time.Time {
+./context.go:395:func (c *Context) GetDuration(key any) time.Duration {
+./context.go:400:func (c *Context) GetError(key any) error {
+./context.go:405:func (c *Context) GetIntSlice(key any) []int {
+./context.go:410:func (c *Context) GetInt8Slice(key any) []int8 {
+./context.go:415:func (c *Context) GetInt16Slice(key any) []int16 {
+./context.go:420:func (c *Context) GetInt32Slice(key any) []int32 {
+./context.go:425:func (c *Context) GetInt64Slice(key any) []int64 {
+./context.go:430:func (c *Context) GetUintSlice(key any) []uint {
+./context.go:435:func (c *Context) GetUint8Slice(key any) []uint8 {
+./context.go:440:func (c *Context) GetUint16Slice(key any) []uint16 {
+./context.go:445:func (c *Context) GetUint32Slice(key any) []uint32 {
+./context.go:450:func (c *Context) GetUint64Slice(key any) []uint64 {
+./context.go:455:func (c *Context) GetFloat32Slice(key any) []float32 {
+./context.go:460:func (c *Context) GetFloat64Slice(key any) []float64 {
+./context.go:465:func (c *Context) GetStringSlice(key any) []string {
+./context.go:470:func (c *Context) GetErrorSlice(key any) []error {
+./context.go:475:func (c *Context) GetStringMap(key any) map[string]any {
+./context.go:480:func (c *Context) GetStringMapString(key any) map[string]string {
+./context.go:485:func (c *Context) GetStringMapStringSlice(key any) map[string][]string {
+./context.go:489:// Delete deletes the key from the Context's Key map, if it exists.
+./context.go:491:func (c *Context) Delete(key any) {
+./context.go:506://	router.GET("/user/:id", func(c *gin.Context) {
+./context.go:512:func (c *Context) Param(key string) string {
+./context.go:521:func (c *Context) AddParam(key, value string) {
+./context.go:534:func (c *Context) Query(key string) (value string) {
+./context.go:547:func (c *Context) DefaultQuery(key, defaultValue string) string {
+./context.go:563:func (c *Context) GetQuery(key string) (string, bool) {
+./context.go:572:func (c *Context) QueryArray(key string) (values []string) {
+./context.go:577:func (c *Context) initQueryCache() {
+./context.go:589:func (c *Context) GetQueryArray(key string) (values []string, ok bool) {
+./context.go:596:func (c *Context) QueryMap(key string) (dicts map[string]string) {
+./context.go:603:func (c *Context) GetQueryMap(key string) (map[string]string, bool) {
+./context.go:610:func (c *Context) PostForm(key string) (value string) {
+./context.go:618:func (c *Context) DefaultPostForm(key, defaultValue string) string {
+./context.go:633:func (c *Context) GetPostForm(key string) (string, bool) {
+./context.go:642:func (c *Context) PostFormArray(key string) (values []string) {
+./context.go:647:func (c *Context) initFormCache() {
+./context.go:662:func (c *Context) GetPostFormArray(key string) (values []string, ok bool) {
+./context.go:669:func (c *Context) PostFormMap(key string) (dicts map[string]string) {
+./context.go:676:func (c *Context) GetPostFormMap(key string) (map[string]string, bool) {
+./context.go:707:func (c *Context) FormFile(name string) (*multipart.FileHeader, error) {
+./context.go:722:func (c *Context) MultipartForm() (*multipart.Form, error) {
+./context.go:733:func (c *Context) SaveUploadedFile(file *multipart.FileHeader, dst string, perm ...fs.FileMode) error {
+./context.go:779:func (c *Context) Bind(obj any) error {
+./context.go:785:func (c *Context) BindJSON(obj any) error {
+./context.go:790:func (c *Context) BindXML(obj any) error {
+./context.go:795:func (c *Context) BindQuery(obj any) error {
+./context.go:800:func (c *Context) BindYAML(obj any) error {
+./context.go:805:func (c *Context) BindTOML(obj any) error {
+./context.go:810:func (c *Context) BindPlain(obj any) error {
+./context.go:815:func (c *Context) BindHeader(obj any) error {
+./context.go:821:func (c *Context) BindUri(obj any) error {
+./context.go:832:func (c *Context) MustBindWith(obj any, b binding.Binding) error {
+./context.go:860:func (c *Context) ShouldBind(obj any) error {
+./context.go:889:func (c *Context) ShouldBindJSON(obj any) error {
+./context.go:895:func (c *Context) ShouldBindXML(obj any) error {
+./context.go:901:func (c *Context) ShouldBindQuery(obj any) error {
+./context.go:907:func (c *Context) ShouldBindYAML(obj any) error {
+./context.go:913:func (c *Context) ShouldBindTOML(obj any) error {
+./context.go:919:func (c *Context) ShouldBindPlain(obj any) error {
+./context.go:925:func (c *Context) ShouldBindHeader(obj any) error {
+./context.go:931:func (c *Context) ShouldBindUri(obj any) error {
+./context.go:941:func (c *Context) ShouldBindWith(obj any, b binding.Binding) error {
+./context.go:950:func (c *Context) ShouldBindBodyWith(obj any, bb binding.BindingBody) (err error) {
+./context.go:968:func (c *Context) ShouldBindBodyWithJSON(obj any) error {
+./context.go:973:func (c *Context) ShouldBindBodyWithXML(obj any) error {
+./context.go:978:func (c *Context) ShouldBindBodyWithYAML(obj any) error {
+./context.go:983:func (c *Context) ShouldBindBodyWithTOML(obj any) error {
+./context.go:988:func (c *Context) ShouldBindBodyWithPlain(obj any) error {
+./context.go:998:func (c *Context) ClientIP() string {
+./context.go:1020:	localAddr, ok := c.Request.Context().Value(http.LocalAddrContextKey).(net.Addr)
+./context.go:1050:func (c *Context) RemoteIP() string {
+./context.go:1059:func (c *Context) ContentType() string {
+./context.go:1065:func (c *Context) IsWebsocket() bool {
+./context.go:1078:func (c *Context) Scheme() string {
+./context.go:1100:func (c *Context) requestHeader(key string) string {
+./context.go:1123:func (c *Context) Status(code int) {
+./context.go:1130:func (c *Context) Header(key, value string) {
+./context.go:1139:func (c *Context) GetHeader(key string) string {
+./context.go:1144:func (c *Context) GetRawData() ([]byte, error) {
+./context.go:1152:func (c *Context) SetSameSite(samesite http.SameSite) {
+./context.go:1159:func (c *Context) SetCookie(name, value string, maxAge int, path, domain string, secure, httpOnly bool) {
+./context.go:1178:func (c *Context) SetCookieData(cookie *http.Cookie) {
+./context.go:1192:func (c *Context) Cookie(name string) (string, error) {
+./context.go:1202:func (c *Context) Render(code int, r render.Render) {
+./context.go:1221:func (c *Context) HTML(code int, name string, obj any) {
+./context.go:1234:// more CPU and bandwidth consuming. Use Context.JSON() instead.
+./context.go:1235:func (c *Context) IndentedJSON(code int, obj any) {
+./context.go:1242:func (c *Context) SecureJSON(code int, obj any) {
+./context.go:1249:func (c *Context) JSONP(code int, obj any) {
+./context.go:1260:func (c *Context) JSON(code int, obj any) {
+./context.go:1266:func (c *Context) AsciiJSON(code int, obj any) {
+./context.go:1272:func (c *Context) PureJSON(code int, obj any) {
+./context.go:1278:func (c *Context) XML(code int, obj any) {
+./context.go:1284:func (c *Context) PDF(code int, data []byte) {
+./context.go:1289:func (c *Context) YAML(code int, obj any) {
+./context.go:1294:func (c *Context) TOML(code int, obj any) {
+./context.go:1299:func (c *Context) ProtoBuf(code int, obj any) {
+./context.go:1304:func (c *Context) BSON(code int, obj any) {
+./context.go:1309:func (c *Context) String(code int, format string, values ...any) {
+./context.go:1314:func (c *Context) Redirect(code int, location string) {
+./context.go:1323:func (c *Context) Data(code int, contentType string, data []byte) {
+./context.go:1331:func (c *Context) DataFromReader(code int, contentLength int64, contentType string, reader io.Reader, extraHeaders map[string]string) {
+./context.go:1341:func (c *Context) File(filepath string) {
+./context.go:1346:func (c *Context) FileFromFS(filepath string, fs http.FileSystem) {
+./context.go:1364:func (c *Context) FileAttachment(filepath, filename string) {
+./context.go:1374:func (c *Context) SSEvent(name string, message any) {
+./context.go:1383:func (c *Context) Stream(step func(w io.Writer) bool) bool {
+./context.go:1419:func (c *Context) Negotiate(code int, config Negotiate) {
+./context.go:1455:func (c *Context) NegotiateFormat(offered ...string) string {
+./context.go:1486:func (c *Context) SetAccepted(formats ...string) {
+./context.go:1494:// hasRequestContext returns whether c.Request has Context and fallback.
+./context.go:1495:func (c *Context) hasRequestContext() bool {
+./context.go:1496:	hasFallback := c.engine != nil && c.engine.ContextWithFallback
+./context.go:1497:	hasRequestContext := c.Request != nil && c.Request.Context() != nil
+./context.go:1498:	return hasFallback && hasRequestContext
+./context.go:1501:// Deadline returns that there is no deadline (ok==false) when c.Request has no Context.
+./context.go:1502:func (c *Context) Deadline() (deadline time.Time, ok bool) {
+./context.go:1503:	if !c.hasRequestContext() {
+./context.go:1506:	return c.Request.Context().Deadline()
+./context.go:1509:// Done returns nil (chan which will wait forever) when c.Request has no Context.
+./context.go:1510:func (c *Context) Done() <-chan struct{} {
+./context.go:1511:	if !c.hasRequestContext() {
+./context.go:1514:	return c.Request.Context().Done()
+./context.go:1517:// Err returns nil when c.Request has no Context.
+./context.go:1518:func (c *Context) Err() error {
+./context.go:1519:	if !c.hasRequestContext() {
+./context.go:1522:	return c.Request.Context().Err()
+./context.go:1528:func (c *Context) Value(key any) any {
+./context.go:1529:	if key == ContextRequestKey {
+./context.go:1532:	if key == ContextKey {
+./context.go:1540:	if !c.hasRequestContext() {
+./context.go:1543:	return c.Request.Context().Value(key)
+./utils.go:39:	return func(c *Context) {
+./utils.go:49:	return func(c *Context) {
+./utils.go:56:	return func(c *Context) {
+./radix_tree_test.go:19:	return HandlersChain{func(c *Context) {
+./recovery_test.go:24:	router.GET("/recovery", func(c *Context) {
+./recovery_test.go:55:	router.GET("/recovery", func(_ *Context) {
+./recovery_test.go:82:	router.GET("/recovery", func(c *Context) {
+./recovery_test.go:113:			router.GET("/recovery", func(c *Context) {
+./recovery_test.go:139:	router.GET("/recovery", func(c *Context) {
+./recovery_test.go:179:			router.Use(func(c *Context) {
+./recovery_test.go:184:			router.GET("/recovery", func(_ *Context) {
+./recovery_test.go:203:	handleRecovery := func(c *Context, err any) {
+./recovery_test.go:208:	router.GET("/recovery", func(_ *Context) {
+./recovery_test.go:238:	handleRecovery := func(c *Context, err any) {
+./recovery_test.go:243:	router.GET("/recovery", func(_ *Context) {
+./recovery_test.go:273:	handleRecovery := func(c *Context, err any) {
+./recovery_test.go:278:	router.GET("/recovery", func(_ *Context) {
+./deprecated_test.go:19:	c, _ := CreateTestContext(w)
+./benchmarks_test.go:16:	router.GET("/ping", func(c *Context) {})
+./benchmarks_test.go:23:	router.GET("/", func(c *Context) {})
+./benchmarks_test.go:30:	router.GET("/", func(c *Context) {})
+./benchmarks_test.go:37:	router.Use(func(c *Context) {})
+./benchmarks_test.go:38:	router.Use(func(c *Context) {})
+./benchmarks_test.go:39:	router.GET("/ping", func(c *Context) {})
+./benchmarks_test.go:46:	router.Use(func(c *Context) {})
+./benchmarks_test.go:47:	router.GET("/param/:param1/:params2/:param3/:param4/:param5", func(c *Context) {})
+./benchmarks_test.go:56:	router.GET("/json", func(c *Context) {
+./benchmarks_test.go:68:	router.GET("/html", func(c *Context) {
+./benchmarks_test.go:76:	router.GET("/ping", func(c *Context) {
+./benchmarks_test.go:84:	router.GET("/text", func(c *Context) {
+./benchmarks_test.go:92:	router.Any("/ping", func(c *Context) {})
+./benchmarks_test.go:98:	router.Any("/ping", func(c *Context) {})
+./benchmarks_test.go:104:	router.Any("/something", func(c *Context) {})
+./benchmarks_test.go:105:	router.NoRoute(func(c *Context) {})
+./benchmarks_test.go:111:	router.GET("/", func(c *Context) {})
+./benchmarks_test.go:112:	router.GET("/path/to/something", func(c *Context) {})
+./benchmarks_test.go:113:	router.GET("/post/:id", func(c *Context) {})
+./benchmarks_test.go:114:	router.GET("/view/:id", func(c *Context) {})
+./benchmarks_test.go:115:	router.GET("/favicon.ico", func(c *Context) {})
+./benchmarks_test.go:116:	router.GET("/robots.txt", func(c *Context) {})
+./benchmarks_test.go:117:	router.GET("/delete/:id", func(c *Context) {})
+./benchmarks_test.go:118:	router.GET("/user/:id/:mode", func(c *Context) {})
+./benchmarks_test.go:120:	router.NoRoute(func(c *Context) {})
+./radix_tree.go:423:	// pooled Context stack, and the walk below grows it via a raw reslice that
+./debug_test.go:71:		debugPrintRoute(http.MethodGet, "/path/to/route/:param", HandlersChain{func(c *Context) {}, handlerNameTest})
+./debug_test.go:83:		debugPrintRoute(http.MethodGet, "/path/to/route/:param1/:param2", HandlersChain{func(c *Context) {}, handlerNameTest})
+./githubapi_test.go:298:	router.Handle(http.MethodGet, "/rest/:name/:id", func(c *Context) {
+./githubapi_test.go:320:	router.Handle(http.MethodGet, "/rest/:name/:id", func(c *Context) {
+./githubapi_test.go:341:	router.Handle(http.MethodGet, "/new/rest/:num", func(c *Context) {
+./githubapi_test.go:351:func TestRaceContextCopy(t *testing.T) {
+./githubapi_test.go:354:	router.GET("/test/copy/race", func(c *Context) {
+./githubapi_test.go:358:		// Sending a copy of the Context to two separate routines
+./githubapi_test.go:367:func readWriteKeys(c *Context) {
+./githubapi_test.go:376:		router.Handle(route.method, route.path, func(c *Context) {
+./logger_test.go:26:	router.GET("/example", func(c *Context) {})
+./logger_test.go:27:	router.POST("/example", func(c *Context) {})
+./logger_test.go:28:	router.PUT("/example", func(c *Context) {})
+./logger_test.go:29:	router.DELETE("/example", func(c *Context) {})
+./logger_test.go:30:	router.PATCH("/example", func(c *Context) {})
+./logger_test.go:31:	router.HEAD("/example", func(c *Context) {})
+./logger_test.go:32:	router.OPTIONS("/example", func(c *Context) {})
+./logger_test.go:90:	router.GET("/example", func(c *Context) {})
+./logger_test.go:91:	router.POST("/example", func(c *Context) {})
+./logger_test.go:92:	router.PUT("/example", func(c *Context) {})
+./logger_test.go:93:	router.DELETE("/example", func(c *Context) {})
+./logger_test.go:94:	router.PATCH("/example", func(c *Context) {})
+./logger_test.go:95:	router.HEAD("/example", func(c *Context) {})
+./logger_test.go:96:	router.OPTIONS("/example", func(c *Context) {})
+./logger_test.go:171:	router.GET("/example", func(c *Context) {})
+./logger_test.go:207:	router.GET("/example", func(c *Context) {
+./logger_test.go:379:	router.GET("/error", func(c *Context) {
+./logger_test.go:382:	router.GET("/abort", func(c *Context) {
+./logger_test.go:385:	router.GET("/print", func(c *Context) {
+./logger_test.go:407:	router.GET("/logged", func(c *Context) {})
+./logger_test.go:408:	router.GET("/skipped", func(c *Context) {})
+./logger_test.go:425:	router.GET("/logged", func(c *Context) {})
+./logger_test.go:426:	router.GET("/skipped", func(c *Context) {})
+./logger_test.go:441:		Skip: func(c *Context) bool {
+./logger_test.go:445:	router.GET("/logged", func(c *Context) { c.Status(http.StatusOK) })
+./logger_test.go:446:	router.GET("/skipped", func(c *Context) { c.Status(http.StatusNoContent) })
+./logger_test.go:483:	router.GET("/logged", func(c *Context) { c.Status(http.StatusOK) })
+./errors.go:19:	// ErrorTypeBind is used when Context.Bind() fails.
+./errors.go:21:	// ErrorTypeRender is used when Context.Render() fails.
+./test_helpers.go:13:// CreateTestContext returns a fresh Engine and a Context associated with it.
+./test_helpers.go:17:func CreateTestContext(w http.ResponseWriter) (c *Context, r *Engine) {
+./test_helpers.go:19:	c = r.allocateContext(0)
+./test_helpers.go:25:// CreateTestContextOnly returns a fresh Context associated with the provided Engine `r`.
+./test_helpers.go:30:func CreateTestContextOnly(w http.ResponseWriter, r *Engine) (c *Context) {
+./test_helpers.go:31:	c = r.allocateContext(r.maxParams)
+./gin.go:58:type HandlerFunc func(*Context)
+./gin.go:135:	// `(*gin.Context).Request.RemoteAddr`.
+./gin.go:164:	// `(*gin.Context).Request.RemoteAddr` is matched by at least one of the
+./gin.go:185:	// ContextWithFallback enable fallback Context.Deadline(), Context.Done(), Context.Err() and Context.Value() when Context.Request.Context() is not nil.
+./gin.go:186:	ContextWithFallback bool
+./gin.go:244:		return engine.allocateContext(engine.maxParams)
+./gin.go:266:func (engine *Engine) allocateContext(maxParams uint16) *Context {
+./gin.go:269:	return &Context{engine: engine, params: &v, skippedNodes: &skippedNodes}
+./gin.go:287:// SecureJsonPrefix sets the secureJSONPrefix used in Context.SecureJSON.
+./gin.go:472:// Engine.SetTrustedProxies(nil), then Context.ClientIP() will
+./gin.go:696:	c := engine.pool.Get().(*Context)
+./gin.go:706:// HandleContext re-enters a context that has been rewritten.
+./gin.go:709:func (engine *Engine) HandleContext(c *Context) {
+./gin.go:719:func (engine *Engine) handleHTTPRequest(c *Context) {
+./gin.go:793:func serveError(c *Context, code int, defaultMessage []byte) {
+./gin.go:810:func redirectTrailingSlash(c *Context) {
+./gin.go:837:func redirectFixedPath(c *Context, root *node, trailingSlash bool) bool {
+./gin.go:849:func redirectRequest(c *Context) {

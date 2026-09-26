@@ -1,0 +1,12 @@
+ign.py:5: error: Unused "type: ignore" comment  [unused-ignore]
+ign.py:5: error: Argument 1 to "f" has incompatible type "str"; expected "int"  [arg-type]
+ign.py:5: note: Error code "arg-type" not covered by "type: ignore[attr-defined]" comment
+ign.py:6: error: Unused "type: ignore" comment  [unused-ignore]
+ign.py:6: error: Argument 1 to "f" has incompatible type "str"; expected "int"  [arg-type]
+ign.py:6: note: Error code "arg-type" not covered by "type: ignore[attr-defined]" comment
+ign.py:7: error: Unused "type: ignore" comment  [unused-ignore]
+ign.py:7: error: Argument 1 to "f" has incompatible type "str"; expected "int"  [arg-type]
+ign.py:7: note: Error code "arg-type" not covered by "type: ignore[attr-defined]" comment
+ign.py:10: error: Function is missing a return type annotation  [no-untyped-def]
+ign.py:14: error: Function is missing a return type annotation  [no-untyped-def]
+Found 8 errors in 1 file (checked 1 source file)

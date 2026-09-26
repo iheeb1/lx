@@ -1,0 +1,33 @@
+--- FAIL: TestExecuteContext (0.00s)
+panic: runtime error: index out of range [0] with length 0 [recovered, repanicked]
+
+goroutine 109 [running]:
+testing.tRunner.func1.2({0x1028db7e0, 0x7f594249d110})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1974 +0x1a0
+testing.tRunner.func1()
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1977 +0x318
+panic({0x1028db7e0?, 0x7f594249d110?})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/runtime/panic.go:860 +0x12c
+github.com/spf13/cobra.legacyArgs(0x7f594277a908, {0x1029593a0, 0x0, 0x7f594277a908?})
+	/home/user/src/cobra/args.go:36 +0x144
+github.com/spf13/cobra.(*Command).Find(0x7f594277a908?, {0x7f59426cda90?, 0x1?, 0x2?})
+	/home/user/src/cobra/command.go:776 +0x94
+github.com/spf13/cobra.(*Command).initCompleteCmd(0x7f594277a908, {0x7f59426cda90, 0x1, 0x1})
+	/home/user/src/cobra/completions.go:297 +0x1e8
+github.com/spf13/cobra.(*Command).ExecuteC(0x7f594277a908)
+	/home/user/src/cobra/command.go:1110 +0x150
+github.com/spf13/cobra.(*Command).Execute(...)
+	/home/user/src/cobra/command.go:1071
+github.com/spf13/cobra.(*Command).ExecuteContext(...)
+	/home/user/src/cobra/command.go:1064
+github.com/spf13/cobra.executeCommandWithContext({0x1028ffdf8, 0x1029593a0}, 0x7f594277a908, {0x7f59426cda90, 0x1, 0x1})
+	/home/user/src/cobra/command_test.go:43 +0x10c
+github.com/spf13/cobra.TestExecuteContext(0x7f5942768d88)
+	/home/user/src/cobra/command_test.go:193 +0x1a8
+testing.tRunner(0x7f5942768d88, 0x1028f94c0)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4
+created by testing.(*T).Run in goroutine 1
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x3a8
+FAIL	github.com/spf13/cobra	0.622s
+ok  	github.com/spf13/cobra/doc	(cached)
+FAIL

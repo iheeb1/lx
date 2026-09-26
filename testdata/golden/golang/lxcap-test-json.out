@@ -1,0 +1,77 @@
+# example.com/lxcap/setup
+setup/s_test.go:6:2: no required module provides package example.com/doesnotexist/pkg; to add it:
+	go get example.com/doesnotexist/pkg
+# example.com/lxcap/vetfail
+# [example.com/lxcap/vetfail]
+vetfail/v.go:5:60: fmt.Sprintf format %d has arg name of wrong type string
+# example.com/lxcap/buildfail [example.com/lxcap/buildfail.test]
+buildfail/b_test.go:6:5: undefined: Triple
+buildfail/b_test.go:9:6: declared and not used: unused
+FAIL	example.com/lxcap/setup [setup failed]
+FAIL	example.com/lxcap/buildfail [build failed]
+panic: test timed out after 5s
+	running tests:
+		TestDeadlock (5s)
+
+goroutine 23 [running]:
+testing.(*M).startAlarm.func1()
+	$GOROOT/src/testing/testing.go:2802
+created by time.goFunc
+	$GOROOT/src/time/sleep.go:215
+
+goroutine 22 [chan send]:
+example.com/lxcap/dead.TestDeadlock(...)
+	dead/dead_test.go:7
+testing.tRunner(...)
+	$GOROOT/src/testing/testing.go:2036
+created by testing.(*T).Run in goroutine 1
+	$GOROOT/src/testing/testing.go:2101
+
+1 goroutine [chan receive] in library code: testing.(*T).Run
+[paths: $GOROOT=/opt/homebrew/Cellar/go/1.26.5/libexec]
+FAIL	example.com/lxcap/dead	5.245s
+=== RUN   TestLoadConfig
+2026/09/26 02:48:18 config file testdata/app.yaml missing
+FAIL	example.com/lxcap/exit	0.887s
+?   	example.com/lxcap/notests	[no test files]
+--- FAIL: TestParallel (0.00s)
+    --- FAIL: TestParallel/conflict (0.01s)
+        par_test.go:23: adding 2 + 2
+        par_test.go:25: Add(2, 2) = 4, want 5
+    --- FAIL: TestParallel/negative (0.01s)
+        par_test.go:23: adding -1 + -1
+        par_test.go:25: Add(-1, -1) = -2, want -3
+FAIL
+FAIL	example.com/lxcap/par	0.679s
+ok  	5 packages (all cached) under example.com/lxcap: ok1, ok2, ok3, ok4, race
+--- SKIP: TestNeedsDocker (0.00s)
+    skip_test.go:5: docker not available
+--- SKIP: TestNeedsNetwork (0.00s)
+    skip_test.go:6: set LX_NET=1 to run
+ok  	example.com/lxcap/skip	(cached)
+--- FAIL: TestTree (0.00s)
+    --- FAIL: TestTree/nil_next (0.00s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal SIGSEGV: segmentation violation code=0x2 addr=0x0 pc=0x102ec424c]
+
+goroutine 9 [running]:
+testing.tRunner.func1.2(...)
+	$GOROOT/src/testing/testing.go:1974
+testing.tRunner.func1()
+	$GOROOT/src/testing/testing.go:1977
+panic({0x102ffabe0?, 0x103044cb0?})
+	$GOROOT/src/runtime/panic.go:860
+example.com/lxcap/sub.sum(...)
+	sub/sub_test.go:10
+example.com/lxcap/sub.sum(...)
+	sub/sub_test.go:10
+example.com/lxcap/sub.TestTree.func2(...)
+	sub/sub_test.go:15
+testing.tRunner(...)
+	$GOROOT/src/testing/testing.go:2036
+created by testing.(*T).Run in goroutine 7
+	$GOROOT/src/testing/testing.go:2101
+[paths: $GOROOT=/opt/homebrew/Cellar/go/1.26.5/libexec]
+FAIL	example.com/lxcap/sub	0.448s
+FAIL	example.com/lxcap/vetfail [build failed]
+[10 passed, 5 failed, 2 skipped (incl. subtests) · hidden: 36 === RUN/--- PASS lines, 6 lines of passing-test output]

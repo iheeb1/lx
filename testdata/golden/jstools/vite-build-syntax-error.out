@@ -1,0 +1,19 @@
+vite v8.3.1 building client environment for production...
+✓ 15 modules transformed.
+✗ Build failed in 38ms
+error during build:
+Build failed with 1 error:
+
+[builtin:vite-transform] Unexpected token
+   ╭─[ src/utils/broken.ts:1:24 ]
+   │
+ 1 │ export const broken = (;
+   │                        ┬
+   │                        ╰──
+───╯
+
+    at aggregateBindingErrorsIntoJsError (file:///home/user/src/vite-app/node_modules/rolldown/dist/shared/error-C7pxws0W.mjs:48:18)
+    … 5 library frames (rolldown, vite)
+    at async CAC.<anonymous> (file:///home/user/src/vite-app/node_modules/vite/dist/node/cli.js:780:3) {
+  errors: [Getter/Setter]
+}

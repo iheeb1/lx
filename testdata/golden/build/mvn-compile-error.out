@@ -1,0 +1,15 @@
+[lx: hidden: 21 [INFO] progress lines, 7 lines of Maven's help footer]
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Calc.java: /home/user/src/mvnapp/src/main/java/com/example/Calc.java uses unchecked or unsafe operations.
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Calc.java: Recompile with -Xlint:unchecked for details.
+[ERROR] COMPILATION ERROR :
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[10,35] cannot find symbol
+  symbol:   method helper(int)
+  location: class com.example.Calc
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[11,86] incompatible types: int cannot be converted to java.lang.String
+[INFO] 2 errors
+[INFO] BUILD FAILURE
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project demo: Compilation failure: Compilation failure:
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[10,35] cannot find symbol
+[ERROR]   symbol:   method helper(int)
+[ERROR]   location: class com.example.Calc
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[11,86] incompatible types: int cannot be converted to java.lang.String

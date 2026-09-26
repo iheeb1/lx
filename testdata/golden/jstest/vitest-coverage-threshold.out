@@ -1,0 +1,18 @@
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Duration  275ms (transform 20ms, setup 0ms, import 34ms, tests 3ms, environment 0ms)
+ % Coverage report from v8
+
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------|---------|----------|---------|---------|-------------------
+All files |       0 |        0 |       0 |       0 |
+ cart.ts  |       0 |        0 |       0 |       0 | 8-23
+----------|---------|----------|---------|---------|-------------------
+=============================== Coverage summary ===============================
+Statements   : 0% ( 0/10 )
+Branches     : 0% ( 0/6 )
+Functions    : 0% ( 0/5 )
+Lines        : 0% ( 0/8 )
+================================================================================
+ERROR: Coverage for lines (0%) does not meet global threshold (95%)

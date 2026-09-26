@@ -1,0 +1,36 @@
+
+
+  async leak
+    ✔ schedules a throw
+    1) waits
+
+
+  1 passing (8ms)
+  1 failing
+
+  1) async leak
+       waits:
+     Uncaught Error: uncaught boom after test
+      at Timeout._onTimeout (adv/uncaught.js:4:30)
+      at listOnTimeout (node:internal/timers:605:17)
+      at process.processTimers (node:internal/timers:541:7)
+
+
+
+/home/user/src/mochaproj/node_modules/mocha/lib/runner.js:1120
+    throw err;
+    ^
+
+Error: done() called multiple times in test <async leak waits> of file /home/user/src/mochaproj/adv/uncaught.js
+    at createMultipleDoneError (/home/user/src/mochaproj/node_modules/mocha/lib/errors.js:316:13)
+    at multiple (/home/user/src/mochaproj/node_modules/mocha/lib/runnable.js:290:24)
+    at done (/home/user/src/mochaproj/node_modules/mocha/lib/runnable.js:301:14)
+    at Timeout._onTimeout (/home/user/src/mochaproj/node_modules/mocha/lib/runnable.js:414:7)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  code: 'ERR_MOCHA_MULTIPLE_DONE',
+  valueType: 'undefined',
+  value: undefined
+}
+
+Node.js v24.18.0

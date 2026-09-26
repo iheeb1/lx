@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "mvn",
+    "-o",
+    "test"
+  ],
+  "exit_code": 1,
+  "description": "mvn test (offline, Maven 3.9.16, surefire 3.1.2, JUnit 5.10.1, JDK 26): one assertion failure, one ArithmeticException error, a passing class printing to stdout, deprecation warning from javac",
+  "cwd": "/home/user/src/mvnapp"
+}

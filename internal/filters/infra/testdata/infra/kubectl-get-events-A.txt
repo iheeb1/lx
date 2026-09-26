@@ -1,0 +1,41 @@
+NAMESPACE   LAST SEEN            TYPE      REASON             OBJECT                        MESSAGE
+shop        90m                  Normal    Scheduled          pod/worker-5c6d7e8f9-76203    Successfully assigned shop/worker-5c6d7e8f9-76203 to node-1
+shop        89m                  Normal    Pulled             pod/worker-5c6d7e8f9-60c55    Container image "registry.example.com/shop/worker:1.8.2" already present on machine
+shop        88m                  Normal    Created            pod/worker-5c6d7e8f9-06f8f    Created container: worker
+shop        87m                  Normal    Started            pod/worker-5c6d7e8f9-55eae    Started container worker
+shop        86m                  Normal    Killing            pod/worker-5c6d7e8f9-879cc    Stopping container worker
+shop        85m                  Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-bb349
+shop        84m                  Normal    Scheduled          pod/worker-5c6d7e8f9-d5bc1    Successfully assigned shop/worker-5c6d7e8f9-d5bc1 to node-3
+shop        83m                  Normal    Pulled             pod/worker-5c6d7e8f9-c43a2    Container image "registry.example.com/shop/worker:1.8.2" already present on machine
+shop        82m                  Normal    Created            pod/worker-5c6d7e8f9-cbac2    Created container: worker
+shop        81m                  Normal    Started            pod/worker-5c6d7e8f9-f06dc    Started container worker
+shop        80m                  Normal    Killing            pod/worker-5c6d7e8f9-493ea    Stopping container worker
+shop        79m                  Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-eb83f
+shop        78m                  Normal    Scheduled          pod/worker-5c6d7e8f9-39297    Successfully assigned shop/worker-5c6d7e8f9-39297 to node-1
+shop        77m                  Normal    Pulled             pod/worker-5c6d7e8f9-593df    Container image "registry.example.com/shop/worker:1.8.2" already present on machine
+shop        76m                  Normal    Created            pod/worker-5c6d7e8f9-f520c    Created container: worker
+shop        75m                  Normal    Started            pod/worker-5c6d7e8f9-64892    Started container worker
+shop        74m                  Normal    Killing            pod/worker-5c6d7e8f9-46f84    Stopping container worker
+shop        73m                  Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-809d2
+shop        72m                  Normal    Scheduled          pod/worker-5c6d7e8f9-31b47    Successfully assigned shop/worker-5c6d7e8f9-31b47 to node-3
+shop        71m                  Normal    Pulled             pod/worker-5c6d7e8f9-7cefb    Container image "registry.example.com/shop/worker:1.8.2" already present on machine
+shop        70m                  Normal    Created            pod/worker-5c6d7e8f9-0079f    Created container: worker
+shop        69m                  Normal    Started            pod/worker-5c6d7e8f9-7872a    Started container worker
+shop        68m                  Normal    Killing            pod/worker-5c6d7e8f9-93fde    Stopping container worker
+shop        67m                  Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-746cb
+shop        66m                  Normal    Scheduled          pod/worker-5c6d7e8f9-adaac    Successfully assigned shop/worker-5c6d7e8f9-adaac to node-1
+shop        65m                  Normal    Pulled             pod/worker-5c6d7e8f9-75f15    Container image "registry.example.com/shop/worker:1.8.2" already present on machine
+shop        64m                  Normal    Created            pod/worker-5c6d7e8f9-9014e    Created container: worker
+shop        63m                  Normal    Started            pod/worker-5c6d7e8f9-cba70    Started container worker
+shop        62m                  Normal    Killing            pod/worker-5c6d7e8f9-c5a2d    Stopping container worker
+shop        61m                  Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-0108d
+shop        31m (x14 over 58m)   Warning   FailedScheduling   pod/worker-5c6d7e8f9-rt9vb    0/5 nodes are available: 1 node(s) had untolerated taint {node.kubernetes.io/not-ready: }, 4 Insufficient memory. preemption: 0/5 nodes are available: 1 Preemption is not helpful for scheduling, 4 No preemption victims found for incoming pod.
+shop        60m                  Normal    Scheduled          pod/worker-5c6d7e8f9-76203    Successfully assigned shop/worker-5c6d7e8f9-76203 to node-3
+shop        59m                  Normal    Pulled             pod/worker-5c6d7e8f9-60c55    Container image "registry.example.com/shop/worker:1.8.2" already present on machine
+shop        58m                  Normal    Created            pod/worker-5c6d7e8f9-06f8f    Created container: worker
+shop        57m                  Normal    Started            pod/worker-5c6d7e8f9-55eae    Started container worker
+shop        56m                  Normal    Killing            pod/worker-5c6d7e8f9-879cc    Stopping container worker
+shop        55m                  Normal    SuccessfulCreate   replicaset/worker-5c6d7e8f9   Created pod: worker-5c6d7e8f9-bb349
+shop        54m                  Normal    Scheduled          pod/worker-5c6d7e8f9-d5bc1    Successfully assigned shop/worker-5c6d7e8f9-d5bc1 to node-1
+shop        53m                  Normal    Pulled             pod/worker-5c6d7e8f9-c43a2    Container image "registry.example.com/shop/worker:1.8.2" already present on machine
+shop        52m                  Normal    Created            pod/worker-5c6d7e8f9-cbac2    Created container: worker

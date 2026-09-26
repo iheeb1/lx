@@ -1,0 +1,3 @@
+logs/12:30:00.log:1:ERROR first
+logs/12:30:00.log:3:ERROR second
+logs/12:30:00.log:4:ERROR third

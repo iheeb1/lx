@@ -1,0 +1,84 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] parent                                                             [pom]
+[INFO] core                                                               [jar]
+[INFO] api                                                                [jar]
+[INFO] web                                                                [jar]
+[INFO] 
+[INFO] -------------------------< com.example:parent >-------------------------
+[INFO] Building parent 1.0                                                [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --------------------------< com.example:core >--------------------------
+[INFO] Building core 1.0                                                  [2/4]
+[INFO]   from core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core ---
+[INFO] skip non existing resourceDirectory /home/user/src/mvnmulti/core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ core ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 1 source file with javac [debug release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core ---
+[INFO] skip non existing resourceDirectory /home/user/src/mvnmulti/core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ core ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ core ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.3.0:jar (default-jar) @ core ---
+[INFO] Building jar: /home/user/src/mvnmulti/core/target/core-1.0.jar
+[INFO] 
+[INFO] --------------------------< com.example:api >---------------------------
+[INFO] Building api 1.0                                                   [3/4]
+[INFO]   from api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ api ---
+[INFO] skip non existing resourceDirectory /home/user/src/mvnmulti/api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ api ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 1 source file with javac [debug release 17] to target/classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /home/user/src/mvnmulti/api/src/main/java/com/example/api/Api.java:[1,90] cannot find symbol
+  symbol:   method value()
+  location: class com.example.core.Core
+[INFO] 1 error
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for parent 1.0:
+[INFO] 
+[INFO] parent ............................................. SUCCESS [  0.002 s]
+[INFO] core ............................................... SUCCESS [  1.426 s]
+[INFO] api ................................................ FAILURE [  0.207 s]
+[INFO] web ................................................ SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.728 s
+[INFO] Finished at: 2026-09-26T03:04:10+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project api: Compilation failure
+[ERROR] /home/user/src/mvnmulti/api/src/main/java/com/example/api/Api.java:[1,90] cannot find symbol
+[ERROR]   symbol:   method value()
+[ERROR]   location: class com.example.core.Core
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :api

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "node",
+    "syntax.js"
+  ],
+  "shell": "node syntax.js",
+  "repo": "scratch/nodeproj",
+  "exit_code": 1,
+  "description": "node 24: script with a syntax error",
+  "cwd": "repos/nodeproj"
+}

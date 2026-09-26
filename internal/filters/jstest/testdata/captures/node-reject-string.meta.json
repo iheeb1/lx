@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "node",
+    "rejectstr.js"
+  ],
+  "shell": "node rejectstr.js",
+  "repo": "scratch/nodeproj",
+  "exit_code": 1,
+  "description": "node 24: Promise.reject with a string reason",
+  "cwd": "repos/nodeproj"
+}

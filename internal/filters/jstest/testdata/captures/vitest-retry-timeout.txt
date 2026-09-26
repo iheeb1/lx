@@ -1,0 +1,85 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/home/user/src/vitproj[39m
+
+ [31m❯[39m adv/retry.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 5[2mms[22m[39m
+[31m   [31m×[31m flaky[39m[32m 4[2mms[22m[39m[33m (retry x2)[39m
+ [31m❯[39m adv/timeout.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 54[2mms[22m[39m
+[31m   [31m×[31m times out[39m[32m 54[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m adv/retry.test.ts[2m > [22mflaky
+[31m[1mAssertionError[22m: expected 1 to be 5 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 5[39m
+[31m+ 1[39m
+
+[36m [2m❯[22m adv/retry.test.ts:[2m5:13[22m[39m
+    [90m  3|[39m [34mit[39m([32m"flaky"[39m[33m,[39m { retry[33m:[39m [34m2[39m }[33m,[39m () [33m=>[39m {
+    [90m  4|[39m   n[33m++[39m[33m;[39m
+    [90m  5|[39m   [34mexpect[39m(n)[33m.[39m[34mtoBe[39m([34m5[39m)[33m;[39m
+    [90m   |[39m             [31m^[39m
+    [90m  6|[39m })[33m;[39m
+    [90m  7|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m adv/retry.test.ts[2m > [22mflaky
+[31m[1mAssertionError[22m: expected 2 to be 5 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 5[39m
+[31m+ 2[39m
+
+[36m [2m❯[22m adv/retry.test.ts:[2m5:13[22m[39m
+    [90m  3|[39m [34mit[39m([32m"flaky"[39m[33m,[39m { retry[33m:[39m [34m2[39m }[33m,[39m () [33m=>[39m {
+    [90m  4|[39m   n[33m++[39m[33m;[39m
+    [90m  5|[39m   [34mexpect[39m(n)[33m.[39m[34mtoBe[39m([34m5[39m)[33m;[39m
+    [90m   |[39m             [31m^[39m
+    [90m  6|[39m })[33m;[39m
+    [90m  7|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m adv/retry.test.ts[2m > [22mflaky
+[31m[1mAssertionError[22m: expected 3 to be 5 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 5[39m
+[31m+ 3[39m
+
+[36m [2m❯[22m adv/retry.test.ts:[2m5:13[22m[39m
+    [90m  3|[39m [34mit[39m([32m"flaky"[39m[33m,[39m { retry[33m:[39m [34m2[39m }[33m,[39m () [33m=>[39m {
+    [90m  4|[39m   n[33m++[39m[33m;[39m
+    [90m  5|[39m   [34mexpect[39m(n)[33m.[39m[34mtoBe[39m([34m5[39m)[33m;[39m
+    [90m   |[39m             [31m^[39m
+    [90m  6|[39m })[33m;[39m
+    [90m  7|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m adv/timeout.test.ts[2m > [22mtimes out
+[31m[1mError[22m: Test timed out in 50ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m adv/timeout.test.ts:[2m2:1[22m[39m
+    [90m  1|[39m [35mimport[39m { it } [35mfrom[39m [32m"vitest"[39m[33m;[39m
+    [90m  2|[39m [34mit[39m([32m"times out"[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m   |[39m [31m^[39m
+    [90m  3|[39m   [35mawait[39m [35mnew[39m [33mPromise[39m((r) [33m=>[39m [34msetTimeout[39m(r[33m,[39m [34m200[39m))[33m;[39m
+    [90m  4|[39m }[33m,[39m [34m50[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[90m (2)[39m
+[2m   Start at [22m 13:18:25
+[2m   Duration [22m 176ms[2m (transform 23ms, setup 0ms, import 38ms, tests 60ms, environment 0ms)[22m
+

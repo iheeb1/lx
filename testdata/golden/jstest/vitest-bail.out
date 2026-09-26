@@ -1,0 +1,27 @@
+ ❯ adv/soft.test.ts (4 tests | 1 failed) 7ms
+   × soft assertions 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  adv/soft.test.ts > soft assertions
+AssertionError: expected 1 to be 2 // Object.is equality
+- Expected
++ Received
+- 2
++ 1
+ ❯ adv/soft.test.ts:3:18
+      3|   expect.soft(1).toBe(2);
+       |                  ^
+
+ FAIL  adv/soft.test.ts > soft assertions
+AssertionError: expected 'a' to be 'b' // Object.is equality
+Expected: "b"
+Received: "a"
+ ❯ adv/soft.test.ts:4:20
+      4|   expect.soft("a").toBe("b");
+       |                    ^
+
+[1 passing file, 2 passing tests hidden; 1 console block of passing tests hidden]
+ Test Files  1 failed | 1 passed (3)
+      Tests  1 failed | 2 passed | 1 skipped | 1 todo (16)
+   Duration  136ms (transform 47ms, setup 0ms, import 69ms, tests 10ms, environment 0ms)

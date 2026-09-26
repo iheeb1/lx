@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "curl",
+    "-#",
+    "-o",
+    "/dev/null",
+    "https://go.dev/doc/install"
+  ],
+  "shell": "curl -# -o /dev/null https://go.dev/doc/install",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -# progress bar to a file: only bar frames",
+  "cwd": "data/api"
+}

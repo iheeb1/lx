@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "diff",
+    "--cached"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git diff --cached with a binary change, a mode change, a rename with edits, a deletion and a new file"
+}

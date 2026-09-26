@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "./..."
+  ],
+  "shell": "go test ./...",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "go test ./... passing in cobra (few packages, 'ok' lines)",
+  "cwd": "repos/cobra"
+}

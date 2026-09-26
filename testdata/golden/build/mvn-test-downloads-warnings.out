@@ -1,0 +1,8 @@
+[lx: hidden: 32 [INFO] progress lines, 12 download lines, 3 lines of passing-test output]
+[WARNING] The POM for org.example:legacy-lib:jar:0.9 is invalid, transitive dependencies (if any) will not be available, enable verbose output (-X) for more details
+[WARNING] /home/user/src/demo/src/main/java/com/example/Store.java:[41,25] [removal] finalize() in Object has been deprecated and marked for removal
+[WARNING] /home/user/src/demo/src/main/java/com/example/Codec.java:[12,8] [unchecked] unchecked conversion
+[lx: same warning at 1 more location: src/main/java/com/example/Codec.java:[30,8]]
+[WARNING] Tests run: 9, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.214 s -- in com.example.StoreTest
+[WARNING] Tests run: 21, Failures: 0, Errors: 0, Skipped: 1
+[INFO] BUILD SUCCESS

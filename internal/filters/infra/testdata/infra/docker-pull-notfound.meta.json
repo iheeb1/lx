@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "docker",
+    "pull",
+    "alpine:99.99"
+  ],
+  "shell": "docker pull alpine:99.99",
+  "repo": "",
+  "exit_code": 1,
+  "description": "REAL docker 29.5.2: pull of a tag that does not exist",
+  "cwd": "repos/shop"
+}

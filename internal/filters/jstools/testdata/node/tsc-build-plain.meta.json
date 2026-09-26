@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npx",
+    "tsc",
+    "-b"
+  ],
+  "shell": "npx tsc -b",
+  "exit_code": 2,
+  "description": "same tsc -b without --pretty: plain file(l,c) diagnostics with elaboration lines",
+  "cwd": "/home/user/src/vite-app"
+}

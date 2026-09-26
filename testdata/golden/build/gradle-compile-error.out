@@ -1,0 +1,26 @@
+[lx: hidden: 4 task lines (UP-TO-DATE ×3, NO-SOURCE), 7 lines of Gradle's help text (* Try:, --warning-mode)]
+> Task :api:compileJava FAILED
+/home/user/src/app/api/src/main/java/com/example/api/Api.java:14: error: cannot find symbol
+        return Core.value();
+                   ^
+  symbol:   method value()
+  location: class Core
+/home/user/src/app/api/src/main/java/com/example/api/Api.java:21: error: incompatible types: String cannot be converted to int
+        int port = props.getProperty("port");
+                                    ^
+/home/user/src/app/api/src/main/java/com/example/api/Legacy.java:9: warning: [deprecation] Date(String) in Date has been deprecated
+        Date d = new Date(text);
+                 ^
+2 errors
+1 warning
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':api:compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+BUILD FAILED in 2s
+5 actionable tasks: 1 executed, 4 up-to-date

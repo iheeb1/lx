@@ -1,0 +1,23 @@
+collected 547 items / 2 errors
+==================================== ERRORS ====================================
+____________________ ERROR collecting tests/test_parser.py _____________________
+… 9 library frames (_pytest, importlib)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ast.py:50: in parse
+    return compile(source, filename, mode, flags,
+E     File "/home/user/src/click/tests/test_parser.py", line 18
+E       def test_split_arg_string_quotes(:
+E                                        ^
+E   SyntaxError: invalid syntax
+_____________________ ERROR collecting tests/test_utils.py _____________________
+ImportError while importing test module '/home/user/src/click/tests/test_utils.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py:127: in import_module
+tests/test_utils.py:10: in <module>
+    from click.utils import format_filename_safe
+E   ImportError: cannot import name 'format_filename_safe' from 'click.utils' (/home/user/src/click/src/click/utils.py)
+=========================== short test summary info ============================
+ERROR tests/test_parser.py
+ERROR tests/test_utils.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!
+============================== 2 errors in 0.31s ===============================

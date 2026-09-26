@@ -1,0 +1,14 @@
+> vite-react-app@0.0.0 build
+> tsc -b && vite build
+
+vite v8.3.1 building client environment for production...
+✓ 21 modules transformed.
+dist/assets/index-Ei-G0xja.js   1,371.51 kB │ gzip: 495.34 kB
+[5 asset lines hidden (30.43 kB, largest dist/assets/hero-CLDdwZDr.png 13.05 kB)]
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 171ms

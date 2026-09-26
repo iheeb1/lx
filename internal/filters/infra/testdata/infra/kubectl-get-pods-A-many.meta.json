@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "kubectl",
+    "get",
+    "pods",
+    "-A"
+  ],
+  "shell": "kubectl get pods -A",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of kubectl 1.31 `kubectl get pods -A`; the tool is not available on the capture host): 170 pods in 8 namespaces; 7 unhealthy ones past row 40 and one within, 3 Completed",
+  "cwd": "repos/shop"
+}

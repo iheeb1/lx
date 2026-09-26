@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-sS",
+    "http://127.0.0.1:18765/issues"
+  ],
+  "shell": "curl -sS http://127.0.0.1:18765/issues",
+  "repo": "",
+  "exit_code": 18,
+  "description": "REAL curl 8.7.1 against a local server that closes after 60% of Content-Length: \"curl: (18) transfer closed\" is glued inside the JSON body at line 1868 of 2085 (stdout flushed after stderr)",
+  "cwd": "data/api"
+}

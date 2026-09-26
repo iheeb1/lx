@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "package-lock.json"
+  ],
+  "shell": "cat package-lock.json",
+  "repo": "",
+  "exit_code": 0,
+  "description": "cat of a 42 KB npm lockfile (lockfileVersion 3)",
+  "cwd": "repos/vite-react-app"
+}

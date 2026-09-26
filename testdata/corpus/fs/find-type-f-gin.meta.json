@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "find . -type f -not -path './.git/*'"
+  ],
+  "shell": "find . -type f -not -path './.git/*'",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "find . -type f excluding .git in a mid-size Go repo",
+  "cwd": "repos/gin"
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "node_modules/marked/marked.min.js"
+  ],
+  "shell": "cat node_modules/marked/marked.min.js",
+  "repo": "",
+  "exit_code": 0,
+  "description": "cat of a 40 KB minified JS file",
+  "cwd": "repos/express"
+}

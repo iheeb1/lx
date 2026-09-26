@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "ls",
+    "--all"
+  ],
+  "shell": "npm ls --all",
+  "exit_code": 0,
+  "description": "npm ls --all in an npm workspace root: deduped leaves and a deduped workspace link",
+  "cwd": "/home/user/src/ws-app"
+}

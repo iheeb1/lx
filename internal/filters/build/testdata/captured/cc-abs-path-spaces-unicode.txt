@@ -1,0 +1,41 @@
+In file included from /home/user/src/my proj é/src/main.c:2:
+In file included from /home/user/src/my proj é/src/../lib/util.h:3:
+/home/user/src/my proj é/src/../lib/config.h:2:37: warning: unused variable 'tmp' [-Wunused-variable]
+    2 | static const char *name(void) { int tmp; return "x"; }
+      |                                     ^~~
+In file included from /home/user/src/my proj é/src/main.c:2:
+/home/user/src/my proj é/src/../lib/util.h:4:30: warning: unused parameter 'unused' [-Wunused-parameter]
+    4 | static int helper(int x, int unused) { return x * 2; }
+      |                              ^
+/home/user/src/my proj é/src/main.c:5:54: error: use of undeclared identifier 'missing_var'
+    5 |     for (int i = 0; i < n; i++) total += util_add(i, missing_var);
+      |                                                      ^~~~~~~~~~~
+/home/user/src/my proj é/src/main.c:3:24: warning: unused parameter 'flags' [-Wunused-parameter]
+    3 | int compute(int n, int flags) {
+      |                        ^
+/home/user/src/my proj é/src/main.c:8:56: error: call to undeclared function 'undefined_fn'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    8 | int main(void) { printf("%d\n", compute(3, 1)); return undefined_fn(2); }
+      |                                                        ^
+3 warnings and 2 errors generated.
+In file included from /home/user/src/my proj é/src/other.c:1:
+In file included from /home/user/src/my proj é/src/../lib/util.h:3:
+/home/user/src/my proj é/src/../lib/config.h:2:37: warning: unused variable 'tmp' [-Wunused-variable]
+    2 | static const char *name(void) { int tmp; return "x"; }
+      |                                     ^~~
+In file included from /home/user/src/my proj é/src/other.c:1:
+/home/user/src/my proj é/src/../lib/util.h:4:30: warning: unused parameter 'unused' [-Wunused-parameter]
+    4 | static int helper(int x, int unused) { return x * 2; }
+      |                              ^
+/home/user/src/my proj é/src/other.c:2:40: error: incompatible integer to pointer conversion initializing 'char *' with an expression of type 'int' [-Wint-conversion]
+    2 | int other(int a, int b, int c) { char *p = 5; return a; }
+      |                                        ^   ~
+/home/user/src/my proj é/src/other.c:2:40: warning: unused variable 'p' [-Wunused-variable]
+    2 | int other(int a, int b, int c) { char *p = 5; return a; }
+      |                                        ^
+/home/user/src/my proj é/src/other.c:2:22: warning: unused parameter 'b' [-Wunused-parameter]
+    2 | int other(int a, int b, int c) { char *p = 5; return a; }
+      |                      ^
+/home/user/src/my proj é/src/other.c:2:29: warning: unused parameter 'c' [-Wunused-parameter]
+    2 | int other(int a, int b, int c) { char *p = 5; return a; }
+      |                             ^
+5 warnings and 1 error generated.

@@ -1,0 +1,34 @@
+--- FAIL: TestExecuteContext (0.00s)
+panic: runtime error: index out of range [0] with length 0 [recovered, repanicked]
+
+goroutine 109 [running]:
+testing.tRunner.func1.2(...)
+	$GOROOT/src/testing/testing.go:1974
+testing.tRunner.func1()
+	$GOROOT/src/testing/testing.go:1977
+panic({0x1028db7e0?, 0x7f594249d110?})
+	$GOROOT/src/runtime/panic.go:860
+github.com/spf13/cobra.legacyArgs(...)
+	args.go:36
+github.com/spf13/cobra.(*Command).Find(...)
+	command.go:776
+github.com/spf13/cobra.(*Command).initCompleteCmd(...)
+	completions.go:297
+github.com/spf13/cobra.(*Command).ExecuteC(...)
+	command.go:1110
+github.com/spf13/cobra.(*Command).Execute(...)
+	command.go:1071
+github.com/spf13/cobra.(*Command).ExecuteContext(...)
+	command.go:1064
+github.com/spf13/cobra.executeCommandWithContext(...)
+	command_test.go:43
+github.com/spf13/cobra.TestExecuteContext(...)
+	command_test.go:193
+testing.tRunner(...)
+	$GOROOT/src/testing/testing.go:2036
+created by testing.(*T).Run in goroutine 1
+	$GOROOT/src/testing/testing.go:2101
+[paths: $GOROOT=/opt/homebrew/Cellar/go/1.26.5/libexec]
+FAIL	github.com/spf13/cobra	0.622s
+ok  	github.com/spf13/cobra/doc	(cached)
+FAIL

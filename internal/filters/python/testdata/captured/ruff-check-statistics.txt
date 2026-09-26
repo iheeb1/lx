@@ -1,0 +1,31 @@
+warning: `incorrect-blank-line-before-class` (D203) and `blank-line-before-class` (D211) are incompatible. Ignoring `incorrect-blank-line-before-class`.
+warning: `multi-line-summary-first-line` (D212) and `multi-line-summary-second-line` (D213) are incompatible. Ignoring `multi-line-summary-second-line`.
+33	D103   	[ ] undocumented-public-function
+22	ANN201 	[ ] missing-return-type-undocumented-public-function
+20	ANN001 	[ ] missing-type-function-argument
+14	S101   	[ ] assert
+10	CPY001 	[ ] missing-copyright-notice
+ 8	D102   	[ ] undocumented-public-method
+ 8	D100   	[ ] undocumented-public-module
+ 7	PLR2004	[ ] magic-value-comparison
+ 7	UP006  	[ ] non-pep585-annotation
+ 7	T201   	[ ] print
+ 6	INP001 	[ ] implicit-namespace-package
+ 5	UP035  	[-] deprecated-import
+ 5	TRY003 	[ ] raise-vanilla-args
+ 4	PTH123 	[ ] builtin-open
+ 3	EM102  	[ ] f-string-in-exception
+ 3	ARG001 	[ ] unused-function-argument
+ 2	E501   	[ ] line-too-long
+ 2	EM101  	[ ] raw-string-in-exception
+ 2	D101   	[ ] undocumented-public-class
+ 2	I001   	[*] unsorted-imports
+ 1	FA100  	[ ] future-rewritable-type-annotation
+ 1	UP045  	[ ] non-pep604-annotation-optional
+ 1	PTH105 	[ ] os-replace
+ 1	PT028  	[ ] pytest-parameter-with-default-argument
+ 1	UP037  	[*] quoted-annotation
+ 1	D107   	[ ] undocumented-public-init
+ 1	F401   	[*] unused-import
+Found 177 errors.
+[*] 5 fixable with the `--fix` option (41 hidden fixes can be enabled with the `--unsafe-fixes` option).

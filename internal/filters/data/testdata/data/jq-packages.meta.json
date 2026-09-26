@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "jq",
+    ".packages",
+    "package-lock.json"
+  ],
+  "shell": "jq .packages package-lock.json",
+  "repo": "",
+  "exit_code": 0,
+  "description": "jq .packages of a lockfile: 39 KB JSON object of objects",
+  "cwd": "repos/vite-react-app"
+}

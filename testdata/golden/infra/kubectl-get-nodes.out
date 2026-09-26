@@ -1,0 +1,6 @@
+NAME     STATUS                     ROLES           AGE    VERSION
+cp-1     Ready                      control-plane   212d   v1.31.4
+node-1   Ready                      <none>          212d   v1.31.4
+node-2   NotReady                   <none>          212d   v1.31.4
+node-3   Ready,SchedulingDisabled   <none>          98d    v1.31.4
+node-4   Ready                      <none>          98d    v1.31.4

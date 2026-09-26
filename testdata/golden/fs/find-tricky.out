@@ -1,0 +1,13 @@
+[16 paths · names without / may be directories]
+app.conf  empty
+logs/
+  12:30:00.log
+node_modules/ [1 entry]
+src/
+  crlf.txt  main.go
+  sub/
+    a.go
+with space/
+  notes.md
+ünï-目录/
+  文件.txt

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "mvn",
+    "-o",
+    "-B",
+    "install"
+  ],
+  "exit_code": 1,
+  "description": "mvn -B install (offline, Maven 3.9.16) in a 4-project reactor where maven-install-plugin is not in the local repository: plugin resolution error on the parent, Reactor Summary with FAILURE/SKIPPED rows",
+  "cwd": "/home/user/src/mvnmulti"
+}

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "setHeader",
+    "."
+  ],
+  "shell": "grep -rn \"setHeader\" .",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "grep -rn setHeader . in a JS repo without excluding node_modules: 184 matches, ~70% from dependencies",
+  "cwd": "repos/express"
+}

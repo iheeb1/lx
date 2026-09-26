@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "go.sum"
+  ],
+  "shell": "cat go.sum",
+  "repo": "",
+  "exit_code": 0,
+  "description": "cat of gin's go.sum (11 KB)",
+  "cwd": "repos/gin"
+}

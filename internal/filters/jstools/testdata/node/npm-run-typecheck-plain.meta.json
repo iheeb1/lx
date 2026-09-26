@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "typecheck"
+  ],
+  "shell": "npm run typecheck",
+  "exit_code": 2,
+  "description": "npm run typecheck (tsc --noEmit) failing with plain diagnostics",
+  "cwd": "/home/user/src/eslint9-app"
+}

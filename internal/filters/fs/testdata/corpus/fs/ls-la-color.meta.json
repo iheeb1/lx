@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "ls",
+    "--color=always",
+    "-la",
+    "render",
+    "binding"
+  ],
+  "shell": "ls --color=always -la render binding",
+  "exit_code": 0,
+  "description": "ls --color=always -la: ANSI around names",
+  "cwd": "/home/user/src/gin"
+}

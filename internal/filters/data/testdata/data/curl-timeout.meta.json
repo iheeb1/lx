@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "curl",
+    "-sS",
+    "--max-time",
+    "0.001",
+    "https://go.dev/doc/install"
+  ],
+  "shell": "curl -sS --max-time 0.001 https://go.dev/doc/install",
+  "repo": "",
+  "exit_code": 28,
+  "description": "curl -sS timeout: 'curl: (28) Resolving timed out'",
+  "cwd": "data/api"
+}

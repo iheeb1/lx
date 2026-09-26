@@ -1,0 +1,8 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 127.0.0.1:1...
+* connect to 127.0.0.1 port 1 from 127.0.0.1 port 53854 failed: Connection refused
+* Failed to connect to 127.0.0.1 port 1 after 1 ms: Couldn't connect to server
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+* Closing connection
+curl: (7) Failed to connect to 127.0.0.1 port 1 after 1 ms: Couldn't connect to server

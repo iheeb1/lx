@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-i",
+    "https://api.github.com/repos/golang/go/nonexistent"
+  ],
+  "shell": "curl -i https://api.github.com/repos/golang/go/nonexistent",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -i of a 404 JSON error: all headers kept for status >= 400, small JSON error body",
+  "cwd": "data/api"
+}

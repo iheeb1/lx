@@ -1,0 +1,73 @@
+1bd0ecf 2026-09-25 [HazyLab] fix(context): load Keys under the mutex in Copy (#4854) [+6 body lines]
+3b08cd7 2026-09-19 [water] fix: reset skipped-nodes stack on getValue entry to prevent slice overflow panic [#4818] (#4819) [+6 body lines]
+d8f2d58 2026-09-19 [Ruben Pari] fix(engine): add default ReadHeaderTimeout to http.Server in Run methods (#4800) [+7 body lines]
+    Fixes #4760
+8ad9f9c 2026-09-19 [Wahid Rizka Fathurrohman] docs: fix the graceful shutdown example (#4809) [+5 body lines]
+b1f77cf 2026-09-19 [Gaurav Patil] feat(gin): add support for the HTTP QUERY method (RFC 10008) (#4806) [+18 body lines]
+    Ref #4721
+05b14df 2026-09-19 [Bob Du] chore(deps): bump github.com/stretchr/testify to v1.12.1 (#4822) [+2 body lines]
+e318c6a 2026-09-19 [daixiheguu] docs: align function comments with names (#4814) [+2 body lines]
+3329b63 2026-09-19 [Bob Du] ci(codecov): fix stale comparison base and invalid config (#4823) [+2 body lines]
+5c6a15f 2026-09-16 [Langning Zhang] fix(context): handle missing HTML renderer (#4805) [+4 body lines]
+bc141b4 2026-09-16 [Bo-Yi Wu] fix(deps)!: patch x/crypto vulnerabilities (#4832) [+2 body lines]
+    BREAKING CHANGE: Go 1.26 or later is now required by x/crypto v0.56.0. Upgrade the Go toolchain before building Gin.
+b52df1f 2026-09-16 [Ruben Pari] docs: document panic conditions in Handle, StaticFS, and Bind (#4797) [+4 body lines]
+    Fixes #4594
+2a1a14f 2026-09-16 [Jia-ben00] feat(router): add QUERY method shortcut for RFC 10008 (#4830) [+11 body lines]
+    Closes #4721
+dcaa429 2026-08-15 [Amirhf] docs(path): fix malformed comment in cleanPath (#4723)
+8dd2011 2026-08-15 [Gaurav Patil] fix(deps): bump golang.org/x/net and golang.org/x/text to patched versions (#4807) [+10 body lines]
+    - CVE-2026-56852, golang.org/x/text, denial of service, fixed in 0.39.0
+    - CVE-2026-46600, golang.org/x/net/dns/dnsmessage, denial of service,
+      fixed in 0.56.0
+00cfe5a 2026-08-15 [dependabot[bot]] chore(deps): bump the actions group across 1 directory with 4 updates (#4787) [+41 body lines]
+34dac20 2026-06-27 [greymoth] docs: fix `BindXML` comment referencing nonexistent `binding.BindXML` (#4717) [+6 body lines]
+03f3e42 2026-06-23 [Hershel1995] update validator library to version 10.30.3 (#4707) [+1 body line]
+d9307db 2026-06-22 [Muhammad Ardy Junata] fix(context): skip chmod on pre-existing dirs in SaveUploadedFile (#4702) [+30 body lines]
+    Fixes #4622
+da1e108 2026-06-22 [Pierre F.] test(context): use t.TempDir() for SaveUploadedFile permission test on WSL (#4709) [+10 body lines]
+074b669 2026-06-22 [MuaazTasawar] test(response_writer): add tests for Flush() with and without http.Flusher (#4699) [+6 body lines]
+4a3eb31 2026-06-22 [DadaVinqi] fix(recovery): record recovered panics in c.Errors (#4698) [+10 body lines]
+293ad7e 2026-06-22 [Amirhf] fix(context): Copy() copies Errors and Accepted fields (#4695) [+8 body lines]
+2e4d4f3 2026-06-22 [Bo-Yi Wu] chore(deps): bump github.com/quic-go/quic-go to v0.60.0 (#4713) [+1 body line]
+d75fcd4 2026-06-02 [Sai Asish Y] fix(response): panic on Hijack/CloseNotify when wrapper unsupported (#4645) [+6 body lines]
+    Closes #4638. http.TimeoutHandler's writer doesn't implement http.Hijacker/CloseNotifier; mirror Flush's graceful degradation.
+8d0468f 2026-06-02 [Tero Saarni] chore(deps): bump golang.org/x/net to v0.55.0 (#4678) [+1 body line]
+88c4263 2026-06-02 [Leehainuo] docs(context): align inline comments in GetPostForm example (#4675) [+3 body lines]
+96ece6a 2026-06-02 [Raju Ahmed] feat(context): add Scheme() with proper reverse proxy support (#4655) [+2 body lines]
+c79f5d4 2026-06-02 [wanghaolong613] refactor: optimize error message concatenation in default_validator (#4685)
+5f4f964 2026-05-09 [dependabot[bot]] chore(deps): bump the actions group across 1 directory with 2 updates (#4640) [+23 body lines]
+d3ffc99 2026-03-16 [Abhiyan Khanal] test(engine): add regression tests for HandleContext with NoRoute (#4571) [+5 body lines]
+ecd26c8 2026-03-15 [Bo-Yi Wu] docs(readme): update benchmark results with latest data (#4583) [+5 body lines]
+    - Remove 20 deprecated frameworks from benchmark report
+a749e4d 2026-03-15 [Bo-Yi Wu] docs: replace AUTHORS.md with link to GitHub contributors page (#4582) [+4 body lines]
+65d1c47 2026-03-15 [Bo-Yi Wu] docs(benchmarks): update benchmark report with Gin v1.12.0 results (#4581) [+6 body lines]
+6d88072 2026-03-13 [tsinglua] refactor(test): use the built-in max/min to simplify the code (#4576) [+2 body lines]
+48667a2 2026-03-13 [Bo-Yi Wu] chore(deps): upgrade Go dependencies and CI action versions (#4580) [+5 body lines]
+d467221 2026-03-13 [Bo-Yi Wu] docs: reorganize doc.md TOC into thematic groups (#4579) [+7 body lines]
+3e44fdc 2026-03-04 [dependabot[bot]] chore(deps): bump aquasecurity/trivy-action in the actions group (#4557) [+14 body lines]
+cb2b764 2026-02-28 [HolynnChen] test(make): modify test folder and test command in Makefile (#4465) [+1 body line]
+a39670f 2026-02-28 [Max Katz] docs(license): update license period (#4130) [+1 body line]
+052d1a7 2026-02-28 [Aum Patel] feat(render): add PDF renderer and tests (#4491) [+3 body lines]
+ff00c01 2026-02-28 [Bo-Yi Wu] docs: revise and expand Gin 1.12.0 release announcement (#4554) [+3 body lines]
+73726dc 2026-02-28 [Bo-Yi Wu] docs: update documentation to reflect Go version changes (#4552) [+2 body lines]
+e292e5c 2026-02-28 [Bo-Yi Wu] docs: document and finalize Gin v1.12.0 release (#4551) [+11 body lines]
+ae3f524 2026-02-28 [Bo-Yi Wu] ci: update Go version support to 1.25+ across CI and docs (#4550) [+10 body lines]
+38534e2 2026-02-28 [dependabot[bot]] chore(deps): bump golang.org/x/net from 0.50.0 to 0.51.0 (#4548) [+12 body lines]
+472d086 2026-02-27 [Varun Chawla] fix(tree): panic in findCaseInsensitivePathRec with RedirectFixedPath (#4535) [+16 body lines]
+    Fixes #2959
+fb25834 2026-02-28 [Mehrdad Banikian] test(context): use http.StatusContinue constant instead of magic number 100 (#4542) [+11 body lines]
+    Fixes #4489
+6f1d5fe 2026-02-28 [Amirhf] test(render): add comprehensive error handling tests (#4541) [+13 body lines]
+5c00df8 2026-02-28 [Denis Galeev] fix(render): write content length in Data.Render (#4206) [+5 body lines]
+db30908 2026-02-27 [Jacob McSwain] chore(logger): allow skipping query string output (#4547) [+4 body lines]
+ba093d1 2026-02-27 [Bob Du] chore(binding): upgrade bson dependency to mongo-driver v2 (#4549) [+1 body line]
+1b414bd 2026-02-27 [dependabot[bot]] chore(deps): bump goreleaser/goreleaser-action in the actions group (#4546) [+14 body lines]
+81dba46 2026-02-21 [dependabot[bot]] chore(deps): bump github.com/go-playground/validator/v10 (#4509) [+12 body lines]
+0c219e7 2026-02-21 [dependabot[bot]] chore(deps): bump aquasecurity/trivy-action in the actions group (#4544) [+14 body lines]
+00900fb 2026-02-21 [Bo-Yi Wu] ci: update CI workflows and standardize Trivy config quotes (#4531) [+4 body lines]
+5260de6 2026-02-18 [dependabot[bot]] chore(deps): bump golang.org/x/net from 0.49.0 to 0.50.0 (#4538) [+11 body lines]
+5f424ff 2026-02-18 [dependabot[bot]] chore(deps): bump github.com/bytedance/sonic from 1.14.2 to 1.15.0 (#4539) [+12 body lines]
+216a4a7 2026-02-17 [Amirhf] test(render): add comprehensive tests for MsgPack render (#4537) [+6 body lines]
+f5c267d 2026-02-15 [dependabot[bot]] chore(deps): bump aquasecurity/trivy-action in the actions group (#4534) [+14 body lines]
+bf52b07 2026-02-15 [dependabot[bot]] chore(deps): bump go.mongodb.org/mongo-driver from 1.17.7 to 1.17.9 (#4533) [+12 body lines]

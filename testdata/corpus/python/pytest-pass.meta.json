@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "pytest"
+  ],
+  "shell": "pytest",
+  "repo": "pallets/click",
+  "exit_code": 0,
+  "description": "pytest passing run on click 8.1.8 (~1100 tests, progress dots per file, skips/xfails)",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

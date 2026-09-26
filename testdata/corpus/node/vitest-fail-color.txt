@@ -1,0 +1,234 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/home/user/src/ufo[39m
+
+ [32m✓[39m test/url.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m test/parse.test.ts [2m([22m[2m56 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [31m❯[39m test/query.test.ts [2m([22m[2m34 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 8[2mms[22m[39m
+     [32m✓[39m  with {}[32m 1[2mms[22m[39m
+     [32m✓[39m / with {}[32m 0[2mms[22m[39m
+     [32m✓[39m ?test with {}[32m 0[2mms[22m[39m
+     [32m✓[39m /?test with {}[32m 0[2mms[22m[39m
+     [32m✓[39m /?test with {"foo":"0"}[32m 0[2mms[22m[39m
+     [32m✓[39m /?test with {"foo":0}[32m 0[2mms[22m[39m
+     [32m✓[39m /?test with {"foo":1}[32m 0[2mms[22m[39m
+     [32m✓[39m /?test with {}[32m 0[2mms[22m[39m
+     [32m✓[39m /?foo=1 with {"foo":2}[32m 0[2mms[22m[39m
+     [32m✓[39m /?foo=1 with {"foo":true,"bar":false}[32m 0[2mms[22m[39m
+     [32m✓[39m /?foo=1 with {}[32m 0[2mms[22m[39m
+     [32m✓[39m /?foo=1 with {"foo":null}[32m 0[2mms[22m[39m
+     [32m✓[39m / with {"email":"some email.com"}[32m 0[2mms[22m[39m
+     [32m✓[39m / with {"key with space":"spaced value"}[32m 0[2mms[22m[39m
+[31m     [31m×[31m / with {"str":"&","str2":"%26"}[39m[32m 3[2mms[22m[39m
+     [32m✓[39m /?x=1,2,3 with {"y":"1,2,3"}[32m 0[2mms[22m[39m
+     [32m✓[39m http://a.com?v=1 with {"x":2}[32m 0[2mms[22m[39m
+     [32m✓[39m / with {"json":"{\"test\":[\"content\"]}"}[32m 0[2mms[22m[39m
+     [32m✓[39m / with {"param":["3",""]}[32m 0[2mms[22m[39m
+     [32m✓[39m / with {"param":["","3"]}[32m 0[2mms[22m[39m
+     [32m✓[39m / with {"param":{"a":{"nested":{"object":123}}}}[32m 0[2mms[22m[39m
+     [32m✓[39m / with {"param":{"a":[{"obj":1},{"obj":2}]}}[32m 0[2mms[22m[39m
+     [32m✓[39m / with {"param":{"a":[{"obj":[1,2,3]}]}}[32m 0[2mms[22m[39m
+     [32m✓[39m / with {"a":"X","b[]":[],"c":"Y"}[32m 0[2mms[22m[39m
+     [32m✓[39m /foo filter "bar"[32m 0[2mms[22m[39m
+     [32m✓[39m /foo?bar=1 filter "bar"[32m 0[2mms[22m[39m
+     [32m✓[39m /foo?bar=1&baz=2 filter "bar"[32m 0[2mms[22m[39m
+     [32m✓[39m http://foo.com/foo?test=123&unicode=%E5%A5%BD[32m 0[2mms[22m[39m
+     [32m✓[39m http://foo.com/?param=3&param=[32m 0[2mms[22m[39m
+     [32m✓[39m http://foo.com/?param=&param=3[32m 0[2mms[22m[39m
+     [32m✓[39m http://foo.com/?param=[32m 0[2mms[22m[39m
+     [32m✓[39m http://foo.com/?param=&param=2&param=3[32m 0[2mms[22m[39m
+     [32m✓[39m http://foo.com/?param=%7B%22a%22:%5B%7B%22obj%22:%5B1,2,3%5D%7D%5D%7D[32m 0[2mms[22m[39m
+     [32m✓[39m http://foo.com/?toString=foo[32m 0[2mms[22m[39m
+ [31m❯[39m test/double-slash.test.ts [2m([22m[2m5 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 7[2mms[22m[39m
+[31m     [31m×[31m //foo//bar//[39m[32m 5[2mms[22m[39m
+[31m     [31m×[31m http://foo.com//[39m[32m 0[2mms[22m[39m
+[31m     [31m×[31m http://foo.com/bar//foo/[39m[32m 0[2mms[22m[39m
+[31m     [31m×[31m http://example.com/analyze//http://localhost:3000//[39m[32m 0[2mms[22m[39m
+     [32m✓[39m no input[32m 0[2mms[22m[39m
+ [32m✓[39m test/normalize.test.ts [2m([22m[2m65 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m test/utilities.test.ts [2m([22m[2m98 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [31m❯[39m test/encoding.test.ts [2m([22m[2m58 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 11[2mms[22m[39m
+     [32m✓[39m https://www.example.com/path/to/file.html[32m 2[2mms[22m[39m
+     [32m✓[39m https://www.example.com/path/to/file.html?foo=bar[32m 0[2mms[22m[39m
+     [32m✓[39m https://www.example.com/path/to/file.html?foo=bar&baz=qux[32m 0[2mms[22m[39m
+     [32m✓[39m https://www.example.com/path/to/file.html#section1[32m 0[2mms[22m[39m
+     [32m✓[39m https://www.example.com/path/to/file.html#section1&section2[32m 0[2mms[22m[39m
+     [32m✓[39m https://www.example.com/My Path/File.html[32m 0[2mms[22m[39m
+     [32m✓[39m https://www.example.com/file.html?foo=bar|baz[32m 0[2mms[22m[39m
+     [32m✓[39m https://www.example.com/file.html#section1|section2[32m 0[2mms[22m[39m
+     [32m✓[39m https://www.example.com/file.html?foo=bar&baz=qux|quux[32m 0[2mms[22m[39m
+     [32m✓[39m https://www.example.com/file.html#section1&section2|section3[32m 0[2mms[22m[39m
+     [32m✓[39m [32m 0[2mms[22m[39m
+     [32m✓[39m hello[32m 0[2mms[22m[39m
+     [32m✓[39m {}^[32m 0[2mms[22m[39m
+     [32m✓[39m !@#$%&*()-_=+[]{};:'",.<>/?`~[32m 0[2mms[22m[39m
+     [32m✓[39m +=&[32m 0[2mms[22m[39m
+     [32m✓[39m abc{def}ghi^jkl[32m 0[2mms[22m[39m
+     [32m✓[39m hello world[32m 0[2mms[22m[39m
+     [32m✓[39m hello+world[32m 0[2mms[22m[39m
+     [32m✓[39m key=value[32m 0[2mms[22m[39m
+     [32m✓[39m true[32m 0[2mms[22m[39m
+     [32m✓[39m 42[32m 0[2mms[22m[39m
+[31m     [31m×[31m a=1&b=2[39m[32m 3[2mms[22m[39m
+     [32m✓[39m apple,banana,cherry[32m 0[2mms[22m[39m
+[31m     [31m×[31m !@#$%^&*()_+{}[]|\:;<>,./?[39m[32m 0[2mms[22m[39m
+     [32m✓[39m key[32m 0[2mms[22m[39m
+     [32m✓[39m key=value[32m 0[2mms[22m[39m
+     [32m✓[39m 123[32m 0[2mms[22m[39m
+     [32m✓[39m =value[32m 0[2mms[22m[39m
+     [32m✓[39m path/to/resource[32m 0[2mms[22m[39m
+     [32m✓[39m /path/to/resource[32m 0[2mms[22m[39m
+     [32m✓[39m path?query=value[32m 0[2mms[22m[39m
+     [32m✓[39m path#hash[32m 0[2mms[22m[39m
+     [32m✓[39m path&param=value[32m 0[2mms[22m[39m
+     [32m✓[39m path+to+resource[32m 0[2mms[22m[39m
+     [32m✓[39m path/to/resource/[32m 0[2mms[22m[39m
+     [32m✓[39m path/to/re source[32m 0[2mms[22m[39m
+     [32m✓[39m p@th[32m 0[2mms[22m[39m
+     [32m✓[39m path/to/resource/file.txt[32m 0[2mms[22m[39m
+     [32m✓[39m hello world[32m 0[2mms[22m[39m
+     [32m✓[39m a/b[32m 0[2mms[22m[39m
+     [32m✓[39m 1+2=3[32m 0[2mms[22m[39m
+     [32m✓[39m áéíóú[32m 0[2mms[22m[39m
+     [32m✓[39m !@#$%^&*()_-+=[]{}\|;:'",.<>/?[32m 0[2mms[22m[39m
+     [32m✓[39m 123[32m 0[2mms[22m[39m
+     [32m✓[39m true[32m 0[2mms[22m[39m
+     [32m✓[39m %7B%7D%5E[32m 0[2mms[22m[39m
+     [32m✓[39m %2B%3D%26[32m 0[2mms[22m[39m
+     [32m✓[39m !%40%23%24%25%26%2A%28%29-_%3D%2B%5B%5D%7B%7D%3B%3A%27%22%2C.%3C%3E%2F%3F%60%7C%5C%22[32m 0[2mms[22m[39m
+     [32m✓[39m hello%20world[32m 0[2mms[22m[39m
+     [32m✓[39m %3Fkey%3Dvalue%26anotherKey%3DanotherValue[32m 0[2mms[22m[39m
+     [32m✓[39m http%3A%2F%2Fexample.com%2Fpage%3Fid%3D123%23details[32m 0[2mms[22m[39m
+     [32m✓[39m foo%2Bbar%2Bbaz[32m 0[2mms[22m[39m
+     [32m✓[39m key[32m 0[2mms[22m[39m
+     [32m✓[39m key%3Dvalue[32m 0[2mms[22m[39m
+     [32m✓[39m 123[32m 0[2mms[22m[39m
+     [32m✓[39m %3Dvalue[32m 0[2mms[22m[39m
+     [32m✓[39m key+with+space[32m 0[2mms[22m[39m
+     [32m✓[39m key%2bwith%2bplus[32m 0[2mms[22m[39m
+ [32m✓[39m test/resolve.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m test/join.test.ts [2m([22m[2m45 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m test/base.test.ts [2m([22m[2m36 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m test/punycode.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/is-same.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m test/trailing-slash.test.ts [2m([22m[2m45 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 7 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/double-slash.test.ts[2m > [22mcleanDoubleSlashes[2m > [22m//foo//bar//
+[31m[1mAssertionError[22m: expected '//foo//bar//' to be '/foo/bar/' // Object.is equality[39m
+
+Expected: [32m"/foo/bar/"[39m
+Received: [31m"[7m/[27m/foo/[7m/[27mbar/[7m/[27m"[39m
+
+[36m [2m❯[22m test/double-slash.test.ts:[2m15:41[22m[39m
+    [90m 13|[39m   [35mfor[39m ([35mconst[39m input [35min[39m tests) {
+    [90m 14|[39m     [34mtest[39m(input[33m,[39m () [33m=>[39m {
+    [90m 15|[39m       [34mexpect[39m([34mcleanDoubleSlashes[39m(input))[33m.[39m[34mtoBe[39m(tests[input])[33m;[39m
+    [90m   |[39m                                         [31m^[39m
+    [90m 16|[39m     })[33m;[39m
+    [90m 17|[39m   }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/double-slash.test.ts[2m > [22mcleanDoubleSlashes[2m > [22mhttp://foo.com//
+[31m[1mAssertionError[22m: expected 'http://foo.com//' to be 'http://foo.com/' // Object.is equality[39m
+
+Expected: [32m"http://foo.com/"[39m
+Received: [31m"http://foo.com/[7m/[27m"[39m
+
+[36m [2m❯[22m test/double-slash.test.ts:[2m15:41[22m[39m
+    [90m 13|[39m   [35mfor[39m ([35mconst[39m input [35min[39m tests) {
+    [90m 14|[39m     [34mtest[39m(input[33m,[39m () [33m=>[39m {
+    [90m 15|[39m       [34mexpect[39m([34mcleanDoubleSlashes[39m(input))[33m.[39m[34mtoBe[39m(tests[input])[33m;[39m
+    [90m   |[39m                                         [31m^[39m
+    [90m 16|[39m     })[33m;[39m
+    [90m 17|[39m   }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/double-slash.test.ts[2m > [22mcleanDoubleSlashes[2m > [22mhttp://foo.com/bar//foo/
+[31m[1mAssertionError[22m: expected 'http://foo.com/bar//foo/' to be 'http://foo.com/bar/foo/' // Object.is equality[39m
+
+Expected: [32m"http://foo.com/bar/foo/"[39m
+Received: [31m"http://foo.com/bar/[7m/[27mfoo/"[39m
+
+[36m [2m❯[22m test/double-slash.test.ts:[2m15:41[22m[39m
+    [90m 13|[39m   [35mfor[39m ([35mconst[39m input [35min[39m tests) {
+    [90m 14|[39m     [34mtest[39m(input[33m,[39m () [33m=>[39m {
+    [90m 15|[39m       [34mexpect[39m([34mcleanDoubleSlashes[39m(input))[33m.[39m[34mtoBe[39m(tests[input])[33m;[39m
+    [90m   |[39m                                         [31m^[39m
+    [90m 16|[39m     })[33m;[39m
+    [90m 17|[39m   }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/double-slash.test.ts[2m > [22mcleanDoubleSlashes[2m > [22mhttp://example.com/analyze//http://localhost:3000//
+[31m[1mAssertionError[22m: expected 'http://example.com/analyze//http://lo…' to be 'http://example.com/analyze/http://loc…' // Object.is equality[39m
+
+Expected: [32m"http://example.com/analyze/http://localhost:3000/"[39m
+Received: [31m"http://example.com/analyze/[7m/[27mhttp://localhost:3000/[7m/[27m"[39m
+
+[36m [2m❯[22m test/double-slash.test.ts:[2m15:41[22m[39m
+    [90m 13|[39m   [35mfor[39m ([35mconst[39m input [35min[39m tests) {
+    [90m 14|[39m     [34mtest[39m(input[33m,[39m () [33m=>[39m {
+    [90m 15|[39m       [34mexpect[39m([34mcleanDoubleSlashes[39m(input))[33m.[39m[34mtoBe[39m(tests[input])[33m;[39m
+    [90m   |[39m                                         [31m^[39m
+    [90m 16|[39m     })[33m;[39m
+    [90m 17|[39m   }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/encoding.test.ts[2m > [22mencodeQueryValue[2m > [22ma=1&b=2
+[31m[1mAssertionError[22m: expected 'a=1&b=2' to strictly equal 'a=1%26b=2'[39m
+
+Expected: [32m"a=1[7m%26[27mb=2"[39m
+Received: [31m"a=1[7m&[27mb=2"[39m
+
+[36m [2m❯[22m test/encoding.test.ts:[2m104:52[22m[39m
+    [90m102|[39m   [35mfor[39m ([35mconst[39m t [35mof[39m tests) {
+    [90m103|[39m     [34mtest[39m(t[33m.[39minput[33m.[39m[34mtoString[39m()[33m,[39m () [33m=>[39m {
+    [90m104|[39m       expect(encodeQueryValue(t.input.toString())).toStrictEqual(t.out…
+    [90m   |[39m                                                    [31m^[39m
+    [90m105|[39m     })[33m;[39m
+    [90m106|[39m   }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/encoding.test.ts[2m > [22mencodeQueryValue[2m > [22m!@#$%^&*()_+{}[]|\:;<>,./?
+[31m[1mAssertionError[22m: expected '!@%23$%25^&*()_%2B%7B%7D%5B%5D|%5C:;%…' to strictly equal '!@%23$%25^%26*()_%2B%7B%7D%5B%5D|%5C:…'[39m
+
+Expected: [32m"!@%23$%25^[7m%26[27m*()_%2B%7B%7D%5B%5D|%5C:;%3C%3E,.%2F?"[39m
+Received: [31m"!@%23$%25^[7m&[27m*()_%2B%7B%7D%5B%5D|%5C:;%3C%3E,.%2F?"[39m
+
+[36m [2m❯[22m test/encoding.test.ts:[2m104:52[22m[39m
+    [90m102|[39m   [35mfor[39m ([35mconst[39m t [35mof[39m tests) {
+    [90m103|[39m     [34mtest[39m(t[33m.[39minput[33m.[39m[34mtoString[39m()[33m,[39m () [33m=>[39m {
+    [90m104|[39m       expect(encodeQueryValue(t.input.toString())).toStrictEqual(t.out…
+    [90m   |[39m                                                    [31m^[39m
+    [90m105|[39m     })[33m;[39m
+    [90m106|[39m   }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/query.test.ts[2m > [22mwithQuery[2m > [22m/ with {"str":"&","str2":"%26"}
+[31m[1mAssertionError[22m: expected '/?str=&&str2=%2526' to be '/?str=%26&str2=%2526' // Object.is equality[39m
+
+Expected: [32m"/?str=[7m%26[27m&str2=%2526"[39m
+Received: [31m"/?str=[7m&[27m&str2=%2526"[39m
+
+[36m [2m❯[22m test/query.test.ts:[2m70:43[22m[39m
+    [90m 68|[39m   [35mfor[39m ([35mconst[39m t [35mof[39m tests) {
+    [90m 69|[39m     test(t.input.toString() + " with " + JSON.stringify(t.query), () =…
+    [90m 70|[39m       [34mexpect[39m([34mwithQuery[39m(t[33m.[39minput[33m,[39m t[33m.[39mquery))[33m.[39m[34mtoBe[39m(t[33m.[39mout)[33m;[39m
+    [90m   |[39m                                           [31m^[39m
+    [90m 71|[39m     })[33m;[39m
+    [90m 72|[39m   }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m10 passed[39m[22m[90m (13)[39m
+[2m      Tests [22m [1m[31m7 failed[39m[22m[2m | [22m[1m[32m482 passed[39m[22m[90m (489)[39m
+[2m   Start at [22m 00:36:49
+[2m   Duration [22m 367ms[2m (transform 509ms, setup 0ms, import 733ms, tests 73ms, environment 1ms)[22m
+

@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "npm",
+    "ls"
+  ],
+  "shell": "npm ls",
+  "exit_code": 0,
+  "description": "npm ls (no --all) in an npm workspace root: workspaces are shown with their dependencies at depth 1, some of them deduped",
+  "cwd": "/home/user/src/ws-app"
+}

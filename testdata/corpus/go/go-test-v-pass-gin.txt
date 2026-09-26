@@ -1,0 +1,1525 @@
+=== RUN   TestBasicAuth
+--- PASS: TestBasicAuth (0.00s)
+=== RUN   TestBasicAuthFails
+--- PASS: TestBasicAuthFails (0.00s)
+=== RUN   TestBasicAuthSearchCredential
+--- PASS: TestBasicAuthSearchCredential (0.00s)
+=== RUN   TestBasicAuthAuthorizationHeader
+--- PASS: TestBasicAuthAuthorizationHeader (0.00s)
+=== RUN   TestBasicAuthSucceed
+--- PASS: TestBasicAuthSucceed (0.00s)
+=== RUN   TestBasicAuth401
+--- PASS: TestBasicAuth401 (0.00s)
+=== RUN   TestBasicAuth401WithCustomRealm
+--- PASS: TestBasicAuth401WithCustomRealm (0.00s)
+=== RUN   TestBasicAuthForProxySucceed
+--- PASS: TestBasicAuthForProxySucceed (0.00s)
+=== RUN   TestBasicAuthForProxy407
+--- PASS: TestBasicAuthForProxy407 (0.00s)
+=== RUN   TestContextFileSimple
+--- PASS: TestContextFileSimple (0.00s)
+=== RUN   TestContextFileNotFound
+--- PASS: TestContextFileNotFound (0.00s)
+=== RUN   TestContextFile
+=== RUN   TestContextFile/serve_existing_file
+=== RUN   TestContextFile/serve_non-existent_file
+=== RUN   TestContextFile/serve_directory
+=== RUN   TestContextFile/HEAD_request
+=== RUN   TestContextFile/Range_request
+--- PASS: TestContextFile (0.00s)
+    --- PASS: TestContextFile/serve_existing_file (0.00s)
+    --- PASS: TestContextFile/serve_non-existent_file (0.00s)
+    --- PASS: TestContextFile/serve_directory (0.00s)
+    --- PASS: TestContextFile/HEAD_request (0.00s)
+    --- PASS: TestContextFile/Range_request (0.00s)
+=== RUN   TestContextFormFile
+--- PASS: TestContextFormFile (0.00s)
+=== RUN   TestContextFormFileFailed
+--- PASS: TestContextFormFileFailed (0.00s)
+=== RUN   TestContextMultipartForm
+--- PASS: TestContextMultipartForm (0.00s)
+=== RUN   TestSaveUploadedOpenFailed
+--- PASS: TestSaveUploadedOpenFailed (0.00s)
+=== RUN   TestSaveUploadedCreateFailed
+--- PASS: TestSaveUploadedCreateFailed (0.00s)
+=== RUN   TestSaveUploadedFileWithPermission
+--- PASS: TestSaveUploadedFileWithPermission (0.00s)
+=== RUN   TestSaveUploadedFileWithPermissionFailed
+--- PASS: TestSaveUploadedFileWithPermissionFailed (0.00s)
+=== RUN   TestSaveUploadedFileToExistingDir
+--- PASS: TestSaveUploadedFileToExistingDir (0.00s)
+=== RUN   TestContextReset
+--- PASS: TestContextReset (0.00s)
+=== RUN   TestContextHandlers
+--- PASS: TestContextHandlers (0.00s)
+=== RUN   TestContextSetGet
+--- PASS: TestContextSetGet (0.00s)
+=== RUN   TestContextSetGetAnyKey
+=== RUN   TestContextSetGetAnyKey/int
+=== RUN   TestContextSetGetAnyKey/int32
+=== RUN   TestContextSetGetAnyKey/int64
+=== RUN   TestContextSetGetAnyKey/uint
+=== RUN   TestContextSetGetAnyKey/float32
+=== RUN   TestContextSetGetAnyKey/gin.key
+=== RUN   TestContextSetGetAnyKey/*gin.key
+--- PASS: TestContextSetGetAnyKey (0.00s)
+    --- PASS: TestContextSetGetAnyKey/int (0.00s)
+    --- PASS: TestContextSetGetAnyKey/int32 (0.00s)
+    --- PASS: TestContextSetGetAnyKey/int64 (0.00s)
+    --- PASS: TestContextSetGetAnyKey/uint (0.00s)
+    --- PASS: TestContextSetGetAnyKey/float32 (0.00s)
+    --- PASS: TestContextSetGetAnyKey/gin.key (0.00s)
+    --- PASS: TestContextSetGetAnyKey/*gin.key (0.00s)
+=== RUN   TestContextSetGetPanicsWhenKeyNotComparable
+--- PASS: TestContextSetGetPanicsWhenKeyNotComparable (0.00s)
+=== RUN   TestContextSetGetValues
+--- PASS: TestContextSetGetValues (0.00s)
+=== RUN   TestContextGetString
+--- PASS: TestContextGetString (0.00s)
+=== RUN   TestContextSetGetBool
+--- PASS: TestContextSetGetBool (0.00s)
+=== RUN   TestSetGetDelete
+--- PASS: TestSetGetDelete (0.00s)
+=== RUN   TestContextGetInt
+--- PASS: TestContextGetInt (0.00s)
+=== RUN   TestContextGetInt8
+--- PASS: TestContextGetInt8 (0.00s)
+=== RUN   TestContextGetInt16
+--- PASS: TestContextGetInt16 (0.00s)
+=== RUN   TestContextGetInt32
+--- PASS: TestContextGetInt32 (0.00s)
+=== RUN   TestContextGetInt64
+--- PASS: TestContextGetInt64 (0.00s)
+=== RUN   TestContextGetUint
+--- PASS: TestContextGetUint (0.00s)
+=== RUN   TestContextGetUint8
+--- PASS: TestContextGetUint8 (0.00s)
+=== RUN   TestContextGetUint16
+--- PASS: TestContextGetUint16 (0.00s)
+=== RUN   TestContextGetUint32
+--- PASS: TestContextGetUint32 (0.00s)
+=== RUN   TestContextGetUint64
+--- PASS: TestContextGetUint64 (0.00s)
+=== RUN   TestContextGetFloat32
+--- PASS: TestContextGetFloat32 (0.00s)
+=== RUN   TestContextGetFloat64
+--- PASS: TestContextGetFloat64 (0.00s)
+=== RUN   TestContextGetTime
+--- PASS: TestContextGetTime (0.00s)
+=== RUN   TestContextGetDuration
+--- PASS: TestContextGetDuration (0.00s)
+=== RUN   TestContextGetError
+--- PASS: TestContextGetError (0.00s)
+=== RUN   TestContextGetIntSlice
+--- PASS: TestContextGetIntSlice (0.00s)
+=== RUN   TestContextGetInt8Slice
+--- PASS: TestContextGetInt8Slice (0.00s)
+=== RUN   TestContextGetInt16Slice
+--- PASS: TestContextGetInt16Slice (0.00s)
+=== RUN   TestContextGetInt32Slice
+--- PASS: TestContextGetInt32Slice (0.00s)
+=== RUN   TestContextGetInt64Slice
+--- PASS: TestContextGetInt64Slice (0.00s)
+=== RUN   TestContextGetUintSlice
+--- PASS: TestContextGetUintSlice (0.00s)
+=== RUN   TestContextGetUint8Slice
+--- PASS: TestContextGetUint8Slice (0.00s)
+=== RUN   TestContextGetUint16Slice
+--- PASS: TestContextGetUint16Slice (0.00s)
+=== RUN   TestContextGetUint32Slice
+--- PASS: TestContextGetUint32Slice (0.00s)
+=== RUN   TestContextGetUint64Slice
+--- PASS: TestContextGetUint64Slice (0.00s)
+=== RUN   TestContextGetFloat32Slice
+--- PASS: TestContextGetFloat32Slice (0.00s)
+=== RUN   TestContextGetFloat64Slice
+--- PASS: TestContextGetFloat64Slice (0.00s)
+=== RUN   TestContextGetStringSlice
+--- PASS: TestContextGetStringSlice (0.00s)
+=== RUN   TestContextGetErrorSlice
+--- PASS: TestContextGetErrorSlice (0.00s)
+=== RUN   TestContextGetStringMap
+--- PASS: TestContextGetStringMap (0.00s)
+=== RUN   TestContextGetStringMapString
+--- PASS: TestContextGetStringMapString (0.00s)
+=== RUN   TestContextGetStringMapStringSlice
+--- PASS: TestContextGetStringMapStringSlice (0.00s)
+=== RUN   TestCopyConcurrentWithSet
+--- PASS: TestCopyConcurrentWithSet (0.00s)
+=== RUN   TestContextCopy
+--- PASS: TestContextCopy (0.00s)
+=== RUN   TestContextCopyCopiesErrors
+--- PASS: TestContextCopyCopiesErrors (0.00s)
+=== RUN   TestContextCopyCopiesAccepted
+--- PASS: TestContextCopyCopiesAccepted (0.00s)
+=== RUN   TestContextCopyNilErrorsAndAccepted
+--- PASS: TestContextCopyNilErrorsAndAccepted (0.00s)
+=== RUN   TestContextHandlerName
+--- PASS: TestContextHandlerName (0.00s)
+=== RUN   TestContextHandlerNames
+--- PASS: TestContextHandlerNames (0.00s)
+=== RUN   TestContextHandler
+--- PASS: TestContextHandler (0.00s)
+=== RUN   TestContextQuery
+--- PASS: TestContextQuery (0.00s)
+=== RUN   TestContextInitQueryCache
+=== RUN   TestContextInitQueryCache/queryCache_should_remain_unchanged_if_already_not_nil
+=== RUN   TestContextInitQueryCache/queryCache_should_be_empty_when_Request_is_nil
+=== RUN   TestContextInitQueryCache/queryCache_should_be_empty_when_Request.URL_is_nil
+=== RUN   TestContextInitQueryCache/queryCache_should_be_populated_when_it_not_yet_populated_and_Request_+_Request.URL_are_non_nil
+--- PASS: TestContextInitQueryCache (0.00s)
+    --- PASS: TestContextInitQueryCache/queryCache_should_remain_unchanged_if_already_not_nil (0.00s)
+    --- PASS: TestContextInitQueryCache/queryCache_should_be_empty_when_Request_is_nil (0.00s)
+    --- PASS: TestContextInitQueryCache/queryCache_should_be_empty_when_Request.URL_is_nil (0.00s)
+    --- PASS: TestContextInitQueryCache/queryCache_should_be_populated_when_it_not_yet_populated_and_Request_+_Request.URL_are_non_nil (0.00s)
+=== RUN   TestContextDefaultQueryOnEmptyRequest
+--- PASS: TestContextDefaultQueryOnEmptyRequest (0.00s)
+=== RUN   TestContextQueryAndPostForm
+--- PASS: TestContextQueryAndPostForm (0.00s)
+=== RUN   TestContextPostFormMultipart
+--- PASS: TestContextPostFormMultipart (0.00s)
+=== RUN   TestContextSetCookie
+--- PASS: TestContextSetCookie (0.00s)
+=== RUN   TestContextSetCookiePathEmpty
+--- PASS: TestContextSetCookiePathEmpty (0.00s)
+=== RUN   TestContextGetCookie
+--- PASS: TestContextGetCookie (0.00s)
+=== RUN   TestContextBodyAllowedForStatus
+--- PASS: TestContextBodyAllowedForStatus (0.00s)
+=== RUN   TestContextRenderIfErr
+--- PASS: TestContextRenderIfErr (0.00s)
+=== RUN   TestContextRenderJSON
+--- PASS: TestContextRenderJSON (0.00s)
+=== RUN   TestContextRenderJSONP
+--- PASS: TestContextRenderJSONP (0.00s)
+=== RUN   TestContextRenderJSONPWithoutCallback
+--- PASS: TestContextRenderJSONPWithoutCallback (0.00s)
+=== RUN   TestContextRenderNoContentJSON
+--- PASS: TestContextRenderNoContentJSON (0.00s)
+=== RUN   TestContextRenderAPIJSON
+--- PASS: TestContextRenderAPIJSON (0.00s)
+=== RUN   TestContextRenderNoContentAPIJSON
+--- PASS: TestContextRenderNoContentAPIJSON (0.00s)
+=== RUN   TestContextRenderIndentedJSON
+--- PASS: TestContextRenderIndentedJSON (0.00s)
+=== RUN   TestContextRenderNoContentIndentedJSON
+--- PASS: TestContextRenderNoContentIndentedJSON (0.00s)
+=== RUN   TestContextClientIPWithMultipleHeaders
+--- PASS: TestContextClientIPWithMultipleHeaders (0.00s)
+=== RUN   TestContextClientIPWithSingleHeader
+--- PASS: TestContextClientIPWithSingleHeader (0.00s)
+=== RUN   TestContextRenderSecureJSON
+--- PASS: TestContextRenderSecureJSON (0.00s)
+=== RUN   TestContextRenderNoContentSecureJSON
+--- PASS: TestContextRenderNoContentSecureJSON (0.00s)
+=== RUN   TestContextRenderNoContentAsciiJSON
+--- PASS: TestContextRenderNoContentAsciiJSON (0.00s)
+=== RUN   TestContextRenderPureJSON
+--- PASS: TestContextRenderPureJSON (0.00s)
+=== RUN   TestContextRenderHTML
+--- PASS: TestContextRenderHTML (0.00s)
+=== RUN   TestContextRenderHTMLWithoutRenderer
+=== RUN   TestContextRenderHTMLWithoutRenderer/body_allowed
+=== RUN   TestContextRenderHTMLWithoutRenderer/no_content
+=== RUN   TestContextRenderHTMLWithoutRenderer/not_modified
+=== RUN   TestContextRenderHTMLWithoutRenderer/head
+--- PASS: TestContextRenderHTMLWithoutRenderer (0.00s)
+    --- PASS: TestContextRenderHTMLWithoutRenderer/body_allowed (0.00s)
+    --- PASS: TestContextRenderHTMLWithoutRenderer/no_content (0.00s)
+    --- PASS: TestContextRenderHTMLWithoutRenderer/not_modified (0.00s)
+    --- PASS: TestContextRenderHTMLWithoutRenderer/head (0.00s)
+=== RUN   TestContextRenderHTML2
+--- PASS: TestContextRenderHTML2 (0.00s)
+=== RUN   TestContextRenderNoContentHTML
+--- PASS: TestContextRenderNoContentHTML (0.00s)
+=== RUN   TestContextRenderXML
+--- PASS: TestContextRenderXML (0.00s)
+=== RUN   TestContextRenderNoContentXML
+--- PASS: TestContextRenderNoContentXML (0.00s)
+=== RUN   TestContextRenderPDF
+--- PASS: TestContextRenderPDF (0.00s)
+=== RUN   TestContextRenderNoContentPDF
+--- PASS: TestContextRenderNoContentPDF (0.00s)
+=== RUN   TestContextRenderString
+--- PASS: TestContextRenderString (0.00s)
+=== RUN   TestContextRenderNoContentString
+--- PASS: TestContextRenderNoContentString (0.00s)
+=== RUN   TestContextRenderHTMLString
+--- PASS: TestContextRenderHTMLString (0.00s)
+=== RUN   TestContextRenderNoContentHTMLString
+--- PASS: TestContextRenderNoContentHTMLString (0.00s)
+=== RUN   TestContextRenderData
+--- PASS: TestContextRenderData (0.00s)
+=== RUN   TestContextRenderNoContentData
+--- PASS: TestContextRenderNoContentData (0.00s)
+=== RUN   TestContextRenderSSE
+--- PASS: TestContextRenderSSE (0.00s)
+=== RUN   TestContextRenderFile
+--- PASS: TestContextRenderFile (0.00s)
+=== RUN   TestContextRenderFileFromFS
+--- PASS: TestContextRenderFileFromFS (0.00s)
+=== RUN   TestContextRenderAttachment
+--- PASS: TestContextRenderAttachment (0.00s)
+=== RUN   TestContextRenderAndEscapeAttachment
+--- PASS: TestContextRenderAndEscapeAttachment (0.00s)
+=== RUN   TestContextRenderUTF8Attachment
+--- PASS: TestContextRenderUTF8Attachment (0.00s)
+=== RUN   TestContextRenderYAML
+--- PASS: TestContextRenderYAML (0.00s)
+=== RUN   TestContextRenderTOML
+--- PASS: TestContextRenderTOML (0.00s)
+=== RUN   TestContextRenderProtoBuf
+--- PASS: TestContextRenderProtoBuf (0.00s)
+=== RUN   TestContextHeaders
+--- PASS: TestContextHeaders (0.00s)
+=== RUN   TestContextRenderRedirectWithRelativePath
+--- PASS: TestContextRenderRedirectWithRelativePath (0.00s)
+=== RUN   TestContextRenderRedirectWithAbsolutePath
+--- PASS: TestContextRenderRedirectWithAbsolutePath (0.00s)
+=== RUN   TestContextRenderRedirectWith201
+--- PASS: TestContextRenderRedirectWith201 (0.00s)
+=== RUN   TestContextRenderRedirectAll
+--- PASS: TestContextRenderRedirectAll (0.00s)
+=== RUN   TestContextNegotiationWithJSON
+--- PASS: TestContextNegotiationWithJSON (0.00s)
+=== RUN   TestContextNegotiationWithXML
+--- PASS: TestContextNegotiationWithXML (0.00s)
+=== RUN   TestContextNegotiationWithYAML
+--- PASS: TestContextNegotiationWithYAML (0.00s)
+=== RUN   TestContextNegotiationWithTOML
+--- PASS: TestContextNegotiationWithTOML (0.00s)
+=== RUN   TestContextNegotiationWithHTML
+--- PASS: TestContextNegotiationWithHTML (0.00s)
+=== RUN   TestContextNegotiationWithPROTOBUF
+--- PASS: TestContextNegotiationWithPROTOBUF (0.00s)
+=== RUN   TestContextNegotiationWithBSON
+--- PASS: TestContextNegotiationWithBSON (0.00s)
+=== RUN   TestContextNegotiationNotSupport
+--- PASS: TestContextNegotiationNotSupport (0.00s)
+=== RUN   TestContextNegotiationFormat
+--- PASS: TestContextNegotiationFormat (0.00s)
+=== RUN   TestContextNegotiationFormatWithAccept
+--- PASS: TestContextNegotiationFormatWithAccept (0.00s)
+=== RUN   TestContextNegotiationFormatWithWildcardAccept
+--- PASS: TestContextNegotiationFormatWithWildcardAccept (0.00s)
+=== RUN   TestContextNegotiationFormatCustom
+--- PASS: TestContextNegotiationFormatCustom (0.00s)
+=== RUN   TestContextNegotiationFormat2
+--- PASS: TestContextNegotiationFormat2 (0.00s)
+=== RUN   TestContextIsAborted
+--- PASS: TestContextIsAborted (0.00s)
+=== RUN   TestContextAbortWithStatus
+--- PASS: TestContextAbortWithStatus (0.00s)
+=== RUN   TestContextAbortWithStatusJSON
+--- PASS: TestContextAbortWithStatusJSON (0.00s)
+=== RUN   TestContextAbortWithStatusPureJSON
+--- PASS: TestContextAbortWithStatusPureJSON (0.00s)
+=== RUN   TestContextError
+--- PASS: TestContextError (0.00s)
+=== RUN   TestContextTypedError
+--- PASS: TestContextTypedError (0.00s)
+=== RUN   TestContextAbortWithError
+--- PASS: TestContextAbortWithError (0.00s)
+=== RUN   TestContextClientIP
+2026/09/26 00:43:50 The AppEngine flag is going to be deprecated. Please check issues #2723 and #2739 and use 'TrustedPlatform: gin.PlatformGoogleAppEngine' instead.
+--- PASS: TestContextClientIP (0.00s)
+=== RUN   TestContextContentType
+--- PASS: TestContextContentType (0.00s)
+=== RUN   TestContextBindRequestTooLarge
+--- PASS: TestContextBindRequestTooLarge (0.00s)
+=== RUN   TestContextAutoBindJSON
+--- PASS: TestContextAutoBindJSON (0.00s)
+=== RUN   TestContextBindWithJSON
+--- PASS: TestContextBindWithJSON (0.00s)
+=== RUN   TestContextBindWithXML
+--- PASS: TestContextBindWithXML (0.00s)
+=== RUN   TestContextBindPlain
+--- PASS: TestContextBindPlain (0.00s)
+=== RUN   TestContextBindHeader
+--- PASS: TestContextBindHeader (0.00s)
+=== RUN   TestContextBindWithQuery
+--- PASS: TestContextBindWithQuery (0.00s)
+=== RUN   TestContextBindWithYAML
+--- PASS: TestContextBindWithYAML (0.00s)
+=== RUN   TestContextBindWithTOML
+--- PASS: TestContextBindWithTOML (0.00s)
+=== RUN   TestContextBadAutoBind
+--- PASS: TestContextBadAutoBind (0.00s)
+=== RUN   TestContextAutoShouldBindJSON
+--- PASS: TestContextAutoShouldBindJSON (0.00s)
+=== RUN   TestContextShouldBindWithJSON
+--- PASS: TestContextShouldBindWithJSON (0.00s)
+=== RUN   TestContextShouldBindWithXML
+--- PASS: TestContextShouldBindWithXML (0.00s)
+=== RUN   TestContextShouldBindPlain
+--- PASS: TestContextShouldBindPlain (0.00s)
+=== RUN   TestContextShouldBindHeader
+--- PASS: TestContextShouldBindHeader (0.00s)
+=== RUN   TestContextShouldBindWithQuery
+--- PASS: TestContextShouldBindWithQuery (0.00s)
+=== RUN   TestContextShouldBindWithYAML
+--- PASS: TestContextShouldBindWithYAML (0.00s)
+=== RUN   TestContextShouldBindWithTOML
+--- PASS: TestContextShouldBindWithTOML (0.00s)
+=== RUN   TestContextBadAutoShouldBind
+--- PASS: TestContextBadAutoShouldBind (0.00s)
+=== RUN   TestContextShouldBindBodyWith
+    context_test.go:2739: testing: JSON & JSON
+    context_test.go:2739: testing: JSON & XML
+    context_test.go:2739: testing: XML & XML
+--- PASS: TestContextShouldBindBodyWith (0.00s)
+=== RUN   TestContextShouldBindBodyWithJSON
+    context_test.go:2805: testing:  JSON & JSON-BODY 
+    context_test.go:2805: testing:  JSON & XML-BODY 
+    context_test.go:2805: testing:  JSON & YAML-BODY 
+    context_test.go:2805: testing:  JSON & TOM-BODY 
+--- PASS: TestContextShouldBindBodyWithJSON (0.00s)
+=== RUN   TestContextShouldBindBodyWithXML
+    context_test.go:2869: testing:  XML & JSON-BODY 
+    context_test.go:2869: testing:  XML & XML-BODY 
+    context_test.go:2869: testing:  XML & YAML-BODY 
+    context_test.go:2869: testing:  XML & TOM-BODY 
+--- PASS: TestContextShouldBindBodyWithXML (0.00s)
+=== RUN   TestContextShouldBindBodyWithYAML
+    context_test.go:2933: testing:  YAML & JSON-BODY 
+    context_test.go:2933: testing:  YAML & XML-BODY 
+    context_test.go:2933: testing:  YAML & YAML-BODY 
+    context_test.go:2933: testing:  YAML & TOM-BODY 
+--- PASS: TestContextShouldBindBodyWithYAML (0.00s)
+=== RUN   TestContextShouldBindBodyWithTOML
+    context_test.go:2998: testing:  TOML & JSON-BODY 
+    context_test.go:2998: testing:  TOML & XML-BODY 
+    context_test.go:2998: testing:  TOML & YAML-BODY 
+    context_test.go:2998: testing:  TOML & TOM-BODY 
+--- PASS: TestContextShouldBindBodyWithTOML (0.00s)
+=== RUN   TestContextShouldBindBodyWithPlain
+    context_test.go:3067: testing:  JSON & JSON-BODY 
+    context_test.go:3067: testing:  JSON & XML-BODY 
+    context_test.go:3067: testing:  JSON & YAML-BODY 
+    context_test.go:3067: testing:  JSON & TOM-BODY 
+    context_test.go:3067: testing:  JSON & Plain-BODY 
+--- PASS: TestContextShouldBindBodyWithPlain (0.00s)
+=== RUN   TestContextGolangContext
+--- PASS: TestContextGolangContext (0.00s)
+=== RUN   TestWebsocketsRequired
+--- PASS: TestWebsocketsRequired (0.00s)
+=== RUN   TestContextScheme
+--- PASS: TestContextScheme (0.00s)
+=== RUN   TestGetRequestHeaderValue
+--- PASS: TestGetRequestHeaderValue (0.00s)
+=== RUN   TestContextGetRawData
+--- PASS: TestContextGetRawData (0.00s)
+=== RUN   TestContextGetRawDataNilBody
+--- PASS: TestContextGetRawDataNilBody (0.00s)
+=== RUN   TestContextRenderDataFromReader
+--- PASS: TestContextRenderDataFromReader (0.00s)
+=== RUN   TestContextRenderDataFromReaderNoHeaders
+--- PASS: TestContextRenderDataFromReaderNoHeaders (0.00s)
+=== RUN   TestContextStream
+--- PASS: TestContextStream (0.00s)
+=== RUN   TestContextStreamWithClientGone
+--- PASS: TestContextStreamWithClientGone (0.00s)
+=== RUN   TestContextResetInHandler
+--- PASS: TestContextResetInHandler (0.00s)
+=== RUN   TestRaceParamsContextCopy
+[GIN] 2026/09/26 - 00:43:50 | 200 |  2.584µs |       192.0.2.1 | GET      "/name1/api"
+[GIN] 2026/09/26 - 00:43:50 | 200 |  5.541µs |       192.0.2.1 | GET      "/name2/api"
+--- PASS: TestRaceParamsContextCopy (0.05s)
+=== RUN   TestContextWithKeysMutex
+--- PASS: TestContextWithKeysMutex (0.00s)
+=== RUN   TestRemoteIPFail
+--- PASS: TestRemoteIPFail (0.00s)
+=== RUN   TestHasRequestContext
+--- PASS: TestHasRequestContext (0.00s)
+=== RUN   TestContextWithFallbackDeadlineFromRequestContext
+--- PASS: TestContextWithFallbackDeadlineFromRequestContext (0.00s)
+=== RUN   TestContextWithFallbackDoneFromRequestContext
+--- PASS: TestContextWithFallbackDoneFromRequestContext (0.00s)
+=== RUN   TestContextWithFallbackErrFromRequestContext
+--- PASS: TestContextWithFallbackErrFromRequestContext (0.00s)
+=== RUN   TestContextWithFallbackValueFromRequestContext
+=== RUN   TestContextWithFallbackValueFromRequestContext/c_with_struct_context_key
+=== RUN   TestContextWithFallbackValueFromRequestContext/c_with_string_context_key
+=== RUN   TestContextWithFallbackValueFromRequestContext/c_with_nil_http.Request
+=== RUN   TestContextWithFallbackValueFromRequestContext/c_with_nil_http.Request.Context()
+--- PASS: TestContextWithFallbackValueFromRequestContext (0.00s)
+    --- PASS: TestContextWithFallbackValueFromRequestContext/c_with_struct_context_key (0.00s)
+    --- PASS: TestContextWithFallbackValueFromRequestContext/c_with_string_context_key (0.00s)
+    --- PASS: TestContextWithFallbackValueFromRequestContext/c_with_nil_http.Request (0.00s)
+    --- PASS: TestContextWithFallbackValueFromRequestContext/c_with_nil_http.Request.Context() (0.00s)
+=== RUN   TestContextCopyShouldNotCancel
+--- PASS: TestContextCopyShouldNotCancel (0.00s)
+=== RUN   TestContextAddParam
+--- PASS: TestContextAddParam (0.00s)
+=== RUN   TestCreateTestContextWithRouteParams
+--- PASS: TestCreateTestContextWithRouteParams (0.00s)
+=== RUN   TestInterceptedHeader
+--- PASS: TestInterceptedHeader (0.00s)
+=== RUN   TestContextNext
+--- PASS: TestContextNext (0.00s)
+=== RUN   TestContextSetCookieData
+=== RUN   TestContextSetCookieData/SameSite=Strict_is_included
+=== RUN   TestContextSetCookieData/SameSite=None_is_included
+=== RUN   TestContextSetCookieData/SameSiteDefaultMode_inherits_context_sameSite
+--- PASS: TestContextSetCookieData (0.00s)
+    --- PASS: TestContextSetCookieData/SameSite=Strict_is_included (0.00s)
+    --- PASS: TestContextSetCookieData/SameSite=None_is_included (0.00s)
+    --- PASS: TestContextSetCookieData/SameSiteDefaultMode_inherits_context_sameSite (0.00s)
+=== RUN   TestGetMapFromFormData
+=== RUN   TestGetMapFromFormData/Basic_bracket_notation
+=== RUN   TestGetMapFromFormData/Mixed_data_with_bracket_notation
+=== RUN   TestGetMapFromFormData/Names_key
+=== RUN   TestGetMapFromFormData/Key_not_found
+=== RUN   TestGetMapFromFormData/Empty_data
+=== RUN   TestGetMapFromFormData/Malformed_bracket_notation
+=== RUN   TestGetMapFromFormData/Nested_bracket_notation
+=== RUN   TestGetMapFromFormData/Simple_key_without_brackets
+=== RUN   TestGetMapFromFormData/Mixed_simple_and_bracket_keys
+--- PASS: TestGetMapFromFormData (0.00s)
+    --- PASS: TestGetMapFromFormData/Basic_bracket_notation (0.00s)
+    --- PASS: TestGetMapFromFormData/Mixed_data_with_bracket_notation (0.00s)
+    --- PASS: TestGetMapFromFormData/Names_key (0.00s)
+    --- PASS: TestGetMapFromFormData/Key_not_found (0.00s)
+    --- PASS: TestGetMapFromFormData/Empty_data (0.00s)
+    --- PASS: TestGetMapFromFormData/Malformed_bracket_notation (0.00s)
+    --- PASS: TestGetMapFromFormData/Nested_bracket_notation (0.00s)
+    --- PASS: TestGetMapFromFormData/Simple_key_without_brackets (0.00s)
+    --- PASS: TestGetMapFromFormData/Mixed_simple_and_bracket_keys (0.00s)
+=== RUN   TestIsDebugging
+--- PASS: TestIsDebugging (0.00s)
+=== RUN   TestDebugPrint
+--- PASS: TestDebugPrint (0.00s)
+=== RUN   TestDebugPrintFunc
+--- PASS: TestDebugPrintFunc (0.00s)
+=== RUN   TestDebugPrintError
+--- PASS: TestDebugPrintError (0.00s)
+=== RUN   TestDebugPrintRoutes
+--- PASS: TestDebugPrintRoutes (0.00s)
+=== RUN   TestDebugPrintRouteFunc
+--- PASS: TestDebugPrintRouteFunc (0.00s)
+=== RUN   TestDebugPrintLoadTemplate
+--- PASS: TestDebugPrintLoadTemplate (0.00s)
+=== RUN   TestDebugPrintWARNINGSetHTMLTemplate
+--- PASS: TestDebugPrintWARNINGSetHTMLTemplate (0.00s)
+=== RUN   TestDebugPrintWARNINGDefault
+--- PASS: TestDebugPrintWARNINGDefault (0.00s)
+=== RUN   TestDebugPrintWARNINGDefaultWithUnsupportedVersion
+--- PASS: TestDebugPrintWARNINGDefaultWithUnsupportedVersion (0.00s)
+=== RUN   TestDebugPrintWARNINGNew
+--- PASS: TestDebugPrintWARNINGNew (0.00s)
+=== RUN   TestGetMinVer
+--- PASS: TestGetMinVer (0.00s)
+=== RUN   TestBindWith
+--- PASS: TestBindWith (0.00s)
+=== RUN   TestError
+--- PASS: TestError (0.00s)
+=== RUN   TestErrorSlice
+--- PASS: TestErrorSlice (0.00s)
+=== RUN   TestErrorUnwrap
+--- PASS: TestErrorUnwrap (0.00s)
+=== RUN   TestOnlyFilesFS_Open
+--- PASS: TestOnlyFilesFS_Open (0.00s)
+=== RUN   TestOnlyFilesFS_Open_err
+--- PASS: TestOnlyFilesFS_Open_err (0.00s)
+=== RUN   Test_neuteredReaddirFile_Readdir
+--- PASS: Test_neuteredReaddirFile_Readdir (0.00s)
+=== RUN   TestDir_listDirectory
+--- PASS: TestDir_listDirectory (0.00s)
+=== RUN   TestDir
+--- PASS: TestDir (0.00s)
+=== RUN   TestRunEmpty
+--- PASS: TestRunEmpty (0.00s)
+=== RUN   TestBadTrustedCIDRs
+--- PASS: TestBadTrustedCIDRs (0.00s)
+=== RUN   TestRunTLS
+--- PASS: TestRunTLS (0.01s)
+=== RUN   TestPusher
+--- PASS: TestPusher (0.01s)
+=== RUN   TestRunEmptyWithEnv
+--- PASS: TestRunEmptyWithEnv (0.00s)
+=== RUN   TestRunTooMuchParams
+--- PASS: TestRunTooMuchParams (0.00s)
+=== RUN   TestRunWithPort
+--- PASS: TestRunWithPort (0.00s)
+=== RUN   TestUnixSocket
+--- PASS: TestUnixSocket (0.01s)
+=== RUN   TestBadUnixSocket
+--- PASS: TestBadUnixSocket (0.00s)
+=== RUN   TestRunQUIC
+--- PASS: TestRunQUIC (0.01s)
+=== RUN   TestFileDescriptor
+--- PASS: TestFileDescriptor (0.01s)
+=== RUN   TestBadFileDescriptor
+--- PASS: TestBadFileDescriptor (0.00s)
+=== RUN   TestListener
+--- PASS: TestListener (0.01s)
+=== RUN   TestBadListener
+--- PASS: TestBadListener (0.00s)
+=== RUN   TestWithHttptestWithAutoSelectedPort
+--- PASS: TestWithHttptestWithAutoSelectedPort (0.00s)
+=== RUN   TestConcurrentHandleContext
+--- PASS: TestConcurrentHandleContext (0.00s)
+=== RUN   TestTreeRunDynamicRouting
+--- PASS: TestTreeRunDynamicRouting (0.03s)
+=== RUN   TestEscapedColon
+--- PASS: TestEscapedColon (0.00s)
+=== RUN   TestLoadHTMLGlobDebugMode
+--- PASS: TestLoadHTMLGlobDebugMode (0.00s)
+=== RUN   TestH2c
+[GIN] 2026/09/26 - 00:43:51 | 200 |  6.166µs |       127.0.0.1 | GET      "/"
+    gin_test.go:98: accept tcp 127.0.0.1:63113: use of closed network connection
+--- PASS: TestH2c (0.00s)
+=== RUN   TestLoadHTMLGlobTestMode
+--- PASS: TestLoadHTMLGlobTestMode (0.00s)
+=== RUN   TestLoadHTMLGlobReleaseMode
+--- PASS: TestLoadHTMLGlobReleaseMode (0.00s)
+=== RUN   TestLoadHTMLGlobUsingTLS
+--- PASS: TestLoadHTMLGlobUsingTLS (0.00s)
+=== RUN   TestLoadHTMLGlobFromFuncMap
+--- PASS: TestLoadHTMLGlobFromFuncMap (0.00s)
+=== RUN   TestCreateEngine
+--- PASS: TestCreateEngine (0.00s)
+=== RUN   TestLoadHTMLFilesTestMode
+--- PASS: TestLoadHTMLFilesTestMode (0.00s)
+=== RUN   TestLoadHTMLFilesDebugMode
+--- PASS: TestLoadHTMLFilesDebugMode (0.00s)
+=== RUN   TestLoadHTMLFilesReleaseMode
+--- PASS: TestLoadHTMLFilesReleaseMode (0.00s)
+=== RUN   TestLoadHTMLFilesUsingTLS
+--- PASS: TestLoadHTMLFilesUsingTLS (0.00s)
+=== RUN   TestLoadHTMLFilesFuncMap
+--- PASS: TestLoadHTMLFilesFuncMap (0.00s)
+=== RUN   TestLoadHTMLFSTestMode
+--- PASS: TestLoadHTMLFSTestMode (0.00s)
+=== RUN   TestLoadHTMLFSDebugMode
+--- PASS: TestLoadHTMLFSDebugMode (0.00s)
+=== RUN   TestLoadHTMLFSReleaseMode
+--- PASS: TestLoadHTMLFSReleaseMode (0.00s)
+=== RUN   TestLoadHTMLFSUsingTLS
+--- PASS: TestLoadHTMLFSUsingTLS (0.00s)
+=== RUN   TestLoadHTMLFSFuncMap
+--- PASS: TestLoadHTMLFSFuncMap (0.00s)
+=== RUN   TestAddRoute
+--- PASS: TestAddRoute (0.00s)
+=== RUN   TestAddRouteFails
+--- PASS: TestAddRouteFails (0.00s)
+=== RUN   TestCreateDefaultRouter
+--- PASS: TestCreateDefaultRouter (0.00s)
+=== RUN   TestNoRouteWithoutGlobalHandlers
+--- PASS: TestNoRouteWithoutGlobalHandlers (0.00s)
+=== RUN   TestNoRouteWithGlobalHandlers
+--- PASS: TestNoRouteWithGlobalHandlers (0.00s)
+=== RUN   TestNoMethodWithoutGlobalHandlers
+--- PASS: TestNoMethodWithoutGlobalHandlers (0.00s)
+=== RUN   TestRebuild404Handlers
+--- PASS: TestRebuild404Handlers (0.00s)
+=== RUN   TestNoMethodWithGlobalHandlers
+--- PASS: TestNoMethodWithGlobalHandlers (0.00s)
+=== RUN   TestListOfRoutes
+--- PASS: TestListOfRoutes (0.00s)
+=== RUN   TestEngineHandleContext
+--- PASS: TestEngineHandleContext (0.00s)
+=== RUN   TestEngineHandleContextManyReEntries
+--- PASS: TestEngineHandleContextManyReEntries (0.02s)
+=== RUN   TestEngineHandleContextPreventsMiddlewareReEntry
+--- PASS: TestEngineHandleContextPreventsMiddlewareReEntry (0.00s)
+=== RUN   TestEngineHandleContextNoRouteWithGroupMiddleware
+--- PASS: TestEngineHandleContextNoRouteWithGroupMiddleware (0.00s)
+=== RUN   TestEngineHandleContextNoRouteWithEngineMiddleware
+--- PASS: TestEngineHandleContextNoRouteWithEngineMiddleware (0.00s)
+=== RUN   TestEngineHandleContextUseEscapedPathPercentEncoded
+--- PASS: TestEngineHandleContextUseEscapedPathPercentEncoded (0.00s)
+=== RUN   TestEngineHandleContextUseRawPathPercentEncoded
+--- PASS: TestEngineHandleContextUseRawPathPercentEncoded (0.00s)
+=== RUN   TestEngineHandleContextUseEscapedPathOverride
+--- PASS: TestEngineHandleContextUseEscapedPathOverride (0.00s)
+=== RUN   TestPrepareTrustedCIRDsWith
+--- PASS: TestPrepareTrustedCIRDsWith (0.00s)
+=== RUN   TestNewOptionFunc
+--- PASS: TestNewOptionFunc (0.00s)
+=== RUN   TestWithOptionFunc
+--- PASS: TestWithOptionFunc (0.00s)
+=== RUN   TestReadHeaderTimeoutDefault
+--- PASS: TestReadHeaderTimeoutDefault (0.00s)
+=== RUN   TestReadHeaderTimeoutCustom
+--- PASS: TestReadHeaderTimeoutCustom (0.00s)
+=== RUN   TestReadHeaderTimeoutZeroFallsBackToDefault
+--- PASS: TestReadHeaderTimeoutZeroFallsBackToDefault (0.00s)
+=== RUN   TestCustomUnmarshalStruct
+[GIN] 2026/09/26 - 00:43:51 | 200 | 36.084µs |       192.0.2.1 | GET      "/test?birthday=2000-01-01"
+--- PASS: TestCustomUnmarshalStruct (0.00s)
+=== RUN   TestMethodNotAllowedNoRoute
+--- PASS: TestMethodNotAllowedNoRoute (0.00s)
+=== RUN   TestLiteralColonWithRun
+--- PASS: TestLiteralColonWithRun (0.00s)
+=== RUN   TestLiteralColonWithDirectServeHTTP
+--- PASS: TestLiteralColonWithDirectServeHTTP (0.00s)
+=== RUN   TestLiteralColonWithHandler
+--- PASS: TestLiteralColonWithHandler (0.00s)
+=== RUN   TestLiteralColonWithHTTPServer
+--- PASS: TestLiteralColonWithHTTPServer (0.00s)
+=== RUN   TestUpdateRouteTreesCalledOnce
+--- PASS: TestUpdateRouteTreesCalledOnce (0.00s)
+=== RUN   TestRouterQueryMethod
+--- PASS: TestRouterQueryMethod (0.00s)
+=== RUN   TestShouldBindUri
+--- PASS: TestShouldBindUri (0.00s)
+=== RUN   TestBindUri
+--- PASS: TestBindUri (0.00s)
+=== RUN   TestBindUriError
+--- PASS: TestBindUriError (0.00s)
+=== RUN   TestRaceContextCopy
+[GIN] 2026/09/26 - 00:43:51 | 200 |  3.917µs |       192.0.2.1 | GET      "/test/copy/race"
+--- PASS: TestRaceContextCopy (0.00s)
+=== RUN   TestGithubAPI
+--- PASS: TestGithubAPI (0.00s)
+=== RUN   TestLogger
+--- PASS: TestLogger (0.00s)
+=== RUN   TestLoggerWithConfig
+--- PASS: TestLoggerWithConfig (0.00s)
+=== RUN   TestLoggerWithFormatter
+--- PASS: TestLoggerWithFormatter (0.00s)
+=== RUN   TestLoggerWithConfigFormatting
+--- PASS: TestLoggerWithConfigFormatting (0.00s)
+=== RUN   TestDefaultLogFormatter
+--- PASS: TestDefaultLogFormatter (0.00s)
+=== RUN   TestColorForMethod
+--- PASS: TestColorForMethod (0.00s)
+=== RUN   TestColorForStatus
+--- PASS: TestColorForStatus (0.00s)
+=== RUN   TestColorForLatency
+--- PASS: TestColorForLatency (0.00s)
+=== RUN   TestResetColor
+--- PASS: TestResetColor (0.00s)
+=== RUN   TestIsOutputColor
+--- PASS: TestIsOutputColor (0.00s)
+=== RUN   TestErrorLogger
+--- PASS: TestErrorLogger (0.00s)
+=== RUN   TestLoggerWithWriterSkippingPaths
+--- PASS: TestLoggerWithWriterSkippingPaths (0.00s)
+=== RUN   TestLoggerWithConfigSkippingPaths
+--- PASS: TestLoggerWithConfigSkippingPaths (0.00s)
+=== RUN   TestLoggerWithConfigSkipper
+--- PASS: TestLoggerWithConfigSkipper (0.00s)
+=== RUN   TestDisableConsoleColor
+--- PASS: TestDisableConsoleColor (0.00s)
+=== RUN   TestForceConsoleColor
+--- PASS: TestForceConsoleColor (0.00s)
+=== RUN   TestLoggerWithConfigSkipQueryString
+--- PASS: TestLoggerWithConfigSkipQueryString (0.00s)
+=== RUN   TestMiddlewareGeneralCase
+--- PASS: TestMiddlewareGeneralCase (0.00s)
+=== RUN   TestMiddlewareNoRoute
+--- PASS: TestMiddlewareNoRoute (0.00s)
+=== RUN   TestMiddlewareNoMethodEnabled
+--- PASS: TestMiddlewareNoMethodEnabled (0.00s)
+=== RUN   TestMiddlewareNoMethodDisabled
+--- PASS: TestMiddlewareNoMethodDisabled (0.00s)
+=== RUN   TestMiddlewareAbort
+--- PASS: TestMiddlewareAbort (0.00s)
+=== RUN   TestMiddlewareAbortHandlersChainAndNext
+--- PASS: TestMiddlewareAbortHandlersChainAndNext (0.00s)
+=== RUN   TestMiddlewareFailHandlersChain
+--- PASS: TestMiddlewareFailHandlersChain (0.00s)
+=== RUN   TestMiddlewareWrite
+--- PASS: TestMiddlewareWrite (0.00s)
+=== RUN   TestSetMode
+--- PASS: TestSetMode (0.00s)
+=== RUN   TestDisableBindValidation
+--- PASS: TestDisableBindValidation (0.00s)
+=== RUN   TestEnableJsonDecoderUseNumber
+--- PASS: TestEnableJsonDecoderUseNumber (0.00s)
+=== RUN   TestEnableJsonDecoderDisallowUnknownFields
+--- PASS: TestEnableJsonDecoderDisallowUnknownFields (0.00s)
+=== RUN   TestPathClean
+--- PASS: TestPathClean (0.00s)
+=== RUN   TestPathCleanMallocs
+    path_test.go:85: skipping malloc count; GOMAXPROCS>1
+--- SKIP: TestPathCleanMallocs (0.00s)
+=== RUN   TestPathCleanLong
+--- PASS: TestPathCleanLong (0.01s)
+=== RUN   TestRemoveRepeatedChar
+=== RUN   TestRemoveRepeatedChar/empty
+=== RUN   TestRemoveRepeatedChar/noSlash
+=== RUN   TestRemoveRepeatedChar/withSlash
+=== RUN   TestRemoveRepeatedChar/withRepeatedSlashes
+=== RUN   TestRemoveRepeatedChar/threeSlashes
+--- PASS: TestRemoveRepeatedChar (0.00s)
+    --- PASS: TestRemoveRepeatedChar/empty (0.00s)
+    --- PASS: TestRemoveRepeatedChar/noSlash (0.00s)
+    --- PASS: TestRemoveRepeatedChar/withSlash (0.00s)
+    --- PASS: TestRemoveRepeatedChar/withRepeatedSlashes (0.00s)
+    --- PASS: TestRemoveRepeatedChar/threeSlashes (0.00s)
+=== RUN   TestPanicClean
+--- PASS: TestPanicClean (0.00s)
+=== RUN   TestPanicInHandler
+--- PASS: TestPanicInHandler (0.00s)
+=== RUN   TestPanicWithAbort
+--- PASS: TestPanicWithAbort (0.00s)
+=== RUN   TestFunction
+--- PASS: TestFunction (0.00s)
+=== RUN   TestPanicWithBrokenPipe
+=== RUN   TestPanicWithBrokenPipe/Recovery_from_broken_pipe
+=== RUN   TestPanicWithBrokenPipe/Recovery_from_connection_reset_by_peer
+--- PASS: TestPanicWithBrokenPipe (0.00s)
+    --- PASS: TestPanicWithBrokenPipe/Recovery_from_broken_pipe (0.00s)
+    --- PASS: TestPanicWithBrokenPipe/Recovery_from_connection_reset_by_peer (0.00s)
+=== RUN   TestPanicWithAbortHandler
+--- PASS: TestPanicWithAbortHandler (0.00s)
+=== RUN   TestPanicInHandlerRecordsError
+=== RUN   TestPanicInHandlerRecordsError/string_panic
+=== RUN   TestPanicInHandlerRecordsError/error_panic
+--- PASS: TestPanicInHandlerRecordsError (0.00s)
+    --- PASS: TestPanicInHandlerRecordsError/string_panic (0.00s)
+    --- PASS: TestPanicInHandlerRecordsError/error_panic (0.00s)
+=== RUN   TestCustomRecoveryWithWriter
+--- PASS: TestCustomRecoveryWithWriter (0.00s)
+=== RUN   TestCustomRecovery
+--- PASS: TestCustomRecovery (0.00s)
+=== RUN   TestRecoveryWithWriterWithCustomRecovery
+--- PASS: TestRecoveryWithWriterWithCustomRecovery (0.00s)
+=== RUN   TestSecureRequestDump
+=== RUN   TestSecureRequestDump/Authorization_header_standard_case
+=== RUN   TestSecureRequestDump/authorization_header_lowercase
+=== RUN   TestSecureRequestDump/Authorization_header_mixed_case
+=== RUN   TestSecureRequestDump/No_Authorization_header
+--- PASS: TestSecureRequestDump (0.00s)
+    --- PASS: TestSecureRequestDump/Authorization_header_standard_case (0.00s)
+    --- PASS: TestSecureRequestDump/authorization_header_lowercase (0.00s)
+    --- PASS: TestSecureRequestDump/Authorization_header_mixed_case (0.00s)
+    --- PASS: TestSecureRequestDump/No_Authorization_header (0.00s)
+=== RUN   TestReadNthLine
+=== RUN   TestReadNthLine/Read_first_line
+=== RUN   TestReadNthLine/Read_middle_line
+=== RUN   TestReadNthLine/Read_last_line
+=== RUN   TestReadNthLine/Line_number_exceeds_file_length
+=== RUN   TestReadNthLine/Negative_line_number
+=== RUN   TestReadNthLine/Non-existent_file
+--- PASS: TestReadNthLine (0.00s)
+    --- PASS: TestReadNthLine/Read_first_line (0.00s)
+    --- PASS: TestReadNthLine/Read_middle_line (0.00s)
+    --- PASS: TestReadNthLine/Read_last_line (0.00s)
+    --- PASS: TestReadNthLine/Line_number_exceeds_file_length (0.00s)
+    --- PASS: TestReadNthLine/Negative_line_number (0.00s)
+    --- PASS: TestReadNthLine/Non-existent_file (0.00s)
+=== RUN   TestResponseWriterFlushWithFlusher
+--- PASS: TestResponseWriterFlushWithFlusher (0.00s)
+=== RUN   TestResponseWriterFlushWithNonFlusher
+--- PASS: TestResponseWriterFlushWithNonFlusher (0.00s)
+=== RUN   TestResponseWriterUnwrap
+--- PASS: TestResponseWriterUnwrap (0.00s)
+=== RUN   TestResponseWriterReset
+--- PASS: TestResponseWriterReset (0.00s)
+=== RUN   TestResponseWriterWriteHeader
+--- PASS: TestResponseWriterWriteHeader (0.00s)
+=== RUN   TestResponseWriterWriteHeadersNow
+--- PASS: TestResponseWriterWriteHeadersNow (0.00s)
+=== RUN   TestResponseWriterWrite
+--- PASS: TestResponseWriterWrite (0.00s)
+=== RUN   TestResponseWriterHijack
+--- PASS: TestResponseWriterHijack (0.00s)
+=== RUN   TestResponseWriterHijackAfterWrite
+=== RUN   TestResponseWriterHijackAfterWrite/hijack_before_write_should_succeed
+=== RUN   TestResponseWriterHijackAfterWrite/hijack_after_write_should_fail
+--- PASS: TestResponseWriterHijackAfterWrite (0.00s)
+    --- PASS: TestResponseWriterHijackAfterWrite/hijack_before_write_should_succeed (0.00s)
+    --- PASS: TestResponseWriterHijackAfterWrite/hijack_after_write_should_fail (0.00s)
+=== RUN   TestResponseWriterHijackAfterWriteHeaderNow
+=== RUN   TestResponseWriterHijackAfterWriteHeaderNow/hijack_after_WriteHeaderNow_only_should_succeed_(websocket_pattern)
+=== RUN   TestResponseWriterHijackAfterWriteHeaderNow/hijack_after_WriteHeaderNow_+_Write_should_fail
+--- PASS: TestResponseWriterHijackAfterWriteHeaderNow (0.00s)
+    --- PASS: TestResponseWriterHijackAfterWriteHeaderNow/hijack_after_WriteHeaderNow_only_should_succeed_(websocket_pattern) (0.00s)
+    --- PASS: TestResponseWriterHijackAfterWriteHeaderNow/hijack_after_WriteHeaderNow_+_Write_should_fail (0.00s)
+=== RUN   TestResponseWriterFlush
+--- PASS: TestResponseWriterFlush (0.00s)
+=== RUN   TestResponseWriterStatusCode
+--- PASS: TestResponseWriterStatusCode (0.00s)
+=== RUN   TestPusherWithPusher
+--- PASS: TestPusherWithPusher (0.00s)
+=== RUN   TestPusherWithoutPusher
+--- PASS: TestPusherWithoutPusher (0.00s)
+=== RUN   TestRouterGroupBasic
+--- PASS: TestRouterGroupBasic (0.00s)
+=== RUN   TestRouterGroupBasicHandle
+--- PASS: TestRouterGroupBasicHandle (0.00s)
+=== RUN   TestRouterGroupInvalidStatic
+--- PASS: TestRouterGroupInvalidStatic (0.00s)
+=== RUN   TestRouterGroupInvalidStaticFile
+--- PASS: TestRouterGroupInvalidStaticFile (0.00s)
+=== RUN   TestRouterGroupInvalidStaticFileFS
+--- PASS: TestRouterGroupInvalidStaticFileFS (0.00s)
+=== RUN   TestRouterGroupTooManyHandlers
+--- PASS: TestRouterGroupTooManyHandlers (0.00s)
+=== RUN   TestRouterGroupBadMethod
+--- PASS: TestRouterGroupBadMethod (0.00s)
+=== RUN   TestRouterGroupPipeline
+--- PASS: TestRouterGroupPipeline (0.00s)
+=== RUN   TestRouterGroupCombineHandlersTooManyHandlers
+--- PASS: TestRouterGroupCombineHandlersTooManyHandlers (0.00s)
+=== RUN   TestRouterGroupCombineHandlersEmptySliceNotNil
+--- PASS: TestRouterGroupCombineHandlersEmptySliceNotNil (0.00s)
+=== RUN   TestRouteQuery
+--- PASS: TestRouteQuery (0.00s)
+=== RUN   TestRouteQueryNotRegisteredByAny
+--- PASS: TestRouteQueryNotRegisteredByAny (0.00s)
+=== RUN   TestQueryRoutesInterface
+--- PASS: TestQueryRoutesInterface (0.00s)
+=== RUN   TestRouterMethod
+--- PASS: TestRouterMethod (0.00s)
+=== RUN   TestRouterGroupRouteOK
+--- PASS: TestRouterGroupRouteOK (0.00s)
+=== RUN   TestRouteNotOK
+--- PASS: TestRouteNotOK (0.00s)
+=== RUN   TestRouteNotOK2
+--- PASS: TestRouteNotOK2 (0.00s)
+=== RUN   TestRouteRedirectTrailingSlash
+--- PASS: TestRouteRedirectTrailingSlash (0.00s)
+=== RUN   TestRouteRedirectFixedPath
+--- PASS: TestRouteRedirectFixedPath (0.00s)
+=== RUN   TestRouteParamsByName
+--- PASS: TestRouteParamsByName (0.00s)
+=== RUN   TestRouteParamsByNameWithExtraSlash
+--- PASS: TestRouteParamsByNameWithExtraSlash (0.00s)
+=== RUN   TestRouteParamsNotEmpty
+--- PASS: TestRouteParamsNotEmpty (0.00s)
+=== RUN   TestRouteStaticFile
+--- PASS: TestRouteStaticFile (0.00s)
+=== RUN   TestRouteStaticFileFS
+--- PASS: TestRouteStaticFileFS (0.00s)
+=== RUN   TestRouteStaticListingDir
+--- PASS: TestRouteStaticListingDir (0.00s)
+=== RUN   TestRouteStaticNoListing
+--- PASS: TestRouteStaticNoListing (0.00s)
+=== RUN   TestRouterMiddlewareAndStatic
+--- PASS: TestRouterMiddlewareAndStatic (0.00s)
+=== RUN   TestRouteNotAllowedEnabled
+--- PASS: TestRouteNotAllowedEnabled (0.00s)
+=== RUN   TestRouteNotAllowedEnabled2
+--- PASS: TestRouteNotAllowedEnabled2 (0.00s)
+=== RUN   TestRouteNotAllowedEnabled3
+--- PASS: TestRouteNotAllowedEnabled3 (0.00s)
+=== RUN   TestRouteNotAllowedDisabled
+--- PASS: TestRouteNotAllowedDisabled (0.00s)
+=== RUN   TestRouterNotFoundWithRemoveExtraSlash
+--- PASS: TestRouterNotFoundWithRemoveExtraSlash (0.00s)
+=== RUN   TestRouterNotFound
+--- PASS: TestRouterNotFound (0.00s)
+=== RUN   TestRouterStaticFSNotFound
+--- PASS: TestRouterStaticFSNotFound (0.00s)
+=== RUN   TestRouterStaticFSFileNotFound
+--- PASS: TestRouterStaticFSFileNotFound (0.00s)
+=== RUN   TestMiddlewareCalledOnceByRouterStaticFSNotFound
+--- PASS: TestMiddlewareCalledOnceByRouterStaticFSNotFound (0.00s)
+=== RUN   TestRouteRawPath
+--- PASS: TestRouteRawPath (0.00s)
+=== RUN   TestRouteRawPathNoUnescape
+--- PASS: TestRouteRawPathNoUnescape (0.00s)
+=== RUN   TestRouteServeErrorWithWriteHeader
+--- PASS: TestRouteServeErrorWithWriteHeader (0.00s)
+=== RUN   TestRouteContextHoldsFullPath
+--- PASS: TestRouteContextHoldsFullPath (0.00s)
+=== RUN   TestEngineHandleMethodNotAllowedCornerCase
+--- PASS: TestEngineHandleMethodNotAllowedCornerCase (0.00s)
+=== RUN   TestIssue4818_skippedNodesOverflow_Panic
+--- PASS: TestIssue4818_skippedNodesOverflow_Panic (0.00s)
+=== RUN   TestIssue4818_MethodNotAllowedStillWorks
+--- PASS: TestIssue4818_MethodNotAllowedStillWorks (0.00s)
+=== RUN   TestIssue4818_MethodNotAllowedManyTrees
+--- PASS: TestIssue4818_MethodNotAllowedManyTrees (0.00s)
+=== RUN   TestCountParams
+--- PASS: TestCountParams (0.00s)
+=== RUN   TestTreeAddAndGet
+--- PASS: TestTreeAddAndGet (0.00s)
+=== RUN   TestTreeWildcard
+--- PASS: TestTreeWildcard (0.00s)
+=== RUN   TestUnescapeParameters
+--- PASS: TestUnescapeParameters (0.00s)
+=== RUN   TestTreeWildcardConflict
+--- PASS: TestTreeWildcardConflict (0.00s)
+=== RUN   TestCatchAllAfterSlash
+--- PASS: TestCatchAllAfterSlash (0.00s)
+=== RUN   TestTreeChildConflict
+--- PASS: TestTreeChildConflict (0.00s)
+=== RUN   TestTreeDuplicatePath
+--- PASS: TestTreeDuplicatePath (0.00s)
+=== RUN   TestEmptyWildcardName
+--- PASS: TestEmptyWildcardName (0.00s)
+=== RUN   TestTreeCatchAllConflict
+--- PASS: TestTreeCatchAllConflict (0.00s)
+=== RUN   TestTreeCatchAllConflictRoot
+--- PASS: TestTreeCatchAllConflictRoot (0.00s)
+=== RUN   TestTreeCatchMaxParams
+--- PASS: TestTreeCatchMaxParams (0.00s)
+=== RUN   TestTreeDoubleWildcard
+--- PASS: TestTreeDoubleWildcard (0.00s)
+=== RUN   TestTreeTrailingSlashRedirect
+--- PASS: TestTreeTrailingSlashRedirect (0.00s)
+=== RUN   TestTreeRootTrailingSlashRedirect
+--- PASS: TestTreeRootTrailingSlashRedirect (0.00s)
+=== RUN   TestRedirectTrailingSlash
+--- PASS: TestRedirectTrailingSlash (0.00s)
+=== RUN   TestTreeFindCaseInsensitivePath
+--- PASS: TestTreeFindCaseInsensitivePath (0.00s)
+=== RUN   TestTreeInvalidNodeType
+--- PASS: TestTreeInvalidNodeType (0.00s)
+=== RUN   TestTreeInvalidParamsType
+--- PASS: TestTreeInvalidParamsType (0.00s)
+=== RUN   TestTreeExpandParamsCapacity
+--- PASS: TestTreeExpandParamsCapacity (0.00s)
+=== RUN   TestTreeWildcardConflictEx
+--- PASS: TestTreeWildcardConflictEx (0.00s)
+=== RUN   TestTreeInvalidEscape
+--- PASS: TestTreeInvalidEscape (0.00s)
+=== RUN   TestWildcardInvalidSlash
+--- PASS: TestWildcardInvalidSlash (0.00s)
+=== RUN   TestTreeFindCaseInsensitivePathWithMultipleChildrenAndWildcard
+--- PASS: TestTreeFindCaseInsensitivePathWithMultipleChildrenAndWildcard (0.00s)
+=== RUN   TestTreeFindCaseInsensitivePathWildcardParamAndStaticChild
+--- PASS: TestTreeFindCaseInsensitivePathWildcardParamAndStaticChild (0.00s)
+=== RUN   TestWrap
+--- PASS: TestWrap (0.00s)
+=== RUN   TestLastChar
+--- PASS: TestLastChar (0.00s)
+=== RUN   TestParseAccept
+--- PASS: TestParseAccept (0.00s)
+=== RUN   TestChooseData
+--- PASS: TestChooseData (0.00s)
+=== RUN   TestFilterFlags
+--- PASS: TestFilterFlags (0.00s)
+=== RUN   TestFunctionName
+--- PASS: TestFunctionName (0.00s)
+=== RUN   TestJoinPaths
+--- PASS: TestJoinPaths (0.00s)
+=== RUN   TestBindMiddleware
+--- PASS: TestBindMiddleware (0.00s)
+=== RUN   TestMarshalXMLforH
+--- PASS: TestMarshalXMLforH (0.00s)
+=== RUN   TestMarshalXMLforHSuccess
+--- PASS: TestMarshalXMLforHSuccess (0.00s)
+=== RUN   TestIsASCII
+--- PASS: TestIsASCII (0.00s)
+=== RUN   TestSafeInt8
+--- PASS: TestSafeInt8 (0.00s)
+=== RUN   TestSafeUint16
+--- PASS: TestSafeUint16 (0.00s)
+PASS
+ok  	github.com/gin-gonic/gin	0.657s
+=== RUN   TestBindingMsgPack
+--- PASS: TestBindingMsgPack (0.00s)
+=== RUN   TestBindingDefaultMsgPack
+--- PASS: TestBindingDefaultMsgPack (0.00s)
+=== RUN   TestBindingDefault
+--- PASS: TestBindingDefault (0.00s)
+=== RUN   TestBindingJSONNilBody
+--- PASS: TestBindingJSONNilBody (0.00s)
+=== RUN   TestBindingJSON
+--- PASS: TestBindingJSON (0.00s)
+=== RUN   TestBindingJSONSlice
+--- PASS: TestBindingJSONSlice (0.00s)
+=== RUN   TestBindingJSONUseNumber
+--- PASS: TestBindingJSONUseNumber (0.00s)
+=== RUN   TestBindingJSONUseNumber2
+--- PASS: TestBindingJSONUseNumber2 (0.00s)
+=== RUN   TestBindingJSONDisallowUnknownFields
+--- PASS: TestBindingJSONDisallowUnknownFields (0.00s)
+=== RUN   TestBindingJSONStringMap
+--- PASS: TestBindingJSONStringMap (0.00s)
+=== RUN   TestBindingForm
+--- PASS: TestBindingForm (0.00s)
+=== RUN   TestBindingForm2
+--- PASS: TestBindingForm2 (0.00s)
+=== RUN   TestBindingFormEmbeddedStruct
+--- PASS: TestBindingFormEmbeddedStruct (0.00s)
+=== RUN   TestBindingFormEmbeddedStruct2
+--- PASS: TestBindingFormEmbeddedStruct2 (0.00s)
+=== RUN   TestBindingFormDefaultValue
+--- PASS: TestBindingFormDefaultValue (0.00s)
+=== RUN   TestBindingFormDefaultValue2
+--- PASS: TestBindingFormDefaultValue2 (0.00s)
+=== RUN   TestBindingFormForTime
+--- PASS: TestBindingFormForTime (0.00s)
+=== RUN   TestBindingFormForTime2
+--- PASS: TestBindingFormForTime2 (0.00s)
+=== RUN   TestFormBindingIgnoreField
+--- PASS: TestFormBindingIgnoreField (0.00s)
+=== RUN   TestBindingFormInvalidName
+--- PASS: TestBindingFormInvalidName (0.00s)
+=== RUN   TestBindingFormInvalidName2
+--- PASS: TestBindingFormInvalidName2 (0.00s)
+=== RUN   TestBindingFormForType
+--- PASS: TestBindingFormForType (0.00s)
+=== RUN   TestBindingFormStringMap
+--- PASS: TestBindingFormStringMap (0.00s)
+=== RUN   TestBindingFormStringSliceMap
+--- PASS: TestBindingFormStringSliceMap (0.00s)
+=== RUN   TestBindingQuery
+--- PASS: TestBindingQuery (0.00s)
+=== RUN   TestBindingQuery2
+--- PASS: TestBindingQuery2 (0.00s)
+=== RUN   TestBindingQueryFail
+--- PASS: TestBindingQueryFail (0.00s)
+=== RUN   TestBindingQueryFail2
+--- PASS: TestBindingQueryFail2 (0.00s)
+=== RUN   TestBindingQueryBoolFail
+--- PASS: TestBindingQueryBoolFail (0.00s)
+=== RUN   TestBindingQueryStringMap
+--- PASS: TestBindingQueryStringMap (0.00s)
+=== RUN   TestBindingXML
+--- PASS: TestBindingXML (0.00s)
+=== RUN   TestBindingXMLFail
+--- PASS: TestBindingXMLFail (0.00s)
+=== RUN   TestBindingTOML
+--- PASS: TestBindingTOML (0.00s)
+=== RUN   TestBindingTOMLFail
+--- PASS: TestBindingTOMLFail (0.00s)
+=== RUN   TestBindingYAML
+--- PASS: TestBindingYAML (0.00s)
+=== RUN   TestBindingYAMLStringMap
+--- PASS: TestBindingYAMLStringMap (0.00s)
+=== RUN   TestBindingYAMLFail
+--- PASS: TestBindingYAMLFail (0.00s)
+=== RUN   TestBindingFormPost
+--- PASS: TestBindingFormPost (0.00s)
+=== RUN   TestBindingDefaultValueFormPost
+--- PASS: TestBindingDefaultValueFormPost (0.00s)
+=== RUN   TestBindingFormPostForMap
+--- PASS: TestBindingFormPostForMap (0.00s)
+=== RUN   TestBindingFormPostForMapFail
+--- PASS: TestBindingFormPostForMapFail (0.00s)
+=== RUN   TestBindingFormFilesMultipart
+--- PASS: TestBindingFormFilesMultipart (0.00s)
+=== RUN   TestBindingFormFilesMultipartFail
+--- PASS: TestBindingFormFilesMultipartFail (0.00s)
+=== RUN   TestBindingFormMultipart
+--- PASS: TestBindingFormMultipart (0.00s)
+=== RUN   TestBindingFormMultipartForMap
+--- PASS: TestBindingFormMultipartForMap (0.00s)
+=== RUN   TestBindingFormMultipartForMapFail
+--- PASS: TestBindingFormMultipartForMapFail (0.00s)
+=== RUN   TestBindingProtoBuf
+--- PASS: TestBindingProtoBuf (0.00s)
+=== RUN   TestBindingProtoBufFail
+--- PASS: TestBindingProtoBufFail (0.00s)
+=== RUN   TestBindingBSON
+--- PASS: TestBindingBSON (0.00s)
+=== RUN   TestValidationFails
+--- PASS: TestValidationFails (0.00s)
+=== RUN   TestValidationDisabled
+--- PASS: TestValidationDisabled (0.00s)
+=== RUN   TestRequiredSucceeds
+--- PASS: TestRequiredSucceeds (0.00s)
+=== RUN   TestRequiredFails
+--- PASS: TestRequiredFails (0.00s)
+=== RUN   TestHeaderBinding
+--- PASS: TestHeaderBinding (0.00s)
+=== RUN   TestUriBinding
+--- PASS: TestUriBinding (0.00s)
+=== RUN   TestUriInnerBinding
+--- PASS: TestUriInnerBinding (0.00s)
+=== RUN   TestFormBindingFail
+--- PASS: TestFormBindingFail (0.00s)
+=== RUN   TestFormBindingMultipartFail
+--- PASS: TestFormBindingMultipartFail (0.00s)
+=== RUN   TestFormPostBindingFail
+--- PASS: TestFormPostBindingFail (0.00s)
+=== RUN   TestFormMultipartBindingFail
+--- PASS: TestFormMultipartBindingFail (0.00s)
+=== RUN   TestPlainBinding
+--- PASS: TestPlainBinding (0.00s)
+=== RUN   TestSliceValidationError
+=== RUN   TestSliceValidationError/has_nil_elements
+=== RUN   TestSliceValidationError/has_zero_elements
+=== RUN   TestSliceValidationError/has_one_element
+=== RUN   TestSliceValidationError/has_two_elements
+=== RUN   TestSliceValidationError/has_many_elements
+--- PASS: TestSliceValidationError (0.00s)
+    --- PASS: TestSliceValidationError/has_nil_elements (0.00s)
+    --- PASS: TestSliceValidationError/has_zero_elements (0.00s)
+    --- PASS: TestSliceValidationError/has_one_element (0.00s)
+    --- PASS: TestSliceValidationError/has_two_elements (0.00s)
+    --- PASS: TestSliceValidationError/has_many_elements (0.00s)
+=== RUN   TestDefaultValidator
+=== RUN   TestDefaultValidator/validate_nil_obj
+=== RUN   TestDefaultValidator/validate_int_obj
+=== RUN   TestDefaultValidator/validate_struct_failed-1
+=== RUN   TestDefaultValidator/validate_struct_failed-2
+=== RUN   TestDefaultValidator/validate_struct_passed
+=== RUN   TestDefaultValidator/validate_*struct_failed-1
+=== RUN   TestDefaultValidator/validate_*struct_failed-2
+=== RUN   TestDefaultValidator/validate_*struct_passed
+=== RUN   TestDefaultValidator/validate_[]struct_failed-1
+=== RUN   TestDefaultValidator/validate_[]struct_failed-2
+=== RUN   TestDefaultValidator/validate_[]struct_passed
+=== RUN   TestDefaultValidator/validate_[]*struct_failed-1
+=== RUN   TestDefaultValidator/validate_[]*struct_failed-2
+=== RUN   TestDefaultValidator/validate_[]*struct_passed
+=== RUN   TestDefaultValidator/validate_*[]struct_failed-1
+=== RUN   TestDefaultValidator/validate_*[]struct_failed-2
+=== RUN   TestDefaultValidator/validate_*[]struct_passed
+=== RUN   TestDefaultValidator/validate_*[]*struct_failed-1
+=== RUN   TestDefaultValidator/validate_*[]*struct_failed-2
+=== RUN   TestDefaultValidator/validate_*[]*struct_passed
+--- PASS: TestDefaultValidator (0.00s)
+    --- PASS: TestDefaultValidator/validate_nil_obj (0.00s)
+    --- PASS: TestDefaultValidator/validate_int_obj (0.00s)
+    --- PASS: TestDefaultValidator/validate_struct_failed-1 (0.00s)
+    --- PASS: TestDefaultValidator/validate_struct_failed-2 (0.00s)
+    --- PASS: TestDefaultValidator/validate_struct_passed (0.00s)
+    --- PASS: TestDefaultValidator/validate_*struct_failed-1 (0.00s)
+    --- PASS: TestDefaultValidator/validate_*struct_failed-2 (0.00s)
+    --- PASS: TestDefaultValidator/validate_*struct_passed (0.00s)
+    --- PASS: TestDefaultValidator/validate_[]struct_failed-1 (0.00s)
+    --- PASS: TestDefaultValidator/validate_[]struct_failed-2 (0.00s)
+    --- PASS: TestDefaultValidator/validate_[]struct_passed (0.00s)
+    --- PASS: TestDefaultValidator/validate_[]*struct_failed-1 (0.00s)
+    --- PASS: TestDefaultValidator/validate_[]*struct_failed-2 (0.00s)
+    --- PASS: TestDefaultValidator/validate_[]*struct_passed (0.00s)
+    --- PASS: TestDefaultValidator/validate_*[]struct_failed-1 (0.00s)
+    --- PASS: TestDefaultValidator/validate_*[]struct_failed-2 (0.00s)
+    --- PASS: TestDefaultValidator/validate_*[]struct_passed (0.00s)
+    --- PASS: TestDefaultValidator/validate_*[]*struct_failed-1 (0.00s)
+    --- PASS: TestDefaultValidator/validate_*[]*struct_failed-2 (0.00s)
+    --- PASS: TestDefaultValidator/validate_*[]*struct_passed (0.00s)
+=== RUN   TestMappingBaseTypes
+--- PASS: TestMappingBaseTypes (0.00s)
+=== RUN   TestMappingDefault
+--- PASS: TestMappingDefault (0.00s)
+=== RUN   TestMappingSkipField
+--- PASS: TestMappingSkipField (0.00s)
+=== RUN   TestMappingIgnoreField
+--- PASS: TestMappingIgnoreField (0.00s)
+=== RUN   TestMappingUnexportedField
+--- PASS: TestMappingUnexportedField (0.00s)
+=== RUN   TestMappingPrivateField
+--- PASS: TestMappingPrivateField (0.00s)
+=== RUN   TestMappingUnknownFieldType
+--- PASS: TestMappingUnknownFieldType (0.00s)
+=== RUN   TestMappingURI
+--- PASS: TestMappingURI (0.00s)
+=== RUN   TestMappingForm
+--- PASS: TestMappingForm (0.00s)
+=== RUN   TestMappingFormFieldNotSent
+--- PASS: TestMappingFormFieldNotSent (0.00s)
+=== RUN   TestMappingFormWithEmptyToDefault
+--- PASS: TestMappingFormWithEmptyToDefault (0.00s)
+=== RUN   TestMapFormWithTag
+--- PASS: TestMapFormWithTag (0.00s)
+=== RUN   TestMappingTime
+--- PASS: TestMappingTime (0.00s)
+=== RUN   TestMappingTimeUnixNano
+--- PASS: TestMappingTimeUnixNano (0.00s)
+=== RUN   TestMappingTimeDuration
+--- PASS: TestMappingTimeDuration (0.00s)
+=== RUN   TestMappingSlice
+--- PASS: TestMappingSlice (0.00s)
+=== RUN   TestMappingArray
+--- PASS: TestMappingArray (0.00s)
+=== RUN   TestMappingCollectionFormat
+--- PASS: TestMappingCollectionFormat (0.00s)
+=== RUN   TestMappingCollectionFormatInvalid
+--- PASS: TestMappingCollectionFormatInvalid (0.00s)
+=== RUN   TestMappingMultipleDefaultWithCollectionFormat
+--- PASS: TestMappingMultipleDefaultWithCollectionFormat (0.00s)
+=== RUN   TestMappingStructField
+--- PASS: TestMappingStructField (0.00s)
+=== RUN   TestMappingPtrField
+--- PASS: TestMappingPtrField (0.00s)
+=== RUN   TestMappingMapField
+--- PASS: TestMappingMapField (0.00s)
+=== RUN   TestMappingIgnoredCircularRef
+--- PASS: TestMappingIgnoredCircularRef (0.00s)
+=== RUN   TestMappingCustomUnmarshalParamHexWithFormTag
+--- PASS: TestMappingCustomUnmarshalParamHexWithFormTag (0.00s)
+=== RUN   TestMappingCustomUnmarshalParamHexWithURITag
+--- PASS: TestMappingCustomUnmarshalParamHexWithURITag (0.00s)
+=== RUN   TestMappingCustomUnmarshalParamHexDefault
+--- PASS: TestMappingCustomUnmarshalParamHexDefault (0.00s)
+=== RUN   TestMappingCustomStructTypeWithFormTag
+--- PASS: TestMappingCustomStructTypeWithFormTag (0.00s)
+=== RUN   TestMappingCustomStructTypeWithURITag
+--- PASS: TestMappingCustomStructTypeWithURITag (0.00s)
+=== RUN   TestMappingCustomPointerStructTypeWithFormTag
+--- PASS: TestMappingCustomPointerStructTypeWithFormTag (0.00s)
+=== RUN   TestMappingCustomPointerStructTypeWithURITag
+--- PASS: TestMappingCustomPointerStructTypeWithURITag (0.00s)
+=== RUN   TestMappingCustomSliceUri
+--- PASS: TestMappingCustomSliceUri (0.00s)
+=== RUN   TestMappingCustomSliceForm
+--- PASS: TestMappingCustomSliceForm (0.00s)
+=== RUN   TestMappingCustomSliceStopsWhenError
+--- PASS: TestMappingCustomSliceStopsWhenError (0.00s)
+=== RUN   TestMappingCustomSliceOfSliceUri
+--- PASS: TestMappingCustomSliceOfSliceUri (0.00s)
+=== RUN   TestMappingCustomSliceOfSliceForm
+--- PASS: TestMappingCustomSliceOfSliceForm (0.00s)
+=== RUN   TestMappingCustomArrayUri
+--- PASS: TestMappingCustomArrayUri (0.00s)
+=== RUN   TestMappingCustomArrayForm
+--- PASS: TestMappingCustomArrayForm (0.00s)
+=== RUN   TestMappingCustomArrayOfArrayUri
+--- PASS: TestMappingCustomArrayOfArrayUri (0.00s)
+=== RUN   TestMappingCustomArrayOfArrayForm
+--- PASS: TestMappingCustomArrayOfArrayForm (0.00s)
+=== RUN   TestMappingCustomUnmarshalTextHexUri
+--- PASS: TestMappingCustomUnmarshalTextHexUri (0.00s)
+=== RUN   TestMappingCustomUnmarshalTextHexForm
+--- PASS: TestMappingCustomUnmarshalTextHexForm (0.00s)
+=== RUN   TestMappingCustomUnmarshalTextHexDefault
+--- PASS: TestMappingCustomUnmarshalTextHexDefault (0.00s)
+=== RUN   TestMappingCustomStructTypeUnmarshalTextForm
+--- PASS: TestMappingCustomStructTypeUnmarshalTextForm (0.00s)
+=== RUN   TestMappingCustomStructTypeUnmarshalTextUri
+--- PASS: TestMappingCustomStructTypeUnmarshalTextUri (0.00s)
+=== RUN   TestMappingCustomPointerStructTypeUnmarshalTextForm
+--- PASS: TestMappingCustomPointerStructTypeUnmarshalTextForm (0.00s)
+=== RUN   TestMappingCustomPointerStructTypeUnmarshalTextUri
+--- PASS: TestMappingCustomPointerStructTypeUnmarshalTextUri (0.00s)
+=== RUN   TestMappingCustomSliceUnmarshalTextUri
+--- PASS: TestMappingCustomSliceUnmarshalTextUri (0.00s)
+=== RUN   TestMappingCustomSliceUnmarshalTextForm
+--- PASS: TestMappingCustomSliceUnmarshalTextForm (0.00s)
+=== RUN   TestMappingCustomSliceUnmarshalTextStopsWhenError
+--- PASS: TestMappingCustomSliceUnmarshalTextStopsWhenError (0.00s)
+=== RUN   TestMappingCustomSliceOfSliceUnmarshalTextUri
+--- PASS: TestMappingCustomSliceOfSliceUnmarshalTextUri (0.00s)
+=== RUN   TestMappingCustomSliceOfSliceUnmarshalTextForm
+--- PASS: TestMappingCustomSliceOfSliceUnmarshalTextForm (0.00s)
+=== RUN   TestMappingCustomSliceOfSliceUnmarshalTextDefault
+--- PASS: TestMappingCustomSliceOfSliceUnmarshalTextDefault (0.00s)
+=== RUN   TestMappingCustomArrayUnmarshalTextUri
+--- PASS: TestMappingCustomArrayUnmarshalTextUri (0.00s)
+=== RUN   TestMappingCustomArrayUnmarshalTextForm
+--- PASS: TestMappingCustomArrayUnmarshalTextForm (0.00s)
+=== RUN   TestMappingCustomArrayOfArrayUnmarshalTextUri
+--- PASS: TestMappingCustomArrayOfArrayUnmarshalTextUri (0.00s)
+=== RUN   TestMappingCustomArrayOfArrayUnmarshalTextForm
+--- PASS: TestMappingCustomArrayOfArrayUnmarshalTextForm (0.00s)
+=== RUN   TestMappingCustomArrayOfArrayUnmarshalTextDefault
+--- PASS: TestMappingCustomArrayOfArrayUnmarshalTextDefault (0.00s)
+=== RUN   TestMappingUsingBindUnmarshalerAndTextUnmarshalerWhenOnlyBindUnmarshalerDefined
+--- PASS: TestMappingUsingBindUnmarshalerAndTextUnmarshalerWhenOnlyBindUnmarshalerDefined (0.00s)
+=== RUN   TestMappingUsingBindUnmarshalerAndTextUnmarshalerWhenOnlyTextUnmarshalerDefined
+--- PASS: TestMappingUsingBindUnmarshalerAndTextUnmarshalerWhenOnlyTextUnmarshalerDefined (0.00s)
+=== RUN   TestMappingUsingTextUnmarshalerWhenBindUnmarshalerAlsoDefined
+--- PASS: TestMappingUsingTextUnmarshalerWhenBindUnmarshalerAlsoDefined (0.00s)
+=== RUN   TestMappingEmptyValues
+=== RUN   TestMappingEmptyValues/slice_with_default
+=== RUN   TestMappingEmptyValues/array_with_default
+=== RUN   TestMappingEmptyValues/slice_without_default
+=== RUN   TestMappingEmptyValues/array_without_default
+=== RUN   TestMappingEmptyValues/slice_with_collection_format
+--- PASS: TestMappingEmptyValues (0.00s)
+    --- PASS: TestMappingEmptyValues/slice_with_default (0.00s)
+    --- PASS: TestMappingEmptyValues/array_with_default (0.00s)
+    --- PASS: TestMappingEmptyValues/slice_without_default (0.00s)
+    --- PASS: TestMappingEmptyValues/array_without_default (0.00s)
+    --- PASS: TestMappingEmptyValues/slice_with_collection_format (0.00s)
+=== RUN   TestJSONBindingBindBody
+--- PASS: TestJSONBindingBindBody (0.00s)
+=== RUN   TestJSONBindingBindBodyMap
+--- PASS: TestJSONBindingBindBodyMap (0.00s)
+=== RUN   TestCustomJsonCodec
+--- PASS: TestCustomJsonCodec (0.00s)
+=== RUN   TestMsgpackBindingBindBody
+--- PASS: TestMsgpackBindingBindBody (0.00s)
+=== RUN   TestFormMultipartBindingBindOneFile
+--- PASS: TestFormMultipartBindingBindOneFile (0.00s)
+=== RUN   TestFormMultipartBindingBindTwoFiles
+--- PASS: TestFormMultipartBindingBindTwoFiles (0.00s)
+=== RUN   TestFormMultipartBindingBindError
+--- PASS: TestFormMultipartBindingBindError (0.00s)
+=== RUN   TestTOMLBindingBindBody
+--- PASS: TestTOMLBindingBindBody (0.00s)
+=== RUN   TestValidateNoValidationValues
+--- PASS: TestValidateNoValidationValues (0.00s)
+=== RUN   TestValidateNoValidationPointers
+--- PASS: TestValidateNoValidationPointers (0.00s)
+=== RUN   TestValidatePrimitives
+--- PASS: TestValidatePrimitives (0.00s)
+=== RUN   TestValidateAndModifyStruct
+--- PASS: TestValidateAndModifyStruct (0.00s)
+=== RUN   TestValidatorEngine
+--- PASS: TestValidatorEngine (0.00s)
+=== RUN   TestXMLBindingBindBody
+--- PASS: TestXMLBindingBindBody (0.00s)
+=== RUN   TestYAMLBindingBindBody
+--- PASS: TestYAMLBindingBindBody (0.00s)
+PASS
+ok  	github.com/gin-gonic/gin/binding	1.666s
+?   	github.com/gin-gonic/gin/codec/json	[no test files]
+=== RUN   TestGET
+[GIN] 2026/09/26 - 00:43:51 | 200 |   3.25µs |       192.0.2.1 | GET      "/test"
+--- PASS: TestGET (0.00s)
+=== RUN   TestQUERY
+[GIN] 2026/09/26 - 00:43:51 | 200 |    708ns |       192.0.2.1 | QUERY    "/query"
+--- PASS: TestQUERY (0.00s)
+=== RUN   TestPOST
+[GIN] 2026/09/26 - 00:43:51 | 201 |    625ns |       192.0.2.1 | POST     "/post"
+--- PASS: TestPOST (0.00s)
+=== RUN   TestPUT
+[GIN] 2026/09/26 - 00:43:51 | 200 |    667ns |       192.0.2.1 | PUT      "/put"
+--- PASS: TestPUT (0.00s)
+=== RUN   TestDELETE
+[GIN] 2026/09/26 - 00:43:51 | 200 |    459ns |       192.0.2.1 | DELETE   "/delete"
+--- PASS: TestDELETE (0.00s)
+=== RUN   TestPATCH
+[GIN] 2026/09/26 - 00:43:51 | 200 |    792ns |       192.0.2.1 | PATCH    "/patch"
+--- PASS: TestPATCH (0.00s)
+=== RUN   TestOPTIONS
+[GIN] 2026/09/26 - 00:43:51 | 200 |    541ns |       192.0.2.1 | OPTIONS  "/options"
+--- PASS: TestOPTIONS (0.00s)
+=== RUN   TestHEAD
+[GIN] 2026/09/26 - 00:43:51 | 200 |    667ns |       192.0.2.1 | HEAD     "/head"
+--- PASS: TestHEAD (0.00s)
+=== RUN   TestAny
+[GIN] 2026/09/26 - 00:43:51 | 200 |    458ns |       192.0.2.1 | GET      "/any"
+--- PASS: TestAny (0.00s)
+=== RUN   TestHandle
+[GIN] 2026/09/26 - 00:43:51 | 200 |    458ns |       192.0.2.1 | GET      "/handle"
+--- PASS: TestHandle (0.00s)
+=== RUN   TestGroup
+[GIN] 2026/09/26 - 00:43:51 | 200 |  1.666µs |       192.0.2.1 | GET      "/group/test"
+--- PASS: TestGroup (0.00s)
+=== RUN   TestUse
+[GIN] 2026/09/26 - 00:43:51 | 200 |    583ns |       192.0.2.1 | GET      "/middleware-test"
+--- PASS: TestUse (0.00s)
+=== RUN   TestNoRoute
+[GIN] 2026/09/26 - 00:43:51 | 404 |    541ns |       192.0.2.1 | GET      "/nonexistent"
+--- PASS: TestNoRoute (0.00s)
+=== RUN   TestNoMethod
+--- PASS: TestNoMethod (0.00s)
+=== RUN   TestRoutes
+--- PASS: TestRoutes (0.00s)
+=== RUN   TestSetHTMLTemplate
+--- PASS: TestSetHTMLTemplate (0.00s)
+=== RUN   TestStaticFile
+[GIN] 2026/09/26 - 00:43:51 | 200 | 940.417µs |       192.0.2.1 | GET      "/static-file"
+--- PASS: TestStaticFile (0.00s)
+=== RUN   TestStatic
+[GIN] 2026/09/26 - 00:43:51 | 200 | 44.583µs |       192.0.2.1 | GET      "/static-dir/test_file.txt"
+--- PASS: TestStatic (0.00s)
+=== RUN   TestStaticFS
+[GIN] 2026/09/26 - 00:43:51 | 200 | 40.666µs |       192.0.2.1 | GET      "/static-fs/test_file.txt"
+--- PASS: TestStaticFS (0.00s)
+PASS
+ok  	github.com/gin-gonic/gin/ginS	1.318s
+=== RUN   TestBytesToString
+--- PASS: TestBytesToString (0.00s)
+=== RUN   TestBytesToStringEmpty
+--- PASS: TestBytesToStringEmpty (0.00s)
+=== RUN   TestStringToBytes
+--- PASS: TestStringToBytes (0.00s)
+=== RUN   TestStringToBytesEmpty
+--- PASS: TestStringToBytesEmpty (0.00s)
+PASS
+ok  	github.com/gin-gonic/gin/internal/bytesconv	1.857s
+=== RUN   TestFileSystem_Open
+--- PASS: TestFileSystem_Open (0.00s)
+=== RUN   TestFileSystem_Open_err
+--- PASS: TestFileSystem_Open_err (0.00s)
+PASS
+ok  	github.com/gin-gonic/gin/internal/fs	1.026s
+=== RUN   TestReaderRenderNoHeaders
+--- PASS: TestReaderRenderNoHeaders (0.00s)
+=== RUN   TestRenderMsgPack
+--- PASS: TestRenderMsgPack (0.00s)
+=== RUN   TestWriteMsgPack
+--- PASS: TestWriteMsgPack (0.00s)
+=== RUN   TestRenderMsgPackError
+--- PASS: TestRenderMsgPackError (0.00s)
+=== RUN   TestRenderJSON
+--- PASS: TestRenderJSON (0.00s)
+=== RUN   TestRenderJSONError
+--- PASS: TestRenderJSONError (0.00s)
+=== RUN   TestRenderIndentedJSON
+--- PASS: TestRenderIndentedJSON (0.00s)
+=== RUN   TestRenderIndentedJSONPanics
+--- PASS: TestRenderIndentedJSONPanics (0.00s)
+=== RUN   TestRenderSecureJSON
+--- PASS: TestRenderSecureJSON (0.00s)
+=== RUN   TestRenderSecureJSONFail
+--- PASS: TestRenderSecureJSONFail (0.00s)
+=== RUN   TestRenderJsonpJSON
+--- PASS: TestRenderJsonpJSON (0.00s)
+=== RUN   TestRenderJsonpJSONError
+--- PASS: TestRenderJsonpJSONError (0.00s)
+=== RUN   TestRenderJsonpJSONError2
+--- PASS: TestRenderJsonpJSONError2 (0.00s)
+=== RUN   TestRenderJsonpJSONFail
+--- PASS: TestRenderJsonpJSONFail (0.00s)
+=== RUN   TestRenderAsciiJSON
+--- PASS: TestRenderAsciiJSON (0.00s)
+=== RUN   TestRenderAsciiJSONFail
+--- PASS: TestRenderAsciiJSONFail (0.00s)
+=== RUN   TestRenderPureJSON
+--- PASS: TestRenderPureJSON (0.00s)
+=== RUN   TestRenderYAML
+--- PASS: TestRenderYAML (0.00s)
+=== RUN   TestRenderYAMLFail
+--- PASS: TestRenderYAMLFail (0.00s)
+=== RUN   TestRenderTOML
+--- PASS: TestRenderTOML (0.00s)
+=== RUN   TestRenderTOMLFail
+--- PASS: TestRenderTOMLFail (0.00s)
+=== RUN   TestRenderProtoBuf
+--- PASS: TestRenderProtoBuf (0.00s)
+=== RUN   TestRenderProtoBufFail
+--- PASS: TestRenderProtoBufFail (0.00s)
+=== RUN   TestRenderBSON
+--- PASS: TestRenderBSON (0.00s)
+=== RUN   TestRenderBSONError
+--- PASS: TestRenderBSONError (0.00s)
+=== RUN   TestRenderBSONWriteError
+--- PASS: TestRenderBSONWriteError (0.00s)
+=== RUN   TestRenderXML
+--- PASS: TestRenderXML (0.00s)
+=== RUN   TestRenderXMLError
+--- PASS: TestRenderXMLError (0.00s)
+=== RUN   TestRenderPDF
+--- PASS: TestRenderPDF (0.00s)
+=== RUN   TestRenderRedirect
+--- PASS: TestRenderRedirect (0.00s)
+=== RUN   TestRenderData
+--- PASS: TestRenderData (0.00s)
+=== RUN   TestRenderDataContentLength
+=== RUN   TestRenderDataContentLength/0
+=== RUN   TestRenderDataContentLength/1
+=== RUN   TestRenderDataContentLength/100
+=== RUN   TestRenderDataContentLength/100000
+--- PASS: TestRenderDataContentLength (0.00s)
+    --- PASS: TestRenderDataContentLength/0 (0.00s)
+    --- PASS: TestRenderDataContentLength/1 (0.00s)
+    --- PASS: TestRenderDataContentLength/100 (0.00s)
+    --- PASS: TestRenderDataContentLength/100000 (0.00s)
+=== RUN   TestRenderDataError
+--- PASS: TestRenderDataError (0.00s)
+=== RUN   TestRenderString
+--- PASS: TestRenderString (0.00s)
+=== RUN   TestRenderStringLenZero
+--- PASS: TestRenderStringLenZero (0.00s)
+=== RUN   TestRenderHTMLTemplate
+--- PASS: TestRenderHTMLTemplate (0.00s)
+=== RUN   TestRenderHTMLWithoutTemplate
+--- PASS: TestRenderHTMLWithoutTemplate (0.00s)
+=== RUN   TestRenderHTMLTemplateEmptyName
+--- PASS: TestRenderHTMLTemplateEmptyName (0.00s)
+=== RUN   TestRenderHTMLDebugFiles
+--- PASS: TestRenderHTMLDebugFiles (0.00s)
+=== RUN   TestRenderHTMLDebugGlob
+--- PASS: TestRenderHTMLDebugGlob (0.00s)
+=== RUN   TestRenderHTMLDebugFS
+--- PASS: TestRenderHTMLDebugFS (0.00s)
+=== RUN   TestRenderHTMLDebugPanics
+--- PASS: TestRenderHTMLDebugPanics (0.00s)
+=== RUN   TestRenderHTMLTemplateError
+--- PASS: TestRenderHTMLTemplateError (0.00s)
+=== RUN   TestRenderHTMLTemplateExecuteError
+--- PASS: TestRenderHTMLTemplateExecuteError (0.00s)
+=== RUN   TestRenderReader
+--- PASS: TestRenderReader (0.00s)
+=== RUN   TestRenderReaderNoContentLength
+--- PASS: TestRenderReaderNoContentLength (0.00s)
+=== RUN   TestRenderWriteError
+--- PASS: TestRenderWriteError (0.00s)
+PASS
+ok  	github.com/gin-gonic/gin/render	0.793s

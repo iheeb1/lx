@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "npm",
+    "outdated"
+  ],
+  "shell": "npm outdated",
+  "exit_code": 1,
+  "description": "npm outdated in an npm workspace root: the Depended by column names each workspace",
+  "cwd": "/home/user/src/ws-app"
+}

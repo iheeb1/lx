@@ -1,0 +1,4 @@
+go test fuzz v1
+byte('\x11')
+byte('\x00')
+string("diff --git \n@@ -1 +1 @@\ndiff --git \n@@ -1 +1 @@")

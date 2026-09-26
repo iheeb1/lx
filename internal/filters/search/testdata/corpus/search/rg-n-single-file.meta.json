@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rg",
+    "-n",
+    "func \\(c \\*Context\\) Should",
+    "context.go"
+  ],
+  "shell": "rg -n func \\(c \\*Context\\) Should context.go",
+  "exit_code": 0,
+  "description": "rg -n on one file: no path prefix",
+  "cwd": "/home/user/src/gin"
+}

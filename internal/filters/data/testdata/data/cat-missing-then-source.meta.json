@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "cat",
+    "missing.c",
+    "cJSON.c"
+  ],
+  "shell": "cat missing.c cJSON.c",
+  "repo": "",
+  "exit_code": 1,
+  "description": "cat of a missing file then cJSON.c: the 'No such file' error must survive the cut",
+  "cwd": "repos/cJSON"
+}

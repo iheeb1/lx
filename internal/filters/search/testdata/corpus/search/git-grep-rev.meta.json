@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "git",
+    "grep",
+    "-n",
+    "ShouldBindJSON",
+    "HEAD",
+    "--",
+    "*.go"
+  ],
+  "shell": "git grep -n ShouldBindJSON HEAD -- *.go",
+  "exit_code": 0,
+  "description": "git grep in a revision: paths are prefixed with HEAD:",
+  "cwd": "/home/user/src/gin"
+}

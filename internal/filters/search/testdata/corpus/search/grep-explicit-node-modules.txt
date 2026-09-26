@@ -1,0 +1,44 @@
+node_modules/send/index.js:180:    setHeaders(res, err.headers)
+node_modules/send/index.js:185:  res.setHeader('Content-Type', 'text/html; charset=UTF-8')
+node_modules/send/index.js:186:  res.setHeader('Content-Length', Buffer.byteLength(doc))
+node_modules/send/index.js:187:  res.setHeader('Content-Security-Policy', "default-src 'none'")
+node_modules/send/index.js:188:  res.setHeader('X-Content-Type-Options', 'nosniff')
+node_modules/send/index.js:387:  res.setHeader('Content-Type', 'text/html; charset=UTF-8')
+node_modules/send/index.js:388:  res.setHeader('Content-Length', Buffer.byteLength(doc))
+node_modules/send/index.js:389:  res.setHeader('Content-Security-Policy', "default-src 'none'")
+node_modules/send/index.js:390:  res.setHeader('X-Content-Type-Options', 'nosniff')
+node_modules/send/index.js:391:  res.setHeader('Location', loc)
+node_modules/send/index.js:508:  this.setHeader(path, stat)
+node_modules/send/index.js:551:      res.setHeader('Content-Range', contentRange('bytes', len))
+node_modules/send/index.js:565:      res.setHeader('Content-Range', contentRange('bytes', len, ranges[0]))
+node_modules/send/index.js:583:  res.setHeader('Content-Length', len)
+node_modules/send/index.js:724:  res.setHeader('Content-Type', type)
+node_modules/send/index.js:736:SendStream.prototype.setHeader = function setHeader (path, stat) {
+node_modules/send/index.js:743:    res.setHeader('Accept-Ranges', 'bytes')
+node_modules/send/index.js:754:    res.setHeader('Cache-Control', cacheControl)
+node_modules/send/index.js:760:    res.setHeader('Last-Modified', modified)
+node_modules/send/index.js:766:    res.setHeader('ETag', val)
+node_modules/send/index.js:990:function setHeaders (res, headers) {
+node_modules/send/index.js:995:    res.setHeader(key, headers[key])
+node_modules/send/README.md:215:          res.setHeader('Content-Type', 'application/x-my-type')
+node_modules/send/README.md:260:    res.setHeader('Content-Type', 'text/plain; charset=UTF-8')
+node_modules/send/README.md:283:    res.setHeader('Content-Disposition', 'attachment')
+node_modules/send/README.md:289:    res.setHeader('Location', req.url + '/')
+node_modules/serve-static/index.js:56:  var setHeaders = opts.setHeaders
+node_modules/serve-static/index.js:58:  if (setHeaders && typeof setHeaders !== 'function') {
+node_modules/serve-static/index.js:59:    throw new TypeError('option setHeaders must be function')
+node_modules/serve-static/index.js:79:      res.setHeader('Allow', 'GET, HEAD')
+node_modules/serve-static/index.js:80:      res.setHeader('Content-Length', '0')
+node_modules/serve-static/index.js:101:    if (setHeaders) {
+node_modules/serve-static/index.js:102:      stream.on('headers', setHeaders)
+node_modules/serve-static/index.js:201:    res.setHeader('Content-Type', 'text/html; charset=UTF-8')
+node_modules/serve-static/index.js:202:    res.setHeader('Content-Length', Buffer.byteLength(doc))
+node_modules/serve-static/index.js:203:    res.setHeader('Content-Security-Policy', "default-src 'none'")
+node_modules/serve-static/index.js:204:    res.setHeader('X-Content-Type-Options', 'nosniff')
+node_modules/serve-static/index.js:205:    res.setHeader('Location', loc)
+node_modules/serve-static/README.md:120:##### setHeaders
+node_modules/serve-static/README.md:162:  setHeaders: setHeaders
+node_modules/serve-static/README.md:166:function setHeaders (res, path) {
+node_modules/serve-static/README.md:167:  res.setHeader('Content-Disposition', contentDisposition(path))
+node_modules/serve-static/README.md:228:  setHeaders: setCustomCacheControl
+node_modules/serve-static/README.md:236:    res.setHeader('Cache-Control', 'public, max-age=0')

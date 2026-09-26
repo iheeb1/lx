@@ -1,0 +1,42 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< com.example:demo >--------------------------
+[INFO] Building demo 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ demo ---
+[INFO] skip non existing resourceDirectory /home/user/src/mvnapp/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ demo ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 1 source file with javac [debug release 17] to target/classes
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Calc.java: /home/user/src/mvnapp/src/main/java/com/example/Calc.java uses unchecked or unsafe operations.
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Calc.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[10,35] cannot find symbol
+  symbol:   method helper(int)
+  location: class com.example.Calc
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[11,86] incompatible types: int cannot be converted to java.lang.String
+[INFO] 2 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.147 s
+[INFO] Finished at: 2026-09-26T03:03:18+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project demo: Compilation failure: Compilation failure: 
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[10,35] cannot find symbol
+[ERROR]   symbol:   method helper(int)
+[ERROR]   location: class com.example.Calc
+[ERROR] /home/user/src/mvnapp/src/main/java/com/example/Calc.java:[11,86] incompatible types: int cannot be converted to java.lang.String
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

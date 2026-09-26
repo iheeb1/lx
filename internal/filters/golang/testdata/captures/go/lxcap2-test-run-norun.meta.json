@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-run",
+    "TestX",
+    "./manyok/...",
+    "./coverfail"
+  ],
+  "shell": "go test -run TestX ./manyok/... ./coverfail",
+  "repo": "",
+  "exit_code": 0,
+  "description": "go test -run with a pattern that matches nothing in 12 packages and one test elsewhere",
+  "cwd": "/home/user/src/lxcap2"
+}

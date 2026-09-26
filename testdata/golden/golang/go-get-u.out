@@ -1,0 +1,22 @@
+[go: downloading 26 modules (21 named below); also: go.mongodb.org/mongo-driver, github.com/ugorji/go, github.com/pelletier/go-toml, github.com/go-playground/validator, github.com/klauspost/cpuid]
+go: upgraded github.com/bytedance/gopkg v0.1.3 => v0.1.4
+go: upgraded github.com/bytedance/sonic v1.15.0 => v1.15.4
+go: upgraded github.com/bytedance/sonic/loader v0.5.0 => v0.5.2
+go: upgraded github.com/cloudwego/base64x v0.1.6 => v0.1.7
+go: upgraded github.com/gabriel-vasile/mimetype v1.4.13 => v1.4.15
+go: upgraded github.com/gin-contrib/sse v1.1.0 => v1.1.2
+go: upgraded github.com/go-playground/universal-translator v0.18.1 => v0.18.2
+go: upgraded github.com/go-playground/validator/v10 v10.30.3 => v10.30.5
+go: upgraded github.com/klauspost/cpuid/v2 v2.3.0 => v2.4.0
+go: upgraded github.com/leodido/go-urn v1.4.0 => v1.5.0
+go: upgraded github.com/mattn/go-isatty v0.0.20 => v0.0.24
+go: upgraded github.com/pelletier/go-toml/v2 v2.2.4 => v2.4.3
+go: upgraded github.com/quic-go/quic-go v0.60.0 => v0.63.0
+go: upgraded github.com/ugorji/go/codec v1.3.1 => v1.3.2
+go: upgraded go.mongodb.org/mongo-driver/v2 v2.5.0 => v2.9.1
+go: upgraded golang.org/x/arch v0.25.0 => v0.31.0
+go: upgraded golang.org/x/crypto v0.56.0 => v0.57.0
+go: upgraded golang.org/x/net v0.57.0 => v0.59.0
+go: upgraded golang.org/x/sys v0.47.0 => v0.48.0
+go: upgraded golang.org/x/text v0.41.0 => v0.42.0
+go: upgraded google.golang.org/protobuf v1.36.11 => v1.36.12

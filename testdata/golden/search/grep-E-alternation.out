@@ -1,0 +1,120 @@
+src/duration.js
+160:// Render a number for toISO(). JS prints very small magnitudes in exponential
+161:// notation (e.g. `1e-7`), which is not valid ISO 8601 and which fromISO() cannot
+164:function toISONumber(value) {
+174:* * **Creation** To create a Duration, use {@link Duration.fromMillis}, {@link Duration.fromObject}, or {@link Duration.fromISO}.
+178:* * **Output** To convert the Duration into other representations, see {@link Duration#as}, {@link Duration#toISO}, {@link Duration#toFormat}, and {@link Duration#toJSON}
+303:* @example Duration.fromISO('P3Y6M1W4DT12H30M5S').toObject() //=> { years: 3, months: 6, weeks: 1, days: 4, hours: 12, minutes: 30, seconds: 5 }
+304:* @example Duration.fromISO('PT23H').toObject() //=> { hours: 23 }
+305:* @example Duration.fromISO('P5Y3M').toObject() //=> { years: 5, months: 3 }
+308:static fromISO(text, opts) {
+326:* @example Duration.fromISOTime('11:22:33.444').toObject() //=> { hours: 11, minutes: 22, seconds: 33, milliseconds: 444 }
+327:* @example Duration.fromISOTime('11:00').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
+328:* @example Duration.fromISOTime('T11:00').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
+329:* @example Duration.fromISOTime('1100').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
+330:* @example Duration.fromISOTime('T1100').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
+333:static fromISOTime(text, opts) {
+514:* @example Duration.fromObject({ years: 3, seconds: 45 }).toISO() //=> 'P3YT45S'
+515:* @example Duration.fromObject({ months: 4, seconds: 45 }).toISO() //=> 'P4MT45S'
+516:* @example Duration.fromObject({ months: 5 }).toISO() //=> 'P5M'
+517:* @example Duration.fromObject({ minutes: 5 }).toISO() //=> 'PT5M'
+518:* @example Duration.fromObject({ milliseconds: 6 }).toISO() //=> 'PT0.006S'
+521:toISO() {
+526:if (this.years !== 0) s += toISONumber(this.years) + "Y";
+528:s += toISONumber(this.months + this.quarters * 4) + "M";
+529:if (this.weeks !== 0) s += toISONumber(this.weeks) + "W";
+530:if (this.days !== 0) s += toISONumber(this.days) + "D";
+533:if (this.hours !== 0) s += toISONumber(this.hours) + "H";
+534:if (this.minutes !== 0) s += toISONumber(this.minutes) + "M";
+538:s += toISONumber(roundTo(this.seconds + this.milliseconds / 1000, 3)) + "S";
+552:* @example Duration.fromObject({ hours: 11 }).toISOTime() //=> '11:00:00.000'
+553:* @example Duration.fromObject({ hours: 11 }).toISOTime({ suppressMilliseconds: true }) //=> '11:00:00'
+554:* @example Duration.fromObject({ hours: 11 }).toISOTime({ suppressSeconds: true }) //=> '11:00'
+555:* @example Duration.fromObject({ hours: 11 }).toISOTime({ includePrefix: true }) //=> 'T11:00:00.000'
+556:* @example Duration.fromObject({ hours: 11 }).toISOTime({ format: 'basic' }) //=> '110000.000'
+559:toISOTime(opts = {}) {
+575:return dateTime.toISOTime(opts);
+583:return this.toISO();
+591:return this.toISO();
+
+src/interval.js
+21:`The end of an interval must be after its start, but you had start=${start.toISO()} and end=${end.toISO()}`
+33:* * **Creation** To create an Interval, use {@link Interval.fromDateTimes}, {@link Interval.after}, {@link Interval.before}, or {@link Interval.fromISO}.
+38:…[+70 chars]… {@link Interval#toString}, {@link Interval#toLocaleString}, {@link Interval#toISO}, {@link Interval#toISODate}, {@link Interval#toISOTime}, {@link Interval#toF …[+40 chars]…
+133:* @param {Object} [opts] - options to pass {@link DateTime#fromISO} and optionally {@link Duration#fromISO}
+137:static fromISO(text, opts) {
+145:start = DateTime.fromISO(s, { ...restOpts, zone, setZone: true });
+179:const dur = Duration.fromISO(e, opts);
+184:const dur = Duration.fromISO(s, opts);
+573:return `[${this.s.toISO()} – ${this.e.toISO()})`;
+582:return `Interval { start: ${this.s.toISO()}, end: ${this.e.toISO()} }`;
+602:* @example Interval.fromISO('2022-11-07T09:00Z/2022-11-08T09:00Z').toLocaleString(); //=> 11/7/2022 – 11/8/2022
+603:* @example Interval.fromISO('2022-11-07T09:00Z/2022-11-08T09:00Z').toLocaleString(DateTime.DATE_FULL); //=> November 7 – 8, 2022
+604:* @example Interval.fromISO('2022-11-07T09:00Z/2022-11-08T09:00Z').toLocaleString(DateTime.DATE_FULL, { locale: 'fr-FR' }); //=> 7–8 novembre 2022
+605:* @example Interval.fromISO('2022-11-07T17:00Z/2022-11-07T19:00Z').toLocaleString(DateTime.TIME_SIMPLE); //=> 6:00 – 8:00 PM
+606:* @example Interval.fromISO('2022-11-07T17:00Z/2022-11-07T19:00Z').toLocaleString({ weekday: 'short', month: 'short', day: '2-digit', hour: '2-digit', minute: ' …[+44 chars]…
+618:* @param {Object} opts - The same options as {@link DateTime#toISO}
+621:toISO(opts) {
+623:return `${this.s.toISO(opts)}/${this.e.toISO(opts)}`;
+632:toISODate() {
+634:return `${this.s.toISODate()}/${this.e.toISODate()}`;
+641:* @param {Object} opts - The same options as {@link DateTime#toISO}
+644:toISOTime(opts) {
+646:return `${this.s.toISOTime(opts)}/${this.e.toISOTime(opts)}`;
+
+src/datetime.js
+220:function toISODate(o, extended, precision) {
+239:function toISOTime(
+540:…[+182 chars]… omObject}. To create one from a standard string format, use {@link DateTime.fromISO}, {@link DateTime.fromHTTP}, and {@link DateTime.fromRFC2822}. To create one …[+132 chars]…
+546:…[+104 chars]… @link DateTime#toRelativeCalendar}, {@link DateTime#toJSON}, {@link DateTime#toISO}, {@link DateTime#toHTTP}, {@link DateTime#toObject}, {@link DateTime#toRFC28 …[+148 chars]…
+628:* @example DateTime.now().toISO() //~> now in the ISO format
+794:* @example DateTime.fromObject({ year: 1982, month: 5, day: 25}).toISODate() //=> '1982-05-25'
+795:* @example DateTime.fromObject({ year: 1982 }).toISODate() //=> '1982-01-01'
+800:* @example DateTime.fromObject({ weekYear: 2016, weekNumber: 2, weekday: 3 }).toISODate() //=> '2016-01-13'
+801:* @example DateTime.fromObject({ localWeekYear: 2022, localWeekNumber: 1, localWeekday: 1 }, { locale: "en-US" }).toISODate() //=> '2021-12-26'
+905:`you can't specify both a weekday of ${normalized.weekday} and a date of ${inst.toISO()}`
+926:* @example DateTime.fromISO('2016-05-25T09:08:34.123')
+927:* @example DateTime.fromISO('2016-05-25T09:08:34.123+06:00')
+928:* @example DateTime.fromISO('2016-05-25T09:08:34.123+06:00', {setZone: true})
+929:* @example DateTime.fromISO('2016-05-25T09:08:34.123', {zone: 'utc'})
+930:* @example DateTime.fromISO('2016-W05-4')
+933:static fromISO(text, opts = {}) {
+1737:* @example DateTime.local(2014, 3, 3).startOf('month').toISODate(); //=> '2014-03-01'
+1738:* @example DateTime.local(2014, 3, 3).startOf('year').toISODate(); //=> '2014-01-01'
+1739:* @example DateTime.local(2014, 3, 3).startOf('week').toISODate(); //=> '2014-03-03', weeks always start on Mondays
+1740:* @example DateTime.local(2014, 3, 3, 5, 30).startOf('day').toISOTime(); //=> '00:00.000-05:00'
+1741:* @example DateTime.local(2014, 3, 3, 5, 30).startOf('hour').toISOTime(); //=> '05:00:00.000-05:00'
+1801:* @example DateTime.local(2014, 3, 3).endOf('month').toISO(); //=> '2014-03-31T23:59:59.999-05:00'
+1802:* @example DateTime.local(2014, 3, 3).endOf('year').toISO(); //=> '2014-12-31T23:59:59.999-05:00'
+1803:* @example DateTime.local(2014, 3, 3).endOf('week').toISO(); // => '2014-03-09T23:59:59.999-05:00', weeks start on Mondays
+1804:* @example DateTime.local(2014, 3, 3, 5, 30).endOf('day').toISO(); //=> '2014-03-03T23:59:59.999-05:00'
+1805:* @example DateTime.local(2014, 3, 3, 5, 30).endOf('hour').toISO(); //=> '2014-03-03T05:59:59.999-05:00'
+1889:* @example DateTime.utc(1983, 5, 25).toISO() //=> '1982-05-25T00:00:00.000Z'
+1890:* @example DateTime.now().toISO() //=> '2017-04-22T20:47:05.335-04:00'
+1891:* @example DateTime.now().toISO({ includeOffset: false }) //=> '2017-04-22T20:47:05.335'
+1892:* @example DateTime.now().toISO({ format: 'basic' }) //=> '20170422T204705.335-0400'
+1893:* @example DateTime.now().toISO({ precision: 'day' }) //=> '2017-04-22Z'
+1894:* @example DateTime.now().toISO({ precision: 'minute' }) //=> '2017-04-22T20:47Z'
+1897:toISO({
+1912:let c = toISODate(this, ext, precision);
+1914:c += toISOTime(
+1931:* @example DateTime.utc(1982, 5, 25).toISODate() //=> '1982-05-25'
+1932:* @example DateTime.utc(1982, 5, 25).toISODate({ format: 'basic' }) //=> '19820525'
+1933:* @example DateTime.utc(1982, 5, 25).toISODate({ precision: 'month' }) //=> '1982-05'
+1936:toISODate({ format = "extended", precision = "day" } = {}) {
+1940:return toISODate(this, format === "extended", normalizeUnit(precision));
+1945:* @example DateTime.utc(1982, 5, 25).toISOWeekDate() //=> '1982-W21-2'
+1948:toISOWeekDate() {
+1962:* @example DateTime.utc().set({ hour: 7, minute: 34 }).toISOTime() //=> '07:34:19.361Z'
+1963:* @example DateTime.utc().set({ hour: 7, minute: 34, seconds: 0, milliseconds: 0 }).toISOTime({ suppressSeconds: true }) //=> '07:34Z'
+1964:* @example DateTime.utc().set({ hour: 7, minute: 34 }).toISOTime({ format: 'basic' }) //=> '073419.361Z'
+1965:* @example DateTime.utc().set({ hour: 7, minute: 34 }).toISOTime({ includePrefix: true }) //=> 'T07:34:19.361Z'
+1966:* @example DateTime.utc().set({ hour: 7, minute: 34, second: 56 }).toISOTime({ precision: 'minute' }) //=> '07:34Z'
+1969:toISOTime({
+1986:toISOTime(
+2029:return toISODate(this, true);
+2086:return this.isValid ? this.toISO() : INVALID;
+2095:return `DateTime { ts: ${this.toISO()}, zone: ${this.zone.name}, locale: ${this.locale} }`;
+2138:return this.toISO();
+2186:* var i1 = DateTime.fromISO('1982-05-25T09:45'),
+2187:*     i2 = DateTime.fromISO('1983-10-14T10:30');

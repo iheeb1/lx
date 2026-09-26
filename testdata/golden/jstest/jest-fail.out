@@ -1,0 +1,113 @@
+FAIL test/info/listers.test.js
+  ● Info.months lists all the months
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+    > 28 |   expect(Info.months("short", { locale: "en" })).toEqual([
+         |                                                  ^
+      at Object.toEqual (test/info/listers.test.js:28:50)
+
+  ● Info.monthsFormat lists all the months
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+    > 231 |   expect(Info.monthsFormat("short", { locale: "en" })).toEqual([
+          |                                                        ^
+      at Object.toEqual (test/info/listers.test.js:231:56)
+
+FAIL test/datetime/format.test.js
+  ● DateTime#toISO() handles negative years
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "-012345-05-25T09:23:54.123Z"
+    Received: "-12345-05-25T09:23:54.123Z"
+    > 126 |   expect(negativeYear.toISO()).toBe("-012345-05-25T09:23:54.123Z");
+          |                                ^
+      at Object.toBe (test/datetime/format.test.js:126:32)
+
+  ● DateTime#toISODate() correctly pads negative years
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "-000001-01-01"
+    Received: "0000-1-01-01"
+    > 207 |   expect(DateTime.fromObject({ year: -1, month: 1, day: 1 }, { zone: "utc" }).toISODate()).toBe(
+          |                                                                                            ^
+      at Object.toBe (test/datetime/format.test.js:207:92)
+
+FAIL test/datetime/tokenParse.test.js
+  ● DateTime.fromFormat() defaults yy to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2060
+    Received: 1960
+    > 153 |   expect(DateTime.fromFormat("60", "yy").year).toBe(2060);
+          |                                                ^
+      at Object.toBe (test/datetime/tokenParse.test.js:153:48)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing yy to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2050
+    Received: 1950
+    > 163 |     expect(DateTime.fromFormat("50", "yy").year).toBe(2050);
+          |                                                  ^
+      at Object.toBe (test/datetime/tokenParse.test.js:163:50)
+
+  ● DateTime.fromFormat() parses standalone month names
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 1982
+    Received: NaN
+    > 262 |   expect(i.year).toBe(1982);
+          |                  ^
+      at Object.toBe (test/datetime/tokenParse.test.js:262:18)
+
+  ● DateTime.fromFormat() parses format month names
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 1982
+    Received: NaN
+    > 294 |   expect(i.year).toBe(1982);
+          |                  ^
+      at Object.toBe (test/datetime/tokenParse.test.js:294:18)
+
+  ● DateTime.fromFormat() defaults kk to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2060
+    Received: 1960
+    > 448 |   expect(DateTime.fromFormat("60", "kk").weekYear).toBe(2060);
+          |                                                    ^
+      at Object.toBe (test/datetime/tokenParse.test.js:448:52)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing two digit weekYear to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2050
+    Received: 1950
+    > 458 |     expect(DateTime.fromFormat("50", "kk").weekYear).toBe(2050);
+          |                                                      ^
+      at Object.toBe (test/datetime/tokenParse.test.js:458:54)
+
+[55 passing suites hidden]
+Test Suites: 3 failed, 55 passed, 58 total
+Tests:       10 failed, 1212 passed, 1222 total
+Snapshots:   1 passed, 1 total
+Time:        2.137 s
+Ran all test suites.

@@ -1,0 +1,2 @@
+ls: nonexistent: No such file or directory
+-rw-r--r--@ 1 user  wheel  1458 Sep 26 00:47 go.mod

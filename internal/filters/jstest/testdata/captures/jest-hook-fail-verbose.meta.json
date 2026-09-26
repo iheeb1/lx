@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--verbose",
+    "adv/hook.test.js",
+    "adv/errtitles.test.js"
+  ],
+  "shell": "npx jest --verbose adv/hook.test.js adv/errtitles.test.js",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "jest 29 --verbose: beforeAll throws inside describe('error handling'), plus a passing suite with error-looking titles",
+  "cwd": "repos/jestproj"
+}

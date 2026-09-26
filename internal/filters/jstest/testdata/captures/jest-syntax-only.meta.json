@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--ci",
+    "test/syntax.test.js"
+  ],
+  "shell": "npx jest --ci test/syntax.test.js",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "only suite is a file with a syntax error: Test suite failed to run, 0 tests",
+  "cwd": "repos/jestproj"
+}

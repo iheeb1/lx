@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "mvn",
+    "-o",
+    "-B",
+    "package"
+  ],
+  "exit_code": 1,
+  "description": "mvn -B package (offline, Maven 3.9.16) in a 4-project reactor: parent and core build, api fails to compile (cannot find symbol), web is skipped; Reactor Summary with SUCCESS/FAILURE/SKIPPED rows and the resume hint",
+  "cwd": "/home/user/src/mvnmulti"
+}

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "test/unhandled.test.ts",
+    "test/ok.test.ts"
+  ],
+  "shell": "CLAUDECODE=1 AI_AGENT=claude-code npx vitest run test/unhandled.test.ts test/ok.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "all tests pass but an unhandled rejection makes the run fail",
+  "cwd": "repos/vitproj"
+}

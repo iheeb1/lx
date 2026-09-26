@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-v",
+    "http://127.0.0.1:18766/issues"
+  ],
+  "shell": "curl -v http://127.0.0.1:18766/issues",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL curl 8.7.1 -v (progress meter too) of the same body",
+  "cwd": "data/api"
+}

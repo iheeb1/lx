@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "jq",
+    "-r",
+    ".packages | keys[]",
+    "package-lock.json"
+  ],
+  "shell": "jq -r .packages | keys[] package-lock.json",
+  "repo": "",
+  "exit_code": 0,
+  "description": "jq -r listing package keys: raw lines, small",
+  "cwd": "repos/vite-react-app"
+}

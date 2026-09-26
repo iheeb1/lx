@@ -1,0 +1,644 @@
+
+/home/user/src/express/examples/auth/index.js
+    7:1   error    Unexpected var, use let or const instead  no-var
+    8:1   error    Unexpected var, use let or const instead  no-var
+    9:1   error    Unexpected var, use let or const instead  no-var
+   10:1   error    Unexpected var, use let or const instead  no-var
+   12:1   error    Unexpected var, use let or const instead  no-var
+   31:3   error    Unexpected var, use let or const instead  no-var
+   32:3   error    Unexpected var, use let or const instead  no-var
+   43:1   error    Unexpected var, use let or const instead  no-var
+   62:3   error    Unexpected var, use let or const instead  no-var
+  105:40  warning  No magic number: 400                      no-magic-numbers
+  132:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/content-negotiation/db.js
+  3:1  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/examples/content-negotiation/index.js
+   3:1   error    Unexpected var, use let or const instead  no-var
+   4:1   error    Unexpected var, use let or const instead  no-var
+   5:1   error    Unexpected var, use let or const instead  no-var
+  34:3   error    Unexpected var, use let or const instead  no-var
+  44:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/content-negotiation/users.js
+  3:1  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/examples/cookie-sessions/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  17:45  warning  No magic number: 0                        no-magic-numbers
+  17:50  warning  No magic number: 1                        no-magic-numbers
+  23:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/cookies/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  40:3   error    Unexpected var, use let or const instead  no-var
+  43:28  warning  No magic number: 1                        no-magic-numbers
+  51:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/downloads/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  13:1   error    Unexpected var, use let or const instead  no-var
+  29:24  warning  No magic number: 404                      no-magic-numbers
+  38:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/ejs/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  39:1   error    Unexpected var, use let or const instead  no-var
+  55:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/error-pages/index.js
+    7:1   error    Unexpected var, use let or const instead  no-var
+    8:1   error    Unexpected var, use let or const instead  no-var
+    9:1   error    Unexpected var, use let or const instead  no-var
+   10:1   error    Unexpected var, use let or const instead  no-var
+   11:1   error    Unexpected var, use let or const instead  no-var
+   43:3   error    Unexpected var, use let or const instead  no-var
+   64:14  warning  No magic number: 404                      no-magic-numbers
+   95:28  warning  No magic number: 500                      no-magic-numbers
+  101:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/error/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  25:14  warning  No magic number: 500                      no-magic-numbers
+  51:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/hello-world/index.js
+   3:1   error    Unexpected var, use let or const instead  no-var
+   5:1   error    Unexpected var, use let or const instead  no-var
+  13:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/markdown/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  11:1   error    Unexpected var, use let or const instead  no-var
+  13:1   error    Unexpected var, use let or const instead  no-var
+  20:5   error    Unexpected var, use let or const instead  no-var
+  42:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/multi-router/controllers/api_v1.js
+  3:1  error  Unexpected var, use let or const instead  no-var
+  5:1  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/examples/multi-router/controllers/api_v2.js
+  3:1  error  Unexpected var, use let or const instead  no-var
+  5:1  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/examples/multi-router/index.js
+   3:1   error    Unexpected var, use let or const instead  no-var
+   5:1   error    Unexpected var, use let or const instead  no-var
+  16:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/mvc/controllers/pet/index.js
+   7:1  error  Unexpected var, use let or const instead  no-var
+  12:3  error  Unexpected var, use let or const instead  no-var
+  27:3  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/examples/mvc/controllers/user-pet/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+  13:3   error    Unexpected var, use let or const instead  no-var
+  14:3   error    Unexpected var, use let or const instead  no-var
+  15:3   error    Unexpected var, use let or const instead  no-var
+  17:3   error    Unexpected var, use let or const instead  no-var
+  18:32  warning  No magic number: 1                        no-magic-numbers
+
+/home/user/src/express/examples/mvc/controllers/user/index.js
+   7:1  error  Unexpected var, use let or const instead  no-var
+  12:3  error  Unexpected var, use let or const instead  no-var
+  37:3  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/examples/mvc/db.js
+   5:1   error    Unexpected var, use let or const instead  no-var
+  12:1   error    Unexpected var, use let or const instead  no-var
+  14:38  warning  No magic number: 0                        no-magic-numbers
+  14:47  warning  No magic number: 1                        no-magic-numbers
+  14:56  warning  No magic number: 2                        no-magic-numbers
+  15:45  warning  No magic number: 3                        no-magic-numbers
+
+/home/user/src/express/examples/mvc/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  11:1   error    Unexpected var, use let or const instead  no-var
+  13:1   error    Unexpected var, use let or const instead  no-var
+  26:3   error    Unexpected var, use let or const instead  no-var
+  54:3   error    Unexpected var, use let or const instead  no-var
+  83:14  warning  No magic number: 500                      no-magic-numbers
+  88:14  warning  No magic number: 404                      no-magic-numbers
+  93:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/mvc/lib/boot.js
+   7:1   error  Unexpected var, use let or const instead  no-var
+   8:1   error  Unexpected var, use let or const instead  no-var
+   9:1   error  Unexpected var, use let or const instead  no-var
+  12:3   error  Unexpected var, use let or const instead  no-var
+  13:3   error  Unexpected var, use let or const instead  no-var
+  15:5   error  Unexpected var, use let or const instead  no-var
+  18:5   error  Unexpected var, use let or const instead  no-var
+  19:5   error  Unexpected var, use let or const instead  no-var
+  20:5   error  Unexpected var, use let or const instead  no-var
+  21:5   error  Unexpected var, use let or const instead  no-var
+  22:5   error  Unexpected var, use let or const instead  no-var
+  23:5   error  Unexpected var, use let or const instead  no-var
+  24:5   error  Unexpected var, use let or const instead  no-var
+  32:10  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/examples/online/index.js
+  14:1   error    Unexpected var, use let or const instead  no-var
+  15:1   error    Unexpected var, use let or const instead  no-var
+  16:1   error    Unexpected var, use let or const instead  no-var
+  17:1   error    Unexpected var, use let or const instead  no-var
+  25:1   error    Unexpected var, use let or const instead  no-var
+  51:15  warning  No magic number: 5                        no-magic-numbers
+  59:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/params/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  13:1   error    Unexpected var, use let or const instead  no-var
+  26:22  warning  No magic number: 400                      no-magic-numbers
+  39:22  warning  No magic number: 404                      no-magic-numbers
+  64:3   error    Unexpected var, use let or const instead  no-var
+  65:3   error    Unexpected var, use let or const instead  no-var
+  66:3   error    Unexpected var, use let or const instead  no-var
+  67:46  warning  No magic number: 1                        no-magic-numbers
+  72:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/resource/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  16:5   error    Unexpected var, use let or const instead  no-var
+  17:5   error    Unexpected var, use let or const instead  no-var
+  18:5   error    Unexpected var, use let or const instead  no-var
+  23:5   error    Unexpected var, use let or const instead  no-var
+  30:1   error    Unexpected var, use let or const instead  no-var
+  41:1   error    Unexpected var, use let or const instead  no-var
+  49:5   error    Unexpected var, use let or const instead  no-var
+  54:5   error    Unexpected var, use let or const instead  no-var
+  54:36  warning  No magic number: 1                        no-magic-numbers
+  61:9   error    Unexpected var, use let or const instead  no-var
+  93:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/route-map/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  12:1   error    Unexpected var, use let or const instead  no-var
+  15:3   warning  Assignment to function parameter 'route'  no-param-reassign
+  16:8   error    Unexpected var, use let or const instead  no-var
+  31:1   error    Unexpected var, use let or const instead  no-var
+  45:1   error    Unexpected var, use let or const instead  no-var
+  73:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/route-middleware/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  19:1   error    Unexpected var, use let or const instead  no-var
+  27:3   error    Unexpected var, use let or const instead  no-var
+  66:33  warning  No magic number: 0                        no-magic-numbers
+  88:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/route-separation/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  11:1   error    Unexpected var, use let or const instead  no-var
+  12:1   error    Unexpected var, use let or const instead  no-var
+  13:1   error    Unexpected var, use let or const instead  no-var
+  14:1   error    Unexpected var, use let or const instead  no-var
+  15:1   error    Unexpected var, use let or const instead  no-var
+  53:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/route-separation/post.js
+  5:1  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/examples/route-separation/user.js
+   5:1  error  Unexpected var, use let or const instead  no-var
+  15:3  error  Unexpected var, use let or const instead  no-var
+  20:5  error  Unexpected var, use let or const instead  no-var
+  43:3  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/examples/search/index.js
+  14:1   error    Unexpected var, use let or const instead  no-var
+  15:1   error    Unexpected var, use let or const instead  no-var
+  16:1   error    Unexpected var, use let or const instead  no-var
+  18:1   error    Unexpected var, use let or const instead  no-var
+  19:1   error    Unexpected var, use let or const instead  no-var
+  44:18  warning  No magic number: 1                        no-magic-numbers
+  53:3   error    Unexpected var, use let or const instead  no-var
+  80:16  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/search/public/client.js
+   3:1   error    Unexpected var, use let or const instead  no-var
+   4:1   error    Unexpected var, use let or const instead  no-var
+   7:3   error    Unexpected var, use let or const instead  no-var
+  10:28  warning  No magic number: 4                        no-magic-numbers
+
+/home/user/src/express/examples/session/index.js
+  10:1   error    Unexpected var, use let or const instead  no-var
+  11:1   error    Unexpected var, use let or const instead  no-var
+  13:1   error    Unexpected var, use let or const instead  no-var
+  23:3   error    Unexpected var, use let or const instead  no-var
+  35:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/session/redis.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  13:1   error    Unexpected var, use let or const instead  no-var
+  15:1   error    Unexpected var, use let or const instead  no-var
+  28:3   error    Unexpected var, use let or const instead  no-var
+  38:12  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/static-files/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  10:1   error    Unexpected var, use let or const instead  no-var
+  38:12  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/vhost/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  21:1   error    Unexpected var, use let or const instead  no-var
+  35:1   error    Unexpected var, use let or const instead  no-var
+  39:55  warning  No magic number: 0                        no-magic-numbers
+  44:1   error    Unexpected var, use let or const instead  no-var
+  51:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/view-constructor/github-view.js
+   7:1  error    Unexpected var, use let or const instead    no-var
+   8:1  error    Unexpected var, use let or const instead    no-var
+   9:1  error    Unexpected var, use let or const instead    no-var
+  25:3  warning  Assignment to function parameter 'options'  no-param-reassign
+  37:3  error    Unexpected var, use let or const instead    no-var
+  38:3  error    Unexpected var, use let or const instead    no-var
+  46:5  error    Unexpected var, use let or const instead    no-var
+
+/home/user/src/express/examples/view-constructor/index.js
+   7:1   error    Unexpected var, use let or const instead  no-var
+   8:1   error    Unexpected var, use let or const instead  no-var
+   9:1   error    Unexpected var, use let or const instead  no-var
+  11:1   error    Unexpected var, use let or const instead  no-var
+  16:5   error    Unexpected var, use let or const instead  no-var
+  46:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/view-locals/index.js
+    7:1   error    Unexpected var, use let or const instead  no-var
+    8:1   error    Unexpected var, use let or const instead  no-var
+    9:1   error    Unexpected var, use let or const instead  no-var
+   10:1   error    Unexpected var, use let or const instead  no-var
+  153:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/examples/view-locals/user.js
+  30:1   error    Unexpected var, use let or const instead  no-var
+  32:29  warning  No magic number: 2                        no-magic-numbers
+  33:29  warning  No magic number: 1                        no-magic-numbers
+  34:29  warning  No magic number: 6                        no-magic-numbers
+  35:29  warning  No magic number: 1                        no-magic-numbers
+  36:30  warning  No magic number: 1                        no-magic-numbers
+
+/home/user/src/express/examples/web-service/index.js
+    7:1   error    Unexpected var, use let or const instead  no-var
+    9:1   error    Unexpected var, use let or const instead  no-var
+   16:3   error    Unexpected var, use let or const instead  no-var
+   31:3   error    Unexpected var, use let or const instead  no-var
+   34:31  warning  No magic number: 400                      no-magic-numbers
+   37:32  warning  No magic number: -1                       no-magic-numbers
+   37:54  warning  No magic number: 401                      no-magic-numbers
+   49:1   error    Unexpected var, use let or const instead  no-var
+   53:1   error    Unexpected var, use let or const instead  no-var
+   59:1   error    Unexpected var, use let or const instead  no-var
+   65:1   error    Unexpected var, use let or const instead  no-var
+   66:16  warning  No magic number: 0                        no-magic-numbers
+   66:26  warning  No magic number: 1                        no-magic-numbers
+   67:18  warning  No magic number: 1                        no-magic-numbers
+   68:18  warning  No magic number: 2                        no-magic-numbers
+   86:3   error    Unexpected var, use let or const instead  no-var
+   87:3   error    Unexpected var, use let or const instead  no-var
+  101:28  warning  No magic number: 500                      no-magic-numbers
+  109:14  warning  No magic number: 404                      no-magic-numbers
+  115:14  warning  No magic number: 3000                     no-magic-numbers
+
+/home/user/src/express/lib/application.js
+   16:1    error    Unexpected var, use let or const instead  no-var
+   17:1    error    Unexpected var, use let or const instead  no-var
+   18:1    error    Unexpected var, use let or const instead  no-var
+   19:1    error    Unexpected var, use let or const instead  no-var
+   20:1    error    Unexpected var, use let or const instead  no-var
+   21:1    error    Unexpected var, use let or const instead  no-var
+   22:1    error    Unexpected var, use let or const instead  no-var
+   23:1    error    Unexpected var, use let or const instead  no-var
+   24:1    error    Unexpected var, use let or const instead  no-var
+   25:1    error    Unexpected var, use let or const instead  no-var
+   26:1    error    Unexpected var, use let or const instead  no-var
+   33:1    error    Unexpected var, use let or const instead  no-var
+   34:1    error    Unexpected var, use let or const instead  no-var
+   40:1    error    Unexpected var, use let or const instead  no-var
+   47:1    error    Unexpected var, use let or const instead  no-var
+   60:3    error    Unexpected var, use let or const instead  no-var
+   91:3    error    Unexpected var, use let or const instead  no-var
+   98:32   warning  No magic number: 2                        no-magic-numbers
+  154:3    error    Unexpected var, use let or const instead  no-var
+  191:3    error    Unexpected var, use let or const instead  no-var
+  192:3    error    Unexpected var, use let or const instead  no-var
+  197:5    error    Unexpected var, use let or const instead  no-var
+  199:49   warning  No magic number: 0                        no-magic-numbers
+  200:17   warning  No magic number: 0                        no-magic-numbers
+  205:16   warning  No magic number: 1                        no-magic-numbers
+  210:3    error    Unexpected var, use let or const instead  no-var
+  212:22   warning  No magic number: 0                        no-magic-numbers
+  217:3    error    Unexpected var, use let or const instead  no-var
+  231:7    error    Unexpected var, use let or const instead  no-var
+  300:3    error    Unexpected var, use let or const instead  no-var
+  300:23   warning  No magic number: 0                        no-magic-numbers
+  324:10   error    Unexpected var, use let or const instead  no-var
+  352:28   warning  No magic number: 1                        no-magic-numbers
+  473:50   warning  No magic number: 1                        no-magic-numbers
+  478:5    error    Unexpected var, use let or const instead  no-var
+  479:54   warning  No magic number: 1                        no-magic-numbers
+  495:3    error    Unexpected var, use let or const instead  no-var
+  496:3    error    Unexpected var, use let or const instead  no-var
+  496:36   warning  No magic number: 1                        no-magic-numbers
+  498:8    error    Unexpected var, use let or const instead  no-var
+  523:3    error    Unexpected var, use let or const instead  no-var
+  524:3    error    Unexpected var, use let or const instead  no-var
+  525:3    error    Unexpected var, use let or const instead  no-var
+  526:3    error    Unexpected var, use let or const instead  no-var
+  527:3    error    Unexpected var, use let or const instead  no-var
+  536:3    error    Unexpected var, use let or const instead  no-var
+  550:5    error    Unexpected var, use let or const instead  no-var
+  559:7    error    Unexpected var, use let or const instead  no-var
+  559:65   warning  No magic number: 1                        no-magic-numbers
+  560:45   warning  No magic number: 0                        no-magic-numbers
+  560:48   warning  No magic number: -1                       no-magic-numbers
+  560:107  warning  No magic number: 1                        no-magic-numbers
+  562:7    error    Unexpected var, use let or const instead  no-var
+  599:3    error    Unexpected var, use let or const instead  no-var
+  600:3    error    Unexpected var, use let or const instead  no-var
+  601:33   warning  No magic number: 1                        no-magic-numbers
+  602:5    error    Unexpected var, use let or const instead  no-var
+  602:35   warning  No magic number: 1                        no-magic-numbers
+  602:64   warning  No magic number: 1                        no-magic-numbers
+
+/home/user/src/express/lib/express.js
+  15:1  error  Unexpected var, use let or const instead  no-var
+  16:1  error  Unexpected var, use let or const instead  no-var
+  17:1  error  Unexpected var, use let or const instead  no-var
+  18:1  error  Unexpected var, use let or const instead  no-var
+  19:1  error  Unexpected var, use let or const instead  no-var
+  20:1  error  Unexpected var, use let or const instead  no-var
+  21:1  error  Unexpected var, use let or const instead  no-var
+  37:3  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/lib/request.js
+   16:1   error    Unexpected var, use let or const instead  no-var
+   17:1   error    Unexpected var, use let or const instead  no-var
+   18:1   error    Unexpected var, use let or const instead  no-var
+   19:1   error    Unexpected var, use let or const instead  no-var
+   20:1   error    Unexpected var, use let or const instead  no-var
+   21:1   error    Unexpected var, use let or const instead  no-var
+   22:1   error    Unexpected var, use let or const instead  no-var
+   23:1   error    Unexpected var, use let or const instead  no-var
+   30:1   error    Unexpected var, use let or const instead  no-var
+   73:3   error    Unexpected var, use let or const instead  no-var
+  128:3   error    Unexpected var, use let or const instead  no-var
+  141:3   error    Unexpected var, use let or const instead  no-var
+  215:3   error    Unexpected var, use let or const instead  no-var
+  231:3   error    Unexpected var, use let or const instead  no-var
+  238:3   error    Unexpected var, use let or const instead  no-var
+  270:3   error    Unexpected var, use let or const instead  no-var
+  275:10  error    Unexpected var, use let or const instead  no-var
+  298:3   error    Unexpected var, use let or const instead  no-var
+  301:3   error    Unexpected var, use let or const instead  no-var
+  303:41  warning  No magic number: 0                        no-magic-numbers
+  309:3   error    Unexpected var, use let or const instead  no-var
+  310:3   error    Unexpected var, use let or const instead  no-var
+  312:20  warning  No magic number: -1                       no-magic-numbers
+  313:24  warning  No magic number: 0                        no-magic-numbers
+  341:3   error    Unexpected var, use let or const instead  no-var
+  358:3   error    Unexpected var, use let or const instead  no-var
+  359:3   error    Unexpected var, use let or const instead  no-var
+  384:3   error    Unexpected var, use let or const instead  no-var
+  388:3   error    Unexpected var, use let or const instead  no-var
+  388:51  warning  No magic number: 1                        no-magic-numbers
+  389:3   error    Unexpected var, use let or const instead  no-var
+  419:3   error    Unexpected var, use let or const instead  no-var
+  420:3   error    Unexpected var, use let or const instead  no-var
+  422:49  warning  No magic number: 0                        no-magic-numbers
+  424:35  warning  No magic number: -1                       no-magic-numbers
+  427:25  warning  No magic number: 0                        no-magic-numbers
+  445:3   error    Unexpected var, use let or const instead  no-var
+  450:3   error    Unexpected var, use let or const instead  no-var
+  450:21  warning  No magic number: 0                        no-magic-numbers
+  451:27  warning  No magic number: 1                        no-magic-numbers
+  452:7   warning  No magic number: 0                        no-magic-numbers
+  453:3   error    Unexpected var, use let or const instead  no-var
+  455:20  warning  No magic number: -1                       no-magic-numbers
+  456:22  warning  No magic number: 0                        no-magic-numbers
+  470:3   error    Unexpected var, use let or const instead  no-var
+  471:3   error    Unexpected var, use let or const instead  no-var
+  472:3   error    Unexpected var, use let or const instead  no-var
+  478:18  warning  No magic number: 200                      no-magic-numbers
+  478:34  warning  No magic number: 300                      no-magic-numbers
+  478:42  warning  No magic number: 304                      no-magic-numbers
+  509:3   error    Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/lib/response.js
+    15:1   error    Unexpected var, use let or const instead  no-var
+    16:1   error    Unexpected var, use let or const instead  no-var
+    17:1   error    Unexpected var, use let or const instead  no-var
+    18:1   error    Unexpected var, use let or const instead  no-var
+    19:1   error    Unexpected var, use let or const instead  no-var
+    20:1   error    Unexpected var, use let or const instead  no-var
+    21:1   error    Unexpected var, use let or const instead  no-var
+    22:1   error    Unexpected var, use let or const instead  no-var
+    23:1   error    Unexpected var, use let or const instead  no-var
+    24:1   error    Unexpected var, use let or const instead  no-var
+    25:1   error    Unexpected var, use let or const instead  no-var
+    26:1   error    Unexpected var, use let or const instead  no-var
+    27:1   error    Unexpected var, use let or const instead  no-var
+    28:1   error    Unexpected var, use let or const instead  no-var
+    29:1   error    Unexpected var, use let or const instead  no-var
+    30:1   error    Unexpected var, use let or const instead  no-var
+    31:1   error    Unexpected var, use let or const instead  no-var
+    32:1   error    Unexpected var, use let or const instead  no-var
+    33:1   error    Unexpected var, use let or const instead  no-var
+    34:1   error    Unexpected var, use let or const instead  no-var
+    35:1   error    Unexpected var, use let or const instead  no-var
+    43:1   error    Unexpected var, use let or const instead  no-var
+    71:14  warning  No magic number: 100                      no-magic-numbers
+    71:28  warning  No magic number: 599                      no-magic-numbers
+    99:3   error    Unexpected var, use let or const instead  no-var
+   127:3   error    Unexpected var, use let or const instead  no-var
+   128:3   error    Unexpected var, use let or const instead  no-var
+   129:3   error    Unexpected var, use let or const instead  no-var
+   132:3   error    Unexpected var, use let or const instead  no-var
+   162:3   error    Unexpected var, use let or const instead  no-var
+   163:3   error    Unexpected var, use let or const instead  no-var
+   165:3   error    Unexpected var, use let or const instead  no-var
+   170:48  warning  No magic number: 1000                     no-magic-numbers
+   188:3   error    Unexpected var, use let or const instead  no-var
+   196:30  warning  No magic number: 304                      no-magic-numbers
+   199:7   warning  No magic number: 204                      no-magic-numbers
+   199:34  warning  No magic number: 304                      no-magic-numbers
+   207:27  warning  No magic number: 205                      no-magic-numbers
+   238:3   error    Unexpected var, use let or const instead  no-var
+   239:3   error    Unexpected var, use let or const instead  no-var
+   240:3   error    Unexpected var, use let or const instead  no-var
+   241:3   error    Unexpected var, use let or const instead  no-var
+   242:3   error    Unexpected var, use let or const instead  no-var
+   266:3   error    Unexpected var, use let or const instead  no-var
+   267:3   error    Unexpected var, use let or const instead  no-var
+   268:3   error    Unexpected var, use let or const instead  no-var
+   269:3   error    Unexpected var, use let or const instead  no-var
+   270:3   error    Unexpected var, use let or const instead  no-var
+   271:3   error    Unexpected var, use let or const instead  no-var
+   281:25  warning  No magic number: 0                        no-magic-numbers
+   285:59  warning  No magic number: 0                        no-magic-numbers
+   326:3   error    Unexpected var, use let or const instead  no-var
+   376:3   error    Unexpected var, use let or const instead  no-var
+   377:3   error    Unexpected var, use let or const instead  no-var
+   378:3   error    Unexpected var, use let or const instead  no-var
+   379:3   error    Unexpected var, use let or const instead  no-var
+   380:3   error    Unexpected var, use let or const instead  no-var
+   401:3   error    Unexpected var, use let or const instead  no-var
+   405:3   error    Unexpected var, use let or const instead  no-var
+   438:3   error    Unexpected var, use let or const instead  no-var
+   439:3   error    Unexpected var, use let or const instead  no-var
+   440:3   error    Unexpected var, use let or const instead  no-var
+   460:3   error    Unexpected var, use let or const instead  no-var
+   466:5   error    Unexpected var, use let or const instead  no-var
+   467:10  error    Unexpected var, use let or const instead  no-var
+   468:7   error    Unexpected var, use let or const instead  no-var
+   480:3   error    Unexpected var, use let or const instead  no-var
+   509:3   error    Unexpected var, use let or const instead  no-var
+   509:34  warning  No magic number: -1                       no-magic-numbers
+   574:3   error    Unexpected var, use let or const instead  no-var
+   575:3   error    Unexpected var, use let or const instead  no-var
+   577:3   error    Unexpected var, use let or const instead  no-var
+   580:3   error    Unexpected var, use let or const instead  no-var
+   580:27  warning  No magic number: 0                        no-magic-numbers
+   592:22  warning  No magic number: 406                      no-magic-numbers
+   635:3   error    Unexpected var, use let or const instead  no-var
+   636:3   error    Unexpected var, use let or const instead  no-var
+   671:28  warning  No magic number: 2                        no-magic-numbers
+   672:5   error    Unexpected var, use let or const instead  no-var
+   686:10  error    Unexpected var, use let or const instead  no-var
+   716:59  warning  No magic number: 1                        no-magic-numbers
+   748:3   error    Unexpected var, use let or const instead  no-var
+   749:3   error    Unexpected var, use let or const instead  no-var
+   750:3   error    Unexpected var, use let or const instead  no-var
+   756:3   error    Unexpected var, use let or const instead  no-var
+   765:5   error    Unexpected var, use let or const instead  no-var
+   765:32  warning  No magic number: 0                        no-magic-numbers
+   769:41  warning  No magic number: 1000                     no-magic-numbers
+   815:3   error    Unexpected var, use let or const instead  no-var
+   816:3   error    Unexpected var, use let or const instead  no-var
+   817:3   error    Unexpected var, use let or const instead  no-var
+   820:28  warning  No magic number: 2                        no-magic-numbers
+   821:24  warning  No magic number: 0                        no-magic-numbers
+   822:25  warning  No magic number: 1                        no-magic-numbers
+   847:7   error    Unexpected var, use let or const instead  no-var
+   897:3   error    Unexpected var, use let or const instead  no-var
+   898:3   error    Unexpected var, use let or const instead  no-var
+   899:3   error    Unexpected var, use let or const instead  no-var
+   900:3   error    Unexpected var, use let or const instead  no-var
+   901:3   error    Unexpected var, use let or const instead  no-var
+   924:3   error    Unexpected var, use let or const instead  no-var
+   925:3   error    Unexpected var, use let or const instead  no-var
+   932:5   error    Unexpected var, use let or const instead  no-var
+   942:5   error    Unexpected var, use let or const instead  no-var
+   999:7   error    Unexpected var, use let or const instead  no-var
+  1000:7   error    Unexpected var, use let or const instead  no-var
+  1002:12  error    Unexpected var, use let or const instead  no-var
+  1003:9   error    Unexpected var, use let or const instead  no-var
+  1028:3   error    Unexpected var, use let or const instead  no-var
+  1034:28  warning  No magic number: 0                        no-magic-numbers
+  1035:14  warning  No magic number: 0x3c                     no-magic-numbers
+  1037:14  warning  No magic number: 0x3e                     no-magic-numbers
+  1039:14  warning  No magic number: 0x26                     no-magic-numbers
+
+/home/user/src/express/lib/utils.js
+   15:1   error    Unexpected var, use let or const instead  no-var
+   16:1   error    Unexpected var, use let or const instead  no-var
+   17:1   error    Unexpected var, use let or const instead  no-var
+   18:1   error    Unexpected var, use let or const instead  no-var
+   19:1   error    Unexpected var, use let or const instead  no-var
+   20:1   error    Unexpected var, use let or const instead  no-var
+   21:1   error    Unexpected var, use let or const instead  no-var
+   90:3   error    Unexpected var, use let or const instead  no-var
+   91:3   error    Unexpected var, use let or const instead  no-var
+   92:3   error    Unexpected var, use let or const instead  no-var
+   92:30  warning  No magic number: -1                       no-magic-numbers
+   93:3   error    Unexpected var, use let or const instead  no-var
+   93:32  warning  No magic number: 0                        no-magic-numbers
+   96:5   error    Unexpected var, use let or const instead  no-var
+   97:24  warning  No magic number: -1                       no-magic-numbers
+   99:5   error    Unexpected var, use let or const instead  no-var
+  100:5   error    Unexpected var, use let or const instead  no-var
+  100:35  warning  No magic number: -1                       no-magic-numbers
+  103:49  warning  No magic number: 1                        no-magic-numbers
+  103:54  warning  No magic number: 1                        no-magic-numbers
+  107:5   error    Unexpected var, use let or const instead  no-var
+  108:5   error    Unexpected var, use let or const instead  no-var
+  108:40  warning  No magic number: 1                        no-magic-numbers
+  116:24  warning  No magic number: 1                        no-magic-numbers
+  131:3   error    Unexpected var, use let or const instead  no-var
+  163:3   error    Unexpected var, use let or const instead  no-var
+  209:5   warning  Assignment to function parameter 'val'    no-param-reassign
+  231:3   error    Unexpected var, use let or const instead  no-var
+  251:5   error    Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/lib/view.js
+   16:1   error    Unexpected var, use let or const instead  no-var
+   17:1   error    Unexpected var, use let or const instead  no-var
+   18:1   error    Unexpected var, use let or const instead  no-var
+   25:1   error    Unexpected var, use let or const instead  no-var
+   26:1   error    Unexpected var, use let or const instead  no-var
+   27:1   error    Unexpected var, use let or const instead  no-var
+   28:1   error    Unexpected var, use let or const instead  no-var
+   29:1   error    Unexpected var, use let or const instead  no-var
+   53:3   error    Unexpected var, use let or const instead  no-var
+   64:3   error    Unexpected var, use let or const instead  no-var
+   68:35  warning  No magic number: 0                        no-magic-numbers
+   77:5   error    Unexpected var, use let or const instead  no-var
+   77:30  warning  No magic number: 1                        no-magic-numbers
+   81:5   error    Unexpected var, use let or const instead  no-var
+  105:3   error    Unexpected var, use let or const instead  no-var
+  106:3   error    Unexpected var, use let or const instead  no-var
+  110:8   error    Unexpected var, use let or const instead  no-var
+  111:5   error    Unexpected var, use let or const instead  no-var
+  114:5   error    Unexpected var, use let or const instead  no-var
+  115:5   error    Unexpected var, use let or const instead  no-var
+  116:5   error    Unexpected var, use let or const instead  no-var
+  134:3   error    Unexpected var, use let or const instead  no-var
+  145:5   error    Unexpected var, use let or const instead  no-var
+  146:5   error    Unexpected var, use let or const instead  no-var
+  148:10  error    Unexpected var, use let or const instead  no-var
+  170:3   error    Unexpected var, use let or const instead  no-var
+  173:3   error    Unexpected var, use let or const instead  no-var
+  174:3   error    Unexpected var, use let or const instead  no-var
+
+✖ 548 problems (416 errors, 132 warnings)
+  410 errors and 0 warnings potentially fixable with the `--fix` option.
+

@@ -1,0 +1,11 @@
+packages/vite/bin:
+total 16
+-rw-r--r--@ 1 user  wheel  1839 Sep 26 00:31 openChrome.js
+-rwxr-xr-x@ 1 user  wheel  2995 Sep 26 00:31 vite.js
+
+packages/vite/misc:
+total 32
+-rw-r--r--@ 1 user  wheel  52 Sep 26 00:31 false.d.ts
+-rw-r--r--@ 1 user  wheel  21 Sep 26 00:31 false.js
+-rw-r--r--@ 1 user  wheel  52 Sep 26 00:31 true.d.ts
+-rw-r--r--@ 1 user  wheel  20 Sep 26 00:31 true.js

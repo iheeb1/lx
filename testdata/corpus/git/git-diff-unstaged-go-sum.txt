@@ -1,0 +1,592 @@
+diff --git a/CODE_OF_CONDUCT.md b/CODE_OF_CONDUCT.md
+deleted file mode 100644
+index 4ea14f3..0000000
+--- a/CODE_OF_CONDUCT.md
++++ /dev/null
+@@ -1,46 +0,0 @@
+-# Contributor Covenant Code of Conduct
+-
+-## Our Pledge
+-
+-In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
+-
+-## Our Standards
+-
+-Examples of behavior that contributes to creating a positive environment include:
+-
+-* Using welcoming and inclusive language
+-* Being respectful of differing viewpoints and experiences
+-* Gracefully accepting constructive criticism
+-* Focusing on what is best for the community
+-* Showing empathy towards other community members
+-
+-Examples of unacceptable behavior by participants include:
+-
+-* The use of sexualized language or imagery and unwelcome sexual attention or advances
+-* Trolling, insulting/derogatory comments, and personal or political attacks
+-* Public or private harassment
+-* Publishing others' private information, such as a physical or electronic address, without explicit permission
+-* Other conduct which could reasonably be considered inappropriate in a professional setting
+-
+-## Our Responsibilities
+-
+-Project maintainers are responsible for clarifying the standards of acceptable behavior and are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior.
+-
+-Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct, or to ban temporarily or permanently any contributor for other behaviors that they deem inappropriate, threatening, offensive, or harmful.
+-
+-## Scope
+-
+-This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community. Examples of representing a project or community include using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event. Representation of a project may be further defined and clarified by project maintainers.
+-
+-## Enforcement
+-
+-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at teamgingonic@gmail.com. The project team will review and investigate all complaints, and will respond in a way that it deems appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies may be posted separately.
+-
+-Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
+-
+-## Attribution
+-
+-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4, available at [http://contributor-covenant.org/version/1/4][version]
+-
+-[homepage]: http://contributor-covenant.org
+-[version]: http://contributor-covenant.org/version/1/4/
+diff --git a/README.md b/README.md
+index 10e627f..e4f0ba1 100644
+--- a/README.md
++++ b/README.md
+@@ -225,3 +225,12 @@ Gin is the work of hundreds of contributors from around the world. We welcome an
+ 2. Join our community discussions and ask questions
+ 
+ **All contributions are valued and help make Gin better for everyone!**
++
++## Rate limiting
++
++Gin does not ship a rate limiter in core. The `middleware/ratelimit` package
++provides a token-bucket limiter that can be attached per route group:
++
++```go
++api := r.Group("/api", ratelimit.New(100, time.Minute))
++```
+diff --git a/context.go b/context.go
+index 20331d2..860032e 100644
+--- a/context.go
++++ b/context.go
+@@ -994,6 +994,7 @@ func (c *Context) ShouldBindBodyWithPlain(obj any) error {
+ // If it is it will then try to parse the headers defined in Engine.RemoteIPHeaders (defaulting to [X-Forwarded-For, X-Real-IP]).
+ // If the headers are not syntactically valid OR the remote IP does not correspond to a trusted proxy,
+ // the remote IP (coming from Request.RemoteAddr) is returned.
++// ClientIP is also used as the default key by the ratelimit middleware.
+ func (c *Context) ClientIP() string {
+ 	// Check if we're running on a trusted platform, continue running backwards if error
+ 	if c.engine.TrustedPlatform != "" {
+diff --git a/debug.go b/debug.go
+index 753c128..bc15d84 100644
+--- a/debug.go
++++ b/debug.go
+@@ -34,7 +34,7 @@ func debugPrintRoute(httpMethod, absolutePath string, handlers HandlersChain) {
+ 		nuHandlers := len(handlers)
+ 		handlerName := nameOfFunction(handlers.Last())
+ 		if DebugPrintRouteFunc == nil {
+-			debugPrint("%-6s %-25s --> %s (%d handlers)\n", httpMethod, absolutePath, handlerName, nuHandlers)
++			debugPrintf("%-6s %-25s --> %s (%d handlers)\n", httpMethod, absolutePath, handlerName, nuHandlers)
+ 		} else {
+ 			DebugPrintRouteFunc(httpMethod, absolutePath, handlerName, nuHandlers)
+ 		}
+@@ -49,11 +49,11 @@ func debugPrintLoadTemplate(tmpl *template.Template) {
+ 			buf.WriteString(tmpl.Name())
+ 			buf.WriteString("\n")
+ 		}
+-		debugPrint("Loaded HTML Templates (%d): \n%s\n", len(tmpl.Templates()), buf.String())
++		debugPrintf("Loaded HTML Templates (%d): \n%s\n", len(tmpl.Templates()), buf.String())
+ 	}
+ }
+ 
+-func debugPrint(format string, values ...any) {
++func debugPrintf(format string, values ...any) {
+ 	if !IsDebugging() {
+ 		return
+ 	}
+@@ -80,17 +80,17 @@ func getMinVer(v string) (uint64, error) {
+ 
+ func debugPrintWARNINGDefault() {
+ 	if v, e := getMinVer(runtimeVersion); e == nil && v < ginSupportMinGoVer {
+-		debugPrint(`[WARNING] Now Gin requires Go 1.25+.
++		debugPrintf(`[WARNING] Now Gin requires Go 1.25+.
+ 
+ `)
+ 	}
+-	debugPrint(`[WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
++	debugPrintf(`[WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+ 
+ `)
+ }
+ 
+ func debugPrintWARNINGNew() {
+-	debugPrint(`[WARNING] Running in "debug" mode. Switch to "release" mode in production.
++	debugPrintf(`[WARNING] Running in "debug" mode. Switch to "release" mode in production.
+  - using env:	export GIN_MODE=release
+  - using code:	gin.SetMode(gin.ReleaseMode)
+ 
+@@ -98,7 +98,7 @@ func debugPrintWARNINGNew() {
+ }
+ 
+ func debugPrintWARNINGSetHTMLTemplate() {
+-	debugPrint(`[WARNING] Since SetHTMLTemplate() is NOT thread-safe. It should only be called
++	debugPrintf(`[WARNING] Since SetHTMLTemplate() is NOT thread-safe. It should only be called
+ at initialization. ie. before any route is registered or the router is listening in a socket:
+ 
+ 	router := gin.Default()
+diff --git a/debug_test.go b/debug_test.go
+index bf115ce..e4b6e8d 100644
+--- a/debug_test.go
++++ b/debug_test.go
+@@ -33,11 +33,11 @@ func TestDebugPrint(t *testing.T) {
+ 	re := captureOutput(t, func() {
+ 		SetMode(DebugMode)
+ 		SetMode(ReleaseMode)
+-		debugPrint("DEBUG this!")
++		debugPrintf("DEBUG this!")
+ 		SetMode(TestMode)
+-		debugPrint("DEBUG this!")
++		debugPrintf("DEBUG this!")
+ 		SetMode(DebugMode)
+-		debugPrint("these are %d %s", 2, "error messages")
++		debugPrintf("these are %d %s", 2, "error messages")
+ 		SetMode(TestMode)
+ 	})
+ 	assert.Equal(t, "[GIN-debug] these are 2 error messages\n", re)
+@@ -49,7 +49,7 @@ func TestDebugPrintFunc(t *testing.T) {
+ 	}
+ 	re := captureOutput(t, func() {
+ 		SetMode(DebugMode)
+-		debugPrint("debug print func test: %d", 123)
++		debugPrintf("debug print func test: %d", 123)
+ 		SetMode(TestMode)
+ 	})
+ 	assert.Regexp(t, `^\[GIN-debug\] debug print func test: 123`, re)
+diff --git a/gin.go b/gin.go
+index a160727..3422f90 100644
+--- a/gin.go
++++ b/gin.go
+@@ -567,12 +567,12 @@ func (engine *Engine) Run(addr ...string) (err error) {
+ 	defer func() { debugPrintError(err) }()
+ 
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+ 	engine.updateRouteTrees()
+ 	address := resolveAddress(addr)
+-	debugPrint("Listening and serving HTTP on %s\n", address)
++	debugPrintf("Listening and serving HTTP on %s\n", address)
+ 	server := &http.Server{ // #nosec G112
+ 		Addr:              address,
+ 		Handler:           engine.Handler(),
+@@ -586,11 +586,11 @@ func (engine *Engine) Run(addr ...string) (err error) {
+ // It is a shortcut for http.ListenAndServeTLS(addr, certFile, keyFile, router)
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
+ func (engine *Engine) RunTLS(addr, certFile, keyFile string) (err error) {
+-	debugPrint("Listening and serving HTTPS on %s\n", addr)
++	debugPrintf("Listening and serving HTTPS on %s\n", addr)
+ 	defer func() { debugPrintError(err) }()
+ 
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+ 
+@@ -607,11 +607,11 @@ func (engine *Engine) RunTLS(addr, certFile, keyFile string) (err error) {
+ // through the specified unix socket (i.e. a file).
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
+ func (engine *Engine) RunUnix(file string) (err error) {
+-	debugPrint("Listening and serving HTTP on unix:/%s", file)
++	debugPrintf("Listening and serving HTTP on unix:/%s", file)
+ 	defer func() { debugPrintError(err) }()
+ 
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+ 
+@@ -633,11 +633,11 @@ func (engine *Engine) RunUnix(file string) (err error) {
+ // through the specified file descriptor.
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
+ func (engine *Engine) RunFd(fd int) (err error) {
+-	debugPrint("Listening and serving HTTP on fd@%d", fd)
++	debugPrintf("Listening and serving HTTP on fd@%d", fd)
+ 	defer func() { debugPrintError(err) }()
+ 
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+ 
+@@ -656,11 +656,11 @@ func (engine *Engine) RunFd(fd int) (err error) {
+ // It is a shortcut for http3.ListenAndServeQUIC(addr, certFile, keyFile, router)
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
+ func (engine *Engine) RunQUIC(addr, certFile, keyFile string) (err error) {
+-	debugPrint("Listening and serving QUIC on %s\n", addr)
++	debugPrintf("Listening and serving QUIC on %s\n", addr)
+ 	defer func() { debugPrintError(err) }()
+ 
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+ 
+@@ -671,11 +671,11 @@ func (engine *Engine) RunQUIC(addr, certFile, keyFile string) (err error) {
+ // RunListener attaches the router to a http.Server and starts listening and serving HTTP requests
+ // through the specified net.Listener
+ func (engine *Engine) RunListener(listener net.Listener) (err error) {
+-	debugPrint("Listening and serving HTTP on listener what's bind with address@%s", listener.Addr())
++	debugPrintf("Listening and serving HTTP on listener what's bind with address@%s", listener.Addr())
+ 	defer func() { debugPrintError(err) }()
+ 
+ 	if engine.isUnsafeTrustedProxies() {
+-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
++		debugPrintf("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+ 			"Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+ 	}
+ 
+@@ -800,7 +800,7 @@ func serveError(c *Context, code int, defaultMessage []byte) {
+ 		c.writermem.Header()["Content-Type"] = mimePlain
+ 		_, err := c.Writer.Write(defaultMessage)
+ 		if err != nil {
+-			debugPrint("cannot write message to writer during serve error: %v", err)
++			debugPrintf("cannot write message to writer during serve error: %v", err)
+ 		}
+ 		return
+ 	}
+@@ -855,7 +855,7 @@ func redirectRequest(c *Context) {
+ 	if req.Method != http.MethodGet {
+ 		code = http.StatusTemporaryRedirect
+ 	}
+-	debugPrint("redirecting request %d: %s --> %s", code, rPath, rURL)
++	debugPrintf("redirecting request %d: %s --> %s", code, rPath, rURL)
+ 	http.Redirect(c.Writer, req, rURL, code)
+ 	c.writermem.WriteHeaderNow()
+ }
+diff --git a/go.mod b/go.mod
+index 99a8d5b..5e7b845 100644
+--- a/go.mod
++++ b/go.mod
+@@ -3,39 +3,39 @@ module github.com/gin-gonic/gin
+ go 1.26.0
+ 
+ require (
+-	github.com/bytedance/sonic v1.15.0
+-	github.com/gin-contrib/sse v1.1.0
+-	github.com/go-playground/validator/v10 v10.30.3
++	github.com/bytedance/sonic v1.15.4
++	github.com/gin-contrib/sse v1.1.2
++	github.com/go-playground/validator/v10 v10.30.5
+ 	github.com/goccy/go-json v0.10.6
+ 	github.com/goccy/go-yaml v1.19.2
+ 	github.com/json-iterator/go v1.1.12
+-	github.com/mattn/go-isatty v0.0.20
++	github.com/mattn/go-isatty v0.0.24
+ 	github.com/modern-go/reflect2 v1.0.2
+-	github.com/pelletier/go-toml/v2 v2.2.4
+-	github.com/quic-go/quic-go v0.60.0
++	github.com/pelletier/go-toml/v2 v2.4.3
++	github.com/quic-go/quic-go v0.63.0
+ 	github.com/stretchr/testify v1.12.1
+-	github.com/ugorji/go/codec v1.3.1
+-	go.mongodb.org/mongo-driver/v2 v2.5.0
+-	golang.org/x/net v0.57.0
+-	google.golang.org/protobuf v1.36.11
++	github.com/ugorji/go/codec v1.3.2
++	go.mongodb.org/mongo-driver/v2 v2.9.1
++	golang.org/x/net v0.59.0
++	google.golang.org/protobuf v1.36.12
+ )
+ 
+ require (
+-	github.com/bytedance/gopkg v0.1.3 // indirect
+-	github.com/bytedance/sonic/loader v0.5.0 // indirect
+-	github.com/cloudwego/base64x v0.1.6 // indirect
+-	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
++	github.com/bytedance/gopkg v0.1.4 // indirect
++	github.com/bytedance/sonic/loader v0.5.2 // indirect
++	github.com/cloudwego/base64x v0.1.7 // indirect
++	github.com/gabriel-vasile/mimetype v1.4.15 // indirect
+ 	github.com/go-playground/locales v0.14.1 // indirect
+-	github.com/go-playground/universal-translator v0.18.1 // indirect
+-	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
+-	github.com/leodido/go-urn v1.4.0 // indirect
++	github.com/go-playground/universal-translator v0.18.2 // indirect
++	github.com/klauspost/cpuid/v2 v2.4.0 // indirect
++	github.com/leodido/go-urn v1.5.0 // indirect
+ 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
+ 	github.com/quic-go/qpack v0.6.0 // indirect
+ 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
+ 	go.uber.org/mock v0.6.0 // indirect
+ 	go.yaml.in/yaml/v3 v3.0.5 // indirect
+-	golang.org/x/arch v0.25.0 // indirect
+-	golang.org/x/crypto v0.56.0 // indirect
+-	golang.org/x/sys v0.47.0 // indirect
+-	golang.org/x/text v0.41.0 // indirect
++	golang.org/x/arch v0.31.0 // indirect
++	golang.org/x/crypto v0.57.0 // indirect
++	golang.org/x/sys v0.48.0 // indirect
++	golang.org/x/text v0.42.0 // indirect
+ )
+diff --git a/go.sum b/go.sum
+index dc6ef90..81c2b3f 100644
+--- a/go.sum
++++ b/go.sum
+@@ -1,26 +1,42 @@
+ github.com/bytedance/gopkg v0.1.3 h1:TPBSwH8RsouGCBcMBktLt1AymVo2TVsBVCY4b6TnZ/M=
+ github.com/bytedance/gopkg v0.1.3/go.mod h1:576VvJ+eJgyCzdjS+c4+77QF3p7ubbtiKARP3TxducM=
++github.com/bytedance/gopkg v0.1.4 h1:oZnQwnX82KAIWb7033bEwtxvTqXcYMxDBaQxo5JJHWM=
++github.com/bytedance/gopkg v0.1.4/go.mod h1:v1zWfPm21Fb+OsyXN2VAHdL6TBb2L88anLQgdyje6R4=
+ github.com/bytedance/sonic v1.15.0 h1:/PXeWFaR5ElNcVE84U0dOHjiMHQOwNIx3K4ymzh/uSE=
+ github.com/bytedance/sonic v1.15.0/go.mod h1:tFkWrPz0/CUCLEF4ri4UkHekCIcdnkqXw9VduqpJh0k=
++github.com/bytedance/sonic v1.15.4 h1:FgtV/4aBHpla9AxuMpuuzVUpa/Cf3izufkxNmnEzdI8=
++github.com/bytedance/sonic v1.15.4/go.mod h1:8e51yTPdY8M6t+vvGL1c2Y1xL9i+frEeIAQAEl75NUc=
+ github.com/bytedance/sonic/loader v0.5.0 h1:gXH3KVnatgY7loH5/TkeVyXPfESoqSBSBEiDd5VjlgE=
+ github.com/bytedance/sonic/loader v0.5.0/go.mod h1:AR4NYCk5DdzZizZ5djGqQ92eEhCCcdf5x77udYiSJRo=
++github.com/bytedance/sonic/loader v0.5.2 h1:0QtP1gevc1OZ6/H8Lb9BRZiCXd1Ftjd3OKuj1T1lBIo=
++github.com/bytedance/sonic/loader v0.5.2/go.mod h1:AR4NYCk5DdzZizZ5djGqQ92eEhCCcdf5x77udYiSJRo=
+ github.com/cloudwego/base64x v0.1.6 h1:t11wG9AECkCDk5fMSoxmufanudBtJ+/HemLstXDLI2M=
+ github.com/cloudwego/base64x v0.1.6/go.mod h1:OFcloc187FXDaYHvrNIjxSe8ncn0OOM8gEHfghB2IPU=
++github.com/cloudwego/base64x v0.1.7 h1:NppS+Fgzg5ovhn4NkUXaDT3x9jldgH5ToMCqzBSi2zI=
++github.com/cloudwego/base64x v0.1.7/go.mod h1:Cu1PV9zfrSf7ET2tIbWbbEy7jO7HHJ13q4X2SQ8aWYg=
+ github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+ github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+ github.com/gabriel-vasile/mimetype v1.4.13 h1:46nXokslUBsAJE/wMsp5gtO500a4F3Nkz9Ufpk2AcUM=
+ github.com/gabriel-vasile/mimetype v1.4.13/go.mod h1:d+9Oxyo1wTzWdyVUPMmXFvp4F9tea18J8ufA774AB3s=
++github.com/gabriel-vasile/mimetype v1.4.15 h1:05iP/CYtZ/w455R/KZM6rZ5ieAdh99UPtd+d3YzLmaI=
++github.com/gabriel-vasile/mimetype v1.4.15/go.mod h1:azpTcoLcDZRNgFou5j+APrqQx9HqVPWa6ijYQIIVswQ=
+ github.com/gin-contrib/sse v1.1.0 h1:n0w2GMuUpWDVp7qSpvze6fAu9iRxJY4Hmj6AmBOU05w=
+ github.com/gin-contrib/sse v1.1.0/go.mod h1:hxRZ5gVpWMT7Z0B0gSNYqqsSCNIJMjzvm6fqCz9vjwM=
++github.com/gin-contrib/sse v1.1.2 h1:MU2fgl1RrdYTMcgJLtz2kJF+vPg3xrqaaKfUUU18tCo=
++github.com/gin-contrib/sse v1.1.2/go.mod h1:QXzuVkA0YO7o/gun03UI1Q+FTI8ZV/n5t03kIQAI89s=
+ github.com/go-playground/assert/v2 v2.2.0 h1:JvknZsQTYeFEAhQwI4qEt9cyV5ONwRHC+lYKSsYSR8s=
+ github.com/go-playground/assert/v2 v2.2.0/go.mod h1:VDjEfimB/XKnb+ZQfWdccd7VUvScMdVu0Titje2rxJ4=
+ github.com/go-playground/locales v0.14.1 h1:EWaQ/wswjilfKLTECiXz7Rh+3BjFhfDFKv/oXslEjJA=
+ github.com/go-playground/locales v0.14.1/go.mod h1:hxrqLVvrK65+Rwrd5Fc6F2O76J/NuW9t0sjnWqG1slY=
+ github.com/go-playground/universal-translator v0.18.1 h1:Bcnm0ZwsGyWbCzImXv+pAJnYK9S473LQFuzCbDbfSFY=
+ github.com/go-playground/universal-translator v0.18.1/go.mod h1:xekY+UJKNuX9WP91TpwSH2VMlDf28Uj24BCp08ZFTUY=
++github.com/go-playground/universal-translator v0.18.2 h1:LCsMLC9RzmbUMNUPVYD15dmcjwYAJhmX8mPZRW4rAVU=
++github.com/go-playground/universal-translator v0.18.2/go.mod h1:67VZIMp5lQpDWlnStOct22q1bkdJGJqHghbOtmkawxk=
+ github.com/go-playground/validator/v10 v10.30.3 h1:4MU6YkEwx7GbcPJOZxrtbu+QfF3pJLJuaYTeAH0DYy8=
+ github.com/go-playground/validator/v10 v10.30.3/go.mod h1:4Axh7oCNGcoGkqLoE4YWt6n20mcEIsPRlB7vPk3lpyc=
++github.com/go-playground/validator/v10 v10.30.5 h1:YyCXvVShZbs2Sm3Mb53eNOlhRXctSOzW5QJAouCTZL4=
++github.com/go-playground/validator/v10 v10.30.5/go.mod h1:wEqiaov48pXX1kjhc3Da8y0M0Dtg/BK7gurFBLgwFrQ=
+ github.com/goccy/go-json v0.10.6 h1:p8HrPJzOakx/mn/bQtjgNjdTcN+/S6FcG2CTtQOrHVU=
+ github.com/goccy/go-json v0.10.6/go.mod h1:oq7eo15ShAhp70Anwd5lgX2pLfOS3QCiwU/PULtXL6M=
+ github.com/goccy/go-yaml v1.19.2 h1:PmFC1S6h8ljIz6gMRBopkjP1TVT7xuwrButHID66PoM=
+@@ -32,10 +48,16 @@ github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnr
+ github.com/json-iterator/go v1.1.12/go.mod h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=
+ github.com/klauspost/cpuid/v2 v2.3.0 h1:S4CRMLnYUhGeDFDqkGriYKdfoFlDnMtqTiI/sFzhA9Y=
+ github.com/klauspost/cpuid/v2 v2.3.0/go.mod h1:hqwkgyIinND0mEev00jJYCxPNVRVXFQeu1XKlok6oO0=
++github.com/klauspost/cpuid/v2 v2.4.0 h1:S6Hrbc7+ywsr0r+RLapfGBHfyefhCTwEh3A0tV913Dw=
++github.com/klauspost/cpuid/v2 v2.4.0/go.mod h1:19jmZ9mjzoF//ddRSUsv0zfBTJWh3QJh9FNxZTMrGxU=
+ github.com/leodido/go-urn v1.4.0 h1:WT9HwE9SGECu3lg4d/dIA+jxlljEa1/ffXKmRjqdmIQ=
+ github.com/leodido/go-urn v1.4.0/go.mod h1:bvxc+MVxLKB4z00jd1z+Dvzr47oO32F/QSNjSBOlFxI=
++github.com/leodido/go-urn v1.5.0 h1:pLqT2kq1zpHW/1D18QMjMpdtX7cekxqtJJjg5ANyWw0=
++github.com/leodido/go-urn v1.5.0/go.mod h1:9BORnCDhdPBJNDEX+w1bJisa8yOKYi116VeO96s4ifE=
+ github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
+ github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
++github.com/mattn/go-isatty v0.0.24 h1:tGZZoVgT/KiqK1c8ocVLeDS8BSWMRd47J3Lbz7vsReI=
++github.com/mattn/go-isatty v0.0.24/go.mod h1:nMCL3Zebbrt45jsMDgnfIwz6ydEQApk5oEI3HqDio6A=
+ github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
+ github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd h1:TRLaZ9cD/w8PVh93nsPXa1VrQ6jlwL5oN8l14QlcNfg=
+ github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
+@@ -43,6 +65,8 @@ github.com/modern-go/reflect2 v1.0.2 h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9G
+ github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=
+ github.com/pelletier/go-toml/v2 v2.2.4 h1:mye9XuhQ6gvn5h28+VilKrrPoQVanw5PMw/TB0t5Ec4=
+ github.com/pelletier/go-toml/v2 v2.2.4/go.mod h1:2gIqNv+qfxSVS7cM2xJQKtLSTLUE9V8t9Stt+h56mCY=
++github.com/pelletier/go-toml/v2 v2.4.3 h1:GTRvJQutkOSftxIFD5xw9aepkYNuPWmVJpffdDPYVpY=
++github.com/pelletier/go-toml/v2 v2.4.3/go.mod h1:2gIqNv+qfxSVS7cM2xJQKtLSTLUE9V8t9Stt+h56mCY=
+ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+ github.com/quic-go/go-ossfuzz-seeds v0.1.0 h1:APacT+iIaNF6fd8AGEiN3bT/Jtkd2jz4v4TzM7MFjy0=
+ github.com/quic-go/go-ossfuzz-seeds v0.1.0/go.mod h1:3IOHRbJIc+L6YKMwfDtJAM9Vj9k0YY4muhuyUYk5tbk=
+@@ -50,6 +74,8 @@ github.com/quic-go/qpack v0.6.0 h1:g7W+BMYynC1LbYLSqRt8PBg5Tgwxn214ZZR34VIOjz8=
+ github.com/quic-go/qpack v0.6.0/go.mod h1:lUpLKChi8njB4ty2bFLX2x4gzDqXwUpaO1DP9qMDZII=
+ github.com/quic-go/quic-go v0.60.0 h1:xcQioE8OM66UQLeUMHltK1CCcOu3JbVB4JAQdDQSB+0=
+ github.com/quic-go/quic-go v0.60.0/go.mod h1:wpKpjmPpftl30sL6pFh7REVpjbcCVy4zt2vDyK1TuJk=
++github.com/quic-go/quic-go v0.63.0 h1:LIFGHI4PFUhhw2dDD1ARHdCff143ffMHwZtbnbuJ78A=
++github.com/quic-go/quic-go v0.63.0/go.mod h1:RAro2j2yN9a9EiPACLHT9IB2NXCvGQmmo/alT0yYI0w=
+ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
+ github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
+ github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
+@@ -65,25 +91,41 @@ github.com/twitchyliquid64/golang-asm v0.15.1 h1:SU5vSMR7hnwNxj24w34ZyCi/FmDZTkS
+ github.com/twitchyliquid64/golang-asm v0.15.1/go.mod h1:a1lVb/DtPvCB8fslRZhAngC2+aY1QWCk3Cedj/Gdt08=
+ github.com/ugorji/go/codec v1.3.1 h1:waO7eEiFDwidsBN6agj1vJQ4AG7lh2yqXyOXqhgQuyY=
+ github.com/ugorji/go/codec v1.3.1/go.mod h1:pRBVtBSKl77K30Bv8R2P+cLSGaTtex6fsA2Wjqmfxj4=
++github.com/ugorji/go/codec v1.3.2 h1:zkEASHHyEClGeURfgNT9PJZVfAbs9oEX9QXggwWNJbc=
++github.com/ugorji/go/codec v1.3.2/go.mod h1:pRBVtBSKl77K30Bv8R2P+cLSGaTtex6fsA2Wjqmfxj4=
+ go.mongodb.org/mongo-driver/v2 v2.5.0 h1:yXUhImUjjAInNcpTcAlPHiT7bIXhshCTL3jVBkF3xaE=
+ go.mongodb.org/mongo-driver/v2 v2.5.0/go.mod h1:yOI9kBsufol30iFsl1slpdq1I0eHPzybRWdyYUs8K/0=
++go.mongodb.org/mongo-driver/v2 v2.9.1 h1:jewiFs2m1/VOQp8qhFshX6hWZ+EAXDhZHXExAUMcOgQ=
++go.mongodb.org/mongo-driver/v2 v2.9.1/go.mod h1:SHKN0IWkKmEVGHLjXnni6s4wPKX4v86FTgOeJJFuXcA=
+ go.uber.org/mock v0.6.0 h1:hyF9dfmbgIX5EfOdasqLsWD6xqpNZlXblLB/Dbnwv3Y=
+ go.uber.org/mock v0.6.0/go.mod h1:KiVJ4BqZJaMj4svdfmHM0AUx4NJYO8ZNpPnZn1Z+BBU=
+ go.yaml.in/yaml/v3 v3.0.5 h1:N6y/pJk8buWs9NY5ERU2HSMfm+IuD/OtfdAnq6kESPw=
+ go.yaml.in/yaml/v3 v3.0.5/go.mod h1:HVTZu1O7/Vkt2N+BFy8Zza+lnLsABggaTM2ZpNIGuKg=
+ golang.org/x/arch v0.25.0 h1:qnk6Ksugpi5Bz32947rkUgDt9/s5qvqDPl/gBKdMJLE=
+ golang.org/x/arch v0.25.0/go.mod h1:0X+GdSIP+kL5wPmpK7sdkEVTt2XoYP0cSjQSbZBwOi8=
++golang.org/x/arch v0.31.0 h1:22MlEb14/O/EPCYHFxsDdv5TuLD5dMjT5e2QeJw4ULk=
++golang.org/x/arch v0.31.0/go.mod h1:KcJSod3cqT2dKcjBxqTyGfbumNikqU9p5tHJinPJnuY=
+ golang.org/x/crypto v0.56.0 h1:GUh5Ii4J5jtcseSMiRqr1jXCNHoxjeV9Fmekc2oLy6Y=
+ golang.org/x/crypto v0.56.0/go.mod h1:OMW5y6CY9l38uPLmxU6l6pwcXp1obtLo3e6gT7gQR2I=
++golang.org/x/crypto v0.57.0 h1:3ZVCjf8Ggz7zneR/EHRVx68Ctf+2pmIMP2UFhh9cC6M=
++golang.org/x/crypto v0.57.0/go.mod h1:Fdz0i5U6CoizGwLda9DttjSk6qlZo25zYNtR+ycvuZA=
+ golang.org/x/net v0.57.0 h1:K5+3DljvIuDG9/Jv9rvyMywYNFCQ9RSUY6OOTTkT+tE=
+ golang.org/x/net v0.57.0/go.mod h1:KpXc8iv+r3XplLAG/f7Jsf9RPszJzdR0f58q9vGOuEU=
++golang.org/x/net v0.59.0 h1:5zfYln+w5XCxwrnMMJPufRgNoXEaGxl0wo5GqPXyues=
++golang.org/x/net v0.59.0/go.mod h1:2DA/G1UfVbCpQPeWTmMPGY7Cs2PkBkwu743bVX5PIVg=
+ golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+ golang.org/x/sys v0.47.0 h1:o7XGOvZQCADBQQ4Y7VNq2dRWQR7JmOUW8Kxx4ZsNgWs=
+ golang.org/x/sys v0.47.0/go.mod h1:4GL1E5IUh+htKOUEOaiffhrAeqysfVGipDYzABqnCmw=
++golang.org/x/sys v0.48.0 h1:bbX/i/6MgT9BVLM9RT1thmxL04yeTAhbEz4SyadbXoo=
++golang.org/x/sys v0.48.0/go.mod h1:hNLxWAXmnKAxqDtdwIYC4bM9oQPEecfsnNMuSxOs3og=
+ golang.org/x/text v0.41.0 h1:vz/seA0lnX87Othu2f/0L24RcgrXD9/YFTSuGjj3rH8=
+ golang.org/x/text v0.41.0/go.mod h1:jvf1O8ajNzZqhSrQBPbutR/EB83Cc0CFrezNQIwbb5M=
++golang.org/x/text v0.42.0 h1:JbOZXgfeCPU9gacVtYliJqOhD+zhrEqK4LfdpmlUZqI=
++golang.org/x/text v0.42.0/go.mod h1:ojzP1Z+2QtioaF8DTtO8K5q7JWVVYwZKenzujK0Zd0E=
+ google.golang.org/protobuf v1.36.11 h1:fV6ZwhNocDyBLK0dj+fg8ektcVegBBuEolpbTQyBNVE=
+ google.golang.org/protobuf v1.36.11/go.mod h1:HTf+CrKn2C3g5S8VImy6tdcUvCska2kB7j23XfzDpco=
++google.golang.org/protobuf v1.36.12 h1:pJOKDDOyeXErUroCihFAd5LQuwXBSpVnKGrj5o/fwxc=
++google.golang.org/protobuf v1.36.12/go.mod h1:HTf+CrKn2C3g5S8VImy6tdcUvCska2kB7j23XfzDpco=
+ gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+ gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
+ gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
+diff --git a/render/data.go b/render/data.go
+index 2c0ad5e..79274d0 100644
+--- a/render/data.go
++++ b/render/data.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/render/html.go b/render/html.go
+index 36c8f07..434e2e6 100644
+--- a/render/html.go
++++ b/render/html.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/render/json.go b/render/json.go
+index 2f98676..b6ae00b 100644
+--- a/render/json.go
++++ b/render/json.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/render/redirect.go b/render/redirect.go
+index 70e3a47..5f75dcd 100644
+--- a/render/redirect.go
++++ b/render/redirect.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/render/render.go b/render/render.go
+index 28bc0f5..dfeab5f 100644
+--- a/render/render.go
++++ b/render/render.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/render/render_msgpack_test.go b/render/render_msgpack_test.go
+index 48b2387..3b19773 100644
+--- a/render/render_msgpack_test.go
++++ b/render/render_msgpack_test.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/render/render_test.go b/render/render_test.go
+index a3f90a3..8c17f83 100644
+--- a/render/render_test.go
++++ b/render/render_test.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/render/text.go b/render/text.go
+index 77eafdf..51e5a3b 100644
+--- a/render/text.go
++++ b/render/text.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/render/xml.go b/render/xml.go
+index 6af8901..295a129 100644
+--- a/render/xml.go
++++ b/render/xml.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/render/yaml.go b/render/yaml.go
+index 98b0644..adfe877 100644
+--- a/render/yaml.go
++++ b/render/yaml.go
+@@ -1,4 +1,4 @@
+-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
++// Copyright 2014-2026 Manu Martinez-Almeida and Gin contributors. All rights reserved.
+ // Use of this source code is governed by a MIT style
+ // license that can be found in the LICENSE file.
+ 
+diff --git a/response_writer.go b/response_writer.go
+index 8e2d8b3..6721552 100644
+--- a/response_writer.go
++++ b/response_writer.go
+@@ -67,7 +67,7 @@ func (w *responseWriter) reset(writer http.ResponseWriter) {
+ func (w *responseWriter) WriteHeader(code int) {
+ 	if code > 0 && w.status != code {
+ 		if w.Written() {
+-			debugPrint("[WARNING] Headers were already written. Wanted to override status code %d with %d", w.status, code)
++			debugPrintf("[WARNING] Headers were already written. Wanted to override status code %d with %d", w.status, code)
+ 			return
+ 		}
+ 		w.status = code
+diff --git a/utils.go b/utils.go
+index e8b86fc..e3b84b3 100644
+--- a/utils.go
++++ b/utils.go
+@@ -149,10 +149,10 @@ func resolveAddress(addr []string) string {
+ 	switch len(addr) {
+ 	case 0:
+ 		if port := os.Getenv("PORT"); port != "" {
+-			debugPrint("Environment variable PORT=\"%s\"", port)
++			debugPrintf("Environment variable PORT=\"%s\"", port)
+ 			return ":" + port
+ 		}
+-		debugPrint("Environment variable PORT is undefined. Using port :8080 by default")
++		debugPrintf("Environment variable PORT is undefined. Using port :8080 by default")
+ 		return ":8080"
+ 	case 1:
+ 		return addr[0]

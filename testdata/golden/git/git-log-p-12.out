@@ -1,0 +1,580 @@
+1bd0ecf 2026-09-25 [HazyLab] fix(context): load Keys under the mutex in Copy (#4854) [+6 body lines]
+diff --git a/context.go b/context.go
+@@ -132,9 +132,8 @@ func (c *Context) Copy() *Context {
+ 	cp.handlers = nil
+ 	cp.fullPath = c.fullPath
+
+-	cKeys := c.Keys
+ 	c.mu.RLock()
+-	cp.Keys = maps.Clone(cKeys)
++	cp.Keys = maps.Clone(c.Keys)
+ 	c.mu.RUnlock()
+
+ 	cParams := c.Params
+diff --git a/context_test.go b/context_test.go
+@@ -709,6 +709,30 @@ func TestContextGetStringMapStringSlice(t *testing.T) {
+ 	assert.Equal(t, []string{"foo"}, c.GetStringMapStringSlice("map")["foo"])
+ }
+
++func TestCopyConcurrentWithSet(t *testing.T) {
++	c := &Context{}
++	var wg sync.WaitGroup
++	wg.Add(2)
++	go func() {
++		defer wg.Done()
++		for i := 0; i < 100; i++ {
++			c.Set(i, i)
++		}
++	}()
++	go func() {
++		defer wg.Done()
++		for i := 0; i < 100; i++ {
++			cp := c.Copy()
++			for k, v := range cp.Keys {
++				if k != v {
++					t.Errorf("copied key %v = %v, want %v", k, v, k)
++				}
++			}
++		}
++	}()
++	wg.Wait()
++}
++
+ func TestContextCopy(t *testing.T) {
+ 	c, _ := CreateTestContext(httptest.NewRecorder())
+ 	c.index = 2
+3b08cd7 2026-09-19 [water] fix: reset skipped-nodes stack on getValue entry to prevent slice overflow panic [#4818] (#4819) [+6 body lines]
+diff --git a/routes_test.go b/routes_test.go
+@@ -844,3 +844,100 @@ func TestEngineHandleMethodNotAllowedCornerCase(t *testing.T) {
+ 	w := PerformRequest(r, http.MethodGet, "/base/v1/user/groups")
+ 	assert.Equal(t, http.StatusNotFound, w.Code)
+ }
++
++// TestIssue4818_skippedNodesOverflow_Panic reproduces the panic from issue #4818:
++// with HandleMethodNotAllowed enabled, getValue is called once per method tree
++// reusing the same c.skippedNodes stack without resetting it, so residue
++// accumulates until the reslice exceeds the capacity (engine.maxSections).
++// The request must not panic and must fall through to the normal 404 path
++// (the path genuinely matches no route, so 405 is not applicable here).
++func TestIssue4818_skippedNodesOverflow_Panic(t *testing.T) {
++	router := New()
++	router.HandleMethodNotAllowed = true
++
++	h := func(c *Context) {}
++	router.OPTIONS("/:p0/:p1/a/:p2", h)
++	router.GET("/:p0/:p1/a/:p2", h)
++	router.PATCH("/b/:p0/:p1/c", h)
++	router.DELETE("/b/:p0/:p1/d/:p3", h)
++	router.GET("/b/:p0/:p1/e/f", h)
++	router.POST("/b/:p0/:p1/g/:p4/h", h)
++	router.OPTIONS("/b/:p0/:p1/g/:p4/h", h)
++	router.DELETE("/b/cache", h)
++	router.GET("/b/clients/:p1/g", h)
++	router.POST("/b/clients/:p1/g", h)
++	router.PATCH("/b/clients/:p1/g/:p4", h)
++	router.OPTIONS("/b/clients/:p1/g/:p4", h)
++
++	req := httptest.NewRequest(http.MethodPost, "/b/clients/42", nil)
++	w := httptest.NewRecorder()
++	router.ServeHTTP(w, req)
++
++	// Must not panic; path matches no route, so 404 is the correct outcome.
++	if w.Code != http.StatusNotFound {
++		t.Fatalf("expected 404, got %d (a panic would have aborted the test)", w.Code)
++	}
++}
++
++// TestIssue4818_MethodNotAllowedStillWorks verifies the HandleMethodNotAllowed
++// loop still produces a correct 405 with an Allow header after the fix, i.e.
++// the reset does not break the loop across multiple method trees.
++func TestIssue4818_MethodNotAllowedStillWorks(t *testing.T) {
++	router := New()
++	router.HandleMethodNotAllowed = true
++
++	h := func(c *Context) {}
++	router.OPTIONS("/:p0/:p1/a/:p2", h)
++	router.GET("/:p0/:p1/a/:p2", h)
++	router.PATCH("/b/:p0/:p1/c", h)
++	router.DELETE("/b/:p0/:p1/d/:p3", h)
++	router.GET("/b/:p0/:p1/e/f", h)
++	router.POST("/b/:p0/:p1/g/:p4/h", h)
++	router.OPTIONS("/b/:p0/:p1/g/:p4/h", h)
++	router.DELETE("/b/cache", h)
++	router.GET("/b/clients/:p1/g", h)
++	router.POST("/b/clients/:p1/g", h)
++	router.PATCH("/b/clients/:p1/g/:p4", h)
++	router.OPTIONS("/b/clients/:p1/g/:p4", h)
++
++	// PATCH /b/clients/42/g is registered under GET but not under PATCH
++	// -> HandleMethodNotAllowed should yield 405 with an Allow header.
++	req := httptest.NewRequest(http.MethodPatch, "/b/clients/42/g", nil)
++	w := httptest.NewRecorder()
++	router.ServeHTTP(w, req)
++
++	if w.Code != http.StatusMethodNotAllowed {
++		t.Fatalf("expected 405, got %d", w.Code)
++	}
++	allow := w.Header().Get("Allow")
++	if allow == "" {
++		t.Fatal("expected Allow header to be set for 405")
++	}
++}
++
++// TestIssue4818_MethodNotAllowedManyTrees stresses the loop across many
++// method trees to make sure the skipped-nodes accumulator can never overflow.
++func TestIssue4818_MethodNotAllowedManyTrees(t *testing.T) {
++	router := New()
++	router.HandleMethodNotAllowed = true
++
++	h := func(c *Context) {}
++	for _, m := range []string{
++		http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete,
++		http.MethodPatch, http.MethodOptions, http.MethodHead, http.MethodConnect,
++		http.MethodTrace,
++	} {
++		router.Handle(m, "/:p0/:p1/a/:p2", h)
++		router.Handle(m, "/s/:p0/:p1/:p2/:p3/:p4/:p5/d", h)
++	}
++	// GET route so that a POST to a GET-only path yields 405
++	router.GET("/only-get", h)
++
++	req := httptest.NewRequest(http.MethodPost, "/only-get", nil)
++	w := httptest.NewRecorder()
++	router.ServeHTTP(w, req)
++
++	if w.Code != http.StatusMethodNotAllowed {
++		t.Fatalf("expected 405, got %d", w.Code)
++	}
++}
+diff --git a/tree.go b/tree.go
+@@ -418,6 +418,14 @@ type skippedNode struct {
+ func (n *node) getValue(path string, params *Params, skippedNodes *[]skippedNode, unescape bool) (value nodeValue) {
+ 	var globalParamsCount int16
+
++	// Reset the skipped-nodes stack on entry. getValue is called once per
++	// method tree (e.g. in the HandleMethodNotAllowed loop) reusing the same
++	// pooled Context stack, and the walk below grows it via a raw reslice that
++	// cannot exceed engine.maxSections. Without this reset the residue from a
++	// previous tree leaks into the next call and can panic with "slice bounds
++	// out of range" once the accumulated length passes the capacity.
++	*skippedNodes = (*skippedNodes)[:0]
++
+ walk: // Outer loop for walking the tree
+ 	for {
+ 		prefix := n.path
+d8f2d58 2026-09-19 [Ruben Pari] fix(engine): add default ReadHeaderTimeout to http.Server in Run methods (#4800) [+7 body lines]
+    Fixes #4760
+diff --git a/gin.go b/gin.go
+@@ -13,6 +13,7 @@ import (
+ 	"path"
+ 	"strings"
+ 	"sync"
++	"time"
+
+ 	"github.com/gin-gonic/gin/internal/bytesconv"
+ 	filesystem "github.com/gin-gonic/gin/internal/fs"
+@@ -29,6 +30,12 @@ const (
+ 	backslash              = "\\"
+ )
+
++// defaultReadHeaderTimeout is the default ReadHeaderTimeout applied to the
++// http.Server created by Run, RunTLS and RunListener. It protects against
++// slowloris-style resource exhaustion when the caller does not configure a
++// custom http.Server.
++const defaultReadHeaderTimeout = 10 * time.Second
++
+ var (
+ 	default404Body = []byte("404 page not found")
+ 	default405Body = []byte("405 method not allowed")
+@@ -166,6 +173,12 @@ type Engine struct {
+ 	// method call.
+ 	MaxMultipartMemory int64
+
++	// ReadHeaderTimeout is the maximum duration allowed for reading the request
++	// headers by the http.Server created through Run, RunTLS and RunListener.
++	// If zero or negative, a default of 10 seconds is used. Set to a positive
++	// value to customize, or use a custom http.Server directly to disable it.
++	ReadHeaderTimeout time.Duration
++
+ 	// UseH2C enable h2c support.
+ 	UseH2C bool
+
+@@ -219,6 +232,7 @@ func New(opts ...OptionFunc) *Engine {
+ 		RemoveExtraSlash:       false,
+ 		UnescapePathValues:     true,
+ 		MaxMultipartMemory:     defaultMultipartMemory,
++		ReadHeaderTimeout:      defaultReadHeaderTimeout,
+ 		trees:                  make(methodTrees, 0, 9),
+ 		delims:                 render.Delims{Left: "{{", Right: "}}"},
+ 		secureJSONPrefix:       "while(1);",
+@@ -255,6 +269,15 @@ func (engine *Engine) allocateContext(maxParams uint16) *Context {
+ 	return &Context{engine: engine, params: &v, skippedNodes: &skippedNodes}
+ }
+
++// getReadHeaderTimeout returns the configured ReadHeaderTimeout, or the
++// default if it is zero or negative.
++func (engine *Engine) getReadHeaderTimeout() time.Duration {
++	if engine.ReadHeaderTimeout <= 0 {
++		return defaultReadHeaderTimeout
++	}
++	return engine.ReadHeaderTimeout
++}
++
+ // Delims sets template left and right delims and returns an Engine instance.
+ func (engine *Engine) Delims(left, right string) *Engine {
+ 	engine.delims = render.Delims{Left: left, Right: right}
+@@ -537,6 +560,9 @@ func parseIP(ip string) net.IP {
+ // Run attaches the router to a http.Server and starts listening and serving HTTP requests.
+ // It is a shortcut for http.ListenAndServe(addr, router)
+ // Note: this method will block the calling goroutine indefinitely unless an error happens.
++// The created http.Server is configured with a default ReadHeaderTimeout of 10 seconds
++// (configurable via Engine.ReadHeaderTimeout) to mitigate slowloris attacks.
++// For full control over timeouts, create a custom http.Server and use ServeHTTP.
+ func (engine *Engine) Run(addr ...string) (err error) {
+ 	defer func() { debugPrintError(err) }()
+
+@@ -548,8 +574,9 @@ func (engine *Engine) Run(addr ...string) (err error) {
+ 	address := resolveAddress(addr)
+ 	debugPrint("Listening and serving HTTP on %s\n", address)
+ 	server := &http.Server{ // #nosec G112
+-		Addr:    address,
+-		Handler: engine.Handler(),
++		Addr:              address,
++		Handler:           engine.Handler(),
++		ReadHeaderTimeout: engine.getReadHeaderTimeout(),
+ 	}
+ 	err = server.ListenAndServe()
+ 	return
+@@ -568,8 +595,9 @@ func (engine *Engine) RunTLS(addr, certFile, keyFile string) (err error) {
+ 	}
+
+ 	server := &http.Server{ // #nosec G112
+-		Addr:    addr,
+-		Handler: engine.Handler(),
++		Addr:              addr,
++		Handler:           engine.Handler(),
++		ReadHeaderTimeout: engine.getReadHeaderTimeout(),
+ 	}
+ 	err = server.ListenAndServeTLS(certFile, keyFile)
+ 	return
+@@ -652,7 +680,8 @@ func (engine *Engine) RunListener(listener net.Listener) (err error) {
+ 	}
+
+ 	server := &http.Server{ // #nosec G112
+-		Handler: engine.Handler(),
++		Handler:           engine.Handler(),
++		ReadHeaderTimeout: engine.getReadHeaderTimeout(),
+ 	}
+ 	err = server.Serve(listener)
+ 	return
+diff --git a/gin_test.go b/gin_test.go
+@@ -1024,6 +1024,26 @@ func TestWithOptionFunc(t *testing.T) {
+ 	assertRoutePresent(t, routes, RouteInfo{Path: "/test2", Method: http.MethodGet, Handler: "github.com/gin-gonic/gin.handlerTest2"})
+ }
+
++func TestReadHeaderTimeoutDefault(t *testing.T) {
++	engine := New()
++	assert.Equal(t, defaultReadHeaderTimeout, engine.ReadHeaderTimeout)
++	assert.Equal(t, defaultReadHeaderTimeout, engine.getReadHeaderTimeout())
++}
++
++func TestReadHeaderTimeoutCustom(t *testing.T) {
++	engine := New(func(e *Engine) {
++		e.ReadHeaderTimeout = 30 * time.Second
++	})
++	assert.Equal(t, 30*time.Second, engine.ReadHeaderTimeout)
++	assert.Equal(t, 30*time.Second, engine.getReadHeaderTimeout())
++}
++
++func TestReadHeaderTimeoutZeroFallsBackToDefault(t *testing.T) {
++	engine := New()
++	engine.ReadHeaderTimeout = 0
++	assert.Equal(t, defaultReadHeaderTimeout, engine.getReadHeaderTimeout())
++}
++
+ type Birthday string
+
+ func (b *Birthday) UnmarshalParam(param string) error {
+8ad9f9c 2026-09-19 [Wahid Rizka Fathurrohman] docs: fix the graceful shutdown example (#4809) [+5 body lines]
+diff --git a/docs/doc.md b/docs/doc.md
+@@ -2399,6 +2399,7 @@ package main
+
+ import (
+   "context"
++  "errors"
+   "log"
+   "net/http"
+   "os"
+@@ -2431,7 +2432,7 @@ func main() {
+
+   // Wait for interrupt signal to gracefully shutdown the server with
+   // a timeout of 5 seconds.
+-  quit := make(chan os.Signal)
++  quit := make(chan os.Signal, 1)
+   // kill (no param) default send syscall.SIGTERM
+   // kill -2 is syscall.SIGINT
+   // kill -9 is syscall.SIGKILL but can't be caught, so don't need to add it
+b1f77cf 2026-09-19 [Gaurav Patil] feat(gin): add support for the HTTP QUERY method (RFC 10008) (#4806) [+18 body lines]
+    Ref #4721
+diff --git a/docs/doc.md b/docs/doc.md
+@@ -7,6 +7,7 @@
+   - [Build without MsgPack rendering feature](#build-without-msgpack-rendering-feature)
+ - [Routing](#routing)
+   - [Using GET, POST, PUT, PATCH, DELETE and OPTIONS](#using-get-post-put-patch-delete-and-options)
++  - [Using the QUERY method](#using-the-query-method)
+   - [Parameters in path](#parameters-in-path)
+   - [Querystring parameters](#querystring-parameters)
+   - [Multipart/Urlencoded Form](#multiparturlencoded-form)
+@@ -137,6 +138,46 @@ func main() {
+ }
+ ```
+
++### Using the QUERY method
++
++`QUERY` is the safe and idempotent method defined by [RFC 10008](https://www.rfc-editor.org/info/rfc10008/). It carries its query in the request body, so you can send a query that is too large or too structured for a URL without turning it into a `POST`.
++
++```go
++func main() {
++  router := gin.Default()
++
++  router.QUERY("/search", func(c *gin.Context) {
++    var query struct {
++      Term string `json:"term"`
++    }
++    if err := c.ShouldBindJSON(&query); err != nil {
++      c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
++      return
++    }
++    c.JSON(http.StatusOK, gin.H{"term": query.Term})
++  })
++
++  router.Run()
++}
++```
++
++Use the `gin.MethodQuery` constant wherever an HTTP method name is expected, for example when building a request in a test:
++
++```go
++req := httptest.NewRequest(gin.MethodQuery, "/search", body)
++```
++
++Two things to keep in mind:
++
++- `router.Any` does not register `QUERY`, so existing catch-all routes keep matching exactly the methods they matched before. Use `router.QUERY` or `router.Match([]string{gin.MethodQuery, http.MethodPost}, ...)` when you want it.
++- `QUERY` is not part of the `gin.IRoutes` interface. `*gin.Engine` and `*gin.RouterGroup` expose it directly; if you only hold an `IRoutes` value, assert to `gin.IQueryRoutes` first.
++
++```go
++if q, ok := routes.(gin.IQueryRoutes); ok {
++  q.QUERY("/search", searching)
++}
++```
++
+ ### Parameters in path
+
+ ```go
+diff --git a/ginS/gins.go b/ginS/gins.go
+@@ -67,6 +67,11 @@ func GET(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+ 	return engine().GET(relativePath, handlers...)
+ }
+
++// QUERY is a shortcut for router.Handle("QUERY", path, handle)
++func QUERY(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
++	return engine().QUERY(relativePath, handlers...)
++}
++
+ // DELETE is a shortcut for router.Handle("DELETE", path, handle)
+ func DELETE(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+ 	return engine().DELETE(relativePath, handlers...)
+diff --git a/ginS/gins_test.go b/ginS/gins_test.go
+@@ -31,6 +31,19 @@ func TestGET(t *testing.T) {
+ 	assert.Equal(t, "test", w.Body.String())
+ }
+
++func TestQUERY(t *testing.T) {
++	QUERY("/query", func(c *gin.Context) {
++		c.String(http.StatusOK, "query")
++	})
++
++	req := httptest.NewRequest(gin.MethodQuery, "/query", nil)
++	w := httptest.NewRecorder()
++	engine().ServeHTTP(w, req)
++
++	assert.Equal(t, http.StatusOK, w.Code)
++	assert.Equal(t, "query", w.Body.String())
++}
++
+ func TestPOST(t *testing.T) {
+ 	POST("/post", func(c *gin.Context) {
+ 		c.String(http.StatusCreated, "created")
+diff --git a/routergroup.go b/routergroup.go
+@@ -11,6 +11,11 @@ import (
+ 	"strings"
+ )
+
++// MethodQuery is the HTTP QUERY method defined by RFC 10008. It is declared
++// here because the standard library does not provide http.MethodQuery yet.
++// Once it does, this constant keeps the same value and stays valid.
++const MethodQuery = "QUERY"
++
+ var (
+ 	// regEnLetter matches english letters for http method name
+ 	regEnLetter = regexp.MustCompile("^[A-Z]+$")
+@@ -50,6 +55,22 @@ type IRoutes interface {
+ 	StaticFS(string, http.FileSystem) IRoutes
+ }
+
++// IQueryRoutes defines the router handle interface for the HTTP QUERY method.
++//
++// It is deliberately kept out of IRoutes: adding a method to IRoutes would
++// break every type outside of Gin that implements it, such as test doubles and
++// wrappers. Type assert when you only hold an IRoutes value:
++//
++//	if q, ok := routes.(gin.IQueryRoutes); ok {
++//		q.QUERY("/search", handler)
++//	}
++//
++// *gin.RouterGroup and *gin.Engine satisfy this interface, so the assertion is
++// only needed when the concrete type has been erased.
++type IQueryRoutes interface {
++	QUERY(string, ...HandlerFunc) IRoutes
++}
++
+ // RouterGroup is used internally to configure router, a RouterGroup is associated with
+ // a prefix and an array of handlers (middleware).
+ type RouterGroup struct {
+@@ -59,7 +80,10 @@ type RouterGroup struct {
+ 	root     bool
+ }
+
+-var _ IRouter = (*RouterGroup)(nil)
++var (
++	_ IRouter      = (*RouterGroup)(nil)
++	_ IQueryRoutes = (*RouterGroup)(nil)
++)
+
+ // Use adds middleware to the group, see example code in GitHub.
+ func (group *RouterGroup) Use(middleware ...HandlerFunc) IRoutes {
+@@ -145,14 +169,20 @@ func (group *RouterGroup) HEAD(relativePath string, handlers ...HandlerFunc) IRo
+ }
+
+ // QUERY is a shortcut for router.Handle("QUERY", path, handlers).
+-// The QUERY method is defined by RFC 10008 and is used to send a query
+-// in the request body, similar to GET but with a body.
++//
++// QUERY is the safe and idempotent method defined by RFC 10008 that carries its
++// query in the request body. The body is read like any other body, for example
++// with c.ShouldBindJSON.
+ func (group *RouterGroup) QUERY(relativePath string, handlers ...HandlerFunc) IRoutes {
+-	return group.handle("QUERY", relativePath, handlers)
++	return group.handle(MethodQuery, relativePath, handlers)
+ }
+
+ // Any registers a route that matches all the HTTP methods.
+ // GET, POST, PUT, PATCH, HEAD, OPTIONS, DELETE, CONNECT, TRACE.
++//
++// QUERY is not part of that list, so that Any keeps registering exactly the
++// same routes as before. Register it with QUERY, or with
++// Match([]string{gin.MethodQuery, ...}, ...) to combine it with other methods.
+ func (group *RouterGroup) Any(relativePath string, handlers ...HandlerFunc) IRoutes {
+ 	for _, method := range anyMethods {
+ 		group.handle(method, relativePath, handlers)
+diff --git a/routergroup_test.go b/routergroup_test.go
+@@ -42,6 +42,7 @@ func TestRouterGroupBasicHandle(t *testing.T) {
+ 	performRequestInGroup(t, http.MethodDelete)
+ 	performRequestInGroup(t, http.MethodHead)
+ 	performRequestInGroup(t, http.MethodOptions)
++	performRequestInGroup(t, MethodQuery)
+ }
+
+ func performRequestInGroup(t *testing.T, method string) {
+@@ -78,6 +79,9 @@ func performRequestInGroup(t *testing.T, method string) {
+ 	case http.MethodOptions:
+ 		v1.OPTIONS("/test", handler)
+ 		login.OPTIONS("/test", handler)
++	case MethodQuery:
++		v1.QUERY("/test", handler)
++		login.QUERY("/test", handler)
+ 	default:
+ 		panic("unknown method")
+ 	}
+diff --git a/routes_test.go b/routes_test.go
+@@ -10,6 +10,7 @@ import (
+ 	"net/http/httptest"
+ 	"os"
+ 	"path/filepath"
++	"strings"
+ 	"testing"
+
+ 	"github.com/stretchr/testify/assert"
+@@ -86,6 +87,60 @@ func testRouteNotOK2(method string, t *testing.T) {
+ 	assert.Equal(t, http.StatusMethodNotAllowed, w.Code)
+ }
+
++// TestRouteQuery tests that a QUERY route is invoked and can read the request
++// body, which is the whole point of the method (RFC 10008).
++func TestRouteQuery(t *testing.T) {
++	type search struct {
++		Term string `json:"term"`
++	}
++
++	router := New()
++	router.QUERY("/search", func(c *Context) {
++		var body search
++		require.NoError(t, c.ShouldBindJSON(&body))
++		c.String(http.StatusOK, body.Term)
++	})
++
++	req := httptest.NewRequest(MethodQuery, "/search", strings.NewReader(`{"term":"gin"}`))
++	req.Header.Set("Content-Type", MIMEJSON)
++	w := httptest.NewRecorder()
++	router.ServeHTTP(w, req)
++
++	assert.Equal(t, http.StatusOK, w.Code)
++	assert.Equal(t, "gin", w.Body.String())
++}
++
++// TestRouteQueryNotRegisteredByAny documents that Any does not register QUERY,
++// so that existing Any routes keep matching exactly the methods they used to.
++func TestRouteQueryNotRegisteredByAny(t *testing.T) {
++	router := New()
++	router.Any("/test", func(c *Context) {
++		c.Status(http.StatusOK)
++	})
++
++	w := PerformRequest(router, MethodQuery, "/test")
++
++	assert.Equal(t, http.StatusNotFound, w.Code)
++}
++
++// TestQueryRoutesInterface tests that a router reached through IRoutes can
++// still register a QUERY route via the IQueryRoutes assertion.
++func TestQueryRoutesInterface(t *testing.T) {
++	router := New()
++
++	var routes IRoutes = router.Group("/v1")
++	queryRoutes, ok := routes.(IQueryRoutes)
++	require.True(t, ok)
++
++	queryRoutes.QUERY("/search", func(c *Context) {
++		c.Status(http.StatusOK)
++	})
++
++	w := PerformRequest(router, MethodQuery, "/v1/search")
++
++	assert.Equal(t, http.StatusOK, w.Code)
++}
++
+ func TestRouterMethod(t *testing.T) {
+ 	router := New()
+ 	router.PUT("/hey2", func(c *Context) {
+[… the next 7 commits without their changes (output budget):]
+05b14df 2026-09-19 [Bob Du] chore(deps): bump github.com/stretchr/testify to v1.12.1 (#4822) [+2 body lines]
+e318c6a 2026-09-19 [daixiheguu] docs: align function comments with names (#4814) [+2 body lines]
+3329b63 2026-09-19 [Bob Du] ci(codecov): fix stale comparison base and invalid config (#4823) [+2 body lines]
+5c6a15f 2026-09-16 [Langning Zhang] fix(context): handle missing HTML renderer (#4805) [+4 body lines]
+bc141b4 2026-09-16 [Bo-Yi Wu] fix(deps)!: patch x/crypto vulnerabilities (#4832) [+2 body lines]
+    BREAKING CHANGE: Go 1.26 or later is now required by x/crypto v0.56.0. Upgrade the Go toolchain before building Gin.
+b52df1f 2026-09-16 [Ruben Pari] docs: document panic conditions in Handle, StaticFS, and Bind (#4797) [+4 body lines]
+    Fixes #4594
+2a1a14f 2026-09-16 [Jia-ben00] feat(router): add QUERY method shortcut for RFC 10008 (#4830) [+11 body lines]
+    Closes #4721

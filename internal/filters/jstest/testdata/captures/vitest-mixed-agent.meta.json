@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run"
+  ],
+  "shell": "CLAUDECODE=1 AI_AGENT=claude-code npx vitest run",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "same project with CLAUDECODE/AI_AGENT set: vitest's compact agent reporter",
+  "cwd": "repos/vitproj"
+}

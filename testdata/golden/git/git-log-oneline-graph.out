@@ -1,0 +1,215 @@
+* 6d9445a77 test(hmr): cover acceptExports with hmrPartialAccept off
+* 941225f04 feat(bundled-dev): support `import.meta.hot.acceptExports`
+| * 82e9fef6e refactor(bundled-dev): serve the rolldown dev runtime as a single file
+| | * 1282d8649 fix: pass queries to `renderBuiltUrl`
+| |/
+| * bc598a6a8 fix(bundled-dev): serve the rolldown runtime from the installed rolldown (#23568)
+| * 3d02335c5 ci: remove unnecessary step (#23582)
+| * db915e5c0 refactor: use `tinyexec` instead of `cross-spawn` (#23583)
+| * bbc88129c fix(ssr): encode whitespace in module runner sourceURL (#23513)
+| * 692830194 ci: unpin Node 24 Windows CI (#23581)
+| * 972b73a6f chore: use full version for actions comment (#23580)
+| * 00cb9fd33 ci: use pnpm/setup action (#23579)
+| * e64a5877d fix: limit size of object and array printing via `forwardConsole` (#23565)
+| * 39ddf7ccf release: v8.3.1 (#23573)
+| * 931ad6573 docs: update viteconf link on the sidebar to 2026 and add banner (#23569)
+| * f68c0d5a2 fix: handle `server.ws: false` in mergeConfig (#23511)
+| * 6f831f9b5 fix(server): avoid reinitializing watcher when adding file after server close (#23572)
+| * e5d9af29a refactor(create-vite): use `tinyexec` instead of `cross-spawn` (#23541)
+| * 04fc30a4b fix(sourcemap): skip URL source roots when injecting sources content (#23519)
+| | * 834e97a65 chore(deps): update eslint monorepo to v10
+| |/
+| | * d56fe35c6 chore(deps): update dependency open to v11
+| |/
+| * 5f894339d fix(optimizer): resolve pending discovered dep processing on close before init (#23567)
+| * 6e0996118 test(bundled-dev): enable passing cases in more playgrounds (#23552)
+| * 63567c73a chore(optimizer): add debug log when waiting for dep before init (#23566)
+| * e8990c4d6 fix(deps): update all non-major dependencies (#23537)
+| * f155b62ce fix(create-vite): add router only options for tanstack router/start (#23543)
+| * af7cdf696 refactor: replace `find` with `some` (#23554)
+| | * fd2ec4164 test(bundled-dev): expect bundle-only serving in fs-serve, resolve, dynamic-import
+| | * dc7809092 feat(bundled-dev): serve static files with fs checks after the bundle lookup
+| |/
+| * 1544bb1b7 docs(config): correct the server.sourcemapIgnoreList default (#23462)
+| * 39330f489 fix(optimizer): don't skip imports whose binding starts with type (#23540)
+| * bd97903e3 docs(config): document preserveEntrySignatures defaults (#23469)
+| * 15569ce34 docs: fix typo builtin -> built-in in plugins guide (#23525)
+| * 9abd99bfd refactor: remove duplicate configurations (#23532)
+| * e9078f865 docs: size the version check input to its content (#23505)
+| | * 4e220fbdd test(lazy-compilation): look up built chunks by normalized id
+| | * ffd188bb8 fix(bundled-dev): redirect a lazy request to the built chunk only when it is safe
+| | * 4c46b5b64 fix(bundled-dev): serve an already-built lazy route instead of recompiling it on reload
+| |/
+| * 3c752c893 fix(deps): update all non-major dependencies (#23482)
+| * f4b4431a2 refactor: assets regexp use non-capture (#23491)
+| * 6a84c7210 chore: update `optimizeDeps.include` comment (#23489)
+| * 9aecbbfa5 fix(deps): update rolldown-related dependencies (#23483)
+| * 4aba8d872 fix: merge `build.rolldownOptions.output.comments` correctly (#23514)
+| * bd3a3a965 chore: enable `trustPolicyExcludePrune` (#23476)
+| * 99bd9d1d4 chore: merge prereleases in changelog (#23466)
+| * 1aec41b32 release: create-vite@9.2.1 (#23465)
+| * 434e8e949 release: v8.3.0 (#23464)
+| | * 08a70f0a9 test: fix flaky playground tests on CI
+| |/
+| * 9913672be fix: handle CRLF line endings in code frame positions (#23219)
+| * c8f7b280a docs(ssr): explain server-only module reloads (fix #19114) (#23235)
+| * 8abf700ee perf(proxy): pre-compile context matchers at server creation (#23263)
+| * ef0dc17ad fix: only treat whole `node_modules` path segments as dependencies (fix #17467) (#23437)
+| * 42a4ea7cd chore: avoid recompiling regex in mergeChangelog script (#23456)
+| * e6f6b3e31 feat(build): avoid settling seen preload dependencies for performance (#23446)
+| * 5bce8ca0f release: v8.3.0-beta.1 (#23449)
+| * fc7c104e7 fix(deps): update all non-major dependencies (#23445)
+| * b919a1a8b chore: remove unnecessary comment (#23448)
+| * 4ec58d159 fix: shortcuts extend error (#23447)
+| * 68aeb8a3b feat(devtools): enable dev server integration (#23333)
+| * f79413353 chore: introducing `@e18e/eslint-plugin` (#23357)
+| * d6b19ab85 chore: fix ts-check comment ordering (#23386)
+| * ac6526ff4 chore(deps): update actions/deploy-pages digest to 368f825 (#23444)
+| * 8492422b8 fix: resolve the actual package root in findNearestMainPackageData for nested package.json (#23356)
+| * 12e709ca4 fix(html): don't inline preload link targets (fix #13355) (#23387)
+| * 3b8c45b0a chore: enable `minimumReleaseAgeStrict` (#23424)
+|/
+* e8d6a4d33 fix(build): keep hash placeholders as-is in `resolveFileUrl` hook (#23422)
+* 07d65709f docs(api-javascript): remove example file name (#23423)
+* a6d43bc9e fix(bundled-dev): mark payload delivered on client report (#23373)
+| *   79209b7c6 Merge branch 'main' into test/bundled-dev-worker
+| |\
+| |/
+|/|
+* | 1c46db555 release: v8.3.0-beta.0 (#23416)
+* | b120589f0 chore: update debugging playwright tests section in contributing.md (#23412)
+* | db45bb113 chore: enable `minimumReleaseAgeExcludePrune` (#23411)
+* | 93164c353 feat: add top-level `tsconfig` option (#23310)
+* | f40efefbb refactor: delete unused `esbuildPlugin` (#23381)
+* | 33d0e986f ci: make backport releases possible (#23394)
+* | 5a38afe1a chore(deps): update pnpm to v12 (#23410)
+* | b50e1b4a3 fix(utils): handle dot in srcset density descriptor (#23346)
+* | fdef04f11 feat: add warning for unsupported hooks in plugin returned from `applyToEnvironment` hook (#23191)
+* | 472385e6e feat(config): warn on named imports from JSON modules (#23378)
+* | 238ad811c fix(deps): update all non-major dependencies (#23404)
+* | b88256607 fix(deps): update rolldown-related dependencies (#23405)
+* | e2b597de0 docs(config): fix wording and terminology (#23397)
+* | ee644014a chore: delete unused `PluginContainerOptions` (#23382)
+* | 493cc7d43 chore: remove useless files (#23372)
+* | 90d08f0c0 docs: remove outdated locale links (#23368)
+* | bfdb22754 docs: update development tools list (#23363)
+* | cd810de10 revert: narrow semantic-pull-request triggers (#23370)
+* | 7370bc3cb ci: skip all bot handling if skip label exist (#23369)
+* | 41f3c6fff fix(utils): match timestamp query parameter with proper delimiters (#23364)
+* | 57f0bf51a docs(guide): fix API documentation grammar and casing (#23353)
+* | c32e784c9 release: create-vite@9.2.0 (#23344)
+* | 2e8355d67 chore(docs): remove markdown-it-image-size (#23342)
+* | d55081581 fix(deps): update all non-major dependencies (#23337)
+* | 21a3ee957 chore: remove outdated `minimumReleaseAgeExclude` config (#23340)
+* | 8d1c9c74b chore(deps): remove `oxc-minify` from docs (#23341)
+* | c31c499ca feat(create-vite): add nub package manager support (#23019)
+* | 76e8082c5 fix(deps): update rolldown-related dependencies (#23338)
+* | 8b3b4894a test(css): fix css async order (#23339)
+* | 5fdfd26ed chore: update contributing (#23332)
+* | 3e34883af ci: narrow semantic-pull-request triggers (#23335)
+* | 4f9d2f4da fix(css): keep newline-separated srcset candidates intact (#23265)
+* | 7bdad37a4 chore: add 97ad042 to .git-blame-ignore-revs (#23330)
+* | ea5ac7c73 ci: fix bot comment formatting (#23329)
+* | a98c8d95d chore: remove eslint comment (#23325)
+* | 97ad04217 chore: use oxfmt `sortImports` (#23319)
+* | dd1a8fbea ci: set up bot workflow and ai policy (#23311)
+* | 75196079f test: add asset path replacement in `typeof` test (#23157)
+* | 92bd2a7f3 refactor: use `urlId` of `import.meta.ROLLDOWN_FILE_URL` in wasm plugin (#22962)
+* | 0291408b8 test: add `renderBuiltUrl` change changes hash (#23118)
+* | ce69ea67d docs: plugin asset emitting (#22898)
+* | e38f29ee4 feat: use `import.meta.ROLLDOWN_FILE_URL_*` for other plugins (#22894)
+* | 4366ac468 feat: use `import.meta.ROLLDOWN_FILE_URL_*` for assets in JS (#22888)
+* | a6c08e10a refactor: exclude postfix from `__VITE_ASSET__` (#22886)
+* | 517b97f57 feat: searched params attached to workers are now preserved (#22280)
+* | 1b5cfe3d3 feat: accept Rolldown watch options in `server.watch` (#23133)
+* | 5164b6a97 test(hmr): skip virtual module `import.meta.hot.invalidate` test in bundled-dev (#23321)
+* | e17d2d565 feat: add closeServer and closePreviewServer hooks (#23110)
+* | 924997a4b feat(worker): remove worker chunk if it's detected that it's not referenced (#22473)
+* | 815668457 feat(css): minify style tag (#23183)
+* | b78e2f1bc feat: support subpath imports in dynamic import statements (#23185)
+* | a500deeb6 feat(cli): support naming the CPU profile via --profile [name] (#23042)
+* | 67a680767 refactor: remove HmrUrl concept (#23172)
+* | 616296895 fix(hmr): handle `import.meta.hot.invalidate` in virtual module (#23171)
+* | 8cb872e7f fix(dev): run closeBundle after buildEnd failure (#23165)
+* | 91ae13469 ci: setup PR-driven release (#23116)
+* | 6bacc956d fix(config): close bundles when generation fails (#23256)
+* | e79c47111 chore: replace prettier comment with oxfmt (#23318)
+* | 1f5b5392c test: eliminate eslint warnings (#23315)
+* | de1111ab0 release: v8.2.2
+* | cb77e2a93 test(ssr): add destructing assignment case for moduleRunnerTransform (#23308)
+* | 9db0b61d4 fix(ssr): rewrite computed key of destructing parameter (#23307)
+* | 1fb8afe2b chore(create-vite): mention experimental react compiler support (#23306)
+* | bdfadefb2 test(bundled-dev): run hmr-ssr spec in bundled dev mode under test-serve-bundled (#23247)
+* | 841305273 fix: respect `resolve.preserveSymlinks` when resolving root (fix #23197) (#23198)
+* | 7ec81e230 ci: use `$/` syntax to reference local action and remove actionlint (#23305)
+* | 05a003e6a fix(config): resolve sourcemap paths against sourcemap location (#23239)
+* | 495d9ff5a feat(deps): widen `@vitejs/devtools` peer range to v0.5.0 (#23302)
+* | 16048483f docs: clarify about `server.proxy` WebSocket origin check (#23293)
+* | 4417cbfc9 docs: fix formatting inconsistencies for better clarity (#23270)
+* | 1d9fa392a refactor: use JSON import attributes instead of readFileSync in constants (#23258)
+* | 2804636ff fix(css): don't pass empty targets to lightningcss (#23295)
+* | 599b44b66 test(module-runner): simplify server-hmr tests (#23300)
+* | 4a261f242 test(module-runner): add TLA circular import case (#23299)
+* | d9b10a98d fix(module-runner): exclude completed modules from in-flight cycle detection (fix #22999) (#23009)
+* | c0f2fc607 fix(vite): update outdated upstream file links in license comments (#23285)
+* | 3dbddefaa fix(bundled-dev): hot update through circular imports instead of reloading (#23259)
+* | 7822e1487 test(bundled-dev): enable hmr playground (#23254)
+* | 354adfeca docs(cli): add experimentalBundle option (#22392)
+* | 3ba026dad fix(bundled-dev): handle lazy request error (#23291)
+| * e9235d91c test(bundled-dev): enable worker playground specs
+|/
+| * 42bc61aff test: regenerate lockfile with tarball integrity for the rolldown pin
+| * ecb03bc7d test: pin rolldown to the pkg.pr.new build of rolldown#10783
+| * a6a09f4f3 fix(bundled-dev): mark payload delivered on client report
+|/
+* 02cffa9e2 fix: reduce Windows 8.3-short-name detection false-positives (#23066)
+* ba958bddf fix(deps): update all non-major dependencies (#23217)
+* 1cbf7d63e fix(create-vite): update moved eslint-react plugin links in generated README (#23284)
+* 83ecb2c80 fix(deps): update rolldown-related dependencies (#23218)
+* 5c1c6c609 refactor: use named regex constants over inline literals (#22964)
+* 56f75f68d docs(deps): update vitepress to 1.0.0-alpha.19 and theme to 5.0.6 (#23280)
+* 904072cd4 chore(deps): bump nanoid from 3.3.16 to 6.0.1 (#23226)
+* dcf88bd2a fix(define): fix match escaped dots to support $-prefixed define keys (#23249)
+* a20a35ec0 docs(build): note cssTarget precedence (#23200)
+* d615bcdb2 build: use JSON import attributes instead of readFIleSync in rolldown configs (#23251)
+* 74a25c324 docs(server-options): update sourcemapIgnoreList Rolldown references (#23248)
+* 5e7efa008 chore: upgrade markdown-it-image-size (#23241)
+* b4d66fee1 test(define): close rolldown bundler after generate (#23231)
+* 9c75eb1ff docs: correct the type of `server.middlewareMode` (#23222)
+* 2c485d6fd docs: fix grammar in Vite 5.1 blog post (#23228)
+* 8fb767528 fix(optimizer): close custom extension analysis bundles (#23207)
+* a0cfcf72f chore: fix ts errors in build test cases (#23209)
+* 0cba7fe9f docs: fix highlight lines (#23206)
+* 4f1411d2c docs: pin vitepress to 2.0.0-alpha.18 to fix language switcher  (#23223)
+* 645270391 docs(build): correct 'rollup' to 'Rolldown' (#23202)
+| * e26053b9c test: repro for css sourcemap sources resolved against the wrong base
+|/
+* 57fea001d docs(static-deploy): update new platform rules (#23190)
+* 6a3339811 docs(api-javascript): fix typo and update configuration reference (#23187)
+* e2d47490c docs(migration): import swc in the decorator workaround (#23188)
+* 7e221fc61 docs: explain browser target using words used by baseline-browser-mapping (#23041)
+* d0d032b24 release: plugin-legacy@8.2.3
+* 421615865 release: v8.2.1
+* fddf4ea41 fix(server): use a random port when port is 0 (#23158)
+* 16944824f test: poll after editFile in playground tests (#23186)
+* de041a79b fix(css): don't re-run lightningcss visitor during minify (fix #23146) (#23147)
+* 15f03073c fix(build): make client chunkImportMap work with `sharedPlugins: true` (#23184)
+* c2155fe4d test(bundled-dev): enable sourcemap playgrounds (#23080)
+| * 9b293c1f7 feat: register references in HTML to safe modules
+| * f63b3954f test(ssr): declare server worker input
+| * b59106a91 fix(optimizer): register new URL assets as safe modules
+| * 91e066322 fix(worker): register worker URLs as safe modules
+| * 2e569370f fix(css): register resolved assets as safe modules
+| * 8a2c7ea39 fix: track canonical safe module paths
+| * c08880c6b test: use `server.fs.allow: []`
+|/
+* ef0243511 docs(build): fix incomplete `@default` for build.minify (#23177)
+* d62b3360e chore: remove outdated `minimumReleaseAgeExclude` configuration (#23174)
+* ad55e3442 test(bundled-dev): enable html playground (#23081)
+* eac0cc84a fix(bundled-dev): inject client script tag before chunk scripts (#23161)
+| * 4352047a4 feat: CSS sourcemaps for build
+|/
+* 23b8a088d refactor(bundled-dev): avoid injecting server values in the bundle (#22967)
+* 5290aea2e test(bundled-dev): enable css playgrounds (#23079)
+* ff4ab6c14 test(bundled-dev): enable assets playgrounds (#23078)
+* fe37d670e test: fix flaky legacy watch failure by workaround (#23152)

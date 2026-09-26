@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "node",
+    "importmissing.mjs"
+  ],
+  "shell": "node importmissing.mjs",
+  "repo": "scratch/nodeproj",
+  "exit_code": 1,
+  "description": "node 24: ESM import of a missing module",
+  "cwd": "repos/nodeproj"
+}

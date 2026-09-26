@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "docker",
+    "logs",
+    "lx-review-logs"
+  ],
+  "shell": "docker logs lx-review-logs",
+  "repo": "",
+  "exit_code": 0,
+  "description": "REAL docker 29.5.2: logs of a container that wrote requests to stdout and warnings, an error with a Python traceback and a FATAL line to stderr; in the merged capture every stderr line comes before the stdout lines",
+  "cwd": "repos/shop"
+}

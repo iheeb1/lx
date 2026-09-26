@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "curl",
+    "https://registry.npmjs.org/express/latest"
+  ],
+  "shell": "curl https://registry.npmjs.org/express/latest",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "curl without -s in a non-TTY: stderr progress meter table followed by a single-line minified JSON body (npm registry metadata for express@latest)",
+  "cwd": "data/api"
+}

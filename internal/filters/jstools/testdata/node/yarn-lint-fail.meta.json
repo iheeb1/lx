@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "yarn",
+    "lint",
+    "--quiet"
+  ],
+  "shell": "yarn lint --quiet",
+  "exit_code": 1,
+  "description": "yarn 1 lint --quiet (eslint 9) failing",
+  "cwd": "/home/user/src/eslint9-app"
+}

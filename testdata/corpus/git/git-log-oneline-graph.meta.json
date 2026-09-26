@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "git",
+    "log",
+    "--oneline",
+    "--graph",
+    "--all",
+    "-n",
+    "200"
+  ],
+  "shell": "git log --oneline --graph --all -n 200",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "git log --oneline --graph --all -n 200 in vite (many branches, decorations)",
+  "cwd": "repos/vite"
+}

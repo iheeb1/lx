@@ -1,0 +1,21 @@
+Collecting requests==2.31.0
+  Using cached requests-2.31.0-py3-none-any.whl.metadata (4.6 kB)
+Collecting urllib3==1.20
+  Downloading urllib3-1.20-py2.py3-none-any.whl.metadata (29 kB)
+Requirement already satisfied: charset-normalizer<4,>=2 in /home/user/venv/lib/python3.9/site-packages (from requests==2.31.0) (3.5.1)
+Requirement already satisfied: idna<4,>=2.5 in /home/user/venv/lib/python3.9/site-packages (from requests==2.31.0) (3.20)
+INFO: pip is looking at multiple versions of requests to determine which version is compatible with other requirements. This could take a while.
+ERROR: Cannot install requests==2.31.0 and urllib3==1.20 because these package versions have conflicting dependencies.
+
+The conflict is caused by:
+    The user requested urllib3==1.20
+    requests 2.31.0 depends on urllib3<3 and >=1.21.1
+
+Additionally, some packages in these conflicts have no matching distributions available for your environment:
+    urllib3
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip to attempt to solve the dependency conflict
+
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts

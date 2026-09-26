@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "du",
+    "-h",
+    "packages/vite/src"
+  ],
+  "shell": "du -h packages/vite/src",
+  "exit_code": 0,
+  "description": "du -h without -s: every directory",
+  "cwd": "/home/user/src/vite"
+}

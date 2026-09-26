@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "./..."
+  ],
+  "shell": "go test ./...",
+  "repo": "spf13/cobra",
+  "exit_code": 1,
+  "description": "go test ./... where a bug in cobra legacyArgs (len(args) >= 0) causes 'index out of range' panic inside a test: repanicked goroutine stack trace, package FAIL",
+  "cwd": "repos/cobra"
+}

@@ -1,0 +1,213 @@
+{"ImportPath":"example.com/doesnotexist/pkg","Action":"build-output","Output":"# example.com/lxcap/setup\n"}
+{"ImportPath":"example.com/doesnotexist/pkg","Action":"build-output","Output":"setup/s_test.go:6:2: no required module provides package example.com/doesnotexist/pkg; to add it:\n"}
+{"ImportPath":"example.com/doesnotexist/pkg","Action":"build-output","Output":"\tgo get example.com/doesnotexist/pkg\n"}
+{"ImportPath":"example.com/doesnotexist/pkg","Action":"build-fail"}
+{"Time":"2026-09-26T02:48:17.041537+01:00","Action":"start","Package":"example.com/lxcap/setup"}
+{"Time":"2026-09-26T02:48:17.04156+01:00","Action":"output","Package":"example.com/lxcap/setup","Output":"FAIL\texample.com/lxcap/setup [setup failed]\n"}
+{"Time":"2026-09-26T02:48:17.041566+01:00","Action":"fail","Package":"example.com/lxcap/setup","Elapsed":0,"FailedBuild":"example.com/doesnotexist/pkg"}
+{"ImportPath":"example.com/lxcap/vetfail [example.com/lxcap/vetfail.test]","Action":"build-output","Output":"# example.com/lxcap/vetfail\n"}
+{"ImportPath":"example.com/lxcap/vetfail [example.com/lxcap/vetfail.test]","Action":"build-output","Output":"# [example.com/lxcap/vetfail]\n"}
+{"ImportPath":"example.com/lxcap/vetfail [example.com/lxcap/vetfail.test]","Action":"build-output","Output":"vetfail/v.go:5:60: fmt.Sprintf format %d has arg name of wrong type string\n"}
+{"ImportPath":"example.com/lxcap/vetfail [example.com/lxcap/vetfail.test]","Action":"build-fail"}
+{"ImportPath":"example.com/lxcap/buildfail [example.com/lxcap/buildfail.test]","Action":"build-output","Output":"# example.com/lxcap/buildfail [example.com/lxcap/buildfail.test]\n"}
+{"ImportPath":"example.com/lxcap/buildfail [example.com/lxcap/buildfail.test]","Action":"build-output","Output":"buildfail/b_test.go:6:5: undefined: Triple\n"}
+{"ImportPath":"example.com/lxcap/buildfail [example.com/lxcap/buildfail.test]","Action":"build-output","Output":"buildfail/b_test.go:9:6: declared and not used: unused\n"}
+{"ImportPath":"example.com/lxcap/buildfail [example.com/lxcap/buildfail.test]","Action":"build-fail"}
+{"Time":"2026-09-26T02:48:17.126352+01:00","Action":"start","Package":"example.com/lxcap/buildfail"}
+{"Time":"2026-09-26T02:48:17.126366+01:00","Action":"output","Package":"example.com/lxcap/buildfail","Output":"FAIL\texample.com/lxcap/buildfail [build failed]\n"}
+{"Time":"2026-09-26T02:48:17.126371+01:00","Action":"fail","Package":"example.com/lxcap/buildfail","Elapsed":0,"FailedBuild":"example.com/lxcap/buildfail [example.com/lxcap/buildfail.test]"}
+{"Time":"2026-09-26T02:48:17.326354+01:00","Action":"start","Package":"example.com/lxcap/dead"}
+{"Time":"2026-09-26T02:48:17.326416+01:00","Action":"start","Package":"example.com/lxcap/exit"}
+{"Time":"2026-09-26T02:48:17.326526+01:00","Action":"start","Package":"example.com/lxcap/notests"}
+{"Time":"2026-09-26T02:48:17.326747+01:00","Action":"output","Package":"example.com/lxcap/notests","Output":"?   \texample.com/lxcap/notests\t[no test files]\n"}
+{"Time":"2026-09-26T02:48:17.326758+01:00","Action":"skip","Package":"example.com/lxcap/notests","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.326957+01:00","Action":"start","Package":"example.com/lxcap/ok1"}
+{"Time":"2026-09-26T02:48:17.327032+01:00","Action":"run","Package":"example.com/lxcap/ok1","Test":"TestOK"}
+{"Time":"2026-09-26T02:48:17.327062+01:00","Action":"start","Package":"example.com/lxcap/ok2"}
+{"Time":"2026-09-26T02:48:17.327043+01:00","Action":"output","Package":"example.com/lxcap/ok1","Test":"TestOK","Output":"=== RUN   TestOK\n"}
+{"Time":"2026-09-26T02:48:17.327096+01:00","Action":"run","Package":"example.com/lxcap/ok2","Test":"TestOK"}
+{"Time":"2026-09-26T02:48:17.327121+01:00","Action":"output","Package":"example.com/lxcap/ok2","Test":"TestOK","Output":"=== RUN   TestOK\n"}
+{"Time":"2026-09-26T02:48:17.327118+01:00","Action":"start","Package":"example.com/lxcap/ok3"}
+{"Time":"2026-09-26T02:48:17.32723+01:00","Action":"run","Package":"example.com/lxcap/ok3","Test":"TestOK"}
+{"Time":"2026-09-26T02:48:17.327143+01:00","Action":"output","Package":"example.com/lxcap/ok2","Test":"TestOK","Output":"--- PASS: TestOK (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.327101+01:00","Action":"output","Package":"example.com/lxcap/ok1","Test":"TestOK","Output":"--- PASS: TestOK (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.327306+01:00","Action":"start","Package":"example.com/lxcap/ok4"}
+{"Time":"2026-09-26T02:48:17.327331+01:00","Action":"run","Package":"example.com/lxcap/ok4","Test":"TestOK"}
+{"Time":"2026-09-26T02:48:17.327336+01:00","Action":"output","Package":"example.com/lxcap/ok4","Test":"TestOK","Output":"=== RUN   TestOK\n"}
+{"Time":"2026-09-26T02:48:17.327323+01:00","Action":"pass","Package":"example.com/lxcap/ok1","Test":"TestOK","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.327358+01:00","Action":"output","Package":"example.com/lxcap/ok1","Output":"PASS\n"}
+{"Time":"2026-09-26T02:48:17.327363+01:00","Action":"output","Package":"example.com/lxcap/ok1","Output":"ok  \texample.com/lxcap/ok1\t(cached)\n"}
+{"Time":"2026-09-26T02:48:17.327386+01:00","Action":"pass","Package":"example.com/lxcap/ok1","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.327347+01:00","Action":"output","Package":"example.com/lxcap/ok4","Test":"TestOK","Output":"--- PASS: TestOK (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.327476+01:00","Action":"pass","Package":"example.com/lxcap/ok4","Test":"TestOK","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.327526+01:00","Action":"output","Package":"example.com/lxcap/ok4","Output":"PASS\n"}
+{"Time":"2026-09-26T02:48:17.32726+01:00","Action":"output","Package":"example.com/lxcap/ok3","Test":"TestOK","Output":"=== RUN   TestOK\n"}
+{"Time":"2026-09-26T02:48:17.32754+01:00","Action":"output","Package":"example.com/lxcap/ok4","Output":"ok  \texample.com/lxcap/ok4\t(cached)\n"}
+{"Time":"2026-09-26T02:48:17.327628+01:00","Action":"pass","Package":"example.com/lxcap/ok4","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.327618+01:00","Action":"output","Package":"example.com/lxcap/ok3","Test":"TestOK","Output":"--- PASS: TestOK (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.327693+01:00","Action":"pass","Package":"example.com/lxcap/ok3","Test":"TestOK","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.327705+01:00","Action":"output","Package":"example.com/lxcap/ok3","Output":"PASS\n"}
+{"Time":"2026-09-26T02:48:17.327716+01:00","Action":"output","Package":"example.com/lxcap/ok3","Output":"ok  \texample.com/lxcap/ok3\t(cached)\n"}
+{"Time":"2026-09-26T02:48:17.327747+01:00","Action":"pass","Package":"example.com/lxcap/ok3","Elapsed":0.001}
+{"Time":"2026-09-26T02:48:17.327291+01:00","Action":"pass","Package":"example.com/lxcap/ok2","Test":"TestOK","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.327882+01:00","Action":"output","Package":"example.com/lxcap/ok2","Output":"PASS\n"}
+{"Time":"2026-09-26T02:48:17.327895+01:00","Action":"output","Package":"example.com/lxcap/ok2","Output":"ok  \texample.com/lxcap/ok2\t(cached)\n"}
+{"Time":"2026-09-26T02:48:17.327915+01:00","Action":"pass","Package":"example.com/lxcap/ok2","Elapsed":0.001}
+{"Time":"2026-09-26T02:48:17.32763+01:00","Action":"start","Package":"example.com/lxcap/par"}
+{"Time":"2026-09-26T02:48:17.328604+01:00","Action":"start","Package":"example.com/lxcap/race"}
+{"Time":"2026-09-26T02:48:17.328638+01:00","Action":"run","Package":"example.com/lxcap/race","Test":"TestRace"}
+{"Time":"2026-09-26T02:48:17.328648+01:00","Action":"output","Package":"example.com/lxcap/race","Test":"TestRace","Output":"=== RUN   TestRace\n"}
+{"Time":"2026-09-26T02:48:17.328665+01:00","Action":"output","Package":"example.com/lxcap/race","Test":"TestRace","Output":"--- PASS: TestRace (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.328669+01:00","Action":"pass","Package":"example.com/lxcap/race","Test":"TestRace","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.328672+01:00","Action":"output","Package":"example.com/lxcap/race","Output":"PASS\n"}
+{"Time":"2026-09-26T02:48:17.328676+01:00","Action":"output","Package":"example.com/lxcap/race","Output":"ok  \texample.com/lxcap/race\t(cached)\n"}
+{"Time":"2026-09-26T02:48:17.328679+01:00","Action":"pass","Package":"example.com/lxcap/race","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.328938+01:00","Action":"start","Package":"example.com/lxcap/skip"}
+{"Time":"2026-09-26T02:48:17.328989+01:00","Action":"start","Package":"example.com/lxcap/sub"}
+{"Time":"2026-09-26T02:48:17.329216+01:00","Action":"start","Package":"example.com/lxcap/vetfail"}
+{"Time":"2026-09-26T02:48:17.329248+01:00","Action":"output","Package":"example.com/lxcap/vetfail","Output":"FAIL\texample.com/lxcap/vetfail [build failed]\n"}
+{"Time":"2026-09-26T02:48:17.329268+01:00","Action":"fail","Package":"example.com/lxcap/vetfail","Elapsed":0,"FailedBuild":"example.com/lxcap/vetfail [example.com/lxcap/vetfail.test]"}
+{"Time":"2026-09-26T02:48:17.331061+01:00","Action":"run","Package":"example.com/lxcap/skip","Test":"TestNeedsDocker"}
+{"Time":"2026-09-26T02:48:17.331139+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestNeedsDocker","Output":"=== RUN   TestNeedsDocker\n"}
+{"Time":"2026-09-26T02:48:17.331184+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestNeedsDocker","Output":"    skip_test.go:5: docker not available\n"}
+{"Time":"2026-09-26T02:48:17.331191+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestNeedsDocker","Output":"--- SKIP: TestNeedsDocker (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.331195+01:00","Action":"skip","Package":"example.com/lxcap/skip","Test":"TestNeedsDocker","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.331208+01:00","Action":"run","Package":"example.com/lxcap/skip","Test":"TestNeedsNetwork"}
+{"Time":"2026-09-26T02:48:17.331212+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestNeedsNetwork","Output":"=== RUN   TestNeedsNetwork\n"}
+{"Time":"2026-09-26T02:48:17.331216+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestNeedsNetwork","Output":"    skip_test.go:6: set LX_NET=1 to run\n"}
+{"Time":"2026-09-26T02:48:17.33122+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestNeedsNetwork","Output":"--- SKIP: TestNeedsNetwork (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.331224+01:00","Action":"skip","Package":"example.com/lxcap/skip","Test":"TestNeedsNetwork","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.331227+01:00","Action":"run","Package":"example.com/lxcap/skip","Test":"TestLogs"}
+{"Time":"2026-09-26T02:48:17.331278+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestLogs","Output":"=== RUN   TestLogs\n"}
+{"Time":"2026-09-26T02:48:17.331284+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestLogs","Output":"    skip_test.go:9: step 0 ok\n"}
+{"Time":"2026-09-26T02:48:17.331288+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestLogs","Output":"    skip_test.go:9: step 1 ok\n"}
+{"Time":"2026-09-26T02:48:17.33129+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestLogs","Output":"    skip_test.go:9: step 2 ok\n"}
+{"Time":"2026-09-26T02:48:17.331294+01:00","Action":"output","Package":"example.com/lxcap/skip","Test":"TestLogs","Output":"--- PASS: TestLogs (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.331299+01:00","Action":"pass","Package":"example.com/lxcap/skip","Test":"TestLogs","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.331302+01:00","Action":"output","Package":"example.com/lxcap/skip","Output":"PASS\n"}
+{"Time":"2026-09-26T02:48:17.331307+01:00","Action":"output","Package":"example.com/lxcap/skip","Output":"ok  \texample.com/lxcap/skip\t(cached)\n"}
+{"Time":"2026-09-26T02:48:17.331336+01:00","Action":"pass","Package":"example.com/lxcap/skip","Elapsed":0.002}
+{"Time":"2026-09-26T02:48:17.567342+01:00","Action":"run","Package":"example.com/lxcap/dead","Test":"TestDeadlock"}
+{"Time":"2026-09-26T02:48:17.567401+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"=== RUN   TestDeadlock\n"}
+{"Time":"2026-09-26T02:48:17.773768+01:00","Action":"run","Package":"example.com/lxcap/sub","Test":"TestTree"}
+{"Time":"2026-09-26T02:48:17.77381+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"=== RUN   TestTree\n"}
+{"Time":"2026-09-26T02:48:17.773846+01:00","Action":"run","Package":"example.com/lxcap/sub","Test":"TestTree/leaf"}
+{"Time":"2026-09-26T02:48:17.773862+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree/leaf","Output":"=== RUN   TestTree/leaf\n"}
+{"Time":"2026-09-26T02:48:17.773872+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree/leaf","Output":"--- PASS: TestTree/leaf (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.773878+01:00","Action":"pass","Package":"example.com/lxcap/sub","Test":"TestTree/leaf","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.773885+01:00","Action":"run","Package":"example.com/lxcap/sub","Test":"TestTree/nil_next"}
+{"Time":"2026-09-26T02:48:17.773887+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree/nil_next","Output":"=== RUN   TestTree/nil_next\n"}
+{"Time":"2026-09-26T02:48:17.773891+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree/nil_next","Output":"--- FAIL: TestTree/nil_next (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.773894+01:00","Action":"fail","Package":"example.com/lxcap/sub","Test":"TestTree/nil_next","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.773897+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"--- FAIL: TestTree (0.00s)\n"}
+{"Time":"2026-09-26T02:48:17.776874+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]\n"}
+{"Time":"2026-09-26T02:48:17.776893+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"[signal SIGSEGV: segmentation violation code=0x2 addr=0x0 pc=0x102ec424c]\n"}
+{"Time":"2026-09-26T02:48:17.776911+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"\n"}
+{"Time":"2026-09-26T02:48:17.776915+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"goroutine 9 [running]:\n"}
+{"Time":"2026-09-26T02:48:17.776921+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"testing.tRunner.func1.2({0x102ffabe0, 0x103044cb0})\n"}
+{"Time":"2026-09-26T02:48:17.776926+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1974 +0x1a0\n"}
+{"Time":"2026-09-26T02:48:17.77693+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"testing.tRunner.func1()\n"}
+{"Time":"2026-09-26T02:48:17.776933+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1977 +0x318\n"}
+{"Time":"2026-09-26T02:48:17.776946+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"panic({0x102ffabe0?, 0x103044cb0?})\n"}
+{"Time":"2026-09-26T02:48:17.77695+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/runtime/panic.go:860 +0x12c\n"}
+{"Time":"2026-09-26T02:48:17.776954+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"example.com/lxcap/sub.sum(0x0)\n"}
+{"Time":"2026-09-26T02:48:17.776958+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"\t/home/user/src/lxcap/sub/sub_test.go:10 +0x1c\n"}
+{"Time":"2026-09-26T02:48:17.776966+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"example.com/lxcap/sub.sum(...)\n"}
+{"Time":"2026-09-26T02:48:17.77701+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"\t/home/user/src/lxcap/sub/sub_test.go:10\n"}
+{"Time":"2026-09-26T02:48:17.777015+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"example.com/lxcap/sub.TestTree.func2(0x19bd39b0a6c8)\n"}
+{"Time":"2026-09-26T02:48:17.77703+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"\t/home/user/src/lxcap/sub/sub_test.go:15 +0x2c\n"}
+{"Time":"2026-09-26T02:48:17.777042+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"testing.tRunner(0x19bd39b0a6c8, 0x103023f88)\n"}
+{"Time":"2026-09-26T02:48:17.777045+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4\n"}
+{"Time":"2026-09-26T02:48:17.777048+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"created by testing.(*T).Run in goroutine 7\n"}
+{"Time":"2026-09-26T02:48:17.77705+01:00","Action":"output","Package":"example.com/lxcap/sub","Test":"TestTree","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x3a8\n"}
+{"Time":"2026-09-26T02:48:17.777534+01:00","Action":"fail","Package":"example.com/lxcap/sub","Test":"TestTree","Elapsed":0}
+{"Time":"2026-09-26T02:48:17.777592+01:00","Action":"output","Package":"example.com/lxcap/sub","Output":"FAIL\texample.com/lxcap/sub\t0.448s\n"}
+{"Time":"2026-09-26T02:48:17.777609+01:00","Action":"fail","Package":"example.com/lxcap/sub","Elapsed":0.449}
+{"Time":"2026-09-26T02:48:17.99415+01:00","Action":"run","Package":"example.com/lxcap/par","Test":"TestParallel"}
+{"Time":"2026-09-26T02:48:17.994242+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel","Output":"=== RUN   TestParallel\n"}
+{"Time":"2026-09-26T02:48:17.994515+01:00","Action":"run","Package":"example.com/lxcap/par","Test":"TestParallel/small"}
+{"Time":"2026-09-26T02:48:17.994526+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/small","Output":"=== RUN   TestParallel/small\n"}
+{"Time":"2026-09-26T02:48:17.994549+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/small","Output":"=== PAUSE TestParallel/small\n"}
+{"Time":"2026-09-26T02:48:17.994554+01:00","Action":"pause","Package":"example.com/lxcap/par","Test":"TestParallel/small"}
+{"Time":"2026-09-26T02:48:17.994558+01:00","Action":"run","Package":"example.com/lxcap/par","Test":"TestParallel/conflict"}
+{"Time":"2026-09-26T02:48:17.994562+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/conflict","Output":"=== RUN   TestParallel/conflict\n"}
+{"Time":"2026-09-26T02:48:17.994565+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/conflict","Output":"=== PAUSE TestParallel/conflict\n"}
+{"Time":"2026-09-26T02:48:17.994568+01:00","Action":"pause","Package":"example.com/lxcap/par","Test":"TestParallel/conflict"}
+{"Time":"2026-09-26T02:48:17.994572+01:00","Action":"run","Package":"example.com/lxcap/par","Test":"TestParallel/large"}
+{"Time":"2026-09-26T02:48:17.994575+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/large","Output":"=== RUN   TestParallel/large\n"}
+{"Time":"2026-09-26T02:48:17.994578+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/large","Output":"=== PAUSE TestParallel/large\n"}
+{"Time":"2026-09-26T02:48:17.994581+01:00","Action":"pause","Package":"example.com/lxcap/par","Test":"TestParallel/large"}
+{"Time":"2026-09-26T02:48:17.994584+01:00","Action":"run","Package":"example.com/lxcap/par","Test":"TestParallel/negative"}
+{"Time":"2026-09-26T02:48:17.994587+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/negative","Output":"=== RUN   TestParallel/negative\n"}
+{"Time":"2026-09-26T02:48:17.99459+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/negative","Output":"=== PAUSE TestParallel/negative\n"}
+{"Time":"2026-09-26T02:48:17.994593+01:00","Action":"pause","Package":"example.com/lxcap/par","Test":"TestParallel/negative"}
+{"Time":"2026-09-26T02:48:17.994825+01:00","Action":"cont","Package":"example.com/lxcap/par","Test":"TestParallel/small"}
+{"Time":"2026-09-26T02:48:17.994845+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/small","Output":"=== CONT  TestParallel/small\n"}
+{"Time":"2026-09-26T02:48:17.994913+01:00","Action":"cont","Package":"example.com/lxcap/par","Test":"TestParallel/conflict"}
+{"Time":"2026-09-26T02:48:17.994927+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/conflict","Output":"=== CONT  TestParallel/conflict\n"}
+{"Time":"2026-09-26T02:48:17.994938+01:00","Action":"cont","Package":"example.com/lxcap/par","Test":"TestParallel/negative"}
+{"Time":"2026-09-26T02:48:17.994949+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/negative","Output":"=== CONT  TestParallel/negative\n"}
+{"Time":"2026-09-26T02:48:17.994961+01:00","Action":"cont","Package":"example.com/lxcap/par","Test":"TestParallel/large"}
+{"Time":"2026-09-26T02:48:17.994973+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/large","Output":"=== CONT  TestParallel/large\n"}
+{"Time":"2026-09-26T02:48:18.006306+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/large","Output":"    par_test.go:23: adding 100 + 200\n"}
+{"Time":"2026-09-26T02:48:18.006363+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/large","Output":"--- PASS: TestParallel/large (0.01s)\n"}
+{"Time":"2026-09-26T02:48:18.006371+01:00","Action":"pass","Package":"example.com/lxcap/par","Test":"TestParallel/large","Elapsed":0.01}
+{"Time":"2026-09-26T02:48:18.006378+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/small","Output":"    par_test.go:23: adding 1 + 2\n"}
+{"Time":"2026-09-26T02:48:18.006383+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/small","Output":"--- PASS: TestParallel/small (0.01s)\n"}
+{"Time":"2026-09-26T02:48:18.006387+01:00","Action":"pass","Package":"example.com/lxcap/par","Test":"TestParallel/small","Elapsed":0.01}
+{"Time":"2026-09-26T02:48:18.00639+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/conflict","Output":"    par_test.go:23: adding 2 + 2\n"}
+{"Time":"2026-09-26T02:48:18.006394+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/conflict","Output":"    par_test.go:25: Add(2, 2) = 4, want 5\n"}
+{"Time":"2026-09-26T02:48:18.006398+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/conflict","Output":"--- FAIL: TestParallel/conflict (0.01s)\n"}
+{"Time":"2026-09-26T02:48:18.006404+01:00","Action":"fail","Package":"example.com/lxcap/par","Test":"TestParallel/conflict","Elapsed":0.01}
+{"Time":"2026-09-26T02:48:18.006407+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/negative","Output":"    par_test.go:23: adding -1 + -1\n"}
+{"Time":"2026-09-26T02:48:18.00641+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/negative","Output":"    par_test.go:25: Add(-1, -1) = -2, want -3\n"}
+{"Time":"2026-09-26T02:48:18.006414+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel/negative","Output":"--- FAIL: TestParallel/negative (0.01s)\n"}
+{"Time":"2026-09-26T02:48:18.006417+01:00","Action":"fail","Package":"example.com/lxcap/par","Test":"TestParallel/negative","Elapsed":0.01}
+{"Time":"2026-09-26T02:48:18.00642+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestParallel","Output":"--- FAIL: TestParallel (0.00s)\n"}
+{"Time":"2026-09-26T02:48:18.006425+01:00","Action":"fail","Package":"example.com/lxcap/par","Test":"TestParallel","Elapsed":0}
+{"Time":"2026-09-26T02:48:18.006429+01:00","Action":"run","Package":"example.com/lxcap/par","Test":"TestSequential"}
+{"Time":"2026-09-26T02:48:18.006431+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestSequential","Output":"=== RUN   TestSequential\n"}
+{"Time":"2026-09-26T02:48:18.006475+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestSequential","Output":"    par_test.go:32: sequential runs fine\n"}
+{"Time":"2026-09-26T02:48:18.006482+01:00","Action":"output","Package":"example.com/lxcap/par","Test":"TestSequential","Output":"--- PASS: TestSequential (0.00s)\n"}
+{"Time":"2026-09-26T02:48:18.006502+01:00","Action":"pass","Package":"example.com/lxcap/par","Test":"TestSequential","Elapsed":0}
+{"Time":"2026-09-26T02:48:18.006507+01:00","Action":"output","Package":"example.com/lxcap/par","Output":"FAIL\n"}
+{"Time":"2026-09-26T02:48:18.007297+01:00","Action":"output","Package":"example.com/lxcap/par","Output":"FAIL\texample.com/lxcap/par\t0.679s\n"}
+{"Time":"2026-09-26T02:48:18.007312+01:00","Action":"fail","Package":"example.com/lxcap/par","Elapsed":0.68}
+{"Time":"2026-09-26T02:48:18.21269+01:00","Action":"run","Package":"example.com/lxcap/exit","Test":"TestLoadConfig"}
+{"Time":"2026-09-26T02:48:18.212729+01:00","Action":"output","Package":"example.com/lxcap/exit","Test":"TestLoadConfig","Output":"=== RUN   TestLoadConfig\n"}
+{"Time":"2026-09-26T02:48:18.212877+01:00","Action":"output","Package":"example.com/lxcap/exit","Test":"TestLoadConfig","Output":"2026/09/26 02:48:18 config file testdata/app.yaml missing\n"}
+{"Time":"2026-09-26T02:48:18.213402+01:00","Action":"output","Package":"example.com/lxcap/exit","Output":"FAIL\texample.com/lxcap/exit\t0.887s\n"}
+{"Time":"2026-09-26T02:48:18.213436+01:00","Action":"fail","Package":"example.com/lxcap/exit","Elapsed":0.887}
+{"Time":"2026-09-26T02:48:22.570939+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"panic: test timed out after 5s\n"}
+{"Time":"2026-09-26T02:48:22.571084+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\trunning tests:\n"}
+{"Time":"2026-09-26T02:48:22.571093+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t\tTestDeadlock (5s)\n"}
+{"Time":"2026-09-26T02:48:22.571098+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\n"}
+{"Time":"2026-09-26T02:48:22.571104+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"goroutine 23 [running]:\n"}
+{"Time":"2026-09-26T02:48:22.571109+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"testing.(*M).startAlarm.func1()\n"}
+{"Time":"2026-09-26T02:48:22.571113+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2802 +0x2cc\n"}
+{"Time":"2026-09-26T02:48:22.571128+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"created by time.goFunc\n"}
+{"Time":"2026-09-26T02:48:22.571133+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/time/sleep.go:215 +0x38\n"}
+{"Time":"2026-09-26T02:48:22.571137+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\n"}
+{"Time":"2026-09-26T02:48:22.57114+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"goroutine 1 [chan receive]:\n"}
+{"Time":"2026-09-26T02:48:22.571144+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"testing.(*T).Run(0x19cd58a6a008, {0x10028bddb?, 0x21cedc88002469e0?}, 0x1003dfef8)\n"}
+{"Time":"2026-09-26T02:48:22.571147+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2109 +0x3bc\n"}
+{"Time":"2026-09-26T02:48:22.571151+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"testing.runTests.func1(0x19cd58a6a008)\n"}
+{"Time":"2026-09-26T02:48:22.571154+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2585 +0x40\n"}
+{"Time":"2026-09-26T02:48:22.571158+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"testing.tRunner(0x19cd58a6a008, 0x19cd58a24c48)\n"}
+{"Time":"2026-09-26T02:48:22.571171+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4\n"}
+{"Time":"2026-09-26T02:48:22.571174+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"testing.runTests({0x10028d37d, 0x11}, {0x10028ec67, 0x16}, 0x19cd58a36018, {0x100401100, 0x1, 0x1}, {0x80808080660b2e63?, 0x10028cb0f?, ...})\n"}
+{"Time":"2026-09-26T02:48:22.571181+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2583 +0x3f0\n"}
+{"Time":"2026-09-26T02:48:22.571184+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"testing.(*M).Run(0x19cd58a281e0)\n"}
+{"Time":"2026-09-26T02:48:22.571187+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2443 +0x578\n"}
+{"Time":"2026-09-26T02:48:22.57119+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"main.main()\n"}
+{"Time":"2026-09-26T02:48:22.571192+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t_testmain.go:46 +0x80\n"}
+{"Time":"2026-09-26T02:48:22.571195+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\n"}
+{"Time":"2026-09-26T02:48:22.571197+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"goroutine 22 [chan send]:\n"}
+{"Time":"2026-09-26T02:48:22.5712+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"example.com/lxcap/dead.TestDeadlock(0x19cd58a6a248?)\n"}
+{"Time":"2026-09-26T02:48:22.571203+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/home/user/src/lxcap/dead/dead_test.go:7 +0x34\n"}
+{"Time":"2026-09-26T02:48:22.571206+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"testing.tRunner(0x19cd58a6a248, 0x1003dfef8)\n"}
+{"Time":"2026-09-26T02:48:22.571209+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4\n"}
+{"Time":"2026-09-26T02:48:22.571216+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"created by testing.(*T).Run in goroutine 1\n"}
+{"Time":"2026-09-26T02:48:22.571219+01:00","Action":"output","Package":"example.com/lxcap/dead","Test":"TestDeadlock","Output":"\t/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x3a8\n"}
+{"Time":"2026-09-26T02:48:22.571553+01:00","Action":"output","Package":"example.com/lxcap/dead","Output":"FAIL\texample.com/lxcap/dead\t5.245s\n"}
+{"Time":"2026-09-26T02:48:22.571569+01:00","Action":"fail","Package":"example.com/lxcap/dead","Elapsed":5.245}

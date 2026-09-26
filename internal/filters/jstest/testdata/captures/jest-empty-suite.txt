@@ -1,0 +1,17 @@
+PASS adv/errtitles.test.js
+FAIL adv/empty.test.js
+  ● Test suite failed to run
+
+    Your test suite must contain at least one test.
+
+      at onResult (node_modules/@jest/core/build/TestScheduler.js:133:18)
+      at node_modules/@jest/core/build/TestScheduler.js:254:19
+      at node_modules/emittery/index.js:363:13
+          at Array.map (<anonymous>)
+      at Emittery.emit (node_modules/emittery/index.js:361:23)
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        0.241 s, estimated 1 s
+Ran all test suites matching /adv\/empty.test.js|adv\/errtitles.test.js/i.

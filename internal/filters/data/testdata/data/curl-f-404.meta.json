@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-fsS",
+    "https://api.github.com/repos/golang/go/nonexistent"
+  ],
+  "shell": "curl -fsS https://api.github.com/repos/golang/go/nonexistent",
+  "repo": "",
+  "exit_code": 56,
+  "description": "curl -fsS of a 404 over HTTP/2: only 'curl: (56) The requested URL returned error: 404'",
+  "cwd": "data/api"
+}

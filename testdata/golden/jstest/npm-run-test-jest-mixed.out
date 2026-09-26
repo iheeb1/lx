@@ -1,0 +1,141 @@
+> jestproj@1.0.0 test
+> jest --ci
+
+FAIL test/snap.test.js
+  ● renders snapshot
+    expect(received).toMatchSnapshot()
+    Snapshot name: `renders snapshot 1`
+    - Snapshot  - 1
+    + Received  + 1
+    @@ -1,7 +1,7 @@
+      {
+    -   "count": 1,
+    +   "count": 2,
+        "items": [
+          "a",
+          "b",
+        ],
+        "title": "Hello",
+    > 2 |   expect({ title: "Hello", count: 2, items: ["a", "b"] }).toMatchSnapshot();
+        |                                                           ^
+      at Object.toMatchSnapshot (test/snap.test.js:2:59)
+
+  ● inline snapshot
+    expect(received).toMatchInlineSnapshot(snapshot)
+    Snapshot name: `inline snapshot 1`
+    Snapshot: "word"
+    Received: "world"
+    > 5 |   expect("world").toMatchInlineSnapshot(`"word"`);
+        |                   ^
+      at Object.toMatchInlineSnapshot (test/snap.test.js:5:19)
+
+ › 2 snapshots failed.
+
+FAIL test/missing.test.js
+  ● Test suite failed to run
+    Cannot find module 'lodash-nonexistent' from 'test/missing.test.js'
+    > 1 | const lodashx = require("lodash-nonexistent");
+        |                         ^
+      2 |
+      3 | test("uses missing module", () => {
+      4 |   expect(lodashx).toBeDefined();
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.<anonymous> (test/missing.test.js:1:25)
+
+FAIL test/user.test.js
+  ● Console
+    console.log
+      fetching user { id: 3 }
+      at Object.log (test/user.test.js:16:13)
+    console.warn
+      deprecated lookup path
+      at Object.warn (test/user.test.js:17:13)
+  ● UserService › handles missing user
+    TypeError: Cannot read properties of undefined (reading 'name')
+    >  7 |     return row.name.toUpperCase();
+         |                ^
+      at UserService.name [as getName] (src/user.js:7:16)
+      at Object.getName (test/user.test.js:12:16)
+
+  ● UserService › logs while failing
+    expect(received).toEqual(expected) // deep equality
+    Expected: "Bob"
+    Received: "BOB"
+    > 19 |     expect(svc.getName(3)).toEqual("Bob");
+         |                            ^
+      at Object.toEqual (test/user.test.js:19:28)
+
+  ● config › rejects bad json
+    SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+        at JSON.parse (<anonymous>)
+    > 13 |   const cfg = JSON.parse(text);
+         |                    ^
+      at parse (src/math.js:13:20)
+      at Object.parseConfig (test/user.test.js:28:12)
+
+  ● config › object equality
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 2
+    + Received  + 2
+      Object {
+        "a": 1,
+        "b": Array [
+          1,
+          2,
+    -     4,
+    +     3,
+        ],
+        "c": Object {
+    -     "d": "y",
+    +     "d": "x",
+        },
+      }
+    > 31 |     expect({ a: 1, b: [1, 2, 3], c: { d: "x" } }).toEqual({ a: 1, b: [1, 2, 4], c: { d: "y" } });
+         |                                                   ^
+      at Object.toEqual (test/user.test.js:31:51)
+
+FAIL test/async.test.js
+  ● times out
+    thrown: "Exceeded timeout of 50 ms for a testfalse.
+    Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."
+    > 1 | test("times out", async () => {
+        |                   ^
+      at Object.<anonymous> (test/async.test.js:1:19)
+
+  ● rejects
+    expect(received).rejects.toThrow()
+    Received promise resolved instead of rejected
+    Resolved to value: 1
+    > 6 |   await expect(Promise.resolve(1)).rejects.toThrow("boom");
+        |         ^
+      at expect (node_modules/expect/build/index.js:105:15)
+      at Object.expect (test/async.test.js:6:9)
+
+  ● throws inside callback
+    RangeError: value out of range: 2
+    > 12 |     if (x === 2) throw new RangeError("value out of range: " + x);
+         |                        ^
+      at test/async.test.js:12:24
+          at Array.forEach (<anonymous>)
+      at Object.forEach (test/async.test.js:11:7)
+
+FAIL test/syntax.test.js
+  ● Test suite failed to run
+    SyntaxError: /home/user/src/jestproj/test/syntax.test.js: Unexpected token, expected "," (4:26)
+      2 |
+      3 | test("broken file", () => {
+    > 4 |   expect(add(1, 2).toBe(3);
+        |                           ^
+      5 | });
+      6 |
+      … 76 library frames (@babel/parser, @babel/core, gensync)
+
+Snapshot Summary
+ › 2 snapshots failed from 1 test suite. Inspect your code changes or run `npm test -- -u` to update them.
+
+[2 passing suites hidden; 1 console message of passing suites hidden]
+Test Suites: 5 failed, 2 passed, 7 total
+Tests:       9 failed, 1 skipped, 1 todo, 6 passed, 17 total
+Snapshots:   2 failed, 2 total
+Time:        2.475 s
+Ran all test suites.

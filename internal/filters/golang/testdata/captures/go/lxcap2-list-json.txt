@@ -1,0 +1,27 @@
+{
+	"Dir": "/home/user/src/lxcap2/coverfail",
+	"ImportPath": "example.com/lxcap2/coverfail",
+	"Name": "coverfail",
+	"Root": "/home/user/src/lxcap2",
+	"Module": {
+		"Path": "example.com/lxcap2",
+		"Main": true,
+		"Dir": "/home/user/src/lxcap2",
+		"GoMod": "/home/user/src/lxcap2/go.mod",
+		"GoVersion": "1.26"
+	},
+	"Match": [
+		"./coverfail"
+	],
+	"Stale": true,
+	"StaleReason": "build ID mismatch",
+	"GoFiles": [
+		"c.go"
+	],
+	"TestGoFiles": [
+		"c_test.go"
+	],
+	"TestImports": [
+		"testing"
+	]
+}

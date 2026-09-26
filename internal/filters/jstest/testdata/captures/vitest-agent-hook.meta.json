@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "adv/hook.test.ts",
+    "adv/soft.test.ts",
+    "adv/errtitles.test.ts"
+  ],
+  "shell": "CLAUDECODE=1 AI_AGENT=claude-code npx vitest run adv/hook.test.ts adv/soft.test.ts adv/errtitles.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "vitest 4 agent reporter: beforeAll failure and soft assertions",
+  "cwd": "repos/vitproj"
+}

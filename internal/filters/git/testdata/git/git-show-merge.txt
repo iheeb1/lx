@@ -1,0 +1,7 @@
+commit db3ddb5cf4968b320ea21f6ee5c2d2202a2e7b22
+Merge: ceb39ab 67171d6
+Author: Steve Francia <steve.francia@gmail.com>
+Date:   Mon May 5 22:12:42 2025 -0400
+
+    Adding sponsorship to README.md
+

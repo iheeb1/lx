@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-v",
+    "https://api.github.com/repos/golang/go"
+  ],
+  "shell": "curl -v https://api.github.com/repos/golang/go",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -v of a GitHub REST object: TLS/connection '* ' lines, request '> ' and response '< ' headers, and a 6.8 KB pretty JSON body into which curl's final progress-meter frame was written mid-line (stderr \\r frame interleaved with buffered stdout)",
+  "cwd": "data/api"
+}

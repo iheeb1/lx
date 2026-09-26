@@ -1,0 +1,260 @@
+[2,832 paths · large tree: some directories shown as counts, ≤20 files and ≤40 subdirectories listed per directory]
+.editorconfig  .git-blame-ignore-revs  .gitattributes  .gitignore  .oxfmtrc.json  CONTRIBUTING.md  LICENSE  README.md  eslint.config.js  netlify.toml
+package.json  pnpm-lock.yaml  pnpm-workspace.yaml  vitest.config.e2e.ts  vitest.config.ts
+.github/ [24 files: .yml×19 .md×4 .json5×1]
+docs/
+  acknowledgements.md  blog.md  index.md  live.md  package.json  releases.md  team.md  tsconfig.json
+  .vitepress/ [26 files: .vue×20 .ts×5 .css×1]
+  _data/
+    acknowledgements.data.ts  blog.data.ts  team.js
+  blog/ [12 files: .md×12]
+  changes/ [6 files: .md×6]
+  config/ [8 files: .md×8]
+  guide/ [25 files: .md×24 .yaml×1]
+  images/ [31 files: .svg×14 .webp×12 .jpg×4 …]
+  plugins/
+    index.md
+  public/ [27 files: .webp×13 .svg×10 other×2 …]
+packages/
+  create-vite/
+    CHANGELOG.md  LICENSE  README.md  index.js  package.json  tsconfig.json  tsdown.config.ts
+    __tests__/
+      cli.spec.ts
+    src/
+      index.ts
+    template-lit/ [10 files: .svg×4 .css×1 .html×1 …]
+    template-lit-ts/ [11 files: .svg×4 .json×2 .css×1 …]
+    template-preact/ [13 files: .svg×4 .css×2 .jsx×2 …]
+    template-preact-ts/ [16 files: .json×4 .svg×4 .css×2 …]
+    template-qwik/ [14 files: .svg×4 .css×2 .jsx×2 …]
+    template-qwik-ts/ [17 files: .json×4 .svg×4 .css×2 …]
+    template-react/ [15 files: .svg×4 .css×2 .json×2 …]
+    template-react-ts/ [18 files: .json×5 .svg×4 .css×2 …]
+    template-solid/ [14 files: .svg×4 .css×2 .jsx×2 …]
+    template-solid-ts/ [17 files: .json×4 .svg×4 .css×2 …]
+    template-svelte/ [17 files: .svg×4 .js×3 .json×3 …]
+    template-svelte-ts/ [19 files: .json×5 .svg×4 .svelte×2 …]
+    template-vanilla/ [11 files: .svg×4 .js×2 .css×1 …]
+    template-vanilla-ts/ [12 files: .svg×4 .json×2 .ts×2 …]
+    template-vue/ [15 files: .svg×4 .js×2 .json×2 …]
+    template-vue-ts/ [18 files: .json×5 .svg×4 .ts×2 …]
+  plugin-legacy/ [13 files: .ts×8 .json×2 .md×2 …]
+  vite/
+    CHANGELOG.md  LICENSE.md  README.md  client.d.ts  package.json  rolldown.config.ts  rolldown.dts.config.ts  rollupLicensePlugin.ts  tsconfig.base.json
+    tsconfig.check.json  tsconfig.json
+    bin/
+      openChrome.js  vite.js
+    misc/
+      false.d.ts  false.js  true.d.ts  true.js
+    scripts/
+      benchCircularImport.ts  generateTarget.ts
+    src/
+      client/ [7 files: .ts×6 .json×1]
+      module-runner/ [17 files: .ts×15 .json×2]
+      node/
+        assetSource.ts  baseEnvironment.ts  build.ts  cli.ts  config.ts  constants.ts  deprecations.ts  env.ts  environment.ts  external.ts  http.ts
+        idResolver.ts  index.ts  internalIndex.ts  logger.ts  nativeConfigCompat.ts  nodeResolve.ts  packages.ts  plugin.ts  preview.ts
+        … +6 more files: .ts×5 .json×1
+        __tests__/
+          assetSource.spec.ts  build.spec.ts  config.spec.ts  constants.spec.ts  dev.spec.ts  env.spec.ts  environment.spec.ts  external.spec.ts
+          filterRegex.spec.ts  html.spec.ts  http.spec.ts  logger.spec.ts  oxc.spec.ts  package.json  packages.spec.ts  resolve.spec.ts  runnerImport.spec.ts
+          scan.spec.ts  shortcuts.spec.ts  utils.spec.ts
+          __snapshots__/
+            logger.spec.ts.snap  utils.spec.ts.snap
+          env/ [6 files: other×4 .existing×1 .testing×1]
+          fixtures/
+            cjs-ssr-dep/
+              index.js  package.json
+            config/ [54 files: .json×18 .js×15 .ts×10 …]
+            css-entry-same-basename/
+              a/
+                index.css
+              b/
+                index.css
+            dynamic-import/
+              dep.mjs  entry.mjs
+            emit-assets/
+              css-module.module.css  css-normal.css  entry.mjs
+            environment-alias/
+              test.client.js  test.rsc.js  test.ssr.js
+            file-url/
+              entry.js  package.json
+            glob-exports/node_modules/ [4 files]
+            input-option/
+              entry.js
+            optimizer-discover-before-listen/
+              entry.js
+            public-dir-write-false/
+              index.html
+              public/
+                favicon.svg
+            runner-import/ [7 files: .ts×5 .js×1 .mts×1]
+            scan-build-input/src/
+              entry-client.tsx
+            scan-jsx-runtime/ [5 files: .tsx×3 .js×1 .json×1]
+            scan-subpath-import-glob/ [3 files: .ts×2 .json×1]
+            shared-config-build/emitAssets/
+              entry.js  test.css
+            shared-plugins/ [4 files: .js×3 .css×1]
+            test-dep-conditions/ [8 files: .js×6 .css×1 .json×1]
+            test-dep-conditions-app/
+              entry-with-module.js  entry.css  entry.js
+            watch-rebuild-manifest/
+              dep.js  entry.js  package.json
+            worker-dynamic/
+              dynamic.js  main.js  worker.js
+          optimizer/ [5 files: .ts×5]
+          packages/ [10 files: .json×6 .html×1 .js×1 …]
+          plugins/ [72 files: .ts×30 .json×18 .js×10 …]
+          utils/isFileReadable/
+            permission-test-file
+        __tests_dts__/ [7 files: .ts×6 .json×1]
+        optimizer/ [6 files: .ts×6]
+        plugins/ [29 files: .ts×29]
+        server/ [57 files: .ts×40 .json×10 .html×2 …]
+        ssr/
+          fetchModule.ts  index.ts  runnerImport.ts  ssrManifestPlugin.ts  ssrModuleLoader.ts  ssrStacktrace.ts  ssrTransform.ts
+          __tests__/ [27 files: .js×18 .ts×5 .map×2 …]
+          runtime/
+            serverModuleRunner.ts
+            __tests__/
+              fixture-outside.js  package.json  server-hmr.spec.ts  server-no-hmr.spec.ts  server-runtime.spec.ts  server-source-maps.spec.ts
+              server-worker-runner.invoke.spec.ts  server-worker-runner.spec.ts  utils.ts
+              fixtures/ [101 files: .js×71 .ts×13 .json×5 …]
+      shared/ [13 files: .ts×12 .json×1]
+      types/ [9 files: .ts×8 .json×1]
+    types/ [13 files: .ts×13]
+patches/ [3 files: .patch×3]
+playground/
+  package.json  shims.d.ts  test-utils.ts  tsconfig.json  vitestGlobalSetup.ts  vitestSetup.ts
+  alias/ [12 files: .js×7 .json×2 .css×1 …]
+  assets/ [63 files: .js×15 .css×11 .png×11 …]
+  assets-sanitize/ [8 files: .js×2 .svg×2 .html×1 …]
+  backend-integration/ [21 files: .css×8 .png×3 .ts×3 …]
+  base-conflict/ [7 files: .ts×5 .html×1 .json×1]
+  build-old/ [5 files: .js×2 .html×1 .json×1 …]
+  chunk-importmap/ [14 files: .js×7 .css×4 .html×1 …]
+  cli/ [6 files: .js×2 .ts×2 .html×1 …]
+  cli-module/ [6 files: .js×2 .ts×2 .html×1 …]
+  client-reload/ [5 files: .ts×3 .html×1 .json×1]
+  csp/ [9 files: .css×3 .js×3 .html×1 …]
+  css/
+    async-treeshaken.css  async-treeshaken.js  async.css  async.js  charset.css  composed.module.css  composed.module.less  composed.module.scss
+    composes-path-resolving.module.css  dep.css  empty.css  external.css  file-absolute.scss  glob-dep.css  imported-at-import.css  imported.css  imported.scss
+    imports-field.css  imports-imports-field.css  index.html
+    … +31 more files: .css×12 .js×10 .less×2 .scss×2 …
+    __tests__/ [9 files: .ts×9]
+    aliased/
+      bar.module.css  foo.css
+    async/ [9 files: .js×5 .css×4]
+    css-dep/
+      index.css  index.js  index.scss  index.styl  package.json
+    css-dep-exports/ [6 files: .scss×3 .css×1 .js×1 …]
+    css-js-dep/
+      bar.module.css  foo.css  index.js  package.json
+    css-proxy-dep/
+      index.css  package.json
+    css-proxy-dep-nested/
+      index.css  package.json
+    folder with space/
+      ok.png  space.css
+    glob-dep/ [3 files: .css×3]
+    glob-import/
+      bar.css  foo.css
+    injected-source/
+      injected-bg.png
+    layered/ [3 files: .css×3]
+    less/ [3 files: .less×2 .svg×1]
+    less-plugin/
+      test.js
+    nested/ [13 files: .scss×5 .less×3 .css×2 …]
+    options/
+      absolute-import.styl  relative-import.styl
+    pkg-dep/
+      _index.scss  index.js  package.json
+    postcss-caching/ [12 files: .js×4 .css×2 .html×2 …]
+    same-name/ [4 files: .css×2 .js×2]
+    sass-modern-compiler-build/
+      entry1.scss  entry2.scss
+    scss-dir/
+      main.scss
+      dir/
+        index.scss
+    scss-proxy-dep/
+      index.scss  package.json
+    scss-proxy-dep-nested/
+      index.css  package.json
+    treeshake-module/ [5 files: .js×3 .css×2]
+    treeshake-scoped/ [14 files: .css×7 .js×6 .html×1]
+  css-codesplit/ [27 files: .css×11 .js×10 .html×3 …]
+  css-codesplit-cjs/ [8 files: .js×3 .css×2 .html×1 …]
+  css-dynamic-import/ [9 files: .js×3 .css×2 .ts×2 …]
+  css-lightningcss/ [21 files: .css×14 .js×2 .html×1 …]
+  css-lightningcss-proxy/
+    index.html  package.json  server.js
+    __tests__/
+      css-lightningcss-proxy.spec.ts  serve.ts
+  css-lightningcss-root/ [7 files: .js×2 .css×1 .html×1 …]
+  css-no-codesplit/ [9 files: .js×3 .css×2 .html×2 …]
+  css-sourcemap/ [23 files: .css×7 .js×4 .sass×3 …]
+  data-uri/ [9 files: .svg×4 .js×2 .html×1 …]
+  define/ [8 files: .js×3 .json×3 .html×1 …]
+  devtools/ [5 files: .ts×3 .html×1 .json×1]
+  dynamic-import/ [34 files: .js×25 .css×4 .json×3 …]
+  dynamic-import-inline/ [6 files: .js×3 .html×1 .json×1 …]
+  env/ [8 files: other×3 .js×2 .html×1 …]
+  env-nested/ [7 files: other×3 .html×1 .js×1 …]
+  environment-react-ssr/ [8 files: .tsx×3 .json×2 .ts×2 …]
+  extensions/ [4 files: .html×1 .js×1 .json×1 …]
+  external/ [11 files: .js×6 .json×3 .html×1 …]
+  forward-console/ [7 files: .ts×3 .json×2 .html×1 …]
+  fs-serve/ [30 files: .ts×7 .js×6 .txt×5 …]
+  glob-import/ [40 files: .js×30 .css×3 .json×3 …]
+  hmr/
+    customFile.js  event.d.ts  global.css  hmr.ts  hmrDep.js  hmrNestedDep.js  hotData.js  icon.png  importedVirtual.js  index.html  logo-no-inline.svg
+    logo.svg  modules.d.ts  package.json  vite.config.ts
+    __tests__/
+      hmr.spec.ts
+    accept-exports/ [32 files: .ts×24 .html×8]
+    circular/ [4 files: .js×4]
+    counter/
+      dep.ts  index.html  index.ts
+    css-deps/
+      dep.js  index.html  main.css
+    css-link/
+      index.html  main.js  plugin.ts  styles.css
+    file-delete-restore/
+      child.js  index.js  parent.js  runtime.js
+    importing-updated/
+      a.js  b.js  index.js
+    intermediate-file-delete/
+      display.js  index.js  re-export.js
+    invalidation/
+      child.js  parent.js  root.js
+    invalidation-circular-deps/ [5 files: .js×5]
+    missing-file/
+      index.html  main.js
+    missing-import/
+      a.js  index.html  main.js
+    optional-chaining/
+      child.js  parent.js
+    prune/ [4 files: .js×4]
+    self-accept-within-circular/ [5 files: .js×4 .html×1]
+    soft-invalidation/
+      child.js  index.js
+    unicode-path/中文-にほんご-한글-🌕🌖🌗/
+      index.html
+    virtual-invalidation/
+      dep.js  parent.js
+  hmr-full-bundle-mode/ [26 files: .js×19 .ts×3 .png×2 …]
+  hmr-root/ [4 files: .ts×2 .html×1 .js×1]
+  hmr-ssr/ [84 files: .js×41 .ts×37 .html×3 …]
+  html/ [60 files: .html×32 .js×16 .css×6 …]
+  import-attribute/ [7 files: .json×4 .html×1 .js×1 …]
+  js-sourcemap/ [33 files: .js×19 .json×6 .ts×6 …]
+  … +37 more directories [868 files: .js×448 .json×191 .ts×107 …]:
+    json/  lazy-compilation/  legacy/  lib/  minify/  module-graph/  multiple-entrypoints/  nested-deps/  object-hooks/  optimize-deps/
+    optimize-deps-no-discovery/  optimize-missing-deps/  preload/  preserve-symlinks/  proxy-bypass/  proxy-hmr/  resolve/  resolve-linked/
+    resolve-tsconfig-paths/  ssr/  ssr-alias/  ssr-conditions/  ssr-deps/  ssr-html/  ssr-noexternal/  ssr-pug/  ssr-resolve/  ssr-wasm/  ssr-webworker/
+    tailwind/  tailwind-sourcemap/  tailwind-v3/  transform-plugin/  tsconfig-json/  tsconfig-json-load-error/  wasm/  worker/
+scripts/ [8 files: .ts×6 .json×1 .sh×1]

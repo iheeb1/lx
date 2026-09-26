@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "ls -lt | head -15"
+  ],
+  "shell": "bash -c ls -lt | head -15",
+  "exit_code": 0,
+  "description": "ls -lt piped into head",
+  "cwd": "/home/user/src/gin"
+}

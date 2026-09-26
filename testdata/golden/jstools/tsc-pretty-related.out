@@ -1,0 +1,11 @@
+ts/a.ts:4:7 - error TS2322: Type 'number' is not assignable to type 'string'.
+ts/a.ts:5:5 - error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+ts/a.ts:6:1 - error TS2554: Expected 2 arguments, but got 1.
+  related ts/a.ts:1:32 - An argument for 'b' was not provided.
+ts/a.ts:8:21 - error TS2322: Type 'string' is not assignable to type 'number'.
+  related ts/a.ts:7:20 - The expected type comes from property 'code' which is declared here on type 'Error2'
+ts/a.ts:9:10 - error TS6133: 'unused' is declared but its value is never read.
+ts/a.ts:11:29 - error TS2304: Cannot find name 'missingName'.
+ts/b.ts:1:25 - error TS2307: Cannot find module './nope' or its corresponding type declarations.
+
+Found 7 errors in 2 files.

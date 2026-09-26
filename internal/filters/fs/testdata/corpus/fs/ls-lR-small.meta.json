@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "ls",
+    "-lR",
+    "packages/vite/src/client",
+    "packages/vite/src/types"
+  ],
+  "shell": "ls -lR packages/vite/src/client packages/vite/src/types",
+  "exit_code": 0,
+  "description": "ls -lR of a small tree",
+  "cwd": "/home/user/src/vite"
+}

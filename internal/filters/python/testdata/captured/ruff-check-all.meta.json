@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "ruff",
+    "check",
+    "--select",
+    "ALL",
+    "--output-format",
+    "concise",
+    "."
+  ],
+  "shell": "ruff check --select ALL --output-format concise .",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter testdata): ruff --select ALL concise: 177 diagnostics plus config warnings",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv with pytest 8.3.4, mypy 1.19.1, ruff 0.16.9, pip 26.0.1"
+}

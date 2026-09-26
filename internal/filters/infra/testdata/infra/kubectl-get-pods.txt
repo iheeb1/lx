@@ -1,0 +1,9 @@
+NAME                     READY   STATUS             RESTARTS         AGE
+api-7d9f8b6c5d-2xkqp     1/1     Running            0                3d4h
+api-7d9f8b6c5d-8vtzn     0/1     CrashLoopBackOff   12 (2m14s ago)   47m
+api-7d9f8b6c5d-q7w2m     1/1     Running            0                3d4h
+migrate-29283120-5tdfp   0/1     Completed          0                6h
+web-6b8f7c9d4-h2k8s      1/1     Running            1 (2d ago)       3d4h
+web-6b8f7c9d4-zp4nr      1/1     Running            0                3d4h
+worker-5c6d7e8f9-7mxkq   1/1     Running            0                3d4h
+worker-5c6d7e8f9-rt9vb   0/1     Pending            0                12m

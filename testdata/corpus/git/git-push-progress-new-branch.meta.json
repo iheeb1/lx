@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "git",
+    "push",
+    "--progress",
+    "-u",
+    "backup",
+    "main"
+  ],
+  "shell": "git push --progress -u backup main",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "git push --progress -u to a new (local bare) remote: enumerating/counting/compressing/writing progress with carriage returns, delta resolution, new branch, upstream tracking message",
+  "cwd": "repos/cobra-merge"
+}

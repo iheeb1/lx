@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "grep",
+    "-r",
+    "HandlerFunc",
+    "--include=*.go",
+    "."
+  ],
+  "shell": "grep -r HandlerFunc --include=*.go .",
+  "exit_code": 0,
+  "description": "grep -r without -n: path:text",
+  "cwd": "/home/user/src/gin"
+}

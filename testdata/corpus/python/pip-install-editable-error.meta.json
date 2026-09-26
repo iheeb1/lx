@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "pip",
+    "install",
+    "-r",
+    "requirements/tests.txt",
+    "-e",
+    "."
+  ],
+  "shell": "pip install -r requirements/tests.txt -e .",
+  "repo": "pallets/click",
+  "exit_code": 1,
+  "description": "pip 21.2.4 (Python 3.9 venv default) refusing an editable install of a pyproject.toml-only (flit) project, plus the outdated-pip warning",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

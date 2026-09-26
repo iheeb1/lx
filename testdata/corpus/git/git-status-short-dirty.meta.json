@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "status",
+    "-s"
+  ],
+  "shell": "git status -s",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git status -s (short porcelain-like format) for the same dirty tree",
+  "cwd": "repos/gin"
+}

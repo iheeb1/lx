@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "core.abbrev=12",
+    "reflog",
+    "-n",
+    "25"
+  ],
+  "exit_code": 0,
+  "cwd": "/home/user/src/cJSON",
+  "description": "git reflog after 14 amends, two resets and checkouts in a cJSON clone, with 12-hex abbreviations as large repositories use: consecutive \"commit (amend)\" entries the generic reducer folds"
+}

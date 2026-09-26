@@ -1,0 +1,48 @@
+[39 paths · names without / may be directories]
+packages/
+  create-vite/
+    __tests__
+  plugin-legacy/src/
+    __tests__
+  vite/src/
+    module-runner/
+      __tests_dts__
+    node/
+      __tests_dts__
+      __tests__/
+        env/
+          .env.testing
+        fixtures/
+          test-dep-conditions  test-dep-conditions-app
+          environment-alias/
+            test.client.js  test.rsc.js  test.ssr.js
+          shared-config-build/emitAssets/
+            test.css
+        plugins/importGlob/fixture-a/.foo/
+          test.ts
+        utils/isFileReadable/
+          permission-test-file
+      server/
+        __tests__
+        middlewares/
+          __tests__
+      ssr/
+        __tests__/fixtures/
+          file-url/
+            test space.js  test.js
+          global/
+            test.js
+          json/
+            test.json
+        runtime/__tests__/fixtures/
+          test.css  test.module.css
+          cyclic2/
+            test1  test2  test3  test4  test5  test6  test7  test9
+          invalid-package/
+            test.js
+            deps/
+              test-dep-invalid-exports
+          live-binding/
+            test1  test2  test3  test4
+    shared/
+      __tests__

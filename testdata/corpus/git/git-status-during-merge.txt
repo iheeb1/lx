@@ -1,0 +1,22 @@
+On branch main
+Your branch is ahead of 'origin/main' by 6 commits.
+  (use "git push" to publish your local commits)
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Changes to be committed:
+	new file:   args_validation.go
+
+Unmerged paths:
+  (use "git add/rm <file>..." as appropriate to mark resolution)
+	both modified:   Makefile
+	both modified:   README.md
+	both modified:   args.go
+	both modified:   command.go
+	both modified:   completions.go
+	deleted by them: fish_completions.go
+	both modified:   go.mod
+	both modified:   site/content/user_guide.md
+

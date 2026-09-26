@@ -1,0 +1,220 @@
+[708 matches in 37 files · showing 155 from the first 21 files, ≤15 per file; match counts for the other 16 files at the end]
+src/duration.js
+1:import { InvalidArgumentError, InvalidDurationError, InvalidUnitError } from "./errors.js";
+5:import { parseISODuration, parseISOTimeOnly } from "./impl/regexParser.js";
+18:const INVALID = "Invalid Duration";
+136:return new Duration(conf);
+170:* A Duration object represents a period of time, like "2 months" or "1 day, 1 hour". Conceptually, it's just a map of units to their quantities, accompanied by …[+301 chars]…
+172:* Here is a brief overview of commonly used methods and getters in Duration:
+174:* * **Creation** To create a Duration, use {@link Duration.fromMillis}, {@link Duration.fromObject}, or {@link Duration.fromISO}.
+175:* * **Unit values** See the {@link Duration#years}, {@link Duration#months}, {@link Duration#weeks}, {@link Duration#days}, {@link Duration#hours}, {@link Durat …[+80 chars]…
+176:* * **Configuration** See  {@link Duration#locale} and {@link Duration#numberingSystem} accessors.
+177:* * **Transformation** To create new Durations out of old ones use {@link Duration#plus}, {@link Duration#minus}, {@link Duration#normalize}, {@link Duration#se …[+88 chars]…
+178:* * **Output** To convert the Duration into other representations, see {@link Duration#as}, {@link Duration#toISO}, {@link Duration#toFormat}, and {@link Duration#toJSON}
+182:export default class Duration {
+217:this.isLuxonDuration = true;
+221:* Create Duration from a number of milliseconds.
+227:* @return {Duration}
+… +131 more in this file
+
+src/impl/formatter.js
+377:formatDurationFromString(dur, fmt) {
+405:info.isNegativeDuration && mapped !== info.largestUnit ? invertLargest : 1;
+424:info.isNegativeDuration &&
+441:isNegativeDuration: collapsed < 0,
+
+src/impl/regexParser.js
+130:const isoDuration =
+133:function extractISODuration(match) {
+344:export function parseISODuration(s) {
+345:return parse(s, [isoDuration, extractISODuration]);
+
+src/impl/diff.js
+1:import Duration from "../duration.js";
+6:return Math.floor(Duration.fromMillis(ms).as("days"));
+86:const duration = Duration.fromObject(results, opts);
+89:return Duration.fromMillis(remainingMillis, opts)
+
+src/interval.js
+2:import Duration from "./duration.js";
+38:…[+110 chars]… val#toLocaleString}, {@link Interval#toISO}, {@link Interval#toISODate}, {@link Interval#toISOTime}, {@link Interval#toFormat}, and {@link Interval#toDuration}.
+106:* Create an Interval from a start DateTime and a Duration to extend to.
+108:* @param {Duration|Object|number} duration - the length of the Interval.
+112:const dur = Duration.fromDurationLike(duration),
+118:* Create an Interval from an end DateTime and a Duration to extend backwards to.
+120:* @param {Duration|Object|number} duration - the length of the Interval.
+124:const dur = Duration.fromDurationLike(duration),
+133:* @param {Object} [opts] - options to pass {@link DateTime#fromISO} and optionally {@link Duration#fromISO}
+179:const dur = Duration.fromISO(e, opts);
+184:const dur = Duration.fromISO(s, opts);
+257:return this.isValid ? this.toDuration(...[unit]).get(unit) : NaN;
+373:* @param {Duration|Object|number} duration - The length of each resulting interval.
+377:const dur = Duration.fromDurationLike(duration);
+666:* Return a Duration representing the time spanned by this interval.
+… +9 more in this file
+
+src/datetime.js
+1:import Duration from "./duration.js";
+166:millisToAdd = Duration.fromObject({
+1705:* @param {Duration|Object|number} duration - The amount to add. Either a Luxon Duration, a number of milliseconds, the object argument to Duration.fromObject()
+1711:* @example DateTime.now().plus(Duration.fromObject({ hours: 3, minutes: 13 })) //~> in 3 hr, 13 min
+1716:const dur = Duration.fromDurationLike(duration);
+1723:* @param {Duration|Object|number} duration - The amount to subtract. Either a Luxon Duration, a number of milliseconds, the object argument to Duration.fromObject()
+1728:const dur = Duration.fromDurationLike(duration).negate();
+1748:normalizedUnit = Duration.normalizeUnit(unit);
+2180:* Return the difference between two DateTimes as a Duration.
+2183:* @param {Object} opts - options that affect the creation of the Duration
+2192:* @return {Duration}
+2196:return Duration.invalid("created by diffing an invalid DateTime");
+2201:const units = maybeArray(unit).map(Duration.normalizeUnit),
+2214:* @param {Object} opts - options that affect the creation of the Duration
+2216:* @return {Duration}
+
+src/errors.js
+29:export class InvalidDurationError extends LuxonError {
+31:super(`Invalid Duration: ${reason.toMessage()}`);
+
+src/luxon.js
+2:import Duration from "./duration.js";
+17:Duration,
+
+src/settings.js
+155:* Get whether Luxon will throw when it encounters invalid DateTimes, Durations, or Intervals
+163:* Set whether Luxon will throw when it encounters invalid DateTimes, Durations, or Intervals
+
+test/datetime/math.test.js
+3:import { DateTime, Duration } from "../../src/luxon";
+83:test("DateTime#plus(Duration) adds the right amount of time", () => {
+85:later = i.plus(Duration.fromObject({ day: 1, hour: 3, minute: 28 }));
+151:milliseconds: Duration.fromObject({ [unit]: 0.7 }).as("milliseconds"),
+247:milliseconds: Duration.fromObject({ [unit]: 0.7 }).as("milliseconds"),
+
+test/datetime/diff.test.js
+261:test("DateTime#diff returns invalid Durations if the DateTimes are invalid", () => {
+353:test("DateTime#diffNow returns invalid Durations if the DateTime is invalid", () => {
+
+test/datetime/invalid.test.js:69:test("Diffing invalid DateTimes creates invalid Durations", () => {
+
+test/interval/many.test.js
+2:import { DateTime, Interval, Duration } from "../../src/luxon";
+334:const split = todayFrom(8, 13).splitBy(Duration.fromObject({ hours: 2 }));
+347:const split = todayFrom(8, 3).splitBy(Duration.invalid("because"));
+352:const split = todayFrom(8, 3).splitBy(Duration.fromObject({}));
+362:const months = interval.splitBy(Duration.fromISO("P1M"));
+392:const after = (i, m, s) => Interval.after(i, Duration.fromObject({ minutes: m, seconds: s })),
+
+test/interval/info.test.js
+73:// #toDuration()
+75:test("Interval#toDuration creates a duration in those units", () => {
+78:expect(int.toDuration().toObject()).toEqual({ milliseconds: 4 * 3600 * 1000 });
+79:expect(int.toDuration("milliseconds").toObject()).toEqual({ milliseconds: 4 * 3600 * 1000 });
+80:expect(int.toDuration("seconds").toObject()).toEqual({ seconds: 4 * 3600 });
+81:expect(int.toDuration("minutes").toObject()).toEqual({ minutes: 4 * 60 });
+82:expect(int.toDuration("hours").toObject()).toEqual({ hours: 4 });
+83:expect(int.toDuration("days").toObject()).toEqual({ days: 1 / 6 });
+84:expect(int.toDuration("weeks").toObject()).toEqual({ weeks: 1 / (6 * 7) });
+87:test("Interval#toDuration accepts multiple units", () => {
+93:expect(int.toDuration(["hours", "minutes"]).toObject()).toEqual({ hours: 4, minutes: 44 });
+96:test("Interval#toDuration accepts duration options", () => {
+98:dur = int.toDuration(["hours"], { conversionAccuracy: "longterm" });
+102:test("Interval#toDuration returns an invalid duration for invalid intervals", () => {
+104:dur = int.toDuration(["hours"]);
+
+test/interval/create.test.js
+2:import { DateTime, Interval, Duration, Settings } from "../../src/luxon";
+79:int = Interval.after(start, Duration.fromObject({ days: 3 }));
+98:int = Interval.before(end, Duration.fromObject({ days: 3 }));
+
+test/duration/typecheck.test.js
+3:import { Duration } from "../../src/luxon";
+6:// #isDuration
+8:test("Duration#isDuration return true for valid duration", () => {
+9:const dur = Duration.fromObject({ hours: 1, minutes: 4.5 });
+10:expect(Duration.isDuration(dur)).toBe(true);
+13:test("Duration#isDuration return true for invalid duration", () => {
+14:const dur = Duration.invalid("because");
+15:expect(Duration.isDuration(dur)).toBe(true);
+18:test("Duration#isDuration return false for primitives", () => {
+19:expect(Duration.isDuration({})).toBe(false);
+20:expect(Duration.isDuration({ hours: 60 })).toBe(false);
+21:expect(Duration.isDuration(1)).toBe(false);
+22:expect(Duration.isDuration(1.1)).toBe(false);
+23:expect(Duration.isDuration("")).toBe(false);
+24:expect(Duration.isDuration(null)).toBe(false);
+… +1 more in this file
+
+test/duration/set.test.js
+2:import { Duration } from "../../src/luxon";
+8:Duration.fromObject({
+18:test("Duration#set() sets the values", () => {
+29:test("Duration#set() throws for metadata", () => {
+35:test("Duration#set maintains invalidity", () => {
+36:expect(Duration.invalid("because").set({ hours: 200 }).isValid).toBe(false);
+
+test/duration/proto.test.js
+1:import { Duration } from "../../src/luxon";
+3:test("Duration prototype properties should not throw when addressed", () => {
+4:const d = Duration.fromObject({ hours: 1 });
+
+test/duration/reconfigure.test.js
+3:import { Duration } from "../../src/luxon";
+5:const dur = Duration.fromObject(
+22:test("Duration#reconfigure() sets the locale", () => {
+29:test("Duration#reconfigure() sets the numberingSystem", () => {
+36:test("Duration#reconfigure() sets the conversion accuracy", () => {
+43:test("Duration#reconfigure() with no arguments does nothing", () => {
+
+test/duration/math.test.js
+3:import { Duration } from "../../src/luxon";
+8:test("Duration#plus add straightforward durations", () => {
+9:const first = Duration.fromObject({ hours: 4, minutes: 12, seconds: 2 }),
+10:second = Duration.fromObject({ hours: 1, seconds: 6, milliseconds: 14 }),
+19:test("Duration#plus add fractional durations", () => {
+20:const first = Duration.fromObject({ hours: 4.2, minutes: 12, seconds: 2 }),
+21:second = Duration.fromObject({ hours: 1, seconds: 6.8, milliseconds: 14 }),
+30:test("Duration#plus noops empty druations", () => {
+31:const first = Duration.fromObject({ hours: 4, minutes: 12, seconds: 2 }),
+32:second = Duration.fromObject({}),
+40:test("Duration#plus adds negatives", () => {
+41:const first = Duration.fromObject({ hours: 4, minutes: -12, seconds: -2 }),
+42:second = Duration.fromObject({ hours: -5, seconds: 6, milliseconds: 14 }),
+51:test("Duration#plus adds single values", () => {
+52:const first = Duration.fromObject({ hours: 4, minutes: 12, seconds: 2 }),
+… +35 more in this file
+
+test/duration/units.test.js
+2:import { Duration } from "../../src/luxon";
+7:test("Duration#shiftTo rolls milliseconds up hours and minutes", () => {
+8:const dur = Duration.fromMillis(5760000);
+15:test("Duration#shiftTo boils hours down milliseconds", () => {
+16:const dur = Duration.fromObject({ hours: 1 }).shiftTo("milliseconds");
+20:test("Duration boils hours down shiftTo minutes and milliseconds", () => {
+21:const dur = Duration.fromObject({ hours: 1, seconds: 30 }).shiftTo("minutes", "milliseconds");
+25:test("Duration#shiftTo boils down and then rolls up", () => {
+26:const dur = Duration.fromObject({ years: 2, hours: 5000 }).shiftTo("months", "days", "minutes");
+30:test("Duration#shiftTo throws on invalid units", () => {
+32:Duration.fromObject({ years: 2, hours: 5000 }).shiftTo("months", "glorp");
+36:test("Duration#shiftTo tacks decimals onto the end", () => {
+37:const dur = Duration.fromObject({ minutes: 73 }).shiftTo("hours");
+42:test("Duration#shiftTo deconstructs decimal inputs", () => {
+43:const dur = Duration.fromObject({ hours: 2.3 }).shiftTo("hours", "minutes");
+… +78 more in this file
+
+[16 more files, by match count]
+test/duration/format.test.js: 123 matches
+test/duration/create.test.js: 42 matches
+test/duration/equality.test.js: 26 matches
+test/duration/parse.test.js: 23 matches
+docs/math.md: 21 matches
+test/duration/invalid.test.js: 18 matches
+test/duration/getters.test.js: 15 matches
+docs/moment.md: 9 matches
+test/duration/info.test.js: 5 matches
+docs/tour.md: 4 matches
+test/duration/customMatrix.test.js: 3 matches
+docs/validity.md: 3 matches
+docs/upgrading.md: 3 matches
+test/duration/accuracy.test.js: 2 matches
+docs/home.md: 1 match
+docs/intl.md: 1 match
+[narrow the search: add a path, --include='*.ext' / --exclude-dir=DIR, or a more specific pattern]

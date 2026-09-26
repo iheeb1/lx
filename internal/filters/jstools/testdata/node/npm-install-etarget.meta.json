@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "install",
+    "ms@99.0.0"
+  ],
+  "shell": "npm install ms@99.0.0",
+  "exit_code": 1,
+  "description": "npm install ms@99.0.0: ETARGET, no matching version",
+  "cwd": "/home/user/src/ws-app"
+}

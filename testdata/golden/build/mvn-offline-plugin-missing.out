@@ -1,0 +1,10 @@
+[lx: hidden: 20 [INFO] progress lines, 7 lines of Maven's help footer]
+[WARNING] The POM for org.apache.maven.plugins:maven-install-plugin:jar:3.1.4 is missing, no dependency information available
+[INFO] Reactor Summary for parent 1.0:
+[INFO] parent ............................................. FAILURE [  0.013 s]
+[INFO] core ............................................... SKIPPED
+[INFO] api ................................................ SKIPPED
+[INFO] web ................................................ SKIPPED
+[INFO] BUILD FAILURE
+[ERROR] Plugin org.apache.maven.plugins:maven-install-plugin:3.1.4 or one of its dependencies could not be resolved:
+[ERROR] 	Cannot access central (https://repo.maven.apache.org/maven2) in offline mode and the artifact org.apache.maven.plugins:maven-install-plugin:jar:3.1.4 has not been downloaded from it before.

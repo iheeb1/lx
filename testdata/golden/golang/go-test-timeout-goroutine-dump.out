@@ -1,0 +1,173 @@
+2026/09/26 00:45:29 The AppEngine flag is going to be deprecated. Please check issues #2723 and #2739 and use 'TrustedPlatform: gin.PlatformGoogleAppEngine' instead.
+[GIN] 2026/09/26 - 00:45:29 | 200 |  2.333µs |       192.0.2.1 | GET      "/name1/api"
+[GIN] 2026/09/26 - 00:45:29 | 200 |   2.25µs |       192.0.2.1 | GET      "/name2/api"
+[GIN] 2026/09/26 - 00:45:29 | 200 |  8.375µs |       127.0.0.1 | GET      "/"
+panic: test timed out after 150ms
+	running tests:
+		TestLoadHTMLFilesUsingTLS (0s)
+
+goroutine 1287 [running]:
+testing.(*M).startAlarm.func1()
+	$GOROOT/src/testing/testing.go:2802
+created by time.goFunc
+	$GOROOT/src/time/sleep.go:215
+
+goroutine 1271 [select]:
+net/http.(*persistConn).roundTrip(...)
+	$GOROOT/src/net/http/transport.go:2911
+… 6 library frames (net/http)
+net/http.(*Client).Get(...)
+	$GOROOT/src/net/http/client.go:489
+github.com/gin-gonic/gin.TestLoadHTMLFilesUsingTLS(...)
+	gin_test.go:299
+testing.tRunner(...)
+	$GOROOT/src/testing/testing.go:2036
+created by testing.(*T).Run in goroutine 1
+	$GOROOT/src/testing/testing.go:2101
+
+goroutine 320 [IO wait]:
+internal/poll.runtime_pollWait(...)
+	$GOROOT/src/runtime/netpoll.go:351
+… 7 library frames (internal/poll, net, net/http)
+net/http.(*Server).ListenAndServe(...)
+	$GOROOT/src/net/http/server.go:3360
+github.com/gin-gonic/gin.(*Engine).Run(...)
+	gin.go:581
+github.com/gin-gonic/gin.TestRunEmpty.func1()
+	gin_integration_test.go:72
+created by github.com/gin-gonic/gin.TestRunEmpty in goroutine 319
+	gin_integration_test.go:70
+
+goroutine 153 [IO wait]:
+internal/poll.runtime_pollWait(...)
+	$GOROOT/src/runtime/netpoll.go:351
+… 6 library frames (internal/poll, net)
+net/http.(*Server).Serve(...)
+	$GOROOT/src/net/http/server.go:3434
+github.com/gin-gonic/gin.TestContextCopyShouldNotCancel.func3()
+	context_test.go:3571
+created by github.com/gin-gonic/gin.TestContextCopyShouldNotCancel in goroutine 248
+	context_test.go:3566
+
+goroutine 377 [select]:
+github.com/quic-go/quic-go.(*baseServer).accept(...)
+	$GOMODCACHE/github.com/quic-go/quic-go@v0.60.0/server.go:334
+… 3 library frames (github.com/quic-go/quic-go)
+github.com/quic-go/quic-go/http3.ListenAndServeQUIC(...)
+	$GOMODCACHE/github.com/quic-go/quic-go@v0.60.0/http3/server.go:673
+github.com/gin-gonic/gin.(*Engine).RunQUIC(...)
+	gin.go:667
+github.com/gin-gonic/gin.TestRunQUIC.func1()
+	gin_integration_test.go:288
+created by github.com/gin-gonic/gin.TestRunQUIC in goroutine 376
+	gin_integration_test.go:285
+
+goroutine 112 [IO wait]:
+internal/poll.runtime_pollWait(...)
+	$GOROOT/src/runtime/netpoll.go:351
+… 6 library frames (internal/poll, net)
+net/http.(*Server).Serve(...)
+	$GOROOT/src/net/http/server.go:3434
+github.com/gin-gonic/gin.(*Engine).RunListener(...)
+	gin.go:686
+github.com/gin-gonic/gin.(*Engine).RunFd(...)
+	gin.go:651
+github.com/gin-gonic/gin.TestFileDescriptor.func1()
+	gin_integration_test.go:320
+created by github.com/gin-gonic/gin.TestFileDescriptor in goroutine 109
+	gin_integration_test.go:318
+
+goroutine 286 [IO wait]:
+internal/poll.runtime_pollWait(...)
+	$GOROOT/src/runtime/netpoll.go:351
+… 9 library frames (internal/poll, net, crypto/tls, …)
+net/http.(*Server).ListenAndServeTLS(...)
+	$GOROOT/src/net/http/server.go:3719
+github.com/gin-gonic/gin.(*Engine).RunTLS(...)
+	gin.go:602
+github.com/gin-gonic/gin.TestRunTLS.func1()
+	gin_integration_test.go:163
+created by github.com/gin-gonic/gin.TestRunTLS in goroutine 285
+	gin_integration_test.go:160
+
+goroutine 331 [IO wait]:
+internal/poll.runtime_pollWait(...)
+	$GOROOT/src/runtime/netpoll.go:351
+… 9 library frames (internal/poll, net, crypto/tls, …)
+net/http.(*Server).ListenAndServeTLS(...)
+	$GOROOT/src/net/http/server.go:3719
+github.com/gin-gonic/gin.(*Engine).RunTLS(...)
+	gin.go:602
+github.com/gin-gonic/gin.TestPusher.func1()
+	gin_integration_test.go:200
+created by github.com/gin-gonic/gin.TestPusher in goroutine 330
+	gin_integration_test.go:191
+
+goroutine 343 [IO wait]:
+internal/poll.runtime_pollWait(...)
+	$GOROOT/src/runtime/netpoll.go:351
+… 7 library frames (internal/poll, net, net/http)
+net/http.(*Server).ListenAndServe(...)
+	$GOROOT/src/net/http/server.go:3360
+github.com/gin-gonic/gin.(*Engine).Run(...)
+	gin.go:581
+github.com/gin-gonic/gin.TestRunEmptyWithEnv.func1()
+	gin_integration_test.go:216
+created by github.com/gin-gonic/gin.TestRunEmptyWithEnv in goroutine 342
+	gin_integration_test.go:214
+
+goroutine 394 [IO wait]:
+internal/poll.runtime_pollWait(...)
+	$GOROOT/src/runtime/netpoll.go:351
+… 6 library frames (internal/poll, net)
+net/http.(*Server).Serve(...)
+	$GOROOT/src/net/http/server.go:3434
+github.com/gin-gonic/gin.(*Engine).RunUnix(...)
+	gin.go:628
+github.com/gin-gonic/gin.TestUnixSocket.func1()
+	gin_integration_test.go:258
+created by github.com/gin-gonic/gin.TestUnixSocket in goroutine 393
+	gin_integration_test.go:256
+
+goroutine 386 [IO wait]:
+internal/poll.runtime_pollWait(...)
+	$GOROOT/src/runtime/netpoll.go:351
+… 7 library frames (internal/poll, net, net/http)
+net/http.(*Server).ListenAndServe(...)
+	$GOROOT/src/net/http/server.go:3360
+github.com/gin-gonic/gin.(*Engine).Run(...)
+	gin.go:581
+github.com/gin-gonic/gin.TestRunWithPort.func1()
+	gin_integration_test.go:238
+created by github.com/gin-gonic/gin.TestRunWithPort in goroutine 385
+	gin_integration_test.go:236
+
+goroutine 437 [IO wait]:
+internal/poll.runtime_pollWait(...)
+	$GOROOT/src/runtime/netpoll.go:351
+… 6 library frames (internal/poll, net)
+net/http.(*Server).Serve(...)
+	$GOROOT/src/net/http/server.go:3434
+github.com/gin-gonic/gin.(*Engine).RunListener(...)
+	gin.go:686
+github.com/gin-gonic/gin.TestListener.func1()
+	gin_integration_test.go:353
+created by github.com/gin-gonic/gin.TestListener in goroutine 434
+	gin_integration_test.go:351
+
+1 goroutine [chan receive] in library code: testing.(*T).Run
+7 goroutines [select] in library code: net/http.(*persistConn).writeLoop … created by net/http.(*Transport).dialConn
+6 goroutines [IO wait] in library code: internal/poll.runtime_pollWait … created by net/http.(*Server).Serve
+7 goroutines [IO wait] in library code: internal/poll.runtime_pollWait … created by net/http.(*Transport).dialConn
+1 goroutine [IO wait] in library code: internal/poll.runtime_pollWait … created by github.com/quic-go/quic-go.(*Transport).init.func1
+1 goroutine [select] in library code: github.com/quic-go/quic-go.(*Transport).runSendQueue … created by github.com/quic-go/quic-go.(*Transport).init.func1
+1 goroutine [select] in library code: github.com/quic-go/quic-go.(*baseServer).run … created by github.com/quic-go/quic-go.newServer
+1 goroutine [select] in library code: github.com/quic-go/quic-go.(*baseServer).runSendQueue … created by github.com/quic-go/quic-go.newServer
+1 goroutine [IO wait] in library code: internal/poll.runtime_pollWait … created by net/http/httptest.(*Server).goServe
+1 goroutine [IO wait] in library code: internal/poll.runtime_pollWait … created by golang.org/x/net/http2.(*serverConn).serve
+1 goroutine [IO wait] in library code: internal/poll.runtime_pollWait … created by golang.org/x/net/http2.(*Transport).newClientConn
+1 goroutine [select] in library code: golang.org/x/net/http2.(*serverConn).serve … created by net/http.(*Server).Serve
+1 goroutine [syscall] in library code: syscall.syscalln … created by net/http.(*Server).Serve
+[paths: $GOROOT=/opt/homebrew/Cellar/go/1.26.5/libexec, $GOMODCACHE=~/gopath/pkg/mod]
+FAIL	github.com/gin-gonic/gin	0.612s
+FAIL

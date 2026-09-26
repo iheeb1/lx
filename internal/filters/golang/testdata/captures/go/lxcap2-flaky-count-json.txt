@@ -1,0 +1,22 @@
+{"Time":"2026-09-26T03:26:33.772105+01:00","Action":"start","Package":"example.com/lxcap2/flaky"}
+{"Time":"2026-09-26T03:26:34.021537+01:00","Action":"run","Package":"example.com/lxcap2/flaky","Test":"TestFlaky"}
+{"Time":"2026-09-26T03:26:34.021625+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestFlaky","Output":"=== RUN   TestFlaky\n"}
+{"Time":"2026-09-26T03:26:34.021799+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestFlaky","Output":"    f_test.go:14: first run: got 1, want 2\n"}
+{"Time":"2026-09-26T03:26:34.021826+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestFlaky","Output":"--- FAIL: TestFlaky (0.00s)\n"}
+{"Time":"2026-09-26T03:26:34.021835+01:00","Action":"fail","Package":"example.com/lxcap2/flaky","Test":"TestFlaky","Elapsed":0}
+{"Time":"2026-09-26T03:26:34.021843+01:00","Action":"run","Package":"example.com/lxcap2/flaky","Test":"TestStable"}
+{"Time":"2026-09-26T03:26:34.021848+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestStable","Output":"=== RUN   TestStable\n"}
+{"Time":"2026-09-26T03:26:34.021862+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestStable","Output":"--- PASS: TestStable (0.00s)\n"}
+{"Time":"2026-09-26T03:26:34.021873+01:00","Action":"pass","Package":"example.com/lxcap2/flaky","Test":"TestStable","Elapsed":0}
+{"Time":"2026-09-26T03:26:34.021906+01:00","Action":"run","Package":"example.com/lxcap2/flaky","Test":"TestFlaky"}
+{"Time":"2026-09-26T03:26:34.021913+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestFlaky","Output":"=== RUN   TestFlaky\n"}
+{"Time":"2026-09-26T03:26:34.02192+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestFlaky","Output":"    f_test.go:17: second run ok\n"}
+{"Time":"2026-09-26T03:26:34.021927+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestFlaky","Output":"--- PASS: TestFlaky (0.00s)\n"}
+{"Time":"2026-09-26T03:26:34.021932+01:00","Action":"pass","Package":"example.com/lxcap2/flaky","Test":"TestFlaky","Elapsed":0}
+{"Time":"2026-09-26T03:26:34.021939+01:00","Action":"run","Package":"example.com/lxcap2/flaky","Test":"TestStable"}
+{"Time":"2026-09-26T03:26:34.021945+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestStable","Output":"=== RUN   TestStable\n"}
+{"Time":"2026-09-26T03:26:34.02195+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Test":"TestStable","Output":"--- PASS: TestStable (0.00s)\n"}
+{"Time":"2026-09-26T03:26:34.021956+01:00","Action":"pass","Package":"example.com/lxcap2/flaky","Test":"TestStable","Elapsed":0}
+{"Time":"2026-09-26T03:26:34.021961+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Output":"FAIL\n"}
+{"Time":"2026-09-26T03:26:34.022762+01:00","Action":"output","Package":"example.com/lxcap2/flaky","Output":"FAIL\texample.com/lxcap2/flaky\t0.250s\n"}
+{"Time":"2026-09-26T03:26:34.02281+01:00","Action":"fail","Package":"example.com/lxcap2/flaky","Elapsed":0.251}

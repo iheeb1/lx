@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cat",
+    "packages/vite/src/node/server/index.ts"
+  ],
+  "shell": "cat packages/vite/src/node/server/index.ts",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "cat of a ~1500-line TypeScript source file (vite packages/vite/src/node/server/index.ts)",
+  "cwd": "repos/vite"
+}

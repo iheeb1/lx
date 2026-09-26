@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "shell": "npm run build",
+  "exit_code": 0,
+  "description": "npm run build (tsc -b && vite build) succeeding with a 1.37 MB chunk and the '(!) Some chunks are larger than 500 kB' warning",
+  "cwd": "/home/user/src/vite-app"
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "node",
+    "long.js"
+  ],
+  "shell": "node long.js",
+  "repo": "scratch/nodeproj",
+  "exit_code": 1,
+  "description": "node 24: 80 lines of output then a TypeError",
+  "cwd": "repos/nodeproj"
+}

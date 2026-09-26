@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "pytest"
+  ],
+  "shell": "pytest",
+  "repo": "pallets/click",
+  "exit_code": 1,
+  "description": "pytest with 11 failures after regressions in click types.py (range bounds/help text) and parser.py (option normalization): full tracebacks with source context, assertion introspection, short test summary",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

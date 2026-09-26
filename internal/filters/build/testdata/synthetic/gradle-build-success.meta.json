@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "./gradlew",
+    "build"
+  ],
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-written in real Gradle 8.10 / Maven 3.9 format; the tool is not installed or not reachable offline on the capture machine): ./gradlew build in a 4-project build served mostly from cache: 44 task lines, one javadoc task with a warning, BUILD SUCCESSFUL, actionable tasks, configuration cache lines",
+  "cwd": "/home/user/src/app"
+}

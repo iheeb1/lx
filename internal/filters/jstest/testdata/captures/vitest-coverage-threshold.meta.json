@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "--coverage",
+    "test/ok.test.ts"
+  ],
+  "shell": "CLAUDECODE=1 AI_AGENT=claude-code npx vitest run --coverage test/ok.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "all tests pass but the 95% lines coverage threshold is not met: exit 1",
+  "cwd": "repos/vitproj"
+}

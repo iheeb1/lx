@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "git",
+    "status"
+  ],
+  "exit_code": 0,
+  "cwd": "/home/user/src/express",
+  "description": "git status on branch fix-panic-on-timeout in an express clone: modified files whose paths are error-class words (error_header.ejs), a staged deletion re-added as untracked, an untracked timeout-killed.txt"
+}

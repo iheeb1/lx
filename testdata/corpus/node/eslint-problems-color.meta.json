@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "npx",
+    "eslint",
+    "--color",
+    "lib",
+    "--rule",
+    "no-var: error",
+    "--rule",
+    "prefer-const: error",
+    "--rule",
+    "prefer-arrow-callback: warn"
+  ],
+  "shell": "npx eslint --color lib --rule 'no-var: error' --rule 'prefer-const: error' --rule 'prefer-arrow-callback: warn'",
+  "repo": "expressjs/express",
+  "exit_code": 1,
+  "description": "same stricter eslint run limited to lib/ with --color forced (ANSI stylish output, 220+ problems)",
+  "cwd": "repos/express"
+}

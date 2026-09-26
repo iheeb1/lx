@@ -1,0 +1,11 @@
+db3ddb5 2025-05-05 [Steve Francia] Adding sponsorship to README.md [merge ceb39ab 67171d6]
+856b96d 2016-10-14 [Eric Paris] Merge pull request #353 from bogem/helpfunc [merge ec2fe78 011f19e]
+    Fix condition in HelpFunc
+ec2fe78 2016-10-10 [Eric Paris] Merge pull request #286 from dnephin/merge_flags_before_adding_help [merge b620a75 7faa7fc]
+    Merge persistent flags before checking for a help flag
+b620a75 2016-10-10 [Eric Paris] Merge pull request #283 from dnephin/add_flag_usage_func [merge 9c28e4b 67feb81]
+    Add support for setting a function to handle flag parsing errors
+9c28e4b 2016-08-30 [Eric Paris] Merge pull request #339 from bogem/fixes [merge d671d98 5da9888]
+    Some fixes
+d671d98 2016-08-30 [Eric Paris] Merge pull request #338 from icaoweiwei/patch-2016-08-29-2 [merge 37c3f80 4a08706]
+    Fix typo

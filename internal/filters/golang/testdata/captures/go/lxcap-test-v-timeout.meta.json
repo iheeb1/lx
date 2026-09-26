@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-v",
+    "-timeout",
+    "2s",
+    "./dead/"
+  ],
+  "shell": "go test -v -timeout 2s ./dead/",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -v -timeout 2s on a test blocked on a channel send",
+  "cwd": "/home/user/src/lxcap"
+}

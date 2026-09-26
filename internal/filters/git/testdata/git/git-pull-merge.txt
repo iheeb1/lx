@@ -1,0 +1,13 @@
+From /home/user/src/origin
+ * branch            main       -> FETCH_HEAD
+   c9c5299..3100b9b  main       -> origin/main
+Merge made by the 'ort' strategy.
+ c.go       | 3 +++
+ extra1.txt | 1 +
+ extra2.txt | 1 +
+ extra3.txt | 1 +
+ 4 files changed, 6 insertions(+)
+ create mode 100644 c.go
+ create mode 100644 extra1.txt
+ create mode 100644 extra2.txt
+ create mode 100644 extra3.txt

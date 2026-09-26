@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "make"
+  ],
+  "exit_code": 2,
+  "description": "make where a prerequisite has no source: builtin rule compiles prog.o, then 'No rule to make target' (GNU make 3.81)",
+  "cwd": "/home/user/src/norule"
+}

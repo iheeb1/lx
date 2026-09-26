@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "find",
+    "."
+  ],
+  "shell": "find .",
+  "exit_code": 0,
+  "description": "find in a tree with an empty dir, spaces, unicode, a colon in a file name and node_modules",
+  "cwd": "/home/user/scratch/tricky"
+}

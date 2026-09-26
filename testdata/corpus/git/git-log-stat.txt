@@ -1,0 +1,572 @@
+commit 1bd0ecf2d3e08da37efa270bb7be20c1eddb0d68
+Author: HazyLab <hazyhaarlab@gmail.com>
+Date:   Fri Sep 25 08:01:37 2026 +0200
+
+    fix(context): load Keys under the mutex in Copy (#4854)
+    
+    Copy read c.Keys before RLock. Set stores that field under Lock when the
+    map is created. The race detector reports the unsynchronized access, and
+    the copy can observe a nil header and drop keys Set has already published.
+    
+    maps.Clone(nil) returns nil, so the load and the clone belong in the same
+    critical section. Map iteration was already under the mutex.
+    
+    Co-authored-by: hazyhaar <hazyhaarlabs@gmail.com>
+
+ context.go      |  3 +--
+ context_test.go | 24 ++++++++++++++++++++++++
+ 2 files changed, 25 insertions(+), 2 deletions(-)
+
+commit 3b08cd7235bd5ad2f055aa9e38135f111f6c5926
+Author: water <672684719@qq.com>
+Date:   Sat Sep 19 21:11:32 2026 +0800
+
+    fix: reset skipped-nodes stack on getValue entry to prevent slice overflow panic [#4818] (#4819)
+    
+    * fix: reset skipped-nodes stack on getValue entry to prevent slice overflow panic [#4818]
+    
+    * test: add regression test for getValue skipped-nodes overflow panic [#4818]
+    
+    * test(gin): consolidate routing regression tests
+    
+    - Move skipped-node regression cases into the existing routing test suite without changing behavior.
+    
+    ---------
+    
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ routes_test.go | 97 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ tree.go        |  8 +++++
+ 2 files changed, 105 insertions(+)
+
+commit d8f2d588d7573b3438cfc95b7a47f9ec8966273c
+Author: Ruben Pari <73421813+RubenPari@users.noreply.github.com>
+Date:   Sat Sep 19 08:41:53 2026 +0200
+
+    fix(engine): add default ReadHeaderTimeout to http.Server in Run methods (#4800)
+    
+    Engine.Run, RunTLS, and RunListener created an http.Server without
+    ReadHeaderTimeout, leaving applications exposed to slowloris-style
+    resource exhaustion. A new Engine.ReadHeaderTimeout field (default
+    10s) is now applied to the http.Server created by these methods.
+    Users can customize the value or use a custom http.Server for full
+    control.
+    
+    Fixes #4760
+    
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ gin.go      | 39 ++++++++++++++++++++++++++++++++++-----
+ gin_test.go | 20 ++++++++++++++++++++
+ 2 files changed, 54 insertions(+), 5 deletions(-)
+
+commit 8ad9f9cbeab45887327608f393bb614187e06099
+Author: Wahid Rizka Fathurrohman <58039870+wahidrizka@users.noreply.github.com>
+Date:   Sat Sep 19 13:21:21 2026 +0700
+
+    docs: fix the graceful shutdown example (#4809)
+    
+    The example calls errors.Is but never imports errors, so copying it as
+    written fails to build with "undefined: errors".
+    
+    It also passes an unbuffered channel to signal.Notify, which go vet
+    reports as a misuse: signal delivery is non-blocking, so a signal that
+    arrives before the receive is dropped.
+
+ docs/doc.md | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit b1f77cf536154f67e3332fc5d0965b891be86606
+Author: Gaurav Patil <159000263+GP-09@users.noreply.github.com>
+Date:   Sat Sep 19 11:50:37 2026 +0530
+
+    feat(gin): add support for the HTTP QUERY method (RFC 10008) (#4806)
+    
+    * feat: add support for the HTTP QUERY method (RFC 10008)
+    
+    Add a QUERY shortcut on RouterGroup, a gin.MethodQuery constant and a
+    gin.IQueryRoutes interface for callers that only hold an IRoutes value.
+    
+    QUERY is deliberately kept out of IRoutes and out of Any:
+    
+    - Adding a method to IRoutes would break every type outside of Gin that
+      implements it, such as test doubles and wrappers.
+    - Leaving Any untouched keeps existing catch-all routes matching exactly
+      the methods they matched before. Match([]string{gin.MethodQuery, ...})
+      covers the case where QUERY is wanted alongside other methods.
+    
+    MethodQuery is declared in Gin because the standard library does not
+    provide http.MethodQuery yet. The value stays correct once it does.
+    
+    Ref #4721
+    
+    Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+    
+    * fix(router): remove duplicate QUERY method
+    
+    - Consolidate QUERY into the existing router method after merging master
+    - Preserve the MethodQuery constant and request body documentation
+    
+    ---------
+    
+    Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ docs/doc.md         | 41 +++++++++++++++++++++++++++++++++++++++
+ ginS/gins.go        |  5 +++++
+ ginS/gins_test.go   | 13 +++++++++++++
+ routergroup.go      | 38 ++++++++++++++++++++++++++++++++----
+ routergroup_test.go |  4 ++++
+ routes_test.go      | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 152 insertions(+), 4 deletions(-)
+
+commit 05b14df992a31fe8ff567338bb6c934f1aa3872f
+Author: Bob Du <i@bobdu.cc>
+Date:   Sat Sep 19 14:12:33 2026 +0800
+
+    chore(deps): bump github.com/stretchr/testify to v1.12.1 (#4822)
+    
+    Signed-off-by: Bob Du <i@bobdu.cc>
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ go.mod |  8 ++------
+ go.sum | 17 ++++-------------
+ 2 files changed, 6 insertions(+), 19 deletions(-)
+
+commit e318c6add8f947ba3c0db15f782517a9bb6bedc2
+Author: daixiheguu <daixihegu@outlook.com>
+Date:   Sat Sep 19 14:10:49 2026 +0800
+
+    docs: align function comments with names (#4814)
+    
+    Signed-off-by: daixiheguu <daixihegu@outlook.com>
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ gin_integration_test.go |  1 +
+ render/render_test.go   |  4 ++--
+ response_writer_test.go |  3 ++-
+ routes_test.go          | 18 +++++++++---------
+ tree.go                 |  6 +++---
+ utils.go                |  3 ++-
+ 6 files changed, 19 insertions(+), 16 deletions(-)
+
+commit 3329b63aa7c0b107dd6d72a74add233fe11485d8
+Author: Bob Du <i@bobdu.cc>
+Date:   Sat Sep 19 14:09:40 2026 +0800
+
+    ci(codecov): fix stale comparison base and invalid config (#4823)
+    
+    Signed-off-by: Bob Du <i@bobdu.cc>
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ .github/workflows/gin.yml | 4 ++++
+ codecov.yml               | 3 ++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+commit 5c6a15f8f9566612076bd209e623861bf92a6283
+Author: Langning Zhang <zln1905391059@163.com>
+Date:   Wed Sep 16 23:01:52 2026 +0800
+
+    fix(context): handle missing HTML renderer (#4805)
+    
+    * fix(context): handle missing HTML renderer
+    
+    * test(render): cover missing HTML renderer error
+    
+    ---------
+    
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ context.go            |  5 ++++
+ context_test.go       | 76 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ render/html.go        |  6 ++++
+ render/render_test.go | 10 +++++++
+ 4 files changed, 97 insertions(+)
+
+commit bc141b4dbf90d5bb5028fc68afe48782402bb2d4
+Author: Bo-Yi Wu <appleboy.tw@gmail.com>
+Date:   Wed Sep 16 22:47:17 2026 +0800
+
+    fix(deps)!: patch x/crypto vulnerabilities (#4832)
+    
+    - Upgrade x/crypto and its required dependency versions
+    - Align documentation and CI with the required Go version
+    
+    BREAKING CHANGE: Go 1.26 or later is now required by x/crypto v0.56.0. Upgrade the Go toolchain before building Gin.
+
+ .github/workflows/gin.yml |  2 +-
+ README.md                 |  2 +-
+ go.mod                    | 10 +++++-----
+ go.sum                    | 16 ++++++++--------
+ 4 files changed, 15 insertions(+), 15 deletions(-)
+
+commit b52df1fe77734c691acc1fce21647fe0ca955201
+Author: Ruben Pari <73421813+RubenPari@users.noreply.github.com>
+Date:   Wed Sep 16 15:26:35 2026 +0200
+
+    docs: document panic conditions in Handle, StaticFS, and Bind (#4797)
+    
+    Handle panics on invalid HTTP method, StaticFS panics when relativePath
+    contains URL parameters, and Bind panics when given a pointer. These
+    panic conditions are reasonable startup-time guards but were not
+    documented, making the crash risk undiscoverable without reading source.
+    
+    Fixes #4594
+
+ routergroup.go | 3 +++
+ utils.go       | 1 +
+ 2 files changed, 4 insertions(+)
+
+commit 2a1a14ff37a26ca6a76763ecc33727c23d9284e9
+Author: Jia-ben00 <2403877005@qq.com>
+Date:   Wed Sep 16 21:24:33 2026 +0800
+
+    feat(router): add QUERY method shortcut for RFC 10008 (#4830)
+    
+    * feat(router): add QUERY method shortcut for RFC 10008
+    
+    Add a QUERY() router method as a shortcut for Handle("QUERY", path, handlers),
+    following the same pattern as GET, POST, HEAD and other HTTP method shortcuts.
+    
+    The QUERY method is defined by RFC 10008 and allows sending a query in the
+    request body, similar to GET but with a body. Go's net/http does not yet
+    expose an http.MethodQuery constant, so the literal string "QUERY" is used.
+    
+    Closes #4721
+    
+    * style(router): format QUERY method test
+    
+    - Remove an extra blank line to satisfy gofmt.
+    
+    ---------
+    
+    Co-authored-by: Jia-ben00 <316397950+Jia-ben00@users.noreply.github.com>
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ gin_test.go    | 19 +++++++++++++++++++
+ routergroup.go |  7 +++++++
+ 2 files changed, 26 insertions(+)
+
+commit dcaa4296d111981ffb31ac3eba90bb63e1eb5ab9
+Author: Amirhf <amirhacking85@gmail.com>
+Date:   Sat Aug 15 09:14:19 2026 +0330
+
+    docs(path): fix malformed comment in cleanPath (#4723)
+
+ path.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8dd20118ba9a9dfa18ebba99e33d6a59b0090436
+Author: Gaurav Patil <159000263+GP-09@users.noreply.github.com>
+Date:   Sat Aug 15 11:13:07 2026 +0530
+
+    fix(deps): bump golang.org/x/net and golang.org/x/text to patched versions (#4807)
+    
+    The scheduled Trivy scan has been failing on master with two HIGH
+    findings, and it fails every pull request along with it:
+    
+    - CVE-2026-56852, golang.org/x/text, denial of service, fixed in 0.39.0
+    - CVE-2026-46600, golang.org/x/net/dns/dnsmessage, denial of service,
+      fixed in 0.56.0
+    
+    Bump both to the first patched release. golang.org/x/crypto and
+    golang.org/x/sys move with them as transitive requirements of x/net.
+    
+    Verified with the same settings the workflow uses:
+    
+      trivy fs --scanners vuln --severity CRITICAL,HIGH,MEDIUM \
+        --ignore-unfixed --exit-code 1 .
+    
+    which now exits 0. go build ./... and go test ./... pass.
+    
+    Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ go.mod |  8 ++++----
+ go.sum | 16 ++++++++--------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
+
+commit 00cfe5aac2604e0632ee674b69a1e652a2461923
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Sat Aug 15 13:42:11 2026 +0800
+
+    chore(deps): bump the actions group across 1 directory with 4 updates (#4787)
+    
+    Bumps the actions group with 4 updates in the / directory: [actions/checkout](https://github.com/actions/checkout), [actions/setup-go](https://github.com/actions/setup-go), [actions/cache](https://github.com/actions/cache) and [codecov/codecov-action](https://github.com/codecov/codecov-action).
+    
+    
+    Updates `actions/checkout` from 6 to 7
+    - [Release notes](https://github.com/actions/checkout/releases)
+    - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
+    - [Commits](https://github.com/actions/checkout/compare/v6...v7)
+    
+    Updates `actions/setup-go` from 6 to 7
+    - [Release notes](https://github.com/actions/setup-go/releases)
+    - [Commits](https://github.com/actions/setup-go/compare/v6...v7)
+    
+    Updates `actions/cache` from 5 to 6
+    - [Release notes](https://github.com/actions/cache/releases)
+    - [Changelog](https://github.com/actions/cache/blob/main/RELEASES.md)
+    - [Commits](https://github.com/actions/cache/compare/v5...v6)
+    
+    Updates `codecov/codecov-action` from 6 to 7
+    - [Release notes](https://github.com/codecov/codecov-action/releases)
+    - [Changelog](https://github.com/codecov/codecov-action/blob/main/CHANGELOG.md)
+    - [Commits](https://github.com/codecov/codecov-action/compare/v6...v7)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/checkout
+      dependency-version: '7'
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+      dependency-group: actions
+    - dependency-name: actions/setup-go
+      dependency-version: '7'
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+      dependency-group: actions
+    - dependency-name: actions/cache
+      dependency-version: '6'
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+      dependency-group: actions
+    - dependency-name: codecov/codecov-action
+      dependency-version: '7'
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+      dependency-group: actions
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
+ .github/workflows/codeql.yml     |  2 +-
+ .github/workflows/gin.yml        | 12 ++++++------
+ .github/workflows/goreleaser.yml |  4 ++--
+ .github/workflows/trivy-scan.yml |  2 +-
+ 4 files changed, 10 insertions(+), 10 deletions(-)
+
+commit 34dac209ffb6ef85cc78c5d217bbb7ad001d68fd
+Author: greymoth <m.hirakawa07@icloud.com>
+Date:   Sat Jun 27 01:48:16 2026 +0900
+
+    docs: fix `BindXML` comment referencing nonexistent `binding.BindXML` (#4717)
+    
+    The doc comment on line 790 read:
+      "BindXML is a shortcut for c.MustBindWith(obj, binding.BindXML)."
+    
+    `binding.BindXML` does not exist. The correct symbol is `binding.XML`
+    (defined in binding/binding.go), which is also what the implementation
+    uses. All sibling methods (BindJSON, BindYAML, BindTOML, etc.) already
+    reference the correct symbol in their comments.
+
+ context.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 03f3e420a3c370659359fb4deb99a474229b215a
+Author: Hershel1995 <sottile-carmelo@virgilio.it>
+Date:   Tue Jun 23 14:08:30 2026 +0200
+
+    update validator library to version 10.30.3 (#4707)
+    
+    Co-authored-by: Carmelo Sottile <carmelo.sottile@ericsson.com>
+
+ go.mod | 4 ++--
+ go.sum | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+commit d9307dbcbbe796a64d9e0ef23452da888dd7f904
+Author: Muhammad Ardy Junata <ardyjunata53@gmail.com>
+Date:   Mon Jun 22 22:34:41 2026 +0700
+
+    fix(context): skip chmod on pre-existing dirs in SaveUploadedFile (#4702)
+    
+    * fix: skip chmod on pre-existing dirs in SaveUploadedFile
+    
+    Fixes #4622
+    
+    Prior to this change, SaveUploadedFile unconditionally called
+    os.Chmod(dir, mode) after os.MkdirAll, even when the target
+    directory already existed. This caused 'operation not permitted'
+    errors when saving files into system-owned directories like /tmp
+    that the current process does not own.
+    
+    The fix uses os.Stat before MkdirAll to detect whether the
+    directory already exists, and only calls os.Chmod when the
+    directory was freshly created by MkdirAll.
+    
+    This restores the behaviour from v1.10.1 where only os.MkdirAll
+    was used (which correctly skips permission changes on existing dirs)
+    while preserving the custom permission feature added in v1.12.0.
+    
+    Regression test added: TestSaveUploadedFileToExistingDir saves
+    a file into os.TempDir() (a pre-existing system directory) and
+    asserts no error is returned.
+    
+    * test: make SaveUploadedFile #4622 regression test platform-independent
+    
+    The regression test relied on os.Chmod failing on a pre-existing directory,
+    which only happens for a non-owner, non-root process. When tests run as root
+    (common in containers/CI) or with a user-owned $TMPDIR, the buggy chmod
+    succeeds, so the test passed even against the unfixed code.
+    
+    Assert the actual contract instead: a pre-existing directory's permissions
+    are left unchanged. This catches the regression deterministically on every
+    platform.
+    
+    Also tighten the SaveUploadedFile doc/comments: the requested perm is enforced
+    only on the newly created destination directory, not on every directory in the
+    path.
+    
+    Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+    
+    ---------
+    
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+    Co-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+ context.go      | 17 +++++++++++++++--
+ context_test.go | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 59 insertions(+), 2 deletions(-)
+
+commit da1e108614ecbbadfa5736b1b297b16121d23b9b
+Author: Pierre F. <pierre.fortes@gmail.com>
+Date:   Mon Jun 22 16:43:44 2026 +0200
+
+    test(context): use t.TempDir() for SaveUploadedFile permission test on WSL (#4709)
+    
+    * fix: change file creation to use c.Temp instead to work on wsl
+    
+    * test(context): use t.TempDir() in SaveUploadedFile failure test for WSL
+    
+    Mirror the WSL-portability fix applied to TestSaveUploadedFileWithPermission:
+    write under t.TempDir() instead of a relative path so the test does not depend
+    on the working directory's filesystem (drvfs reports 0o777 on WSL) and is
+    cleaned up automatically.
+    
+    Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+    
+    ---------
+    
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+    Co-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+ context_test.go | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+commit 074b669a95fd834701359acc55371e6b377618f6
+Author: MuaazTasawar <muaaztasawar6@gmail.com>
+Date:   Mon Jun 22 18:18:24 2026 +0500
+
+    test(response_writer): add tests for Flush() with and without http.Flusher (#4699)
+    
+    * test(response_writer): add tests for Flush() with and without http.Flusher
+    
+    * test(response_writer): drop stray comment and clarify Flush regression note
+    
+    - Remove orphaned doc comment left at the end of the file
+    - Reword the issue #4460 reference to reflect the no-panic guard
+    
+    ---------
+    
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ response_writer_test.go | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
+
+commit 4a3eb31fb15b2a2d78b4bdbe0c31a2c564b1977a
+Author: DadaVinqi <llp507187@gmail.com>
+Date:   Mon Jun 22 20:56:28 2026 +0800
+
+    fix(recovery): record recovered panics in c.Errors (#4698)
+    
+    * fix: record recovered panic errors
+    
+    * chore(deps): bump quic-go to v0.59.1
+    
+    * refactor(recovery): simplify panic error recording
+    
+    - Collapse the if/else into a single c.Error call in defaultHandleRecovery
+    - Assert the recorded panic error is ErrorTypePrivate in the test
+    
+    Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+    
+    ---------
+    
+    Co-authored-by: m0_66095053 <2876430886@qq.com>
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+    Co-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+ recovery.go      |  7 ++++++-
+ recovery_test.go | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 50 insertions(+), 1 deletion(-)
+
+commit 293ad7edebb3ae30369288bd6416ca0d78474727
+Author: Amirhf <amirhacking85@gmail.com>
+Date:   Mon Jun 22 14:39:26 2026 +0330
+
+    fix(context): Copy() copies Errors and Accepted fields (#4695)
+    
+    * Previously, Copy() only copied Keys and Params, leaving Errors and
+    Accepted as nil even when set on the original context. Goroutines
+    receiving a copied context could not observe errors attached before
+    the copy, and content-negotiation state set by middleware was silently
+    lost.
+    
+    * Replace assert.Equal(t, len(c.Errors), len(cp.Errors)) with assert.Len(t, cp.Errors, 2) to satisfy the testifylint linter rule
+    
+    ---------
+    
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ context.go      | 10 ++++++++++
+ context_test.go | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 54 insertions(+)
+
+commit 2e4d4f38962a6f15ae496d59b294f307eef95429
+Author: Bo-Yi Wu <appleboy.tw@gmail.com>
+Date:   Mon Jun 22 19:00:06 2026 +0800
+
+    chore(deps): bump github.com/quic-go/quic-go to v0.60.0 (#4713)
+    
+    - Upgrade quic-go from v0.59.0 to v0.60.0
+
+ go.mod | 2 +-
+ go.sum | 6 ++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+commit d75fcd4c9ab260e5225de590f1f0f8c0e0e12d11
+Author: Sai Asish Y <say.apm35@gmail.com>
+Date:   Tue Jun 2 07:02:14 2026 -0700
+
+    fix(response): panic on Hijack/CloseNotify when wrapper unsupported (#4645)
+    
+    * response_writer: don't panic on Hijack/CloseNotify when wrapper unsupported
+    
+    Closes #4638. http.TimeoutHandler's writer doesn't implement http.Hijacker/CloseNotifier; mirror Flush's graceful degradation.
+    
+    * response_writer: keep Written() false when Hijack is unsupported
+    
+    Signed-off-by: Sai Asish Y <say.apm35@gmail.com>
+    
+    ---------
+    
+    Signed-off-by: Sai Asish Y <say.apm35@gmail.com>
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+
+ response_writer.go      | 11 +++++++++--
+ response_writer_test.go | 19 +++++++++++--------
+ 2 files changed, 20 insertions(+), 10 deletions(-)
+
+commit 8d0468f72897652485933b845253386f9147a8bf
+Author: Tero Saarni <tero.saarni@est.tech>
+Date:   Tue Jun 2 16:50:57 2026 +0300
+
+    chore(deps): bump golang.org/x/net to v0.55.0 (#4678)
+    
+    Signed-off-by: Tero Saarni <tero.saarni@est.tech>
+
+ go.mod |  8 ++++----
+ go.sum | 16 ++++++++--------
+ 2 files changed, 12 insertions(+), 12 deletions(-)

@@ -1,0 +1,18 @@
+ninja: Entering directory `build'
+[1/16] Building C object CMakeFiles/netd.dir/src/buf.c.o
+[2/16] Building C object CMakeFiles/netd.dir/src/log.c.o
+[3/16] Building C object CMakeFiles/netd.dir/src/queue.c.o
+[4/16] Building C object CMakeFiles/netd.dir/src/timer.c.o
+[5/16] Building C object CMakeFiles/netd.dir/src/parse.c.o
+[6/16] Building C object CMakeFiles/netd.dir/src/util.c.o
+[7/16] Building C object CMakeFiles/netd.dir/src/conf.c.o
+[8/16] Building C object CMakeFiles/netd.dir/src/dns.c.o
+[9/16] Building C object CMakeFiles/netd.dir/src/http.c.o
+[10/16] Building C object CMakeFiles/netd.dir/src/tls.c.o
+[11/16] Building C object CMakeFiles/netd.dir/src/main.c.o
+[12/16] Building C object CMakeFiles/netd.dir/src/server.c.o
+[13/16] Building C object CMakeFiles/netd.dir/src/client.c.o
+[14/16] Building C object CMakeFiles/netd.dir/src/stats.c.o
+[15/16] Linking C static library libnetd_core.a
+[16/16] Linking C executable netd
+ld: warning: ignoring duplicate libraries: '-lpthread'

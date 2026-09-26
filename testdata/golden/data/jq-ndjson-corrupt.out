@@ -1,0 +1,25 @@
+[lx: jq output condensed from ~19.4k tokens: tables for arrays of objects, long arrays cut; not valid JSON — narrow the filter for exact values]
+[table: 300 items]
+keys: id, name, version, deps, description
+0 | pkg-0 | 1.0.0 | [] | a package that does something useful with data number 0
+1 | pkg-1 | 1.1.1 | ["dep-0"] | a package that does something useful with data number 1
+2 | pkg-2 | 1.2.2 | ["dep-0","dep-1"] | a package that does something useful with data number 2
+3 | pkg-3 | 1.3.3 | ["dep-0","dep-1","dep-2"] | a package that does something useful with data number 3
+4 | pkg-4 | 1.4.4 | [] | a package that does something useful with data number 4
+5 | pkg-5 | 1.5.5 | ["dep-0"] | a package that does something useful with data number 5
+6 | pkg-6 | 1.6.6 | ["dep-0","dep-1"] | a package that does something useful with data number 6
+7 | pkg-7 | 1.0.7 | ["dep-0","dep-1","dep-2"] | a package that does something useful with data number 7
+8 | pkg-8 | 1.1.8 | [] | a package that does something useful with data number 8
+9 | pkg-9 | 1.2.9 | ["dep-0"] | a package that does something useful with data number 9
+10 | pkg-10 | 1.3.10 | ["dep-0","dep-1"] | a package that does something useful with data number 10
+11 | pkg-11 | 1.4.11 | ["dep-0","dep-1","dep-2"] | a package that does something useful with data number 11
+12 | pkg-12 | 1.5.12 | [] | a package that does something useful with data number 12
+13 | pkg-13 | 1.6.0 | ["dep-0"] | a package that does something useful with data number 13
+14 | pkg-14 | 1.0.1 | ["dep-0","dep-1"] | a package that does something useful with data number 14
+15 | pkg-15 | 1.1.2 | ["dep-0","dep-1","dep-2"] | a package that does something useful with data number 15
+16 | pkg-16 | 1.2.3 | [] | a package that does something useful with data number 16
+17 | pkg-17 | 1.3.4 | ["dep-0"] | a package that does something useful with data number 17
+18 | pkg-18 | 1.4.5 | ["dep-0","dep-1"] | a package that does something useful with data number 18
+19 | pkg-19 | 1.5.6 | ["dep-0","dep-1","dep-2"] | a package that does something useful with data number 19
+… +280 more items
+jq: parse error: Expected separator between values at line 302, column 1

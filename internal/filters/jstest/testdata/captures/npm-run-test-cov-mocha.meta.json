@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "test-cov"
+  ],
+  "shell": "npm run test-cov",
+  "repo": "scratch/mochaproj",
+  "exit_code": 6,
+  "description": "npm run test-cov: nyc text coverage table printed after mocha's failures",
+  "cwd": "repos/mochaproj"
+}

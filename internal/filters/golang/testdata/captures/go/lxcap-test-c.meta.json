@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-c",
+    "-o",
+    "/dev/null",
+    "./buildfail/"
+  ],
+  "shell": "go test -c -o /dev/null ./buildfail/",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -c on a package whose test file does not compile",
+  "cwd": "/home/user/src/lxcap"
+}

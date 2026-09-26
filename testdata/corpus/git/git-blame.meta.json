@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "blame",
+    "gin.go"
+  ],
+  "shell": "git blame gin.go",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "git blame of gin.go (~800 lines with hash, author, timestamp per line)",
+  "cwd": "repos/gin"
+}

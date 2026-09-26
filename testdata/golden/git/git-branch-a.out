@@ -1,0 +1,18 @@
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/ (77):
+    02-05-refactor_move_jsonoptions_to_config_and_isjsonrequest_to_utils 04-21-docs_link_to_oxc-project_fast-glob_for_import.meta.glob_pattern_syntax
+    06-24-chore_update_rolldown 06-29-test_cover_a_constant_prefix_before_the_first_variable_in_dynamic_import_vars
+    07-20-feat/html-process-html-with-plugin-container-in-dev 07-24-fix_don_t_swallow_the_positional_argument_after_--profile arnaud/bump-eslint-react-refresh
+    bluwy-css-modules bluwy-fs-watch bluwy-parcel-watcher claude/fix-vite-port-binding-issue copilot/find-duplicate-issue-22388
+    copilot/fix-30fb8ddb-e23f-4a2c-ba29-02144fbd2479 copilot/fix-bf497b05-f6e2-40f5-828c-307e17ee98b3 copilot/fix-regex-for-modulepreload
+    copilot/fix-vite-named-imports css-scope-to-ordering fbm/examine-non-js-modules fbm/verify-create-vite-templates feat/bundled-dev-accept-exports
+    feat/bundled-dev-single-runtime-file feat/bundled-dev-static-serving feat/config-environment-resolved-hook feat/css-sourcemap-for-build
+    feat/hmr-check-boundary-outside-the-circular-imports feat/hot-update feat/register-more-references-to-safe-modules
+    feat/register-references-in-html-to-safe-modules feat/revamped-css-modules fix/avoid-unhandled-rejection-error-for-missing-properties
+    fix/lazy-redirect-to-built-chunk fix/optimize-deps-align-interop-helper-behavior-with-rolldown fix/pass-queries-to-renderbuilturl improve-fs-access-check
+    main morethanwords/main plugin-cdn renovate/es-module-lexer-2.x renovate/major-eslint-monorepo renovate/open-11.x rolldown-canary
+    shulaoda/06-19-perf_hmr_avoid_eager_subchain_allocation_in_propagateupdate shulaoda/06-19-perf_ssr_only_record_import_binding_identifiers_in_ssrtransform
+    shulaoda/06-19-refactor_server_index_imported_modules_by_url_in_soft_invalidation test/bundled-dev-settle test/bundled-dev-sweep-enabled
+    test/bundled-dev-worker test/css-sourcemap-sources-repro test/rolldown-10783 test/use-server-fs-allow-empty v1 v2 v2.5 v2.6 v2.7 v3 v3.0 v3.1 v4 v4.0 v4.1
+    v4.2 v4.4 v5 v5.0 v5.1 v5.2 v5.3 v6 v6.0 v6.1 v6.2 v7 v7.0 v7.1 v8.0 wasm-node

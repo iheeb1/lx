@@ -1,0 +1,58 @@
+[lx: hidden: 38 source excerpts of repeated warnings]
+gen.c:3:61: warning: unused variable 'unused_0' [-Wunused-variable]
+    3 | int handler_0(void *ctx, int flags, const char *name) { int unused_0; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:3:21: warning: unused parameter 'ctx' [-Wunused-parameter]
+    3 | int handler_0(void *ctx, int flags, const char *name) { int unused_0; return (int)strlen(name); }
+      |                     ^
+[lx: same warning at 39 more locations: gen.c:4:21, gen.c:5:21, gen.c:6:21, gen.c:7:21, gen.c:8:21, gen.c:9:21, gen.c:10:21, gen.c:11:21, gen.c:12:21, gen.c:13:22, gen.c:14:22, gen.c:15:22, … +27 more]
+gen.c:3:30: warning: unused parameter 'flags' [-Wunused-parameter]
+    3 | int handler_0(void *ctx, int flags, const char *name) { int unused_0; return (int)strlen(name); }
+      |                              ^
+[lx: same warning at 39 more locations: gen.c:4:30, gen.c:5:30, gen.c:6:30, gen.c:7:30, gen.c:8:30, gen.c:9:30, gen.c:10:30, gen.c:11:30, gen.c:12:30, gen.c:13:31, gen.c:14:31, gen.c:15:31, … +27 more]
+gen.c:4:61: warning: unused variable 'unused_1' [-Wunused-variable]
+    4 | int handler_1(void *ctx, int flags, const char *name) { int unused_1; return (int)strlen(name); }
+      |                                                             ^~~~~~~~
+gen.c:5:61: warning: unused variable 'unused_2' [-Wunused-variable]
+gen.c:6:61: warning: unused variable 'unused_3' [-Wunused-variable]
+gen.c:7:61: warning: unused variable 'unused_4' [-Wunused-variable]
+gen.c:8:61: warning: unused variable 'unused_5' [-Wunused-variable]
+gen.c:9:61: warning: unused variable 'unused_6' [-Wunused-variable]
+gen.c:10:61: warning: unused variable 'unused_7' [-Wunused-variable]
+gen.c:11:61: warning: unused variable 'unused_8' [-Wunused-variable]
+gen.c:12:61: warning: unused variable 'unused_9' [-Wunused-variable]
+gen.c:13:62: warning: unused variable 'unused_10' [-Wunused-variable]
+gen.c:14:62: warning: unused variable 'unused_11' [-Wunused-variable]
+gen.c:15:62: warning: unused variable 'unused_12' [-Wunused-variable]
+gen.c:16:62: warning: unused variable 'unused_13' [-Wunused-variable]
+gen.c:17:62: warning: unused variable 'unused_14' [-Wunused-variable]
+gen.c:18:62: warning: unused variable 'unused_15' [-Wunused-variable]
+gen.c:19:62: warning: unused variable 'unused_16' [-Wunused-variable]
+gen.c:20:62: warning: unused variable 'unused_17' [-Wunused-variable]
+gen.c:21:62: warning: unused variable 'unused_18' [-Wunused-variable]
+gen.c:22:62: warning: unused variable 'unused_19' [-Wunused-variable]
+gen.c:23:62: warning: unused variable 'unused_20' [-Wunused-variable]
+gen.c:24:62: warning: unused variable 'unused_21' [-Wunused-variable]
+gen.c:25:62: warning: unused variable 'unused_22' [-Wunused-variable]
+gen.c:26:62: warning: unused variable 'unused_23' [-Wunused-variable]
+gen.c:27:62: warning: unused variable 'unused_24' [-Wunused-variable]
+gen.c:28:62: warning: unused variable 'unused_25' [-Wunused-variable]
+gen.c:29:62: warning: unused variable 'unused_26' [-Wunused-variable]
+gen.c:30:62: warning: unused variable 'unused_27' [-Wunused-variable]
+gen.c:31:62: warning: unused variable 'unused_28' [-Wunused-variable]
+gen.c:32:62: warning: unused variable 'unused_29' [-Wunused-variable]
+gen.c:33:62: warning: unused variable 'unused_30' [-Wunused-variable]
+gen.c:34:62: warning: unused variable 'unused_31' [-Wunused-variable]
+gen.c:35:62: warning: unused variable 'unused_32' [-Wunused-variable]
+gen.c:36:62: warning: unused variable 'unused_33' [-Wunused-variable]
+gen.c:37:62: warning: unused variable 'unused_34' [-Wunused-variable]
+gen.c:38:62: warning: unused variable 'unused_35' [-Wunused-variable]
+gen.c:39:62: warning: unused variable 'unused_36' [-Wunused-variable]
+gen.c:40:62: warning: unused variable 'unused_37' [-Wunused-variable]
+gen.c:41:62: warning: unused variable 'unused_38' [-Wunused-variable]
+gen.c:42:62: warning: unused variable 'unused_39' [-Wunused-variable]
+gen.c:43:43: warning: comparison of integers of different signs: 'int' and 'unsigned int' [-Wsign-compare]
+   43 | int compare(int a, unsigned b) { return a < b; }
+      |                                         ~ ^ ~
+[lx: same warning at 1 more location: gen.c:44:44]
+122 warnings generated.

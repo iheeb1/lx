@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "test/broken-import.test.ts"
+  ],
+  "shell": "-u CLAUDECODE -u AI_AGENT npx vitest run test/broken-import.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "only test file fails to load (missing import), full reporter",
+  "cwd": "repos/vitproj"
+}

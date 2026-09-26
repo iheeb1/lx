@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "make",
+    "vet"
+  ],
+  "exit_code": 2,
+  "description": "make vet in gin after adding a bad Sprintf call: go vet printf diagnostics under a '# pkg' header, make error",
+  "cwd": "/home/user/src/gin"
+}

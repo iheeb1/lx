@@ -1,0 +1,13 @@
+[log: 183 lines, 5 templates, 5 distinct error records, Sep 26 09:00:00 … Sep 26 09:59:40]
+Sep 26 09:00:00 web01 CRON[5000]: (root) CMD (/usr/local/bin/rotate-sessions --max-age 24h) [×87]
+    vars: web01 ×64+ distinct (CRON[5000]:, …)
+Sep 26 09:00:20 web01 shop-api[2201]: level=info msg="request completed" method=GET path=/api/products status=200 duration=11ms [×88]
+    vars: web01 shop-api[2201]: ×49, shop-api[2202]: ×39; duration ×20 distinct (11ms, …)
+Sep 26 09:10:00 web01 nginx[1187]: 2026/09/26 09:10:00 [error] 1188#1188: *9030 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.3.30, server: shop.example.com, request: "GET /api/cart HTTP/1.1", upstream: "http://127.0.0.1:8080/api/cart", host: "shop.example.com"
+Sep 26 09:25:00 web01 nginx[1187]: 2026/09/26 09:25:00 [error] 1188#1188: *9075 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.3.75, server: shop.example.com, request: "GET /api/cart HTTP/1.1", upstream: "http://127.0.0.1:8080/api/cart", host: "shop.example.com"
+Sep 26 09:33:20 web01 systemd[1]: shop-api.service: Main process exited, code=exited, status=1/FAILURE
+Sep 26 09:33:20 web01 systemd[1]: shop-api.service: Failed with result 'exit-code'.
+Sep 26 09:33:20 web01 systemd[1]: shop-api.service: Scheduled restart job, restart counter is at 3.
+Sep 26 09:33:20 web01 systemd[1]: Started shop-api.service - Shop API.
+Sep 26 09:40:00 web01 nginx[1187]: 2026/09/26 09:40:00 [error] 1188#1188: *9120 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.3.120, server: shop.example.com, request: "GET /api/cart HTTP/1.1", upstream: "http://127.0.0.1:8080/api/cart", host: "shop.example.com"
+Sep 26 09:55:00 web01 nginx[1187]: 2026/09/26 09:55:00 [error] 1188#1188: *9165 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.3.165, server: shop.example.com, request: "GET /api/cart HTTP/1.1", upstream: "http://127.0.0.1:8080/api/cart", host: "shop.example.com"

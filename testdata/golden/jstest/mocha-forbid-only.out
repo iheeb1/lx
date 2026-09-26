@@ -1,0 +1,9 @@
+ Exception during run: Error: `.only` forbidden by --forbid-only
+    … 3 library frames (mocha)
+    at Suite.<anonymous> (adv/only.js:3:6)
+    … 2 library frames (mocha)
+    at Object.<anonymous> (adv/only.js:2:1)
+    … 13 library frames (node:internal, mocha)
+    at async exports.handler (node_modules/mocha/lib/cli/run.js:389:5) {
+  code: 'ERR_MOCHA_FORBIDDEN_EXCLUSIVITY'
+}

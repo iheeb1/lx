@@ -1,0 +1,32 @@
+b1f77cf 2026-09-19 [Gaurav Patil <159000263+GP-09@users.noreply.github.com>] feat(gin): add support for the HTTP QUERY method (RFC 10008) (#4806)
+    * feat: add support for the HTTP QUERY method (RFC 10008)
+
+    Add a QUERY shortcut on RouterGroup, a gin.MethodQuery constant and a
+    gin.IQueryRoutes interface for callers that only hold an IRoutes value.
+
+    QUERY is deliberately kept out of IRoutes and out of Any:
+
+    - Adding a method to IRoutes would break every type outside of Gin that
+      implements it, such as test doubles and wrappers.
+    - Leaving Any untouched keeps existing catch-all routes matching exactly
+      the methods they matched before. Match([]string{gin.MethodQuery, ...})
+      covers the case where QUERY is wanted alongside other methods.
+
+    MethodQuery is declared in Gin because the standard library does not
+    provide http.MethodQuery yet. The value stays correct once it does.
+
+    Ref #4721
+
+    Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+
+    * fix(router): remove duplicate QUERY method
+
+    - Consolidate QUERY into the existing router method after merging master
+    - Preserve the MethodQuery constant and request body documentation
+
+    ---------
+
+    Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+    Co-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>
+ docs/doc.md +41, ginS/{gins.go +5, gins_test.go +13}, routergroup.go +34 -4, routergroup_test.go +4, routes_test.go +55
+ 6 files changed, 152 insertions(+), 4 deletions(-)

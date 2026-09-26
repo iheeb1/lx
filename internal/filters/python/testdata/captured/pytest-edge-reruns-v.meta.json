@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "--reruns",
+    "2",
+    "-v",
+    "tests/test_flaky.py",
+    "tests/test_basic.py"
+  ],
+  "shell": "pytest -p no:cacheprovider --reruns 2 -v tests/test_flaky.py tests/test_basic.py",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): pytest-rerunfailures -v: RERUN status lines, captured output repeated per rerun, '7 rerun' in the result line",
+  "cwd": "/home/user/src/edge",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv: pytest 8.3.4, pytest-cov 4.1.0, pytest-xdist 3.8.0, pytest-timeout 2.4.0, pytest-rerunfailures 16.0.1, pip 21.2.4"
+}

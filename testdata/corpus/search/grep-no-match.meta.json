@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "ThisIdentifierDoesNotExist",
+    "."
+  ],
+  "shell": "grep -rn \"ThisIdentifierDoesNotExist\" .",
+  "repo": "gin-gonic/gin",
+  "exit_code": 1,
+  "description": "grep -rn with zero matches: empty output and exit code 1",
+  "cwd": "repos/gin"
+}

@@ -1,0 +1,28 @@
+HTTP/2 401
+content-type: application/json; charset=utf-8
+x-github-media-type: github.v3; format=json
+access-control-expose-headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, X-GitHub-Edge-Region, Deprecation, Sunset
+access-control-allow-origin: *
+strict-transport-security: max-age=31536000; includeSubdomains; preload
+x-frame-options: deny
+x-content-type-options: nosniff
+x-xss-protection: 0
+referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
+content-security-policy: default-src 'none'
+vary: Accept-Encoding, Accept, X-Requested-With
+server: github.com
+date: Sat, 26 Sep 2026 02:06:26 GMT
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 55
+x-ratelimit-used: 5
+x-ratelimit-resource: core
+x-ratelimit-reset: 1790391607
+content-length: 120
+x-github-request-id: 0642:2D6014:1CAAC5A:1CCEF8F:6AB728A2
+x-github-edge-region: fra
+
+{
+  "message": "Requires authentication",
+  "documentation_url": "https://docs.github.com/rest",
+  "status": "401"
+}

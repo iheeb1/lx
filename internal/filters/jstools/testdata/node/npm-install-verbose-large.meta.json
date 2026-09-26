@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npm",
+    "install",
+    "--loglevel",
+    "verbose",
+    "--prefer-offline"
+  ],
+  "shell": "npm install --loglevel verbose --prefer-offline",
+  "exit_code": 0,
+  "description": "npm install --loglevel verbose --prefer-offline of express's dependencies: ~1100 npm http fetch/cache lines, deprecations, audit summary",
+  "cwd": "/home/user/src/express-copy"
+}

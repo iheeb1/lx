@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "mod",
+    "download",
+    "-x"
+  ],
+  "shell": "go mod download -x",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "go mod download -x in cobra with cold cache: every proxy GET request and response line",
+  "cwd": "repos/cobra"
+}

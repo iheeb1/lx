@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-race",
+    "./racepost"
+  ],
+  "shell": "go test -race ./racepost",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -race ./racepost: TestFirst fails, then TestMain (after m.Run printed FAIL) races; the race report comes after the final FAIL line",
+  "cwd": "/home/user/src/lxcap2"
+}

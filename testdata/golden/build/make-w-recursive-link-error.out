@@ -1,0 +1,10 @@
+[lx: hidden: 5 recipe commands (make ×2, cc ×2, ar), 5 directory lines]
+make[1]: Entering directory `/home/user/src/recur/app'
+cc -o app main.o ../core/libcore.a
+Undefined symbols for architecture arm64:
+  "_missing_symbol", referenced from:
+      _main in main.o
+ld: symbol(s) not found for architecture arm64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [app] Error 1
+make: *** [all] Error 2

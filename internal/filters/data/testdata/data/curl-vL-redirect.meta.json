@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-vL",
+    "http://github.com/golang/go/blob/master/README.md"
+  ],
+  "shell": "curl -vL http://github.com/golang/go/blob/master/README.md",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -vL following a 301 to a 250 KB GitHub HTML page: two request/response exchanges, TLS noise, cookies (sanitized), big HTML body",
+  "cwd": "data/api"
+}

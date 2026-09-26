@@ -1,0 +1,5 @@
+From /home/user/src/origin
+ * [new branch] (8, each -> origin/<name>):
+    chore/deps docs/readme feat/login feat/signup fix/crash-on-start fix/typo perf/cache refactor/api
+ * [new tag] (4):
+    v1.0.0 v1.1.0 v1.2.0 v2.0.0

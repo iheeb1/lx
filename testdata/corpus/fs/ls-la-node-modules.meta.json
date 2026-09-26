@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "ls",
+    "-la",
+    "node_modules"
+  ],
+  "shell": "ls -la node_modules",
+  "repo": "moment/luxon",
+  "exit_code": 0,
+  "description": "ls -la node_modules in a JS project (~470 entries with permissions, owner, size, mtime)",
+  "cwd": "repos/luxon"
+}

@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "git",
+    "branch"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git branch (locals only)"
+}

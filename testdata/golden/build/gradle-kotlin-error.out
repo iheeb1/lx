@@ -1,0 +1,15 @@
+[lx: hidden: 2 task lines (executed, NO-SOURCE), 5 lines of Gradle's help text (* Try:, --warning-mode)]
+> Task :app:compileKotlin FAILED
+w: file:///home/user/src/app/app/src/main/kotlin/com/example/App.kt:12:13 Variable 'unused' is never used.
+e: file:///home/user/src/app/app/src/main/kotlin/com/example/App.kt:18:9 Unresolved reference 'fetchAll'.
+e: file:///home/user/src/app/app/src/main/kotlin/com/example/Repo.kt:40:24 Argument type mismatch: actual type is 'String', but 'Int' was expected.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+BUILD FAILED in 9s
+2 actionable tasks: 2 executed

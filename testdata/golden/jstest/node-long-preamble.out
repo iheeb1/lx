@@ -1,0 +1,23 @@
+info request 0 served
+info request 1 served
+info request 2 served
+info request 3 served
+info request 4 served
+info request 5 served
+info request 6 served
+info request 7 served
+info request 8 served
+info request 9 served
+info request 10 served
+  … 68 similar lines …
+info request 79 served
+long.js:2
+null.x;
+     ^
+
+TypeError: Cannot read properties of null (reading 'x')
+    at Object.<anonymous> (long.js:2:6)
+    at Module._compile (node:internal/modules/cjs/loader:1871:14)
+    … 6 library frames (node:internal)
+
+Node.js v24.18.0

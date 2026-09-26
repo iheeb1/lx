@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "clang++",
+    "-std=c++17",
+    "-c",
+    "tmpl.cpp"
+  ],
+  "exit_code": 1,
+  "description": "clang++ -std=c++17 -c on a file with a template instantiation error (note: in instantiation \u2026 requested here chains, candidate notes from libc++ headers) and a bad std::sort comparator",
+  "cwd": "/home/user/src/cxx"
+}

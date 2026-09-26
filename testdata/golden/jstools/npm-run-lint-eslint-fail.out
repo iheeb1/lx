@@ -1,0 +1,147 @@
+> express@5.2.1 lint
+> eslint . --rule no-var: error --rule prefer-arrow-callback: warn
+
+[1751 problems grouped by message (too many for per-file blocks); at most 10 positions per file]
+error  Unexpected var, use let or const instead  no-var  ×1751 in 136 files:
+  examples/auth/index.js ×9: 7:1 8:1 9:1 10:1 12:1 31:3 32:3 43:1 62:3
+  examples/content-negotiation/db.js: 3:1
+  examples/content-negotiation/index.js ×4: 3:1 4:1 5:1 34:3
+  examples/content-negotiation/users.js: 3:1
+  examples/cookie-sessions/index.js ×3: 7:1 8:1 10:1
+  examples/cookies/index.js ×5: 7:1 8:1 9:1 10:1 40:3
+  examples/downloads/index.js ×4: 7:1 8:1 10:1 13:1
+  examples/ejs/index.js ×4: 7:1 8:1 10:1 39:1
+  examples/error-pages/index.js ×6: 7:1 8:1 9:1 10:1 11:1 43:3
+  examples/error/index.js ×4: 7:1 8:1 9:1 10:1
+  examples/hello-world/index.js ×2: 3:1 5:1
+  examples/markdown/index.js ×7: 7:1 8:1 9:1 10:1 11:1 13:1 20:5
+  examples/multi-router/controllers/api_v1.js ×2: 3:1 5:1
+  examples/multi-router/controllers/api_v2.js ×2: 3:1 5:1
+  examples/multi-router/index.js ×2: 3:1 5:1
+  examples/mvc/controllers/pet/index.js ×3: 7:1 12:3 27:3
+  examples/mvc/controllers/user-pet/index.js ×5: 7:1 13:3 14:3 15:3 17:3
+  examples/mvc/controllers/user/index.js ×3: 7:1 12:3 37:3
+  examples/mvc/db.js ×2: 5:1 12:1
+  examples/mvc/index.js ×8: 7:1 8:1 9:1 10:1 11:1 13:1 26:3 54:3
+  examples/mvc/lib/boot.js ×14: 7:1 8:1 9:1 12:3 13:3 15:5 18:5 19:5 20:5 21:5 … +4 more
+  examples/online/index.js ×5: 14:1 15:1 16:1 17:1 25:1
+  examples/params/index.js ×7: 7:1 8:1 9:1 13:1 64:3 65:3 66:3
+  examples/resource/index.js ×11: 7:1 9:1 16:5 17:5 18:5 23:5 30:1 41:1 49:5 54:5 … +1 more
+  examples/route-map/index.js ×7: 7:1 8:1 10:1 12:1 16:8 31:1 45:1
+  examples/route-middleware/index.js ×4: 7:1 9:1 19:1 27:3
+  examples/route-separation/index.js ×9: 7:1 8:1 9:1 10:1 11:1 12:1 13:1 14:1 15:1
+  examples/route-separation/post.js: 5:1
+  examples/route-separation/user.js ×4: 5:1 15:3 20:5 43:3
+  examples/search/index.js ×6: 14:1 15:1 16:1 18:1 19:1 53:3
+  examples/search/public/client.js ×3: 3:1 4:1 7:3
+  examples/session/index.js ×4: 10:1 11:1 13:1 23:3
+  examples/session/redis.js ×6: 7:1 8:1 9:1 13:1 15:1 28:3
+  examples/static-files/index.js ×4: 7:1 8:1 9:1 10:1
+  examples/vhost/index.js ×6: 7:1 8:1 9:1 21:1 35:1 44:1
+  examples/view-constructor/github-view.js ×6: 7:1 8:1 9:1 37:3 38:3 46:5
+  examples/view-constructor/index.js ×5: 7:1 8:1 9:1 11:1 16:5
+  examples/view-locals/index.js ×4: 7:1 8:1 9:1 10:1
+  examples/view-locals/user.js: 30:1
+  examples/web-service/index.js ×10: 7:1 9:1 16:3 31:3 49:1 53:1 59:1 65:1 86:3 87:3
+  lib/application.js ×42: 16:1 17:1 18:1 19:1 20:1 21:1 22:1 23:1 24:1 25:1 … +32 more
+  lib/express.js ×8: 15:1 16:1 17:1 18:1 19:1 20:1 21:1 37:3
+  lib/request.js ×36: 16:1 17:1 18:1 19:1 20:1 21:1 22:1 23:1 30:1 73:3 … +26 more
+  lib/response.js ×90: 15:1 16:1 17:1 18:1 19:1 20:1 21:1 22:1 23:1 24:1 … +80 more
+  lib/utils.js ×20: 15:1 16:1 17:1 18:1 19:1 20:1 21:1 90:3 91:3 92:3 … +10 more
+  lib/view.js ×26: 16:1 17:1 18:1 25:1 26:1 27:1 28:1 29:1 53:3 64:3 … +16 more
+  test/Route.js ×32: 3:1 4:1 5:1 11:5 12:5 19:5 20:5 27:10 49:7 50:7 … +22 more
+  test/Router.js ×71: 3:1 4:1 11:5 20:5 21:5 32:5 33:5 45:5 55:5 65:5 … +61 more
+  test/acceptance/auth.js ×2: 1:1 2:1
+  test/acceptance/content-negotiation.js: 2:1
+  test/acceptance/cookie-sessions.js ×2: 2:1 3:1
+  test/acceptance/cookies.js ×2: 2:1 4:1
+  test/acceptance/downloads.js: 2:1
+  test/acceptance/ejs.js: 2:1
+  test/acceptance/error-pages.js: 2:1
+  test/acceptance/error.js: 2:1
+  test/acceptance/hello-world.js ×2: 2:1 3:1
+  test/acceptance/markdown.js ×2: 2:1 3:1
+  test/acceptance/multi-router.js ×2: 1:1 2:1
+  test/acceptance/mvc.js: 2:1
+  test/acceptance/params.js ×2: 1:1 2:1
+  test/acceptance/resource.js ×2: 1:1 2:1
+  test/acceptance/route-map.js: 2:1
+  test/acceptance/route-separation.js ×2: 2:1 3:1
+  test/acceptance/vhost.js ×2: 1:1 2:1
+  test/acceptance/web-service.js: 2:1
+  test/app.all.js ×5: 3:1 4:1 9:5 10:5 26:5
+  test/app.engine.js ×8: 3:1 4:1 6:1 19:7 33:7 40:7 54:7 69:7
+  test/app.head.js ×7: 3:1 4:1 5:1 9:5 22:5 33:7 49:5
+  test/app.js ×14: 3:1 4:1 5:1 9:5 15:5 28:5 43:5 44:5 45:5 46:5 … +4 more
+  test/app.listen.js ×7: 3:1 4:1 8:5 10:5 15:5 16:5 18:5
+  test/app.locals.js ×4: 3:1 4:1 9:7 17:9
+  test/app.options.js ×10: 3:1 8:5 21:5 35:5 53:5 63:5 64:5 78:7 79:7 101:5
+  test/app.param.js ×29: 3:1 9:7 19:9 24:9 41:7 51:9 61:7 62:7 63:7 89:7 … +19 more
+  test/app.render.js ×34: 3:1 4:1 5:1 6:1 11:7 23:7 36:7 49:7 62:7 84:9 … +24 more
+  test/app.request.js ×15: 3:1 4:1 10:7 26:7 27:7 28:7 52:7 53:7 54:7 80:7 … +5 more
+  test/app.response.js ×15: 3:1 4:1 10:7 26:7 27:7 28:7 52:7 53:7 54:7 80:7 … +5 more
+  test/app.route.js ×18: 3:1 4:1 8:5 24:5 43:5 56:5 67:7 68:7 89:7 90:7 … +8 more
+  test/app.router.js ×107: 3:1 4:1 9:1 13:5 14:5 47:9 59:9 65:7 66:7 96:7 … +97 more
+  test/app.routes.error.js ×8: 3:1 4:1 10:7 26:7 28:7 29:7 30:7 31:7
+  test/app.use.js ×39: 3:1 4:1 5:1 6:1 10:5 23:7 38:7 41:7 64:7 72:7 … +29 more
+  test/config.js ×34: 3:1 4:1 9:7 15:7 21:7 26:7 31:7 37:7 43:9 48:9 … +24 more
+  test/exports.js ×5: 3:1 4:1 5:1 59:5 72:5
+  test/express.json.js ×58: 3:1 4:1 7:1 8:1 53:5 74:5 123:7 133:7 134:7 135:7 … +48 more
+  test/express.raw.js ×59: 3:1 4:1 6:1 7:1 24:5 66:5 88:7 89:7 90:7 98:7 … +49 more
+  test/express.static.js ×17: 3:1 4:1 5:1 8:1 9:1 11:1 12:1 14:1 104:7 143:7 … +7 more
+  test/express.text.js ×55: 3:1 4:1 6:1 7:1 23:5 61:5 79:7 80:7 87:7 88:7 … +45 more
+  test/express.urlencoded.js ×63: 3:1 4:1 7:1 8:1 24:5 63:5 156:9 158:14 167:13 184:9 … +53 more
+  test/middleware.basic.js ×5: 3:1 4:1 5:1 10:7 24:9
+  test/regression.js ×2: 3:1 8:5
+  test/req.accepts.js ×10: 3:1 9:7 21:7 34:7 48:5 62:7 74:7 87:7 100:7 113:7
+  test/req.acceptsCharsets.js ×5: 3:1 10:9 24:9 37:9 50:9
+  test/req.acceptsEncodings.js ×3: 3:1 9:7 25:7
+  test/req.acceptsLanguages.js ×4: 3:1 9:7 25:7 41:9
+  test/req.baseUrl.js ×14: 3:1 4:1 9:7 21:7 22:7 35:7 36:7 37:7 38:7 53:7 … +4 more
+  test/req.fresh.js ×10: 3:1 5:1 10:7 11:7 25:7 39:7 55:7 56:7 74:7 89:7
+  test/req.get.js ×5: 3:1 10:7 24:7 37:7 49:7
+  test/req.host.js ×11: 3:1 9:7 22:7 35:7 48:7 61:7 75:9 91:9 107:9 123:11 … +1 more
+  test/req.hostname.js ×13: 3:1 9:7 22:7 35:7 48:7 61:7 75:9 91:9 107:9 123:11 … +3 more
+  test/req.ip.js ×10: 3:1 11:11 26:11 41:11 56:11 57:11 75:11 81:11 90:9 98:9
+  test/req.ips.js ×5: 3:1 11:11 26:11 43:11 59:9
+  test/req.is.js ×13: 3:1 4:1 9:7 23:7 37:7 53:7 68:7 84:7 98:7 112:7 … +3 more
+  test/req.path.js ×2: 3:1 9:7
+  test/req.protocol.js ×8: 3:1 9:7 22:9 37:9 52:9 67:9 82:11 100:9
+  test/req.query.js ×11: 3:1 4:1 10:7 18:7 27:9 35:9 45:9 55:9 67:9 77:9 … +1 more
+  test/req.range.js ×9: 3:1 4:1 9:7 22:7 35:7 48:7 61:7 74:7 89:9
+  test/req.route.js ×2: 3:1 9:7
+  test/req.secure.js ×7: 3:1 10:9 26:9 39:9 54:9 69:9 85:11
+  test/req.signedCookies.js ×3: 3:1 10:7 27:9
+  test/req.stale.js ×5: 3:1 9:7 10:7 24:7 38:7
+  test/req.subdomains.js ×12: 3:1 10:9 23:9 36:9 51:9 66:9 81:9 98:11 112:11 126:11 … +2 more
+  test/req.xhr.js: 3:1
+  test/res.append.js ×10: 3:1 4:1 5:1 10:7 30:7 45:7 66:7 86:7 109:5 112:10
+  test/res.attachment.js ×9: 5:1 11:7 25:7 38:7 51:7 64:7 79:7 93:7 107:7
+  test/res.clearCookie.js ×5: 3:1 9:7 24:7 37:7 50:7
+  test/res.cookie.js ×22: 3:1 10:7 25:7 38:7 56:7 71:9 86:9 102:9 116:9 129:9 … +12 more
+  test/res.download.js ×43: 3:1 4:1 5:1 8:1 9:1 10:1 11:1 13:1 18:7 32:7 … +33 more
+  test/res.format.js ×12: 3:1 4:1 8:1 35:1 50:1 64:1 79:1 98:7 132:9 159:7 … +2 more
+  test/res.get.js ×3: 3:1 4:1 9:7
+  test/res.json.js ×14: 3:1 10:7 22:7 37:9 50:9 63:9 78:9 93:9 108:9 113:9 … +4 more
+  test/res.jsonp.js ×25: 3:1 6:1 11:7 24:7 37:7 50:7 65:7 78:7 91:7 104:7 … +15 more
+  test/res.links.js ×5: 3:1 4:1 9:7 26:7 48:7
+  test/res.locals.js ×4: 3:1 9:7 22:5 23:5
+  test/res.location.js ×26: 3:1 11:7 24:7 37:7 50:7 62:7 74:7 86:7 98:7 112:9 … +16 more
+  test/res.redirect.js ×18: 3:1 4:1 5:1 10:7 23:7 36:7 51:7 66:7 83:7 98:7 … +8 more
+  test/res.render.js ×32: 3:1 4:1 5:1 6:1 11:7 25:7 40:7 54:7 68:7 83:7 … +22 more
+  test/res.send.js ×55: 3:1 5:1 6:1 7:1 8:1 10:1 15:7 29:7 44:7 58:7 … +45 more
+  test/res.sendFile.js ×83: 3:1 4:1 5:1 8:1 10:1 11:1 12:1 13:1 18:7 26:7 … +73 more
+  test/res.sendStatus.js ×5: 3:1 4:1 9:7 21:7 33:7
+  test/res.set.js ×10: 3:1 4:1 9:7 22:7 38:7 51:7 65:7 79:7 94:7 111:7
+  test/res.status.js ×16: 9:7 23:9 35:9 47:9 59:9 71:9 83:9 95:9 107:9 121:9 … +6 more
+  test/res.type.js ×9: 3:1 9:7 22:7 34:7 48:9 61:9 74:9 87:9 100:9
+  test/res.vary.js ×8: 3:1 4:1 5:1 10:7 25:7 41:7 57:7 73:7
+  test/support/tmpl.js ×5: 1:1 3:1 27:5 28:5 30:10
+  test/support/utils.js ×2: 7:1 30:5
+  test/utils.js ×2: 3:1 5:1
+
+[2526 warnings grouped by rule; first 3 locations each]
+warning  Unexpected function expression  prefer-arrow-callback  ×2526: examples/auth/index.js:30:9 examples/auth/index.js:50:30 examples/auth/index.js:68:45 … +2523 more
+
+✖ 4277 problems (1751 errors, 2526 warnings)
+  1740 errors and 2526 warnings potentially fixable with the `--fix` option.

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--ci",
+    "test2/console.test.js"
+  ],
+  "shell": "npx jest --ci test2/console.test.js",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "jest 29 on a single file: console output printed as it happens (before the FAIL line), console.error with an Error stack, then the \u2713/\u2715 list",
+  "cwd": "repos/jestproj"
+}

@@ -1,0 +1,870 @@
+packages/vite/src/node/server/hmr.ts-4-import colors from 'picocolors'
+packages/vite/src/node/server/hmr.ts-5-import type { RollupError } from 'rolldown'
+packages/vite/src/node/server/hmr.ts:6:import type { CustomPayload, HotPayload, Update } from '#types/hmrPayload'
+packages/vite/src/node/server/hmr.ts-7-import type { InferCustomEventPayload, ViteDevServer } from '..'
+packages/vite/src/node/server/hmr.ts-8-import type {
+--
+packages/vite/src/node/server/hmr.ts-40-
+packages/vite/src/node/server/hmr.ts-41-export const debugHmr: ((...args: any[]) => any) | undefined =
+packages/vite/src/node/server/hmr.ts:42:  createDebugger('vite:hmr')
+packages/vite/src/node/server/hmr.ts-43-
+packages/vite/src/node/server/hmr.ts-44-const whitespaceRE = /\s/
+--
+packages/vite/src/node/server/hmr.ts-523-        if (filteredModules) {
+packages/vite/src/node/server/hmr.ts-524-          clientHotUpdateOptions.modules = filteredModules
+packages/vite/src/node/server/hmr.ts:525:          // Invalidate the hmrContext to force compat modules to be updated
+packages/vite/src/node/server/hmr.ts-526-          mixedHmrContext.modules = mixedHmrContext.modules.filter(
+packages/vite/src/node/server/hmr.ts-527-            (mixedMod) =>
+--
+packages/vite/src/node/server/hmr.ts-622-  }
+packages/vite/src/node/server/hmr.ts-623-
+packages/vite/src/node/server/hmr.ts:624:  async function hmr(environment: DevEnvironment) {
+packages/vite/src/node/server/hmr.ts-625-    if (isStale()) return
+packages/vite/src/node/server/hmr.ts-626-    try {
+--
+packages/vite/src/node/server/hmr.ts-667-  const hotUpdateEnvironments =
+packages/vite/src/node/server/hmr.ts-668-    server.config.server.hotUpdateEnvironments ??
+packages/vite/src/node/server/hmr.ts:669:    ((server, hmr) => {
+packages/vite/src/node/server/hmr.ts-670-      // Run HMR in parallel for all environments by default
+packages/vite/src/node/server/hmr.ts-671-      return Promise.all(
+packages/vite/src/node/server/hmr.ts-672-        Object.values(server.environments).map((environment) =>
+packages/vite/src/node/server/hmr.ts:673:          hmr(environment),
+packages/vite/src/node/server/hmr.ts-674-        ),
+packages/vite/src/node/server/hmr.ts-675-      )
+packages/vite/src/node/server/hmr.ts-676-    })
+packages/vite/src/node/server/hmr.ts-677-
+packages/vite/src/node/server/hmr.ts:678:  await hotUpdateEnvironments(server, hmr)
+packages/vite/src/node/server/hmr.ts-679-}
+packages/vite/src/node/server/hmr.ts-680-
+--
+packages/vite/src/node/server/hmr.ts-783-  const filePaths = [...new Set(updates.map((u) => u.path))]
+packages/vite/src/node/server/hmr.ts-784-  const { formatted, truncated } = formatAndTruncateFileList(filePaths)
+packages/vite/src/node/server/hmr.ts:785:  if (truncated) debugHmr?.(`hmr update ${filePaths.join(', ')}`)
+packages/vite/src/node/server/hmr.ts:786:  environment.logger.info(colors.green(`hmr update `) + colors.dim(formatted), {
+packages/vite/src/node/server/hmr.ts-787-    clear: !firstInvalidatedBy,
+packages/vite/src/node/server/hmr.ts-788-    timestamp: true,
+--
+packages/vite/src/node/server/hmr.ts-977-  { hot }: DevEnvironment,
+packages/vite/src/node/server/hmr.ts-978-): void {
+packages/vite/src/node/server/hmr.ts:979:  // update the disposed modules' hmr timestamp
+packages/vite/src/node/server/hmr.ts-980-  // since if it's re-imported, it should re-apply side effects
+packages/vite/src/node/server/hmr.ts-981-  // and without the timestamp the browser will not re-import it!
+--
+packages/vite/src/node/plugin.ts-28-import type { CloseServerHook, ServerHook } from './server'
+packages/vite/src/node/plugin.ts-29-import type { DevEnvironment } from './server/environment'
+packages/vite/src/node/plugin.ts:30:import type { HmrContext, HotUpdateOptions } from './server/hmr'
+packages/vite/src/node/plugin.ts-31-import type { ModuleNode } from './server/mixedModuleGraph'
+packages/vite/src/node/plugin.ts-32-import type { EnvironmentModuleNode } from './server/moduleGraph'
+--
+packages/vite/src/node/plugin.ts-110-   *
+packages/vite/src/node/plugin.ts-111-   * - The hook can also return an empty array and then perform custom updates
+packages/vite/src/node/plugin.ts:112:   *   by sending a custom hmr payload via environment.hot.send().
+packages/vite/src/node/plugin.ts-113-   *
+packages/vite/src/node/plugin.ts:114:   * - If the hook doesn't return a value, the hmr update will be performed as
+packages/vite/src/node/plugin.ts-115-   *   normal.
+packages/vite/src/node/plugin.ts-116-   */
+--
+packages/vite/src/node/plugin.ts-355-   *
+packages/vite/src/node/plugin.ts-356-   * - The hook can also return an empty array and then perform custom updates
+packages/vite/src/node/plugin.ts:357:   *   by sending a custom hmr payload via server.ws.send().
+packages/vite/src/node/plugin.ts-358-   *
+packages/vite/src/node/plugin.ts:359:   * - If the hook doesn't return a value, the hmr update will be performed as
+packages/vite/src/node/plugin.ts-360-   *   normal.
+packages/vite/src/node/plugin.ts-361-   */
+--
+packages/vite/src/node/server/index.ts-76-import type { ServerWatchOptions } from '../watch'
+packages/vite/src/node/server/index.ts-77-import type { DevEnvironment } from './environment'
+packages/vite/src/node/server/index.ts:78:import type { HmrOptions, NormalizedHotChannel, WsOptions } from './hmr'
+packages/vite/src/node/server/index.ts:79:import { handleHMRUpdate, updateModules } from './hmr'
+packages/vite/src/node/server/index.ts-80-import { baseMiddleware } from './middlewares/base'
+packages/vite/src/node/server/index.ts-81-import { errorMiddleware } from './middlewares/error'
+--
+packages/vite/src/node/server/index.ts-121-   * Configure HMR-specific options (port, host, path & protocol)
+packages/vite/src/node/server/index.ts-122-   */
+packages/vite/src/node/server/index.ts:123:  hmr?: HmrOptions | boolean
+packages/vite/src/node/server/index.ts-124-  /**
+packages/vite/src/node/server/index.ts-125-   * Configure WebSocket connection options.
+--
+packages/vite/src/node/server/index.ts-210-  hotUpdateEnvironments?: (
+packages/vite/src/node/server/index.ts-211-    server: ViteDevServer,
+packages/vite/src/node/server/index.ts:212:    hmr: (environment: DevEnvironment) => Promise<void>,
+packages/vite/src/node/server/index.ts-213-  ) => Promise<void>
+packages/vite/src/node/server/index.ts-214-
+--
+packages/vite/src/node/server/index.ts-222-    | 'https'
+packages/vite/src/node/server/index.ts-223-    | 'proxy'
+packages/vite/src/node/server/index.ts:224:    | 'hmr'
+packages/vite/src/node/server/index.ts-225-    | 'ws'
+packages/vite/src/node/server/index.ts-226-    | 'watch'
+--
+packages/vite/src/node/server/index.ts-364-  /**
+packages/vite/src/node/server/index.ts-365-   * Module graph that tracks the import relationships, url to file mapping
+packages/vite/src/node/server/index.ts:366:   * and hmr state.
+packages/vite/src/node/server/index.ts-367-   */
+packages/vite/src/node/server/index.ts-368-  moduleGraph: ModuleGraph
+--
+packages/vite/src/node/server/index.ts-420-  /**
+packages/vite/src/node/server/index.ts-421-   * Triggers HMR for a module in the module graph. You can use the `server.moduleGraph`
+packages/vite/src/node/server/index.ts:422:   * API to retrieve the module to be reloaded. If `hmr` is false, this is a no-op.
+packages/vite/src/node/server/index.ts-423-   */
+packages/vite/src/node/server/index.ts-424-  reloadModule(module: ModuleNode): Promise<void>
+--
+packages/vite/src/node/server/index.ts-748-    async reloadModule(module) {
+packages/vite/src/node/server/index.ts-749-      warnFutureDeprecation(config, 'removeServerReloadModule')
+packages/vite/src/node/server/index.ts:750:      if (serverConfig.hmr !== false && module.file) {
+packages/vite/src/node/server/index.ts-751-        // TODO: Should we also update the node moduleGraph for backward compatibility?
+packages/vite/src/node/server/index.ts-752-        const environmentModule = (module._clientModule ?? module._ssrModule)!
+--
+packages/vite/src/node/server/index.ts-902-    file: string,
+packages/vite/src/node/server/index.ts-903-  ) => {
+packages/vite/src/node/server/index.ts:904:    if (serverConfig.hmr !== false) {
+packages/vite/src/node/server/index.ts-905-      await handleHMRUpdate(type, file, server)
+packages/vite/src/node/server/index.ts-906-    }
+--
+packages/vite/src/node/server/index.ts-1222-  cors: { origin: defaultAllowedOrigins },
+packages/vite/src/node/server/index.ts-1223-  headers: {},
+packages/vite/src/node/server/index.ts:1224:  // hmr
+packages/vite/src/node/server/index.ts-1225-  // ws
+packages/vite/src/node/server/index.ts-1226-  warmup: {
+--
+packages/vite/src/node/server/middlewares/error.ts-4-import type { RollupError } from 'rolldown'
+packages/vite/src/node/server/middlewares/error.ts-5-import type { Connect } from '#dep-types/connect'
+packages/vite/src/node/server/middlewares/error.ts:6:import type { ErrorPayload } from '#types/hmrPayload'
+packages/vite/src/node/server/middlewares/error.ts-7-import type { ViteDevServer } from '../..'
+packages/vite/src/node/server/middlewares/error.ts-8-import { CLIENT_PUBLIC_PATH } from '../../constants'
+--
+packages/vite/src/node/config.ts-618-   * @default false
+packages/vite/src/node/config.ts-619-   */
+packages/vite/src/node/config.ts:620:  hmrPartialAccept?: boolean
+packages/vite/src/node/config.ts-621-  /**
+packages/vite/src/node/config.ts-622-   * Enable full bundle mode during `serve`.
+--
+packages/vite/src/node/config.ts-911-    importGlobRestoreExtension: false,
+packages/vite/src/node/config.ts-912-    renderBuiltUrl: undefined,
+packages/vite/src/node/config.ts:913:    hmrPartialAccept: false,
+packages/vite/src/node/config.ts-914-    bundledDev: false,
+packages/vite/src/node/config.ts-915-  },
+--
+packages/vite/src/node/__tests__/scan.spec.ts-179-
+packages/vite/src/node/__tests__/scan.spec.ts-180-  const runner = createServerModuleRunner(server.environments.ssr, {
+packages/vite/src/node/__tests__/scan.spec.ts:181:    hmr: { logger: false },
+packages/vite/src/node/__tests__/scan.spec.ts-182-  })
+packages/vite/src/node/__tests__/scan.spec.ts-183-
+--
+packages/vite/src/node/index.ts-71-  createServerModuleRunnerTransport,
+packages/vite/src/node/index.ts-72-} from './ssr/runtime/serverModuleRunner'
+packages/vite/src/node/index.ts:73:export { createServerHotChannel } from './server/hmr'
+packages/vite/src/node/index.ts-74-export { ssrTransform as moduleRunnerTransform } from './ssr/ssrTransform'
+packages/vite/src/node/index.ts-75-export type { ModuleRunnerTransformOptions } from './ssr/ssrTransform'
+--
+packages/vite/src/node/index.ts-245-  NormalizedHotChannelClient,
+packages/vite/src/node/index.ts-246-  NormalizedServerHotChannel,
+packages/vite/src/node/index.ts:247:} from './server/hmr'
+packages/vite/src/node/index.ts-248-
+packages/vite/src/node/index.ts-249-export type { FetchFunction, FetchResult } from 'vite/module-runner'
+--
+packages/vite/src/node/index.ts-262-  PrunePayload,
+packages/vite/src/node/index.ts-263-  ErrorPayload,
+packages/vite/src/node/index.ts:264:} from '#types/hmrPayload'
+packages/vite/src/node/index.ts-265-export type {
+packages/vite/src/node/index.ts-266-  CustomEventMap,
+--
+packages/vite/src/node/__tests__/config.spec.ts-596-      server: {
+packages/vite/src/node/__tests__/config.spec.ts-597-        allowedHosts: true,
+packages/vite/src/node/__tests__/config.spec.ts:598:        hmr: expect.any(Object),
+packages/vite/src/node/__tests__/config.spec.ts-599-        ws: expect.any(Object),
+packages/vite/src/node/__tests__/config.spec.ts-600-      },
+--
+packages/vite/src/node/__tests__/config.spec.ts-990-  })
+packages/vite/src/node/__tests__/config.spec.ts-991-
+packages/vite/src/node/__tests__/config.spec.ts:992:  test('syncs `server.hmr.*` to `server.ws.*`', () => {
+packages/vite/src/node/__tests__/config.spec.ts-993-    const baseConfig = defineConfig({
+packages/vite/src/node/__tests__/config.spec.ts-994-      server: {
+packages/vite/src/node/__tests__/config.spec.ts:995:        hmr: {
+packages/vite/src/node/__tests__/config.spec.ts-996-          protocol: 'wss',
+packages/vite/src/node/__tests__/config.spec.ts-997-          host: 'example.com',
+--
+packages/vite/src/node/__tests__/config.spec.ts-1019-      timeout: 60000,
+packages/vite/src/node/__tests__/config.spec.ts-1020-    })
+packages/vite/src/node/__tests__/config.spec.ts:1021:    expect(mergedConfig.server.hmr).toStrictEqual({
+packages/vite/src/node/__tests__/config.spec.ts-1022-      protocol: 'wss',
+packages/vite/src/node/__tests__/config.spec.ts-1023-      host: 'example.com',
+--
+packages/vite/src/node/__tests__/config.spec.ts-1030-  })
+packages/vite/src/node/__tests__/config.spec.ts-1031-
+packages/vite/src/node/__tests__/config.spec.ts:1032:  test('mergeConfig works with `server.ws` and `server.hmr`', () => {
+packages/vite/src/node/__tests__/config.spec.ts-1033-    const baseConfig = defineConfig({
+packages/vite/src/node/__tests__/config.spec.ts-1034-      server: {
+--
+packages/vite/src/node/__tests__/config.spec.ts-1042-    const newConfig = defineConfig({
+packages/vite/src/node/__tests__/config.spec.ts-1043-      server: {
+packages/vite/src/node/__tests__/config.spec.ts:1044:        hmr: {
+packages/vite/src/node/__tests__/config.spec.ts-1045-          host: 'new-host.com',
+packages/vite/src/node/__tests__/config.spec.ts-1046-          port: 3002,
+--
+packages/vite/src/node/__tests__/config.spec.ts-1052-
+packages/vite/src/node/__tests__/config.spec.ts-1053-    expect(mergedConfig.server.ws.host).toBe('new-host.com')
+packages/vite/src/node/__tests__/config.spec.ts:1054:    expect(mergedConfig.server.hmr.host).toBe('new-host.com')
+packages/vite/src/node/__tests__/config.spec.ts-1055-    expect(mergedConfig.server.ws.port).toBe(3002)
+packages/vite/src/node/__tests__/config.spec.ts:1056:    expect(mergedConfig.server.hmr.port).toBe(3002)
+packages/vite/src/node/__tests__/config.spec.ts-1057-  })
+packages/vite/src/node/__tests__/config.spec.ts-1058-
+packages/vite/src/node/__tests__/config.spec.ts:1059:  test('`server.hmr.overlay` is not mapped to `server.ws.overlay`', () => {
+packages/vite/src/node/__tests__/config.spec.ts-1060-    const config = mergeConfig(
+packages/vite/src/node/__tests__/config.spec.ts-1061-      {},
+packages/vite/src/node/__tests__/config.spec.ts-1062-      defineConfig({
+packages/vite/src/node/__tests__/config.spec.ts-1063-        server: {
+packages/vite/src/node/__tests__/config.spec.ts:1064:          hmr: {
+packages/vite/src/node/__tests__/config.spec.ts-1065-            overlay: false,
+packages/vite/src/node/__tests__/config.spec.ts-1066-          },
+--
+packages/vite/src/node/__tests__/config.spec.ts-1069-    )
+packages/vite/src/node/__tests__/config.spec.ts-1070-
+packages/vite/src/node/__tests__/config.spec.ts:1071:    expect(config.server.hmr.overlay).toBe(false)
+packages/vite/src/node/__tests__/config.spec.ts-1072-    // overlay should not be synced to ws
+packages/vite/src/node/__tests__/config.spec.ts-1073-    expect(config.server.ws?.overlay).toBeUndefined()
+packages/vite/src/node/__tests__/config.spec.ts-1074-  })
+packages/vite/src/node/__tests__/config.spec.ts-1075-
+packages/vite/src/node/__tests__/config.spec.ts:1076:  test('`mergeConfig` does not crash when `server.ws` is false and `server.hmr` is merged', () => {
+packages/vite/src/node/__tests__/config.spec.ts-1077-    const baseConfig = defineConfig({
+packages/vite/src/node/__tests__/config.spec.ts-1078-      server: {
+packages/vite/src/node/__tests__/config.spec.ts-1079-        ws: false,
+packages/vite/src/node/__tests__/config.spec.ts:1080:        hmr: {
+packages/vite/src/node/__tests__/config.spec.ts-1081-          host: 'localhost',
+packages/vite/src/node/__tests__/config.spec.ts-1082-        },
+--
+packages/vite/src/node/__tests__/config.spec.ts-1086-    const newConfig = defineConfig({
+packages/vite/src/node/__tests__/config.spec.ts-1087-      server: {
+packages/vite/src/node/__tests__/config.spec.ts:1088:        hmr: {
+packages/vite/src/node/__tests__/config.spec.ts-1089-          port: 5173,
+packages/vite/src/node/__tests__/config.spec.ts-1090-        },
+--
+packages/vite/src/node/__tests__/config.spec.ts-1095-
+packages/vite/src/node/__tests__/config.spec.ts-1096-    expect(mergedConfig.server.ws).toBe(false)
+packages/vite/src/node/__tests__/config.spec.ts:1097:    expect(mergedConfig.server.hmr).toBeTypeOf('object')
+packages/vite/src/node/__tests__/config.spec.ts:1098:    expect(mergedConfig.server.hmr).toBeTruthy()
+packages/vite/src/node/__tests__/config.spec.ts-1099-  })
+packages/vite/src/node/__tests__/config.spec.ts-1100-
+packages/vite/src/node/__tests__/config.spec.ts:1101:  test('resolveConfig properly syncs hmr and ws', async () => {
+packages/vite/src/node/__tests__/config.spec.ts-1102-    const config = await resolveConfig(
+packages/vite/src/node/__tests__/config.spec.ts-1103-      {
+packages/vite/src/node/__tests__/config.spec.ts-1104-        server: {
+packages/vite/src/node/__tests__/config.spec.ts:1105:          hmr: {
+packages/vite/src/node/__tests__/config.spec.ts-1106-            host: 'test-host.com',
+packages/vite/src/node/__tests__/config.spec.ts-1107-            port: 4000,
+--
+packages/vite/src/node/__tests__/config.spec.ts-1116-    expect(config.server.ws.port).toBe(4000)
+packages/vite/src/node/__tests__/config.spec.ts-1117-
+packages/vite/src/node/__tests__/config.spec.ts:1118:    assert(typeof config.server.hmr === 'object')
+packages/vite/src/node/__tests__/config.spec.ts:1119:    config.server.hmr!.host = 'new-host.com'
+packages/vite/src/node/__tests__/config.spec.ts-1120-
+packages/vite/src/node/__tests__/config.spec.ts-1121-    expect(config.server.ws.host).toBe('new-host.com')
+packages/vite/src/node/__tests__/config.spec.ts:1122:    expect(config.server.hmr.host).toBe('new-host.com')
+packages/vite/src/node/__tests__/config.spec.ts-1123-  })
+packages/vite/src/node/__tests__/config.spec.ts-1124-
+--
+packages/vite/src/node/server/environment.ts-25-  NormalizedHotChannel,
+packages/vite/src/node/server/environment.ts-26-  NormalizedHotChannelClient,
+packages/vite/src/node/server/environment.ts:27:} from './hmr'
+packages/vite/src/node/server/environment.ts:28:import { getShortName, normalizeHotChannel, updateModules } from './hmr'
+packages/vite/src/node/server/environment.ts-29-import { buildErrorMessage } from './middlewares/error'
+packages/vite/src/node/server/environment.ts-30-import { EnvironmentModuleGraph } from './moduleGraph'
+--
+packages/vite/src/node/server/environment.ts-293-
+packages/vite/src/node/server/environment.ts-294-  async reloadModule(module: EnvironmentModuleNode): Promise<void> {
+packages/vite/src/node/server/environment.ts:295:    if (this.config.server.hmr !== false && module.file) {
+packages/vite/src/node/server/environment.ts-296-      updateModules(this, module.file, [module], monotonicDateNow())
+packages/vite/src/node/server/environment.ts-297-    }
+--
+packages/vite/src/node/server/environment.ts-351-      mod.lastHMRInvalidationReceived = true
+packages/vite/src/node/server/environment.ts-352-      this.logger.info(
+packages/vite/src/node/server/environment.ts:353:        colors.yellow(`hmr invalidate `) +
+packages/vite/src/node/server/environment.ts-354-          colors.dim(m.path) +
+packages/vite/src/node/server/environment.ts-355-          (m.message ? ` ${m.message}` : ''),
+--
+packages/vite/src/node/server/moduleGraph.ts-301-    })
+packages/vite/src/node/server/moduleGraph.ts-302-
+packages/vite/src/node/server/moduleGraph.ts:303:    // update accepted hmr deps
+packages/vite/src/node/server/moduleGraph.ts-304-    resolvePromises = []
+packages/vite/src/node/server/moduleGraph.ts-305-    resolveResults = new Array(acceptedModules.size)
+--
+packages/vite/src/node/server/moduleGraph.ts-325-    mod.staticImportedUrls = staticImportedUrls
+packages/vite/src/node/server/moduleGraph.ts-326-
+packages/vite/src/node/server/moduleGraph.ts:327:    // update accepted hmr exports
+packages/vite/src/node/server/moduleGraph.ts-328-    mod.acceptedHmrExports = acceptedExports
+packages/vite/src/node/server/moduleGraph.ts-329-    mod.importedBindings = importedBindings
+--
+packages/vite/src/node/server/moduleGraph.ts-392-  // url because they are inlined into the main css import. But they still
+packages/vite/src/node/server/moduleGraph.ts-393-  // need to be represented in the module graph so that they can trigger
+packages/vite/src/node/server/moduleGraph.ts:394:  // hmr in the importing css file.
+packages/vite/src/node/server/moduleGraph.ts-395-  createFileOnlyEntry(file: string): EnvironmentModuleNode {
+packages/vite/src/node/server/moduleGraph.ts-396-    file = normalizePath(file)
+--
+packages/vite/src/node/server/middlewares/indexHtml.ts-568-
+packages/vite/src/node/server/middlewares/indexHtml.ts-569-async function generateFallbackHtml(server: ViteDevServer) {
+packages/vite/src/node/server/middlewares/indexHtml.ts:570:  const hmrRuntime = await getHmrImplementation(server.config)
+packages/vite/src/node/server/middlewares/indexHtml.ts-571-  return /* html */ `
+packages/vite/src/node/server/middlewares/indexHtml.ts-572-<!DOCTYPE html>
+--
+packages/vite/src/node/server/middlewares/indexHtml.ts-575-  <script>globalThis.__vite_is_fallback_page__ = true</script>
+packages/vite/src/node/server/middlewares/indexHtml.ts-576-  <script type="module">
+packages/vite/src/node/server/middlewares/indexHtml.ts:577:    ${hmrRuntime.replaceAll('</script>', '<\\/script>')}
+packages/vite/src/node/server/middlewares/indexHtml.ts-578-  </script>
+packages/vite/src/node/server/middlewares/indexHtml.ts-579-  <style>
+--
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts-7-      host: 'vite.host.example.com',
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts-8-      ws: {
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts:9:        host: 'vite.hmr-host.example.com',
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts-10-      },
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts-11-      origin: 'http://vite.origin.example.com:5173',
+--
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts-18-    [
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts-19-      'vite.host.example.com',
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts:20:      'vite.hmr-host.example.com',
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts-21-      'vite.origin.example.com',
+packages/vite/src/node/server/middlewares/__tests__/hostCheck.spec.ts-22-      'vite.preview-host.example.com',
+--
+packages/vite/src/node/server/environments/runnableEnvironment.ts-6-import type { DevEnvironmentContext } from '../environment'
+packages/vite/src/node/server/environments/runnableEnvironment.ts-7-import { DevEnvironment } from '../environment'
+packages/vite/src/node/server/environments/runnableEnvironment.ts:8:import { createServerHotChannel } from '../hmr'
+packages/vite/src/node/server/environments/runnableEnvironment.ts-9-
+packages/vite/src/node/server/environments/runnableEnvironment.ts-10-export function createRunnableDevEnvironment(
+--
+packages/vite/src/node/server/transformRequest.ts-223-  )
+packages/vite/src/node/server/transformRequest.ts-224-  if (softInvalidatedTransformResult) {
+packages/vite/src/node/server/transformRequest.ts:225:    debugCache?.(`[memory-hmr] ${prettyUrl}`)
+packages/vite/src/node/server/transformRequest.ts-226-    return softInvalidatedTransformResult
+packages/vite/src/node/server/transformRequest.ts-227-  }
+--
+packages/vite/src/node/plugins/importAnalysis.ts-43-  lexAcceptedHmrDeps,
+packages/vite/src/node/plugins/importAnalysis.ts-44-  lexAcceptedHmrExports,
+packages/vite/src/node/plugins/importAnalysis.ts:45:} from '../server/hmr'
+packages/vite/src/node/plugins/importAnalysis.ts-46-import type { TransformPluginContext } from '../server/pluginContainer'
+packages/vite/src/node/plugins/importAnalysis.ts-47-import {
+--
+packages/vite/src/node/plugins/importAnalysis.ts-226-  const { root, base } = config
+packages/vite/src/node/plugins/importAnalysis.ts-227-  const clientPublicPath = path.posix.join(base, CLIENT_PUBLIC_PATH)
+packages/vite/src/node/plugins/importAnalysis.ts:228:  const enablePartialAccept = config.experimental.hmrPartialAccept
+packages/vite/src/node/plugins/importAnalysis.ts-229-  const matchAlias = getAliasPatternMatcher(config.resolve.alias)
+packages/vite/src/node/plugins/importAnalysis.ts-230-
+--
+packages/vite/src/node/plugins/importAnalysis.ts-398-            resolved,
+packages/vite/src/node/plugins/importAnalysis.ts-399-          )
+packages/vite/src/node/plugins/importAnalysis.ts:400:          // check if the dep has been hmr updated. If yes, we need to attach
+packages/vite/src/node/plugins/importAnalysis.ts-401-          // its last updated timestamp to force the browser to fetch the most
+packages/vite/src/node/plugins/importAnalysis.ts-402-          // up-to-date version of this module.
+--
+packages/vite/src/node/plugins/clientInjections.ts-91-  const timeout = wsConfig?.timeout || 30000
+packages/vite/src/node/plugins/clientInjections.ts-92-  const isWsServerSpecified = !!wsConfig?.server
+packages/vite/src/node/plugins/clientInjections.ts:93:  const hmrConfigName = path.basename(config.configFile || 'vite.config.js')
+packages/vite/src/node/plugins/clientInjections.ts-94-
+packages/vite/src/node/plugins/clientInjections.ts:95:  const hmrConfig = isObject(config.server.hmr) ? config.server.hmr : undefined
+packages/vite/src/node/plugins/clientInjections.ts:96:  const overlay = hmrConfig?.overlay !== false
+packages/vite/src/node/plugins/clientInjections.ts-97-
+packages/vite/src/node/plugins/clientInjections.ts-98-  // ws.clientPort -> ws.port
+--
+packages/vite/src/node/plugins/clientInjections.ts-107-  directTarget += devBase
+packages/vite/src/node/plugins/clientInjections.ts-108-
+packages/vite/src/node/plugins/clientInjections.ts:109:  let hmrBase = devBase
+packages/vite/src/node/plugins/clientInjections.ts-110-  if (wsConfig?.path) {
+packages/vite/src/node/plugins/clientInjections.ts:111:    hmrBase = path.posix.join(hmrBase, wsConfig.path)
+packages/vite/src/node/plugins/clientInjections.ts-112-  }
+packages/vite/src/node/plugins/clientInjections.ts-113-
+--
+packages/vite/src/node/plugins/clientInjections.ts-115-  const baseReplacement = escapeReplacement(devBase)
+packages/vite/src/node/plugins/clientInjections.ts-116-  const serverHostReplacement = escapeReplacement(serverHost)
+packages/vite/src/node/plugins/clientInjections.ts:117:  const hmrProtocolReplacement = escapeReplacement(protocol)
+packages/vite/src/node/plugins/clientInjections.ts:118:  const hmrHostnameReplacement = escapeReplacement(host)
+packages/vite/src/node/plugins/clientInjections.ts:119:  const hmrPortReplacement = escapeReplacement(port)
+packages/vite/src/node/plugins/clientInjections.ts:120:  const hmrDirectTargetReplacement = escapeReplacement(directTarget)
+packages/vite/src/node/plugins/clientInjections.ts:121:  const hmrBaseReplacement = escapeReplacement(hmrBase)
+packages/vite/src/node/plugins/clientInjections.ts:122:  const hmrTimeoutReplacement = escapeReplacement(timeout)
+packages/vite/src/node/plugins/clientInjections.ts:123:  const hmrEnableOverlayReplacement = escapeReplacement(overlay)
+packages/vite/src/node/plugins/clientInjections.ts:124:  const hmrConfigNameReplacement = escapeReplacement(hmrConfigName)
+packages/vite/src/node/plugins/clientInjections.ts-125-  const wsTokenReplacement = escapeReplacement(config.webSocketToken)
+packages/vite/src/node/plugins/clientInjections.ts-126-  const serverForwardConsoleReplacement = escapeReplacement(
+--
+packages/vite/src/node/plugins/clientInjections.ts-133-      .replace(/__BASE__/g, baseReplacement)
+packages/vite/src/node/plugins/clientInjections.ts-134-      .replace(`__SERVER_HOST__`, serverHostReplacement)
+packages/vite/src/node/plugins/clientInjections.ts:135:      .replace(`__HMR_PROTOCOL__`, hmrProtocolReplacement)
+packages/vite/src/node/plugins/clientInjections.ts:136:      .replace(`__HMR_HOSTNAME__`, hmrHostnameReplacement)
+packages/vite/src/node/plugins/clientInjections.ts:137:      .replace(`__HMR_PORT__`, hmrPortReplacement)
+packages/vite/src/node/plugins/clientInjections.ts:138:      .replace(`__HMR_DIRECT_TARGET__`, hmrDirectTargetReplacement)
+packages/vite/src/node/plugins/clientInjections.ts:139:      .replace(`__HMR_BASE__`, hmrBaseReplacement)
+packages/vite/src/node/plugins/clientInjections.ts:140:      .replace(`__HMR_TIMEOUT__`, hmrTimeoutReplacement)
+packages/vite/src/node/plugins/clientInjections.ts:141:      .replace(`__HMR_ENABLE_OVERLAY__`, hmrEnableOverlayReplacement)
+packages/vite/src/node/plugins/clientInjections.ts:142:      .replace(`__HMR_CONFIG_NAME__`, hmrConfigNameReplacement)
+packages/vite/src/node/plugins/clientInjections.ts-143-      .replace(`__WS_TOKEN__`, wsTokenReplacement)
+packages/vite/src/node/plugins/clientInjections.ts-144-      .replace(`__SERVER_FORWARD_CONSOLE__`, serverForwardConsoleReplacement)
+--
+packages/vite/src/node/utils.ts-1408-] as const
+packages/vite/src/node/utils.ts-1409-
+packages/vite/src/node/utils.ts:1410:const hmrWsOptionsDeprecationCall = /* @__PURE__ */ (() => {
+packages/vite/src/node/utils.ts-1411-  let logged = false
+packages/vite/src/node/utils.ts-1412-  return () => {
+--
+packages/vite/src/node/utils.ts-1416-    // eslint-disable-next-line no-console
+packages/vite/src/node/utils.ts-1417-    console[method](
+packages/vite/src/node/utils.ts:1418:      '`server.hmr.protocol/host/port/path/clientPort/timeout/server` is deprecated. ' +
+packages/vite/src/node/utils.ts-1419-        'Use `server.ws.*` instead. Note that this option may be set by a plugin. ' +
+packages/vite/src/node/utils.ts-1420-        (method === 'trace'
+--
+packages/vite/src/node/utils.ts-1426-
+packages/vite/src/node/utils.ts-1427-export function setupHmrWsOptionCompat(
+packages/vite/src/node/utils.ts:1428:  serverConfig: Pick<ServerOptions, 'hmr' | 'ws'>,
+packages/vite/src/node/utils.ts-1429-): void {
+packages/vite/src/node/utils.ts:1430:  if (serverConfig.hmr === false || serverConfig.ws === false) {
+packages/vite/src/node/utils.ts-1431-    return
+packages/vite/src/node/utils.ts-1432-  }
+packages/vite/src/node/utils.ts:1433:  if (serverConfig.hmr === true) {
+packages/vite/src/node/utils.ts:1434:    serverConfig.hmr = {}
+packages/vite/src/node/utils.ts-1435-  }
+packages/vite/src/node/utils.ts-1436-
+packages/vite/src/node/utils.ts:1437:  const hmrConfig = serverConfig.hmr
+packages/vite/src/node/utils.ts-1438-  const wsConfig = serverConfig.ws ? { ...serverConfig.ws } : {}
+packages/vite/src/node/utils.ts:1439:  if (hmrConfig) {
+packages/vite/src/node/utils.ts-1440-    for (const key of wsOptionKeys) {
+packages/vite/src/node/utils.ts:1441:      if (hmrConfig[key] !== undefined) {
+packages/vite/src/node/utils.ts-1442-        // @ts-expect-error same value for same key
+packages/vite/src/node/utils.ts:1443:        wsConfig[key] ??= hmrConfig[key]
+packages/vite/src/node/utils.ts-1444-      }
+packages/vite/src/node/utils.ts-1445-    }
+--
+packages/vite/src/node/utils.ts-1447-  serverConfig.ws = wsConfig
+packages/vite/src/node/utils.ts-1448-
+packages/vite/src/node/utils.ts:1449:  const hmrProxy = hmrConfig || {}
+packages/vite/src/node/utils.ts-1450-  for (const key of wsOptionKeys) {
+packages/vite/src/node/utils.ts:1451:    Object.defineProperty(hmrProxy, key, {
+packages/vite/src/node/utils.ts-1452-      get() {
+packages/vite/src/node/utils.ts-1453-        return (serverConfig.ws as Record<string, unknown>)?.[key]
+packages/vite/src/node/utils.ts-1454-      },
+packages/vite/src/node/utils.ts-1455-      set(newValue) {
+packages/vite/src/node/utils.ts:1456:        hmrWsOptionsDeprecationCall()
+packages/vite/src/node/utils.ts-1457-        if (typeof serverConfig.ws === 'object') {
+packages/vite/src/node/utils.ts-1458-          ;(serverConfig.ws as Record<string, unknown>)[key] = newValue
+--
+packages/vite/src/node/utils.ts-1463-    })
+packages/vite/src/node/utils.ts-1464-  }
+packages/vite/src/node/utils.ts:1465:  serverConfig.hmr = hmrProxy
+packages/vite/src/node/utils.ts-1466-}
+packages/vite/src/node/utils.ts-1467-
+--
+packages/vite/src/node/utils.ts-1478-    setupHmrWsOptionCompat(merged)
+packages/vite/src/node/utils.ts-1479-  }
+packages/vite/src/node/utils.ts:1480:  if (rootPath === 'server.hmr') {
+packages/vite/src/node/utils.ts-1481-    for (const key of wsOptionKeys) {
+packages/vite/src/node/utils.ts-1482-      const descriptor = Object.getOwnPropertyDescriptor(defaults, key)
+--
+packages/vite/src/node/utils.ts-1546-    } else if (
+packages/vite/src/node/utils.ts-1547-      key === 'server' &&
+packages/vite/src/node/utils.ts:1548:      (rootPath === 'server.hmr' || rootPath === 'server.ws')
+packages/vite/src/node/utils.ts-1549-    ) {
+packages/vite/src/node/utils.ts-1550-      merged[key] = value
+--
+packages/vite/src/node/server/ws.ts-17-  FullReloadPayload,
+packages/vite/src/node/server/ws.ts-18-  HotPayload,
+packages/vite/src/node/server/ws.ts:19:} from '#types/hmrPayload'
+packages/vite/src/node/server/ws.ts-20-import type { ResolvedConfig } from '..'
+packages/vite/src/node/server/ws.ts-21-import { isObject } from '../utils'
+packages/vite/src/node/server/ws.ts:22:import type { NormalizedHotChannel, NormalizedHotChannelClient } from './hmr'
+packages/vite/src/node/server/ws.ts:23:import { normalizeHotChannel } from './hmr'
+packages/vite/src/node/server/ws.ts-24-import type { HttpServer } from '.'
+packages/vite/src/node/server/ws.ts-25-
+--
+packages/vite/src/node/server/ws.ts-32-  : WebSocketServerRaw_
+packages/vite/src/node/server/ws.ts-33-
+packages/vite/src/node/server/ws.ts:34:export const HMR_HEADER = 'vite-hmr'
+packages/vite/src/node/server/ws.ts-35-
+packages/vite/src/node/server/ws.ts-36-export type WebSocketCustomListener<T> = (
+--
+packages/vite/src/node/server/ws.ts-153-  const portsAreCompatible = !wsPort || wsPort === config.server.port
+packages/vite/src/node/server/ws.ts-154-  const wsServer = wsCustomServer || (portsAreCompatible && server)
+packages/vite/src/node/server/ws.ts:155:  let hmrServerWsListener: (
+packages/vite/src/node/server/ws.ts-156-    req: InstanceType<typeof IncomingMessage>,
+packages/vite/src/node/server/ws.ts-157-    socket: Duplex,
+--
+packages/vite/src/node/server/ws.ts-219-
+packages/vite/src/node/server/ws.ts-220-  if (wsServer) {
+packages/vite/src/node/server/ws.ts:221:    let hmrBase = config.base
+packages/vite/src/node/server/ws.ts-222-    const wsPath = wsOptions?.path
+packages/vite/src/node/server/ws.ts-223-    if (wsPath) {
+packages/vite/src/node/server/ws.ts:224:      hmrBase = path.posix.join(hmrBase, wsPath)
+packages/vite/src/node/server/ws.ts-225-    }
+packages/vite/src/node/server/ws.ts:226:    hmrServerWsListener = (req, socket, head) => {
+packages/vite/src/node/server/ws.ts-227-      const protocol = req.headers['sec-websocket-protocol']!
+packages/vite/src/node/server/ws.ts-228-      const parsedUrl = new URL(`http://example.com${req.url!}`)
+packages/vite/src/node/server/ws.ts-229-      if (
+packages/vite/src/node/server/ws.ts-230-        [HMR_HEADER, 'vite-ping'].includes(protocol) &&
+packages/vite/src/node/server/ws.ts:231:        parsedUrl.pathname === hmrBase
+packages/vite/src/node/server/ws.ts-232-      ) {
+packages/vite/src/node/server/ws.ts-233-        handleUpgrade(req, socket as Socket, head, protocol === 'vite-ping')
+packages/vite/src/node/server/ws.ts-234-      }
+packages/vite/src/node/server/ws.ts-235-    }
+packages/vite/src/node/server/ws.ts:236:    wsServer.on('upgrade', hmrServerWsListener)
+packages/vite/src/node/server/ws.ts-237-  } else {
+packages/vite/src/node/server/ws.ts-238-    // http server request handler keeps the same with
+--
+packages/vite/src/node/server/ws.ts-406-      },
+packages/vite/src/node/server/ws.ts-407-      close() {
+packages/vite/src/node/server/ws.ts:408:        // should remove listener if hmr.server is set
+packages/vite/src/node/server/ws.ts-409-        // otherwise the old listener swallows all WebSocket connections
+packages/vite/src/node/server/ws.ts:410:        if (hmrServerWsListener && wsServer) {
+packages/vite/src/node/server/ws.ts:411:          wsServer.off('upgrade', hmrServerWsListener)
+packages/vite/src/node/server/ws.ts-412-        }
+packages/vite/src/node/server/ws.ts-413-        return new Promise<void>((resolve, reject) => {
+--
+packages/vite/src/node/server/ws.ts-435-      },
+packages/vite/src/node/server/ws.ts-436-    },
+packages/vite/src/node/server/ws.ts:437:    config.server.hmr !== false,
+packages/vite/src/node/server/ws.ts-438-    // Don't normalize client as we already handles the send, and to keep `.socket`
+packages/vite/src/node/server/ws.ts-439-    false,
+--
+packages/vite/src/node/server/bundledDev.ts-17-import { convertToDevWatchOptions } from '../watch'
+packages/vite/src/node/server/bundledDev.ts-18-import type { DevEnvironment } from './environment'
+packages/vite/src/node/server/bundledDev.ts:19:import { type NormalizedHotChannelClient, debugHmr, getShortName } from './hmr'
+packages/vite/src/node/server/bundledDev.ts-20-import { prepareError } from './middlewares/error'
+packages/vite/src/node/server/bundledDev.ts-21-
+--
+packages/vite/src/node/server/bundledDev.ts-449-    client: NormalizedHotChannelClient,
+packages/vite/src/node/server/bundledDev.ts-450-    files: string[],
+packages/vite/src/node/server/bundledDev.ts:451:    hmrOutput: HmrOutput,
+packages/vite/src/node/server/bundledDev.ts-452-  ) {
+packages/vite/src/node/server/bundledDev.ts:453:    if (hmrOutput.type === 'Noop') return
+packages/vite/src/node/server/bundledDev.ts-454-
+packages/vite/src/node/server/bundledDev.ts-455-    const shortFile = files
+packages/vite/src/node/server/bundledDev.ts-456-      .map((file) => getShortName(file, this.environment.config.root))
+packages/vite/src/node/server/bundledDev.ts-457-      .join(', ')
+packages/vite/src/node/server/bundledDev.ts:458:    if (hmrOutput.type === 'FullReload') {
+packages/vite/src/node/server/bundledDev.ts:459:      const reason = hmrOutput.reason
+packages/vite/src/node/server/bundledDev.ts:460:        ? colors.dim(` (${hmrOutput.reason})`)
+packages/vite/src/node/server/bundledDev.ts-461-        : ''
+packages/vite/src/node/server/bundledDev.ts-462-      this.environment.logger.info(
+--
+packages/vite/src/node/server/bundledDev.ts-471-    }
+packages/vite/src/node/server/bundledDev.ts-472-
+packages/vite/src/node/server/bundledDev.ts:473:    debug?.(`handle hmr output for ${shortFile}`, {
+packages/vite/src/node/server/bundledDev.ts:474:      ...hmrOutput,
+packages/vite/src/node/server/bundledDev.ts:475:      code: typeof hmrOutput.code === 'string' ? '[code]' : hmrOutput.code,
+packages/vite/src/node/server/bundledDev.ts-476-    })
+packages/vite/src/node/server/bundledDev.ts-477-
+packages/vite/src/node/server/bundledDev.ts:478:    this.pendingPayloadFilenames.add(hmrOutput.filename)
+packages/vite/src/node/server/bundledDev.ts:479:    this.memoryFiles.set(hmrOutput.filename, {
+packages/vite/src/node/server/bundledDev.ts:480:      // ensure that the generated hmr patch contains ESM syntax
+packages/vite/src/node/server/bundledDev.ts-481-      // this is to avoid attacks like GHSA-4v9v-hfq4-rm2v
+packages/vite/src/node/server/bundledDev.ts-482-      // https://github.com/webpack/webpack-dev-server/security/advisories/GHSA-4v9v-hfq4-rm2v
+--
+packages/vite/src/node/server/bundledDev.ts-486-      // but we cannot use `Sec-Fetch-*` headers as they are only sent to potentially-trustworthy origins
+packages/vite/src/node/server/bundledDev.ts-487-      source:
+packages/vite/src/node/server/bundledDev.ts:488:        hmrOutput.code +
+packages/vite/src/node/server/bundledDev.ts:489:        payloadDeliveredAck(hmrOutput.filename) +
+packages/vite/src/node/server/bundledDev.ts-490-        '\n; export {}',
+packages/vite/src/node/server/bundledDev.ts-491-    })
+packages/vite/src/node/server/bundledDev.ts:492:    if (hmrOutput.sourcemapFilename && hmrOutput.sourcemap) {
+packages/vite/src/node/server/bundledDev.ts:493:      this.memoryFiles.set(hmrOutput.sourcemapFilename, {
+packages/vite/src/node/server/bundledDev.ts:494:        source: hmrOutput.sourcemap,
+packages/vite/src/node/server/bundledDev.ts-495-      })
+packages/vite/src/node/server/bundledDev.ts-496-    }
+packages/vite/src/node/server/bundledDev.ts-497-    client.send({
+packages/vite/src/node/server/bundledDev.ts-498-      type: 'bundled-dev-update',
+packages/vite/src/node/server/bundledDev.ts:499:      changedIds: hmrOutput.changedIds,
+packages/vite/src/node/server/bundledDev.ts:500:      url: hmrOutput.filename,
+packages/vite/src/node/server/bundledDev.ts:501:      seq: hmrOutput.seq,
+packages/vite/src/node/server/bundledDev.ts-502-    })
+packages/vite/src/node/server/bundledDev.ts-503-    const { formatted, truncated } = formatAndTruncateFileList(
+packages/vite/src/node/server/bundledDev.ts:504:      hmrOutput.changedIds,
+packages/vite/src/node/server/bundledDev.ts-505-    )
+packages/vite/src/node/server/bundledDev.ts:506:    if (truncated) debugHmr?.(`hmr update ${hmrOutput.changedIds.join(', ')}`)
+packages/vite/src/node/server/bundledDev.ts-507-    this.environment.logger.info(
+packages/vite/src/node/server/bundledDev.ts:508:      colors.green(`hmr update `) + colors.dim(formatted),
+packages/vite/src/node/server/bundledDev.ts-509-      {
+packages/vite/src/node/server/bundledDev.ts-510-        clear: true,
+--
+packages/vite/src/node/server/__tests__/hmr.spec.ts-1-import path from 'node:path'
+packages/vite/src/node/server/__tests__/hmr.spec.ts-2-import { expect, onTestFinished, test } from 'vitest'
+packages/vite/src/node/server/__tests__/hmr.spec.ts:3:import { handleHMRUpdate } from '../hmr'
+packages/vite/src/node/server/__tests__/hmr.spec.ts-4-import { type ServerOptions, createServer } from '../index'
+packages/vite/src/node/server/__tests__/hmr.spec.ts-5-
+--
+packages/vite/src/node/server/__tests__/hmr.spec.ts-47-  let hotUpdateEnvironmentsCalls = 0
+packages/vite/src/node/server/__tests__/hmr.spec.ts-48-  await testRestartDuringHotUpdate({
+packages/vite/src/node/server/__tests__/hmr.spec.ts:49:    async hotUpdateEnvironments(server, hmr) {
+packages/vite/src/node/server/__tests__/hmr.spec.ts-50-      hotUpdateEnvironmentsCalls++
+packages/vite/src/node/server/__tests__/hmr.spec.ts:51:      await Promise.all(Object.values(server.environments).map(hmr))
+packages/vite/src/node/server/__tests__/hmr.spec.ts-52-    },
+packages/vite/src/node/server/__tests__/hmr.spec.ts-53-  })
+--
+packages/vite/src/node/ssr/runnerImport.ts-45-  const environment = createRunnableDevEnvironment('inline', config, {
+packages/vite/src/node/ssr/runnerImport.ts-46-    runnerOptions: {
+packages/vite/src/node/ssr/runnerImport.ts:47:      hmr: {
+packages/vite/src/node/ssr/runnerImport.ts-48-        logger: false,
+packages/vite/src/node/ssr/runnerImport.ts-49-      },
+--
+packages/vite/src/node/ssr/ssrModuleLoader.ts-10-import type { ViteDevServer } from '../server'
+packages/vite/src/node/ssr/ssrModuleLoader.ts-11-import type { DevEnvironment } from '../server/environment'
+packages/vite/src/node/ssr/ssrModuleLoader.ts:12:import type { NormalizedServerHotChannel } from '../server/hmr'
+packages/vite/src/node/ssr/ssrModuleLoader.ts-13-import { buildErrorMessage } from '../server/middlewares/error'
+packages/vite/src/node/ssr/ssrModuleLoader.ts-14-import { createServerModuleRunnerTransport } from './runtime/serverModuleRunner'
+--
+packages/vite/src/node/ssr/ssrModuleLoader.ts-82-        createImportMeta: createNodeImportMeta,
+packages/vite/src/node/ssr/ssrModuleLoader.ts-83-        sourcemapInterceptor: false,
+packages/vite/src/node/ssr/ssrModuleLoader.ts:84:        hmr: false,
+packages/vite/src/node/ssr/ssrModuleLoader.ts-85-      },
+packages/vite/src/node/ssr/ssrModuleLoader.ts-86-      new ESModulesEvaluator(),
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-6-  ModuleRunnerOptions,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-7-} from 'vite/module-runner'
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:8:import type { HotPayload } from '#types/hmrPayload'
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-9-import type { ModuleRunnerTransport } from '../../../shared/moduleRunnerTransport'
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-10-import type { DevEnvironment } from '../../server/environment'
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-12-  HotChannelClient,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-13-  NormalizedServerHotChannel,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:14:} from '../../server/hmr'
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-15-
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-16-/**
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-19-export interface ServerModuleRunnerOptions extends Omit<
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-20-  ModuleRunnerOptions,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:21:  'root' | 'fetchModule' | 'hmr' | 'transport'
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-22-> {
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-23-  /**
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-24-   * Disable HMR or configure HMR logger.
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-25-   */
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:26:  hmr?:
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-27-    | false
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-28-    | {
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-39-  options: ServerModuleRunnerOptions,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-40-) {
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:41:  if (environment.config.server.hmr === false || options.hmr === false) {
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-42-    return false
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-43-  }
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-57-
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-58-  return {
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:59:    logger: options.hmr?.logger ?? defaultLogger,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-60-  }
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-61-}
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-88-  channel: NormalizedServerHotChannel
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-89-}): ModuleRunnerTransport => {
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:90:  const hmrClient: HotChannelClient = {
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-91-    send: (payload: HotPayload) => {
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-92-      if (payload.type !== 'custom') {
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-107-        'vite:client:connect',
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-108-        undefined,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:109:        hmrClient,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-110-      )
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-111-      onMessage({ type: 'connected' })
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-119-        'vite:client:disconnect',
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-120-        undefined,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:121:        hmrClient,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-122-      )
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-123-    },
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-131-        payload.event,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-132-        payload.data,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:133:        hmrClient,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-134-      )
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-135-    },
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-145-  options: ServerModuleRunnerOptions = {},
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-146-): ModuleRunner {
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:147:  const hmr = createHMROptions(environment, options)
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-148-  return new ModuleRunner(
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-149-    {
+--
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-152-        channel: environment.hot as NormalizedServerHotChannel,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-153-      }),
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:154:      hmr,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-155-      createImportMeta: createNodeImportMeta,
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts-156-      sourcemapInterceptor: resolveSourceMapOptions(options),
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts-490-})
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts-491-
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts:492:describe('virtual module hmr', async () => {
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts-493-  let state = 'init'
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts-494-
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts-592-            createEnvironment(name, config) {
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts-593-              return createRunnableDevEnvironment(name, config, {
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts:594:                runnerOptions: { hmr: { logger } },
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts-595-              })
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts-596-            },
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts-78-        middlewareMode: true,
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts-79-        watch: null,
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts:80:        hmr: {
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts-81-          port: 9609,
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts-82-        },
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts-130-        middlewareMode: true,
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts-131-        watch: null,
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts:132:        hmr: {
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts-133-          port: 9609,
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts-134-        },
+--
+packages/vite/src/node/__tests__/environment.spec.ts-101-    for (const key of ['ssr', 'worker', 'custom1', 'custom1_2']) {
+packages/vite/src/node/__tests__/environment.spec.ts-102-      const runner = createServerModuleRunner(server.environments[key], {
+packages/vite/src/node/__tests__/environment.spec.ts:103:        hmr: {
+packages/vite/src/node/__tests__/environment.spec.ts-104-          logger: false,
+packages/vite/src/node/__tests__/environment.spec.ts-105-        },
+--
+packages/vite/src/node/__tests__/environment.spec.ts-126-    for (const key of ['ssr', 'worker', 'custom1', 'custom1_2']) {
+packages/vite/src/node/__tests__/environment.spec.ts-127-      const runner = createServerModuleRunner(server.environments[key], {
+packages/vite/src/node/__tests__/environment.spec.ts:128:        hmr: {
+packages/vite/src/node/__tests__/environment.spec.ts-129-          logger: false,
+packages/vite/src/node/__tests__/environment.spec.ts-130-        },
+--
+packages/vite/src/node/__tests__/resolve.spec.ts-24-    onTestFinished(() => server.close())
+packages/vite/src/node/__tests__/resolve.spec.ts-25-    const runner = createServerModuleRunner(server.environments.ssr, {
+packages/vite/src/node/__tests__/resolve.spec.ts:26:      hmr: {
+packages/vite/src/node/__tests__/resolve.spec.ts-27-        logger: false,
+packages/vite/src/node/__tests__/resolve.spec.ts-28-      },
+--
+packages/vite/src/node/__tests__/resolve.spec.ts-116-
+packages/vite/src/node/__tests__/resolve.spec.ts-117-    const runner = createServerModuleRunner(server.environments.ssr, {
+packages/vite/src/node/__tests__/resolve.spec.ts:118:      hmr: {
+packages/vite/src/node/__tests__/resolve.spec.ts-119-        logger: false,
+packages/vite/src/node/__tests__/resolve.spec.ts-120-      },
+--
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr.js:1:export const hmr = import.meta.hot
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.invoke.spec.ts-33-        middlewareMode: true,
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.invoke.spec.ts-34-        watch: null,
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.invoke.spec.ts:35:        hmr: {
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.invoke.spec.ts-36-          port: 9610,
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.invoke.spec.ts-37-        },
+--
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race/shared.js-1-import './evaluated.js'
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race/shared.js-2-
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race/shared.js:3:await globalThis.__vite_ssr_hmr_evaluated_import_race__?.wait?.()
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race/shared.js-4-
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race/shared.js-5-export const value = 'ready'
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-4-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-5-describe(
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:6:  'module runner hmr works as expected',
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-7-  async () => {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-8-    const it = await createModuleRunnerTester({
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-13-    })
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-14-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:15:    it('hmr options are defined', async ({ runner }) => {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:16:      expect(runner.hmrClient).toBeDefined()
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-17-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:18:      const mod = await runner.import('/fixtures/hmr.js')
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:19:      expect(mod).toHaveProperty('hmr')
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:20:      expect(mod.hmr).toHaveProperty('accept')
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-21-    })
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-22-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:23:    it('correctly populates hmr client', async ({ runner }) => {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-24-      const mod = await runner.import('/fixtures/d')
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-25-      expect(mod.d).toBe('a')
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-28-      const fixtureD = '/fixtures/d.ts'
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-29-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:30:      assert(runner.hmrClient)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:31:      expect(runner.hmrClient.hotModulesMap.size).toBe(2)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:32:      expect(runner.hmrClient.dataMap.size).toBe(2)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:33:      expect(runner.hmrClient.ctxToListenersMap.size).toBe(2)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-34-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-35-      for (const fixture of [fixtureC, fixtureD]) {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:36:        expect(runner.hmrClient.hotModulesMap.has(fixture)).toBe(true)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:37:        expect(runner.hmrClient.dataMap.has(fixture)).toBe(true)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:38:        expect(runner.hmrClient.ctxToListenersMap.has(fixture)).toBe(true)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-39-      }
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-40-    })
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-44-    }) => {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-45-      const testGlobal = globalThis as any
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:46:      const sharedUrl = '/fixtures/hmr-reexport-race/shared.js'
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:47:      const coreUrl = '/fixtures/hmr-reexport-race/core.js'
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:48:      const entryAUrl = '/fixtures/hmr-reexport-race/entry-a.js'
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:49:      const entryBUrl = '/fixtures/hmr-reexport-race/entry-b.js'
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-50-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:51:      testGlobal.__vite_ssr_hmr_reexport_race__ = {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-52-        wait: () => Promise.resolve(),
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-53-      }
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-54-      onTestFinished(() => {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:55:        delete testGlobal.__vite_ssr_hmr_reexport_race__
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-56-      })
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-57-
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-73-        promiseWithResolvers<void>()
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-74-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:75:      testGlobal.__vite_ssr_hmr_reexport_race__ = {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-76-        wait: () => {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-77-          waitStarted()
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-115-      ])
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-116-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:117:      assert(runner.hmrClient)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:118:      const hmrListeners = runner.hmrClient.hotModulesMap
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:119:      expect(hmrListeners.has(entryAUrl)).toBe(true)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:120:      expect(hmrListeners.has(entryBUrl)).toBe(true)
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-121-    })
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-122-
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-125-    }) => {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-126-      const testGlobal = globalThis as any
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:127:      const sharedUrl = '/fixtures/hmr-evaluated-import-race/shared.js'
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:128:      const evaluatedUrl = '/fixtures/hmr-evaluated-import-race/evaluated.js'
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-129-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:130:      testGlobal.__vite_ssr_hmr_evaluated_import_race__ = {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-131-        wait: () => Promise.resolve(),
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-132-        importShared: () => false,
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-133-      }
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-134-      onTestFinished(() => {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:135:        delete testGlobal.__vite_ssr_hmr_evaluated_import_race__
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-136-      })
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-137-
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-156-
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-157-      let evaluatedRequestCount = 0
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts:158:      testGlobal.__vite_ssr_hmr_evaluated_import_race__ = {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-159-        wait: () => {
+packages/vite/src/node/ssr/runtime/__tests__/server-hmr.spec.ts-160-          waitStarted()
+--
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/worker.invoke.mjs-33-    },
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/worker.invoke.mjs-34-    createImportMeta: createNodeImportMeta,
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/worker.invoke.mjs:35:    hmr: false,
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/worker.invoke.mjs-36-  },
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/worker.invoke.mjs-37-  new ESModulesEvaluator(),
+--
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race/evaluated.js-1-const importShared =
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race/evaluated.js:2:  await globalThis.__vite_ssr_hmr_evaluated_import_race__?.importShared?.()
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race/evaluated.js-3-
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-evaluated-import-race/evaluated.js-4-export const sharedValue = importShared
+--
+packages/vite/src/node/ssr/runtime/__tests__/utils.ts-84-    t.environment = t.server.environments.ssr
+packages/vite/src/node/ssr/runtime/__tests__/utils.ts-85-    t.runner = createServerModuleRunner(t.environment, {
+packages/vite/src/node/ssr/runtime/__tests__/utils.ts:86:      hmr: {
+packages/vite/src/node/ssr/runtime/__tests__/utils.ts-87-        logger: false,
+packages/vite/src/node/ssr/runtime/__tests__/utils.ts-88-      },
+--
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-2-import { createModuleRunnerTester } from './utils'
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-3-
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts:4:describe('module runner hmr works as expected', async () => {
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-5-  const it = await createModuleRunnerTester({
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-6-    server: {
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-7-      // override watch options because it's disabled by default
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-8-      watch: {},
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts:9:      hmr: false,
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-10-    },
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-11-  })
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-12-
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts:13:  it("hmr client is not defined if it's disabled", async ({ runner }) => {
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts:14:    expect(runner.hmrClient).toBeUndefined()
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-15-
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts:16:    const mod = await runner.import('/fixtures/hmr.js')
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts:17:    expect(mod).toHaveProperty('hmr')
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts:18:    expect(mod.hmr).toBeUndefined()
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-19-  })
+packages/vite/src/node/ssr/runtime/__tests__/server-no-hmr.spec.ts-20-})
+--
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-reexport-race/core.js:1:await globalThis.__vite_ssr_hmr_reexport_race__?.wait?.()
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-reexport-race/core.js-2-
+packages/vite/src/node/ssr/runtime/__tests__/fixtures/hmr-reexport-race/core.js-3-export function createThing(value) {

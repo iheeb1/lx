@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rg",
+    "--color=always",
+    "-n",
+    "func \\(c \\*Context\\) Abort"
+  ],
+  "shell": "rg --color=always -n func \\(c \\*Context\\) Abort",
+  "exit_code": 0,
+  "description": "rg --color=always -n: ANSI in path, line number and match",
+  "cwd": "/home/user/src/gin"
+}

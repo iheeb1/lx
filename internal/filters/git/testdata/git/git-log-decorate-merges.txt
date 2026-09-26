@@ -1,0 +1,51 @@
+commit db3ddb5cf4968b320ea21f6ee5c2d2202a2e7b22
+Merge: ceb39ab 67171d6
+Author: Steve Francia <steve.francia@gmail.com>
+Date:   Mon May 5 22:12:42 2025 -0400
+
+    Adding sponsorship to README.md
+
+commit 856b96dcb49d6427babe192998a35190a12c2230
+Merge: ec2fe78 011f19e
+Author: Eric Paris <eparis@redhat.com>
+Date:   Fri Oct 14 18:20:36 2016 -0400
+
+    Merge pull request #353 from bogem/helpfunc
+    
+    Fix condition in HelpFunc
+
+commit ec2fe7859914a5106dcab4e7901633d959bfc2f4
+Merge: b620a75 7faa7fc
+Author: Eric Paris <eparis@redhat.com>
+Date:   Mon Oct 10 11:14:18 2016 -0400
+
+    Merge pull request #286 from dnephin/merge_flags_before_adding_help
+    
+    Merge persistent flags before checking for a help flag
+
+commit b620a7591d08f55e771557eb711d92ee6f4bc5f9
+Merge: 9c28e4b 67feb81
+Author: Eric Paris <eparis@redhat.com>
+Date:   Mon Oct 10 11:13:51 2016 -0400
+
+    Merge pull request #283 from dnephin/add_flag_usage_func
+    
+    Add support for setting a function to handle flag parsing errors
+
+commit 9c28e4bbd74e5c3ed7aacbc552b2cab7cfdfe744
+Merge: d671d98 5da9888
+Author: Eric Paris <eparis@redhat.com>
+Date:   Tue Aug 30 13:49:25 2016 -0400
+
+    Merge pull request #339 from bogem/fixes
+    
+    Some fixes
+
+commit d671d98363b02cd8127087b4675ae77396db5843
+Merge: 37c3f80 4a08706
+Author: Eric Paris <eparis@redhat.com>
+Date:   Tue Aug 30 11:26:59 2016 -0400
+
+    Merge pull request #338 from icaoweiwei/patch-2016-08-29-2
+    
+    Fix typo

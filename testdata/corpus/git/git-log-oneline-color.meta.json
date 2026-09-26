@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "color.ui=always",
+    "log",
+    "--oneline",
+    "--decorate",
+    "-n",
+    "120"
+  ],
+  "shell": "git -c color.ui=always log --oneline --decorate -n 120",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "git log --oneline --decorate -n 120 with color forced (ANSI hashes/refs)",
+  "cwd": "repos/vite"
+}

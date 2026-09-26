@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "rg",
+    "--files"
+  ],
+  "shell": "rg --files",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "rg --files: list all non-ignored files in the vite monorepo",
+  "cwd": "repos/vite"
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "cmake",
+    "--build",
+    "build",
+    "-j8"
+  ],
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-written in real GNU make 4.3 / gcc 13 / GNU ld / CMake 3.28 / ninja 1.11 format; the capture machine is macOS with clang only): cmake --build with the Ninja generator, successful: Entering directory, 16 [N/M] steps, a linker warning",
+  "cwd": "/home/user/src/netd"
+}

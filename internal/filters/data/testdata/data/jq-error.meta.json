@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "jq",
+    ".dependencies | keys[0] | .foo",
+    "package.json"
+  ],
+  "shell": "jq .dependencies | keys[0] | .foo package.json",
+  "repo": "",
+  "exit_code": 5,
+  "description": "jq runtime error: 'jq: error (at package.json:25): Cannot index string with string'",
+  "cwd": "repos/vite-react-app"
+}

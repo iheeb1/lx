@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "find . -name '*.js' -not -path './.git/*'"
+  ],
+  "shell": "find . -name '*.js' -not -path './.git/*'",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "find . -name '*.js' excluding only .git: node_modules dominates the ~3700 results",
+  "cwd": "repos/express"
+}

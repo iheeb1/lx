@@ -1,0 +1,40 @@
+FAIL test2/console.test.js
+  ● Console
+    console.error
+      failed to load settings: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+          at JSON.parse (<anonymous>)
+          at parse (test2/console.test.js:3:10)
+          at Object.load (test2/console.test.js:10:3)
+          … 12 library frames (jest-circus, node:internal, jest-runner)
+      at error (test2/console.test.js:5:13)
+      at Object.load (test2/console.test.js:10:3)
+    console.error
+      failed to load settings: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+          at JSON.parse (<anonymous>)
+          at parse (test2/console.test.js:3:10)
+          at Object.load (test2/console.test.js:15:3)
+          … 12 library frames (jest-circus, node:internal, jest-runner)
+      at error (test2/console.test.js:5:13)
+      at Object.load (test2/console.test.js:15:3)
+    console.warn
+      retrying with defaults
+      at Object.warn (test2/console.test.js:16:11)
+  ● failing test that logs an error object
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 3
+    Received: 2
+    > 17 |   expect(2).toBe(3);
+         |             ^
+      at Object.toBe (test2/console.test.js:17:13)
+
+PASS test2/console-pass.test.js
+    console.error
+      failed to load settings: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+      at error (test2/console-pass.test.js:5:13)
+
+[1 passing suite hidden; 1 console message of passing suites hidden]
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       1 failed, 2 passed, 3 total
+Snapshots:   0 total
+Time:        0.339 s, estimated 1 s
+Ran all test suites matching /test2\//i.

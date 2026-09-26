@@ -1,0 +1,137 @@
+collecting ... collected 23 items
+tests/test_models.py::test_remove_unknown FAILED                         [ 21%]
+tests/test_models.py::test_load_corrupt FAILED                           [ 52%]
+tests/test_models.py::test_uses_db ERROR                                 [ 56%]
+tests/test_models.py::test_sync SKIPPED (needs network)                  [ 60%]
+tests/test_models.py::test_unicode_label XFAIL (unicode names not su...) [ 65%]
+tests/test_pricing.py::test_apply_discount[100.0-10-90.0] FAILED         [ 73%]
+tests/test_pricing.py::test_apply_discount[80.0-25-60.0] FAILED          [ 78%]
+tests/test_pricing.py::test_parse_price FAILED                           [ 91%]
+tests/test_pricing.py::test_fetch_rates FAILED                           [ 95%]
+tests/test_pricing.py::test_bulk_report FAILED                           [100%]
+[lx: 13 PASSED lines hidden]
+==================================== ERRORS ====================================
+________________________ ERROR at setup of test_uses_db ________________________
+    def db_conn():
+>       raise ConnectionError("database fixture unavailable: connection to 127.0.0.1:5432 refused")
+E       ConnectionError: database fixture unavailable: connection to 127.0.0.1:5432 refused
+tests/conftest.py:16: ConnectionError
+=================================== FAILURES ===================================
+_____________________________ test_remove_unknown ______________________________
+    def test_remove_unknown(stock):
+>       assert stock.remove("ZZ") == 0
+tests/test_models.py:26:
+self = <inventory.models.Stock object at 0x10882e130>, sku = 'ZZ', qty = 1
+    def remove(self, sku: str, qty: int = 1) -> int:
+>       have = self.counts[sku]
+E       KeyError: 'ZZ'
+inventory/models.py:33: KeyError
+______________________________ test_load_corrupt _______________________________
+tmp_path = PosixPath('/private/var/folders/80/4_lyj_vx2bl5xtz0k9hny73m0000gn/T/pytest-of-user/pytest-13/test_load_corrupt0')
+    def test_load_corrupt(tmp_path):
+        p = tmp_path / "bad.json"
+        p.write_text('{"items": [')
+>       Stock.load(str(p))
+tests/test_models.py:47:
+inventory/models.py:52: in load
+    data = json.load(f)
+… 3 library frames (json)
+>           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 12 (char 11)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:355: JSONDecodeError
+______________________ test_apply_discount[100.0-10-90.0] ______________________
+price = 100.0, percent = 10, expected = 90.0
+    def test_apply_discount(price, percent, expected):
+>       assert apply_discount(price, percent) == expected
+E       assert 100.0 == 90.0
+E        +  where 100.0 = apply_discount(100.0, 10)
+tests/test_pricing.py:22: AssertionError
+______________________ test_apply_discount[80.0-25-60.0] _______________________
+price = 80.0, percent = 25, expected = 60.0
+    def test_apply_discount(price, percent, expected):
+>       assert apply_discount(price, percent) == expected
+E       assert 80.0 == 60.0
+E        +  where 80.0 = apply_discount(80.0, 25)
+tests/test_pricing.py:22: AssertionError
+_______________________________ test_parse_price _______________________________
+    def test_parse_price():
+        assert parse_price(" $4.20 ") == 4.2
+>       assert parse_price("4,20") == 4.2
+tests/test_pricing.py:33:
+text = '4,20'
+    def parse_price(text: str) -> float:
+>       return float(text.strip().lstrip("$"))
+E       ValueError: could not convert string to float: '4,20'
+inventory/pricing.py:19: ValueError
+_______________________________ test_fetch_rates _______________________________
+… 2 library frames (urllib3)
+>               sock.connect(sa)
+E               ConnectionRefusedError: [Errno 61] Connection refused
+../../venv/lib/python3.9/site-packages/urllib3/util/connection.py:73: ConnectionRefusedError
+
+The above exception was the direct cause of the following exception:
+… 7 library frames (urllib3, http)
+>           raise NewConnectionError(
+E           urllib3.exceptions.NewConnectionError: HTTPConnection(host='127.0.0.1', port=9): Failed to establish a new connection: [Errno 61] Connection refused
+../../venv/lib/python3.9/site-packages/urllib3/connection.py:219: NewConnectionError
+
+The above exception was the direct cause of the following exception:
+… 2 library frames (requests, urllib3)
+>           raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+E           urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=9): Max retries exceeded with url: /rates (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=9): Failed to establish a new connection: [Errno 61] Connection refused"))
+../../venv/lib/python3.9/site-packages/urllib3/util/retry.py:535: MaxRetryError
+
+During handling of the above exception, another exception occurred:
+    def test_fetch_rates():
+        log.warning("fetching exchange rates from %s", "http://127.0.0.1:9/rates")
+        print("GET http://127.0.0.1:9/rates")
+>       r = requests.get("http://127.0.0.1:9/rates", timeout=1)
+tests/test_pricing.py:39:
+… 4 library frames (requests)
+>           raise ConnectionError(e, request=request)
+E           requests.exceptions.ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=9): Max retries exceeded with url: /rates (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=9): Failed to establish a new connection: [Errno 61] Connection refused"))
+../../venv/lib/python3.9/site-packages/requests/adapters.py:677: ConnectionError
+----------------------------- Captured stdout call -----------------------------
+GET http://127.0.0.1:9/rates
+------------------------------ Captured log call -------------------------------
+WARNING  pricing:test_pricing.py:37 fetching exchange rates from http://127.0.0.1:9/rates
+_______________________________ test_bulk_report _______________________________
+stock = None
+        for it in items:
+            print(f"priced {it.sku} {it.name} at {it.price:.2f}")
+        log.error("report failed validation for %d items", len(items))
+>       assert total_price(items) == 470.0
+E       AssertionError: assert 468.0 == 470.0
+E        +  where 468.0 = total_price([Item(sku='S000', name='item-0', price=0.0, tags=[]), Item(sku='S001', name='item-1', price=0.5, tags=[]), Item(sku='S002', name='item-2', price=1.0, tags=[]), Item(sku='S003', name='item-3', price=1.5, tags=[]), Item(sku='S004', name='item-4', price=2.0, tags=[]), Item(sku='S005', name='item-5', price=2.5, tags=[]), ...])
+tests/test_pricing.py:48: AssertionError
+----------------------------- Captured stdout call -----------------------------
+priced S000 item-0 at 0.00
+priced S001 item-1 at 0.50
+priced S002 item-2 at 1.00
+priced S003 item-3 at 1.50
+priced S004 item-4 at 2.00
+priced S005 item-5 at 2.50
+priced S006 item-6 at 3.00
+priced S007 item-7 at 3.50
+priced S008 item-8 at 4.00
+priced S009 item-9 at 4.50
+priced S010 item-10 at 5.00
+  … 28 similar lines …
+priced S039 item-39 at 19.50
+------------------------------ Captured log call -------------------------------
+ERROR    pricing:test_pricing.py:47 report failed validation for 40 items
+=============================== warnings summary ===============================
+../../venv/lib/python3.9/site-packages/urllib3/__init__.py:35
+  ~/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+tests/test_models.py::test_legacy_total[1] (+4 more)
+  tests/test_models.py:32: DeprecationWarning: legacy_total() is deprecated, use total_price()
+=========================== short test summary info ============================
+FAILED tests/test_models.py::test_remove_unknown - KeyError: 'ZZ'
+FAILED tests/test_models.py::test_load_corrupt - json.decoder.JSONDecodeError...
+FAILED tests/test_pricing.py::test_apply_discount[100.0-10-90.0] - assert 100...
+FAILED tests/test_pricing.py::test_apply_discount[80.0-25-60.0] - assert 80.0...
+FAILED tests/test_pricing.py::test_parse_price - ValueError: could not conver...
+FAILED tests/test_pricing.py::test_fetch_rates - requests.exceptions.Connecti...
+FAILED tests/test_pricing.py::test_bulk_report - AssertionError: assert 468.0...
+ERROR tests/test_models.py::test_uses_db - ConnectionError: database fixture ...
+=== 7 failed, 13 passed, 1 skipped, 1 xfailed, 6 warnings, 1 error in 0.60s ====

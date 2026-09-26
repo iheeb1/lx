@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "status"
+  ],
+  "shell": "git status",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "git status in the middle of the conflicted merge (unmerged paths section, both modified, deleted by them)",
+  "cwd": "repos/cobra-merge"
+}

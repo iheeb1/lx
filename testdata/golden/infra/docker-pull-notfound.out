@@ -1,0 +1,1 @@
+Error response from daemon: failed to resolve reference "docker.io/library/alpine:99.99": docker.io/library/alpine:99.99: not found

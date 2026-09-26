@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "grep",
+    "-v",
+    "^#",
+    "app.conf"
+  ],
+  "shell": "grep -v ^# app.conf",
+  "exit_code": 0,
+  "description": "grep -v: printed lines are the non-matching ones (indentation matters)",
+  "cwd": "/home/user/scratch/tricky"
+}

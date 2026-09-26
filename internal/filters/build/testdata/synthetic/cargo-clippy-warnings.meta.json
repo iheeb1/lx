@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "cargo",
+    "clippy"
+  ],
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-written in real cargo 1.8x/rustc format; cargo is not installed on the capture machine): cargo clippy on a library: 9 Checking lines, 5 clippy warnings (the same len_zero message at 3 locations, needless_return with a diff-style help, if_same_then_else with a multi-line span and a note sub-diagnostic), Finished",
+  "cwd": "/home/user/src/demo"
+}

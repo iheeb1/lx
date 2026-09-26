@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--ci",
+    "--coverage",
+    "--coverageThreshold={\"global\":{\"lines\":95,\"branches\":90}}",
+    "test/math.test.js"
+  ],
+  "shell": "npx jest --ci --coverage '--coverageThreshold={\"global\":{\"lines\":95,\"branches\":90}}' test/math.test.js",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "all tests pass but the global coverage threshold is not met: exit 1",
+  "cwd": "repos/jestproj"
+}

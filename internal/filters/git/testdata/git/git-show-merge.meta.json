@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "show",
+    "db3ddb5"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/cobra",
+  "description": "git show of a merge commit"
+}

@@ -1,0 +1,23 @@
+> webpack-app@1.0.0 build
+> webpack --mode production
+
+assets by status 507 KiB [cached] 1 asset
+  ./src/syntax.js 12 bytes [built] [code generated] [1 error]
+[3 module lines hidden]
+
+ERROR in ./src/broken.js 1:0-18
+Module not found: Error: Can't resolve './nope.js' in '/home/user/src/webpack-app/src'
+[resolve trace: 35 lines hidden]
+    Failed to alias from extension alias with mapping '.js' to '.js' for './nope.js': undefined
+ @ ./src/index.js 4:0-20
+
+ERROR in ./src/syntax.js 1:10
+Module parse failed: Unexpected token (1:10)
+File was parsed as module type 'javascript/auto'.
+You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
+> 1 | const x = ;
+    |           ^
+  2 |
+ @ ./src/index.js 5:0-20
+
+webpack 5.111.1 compiled with 2 errors in 248 ms

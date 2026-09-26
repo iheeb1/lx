@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "--timeout=1",
+    "tests/test_slow.py"
+  ],
+  "shell": "pytest -p no:cacheprovider --timeout=1 tests/test_slow.py",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): pytest-timeout (signal method): '+++ Timeout +++' thread stack dump inside the progress line, then Failed: Timeout",
+  "cwd": "/home/user/src/edge",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv: pytest 8.3.4, pytest-cov 4.1.0, pytest-xdist 3.8.0, pytest-timeout 2.4.0, pytest-rerunfailures 16.0.1, pip 21.2.4"
+}

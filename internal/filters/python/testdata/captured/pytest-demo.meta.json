@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "pytest"
+  ],
+  "shell": "pytest",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter testdata): pytest (default --tb=auto) on a small project: setup error, assertion failures, app + stdlib + site-packages frames, a 3-deep chained requests/urllib3 exception, captured stdout (40 lines) and log, warnings summary",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv with pytest 8.3.4, mypy 1.19.1, ruff 0.16.9, pip 26.0.1"
+}

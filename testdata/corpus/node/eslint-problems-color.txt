@@ -1,0 +1,251 @@
+[0m[0m
+[0m[4m/home/user/src/express/lib/application.js[24m[0m
+[0m   [2m16:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m17:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m18:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m19:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m20:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m21:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m22:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m23:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m24:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m25:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m26:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m33:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m34:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m40:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m47:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m60:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m91:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m154:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m191:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m192:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m197:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m210:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m217:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m230:22[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m  [2m231:7[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m232:27[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m  [2m300:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m324:10[22m  [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m471:17[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m  [2m478:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m495:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m496:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m498:8[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m523:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m524:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m525:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m526:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m527:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m536:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m550:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m559:7[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m562:7[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m599:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m600:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m602:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m[0m
+[0m[4m/home/user/src/express/lib/express.js[24m[0m
+[0m  [2m15:1[22m  [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m16:1[22m  [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m17:1[22m  [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m18:1[22m  [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m19:1[22m  [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m20:1[22m  [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m21:1[22m  [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m37:3[22m  [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m[0m
+[0m[4m/home/user/src/express/lib/request.js[24m[0m
+[0m   [2m16:1[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m17:1[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m18:1[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m19:1[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m20:1[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m21:1[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m22:1[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m23:1[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m30:1[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m73:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m128:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m141:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m215:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m231:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m238:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m270:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m275:10[22m  [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m298:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m301:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m309:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m310:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m341:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m358:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m359:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m384:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m388:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m389:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m419:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m420:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m445:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m450:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m453:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m470:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m471:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m472:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m509:3[22m   [31merror[39m  Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m[0m
+[0m[4m/home/user/src/express/lib/response.js[24m[0m
+[0m    [2m15:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m16:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m17:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m18:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m19:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m20:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m21:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m22:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m23:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m24:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m25:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m26:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m27:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m28:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m29:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m30:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m31:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m32:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m33:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m34:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m35:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m43:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m    [2m99:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m101:57[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m   [2m104:29[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m   [2m127:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m128:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m129:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m132:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m162:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m163:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m165:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m188:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m238:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m239:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m240:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m241:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m242:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m266:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m267:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m268:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m269:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m270:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m271:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m326:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m376:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m377:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m378:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m379:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m380:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m401:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m405:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m408:29[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m   [2m438:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m439:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m440:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m460:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m466:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m467:10[22m  [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m468:7[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m480:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m509:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m574:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m575:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m577:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m578:13[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m   [2m580:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m593:39[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m   [2m635:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m636:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m672:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m686:10[22m  [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m748:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m749:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m750:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m756:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m765:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m815:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m816:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m817:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m847:7[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m897:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m898:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m899:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m900:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m901:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m924:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m925:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m932:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m942:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m972:18[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m   [2m998:24[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m   [2m999:7[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m1000:7[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m1002:12[22m  [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m1003:9[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m1028:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m1033:35[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m[0m
+[0m[4m/home/user/src/express/lib/utils.js[24m[0m
+[0m   [2m15:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m16:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m17:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m18:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m19:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m20:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m21:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m90:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m91:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m92:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m93:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m96:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m99:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m100:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m107:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m108:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m131:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m163:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m210:12[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m  [2m231:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m251:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m[0m
+[0m[4m/home/user/src/express/lib/view.js[24m[0m
+[0m   [2m16:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m17:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m18:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m25:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m26:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m27:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m28:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m29:1[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m53:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m64:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m77:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m   [2m81:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m105:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m106:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m110:8[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m111:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m114:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m115:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m116:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m134:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m145:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m146:5[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m148:10[22m  [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m153:29[22m  [33mwarning[39m  Unexpected function expression            [2mprefer-arrow-callback[22m[0m
+[0m  [2m170:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m173:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m  [2m174:3[22m   [31merror[39m    Unexpected var, use let or const instead  [2mno-var[22m[0m
+[0m[0m
+[0m[31m[1m✖ 235 problems (222 errors, 13 warnings)[22m[39m[0m
+[0m[31m[1m[22m[39m[31m[1m  220 errors and 13 warnings potentially fixable with the `--fix` option.[22m[39m[0m
+[0m[31m[1m[22m[39m[0m

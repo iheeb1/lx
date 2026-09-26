@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "npm",
+    "install"
+  ],
+  "shell": "npm install",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "npm install in a repo without a lockfile (fresh resolution of ~400 packages) with deprecation warnings",
+  "cwd": "repos/express"
+}

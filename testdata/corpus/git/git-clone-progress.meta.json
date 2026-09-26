@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "clone",
+    "--progress",
+    "https://github.com/spf13/cobra.git"
+  ],
+  "shell": "git clone --progress https://github.com/spf13/cobra.git",
+  "repo": "spf13/cobra",
+  "exit_code": 0,
+  "description": "git clone with --progress in a non-TTY: carriage-return progress meters for counting/compressing/receiving/resolving objects",
+  "cwd": "repos"
+}

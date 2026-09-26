@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "process.env.NODE_ENV",
+    "."
+  ],
+  "shell": "grep -rn \"process.env.NODE_ENV\" .",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "grep -rn process.env.NODE_ENV . hitting minified bundles in node_modules: only 26 matching lines but ~1.4MB because whole minified files are single lines (extreme long-line case)",
+  "cwd": "repos/express"
+}

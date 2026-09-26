@@ -1,0 +1,7 @@
+collected 3 items
+[lx: 1 progress line hidden]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+kbi/test_kbi.py:6: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+============================== 1 passed in 0.20s ===============================
+[lx: pytest exited 2 although the result line reports no failures; see the lines above]

@@ -1,0 +1,13 @@
+ok  	example.com/lxcap2/manyok/p1	0.272s
+ok  	example.com/lxcap2/manyok/p10	0.379s
+ok  	example.com/lxcap2/manyok/p11	0.655s
+ok  	example.com/lxcap2/manyok/p12	0.763s
+ok  	example.com/lxcap2/manyok/p2	0.961s
+ok  	example.com/lxcap2/manyok/p3	1.164s
+ok  	example.com/lxcap2/manyok/p4	1.384s
+ok  	example.com/lxcap2/manyok/p5	1.593s
+ok  	example.com/lxcap2/manyok/p6	1.747s
+ok  	example.com/lxcap2/manyok/p7	1.854s
+ok  	example.com/lxcap2/manyok/p8	1.770s
+ok  	example.com/lxcap2/manyok/p9	1.776s
+ok  	example.com/lxcap2/coverfail	1.794s [no tests to run]

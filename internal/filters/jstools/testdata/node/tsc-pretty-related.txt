@@ -1,0 +1,51 @@
+[96mts/a.ts[0m:[93m4[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'number' is not assignable to type 'string'.
+
+[7m4[0m const s: string = add(1, 2);
+[7m [0m [91m      ~[0m
+
+[96mts/a.ts[0m:[93m5[0m:[93m5[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'number'.
+
+[7m5[0m add("x", 2);
+[7m [0m [91m    ~~~[0m
+
+[96mts/a.ts[0m:[93m6[0m:[93m1[0m - [91merror[0m[90m TS2554: [0mExpected 2 arguments, but got 1.
+
+[7m6[0m add(1);
+[7m [0m [91m~~~[0m
+
+  [96mts/a.ts[0m:[93m1[0m:[93m32[0m
+    [7m1[0m export function add(a: number, b: number): number {
+    [7m [0m [96m                               ~~~~~~~~~[0m
+    An argument for 'b' was not provided.
+
+[96mts/a.ts[0m:[93m8[0m:[93m21[0m - [91merror[0m[90m TS2322: [0mType 'string' is not assignable to type 'number'.
+
+[7m8[0m const e: Error2 = { code: "E1" };
+[7m [0m [91m                    ~~~~[0m
+
+  [96mts/a.ts[0m:[93m7[0m:[93m20[0m
+    [7m7[0m interface Error2 { code: number }
+    [7m [0m [96m                   ~~~~[0m
+    The expected type comes from property 'code' which is declared here on type 'Error2'
+
+[96mts/a.ts[0m:[93m9[0m:[93m10[0m - [91merror[0m[90m TS6133: [0m'unused' is declared but its value is never read.
+
+[7m9[0m function unused() {}
+[7m [0m [91m         ~~~~~~[0m
+
+[96mts/a.ts[0m:[93m11[0m:[93m29[0m - [91merror[0m[90m TS2304: [0mCannot find name 'missingName'.
+
+[7m11[0m throw new Error("failed " + missingName);
+[7m  [0m [91m                            ~~~~~~~~~~~[0m
+
+[96mts/b.ts[0m:[93m1[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module './nope' or its corresponding type declarations.
+
+[7m1[0m import { nothing } from "./nope";
+[7m [0m [91m                        ~~~~~~~~[0m
+
+
+Found 7 errors in 2 files.
+
+Errors  Files
+     6  ts/a.ts[90m:4[0m
+     1  ts/b.ts[90m:1[0m

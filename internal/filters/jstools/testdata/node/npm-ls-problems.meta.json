@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "npm",
+    "ls"
+  ],
+  "shell": "npm ls",
+  "exit_code": 1,
+  "description": "npm ls with an extraneous package, a missing dependency and an invalid version: UNMET/extraneous/invalid entries and ELSPROBLEMS errors",
+  "cwd": "/home/user/src/vite-app"
+}

@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "env",
+    "-u",
+    "CLAUDECODE",
+    "-u",
+    "AI_AGENT",
+    "FORCE_COLOR=1",
+    "npx",
+    "vitest",
+    "run"
+  ],
+  "shell": "env -u CLAUDECODE -u AI_AGENT FORCE_COLOR=1 npx vitest run",
+  "repo": "unjs/ufo",
+  "exit_code": 1,
+  "description": "failing vitest run (7 failures) with agent-detection env vars (CLAUDECODE, AI_AGENT) removed and FORCE_COLOR=1: full default reporter with ANSI colors (vitest also colors non-TTY output by default when TERM is not 'dumb')",
+  "cwd": "repos/ufo"
+}

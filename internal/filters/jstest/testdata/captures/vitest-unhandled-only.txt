@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /home/user/src/vitproj
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+TypeError: background job failed: connection reset
+ ❯ Timeout._onTimeout test/unhandled.test.ts:5:20
+      3| it("leaks a rejection", () => {
+      4|   setTimeout(() => {
+      5|     Promise.reject(new TypeError("background job failed: connection re…
+       |                    ^
+      6|   }, 1);
+      7|   expect(true).toBe(true);
+ ❯ listOnTimeout node:internal/timers:605:17
+ ❯ processTimers node:internal/timers:541:7
+
+This error originated in "test/unhandled.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "waits". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  2 passed (2)
+      Tests  4 passed (4)
+     Errors  1 error
+   Start at  02:15:38
+   Duration  552ms (transform 77ms, setup 0ms, import 188ms, tests 41ms, environment 0ms)
+

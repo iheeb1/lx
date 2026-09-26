@@ -1,0 +1,142 @@
+packages/vite/src/node/cli.ts:      const { createServer } = await import('./server')
+packages/vite/src/node/cli.ts:        const server = await createServer({
+packages/vite/src/node/preview.ts:import { createServerCloseFn } from './server'
+packages/vite/src/node/preview.ts:  const closeHttpServer = createServerCloseFn(httpServer)
+packages/vite/src/node/optimizer/optimizer.ts:    // A module can be transformed between `createServer()` and `server.listen()`,
+packages/vite/src/node/http.ts:    const { createServer } = await import('node:http')
+packages/vite/src/node/http.ts:    return createServer(app)
+packages/vite/src/node/http.ts:    const server = net.createServer()
+packages/vite/src/node/server/hmr.ts:export function createServerHotChannel(): ServerHotChannel {
+packages/vite/src/node/index.ts:export { createServer } from './server'
+packages/vite/src/node/index.ts:  createServerModuleRunner,
+packages/vite/src/node/index.ts:  createServerModuleRunnerTransport,
+packages/vite/src/node/index.ts:export { createServerHotChannel } from './server/hmr'
+packages/vite/src/node/server/index.ts:export function createServer(
+packages/vite/src/node/server/index.ts:  return _createServer(inlineConfig, { listen: true })
+packages/vite/src/node/server/index.ts:export async function _createServer(
+packages/vite/src/node/server/index.ts:  const closeHttpServer = createServerCloseFn(httpServer)
+packages/vite/src/node/server/index.ts:export function createServerCloseFn(
+packages/vite/src/node/server/index.ts:      newServer = await _createServer(inlineConfig, {
+packages/vite/src/node/server/__tests__/hmr.spec.ts:import { type ServerOptions, createServer } from '../index'
+packages/vite/src/node/server/__tests__/hmr.spec.ts:  const server = await createServer({
+packages/vite/src/node/server/environments/runnableEnvironment.ts:import { createServerModuleRunner } from '../../ssr/runtime/serverModuleRunner'
+packages/vite/src/node/server/environments/runnableEnvironment.ts:import { createServerHotChannel } from '../hmr'
+packages/vite/src/node/server/environments/runnableEnvironment.ts:  context.transport ??= createServerHotChannel()
+packages/vite/src/node/server/environments/runnableEnvironment.ts:    const factory = this._runnerFactory || createServerModuleRunner
+packages/vite/src/node/__tests__/scan.spec.ts:import { createServer, createServerModuleRunner } from '..'
+packages/vite/src/node/__tests__/scan.spec.ts:  const server = await createServer({
+packages/vite/src/node/__tests__/scan.spec.ts:  const runner = createServerModuleRunner(server.environments.ssr, {
+packages/vite/src/node/__tests__/scan.spec.ts:  const server = await createServer({
+packages/vite/src/node/__tests__/scan.spec.ts:  const server = await createServer({
+packages/vite/src/node/__tests__/scan.spec.ts:  const server = await createServer({
+packages/vite/src/node/__tests__/scan.spec.ts:  const server = await createServer({
+packages/vite/src/node/__tests__/scan.spec.ts:  const server = await createServer({
+packages/vite/src/node/__tests__/scan.spec.ts:  const server = await createServer({
+packages/vite/src/node/server/ws.ts:import { STATUS_CODES, createServer as createHttpServer } from 'node:http'
+packages/vite/src/node/server/ws.ts:import { createServer as createHttpsServer } from 'node:https'
+packages/vite/src/node/server/__tests__/watcher.spec.ts:import { type ViteDevServer, createServer } from '../index'
+packages/vite/src/node/server/__tests__/watcher.spec.ts:    server = await createServer({
+packages/vite/src/node/server/__tests__/watcher.spec.ts:    server = await createServer({
+packages/vite/src/node/server/__tests__/watcher.spec.ts:    server = await createServer()
+packages/vite/src/node/server/__tests__/watcher.spec.ts:    server = await createServer({
+packages/vite/src/node/server/__tests__/watcher.spec.ts:    server = await createServer({
+packages/vite/src/node/server/__tests__/watcher.spec.ts:    server = await createServer({ root })
+packages/vite/src/node/__tests__/config.spec.ts:    const httpServer = http.createServer()
+packages/vite/src/node/server/middlewares/__tests__/indexHtml.spec.ts:import { createServer } from '../../../server'
+packages/vite/src/node/server/middlewares/__tests__/indexHtml.spec.ts:  const server = await createServer({
+packages/vite/src/node/server/middlewares/__tests__/indexHtml.spec.ts:    const server = await createServer({
+packages/vite/src/node/__tests__/shortcuts.spec.ts:import { createServer } from '../server'
+packages/vite/src/node/__tests__/shortcuts.spec.ts:    ['dev server', () => createServer()],
+packages/vite/src/node/__tests__/shortcuts.spec.ts:    const server = await createServer({
+packages/vite/src/node/__tests__/environment.spec.ts:import { createServer } from '../server'
+packages/vite/src/node/__tests__/environment.spec.ts:import { createServerModuleRunner } from '../ssr/runtime/serverModuleRunner'
+packages/vite/src/node/__tests__/environment.spec.ts:    const server = await createServer(getConfig({ noExternal: true }))
+packages/vite/src/node/__tests__/environment.spec.ts:      const runner = createServerModuleRunner(server.environments[key], {
+packages/vite/src/node/__tests__/environment.spec.ts:    const server = await createServer(getConfig({ noExternal: undefined }))
+packages/vite/src/node/__tests__/environment.spec.ts:      const runner = createServerModuleRunner(server.environments[key], {
+packages/vite/src/node/__tests__/environment.spec.ts:    const server = await createServer(getConfig({ noExternal: true }))
+packages/vite/src/node/__tests__/http.spec.ts:import { createServer } from '..'
+packages/vite/src/node/__tests__/http.spec.ts:    const server = http.createServer()
+packages/vite/src/node/__tests__/http.spec.ts:      viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:      viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:      viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:      viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:      viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:      viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:    const originalCreateServer = net.createServer.bind(net)
+packages/vite/src/node/__tests__/http.spec.ts:    using _ = vi.spyOn(net, 'createServer').mockImplementation(() => {
+packages/vite/src/node/__tests__/http.spec.ts:    viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:    viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:    viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:      viteServer = await createServer({
+packages/vite/src/node/__tests__/http.spec.ts:      viteServer = await createServer({
+packages/vite/src/node/__tests__/dev.spec.ts:import { createServer, resolveConfig } from '..'
+packages/vite/src/node/__tests__/dev.spec.ts:    server = await createServer({
+packages/vite/src/node/__tests__/dev.spec.ts:    server = await createServer({
+packages/vite/src/node/__tests__/dev.spec.ts:    server = await createServer({
+packages/vite/src/node/__tests__/dev.spec.ts:    server = await createServer({
+packages/vite/src/node/__tests__/dev.spec.ts:    server = await createServer({
+packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts:import { createServer } from '../../server'
+packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts:  const server = await createServer({
+packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts:  const server = await createServer({
+packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts:  const server = await createServer({
+packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts:  const server = await createServer({
+packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts:  const server = await createServer({
+packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts:  const server = await createServer({
+packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts:  const server = await createServer({
+packages/vite/src/node/__tests__/optimizer/discoverBeforeListen.spec.ts:import { createLogger, createServer } from '../..'
+packages/vite/src/node/__tests__/optimizer/discoverBeforeListen.spec.ts:// When a module importing a bare specifier is transformed between `createServer()`
+packages/vite/src/node/__tests__/optimizer/discoverBeforeListen.spec.ts:  server = await createServer({
+packages/vite/src/node/__tests__/optimizer/discoverBeforeListen.spec.ts:  server = await createServer({
+packages/vite/src/node/__tests__/optimizer/customExtensionBundleClose.spec.ts:import { createServer } from '../..'
+packages/vite/src/node/__tests__/optimizer/customExtensionBundleClose.spec.ts:  const server = await createServer({
+packages/vite/src/node/ssr/ssrModuleLoader.ts:import { createServerModuleRunnerTransport } from './runtime/serverModuleRunner'
+packages/vite/src/node/ssr/ssrModuleLoader.ts:        transport: createServerModuleRunnerTransport({
+packages/vite/src/node/__tests__/resolve.spec.ts:import { createServer } from '../server'
+packages/vite/src/node/__tests__/resolve.spec.ts:import { createServerModuleRunner } from '../ssr/runtime/serverModuleRunner'
+packages/vite/src/node/__tests__/resolve.spec.ts:    const server = await createServer({
+packages/vite/src/node/__tests__/resolve.spec.ts:    const runner = createServerModuleRunner(server.environments.ssr, {
+packages/vite/src/node/__tests__/resolve.spec.ts:    const server = await createServer(getConfig())
+packages/vite/src/node/__tests__/resolve.spec.ts:    const runner = createServerModuleRunner(server.environments.ssr, {
+packages/vite/src/node/__tests__/resolve.spec.ts:      const server = await createServer(getConfig(targetEnv, builtins))
+packages/vite/src/node/__tests__/plugins/index.spec.ts:import { type InlineConfig, type Plugin, build, createServer } from '../..'
+packages/vite/src/node/__tests__/plugins/index.spec.ts:  const server = await createServer(config)
+packages/vite/src/node/__tests__/plugins/cssPreprocessorTeardown.spec.ts:import { createServer } from '../../index'
+packages/vite/src/node/__tests__/plugins/cssPreprocessorTeardown.spec.ts:    const server = await createServer({
+packages/vite/src/node/ssr/__tests__/ssrStacktrace.spec.ts:import { createServer } from '../../server'
+packages/vite/src/node/ssr/__tests__/ssrStacktrace.spec.ts:  const server = await createServer({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:import { createServer } from '../../server'
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:const createServerWithPlugin = async (
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:  const server = await createServer({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin(
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin(
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin(
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServer({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/__tests__/plugins/hooks.spec.ts:    const server = await createServerWithPlugin({
+packages/vite/src/node/ssr/__tests__/ssrTransform.spec.ts:import { createServer } from '../..'
+packages/vite/src/node/ssr/__tests__/ssrTransform.spec.ts:  const server = await createServer({
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:export const createServerModuleRunnerTransport = (options: {
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:export function createServerModuleRunner(
+packages/vite/src/node/ssr/runtime/serverModuleRunner.ts:      transport: createServerModuleRunnerTransport({
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.invoke.spec.ts:import { type ViteDevServer, createServer } from '../../../server'
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.invoke.spec.ts:    server = await createServer({
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts:import { createServer } from '../../../server'
+packages/vite/src/node/ssr/runtime/__tests__/server-runtime.spec.ts:    const server = await createServer({
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts:import { createServer } from '../../../server'
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts:    const server = await createServer({
+packages/vite/src/node/ssr/runtime/__tests__/server-worker-runner.spec.ts:    const server = await createServer({
+packages/vite/src/node/ssr/runtime/__tests__/utils.ts:import { createServer } from '../../../server'
+packages/vite/src/node/ssr/runtime/__tests__/utils.ts:import { createServerModuleRunner } from '../serverModuleRunner'
+packages/vite/src/node/ssr/runtime/__tests__/utils.ts:    t.server = await createServer({
+packages/vite/src/node/ssr/runtime/__tests__/utils.ts:    t.runner = createServerModuleRunner(t.environment, {

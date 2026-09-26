@@ -1,0 +1,36 @@
+[lx: hidden: 40 [INFO] progress lines, 1 line of passing-test output, 9 lines of Maven's help footer]
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[6,12] found raw type: java.util.List
+  missing type arguments for generic class java.util.List<E>
+[lx: same warning at 49 more locations: src/main/java/com/example/Legacy.java:[6,26], [7,12], [7,26], [8,12], [8,26], [9,12], [9,26], [10,12], [10,26], [11,12], [11,26], [12,12], … +37 more]
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[6,39] found raw type: java.util.ArrayList
+  missing type arguments for generic class java.util.ArrayList<E>
+[lx: same warning at 24 more locations: src/main/java/com/example/Legacy.java:[7,39], [8,39], [9,39], [10,39], [11,39], [12,39], [13,39], [14,39], [15,39], [16,40], [17,40], [18,40], … +12 more]
+[WARNING] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java:[6,57] unchecked call to add(E) as a member of the raw type java.util.List
+[lx: same warning at 24 more locations: src/main/java/com/example/Legacy.java:[7,57], [8,57], [9,57], [10,57], [11,57], [12,57], [13,57], [14,57], [15,57], [16,58], [17,58], [18,58], … +12 more]
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java: /home/user/src/mvnapp/src/main/java/com/example/Legacy.java uses or overrides a deprecated API.
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java: Recompile with -Xlint:deprecation for details.
+[INFO] /home/user/src/mvnapp/src/main/java/com/example/Legacy.java: /home/user/src/mvnapp/src/main/java/com/example/Legacy.java has additional unchecked or unsafe operations.
+[WARNING] /home/user/src/mvnapp/src/test/java/com/example/CalcTest.java:[11,60] old() in com.example.Calc has been deprecated
+[ERROR] Tests run: 5, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.037 s <<< FAILURE! -- in com.example.CalcTest
+[ERROR] com.example.CalcTest.addsWrong -- Time elapsed: 0.005 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: sum of 2 and 2 ==> expected: <5> but was: <4>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	… 3 library frames (org.junit.jupiter)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:563)
+	at com.example.CalcTest.addsWrong(CalcTest.java:8)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612) [×2]
+[ERROR] com.example.CalcTest.dividesByZero -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.ArithmeticException: / by zero
+	at com.example.Calc.div(Calc.java:5)
+	at com.example.CalcTest.dividesByZero(CalcTest.java:10)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612) [×2]
+[ERROR] Failures:
+[ERROR]   CalcTest.addsWrong:8 sum of 2 and 2 ==> expected: <5> but was: <4>
+[ERROR] Errors:
+[ERROR]   CalcTest.dividesByZero:10 » Arithmetic / by zero
+[ERROR] Tests run: 8, Failures: 1, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.1.2:test (default-test) on project demo: There are test failures.
+[ERROR] Please refer to /home/user/src/mvnapp/target/surefire-reports for the individual test results.

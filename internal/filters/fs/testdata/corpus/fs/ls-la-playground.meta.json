@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "ls",
+    "-la",
+    "playground"
+  ],
+  "shell": "ls -la playground",
+  "exit_code": 0,
+  "description": "ls -la of a directory just over 80 entries (long form stays under the token target)",
+  "cwd": "/home/user/src/vite"
+}

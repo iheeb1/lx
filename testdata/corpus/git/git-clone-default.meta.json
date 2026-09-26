@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "clone",
+    "https://github.com/gin-gonic/gin.git"
+  ],
+  "shell": "git clone https://github.com/gin-gonic/gin.git",
+  "repo": "gin-gonic/gin",
+  "exit_code": 0,
+  "description": "plain git clone as an agent runs it (non-TTY, so git suppresses progress)",
+  "cwd": "repos"
+}

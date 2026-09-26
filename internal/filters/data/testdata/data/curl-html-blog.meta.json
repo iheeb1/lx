@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-s",
+    "https://go.dev/blog/go1.22"
+  ],
+  "shell": "curl -s https://go.dev/blog/go1.22",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -s of a 35 KB HTML blog page",
+  "cwd": "data/api"
+}

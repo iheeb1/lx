@@ -1,0 +1,90 @@
+UP035 `typing.Dict` is deprecated, use `dict` instead
+ --> inventory/models.py:7:1
+7 | from typing import Dict, List, Optional
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UP035 `typing.List` is deprecated, use `list` instead
+ --> inventory/models.py:7:1
+7 | from typing import Dict, List, Optional
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UP006 Use `list` instead of `List` for type annotation
+  --> inventory/models.py:15:11
+15 |     tags: List[str] = field(default_factory=list)
+   |           ^^^^
+help: Replace with `list`
+
+UP006 Use `dict` instead of `Dict` for type annotation
+  --> inventory/models.py:23:21
+23 |         self.items: Dict[str, Item] = {}
+   |                     ^^^^
+help: Replace with `dict`
+
+UP006 Use `dict` instead of `Dict` for type annotation
+  --> inventory/models.py:24:22
+24 |         self.counts: Dict[str, int] = {}
+   |                      ^^^^
+help: Replace with `dict`
+
+UP045 Use `X | None` for type annotations
+  --> inventory/models.py:39:33
+39 |     def find(self, sku: str) -> Optional[Item]:
+   |                                 ^^^^^^^^^^^^^^
+help: Convert to `X | None`
+
+UP006 Use `list` instead of `List` for type annotation
+  --> inventory/models.py:42:24
+42 |     def names(self) -> List[str]:
+   |                        ^^^^
+help: Replace with `list`
+
+UP037 [*] Remove quotes from type annotation
+  --> inventory/models.py:50:33
+50 |     def load(cls, path: str) -> "Stock":
+   |                                 ^^^^^^^
+help: Remove quotes
+
+UP035 [*] Import from `collections.abc` instead: `Iterable`
+ --> inventory/pricing.py:1:1
+1 | from typing import Iterable
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: Import from `collections.abc`
+
+UP035 `typing.Dict` is deprecated, use `dict` instead
+ --> inventory/reports.py:2:1
+2 | from typing import Dict, List, Optional
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UP035 `typing.List` is deprecated, use `list` instead
+ --> inventory/reports.py:2:1
+
+UP006 Use `dict` instead of `Dict` for type annotation
+  --> inventory/reports.py:11:31
+help: Replace with `dict`
+
+UP006 Use `list` instead of `List` for type annotation
+  --> inventory/reports.py:16:44
+help: Replace with `list`
+
+FA100 Add `from __future__ import annotations` to simplify `typing.Optional`
+  --> inventory/reports.py:38:31
+help: Add `from __future__ import annotations`
+
+UP006 Use `list` instead of `List` for type annotation
+  --> inventory/reports.py:51:29
+help: Replace with `list`
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> scripts/fetch.py:1:1
+help: Organize imports
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> scripts/load.py:1:1
+help: Organize imports
+
+F401 [*] `json` imported but unused
+ --> tests/test_models.py:1:8
+help: Remove unused import: `json`
+Found 18 errors.
+[*] 5 fixable with the `--fix` option (9 hidden fixes can be enabled with the `--unsafe-fixes` option).
+[lx: hid source snippets of 8 diagnostics and 5 fix diffs]

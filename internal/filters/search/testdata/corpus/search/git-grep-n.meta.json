@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "grep",
+    "-n",
+    "ShouldBind"
+  ],
+  "shell": "git grep -n ShouldBind",
+  "exit_code": 0,
+  "description": "git grep -n",
+  "cwd": "/home/user/src/gin"
+}

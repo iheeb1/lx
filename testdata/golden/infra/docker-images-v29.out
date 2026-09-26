@@ -1,0 +1,11 @@
+IMAGE                                     ID             DISK USAGE   CONTENT SIZE   EXTRA
+alpine:3.20                               923c5069fa73       13.7MB         4.17MB   U
+golang:1.26-alpine                        12924f7ef54b        357MB         68.9MB
+nats:2-alpine                             206f390f7cbc       39.6MB         10.8MB   U
+postgres:16-alpine                        4b8b35470980        411MB          115MB   U
+redis:7-alpine                            d207b6cb26e5       58.7MB         17.3MB   U
+registry.example.com/shop/api:1.8.2       b20dd144d358       51.9MB         13.8MB   U
+registry.example.com/shop/billing:1.8.2   89090a2d2e2b         49MB         13.1MB   U
+registry.example.com/shop/web:1.8.2       d0c15d7eaaee        107MB         28.1MB   U
+registry.example.com/shop/worker:1.8.2    125814e8ce88       47.5MB         12.7MB
+registry.example.com/shop/search:1.8.2    5bacbe0ba217        853MB          213MB   U

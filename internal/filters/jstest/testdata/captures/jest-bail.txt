@@ -1,0 +1,53 @@
+FAIL test/async.test.js
+  ● times out
+
+    thrown: "Exceeded timeout of 50 ms for a testfalse.
+    Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."
+
+    > 1 | test("times out", async () => {
+        |                   ^
+      2 |   await new Promise((r) => setTimeout(r, 200));
+      3 | }, 50);
+      4 |
+
+      at Object.<anonymous> (test/async.test.js:1:19)
+
+  ● rejects
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: 1
+
+      4 |
+      5 | test("rejects", async () => {
+    > 6 |   await expect(Promise.resolve(1)).rejects.toThrow("boom");
+        |         ^
+      7 | });
+      8 |
+      9 | test("throws inside callback", () => {
+
+      at expect (node_modules/expect/build/index.js:105:15)
+      at Object.expect (test/async.test.js:6:9)
+
+  ● throws inside callback
+
+    RangeError: value out of range: 2
+
+      10 |   const arr = [1, 2, 3];
+      11 |   arr.forEach((x) => {
+    > 12 |     if (x === 2) throw new RangeError("value out of range: " + x);
+         |                        ^
+      13 |   });
+      14 | });
+      15 |
+
+      at test/async.test.js:12:24
+          at Array.forEach (<anonymous>)
+      at Object.forEach (test/async.test.js:11:7)
+
+Test Suites: 1 failed, 1 of 7 total
+Tests:       3 failed, 3 total
+Snapshots:   0 total
+Time:        0.234 s, estimated 1 s
+Ran all test suites matching /test\//i.

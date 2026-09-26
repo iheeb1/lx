@@ -1,0 +1,12 @@
+[ls: owner user · group wheel · mode -rw-r--r--@ files unless shown · link counts dropped]
+packages/vite/bin:
+total 16
+1839 Sep 26 00:31 openChrome.js
+-rwxr-xr-x@ 2995 Sep 26 00:31 vite.js
+
+packages/vite/misc:
+total 32
+52 Sep 26 00:31 false.d.ts
+21 Sep 26 00:31 false.js
+52 Sep 26 00:31 true.d.ts
+20 Sep 26 00:31 true.js

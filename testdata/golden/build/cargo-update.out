@@ -1,0 +1,7 @@
+[lx: hidden: 1 cargo status line (Updating)]
+     Locking 4 packages to latest compatible versions
+    Updating anyhow v1.0.86 -> v1.0.89
+    Updating serde v1.0.204 -> v1.0.210
+    Updating serde_derive v1.0.204 -> v1.0.210
+      Adding windows-sys v0.59.0
+note: pass `--verbose` to see 12 unchanged dependencies behind latest

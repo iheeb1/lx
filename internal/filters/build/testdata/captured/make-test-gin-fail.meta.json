@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "make",
+    "test"
+  ],
+  "exit_code": 2,
+  "description": "make test in gin with one broken assertion in utils_test.go: echoed shell loop, go test -v output of the first package with a --- FAIL block (testify diff), make error",
+  "cwd": "/home/user/src/gin"
+}

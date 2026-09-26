@@ -1,0 +1,26 @@
+    Checking demo v0.1.0 (/home/user/src/demo)
+error: unused variable: `timeout`
+ --> src/lib.rs:7:9
+  |
+7 |     let timeout = 30;
+  |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_timeout`
+  |
+  = note: `-D unused-variables` implied by `-D warnings`
+  = help: to override `-D warnings` add `#[allow(unused_variables)]`
+
+error: redundant clone
+  --> src/lib.rs:22:18
+   |
+22 |     let name = s.clone().to_string();
+   |                 ^^^^^^^^ help: remove this
+   |
+note: this value is dropped without further use
+  --> src/lib.rs:22:16
+   |
+22 |     let name = s.clone().to_string();
+   |                ^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#redundant_clone
+   = note: `-D clippy::redundant-clone` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::redundant_clone)]`
+
+error: could not compile `demo` (lib) due to 2 previous errors

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-I",
+    "https://github.com"
+  ],
+  "shell": "curl -I https://github.com",
+  "repo": "",
+  "exit_code": 0,
+  "description": "curl -I (HEAD): every header must be kept; first header line glued to a progress-meter frame; cookie values sanitized",
+  "cwd": "data/api"
+}

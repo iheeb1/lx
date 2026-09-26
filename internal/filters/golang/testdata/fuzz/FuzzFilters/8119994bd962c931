@@ -1,0 +1,3 @@
+go test fuzz v1
+string("=== RUN \n--- PASS: 0 (0s)\nFAIL\t")
+byte('\u0088')

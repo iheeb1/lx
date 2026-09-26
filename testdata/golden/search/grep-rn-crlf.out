@@ -1,0 +1,8 @@
+./ünï-目录/文件.txt:1:TODO unicode
+./node_modules/dep/index.js:1:module.exports = "TODO"
+./with space/notes.md:1:TODO in space dir
+./src/crlf.txt:2:TODO fix crlf
+
+./src/main.go
+3:// TODO: handle it
+5:// TODO nested

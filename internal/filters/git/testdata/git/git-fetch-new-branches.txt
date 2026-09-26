@@ -1,0 +1,13 @@
+From /home/user/src/origin
+ * [new branch]      chore/deps         -> origin/chore/deps
+ * [new branch]      docs/readme        -> origin/docs/readme
+ * [new branch]      feat/login         -> origin/feat/login
+ * [new branch]      feat/signup        -> origin/feat/signup
+ * [new branch]      fix/crash-on-start -> origin/fix/crash-on-start
+ * [new branch]      fix/typo           -> origin/fix/typo
+ * [new branch]      perf/cache         -> origin/perf/cache
+ * [new branch]      refactor/api       -> origin/refactor/api
+ * [new tag]         v1.0.0             -> v1.0.0
+ * [new tag]         v1.1.0             -> v1.1.0
+ * [new tag]         v1.2.0             -> v1.2.0
+ * [new tag]         v2.0.0             -> v2.0.0

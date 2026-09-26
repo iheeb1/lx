@@ -1,0 +1,16 @@
+[error-like lines printed by passing tests (the rest of their output is hidden):]
+[Debug] [Error] Error while parsing flags from args [--localroot value]: unknown flag: --localroot
+Error: if any flags in the group [a b c] are set they must all be set; missing [b c]
+Error: at least one of the flags in the group [a b] is required [×4]
+Error: if any flags in the group [a b c] are set none of the others can be; [a b] were all set
+Error: if any flags in the group [a b c] are set they must all be set; missing [a b]
+Error: if any flags in the group [a b c] are set none of the others can be; [a c] were all set
+Error: if any flags in the group [a b] are set they must all be set; missing [b]
+Error: if any flags in the group [a b] are set none of the others can be; [a b] were all set
+Error: if any flags in the group [a e] are set they must all be set; missing [e]
+Error: if any flags in the group [f g] are set none of the others can be; [f g] were all set
+Error: at least one of the flags in the group [e subonly] is required
+Error: if any flags in the group [e subonly] are set none of the others can be; [e subonly] were all set
+ok  	github.com/spf13/cobra	0.877s
+ok  	github.com/spf13/cobra/doc	0.487s
+[429 passed (incl. subtests) · hidden: 858 === RUN/--- PASS lines, 245 lines of passing-test output]

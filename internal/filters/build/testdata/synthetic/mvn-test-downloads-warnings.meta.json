@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "mvn",
+    "-B",
+    "test"
+  ],
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-written in real Gradle 8.10 / Maven 3.9 format; the tool is not installed or not reachable offline on the capture machine): mvn -B test on a fresh local repository: 12 Downloading/Downloaded lines, an invalid-POM warning, javac [removal]/[unchecked] warnings with locations, a passing class and a class with a skipped test that logs through slf4j, BUILD SUCCESS",
+  "cwd": "/home/user/src/demo"
+}

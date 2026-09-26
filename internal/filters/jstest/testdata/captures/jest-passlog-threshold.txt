@@ -1,0 +1,28 @@
+  console.error
+    Error: something went wrong in the mock server
+
+      1 | const { add } = require("../src/math");
+      2 | test("passes but logs an error", () => {
+    > 3 |   console.error("Error: something went wrong in the mock server");
+        |           ^
+      4 |   expect(add(1, 2)).toBe(3);
+      5 | });
+      6 |
+
+      at Object.error (adv/passlog.test.js:3:11)
+
+PASS adv/passlog.test.js
+  ✓ passes but logs an error (19 ms)
+
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------|---------|----------|---------|---------|-------------------
+All files |      20 |        0 |      25 |      20 |                   
+ math.js  |      20 |        0 |      25 |      20 | 6-21              
+----------|---------|----------|---------|---------|-------------------
+Jest: "global" coverage threshold for lines (95%) not met: 20%
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.295 s, estimated 1 s
+Ran all test suites matching /adv\/passlog.test.js/i.

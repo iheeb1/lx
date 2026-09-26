@@ -1,0 +1,9 @@
+yarn install v1.22.22
+info No lockfile found.
+warning request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
+warning request > uuid@3.4.0: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+warning request > har-validator@5.1.5: this library is no longer supported
+warning glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+warning glob > inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+success Saved lockfile.
+Done in 19.14s.

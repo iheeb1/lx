@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "commit",
+    "-m",
+    "initial import"
+  ],
+  "exit_code": 0,
+  "cwd": "repos/app",
+  "description": "git commit creating the root commit with 9 files (create mode lines); captured as `git add -A && git commit -m ...` (git add prints nothing)"
+}

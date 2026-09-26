@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "rg",
+    "-n",
+    "func Default",
+    "nosuchdir",
+    "binding"
+  ],
+  "shell": "rg -n func Default nosuchdir binding",
+  "exit_code": 2,
+  "description": "rg over a missing path, then real hits",
+  "cwd": "/home/user/src/gin"
+}

@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "make"
+  ],
+  "shell": "make",
+  "repo": "DaveGamble/cJSON",
+  "exit_code": 2,
+  "description": "make in cJSON after broken edits to cJSON.c: clang diagnostics with source excerpts and carets (undeclared identifier, -Werror unused variable, pointer sign conversion), make error",
+  "cwd": "repos/cJSON"
+}

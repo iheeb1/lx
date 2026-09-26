@@ -1,0 +1,85 @@
+1bd0ecf 2026-09-25 [HazyLab] fix(context): load Keys under the mutex in Copy (#4854) [+6 body lines]
+ context.go +1 -2, context_test.go +24
+ 2 files changed, 25 insertions(+), 2 deletions(-)
+3b08cd7 2026-09-19 [water] fix: reset skipped-nodes stack on getValue entry to prevent slice overflow panic [#4818] (#4819) [+6 body lines]
+ routes_test.go +97, tree.go +8
+ 2 files changed, 105 insertions(+)
+d8f2d58 2026-09-19 [Ruben Pari] fix(engine): add default ReadHeaderTimeout to http.Server in Run methods (#4800) [+7 body lines]
+    Fixes #4760
+ gin.go +34 -5, gin_test.go +20
+ 2 files changed, 54 insertions(+), 5 deletions(-)
+8ad9f9c 2026-09-19 [Wahid Rizka Fathurrohman] docs: fix the graceful shutdown example (#4809) [+5 body lines]
+ docs/doc.md +2 -1
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+b1f77cf 2026-09-19 [Gaurav Patil] feat(gin): add support for the HTTP QUERY method (RFC 10008) (#4806) [+18 body lines]
+    Ref #4721
+ docs/doc.md +41, ginS/{gins.go +5, gins_test.go +13}, routergroup.go +34 -4, routergroup_test.go +4, routes_test.go +55
+ 6 files changed, 152 insertions(+), 4 deletions(-)
+05b14df 2026-09-19 [Bob Du] chore(deps): bump github.com/stretchr/testify to v1.12.1 (#4822) [+2 body lines]
+ go.mod +2 -6, go.sum +4 -13
+ 2 files changed, 6 insertions(+), 19 deletions(-)
+e318c6a 2026-09-19 [daixiheguu] docs: align function comments with names (#4814) [+2 body lines]
+ gin_integration_test.go +1, render/render_test.go +2 -2, response_writer_test.go +2 -1, routes_test.go +9 -9, tree.go +3 -3, utils.go +2 -1
+ 6 files changed, 19 insertions(+), 16 deletions(-)
+3329b63 2026-09-19 [Bob Du] ci(codecov): fix stale comparison base and invalid config (#4823) [+2 body lines]
+ .github/workflows/gin.yml +4, codecov.yml +2 -1
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+5c6a15f 2026-09-16 [Langning Zhang] fix(context): handle missing HTML renderer (#4805) [+4 body lines]
+ context.go +5, context_test.go +76, render/{html.go +6, render_test.go +10}
+ 4 files changed, 97 insertions(+)
+bc141b4 2026-09-16 [Bo-Yi Wu] fix(deps)!: patch x/crypto vulnerabilities (#4832) [+2 body lines]
+    BREAKING CHANGE: Go 1.26 or later is now required by x/crypto v0.56.0. Upgrade the Go toolchain before building Gin.
+ .github/workflows/gin.yml +1 -1, README.md +1 -1, go.mod +5 -5, go.sum +8 -8
+ 4 files changed, 15 insertions(+), 15 deletions(-)
+b52df1f 2026-09-16 [Ruben Pari] docs: document panic conditions in Handle, StaticFS, and Bind (#4797) [+4 body lines]
+    Fixes #4594
+ routergroup.go +3, utils.go +1
+ 2 files changed, 4 insertions(+)
+2a1a14f 2026-09-16 [Jia-ben00] feat(router): add QUERY method shortcut for RFC 10008 (#4830) [+11 body lines]
+    Closes #4721
+ gin_test.go +19, routergroup.go +7
+ 2 files changed, 26 insertions(+)
+dcaa429 2026-08-15 [Amirhf] docs(path): fix malformed comment in cleanPath (#4723)
+ path.go +1 -1
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+8dd2011 2026-08-15 [Gaurav Patil] fix(deps): bump golang.org/x/net and golang.org/x/text to patched versions (#4807) [+10 body lines]
+    - CVE-2026-56852, golang.org/x/text, denial of service, fixed in 0.39.0
+    - CVE-2026-46600, golang.org/x/net/dns/dnsmessage, denial of service,
+      fixed in 0.56.0
+ go.mod +4 -4, go.sum +8 -8
+ 2 files changed, 12 insertions(+), 12 deletions(-)
+00cfe5a 2026-08-15 [dependabot[bot]] chore(deps): bump the actions group across 1 directory with 4 updates (#4787) [+41 body lines]
+ .github/workflows/{codeql.yml +1 -1, gin.yml +6 -6, goreleaser.yml +2 -2, trivy-scan.yml +1 -1}
+ 4 files changed, 10 insertions(+), 10 deletions(-)
+34dac20 2026-06-27 [greymoth] docs: fix `BindXML` comment referencing nonexistent `binding.BindXML` (#4717) [+6 body lines]
+ context.go +1 -1
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+03f3e42 2026-06-23 [Hershel1995] update validator library to version 10.30.3 (#4707) [+1 body line]
+ go.mod +2 -2, go.sum +4 -4
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+d9307db 2026-06-22 [Muhammad Ardy Junata] fix(context): skip chmod on pre-existing dirs in SaveUploadedFile (#4702) [+30 body lines]
+    Fixes #4622
+ context.go +15 -2, context_test.go +44
+ 2 files changed, 59 insertions(+), 2 deletions(-)
+da1e108 2026-06-22 [Pierre F.] test(context): use t.TempDir() for SaveUploadedFile permission test on WSL (#4709) [+10 body lines]
+ context_test.go +6 -7
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+074b669 2026-06-22 [MuaazTasawar] test(response_writer): add tests for Flush() with and without http.Flusher (#4699) [+6 body lines]
+ response_writer_test.go +27 -4
+ 1 file changed, 27 insertions(+), 4 deletions(-)
+4a3eb31 2026-06-22 [DadaVinqi] fix(recovery): record recovered panics in c.Errors (#4698) [+10 body lines]
+ recovery.go +6 -1, recovery_test.go +44
+ 2 files changed, 50 insertions(+), 1 deletion(-)
+293ad7e 2026-06-22 [Amirhf] fix(context): Copy() copies Errors and Accepted fields (#4695) [+8 body lines]
+ context.go +10, context_test.go +44
+ 2 files changed, 54 insertions(+)
+2e4d4f3 2026-06-22 [Bo-Yi Wu] chore(deps): bump github.com/quic-go/quic-go to v0.60.0 (#4713) [+1 body line]
+ go.mod +1 -1, go.sum +4 -2
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+d75fcd4 2026-06-02 [Sai Asish Y] fix(response): panic on Hijack/CloseNotify when wrapper unsupported (#4645) [+6 body lines]
+    Closes #4638. http.TimeoutHandler's writer doesn't implement http.Hijacker/CloseNotifier; mirror Flush's graceful degradation.
+ response_writer.go +9 -2, response_writer_test.go +11 -8
+ 2 files changed, 20 insertions(+), 10 deletions(-)
+8d0468f 2026-06-02 [Tero Saarni] chore(deps): bump golang.org/x/net to v0.55.0 (#4678) [+1 body line]
+ go.mod +4 -4, go.sum +8 -8
+ 2 files changed, 12 insertions(+), 12 deletions(-)

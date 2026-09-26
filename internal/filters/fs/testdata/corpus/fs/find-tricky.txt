@@ -1,0 +1,17 @@
+.
+./empty
+./app.conf
+./ünï-目录
+./ünï-目录/文件.txt
+./node_modules
+./node_modules/dep
+./node_modules/dep/index.js
+./with space
+./with space/notes.md
+./logs
+./logs/12:30:00.log
+./src
+./src/sub
+./src/sub/a.go
+./src/crlf.txt
+./src/main.go

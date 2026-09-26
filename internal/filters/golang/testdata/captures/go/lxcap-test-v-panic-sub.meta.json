@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-v",
+    "./sub/"
+  ],
+  "shell": "go test -v ./sub/",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -v: nil pointer dereference inside a subtest",
+  "cwd": "/home/user/src/lxcap"
+}

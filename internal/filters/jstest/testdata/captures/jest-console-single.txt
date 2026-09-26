@@ -1,0 +1,94 @@
+  console.error
+    failed to load settings: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+        at JSON.parse (<anonymous>)
+        at parse (/home/user/src/jestproj/test2/console.test.js:3:10)
+        at Object.load (/home/user/src/jestproj/test2/console.test.js:10:3)
+        at Promise.then.completed (/home/user/src/jestproj/node_modules/jest-circus/build/utils.js:293:28)
+        at new Promise (<anonymous>)
+        at callAsyncCircusFn (/home/user/src/jestproj/node_modules/jest-circus/build/utils.js:226:10)
+        at _callCircusTest (/home/user/src/jestproj/node_modules/jest-circus/build/run.js:248:40)
+        at _runTest (/home/user/src/jestproj/node_modules/jest-circus/build/run.js:184:3)
+        at _runTestsForDescribeBlock (/home/user/src/jestproj/node_modules/jest-circus/build/run.js:86:9)
+        at run (/home/user/src/jestproj/node_modules/jest-circus/build/run.js:26:3)
+        at runAndTransformResultsToJestFormat (/home/user/src/jestproj/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:120:21)
+        at jestAdapter (/home/user/src/jestproj/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+        at runTestInternal (/home/user/src/jestproj/node_modules/jest-runner/build/runTest.js:367:16)
+        at runTest (/home/user/src/jestproj/node_modules/jest-runner/build/runTest.js:444:34)
+
+      3 |     JSON.parse("{oops");
+      4 |   } catch (err) {
+    > 5 |     console.error("failed to load settings:", err);
+        |             ^
+      6 |   }
+      7 | }
+      8 |
+
+      at error (test2/console.test.js:5:13)
+      at Object.load (test2/console.test.js:10:3)
+
+  console.error
+    failed to load settings: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+        at JSON.parse (<anonymous>)
+        at parse (/home/user/src/jestproj/test2/console.test.js:3:10)
+        at Object.load (/home/user/src/jestproj/test2/console.test.js:15:3)
+        at Promise.then.completed (/home/user/src/jestproj/node_modules/jest-circus/build/utils.js:293:28)
+        at new Promise (<anonymous>)
+        at callAsyncCircusFn (/home/user/src/jestproj/node_modules/jest-circus/build/utils.js:226:10)
+        at _callCircusTest (/home/user/src/jestproj/node_modules/jest-circus/build/run.js:248:40)
+        at _runTest (/home/user/src/jestproj/node_modules/jest-circus/build/run.js:184:3)
+        at _runTestsForDescribeBlock (/home/user/src/jestproj/node_modules/jest-circus/build/run.js:86:9)
+        at run (/home/user/src/jestproj/node_modules/jest-circus/build/run.js:26:3)
+        at runAndTransformResultsToJestFormat (/home/user/src/jestproj/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:120:21)
+        at jestAdapter (/home/user/src/jestproj/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+        at runTestInternal (/home/user/src/jestproj/node_modules/jest-runner/build/runTest.js:367:16)
+        at runTest (/home/user/src/jestproj/node_modules/jest-runner/build/runTest.js:444:34)
+
+      3 |     JSON.parse("{oops");
+      4 |   } catch (err) {
+    > 5 |     console.error("failed to load settings:", err);
+        |             ^
+      6 |   }
+      7 | }
+      8 |
+
+      at error (test2/console.test.js:5:13)
+      at Object.load (test2/console.test.js:15:3)
+
+  console.warn
+    retrying with defaults
+
+      14 | test("failing test that logs an error object", () => {
+      15 |   load();
+    > 16 |   console.warn("retrying with defaults");
+         |           ^
+      17 |   expect(2).toBe(3);
+      18 | });
+      19 |
+
+      at Object.warn (test2/console.test.js:16:11)
+
+FAIL test2/console.test.js
+  ✓ passing test that logs an error object (21 ms)
+  ✕ failing test that logs an error object (3 ms)
+
+  ● failing test that logs an error object
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 3
+    Received: 2
+
+      15 |   load();
+      16 |   console.warn("retrying with defaults");
+    > 17 |   expect(2).toBe(3);
+         |             ^
+      18 | });
+      19 |
+
+      at Object.toBe (test2/console.test.js:17:13)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 passed, 2 total
+Snapshots:   0 total
+Time:        0.24 s, estimated 1 s
+Ran all test suites matching /test2\/console.test.js/i.

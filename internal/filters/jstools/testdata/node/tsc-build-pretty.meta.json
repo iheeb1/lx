@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "tsc",
+    "-b",
+    "--pretty"
+  ],
+  "shell": "npx tsc -b --pretty",
+  "exit_code": 2,
+  "description": "tsc -b --pretty (TypeScript 6) in a vite react-ts app with 10 type errors: code frames, related information ('An argument for x was not provided', 'max is declared here'), 'Found 10 errors.' without a file table",
+  "cwd": "/home/user/src/vite-app"
+}

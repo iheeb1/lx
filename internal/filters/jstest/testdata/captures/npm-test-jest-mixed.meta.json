@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npm",
+    "test",
+    "--",
+    "--ci"
+  ],
+  "shell": "npm test -- --ci",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "npm test wrapping jest with suite and test failures",
+  "cwd": "repos/jestproj"
+}

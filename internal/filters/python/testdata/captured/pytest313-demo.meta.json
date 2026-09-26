@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "pytest",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "shell": "pytest -p no:cacheprovider",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): pytest 9.1.1 on Python 3.13: default run with ^^^ position markers under failing lines",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.13.15 venv at /home/user/venv313: pytest 9.1.1, pytest-cov 7.1.0, pytest-xdist 3.8.0, mypy 2.3.1, ruff 0.11.0"
+}

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--ci",
+    "--verbose"
+  ],
+  "shell": "npx jest --ci --verbose",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "same mixed-failure project with --verbose (per-test \u2713/\u2715/\u25cb lines)",
+  "cwd": "repos/jestproj"
+}

@@ -1,0 +1,36 @@
+--- FAIL: TestAdd (0.00s)
+    c_test.go:7: Add(2, 2) = 4, want 5
+FAIL
+FAIL	example.com/lxcap2/coverfail	0.812s
+--- FAIL: TestParse (0.00s)
+    f_test.go:10: Parse("12") = 21, want 12
+=== RUN   TestLoad
+loading config from testdata/app.yaml
+2026/09/26 03:11:27 open testdata/app.yaml: permission issue
+FAIL	example.com/lxcap2/fatal2	1.377s
+--- FAIL: TestNoNewline (0.00s)
+progress: 3/5    g_test.go:10: stopped early
+FAIL
+FAIL	example.com/lxcap2/glued	1.912s
+--- FAIL: TestBroken (0.00s)
+    l_test.go:21: broken: status = "down", want "up"
+FAIL
+leakcheck: found unexpected goroutines:
+goroutine 36 [chan receive]:
+example.com/lxcap2/leak.worker(...)
+	leak/l_test.go:13
+created by example.com/lxcap2/leak.TestStartsWorker in goroutine 35
+	leak/l_test.go:17 +0x6c
+FAIL	example.com/lxcap2/leak	2.537s
+ok  	12 packages under example.com/lxcap2/manyok
+--- FAIL: TestFirst (0.00s)
+    r_test.go:12: first failed: got 0, want 1
+FAIL
+FAIL	example.com/lxcap2/racepost	2.728s
+--- FAIL: TestÜnicode (0.00s)
+    --- FAIL: TestÜnicode/naïve_case (0.00s)
+        ü_test.go:7: got "café", want "cafe"
+FAIL
+FAIL	example.com/lxcap2/uni	2.783s
+FAIL
+[16 passed, 7 failed (incl. subtests) · hidden: 39 === RUN/--- PASS lines, 1 line of passing-test output]

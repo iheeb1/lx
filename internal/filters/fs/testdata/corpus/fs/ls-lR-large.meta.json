@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "ls",
+    "-lR",
+    "packages/vite/src/node/ssr"
+  ],
+  "shell": "ls -lR packages/vite/src/node/ssr",
+  "exit_code": 0,
+  "description": "ls -lR of a large tree (>80 entries)",
+  "cwd": "/home/user/src/vite"
+}

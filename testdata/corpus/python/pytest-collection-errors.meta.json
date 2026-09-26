@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "pytest"
+  ],
+  "shell": "pytest",
+  "repo": "pallets/click",
+  "exit_code": 2,
+  "description": "pytest run interrupted by 2 collection errors: an ImportError in tests/test_utils.py and a SyntaxError in tests/test_parser.py",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "grep -rn \"func (c \\*Context) Should\" . | sort"
+  ],
+  "shell": "bash -c grep -rn \"func (c \\*Context) Should\" . | sort",
+  "exit_code": 0,
+  "description": "grep -rn piped into sort: line numbers out of file order",
+  "cwd": "/home/user/src/gin"
+}

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "grep",
+    "-rn",
+    "Render(",
+    "nosuchdir",
+    "render"
+  ],
+  "shell": "grep -rn Render( nosuchdir render",
+  "exit_code": 2,
+  "description": "grep on a missing directory next to a real one",
+  "cwd": "/home/user/src/gin"
+}

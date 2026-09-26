@@ -1,0 +1,22 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/home/user/src/vitproj[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+[90mstderr[2m | adv/passlog.test.ts[2m > [22m[2mpasses but logs an error
+[22m[39mError: something went wrong in the mock server
+
+ [32m✓[39m adv/passlog.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 13:18:26
+[2m   Duration [22m 166ms[2m (transform 15ms, setup 0ms, import 24ms, tests 2ms, environment 0ms)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------|---------|----------|---------|---------|-------------------
+All files |      10 |        0 |      20 |    12.5 |                   
+ cart.ts  |      10 |        0 |      20 |    12.5 | 12-23             
+----------|---------|----------|---------|---------|-------------------
+ERROR: Coverage for lines (12.5%) does not meet global threshold (95%)

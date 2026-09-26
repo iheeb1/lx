@@ -1,0 +1,8 @@
+total 8
+drwxr-xr-x@ 7 user  wheel  224 Sep 26 02:30 .
+drwxr-xr-x@ 3 user  wheel   96 Sep 26 02:30 ..
+drwxr-xr-x@ 3 user  wheel   96 Sep 26 02:30 docs
+lrwxr-xr-x@ 1 user  wheel    8 Sep 26 02:30 link.go -> src/a.go
+-rwxr-xr-x@ 1 user  wheel   18 Sep 26 02:30 run.sh
+d---------  3 user  wheel   96 Sep 26 02:30 secret
+drwxr-xr-x@ 4 user  wheel  128 Sep 26 02:30 src

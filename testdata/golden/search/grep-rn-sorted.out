@@ -1,0 +1,17 @@
+./context.go
+860:func (c *Context) ShouldBind(obj any) error {
+889:func (c *Context) ShouldBindJSON(obj any) error {
+895:func (c *Context) ShouldBindXML(obj any) error {
+901:func (c *Context) ShouldBindQuery(obj any) error {
+907:func (c *Context) ShouldBindYAML(obj any) error {
+913:func (c *Context) ShouldBindTOML(obj any) error {
+919:func (c *Context) ShouldBindPlain(obj any) error {
+925:func (c *Context) ShouldBindHeader(obj any) error {
+931:func (c *Context) ShouldBindUri(obj any) error {
+941:func (c *Context) ShouldBindWith(obj any, b binding.Binding) error {
+950:func (c *Context) ShouldBindBodyWith(obj any, bb binding.BindingBody) (err error) {
+968:func (c *Context) ShouldBindBodyWithJSON(obj any) error {
+973:func (c *Context) ShouldBindBodyWithXML(obj any) error {
+978:func (c *Context) ShouldBindBodyWithYAML(obj any) error {
+983:func (c *Context) ShouldBindBodyWithTOML(obj any) error {
+988:func (c *Context) ShouldBindBodyWithPlain(obj any) error {

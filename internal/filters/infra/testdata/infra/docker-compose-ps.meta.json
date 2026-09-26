@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "docker",
+    "compose",
+    "ps"
+  ],
+  "shell": "docker compose ps",
+  "repo": "",
+  "exit_code": 0,
+  "description": "SYNTHETIC (hand-built in the exact layout of docker compose v2.29 `docker compose ps`; the tool is not available on the capture host): 5 services, the worker restarting",
+  "cwd": "repos/shop"
+}

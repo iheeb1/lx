@@ -1,0 +1,18 @@
+echo "mode: count" > coverage.out
+for d in github.com/gin-gonic/gin github.com/gin-gonic/gin/binding github.com/gin-gonic/gin/ginS github.com/gin-gonic/gin/render; do \
+[lx: 21 more lines of this echoed recipe hidden]
+--- SKIP: TestPathCleanMallocs (0.00s)
+    path_test.go:85: skipping malloc count; GOMAXPROCS>1
+--- FAIL: TestLastChar (0.00s)
+    utils_test.go:61:
+        	Error Trace:	/home/user/src/gin/utils_test.go:61
+        	Error:      	Not equal:
+        	            	expected: 0x78
+        	            	actual  : 0x73
+        	Test:       	TestLastChar
+FAIL
+coverage: 98.4% of statements
+FAIL	github.com/gin-gonic/gin	1.483s
+FAIL
+[484 passed, 1 failed, 1 skipped (incl. subtests) · hidden: 970 === RUN/--- PASS lines, 31 lines of passing-test output]
+make: *** [test] Error 1

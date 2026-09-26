@@ -1,0 +1,35 @@
+==================
+WARNING: DATA RACE
+Read at 0x00c00009e198 by goroutine 9:
+  example.com/lxcap/race.(*counter).inc()
+      /home/user/src/lxcap/race/race_test.go:10 +0x6c
+  example.com/lxcap/race.TestRace.func1()
+      /home/user/src/lxcap/race/race_test.go:17 +0x18
+
+Previous write at 0x00c00009e198 by goroutine 8:
+  example.com/lxcap/race.(*counter).inc()
+      /home/user/src/lxcap/race/race_test.go:10 +0x7c
+  example.com/lxcap/race.TestRace.func1()
+      /home/user/src/lxcap/race/race_test.go:17 +0x18
+
+Goroutine 9 (running) created at:
+  example.com/lxcap/race.TestRace()
+      /home/user/src/lxcap/race/race_test.go:17 +0x70
+  testing.tRunner()
+      /opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0x164
+  testing.(*T).Run.gowrap1()
+      /opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x34
+
+Goroutine 8 (finished) created at:
+  example.com/lxcap/race.TestRace()
+      /home/user/src/lxcap/race/race_test.go:17 +0x70
+  testing.tRunner()
+      /opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0x164
+  testing.(*T).Run.gowrap1()
+      /opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x34
+==================
+--- FAIL: TestRace (0.00s)
+    testing.go:1712: race detected during execution of test
+FAIL
+FAIL	example.com/lxcap/race	0.367s
+FAIL

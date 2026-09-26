@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "cargo",
+    "test"
+  ],
+  "exit_code": 101,
+  "description": "SYNTHETIC (hand-written in real cargo 1.8x/libtest format; cargo is not installed on the capture machine): cargo test with RUST_BACKTRACE=1: 16 unit tests, 2 FAILED (unwrap on Err, assert_eq with left/right), 1 ignored with a reason, failures section with backtraces, failure list, result line, rerun hint",
+  "cwd": "/home/user/src/demo"
+}

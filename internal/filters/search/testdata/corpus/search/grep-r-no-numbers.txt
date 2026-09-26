@@ -1,0 +1,93 @@
+./gin_test.go:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware2 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware0 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware1 HandlerFunc = func(c *Context) {}
+./gin_test.go:	var middleware2 HandlerFunc = func(c *Context) {}
+./middleware/ratelimit/ratelimit.go:func New(limit int, window time.Duration) gin.HandlerFunc {
+./recovery.go:func Recovery() HandlerFunc {
+./recovery.go:func CustomRecovery(handle RecoveryFunc) HandlerFunc {
+./recovery.go:func RecoveryWithWriter(out io.Writer, recovery ...RecoveryFunc) HandlerFunc {
+./recovery.go:func CustomRecoveryWithWriter(out io.Writer, handle RecoveryFunc) HandlerFunc {
+./auth.go:func BasicAuthForRealm(accounts Accounts, realm string) HandlerFunc {
+./auth.go:func BasicAuth(accounts Accounts) HandlerFunc {
+./auth.go:func BasicAuthForProxy(accounts Accounts, realm string) HandlerFunc {
+./logger.go:// ErrorLogger returns a HandlerFunc for any error type.
+./logger.go:func ErrorLogger() HandlerFunc {
+./logger.go:// ErrorLoggerT returns a HandlerFunc for a given error type.
+./logger.go:func ErrorLoggerT(typ ErrorType) HandlerFunc {
+./logger.go:func Logger() HandlerFunc {
+./logger.go:func LoggerWithFormatter(f LogFormatter) HandlerFunc {
+./logger.go:func LoggerWithWriter(out io.Writer, notlogged ...string) HandlerFunc {
+./logger.go:func LoggerWithConfig(conf LoggerConfig) HandlerFunc {
+./render/render_test.go:	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+./ginS/gins.go:func NoRoute(handlers ...gin.HandlerFunc) {
+./ginS/gins.go:func NoMethod(handlers ...gin.HandlerFunc) {
+./ginS/gins.go:func Group(relativePath string, handlers ...gin.HandlerFunc) *gin.RouterGroup {
+./ginS/gins.go:func Handle(httpMethod, relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func POST(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func GET(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func QUERY(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func DELETE(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func PATCH(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func PUT(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func OPTIONS(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func HEAD(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func Any(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes {
+./ginS/gins.go:func Use(middlewares ...gin.HandlerFunc) gin.IRoutes {
+./routergroup.go:	Group(string, ...HandlerFunc) *RouterGroup
+./routergroup.go:	Use(...HandlerFunc) IRoutes
+./routergroup.go:	Handle(string, string, ...HandlerFunc) IRoutes
+./routergroup.go:	Any(string, ...HandlerFunc) IRoutes
+./routergroup.go:	GET(string, ...HandlerFunc) IRoutes
+./routergroup.go:	POST(string, ...HandlerFunc) IRoutes
+./routergroup.go:	DELETE(string, ...HandlerFunc) IRoutes
+./routergroup.go:	PATCH(string, ...HandlerFunc) IRoutes
+./routergroup.go:	PUT(string, ...HandlerFunc) IRoutes
+./routergroup.go:	OPTIONS(string, ...HandlerFunc) IRoutes
+./routergroup.go:	HEAD(string, ...HandlerFunc) IRoutes
+./routergroup.go:	Match([]string, string, ...HandlerFunc) IRoutes
+./routergroup.go:	QUERY(string, ...HandlerFunc) IRoutes
+./routergroup.go:func (group *RouterGroup) Use(middleware ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) Group(relativePath string, handlers ...HandlerFunc) *RouterGroup {
+./routergroup.go:func (group *RouterGroup) Handle(httpMethod, relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) POST(relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) DELETE(relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) PATCH(relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) PUT(relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) OPTIONS(relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) HEAD(relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) QUERY(relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) Any(relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) Match(methods []string, relativePath string, handlers ...HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) staticFileHandler(relativePath string, handler HandlerFunc) IRoutes {
+./routergroup.go:func (group *RouterGroup) createStaticHandler(relativePath string, fs http.FileSystem) HandlerFunc {
+./context_test.go:var handlerTest HandlerFunc = func(c *Context) {
+./context_test.go:			handlers := []HandlerFunc{
+./context_test.go:	c.handlers = []HandlerFunc{
+./context_test.go:	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+./routergroup_test.go:	handlers1 := make([]HandlerFunc, maximumCnt-1)
+./routergroup_test.go:	handlers2 := make([]HandlerFunc, maximumCnt+1)
+./response_writer_test.go:	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+./context.go:func (c *Context) Handler() HandlerFunc {
+./utils.go:func Bind(val any) HandlerFunc {
+./utils.go:// WrapF is a helper function for wrapping http.HandlerFunc and returns a Gin middleware.
+./utils.go:func WrapF(f http.HandlerFunc) HandlerFunc {
+./utils.go:func WrapH(h http.Handler) HandlerFunc {
+./gin.go:// HandlerFunc defines the handler used by gin middleware as return value.
+./gin.go:type HandlerFunc func(*Context)
+./gin.go:// HandlersChain defines a HandlerFunc slice.
+./gin.go:type HandlersChain []HandlerFunc
+./gin.go:func (c HandlersChain) Last() HandlerFunc {
+./gin.go:	HandlerFunc HandlerFunc
+./gin.go:func (engine *Engine) NoRoute(handlers ...HandlerFunc) {
+./gin.go:func (engine *Engine) NoMethod(handlers ...HandlerFunc) {
+./gin.go:func (engine *Engine) Use(middleware ...HandlerFunc) IRoutes {
+./gin.go:			HandlerFunc: handlerFunc,

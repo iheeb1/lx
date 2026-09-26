@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "jq",
+    ".",
+    "events.ndjson"
+  ],
+  "shell": "jq . events.ndjson",
+  "repo": "",
+  "exit_code": 5,
+  "description": "REAL jq 1.7.1: pretty-printing NDJSON whose record 301 is truncated; jq's block-buffered stdout was flushed after the unbuffered stderr error, so \"jq: parse error\" is glued after the indentation of line 2659 of 2776",
+  "cwd": "data/work"
+}

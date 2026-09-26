@@ -1,0 +1,9 @@
+collected 2 items
+INTERNALERROR> Traceback (most recent call last):
+INTERNALERROR>   … 34 library frames (_pytest, pluggy)
+INTERNALERROR>   File "ie/conftest.py", line 3, in pytest_runtest_logreport
+INTERNALERROR>     raise RuntimeError("plugin bug in logreport")
+INTERNALERROR> RuntimeError: plugin bug in logreport
+[lx: 1 progress line hidden]
+============================== 2 passed in 0.02s ===============================
+[lx: pytest exited 3 although the result line reports no failures; see the lines above]

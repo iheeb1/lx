@@ -1,0 +1,86 @@
+# example.com/lxcap/setup
+setup/s_test.go:6:2: no required module provides package example.com/doesnotexist/pkg; to add it:
+	go get example.com/doesnotexist/pkg
+FAIL	example.com/lxcap/setup [setup failed]
+# example.com/lxcap/buildfail [example.com/lxcap/buildfail.test]
+buildfail/b_test.go:6:5: undefined: Triple
+buildfail/b_test.go:9:6: declared and not used: unused
+# example.com/lxcap/vetfail
+# [example.com/lxcap/vetfail]
+vetfail/v.go:5:60: fmt.Sprintf format %d has arg name of wrong type string
+FAIL	example.com/lxcap/buildfail [build failed]
+panic: test timed out after 5s
+	running tests:
+		TestDeadlock (5s)
+
+goroutine 8 [running]:
+testing.(*M).startAlarm.func1()
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2802 +0x2cc
+created by time.goFunc
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/time/sleep.go:215 +0x38
+
+goroutine 1 [chan receive]:
+testing.(*T).Run(0x3d78394b2008, {0x10265fddb?, 0x21adeaf00261a9e0?}, 0x1027b3ef8)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2109 +0x3bc
+testing.runTests.func1(0x3d78394b2008)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2585 +0x40
+testing.tRunner(0x3d78394b2008, 0x3d78393fcc48)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4
+testing.runTests({0x10266137d, 0x11}, {0x102662c67, 0x16}, 0x3d783938a030, {0x1027d5100, 0x1, 0x1}, {0x80808080804f0332?, 0x102660b0f?, ...})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2583 +0x3f0
+testing.(*M).Run(0x3d78394801e0)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2443 +0x578
+main.main()
+	_testmain.go:46 +0x80
+
+goroutine 7 [chan send]:
+example.com/lxcap/dead.TestDeadlock(0x3d78394b2248?)
+	/home/user/src/lxcap/dead/dead_test.go:7 +0x34
+testing.tRunner(0x3d78394b2248, 0x1027b3ef8)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4
+created by testing.(*T).Run in goroutine 1
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x3a8
+FAIL	example.com/lxcap/dead	7.570s
+2026/09/26 02:48:03 config file testdata/app.yaml missing
+FAIL	example.com/lxcap/exit	0.907s
+?   	example.com/lxcap/notests	[no test files]
+ok  	example.com/lxcap/ok1	(cached)
+ok  	example.com/lxcap/ok2	(cached)
+ok  	example.com/lxcap/ok3	(cached)
+ok  	example.com/lxcap/ok4	(cached)
+--- FAIL: TestParallel (0.00s)
+    --- FAIL: TestParallel/negative (0.01s)
+        par_test.go:23: adding -1 + -1
+        par_test.go:25: Add(-1, -1) = -2, want -3
+    --- FAIL: TestParallel/conflict (0.01s)
+        par_test.go:23: adding 2 + 2
+        par_test.go:25: Add(2, 2) = 4, want 5
+FAIL
+FAIL	example.com/lxcap/par	3.379s
+ok  	example.com/lxcap/race	(cached)
+ok  	example.com/lxcap/skip	(cached)
+--- FAIL: TestTree (0.00s)
+    --- FAIL: TestTree/nil_next (0.00s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal SIGSEGV: segmentation violation code=0x2 addr=0x0 pc=0x100fa024c]
+
+goroutine 6 [running]:
+testing.tRunner.func1.2({0x1010d6be0, 0x101120cb0})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1974 +0x1a0
+testing.tRunner.func1()
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:1977 +0x318
+panic({0x1010d6be0?, 0x101120cb0?})
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/runtime/panic.go:860 +0x12c
+example.com/lxcap/sub.sum(0x0)
+	/home/user/src/lxcap/sub/sub_test.go:10 +0x1c
+example.com/lxcap/sub.sum(...)
+	/home/user/src/lxcap/sub/sub_test.go:10
+example.com/lxcap/sub.TestTree.func2(0x546278a786c8)
+	/home/user/src/lxcap/sub/sub_test.go:15 +0x2c
+testing.tRunner(0x546278a786c8, 0x1010fff88)
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2036 +0xc4
+created by testing.(*T).Run in goroutine 4
+	/opt/homebrew/Cellar/go/1.26.5/libexec/src/testing/testing.go:2101 +0x3a8
+FAIL	example.com/lxcap/sub	1.812s
+FAIL	example.com/lxcap/vetfail [build failed]
+FAIL

@@ -1,0 +1,79 @@
+* main                                                                                               bc598a6a8 [origin/main] fix(bundled-dev): serve the rolldown runtime from the installed rolldown (#23568)
+  remotes/origin/02-05-refactor_move_jsonoptions_to_config_and_isjsonrequest_to_utils                33a9e8fe5 refactor: move JsonOptions to config and isJSONRequest to utils
+  remotes/origin/04-21-docs_link_to_oxc-project_fast-glob_for_import.meta.glob_pattern_syntax        627931c08 docs: link to @oxc-project/fast-glob for import.meta.glob pattern syntax
+  remotes/origin/06-24-chore_update_rolldown                                                         9a37c5df8 chore: update rolldown to 1.1.3
+  remotes/origin/06-29-test_cover_a_constant_prefix_before_the_first_variable_in_dynamic_import_vars 5bb14050b test: cover a constant prefix before the first variable in dynamic import vars
+  remotes/origin/07-20-feat/html-process-html-with-plugin-container-in-dev                           2966e9c23 feat(html): process HTML with plugin container in dev
+  remotes/origin/07-24-fix_don_t_swallow_the_positional_argument_after_--profile                     0f431606b fix: don't swallow the positional argument after `--profile`
+  remotes/origin/HEAD                                                                                -> origin/main
+  remotes/origin/arnaud/bump-eslint-react-refresh                                                    9bc3da3a7 feat(create-vite): use function config for eslint-plugin-react-refresh
+  remotes/origin/bluwy-css-modules                                                                   7a3970454 wip
+  remotes/origin/bluwy-fs-watch                                                                      1eb2e065d wip: use fs watch
+  remotes/origin/bluwy-parcel-watcher                                                                f385f2025 wip: fix plugin-vue fail
+  remotes/origin/claude/fix-vite-port-binding-issue                                                  1a5b0c236 fix: allow binding to specific IP when wildcard port is blocked
+  remotes/origin/copilot/find-duplicate-issue-22388                                                  8e59c97a4 fix(css): keep deprecated `name`/`originalFileName` in synthetic `assetFileNames` call (#22439)
+  remotes/origin/copilot/fix-30fb8ddb-e23f-4a2c-ba29-02144fbd2479                                    c98504fc0 Merge branch 'main' into copilot/fix-30fb8ddb-e23f-4a2c-ba29-02144fbd2479
+  remotes/origin/copilot/fix-bf497b05-f6e2-40f5-828c-307e17ee98b3                                    3de0d1e24 Changes before error encountered
+  remotes/origin/copilot/fix-regex-for-modulepreload                                                 789ad73a1 Use importmapOrder.html for modulepreload regex test
+  remotes/origin/copilot/fix-vite-named-imports                                                      5e89c00b3 Disable erasableSyntaxOnly in playground tsconfig for enum test
+  remotes/origin/css-scope-to-ordering                                                               cf96b446a test: add scoped css ordering test
+  remotes/origin/fbm/examine-non-js-modules                                                          a14cdea3a test(fbm): port Vite non-JS module tests to full-bundle mode
+  remotes/origin/fbm/verify-create-vite-templates                                                    6df42a1cd test(fbm): scaffold create-vite templates + hand-written HMR drivers for full-bundle-mode coverage
+  remotes/origin/feat/bundled-dev-accept-exports                                                     6d9445a77 test(hmr): cover acceptExports with hmrPartialAccept off
+  remotes/origin/feat/bundled-dev-single-runtime-file                                                82e9fef6e refactor(bundled-dev): serve the rolldown dev runtime as a single file
+  remotes/origin/feat/bundled-dev-static-serving                                                     fd2ec4164 test(bundled-dev): expect bundle-only serving in fs-serve, resolve, dynamic-import
+  remotes/origin/feat/config-environment-resolved-hook                                               62bf36341 chore: merge main
+  remotes/origin/feat/css-sourcemap-for-build                                                        4352047a4 feat: CSS sourcemaps for build
+  remotes/origin/feat/hmr-check-boundary-outside-the-circular-imports                                e284fa838 chore: add warning
+  remotes/origin/feat/hot-update                                                                     45dc235ec refactor: drop read from the rolldown hook args
+  remotes/origin/feat/register-more-references-to-safe-modules                                       f63b3954f test(ssr): declare server worker input
+  remotes/origin/feat/register-references-in-html-to-safe-modules                                    9b293c1f7 feat: register references in HTML to safe modules
+  remotes/origin/feat/revamped-css-modules                                                           ece9f720f chore: port tests over
+  remotes/origin/fix/avoid-unhandled-rejection-error-for-missing-properties                          056e31c3c fix: avoid unhandled rejection error for missing properties
+  remotes/origin/fix/lazy-redirect-to-built-chunk                                                    4e220fbdd test(lazy-compilation): look up built chunks by normalized id
+  remotes/origin/fix/optimize-deps-align-interop-helper-behavior-with-rolldown                       906d8a3ca fix(optimizer): align interop helper behavior with Rolldown
+  remotes/origin/fix/pass-queries-to-renderbuilturl                                                  1282d8649 fix: pass queries to `renderBuiltUrl`
+  remotes/origin/improve-fs-access-check                                                             4562bc18b chore: update comments
+  remotes/origin/main                                                                                bc598a6a8 fix(bundled-dev): serve the rolldown runtime from the installed rolldown (#23568)
+  remotes/origin/morethanwords/main                                                                  cf39ab340 fix: update to check chunk.type
+  remotes/origin/plugin-cdn                                                                          050c7c995 chore: readme [skip ci]
+  remotes/origin/renovate/es-module-lexer-2.x                                                        7659e712c Merge branch 'main' into renovate/es-module-lexer-2.x
+  remotes/origin/renovate/major-eslint-monorepo                                                      834e97a65 chore(deps): update eslint monorepo to v10
+  remotes/origin/renovate/open-11.x                                                                  d56fe35c6 chore(deps): update dependency open to v11
+  remotes/origin/rolldown-canary                                                                     08a70f0a9 test: fix flaky playground tests on CI
+  remotes/origin/shulaoda/06-19-perf_hmr_avoid_eager_subchain_allocation_in_propagateupdate          2fe4ab633 perf(hmr): avoid eager subChain allocation in propagateUpdate
+  remotes/origin/shulaoda/06-19-perf_ssr_only_record_import_binding_identifiers_in_ssrtransform      7fd633f17 perf(ssr): only record import-binding identifiers in ssrTransform
+  remotes/origin/shulaoda/06-19-refactor_server_index_imported_modules_by_url_in_soft_invalidation   6d8ab0898 refactor(server): index imported modules by url in soft invalidation
+  remotes/origin/test/bundled-dev-settle                                                             d5bb819f1 test(bundled-dev): reduce withPageReload to a load-event anchor
+  remotes/origin/test/bundled-dev-sweep-enabled                                                      b2f0f84ef test(bundled-dev): wait for updates after edits in enabled playgrounds
+  remotes/origin/test/bundled-dev-worker                                                             79209b7c6 Merge branch 'main' into test/bundled-dev-worker
+  remotes/origin/test/css-sourcemap-sources-repro                                                    e26053b9c test: repro for css sourcemap sources resolved against the wrong base
+  remotes/origin/test/rolldown-10783                                                                 42bc61aff test: regenerate lockfile with tarball integrity for the rolldown pin
+  remotes/origin/test/use-server-fs-allow-empty                                                      c08880c6b test: use `server.fs.allow: []`
+  remotes/origin/v1                                                                                  68ddf6aa1 docs: update (#1250)
+  remotes/origin/v2                                                                                  a821dfecb docs: v2 show old document warning (#18805) (#18831)
+  remotes/origin/v2.5                                                                                91385ecd7 chore: change ci triggering (#4978)
+  remotes/origin/v2.6                                                                                94eed8ee4 release: plugin-react@1.0.9
+  remotes/origin/v2.7                                                                                e9620af4f release: v2.7.13
+  remotes/origin/v3                                                                                  0114c871a docs: v3 show old document warning (#18805) (#18830)
+  remotes/origin/v3.0                                                                                518bc6ce9 release: v3.0.9
+  remotes/origin/v3.1                                                                                c9da59bda release: v3.1.8
+  remotes/origin/v4                                                                                  96567961a ci: run tests in all version branches (#19833)
+  remotes/origin/v4.0                                                                                2f5827c84 release: v4.0.5
+  remotes/origin/v4.1                                                                                b1b3beb9f release: v4.1.5
+  remotes/origin/v4.2                                                                                3ac6e91b1 release: v4.2.3
+  remotes/origin/v4.4                                                                                09626f898 release: v4.4.12
+  remotes/origin/v5                                                                                  adce3c22c release: v5.4.21
+  remotes/origin/v5.0                                                                                80b1b0791 release: v5.0.13
+  remotes/origin/v5.1                                                                                fe6323127 release: v5.1.8
+  remotes/origin/v5.2                                                                                673ae1607 release: v5.2.14
+  remotes/origin/v5.3                                                                                f469ceb5d release: v5.3.6
+  remotes/origin/v6                                                                                  bdb13d508 chore: pin release-tag action
+  remotes/origin/v6.0                                                                                e3504684e release: v6.0.15
+  remotes/origin/v6.1                                                                                6f884ebdb ci: run tests in all version branches (#19833)
+  remotes/origin/v6.2                                                                                7886f277f ci: run tests in all version branches (#19833)
+  remotes/origin/v7                                                                                  0a7b53ba2 release: v7.3.6
+  remotes/origin/v7.0                                                                                d3c21673f release: v7.0.8
+  remotes/origin/v7.1                                                                                2436afef0 release: v7.1.12
+  remotes/origin/v8.0                                                                                012eb4527 docs: add override banner (#22605)
+  remotes/origin/wasm-node                                                                           37a93dc0e Merge branch 'main' into wasm-node

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "node",
+    "examples/hello-world/index.js"
+  ],
+  "shell": "node examples/hello-world/index.js",
+  "repo": "expressjs/express",
+  "exit_code": 1,
+  "description": "starting a dev server while another process already holds port 3000: unhandled 'error' event EADDRINUSE crash with stack trace",
+  "cwd": "repos/express"
+}

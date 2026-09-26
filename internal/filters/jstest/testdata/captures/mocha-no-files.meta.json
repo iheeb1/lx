@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "nothing/"
+  ],
+  "shell": "npx mocha nothing/",
+  "repo": "scratch/mochaproj",
+  "exit_code": 1,
+  "description": "mocha 11 with a spec path that matches nothing",
+  "cwd": "repos/mochaproj"
+}

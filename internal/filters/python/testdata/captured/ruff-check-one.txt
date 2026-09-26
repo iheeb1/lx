@@ -1,0 +1,17 @@
+UP035 [*] Import from `collections.abc` instead: `Iterable`
+ --> inventory/pricing.py:1:1
+  |
+1 | from typing import Iterable
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2 |
+3 | from .models import Item
+  |
+help: Import from `collections.abc`
+  |
+  - from typing import Iterable
+1 + from collections.abc import Iterable
+2 |
+  |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

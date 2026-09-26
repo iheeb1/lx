@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "pytest",
+    "-k",
+    "nothing_matches_this"
+  ],
+  "shell": "pytest -k nothing_matches_this",
+  "repo": null,
+  "exit_code": 5,
+  "description": "REAL capture (lx python filter testdata): exit 5: every test deselected, no tests ran",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv with pytest 8.3.4, mypy 1.19.1, ruff 0.16.9, pip 26.0.1"
+}

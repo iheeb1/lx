@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "diff",
+    "--cached",
+    "-C",
+    "-C"
+  ],
+  "exit_code": 0,
+  "cwd": "/home/user/src/express",
+  "description": "git diff --cached -C -C in an express clone: one modified file, one pure rename (similarity 100%), one copy with edits (copy from/copy to)"
+}

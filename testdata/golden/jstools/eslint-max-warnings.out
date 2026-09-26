@@ -1,0 +1,18 @@
+lib/application.js
+  230:22  warning  Unexpected function expression  prefer-arrow-callback
+  232:27  warning  Unexpected function expression  prefer-arrow-callback
+  471:17  warning  Unexpected function expression  prefer-arrow-callback
+
+lib/response.js
+  warning  Unexpected function expression  prefer-arrow-callback  ×8: 101:57 104:29 408:29 578:13 593:39 972:18 998:24 1033:35
+
+lib/utils.js
+  210:12  warning  Unexpected function expression  prefer-arrow-callback
+
+lib/view.js
+  153:29  warning  Unexpected function expression  prefer-arrow-callback
+
+✖ 13 problems (0 errors, 13 warnings)
+  0 errors and 13 warnings potentially fixable with the `--fix` option.
+
+ESLint found too many warnings (maximum: 0).

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "run",
+    "test/syntax.test.ts"
+  ],
+  "shell": "CLAUDECODE=1 AI_AGENT=claude-code npx vitest run test/syntax.test.ts",
+  "repo": "scratch/vitproj",
+  "exit_code": 1,
+  "description": "only test file fails to load (syntax error): 0 tests ran, must still show as failed",
+  "cwd": "repos/vitproj"
+}

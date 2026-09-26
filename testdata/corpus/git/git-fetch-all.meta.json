@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "fetch",
+    "--all",
+    "--prune"
+  ],
+  "shell": "git fetch --all --prune",
+  "repo": "expressjs/express",
+  "exit_code": 0,
+  "description": "git fetch --all --prune when everything is already up to date: produces no output at all (empty-output edge case)",
+  "cwd": "repos/express-shallow"
+}

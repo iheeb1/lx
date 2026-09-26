@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-cover",
+    "./coverfail",
+    "./manyok/..."
+  ],
+  "shell": "go test -cover ./coverfail ./manyok/...",
+  "repo": "",
+  "exit_code": 1,
+  "description": "go test -cover over a failing package and 12 passing ones: coverage line printed after the final FAIL",
+  "cwd": "/home/user/src/lxcap2"
+}

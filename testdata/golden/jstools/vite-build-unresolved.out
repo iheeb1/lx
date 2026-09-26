@@ -1,0 +1,24 @@
+vite v8.3.1 building client environment for production...
+✓ 17 modules transformed.
+✗ Build failed in 52ms
+error during build:
+Build failed with 1 error:
+
+[UNRESOLVED_IMPORT] Could not resolve './utils/missing' in src/App.tsx
+   ╭─[ src/App.tsx:7:25 ]
+   │
+ 7 │ import { missing } from "./utils/missing";
+   │                         ────────┬────────
+   │                                 ╰────────── Module not found.
+   │
+   │ Help: 'src/App.tsx' is imported by the following path:
+   │         - src/App.tsx
+   │         - src/main.tsx
+   │         - index.html
+───╯
+
+    at aggregateBindingErrorsIntoJsError (file:///home/user/src/vite-app/node_modules/rolldown/dist/shared/error-C7pxws0W.mjs:48:18)
+    … 5 library frames (rolldown, vite)
+    at async CAC.<anonymous> (file:///home/user/src/vite-app/node_modules/vite/dist/node/cli.js:780:3) {
+  errors: [Getter/Setter]
+}

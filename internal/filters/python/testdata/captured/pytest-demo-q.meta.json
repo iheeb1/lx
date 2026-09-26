@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "pytest",
+    "-q"
+  ],
+  "shell": "pytest -q",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter testdata): same run with -q: bare progress line, bare summary line without === wrapper",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv with pytest 8.3.4, mypy 1.19.1, ruff 0.16.9, pip 26.0.1"
+}

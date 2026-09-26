@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "du -sk node_modules/*"
+  ],
+  "shell": "bash -c du -sk node_modules/*",
+  "exit_code": 0,
+  "description": "du -sk over many node_modules entries",
+  "cwd": "/home/user/src/luxon"
+}

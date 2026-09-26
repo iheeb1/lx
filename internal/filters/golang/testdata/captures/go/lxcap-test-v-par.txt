@@ -1,0 +1,34 @@
+=== RUN   TestParallel
+=== RUN   TestParallel/small
+=== PAUSE TestParallel/small
+=== RUN   TestParallel/conflict
+=== PAUSE TestParallel/conflict
+=== RUN   TestParallel/large
+=== PAUSE TestParallel/large
+=== RUN   TestParallel/negative
+=== PAUSE TestParallel/negative
+=== CONT  TestParallel/small
+=== CONT  TestParallel/conflict
+=== CONT  TestParallel/negative
+=== CONT  TestParallel/large
+=== NAME  TestParallel/small
+    par_test.go:23: adding 1 + 2
+=== NAME  TestParallel/negative
+    par_test.go:23: adding -1 + -1
+    par_test.go:25: Add(-1, -1) = -2, want -3
+=== NAME  TestParallel/large
+    par_test.go:23: adding 100 + 200
+=== NAME  TestParallel/conflict
+    par_test.go:23: adding 2 + 2
+    par_test.go:25: Add(2, 2) = 4, want 5
+--- FAIL: TestParallel (0.00s)
+    --- PASS: TestParallel/small (0.01s)
+    --- FAIL: TestParallel/negative (0.01s)
+    --- PASS: TestParallel/large (0.01s)
+    --- FAIL: TestParallel/conflict (0.01s)
+=== RUN   TestSequential
+    par_test.go:32: sequential runs fine
+--- PASS: TestSequential (0.00s)
+FAIL
+FAIL	example.com/lxcap/par	0.499s
+FAIL

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "-n",
+    "2",
+    "-v"
+  ],
+  "shell": "pytest -p no:cacheprovider -n 2 -v",
+  "repo": null,
+  "exit_code": 1,
+  "description": "REAL capture (lx python filter review): pytest-xdist -n 2 -v: a bare node id line when each test is scheduled, '[gwN] [ x%] STATUS id' when it finishes",
+  "cwd": "/home/user/src/demo",
+  "env_setup": "Python 3.9.6 venv at /home/user/venv: pytest 8.3.4, pytest-cov 4.1.0, pytest-xdist 3.8.0, pytest-timeout 2.4.0, pytest-rerunfailures 16.0.1, pip 21.2.4"
+}

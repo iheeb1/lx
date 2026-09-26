@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "python -c \"import requests; requests.get('http://127.0.0.1:9/health', timeout=2)\""
+  ],
+  "shell": "python -c \"import requests; requests.get('http://127.0.0.1:9/health', timeout=2)\"",
+  "repo": null,
+  "exit_code": 1,
+  "description": "python one-liner calling requests.get (library from PyPI, installed in the venv) against a closed local port: urllib3 NotOpenSSLWarning, then a long chained traceback (ConnectionRefusedError -> NewConnectionError -> MaxRetryError -> requests.ConnectionError) through urllib3/requests/http.client internals",
+  "cwd": "repos/click",
+  "env_setup": "source $CORPUS/venv/bin/activate"
+}

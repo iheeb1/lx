@@ -1,0 +1,12 @@
+loading bad.json
+Traceback (most recent call last):
+  File "scripts/load.py", line 9, in <module>
+    main()
+  File "scripts/load.py", line 6, in main
+    s = Stock.load(sys.argv[1])
+  File "inventory/models.py", line 52, in load
+    data = json.load(f)
+  … 3 library frames (json)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 12 (char 11)

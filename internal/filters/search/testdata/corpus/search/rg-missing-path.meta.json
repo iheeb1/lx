@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "rg",
+    "-n",
+    "Render",
+    "nosuchdir",
+    "render/render.go"
+  ],
+  "shell": "rg -n Render nosuchdir render/render.go",
+  "exit_code": 2,
+  "description": "rg with a missing path",
+  "cwd": "/home/user/src/gin"
+}

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--ci"
+  ],
+  "shell": "npx jest --ci",
+  "repo": "scratch/jestproj",
+  "exit_code": 1,
+  "description": "jest 29: assertion, TypeError, SyntaxError, snapshot, timeout and rejects failures, 2 suites failing to run (syntax error, missing module), console output, skip/todo",
+  "cwd": "repos/jestproj"
+}

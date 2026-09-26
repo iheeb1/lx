@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "du -sh *"
+  ],
+  "shell": "du -sh *",
+  "repo": "moment/luxon",
+  "exit_code": 0,
+  "description": "du -sh * at the root of a JS repo (node_modules dwarfs sources)",
+  "cwd": "repos/luxon"
+}

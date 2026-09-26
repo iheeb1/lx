@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "pnpm",
+    "ls",
+    "--depth",
+    "2"
+  ],
+  "shell": "pnpm ls --depth 2",
+  "exit_code": 0,
+  "description": "pnpm ls --depth 2: tree with box glyphs (no deduped markers)",
+  "cwd": "/home/user/src/pnpm-app"
+}

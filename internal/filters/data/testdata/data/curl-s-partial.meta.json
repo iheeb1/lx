@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "-s",
+    "http://127.0.0.1:18765/issues"
+  ],
+  "shell": "curl -s http://127.0.0.1:18765/issues",
+  "repo": "",
+  "exit_code": 18,
+  "description": "REAL curl 8.7.1, -s: truncated JSON body, exit 18, no message",
+  "cwd": "data/api"
+}

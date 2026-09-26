@@ -1,0 +1,7 @@
+stderr | adv/errtitles.test.ts > error handling > returns error 500 on failure
+Error: simulated failure log from a passing test
+
+[4 passing tests hidden; 1 console block of passing tests hidden]
+ Test Files  2 passed (2)
+      Tests  4 passed (4)
+   Duration  130ms (transform 25ms, setup 0ms, import 39ms, tests 5ms, environment 0ms)

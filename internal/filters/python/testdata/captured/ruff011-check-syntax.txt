@@ -1,0 +1,19 @@
+bad.py:3:12: SyntaxError: Expected a parameter or the end of the parameter list
+  |
+1 | import os
+2 |
+3 | def broken(:
+  |            ^
+4 |     return os.getcwd()
+  |
+
+bad.py:3:13: SyntaxError: Expected ')', found newline
+  |
+1 | import os
+2 |
+3 | def broken(:
+  |             ^
+4 |     return os.getcwd()
+  |
+
+Found 2 errors.

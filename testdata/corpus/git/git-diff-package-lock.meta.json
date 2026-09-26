@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "diff"
+  ],
+  "shell": "git diff",
+  "repo": "moment/luxon",
+  "exit_code": 0,
+  "description": "git diff in a JS repo mixing small source edits (src/, tasks/build.js) with a large package-lock.json churn from replacing deprecated devDependencies (codecov removed, rollup-plugin-terser -> @rollup/plugin-terser, husky 7 -> 9)",
+  "cwd": "repos/luxon"
+}

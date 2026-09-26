@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "TZ=UTC",
+    "npx",
+    "jest"
+  ],
+  "shell": "TZ=UTC npx jest",
+  "repo": "moment/luxon",
+  "exit_code": 1,
+  "description": "jest suite run in UTC instead of the expected America/New_York zone: 38 genuine environment-dependent failures across 7 suites (unmodified repo)",
+  "cwd": "repos/luxon"
+}

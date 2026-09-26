@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "--reporter",
+    "spec",
+    "test2/"
+  ],
+  "shell": "npx mocha --reporter spec test2/",
+  "repo": "scratch/mochaproj",
+  "exit_code": 1,
+  "description": "mocha spec file with a syntax error: mocha aborts before running (no passing/failing summary)",
+  "cwd": "repos/mochaproj"
+}

@@ -1,0 +1,69 @@
+> GET /golang/go/blob/master/README.md HTTP/1.1
+< HTTP/1.1 301 Moved Permanently
+< Content-Length: 0
+< Location: https://github.com/golang/go/blob/master/README.md
+* Issue another request to this URL: 'https://github.com/golang/go/blob/master/README.md'
+> GET /golang/go/blob/master/README.md HTTP/2
+< HTTP/2 200
+< content-type: text/html; charset=utf-8
+< set-cookie: _gh_sess=… (value hidden)
+< set-cookie: _octo=… (value hidden)
+< set-cookie: logged_in=… (value hidden)
+< [lx: 16 more headers not shown: date, x-repository-download, x-raw-download, vary, etag, cache-control, strict-transport-security, x-frame-options, x-content-type-options, x-xss-protection, referrer-policy, content-security-policy, server, accept-ranges, x-github-request-id, x-github-edge-region]
+[lx: HTML body, 206.4 KB (~75.4k tokens): title and visible text only, scripts/styles/markup removed]
+title: go/README.md at master · golang/go · GitHub
+golang
+/
+go
+Public
+Notifications
+You must be signed in to change notification settings
+Fork
+20.5k
+Star
+139k
+## Expand file tree
+/
+# README.md
+Copy path
+More file actions
+## Latest commit
+## History
+History
+42 lines (27 loc) · 1.42 KB
+/
+# README.md
+Copy path
+## File metadata and controls
+42 lines (27 loc) · 1.42 KB
+Raw
+Copy raw file
+Download raw file
+Outline
+Edit and raw actions
+# The Go Programming Language
+Go is an open source programming language that makes it easy to build simple,
+reliable, and efficient software.
+Gopher image by Renee French, licensed under Creative Commons 4.0 Attribution license.
+Our canonical Git repository is located at https://go.googlesource.com/go.
+There is a mirror of the repository at https://github.com/golang/go.
+Unless otherwise noted, the Go source files are distributed under the
+BSD-style license found in the LICENSE file.
+### Download and Install
+#### Binary Distributions
+Official binary distributions are available at https://go.dev/dl/.
+After downloading a binary release, visit https://go.dev/doc/install
+for installation instructions.
+#### Install From Source
+If a binary distribution is not available for your combination of
+operating system and architecture, visit
+https://go.dev/doc/install/source
+for source installation instructions.
+### Contributing
+Go is the work of thousands of contributors. We appreciate your help!
+To contribute, please read the contribution guidelines at https://go.dev/doc/contribute.
+Note that the Go project uses the issue tracker for bug reports and
+proposals only. See https://go.dev/wiki/Questions for a list of
+places to ask questions about the Go language.
+[lx: curl's progress meter was printed into the body above (2×), so some of its text may be lost — use -s (or -sS) for intact output]
+[lx: -v output not shown: 43 "* " lines (connection, TLS, HTTP/2 stream), 6 request header lines]

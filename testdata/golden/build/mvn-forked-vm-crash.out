@@ -1,0 +1,37 @@
+[lx: hidden: 39 [INFO] progress lines, 9 lines of Maven's help footer]
+[INFO] /home/user/src/mvnapp/src/test/java/com/example/CalcTest.java: /home/user/src/mvnapp/src/test/java/com/example/CalcTest.java uses or overrides a deprecated API.
+[INFO] /home/user/src/mvnapp/src/test/java/com/example/CalcTest.java: Recompile with -Xlint:deprecation for details.
+[ERROR] Tests run: 5, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.035 s <<< FAILURE! -- in com.example.CalcTest
+[ERROR] com.example.CalcTest.addsWrong -- Time elapsed: 0.004 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: sum of 2 and 2 ==> expected: <5> but was: <4>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	… 3 library frames (org.junit.jupiter)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:563)
+	at com.example.CalcTest.addsWrong(CalcTest.java:8)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612) [×2]
+[ERROR] com.example.CalcTest.dividesByZero -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.ArithmeticException: / by zero
+	at com.example.Calc.div(Calc.java:5)
+	at com.example.CalcTest.dividesByZero(CalcTest.java:10)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612) [×2]
+about to exit
+[ERROR] Failures:
+[ERROR]   CalcTest.addsWrong:8 sum of 2 and 2 ==> expected: <5> but was: <4>
+[ERROR] Errors:
+[ERROR]   CalcTest.dividesByZero:10 » Arithmetic / by zero
+[ERROR] Tests run: 5, Failures: 1, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.1.2:test (default-test) on project demo:
+[ERROR] Please refer to /home/user/src/mvnapp/target/surefire-reports for the individual test results.
+[ERROR] The forked VM terminated without properly saying goodbye. VM crash or System.exit called?
+[ERROR] Command was /bin/sh -c cd '/home/user/src/mvnapp' && '/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home/bin/java' '-jar' '/home/user/src/mvnapp/target/surefire/surefirebooter-20260926040246121_3.jar' '/home/user/src/mvnapp/target/surefire' '2026-09-26T04-02-46_066-jvmRun1' 'surefire-20260926040246121_1tmp' 'surefire_0-20260926040246121_2tmp'
+[ERROR] Error occurred in starting fork, check output in log
+[ERROR] Process Exit Code: 3
+[ERROR] Crashed tests:
+[ERROR] com.example.ExitTest
+[ERROR] org.apache.maven.surefire.booter.SurefireBooterForkException: The forked VM terminated without properly saying goodbye. VM crash or System.exit called?
+[lx: 5 [ERROR] lines repeated verbatim from above]
+[ERROR] 	at org.apache.maven.plugin.surefire.booterclient.ForkStarter.fork(ForkStarter.java:643)
+[ERROR] 	… 30 library frames (org.apache.maven, jdk.internal, java.lang, …)

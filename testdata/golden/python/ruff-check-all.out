@@ -1,0 +1,181 @@
+warning: `incorrect-blank-line-before-class` (D203) and `blank-line-before-class` (D211) are incompatible. Ignoring `incorrect-blank-line-before-class`.
+warning: `multi-line-summary-first-line` (D212) and `multi-line-summary-second-line` (D213) are incompatible. Ignoring `multi-line-summary-second-line`.
+inventory/__init__.py:1:1: CPY001 Missing copyright notice at top of file
+inventory/models.py:1:1: D100 Missing docstring in public module
+inventory/models.py:1:1: CPY001 Missing copyright notice at top of file
+inventory/models.py:7:1: UP035 `typing.Dict` is deprecated, use `dict` instead
+inventory/models.py:7:1: UP035 `typing.List` is deprecated, use `list` instead
+inventory/models.py:11:7: D101 Missing docstring in public class
+inventory/models.py:15:11: UP006 Use `list` instead of `List` for type annotation
+inventory/models.py:17:9: D102 Missing docstring in public method
+inventory/models.py:21:7: D101 Missing docstring in public class
+inventory/models.py:22:9: D107 Missing docstring in `__init__`
+inventory/models.py:23:21: UP006 Use `dict` instead of `Dict` for type annotation
+inventory/models.py:24:22: UP006 Use `dict` instead of `Dict` for type annotation
+inventory/models.py:26:9: D102 Missing docstring in public method
+inventory/models.py:28:19: TRY003 Avoid specifying long messages outside the exception class
+inventory/models.py:28:30: EM102 Exception must not use an f-string literal, assign to variable first
+inventory/models.py:32:9: D102 Missing docstring in public method
+inventory/models.py:35:19: TRY003 Avoid specifying long messages outside the exception class
+inventory/models.py:35:30: EM102 Exception must not use an f-string literal, assign to variable first
+inventory/models.py:39:9: D102 Missing docstring in public method
+inventory/models.py:39:33: UP045 Use `X | None` for type annotations
+inventory/models.py:42:9: D102 Missing docstring in public method
+inventory/models.py:42:24: UP006 Use `list` instead of `List` for type annotation
+inventory/models.py:45:9: D102 Missing docstring in public method
+inventory/models.py:46:89: E501 Line too long (106 > 88)
+inventory/models.py:50:9: D102 Missing docstring in public method
+inventory/models.py:50:33: UP037 [*] Remove quotes from type annotation
+inventory/models.py:51:14: PTH123 `open()` should be replaced by `Path.open()`
+inventory/models.py:58:9: D102 Missing docstring in public method
+inventory/models.py:60:14: PTH123 `open()` should be replaced by `Path.open()`
+inventory/models.py:62:9: PTH105 `os.replace()` should be replaced by `Path.replace()`
+inventory/pricing.py:1:1: UP035 [*] Import from `collections.abc` instead: `Iterable`
+inventory/pricing.py:1:1: D100 Missing docstring in public module
+inventory/pricing.py:1:1: CPY001 Missing copyright notice at top of file
+inventory/pricing.py:6:5: D103 Missing docstring in public function
+inventory/pricing.py:7:28: PLR2004 Magic value used in comparison, consider replacing `100` with a constant variable
+inventory/pricing.py:8:15: TRY003 Avoid specifying long messages outside the exception class
+inventory/pricing.py:8:26: EM101 Exception must not use a string literal, assign to variable first
+inventory/pricing.py:13:5: D103 Missing docstring in public function
+inventory/pricing.py:18:5: D103 Missing docstring in public function
+inventory/reports.py:1:1: D100 Missing docstring in public module
+inventory/reports.py:1:1: CPY001 Missing copyright notice at top of file
+inventory/reports.py:2:1: UP035 `typing.Dict` is deprecated, use `dict` instead
+inventory/reports.py:2:1: UP035 `typing.List` is deprecated, use `list` instead
+inventory/reports.py:11:5: D103 Missing docstring in public function
+inventory/reports.py:11:31: UP006 Use `dict` instead of `Dict` for type annotation
+inventory/reports.py:12:10: PTH123 `open()` should be replaced by `Path.open()`
+inventory/reports.py:16:5: D103 Missing docstring in public function
+inventory/reports.py:16:44: UP006 Use `list` instead of `List` for type annotation
+inventory/reports.py:21:5: D103 Missing docstring in public function
+inventory/reports.py:26:5: D103 Missing docstring in public function
+inventory/reports.py:31:5: D103 Missing docstring in public function
+inventory/reports.py:32:10: PTH123 `open()` should be replaced by `Path.open()`
+inventory/reports.py:38:5: D103 Missing docstring in public function
+inventory/reports.py:38:31: FA100 Add `from __future__ import annotations` to simplify `typing.Optional`
+inventory/reports.py:40:25: PLR2004 Magic value used in comparison, consider replacing `200` with a constant variable
+inventory/reports.py:45:5: D103 Missing docstring in public function
+inventory/reports.py:51:5: D103 Missing docstring in public function
+inventory/reports.py:51:29: UP006 Use `list` instead of `List` for type annotation
+scripts/fetch.py:1:1: INP001 File `scripts/fetch.py` is part of an implicit namespace package. Add an `__init__.py`.
+scripts/fetch.py:1:1: D100 Missing docstring in public module
+scripts/fetch.py:1:1: I001 [*] Import block is un-sorted or un-formatted
+scripts/fetch.py:1:1: CPY001 Missing copyright notice at top of file
+scripts/fetch.py:5:5: ANN201 Missing return type annotation for public function `sync`
+scripts/fetch.py:5:5: D103 Missing docstring in public function
+scripts/fetch.py:5:10: ANN001 Missing type annotation for function argument `stock`
+scripts/fetch.py:5:10: ARG001 Unused function argument: `stock`
+scripts/fetch.py:5:17: ANN001 Missing type annotation for function argument `url`
+scripts/fetch.py:9:15: TRY003 Avoid specifying long messages outside the exception class
+scripts/fetch.py:9:28: EM102 Exception must not use an f-string literal, assign to variable first
+scripts/load.py:1:1: INP001 File `scripts/load.py` is part of an implicit namespace package. Add an `__init__.py`.
+scripts/load.py:1:1: D100 Missing docstring in public module
+scripts/load.py:1:1: I001 [*] Import block is un-sorted or un-formatted
+scripts/load.py:1:1: CPY001 Missing copyright notice at top of file
+scripts/load.py:4:5: ANN201 Missing return type annotation for public function `main`
+scripts/load.py:4:5: D103 Missing docstring in public function
+scripts/load.py:5:5: T201 `print` found
+scripts/load.py:7:5: T201 `print` found
+scripts/restock.py:1:1: INP001 File `scripts/restock.py` is part of an implicit namespace package. Add an `__init__.py`.
+scripts/restock.py:1:1: CPY001 Missing copyright notice at top of file
+scripts/restock.py:7:5: ANN201 Missing return type annotation for public function `restock`
+scripts/restock.py:7:5: D103 Missing docstring in public function
+scripts/restock.py:7:13: ANN001 Missing type annotation for function argument `stock`
+scripts/restock.py:7:20: ANN001 Missing type annotation for function argument `rows`
+scripts/restock.py:12:5: ANN201 Missing return type annotation for public function `main`
+scripts/restock.py:12:5: D103 Missing docstring in public function
+scripts/restock.py:12:10: ANN001 Missing type annotation for function argument `argv`
+scripts/restock.py:12:10: ARG001 Unused function argument: `argv`
+scripts/restock.py:17:5: T201 `print` found
+tests/conftest.py:1:1: INP001 File `tests/conftest.py` is part of an implicit namespace package. Add an `__init__.py`.
+tests/conftest.py:1:1: D100 Missing docstring in public module
+tests/conftest.py:1:1: CPY001 Missing copyright notice at top of file
+tests/conftest.py:7:5: ANN201 Missing return type annotation for public function `stock`
+tests/conftest.py:7:5: D103 Missing docstring in public function
+tests/conftest.py:15:5: ANN201 Missing return type annotation for public function `db_conn`
+tests/conftest.py:15:5: D103 Missing docstring in public function
+tests/conftest.py:16:11: TRY003 Avoid specifying long messages outside the exception class
+tests/conftest.py:16:27: EM101 Exception must not use a string literal, assign to variable first
+tests/conftest.py:16:89: E501 Line too long (95 > 88)
+tests/test_models.py:1:1: INP001 File `tests/test_models.py` is part of an implicit namespace package. Add an `__init__.py`.
+tests/test_models.py:1:1: D100 Missing docstring in public module
+tests/test_models.py:1:1: CPY001 Missing copyright notice at top of file
+tests/test_models.py:1:8: F401 [*] `json` imported but unused
+tests/test_models.py:8:5: ANN201 Missing return type annotation for public function `test_add_and_find`
+tests/test_models.py:8:5: D103 Missing docstring in public function
+tests/test_models.py:8:23: ANN001 Missing type annotation for function argument `stock`
+tests/test_models.py:9:5: S101 Use of `assert` detected
+tests/test_models.py:12:5: ANN201 Missing return type annotation for public function `test_remove`
+tests/test_models.py:12:5: D103 Missing docstring in public function
+tests/test_models.py:12:17: ANN001 Missing type annotation for function argument `stock`
+tests/test_models.py:13:5: S101 Use of `assert` detected
+tests/test_models.py:13:37: PLR2004 Magic value used in comparison, consider replacing `7` with a constant variable
+tests/test_models.py:16:5: ANN201 Missing return type annotation for public function `test_remove_too_many`
+tests/test_models.py:16:5: D103 Missing docstring in public function
+tests/test_models.py:16:26: ANN001 Missing type annotation for function argument `stock`
+tests/test_models.py:21:5: ANN201 Missing return type annotation for public function `test_names`
+tests/test_models.py:21:5: D103 Missing docstring in public function
+tests/test_models.py:21:16: ANN001 Missing type annotation for function argument `stock`
+tests/test_models.py:22:5: S101 Use of `assert` detected
+tests/test_models.py:25:5: ANN201 Missing return type annotation for public function `test_remove_unknown`
+tests/test_models.py:25:5: D103 Missing docstring in public function
+tests/test_models.py:25:25: ANN001 Missing type annotation for function argument `stock`
+tests/test_models.py:26:5: S101 Use of `assert` detected
+tests/test_models.py:30:5: ANN201 Missing return type annotation for public function `test_legacy_total`
+tests/test_models.py:30:5: D103 Missing docstring in public function
+tests/test_models.py:30:23: ANN001 Missing type annotation for function argument `stock`
+tests/test_models.py:30:30: ANN001 Missing type annotation for function argument `qty`
+tests/test_models.py:32:5: S101 Use of `assert` detected
+tests/test_models.py:35:5: ANN201 Missing return type annotation for public function `test_load_roundtrip`
+tests/test_models.py:35:5: D103 Missing docstring in public function
+tests/test_models.py:35:25: ANN001 Missing type annotation for function argument `tmp_path`
+tests/test_models.py:35:35: ANN001 Missing type annotation for function argument `stock`
+tests/test_models.py:38:5: T201 `print` found
+tests/test_models.py:39:5: T201 `print` found
+tests/test_models.py:41:5: S101 Use of `assert` detected
+tests/test_models.py:44:5: ANN201 Missing return type annotation for public function `test_load_corrupt`
+tests/test_models.py:44:5: D103 Missing docstring in public function
+tests/test_models.py:44:23: ANN001 Missing type annotation for function argument `tmp_path`
+tests/test_models.py:50:5: ANN201 Missing return type annotation for public function `test_uses_db`
+tests/test_models.py:50:5: D103 Missing docstring in public function
+tests/test_models.py:50:18: ANN001 Missing type annotation for function argument `db_conn`
+tests/test_models.py:51:5: S101 Use of `assert` detected
+tests/test_models.py:55:5: ANN201 Missing return type annotation for public function `test_sync`
+tests/test_models.py:55:5: D103 Missing docstring in public function
+tests/test_models.py:60:5: ANN201 Missing return type annotation for public function `test_unicode_label`
+tests/test_models.py:60:5: D103 Missing docstring in public function
+tests/test_models.py:61:5: S101 Use of `assert` detected
+tests/test_pricing.py:1:1: INP001 File `tests/test_pricing.py` is part of an implicit namespace package. Add an `__init__.py`.
+tests/test_pricing.py:1:1: D100 Missing docstring in public module
+tests/test_pricing.py:1:1: CPY001 Missing copyright notice at top of file
+tests/test_pricing.py:21:5: ANN201 Missing return type annotation for public function `test_apply_discount`
+tests/test_pricing.py:21:5: D103 Missing docstring in public function
+tests/test_pricing.py:21:25: ANN001 Missing type annotation for function argument `price`
+tests/test_pricing.py:21:32: ANN001 Missing type annotation for function argument `percent`
+tests/test_pricing.py:21:41: ANN001 Missing type annotation for function argument `expected`
+tests/test_pricing.py:22:5: S101 Use of `assert` detected
+tests/test_pricing.py:25:5: ANN201 Missing return type annotation for public function `test_total_price`
+tests/test_pricing.py:25:5: D103 Missing docstring in public function
+tests/test_pricing.py:28:5: S101 Use of `assert` detected
+tests/test_pricing.py:28:34: PLR2004 Magic value used in comparison, consider replacing `3.6` with a constant variable
+tests/test_pricing.py:31:5: ANN201 Missing return type annotation for public function `test_parse_price`
+tests/test_pricing.py:31:5: D103 Missing docstring in public function
+tests/test_pricing.py:32:5: S101 Use of `assert` detected
+tests/test_pricing.py:32:38: PLR2004 Magic value used in comparison, consider replacing `4.2` with a constant variable
+tests/test_pricing.py:33:5: S101 Use of `assert` detected
+tests/test_pricing.py:33:35: PLR2004 Magic value used in comparison, consider replacing `4.2` with a constant variable
+tests/test_pricing.py:36:5: ANN201 Missing return type annotation for public function `test_fetch_rates`
+tests/test_pricing.py:36:5: D103 Missing docstring in public function
+tests/test_pricing.py:38:5: T201 `print` found
+tests/test_pricing.py:40:5: S101 Use of `assert` detected
+tests/test_pricing.py:43:5: ANN201 Missing return type annotation for public function `test_bulk_report`
+tests/test_pricing.py:43:5: D103 Missing docstring in public function
+tests/test_pricing.py:43:22: ANN001 Missing type annotation for function argument `stock`
+tests/test_pricing.py:43:22: ARG001 Unused function argument: `stock`
+tests/test_pricing.py:43:28: PT028 Test function parameter `stock` has default argument
+tests/test_pricing.py:46:9: T201 `print` found
+tests/test_pricing.py:48:5: S101 Use of `assert` detected
+tests/test_pricing.py:48:34: PLR2004 Magic value used in comparison, consider replacing `470.0` with a constant variable
+Found 177 errors.
+[*] 5 fixable with the `--fix` option (41 hidden fixes can be enabled with the `--unsafe-fixes` option).
