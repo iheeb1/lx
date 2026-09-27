@@ -2,7 +2,7 @@ package golang
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -150,29 +150,29 @@ func runOpts(c *engine.Context) options {
 }
 
 var (
-	markerRe = regexp.MustCompile(`^=== (RUN|PAUSE|CONT|NAME)(?:\s+(.*))?$`)
-	resultRe = regexp.MustCompile(`^(\s*)--- (FAIL|PASS|SKIP): (.+) \((\d+(?:\.\d+)?)s\)$`)
+	markerRe = lazyre.New(`^=== (RUN|PAUSE|CONT|NAME)(?:\s+(.*))?$`)
+	resultRe = lazyre.New(`^(\s*)--- (FAIL|PASS|SKIP): (.+) \((\d+(?:\.\d+)?)s\)$`)
 	// A result line printed right after test output that did not end in a
 	// newline ("progress: 3/5--- FAIL: TestX (0.00s)"): go test prints it
 	// glued to that output. The groups are those of resultRe, after the
 	// glued text.
-	gluedResultRe = regexp.MustCompile(`^\S.*?( *)--- (FAIL|PASS|SKIP): (.+) \((\d+(?:\.\d+)?)s\)$`)
+	gluedResultRe = lazyre.New(`^\S.*?( *)--- (FAIL|PASS|SKIP): (.+) \((\d+(?:\.\d+)?)s\)$`)
 	// Lines cmd/go prints about a test binary it killed or that died from a
 	// signal (exec.ExitError text), before the package's FAIL line.
-	killedRe = regexp.MustCompile(`^(?:\*\*\* Test (?:killed(?: with \w+)?: ran too long \(|I/O incomplete )` +
+	killedRe = lazyre.New(`^(?:\*\*\* Test (?:killed(?: with \w+)?: ran too long \(|I/O incomplete )` +
 		`|signal: [a-z][a-z /-]*(?: \(core dumped\))?$)`)
 	// Package verdict lines, exactly as cmd/go formats them.
-	okRe      = regexp.MustCompile(`^ok  \t(\S+)\t(.+)$`)
-	failPkgRe = regexp.MustCompile(`^FAIL\t(\S+)(?:[\t ].*)?$`)
-	noFilesRe = regexp.MustCompile(`^\?   \t(\S+)\t\[no test files\]$`)
-	covOnlyRe = regexp.MustCompile(`^\t(\S+)\t+coverage: `)
+	okRe      = lazyre.New(`^ok  \t(\S+)\t(.+)$`)
+	failPkgRe = lazyre.New(`^FAIL\t(\S+)(?:[\t ].*)?$`)
+	noFilesRe = lazyre.New(`^\?   \t(\S+)\t\[no test files\]$`)
+	covOnlyRe = lazyre.New(`^\t(\S+)\t+coverage: `)
 	// A crash ends normal test output: everything up to the package's
 	// verdict is kept (folded).
-	crashRe = regexp.MustCompile(`^(?:panic: |fatal error: |SIG[A-Z]+: |\[signal |runtime: |unexpected fault address )`)
+	crashRe = lazyre.New(`^(?:panic: |fatal error: |SIG[A-Z]+: |\[signal |runtime: |unexpected fault address )`)
 	// Compiler / vet diagnostics and their "# pkg" headers.
-	diagRe     = regexp.MustCompile(`^(?:vet: )?\S*?\.(?:go|s|c|h|cc|cpp|m|mod|sum|work):\d+(?::\d+)?: \S`)
-	buildHdrRe = regexp.MustCompile(`^# (?:\[[\w.~+\-/]+\]|[\w.~+\-/]+(?: \[[\w.~+\-/]+\])?)$`)
-	exitRe     = regexp.MustCompile(`^exit status \d+$`)
+	diagRe     = lazyre.New(`^(?:vet: )?\S*?\.(?:go|s|c|h|cc|cpp|m|mod|sum|work):\d+(?::\d+)?: \S`)
+	buildHdrRe = lazyre.New(`^# (?:\[[\w.~+\-/]+\]|[\w.~+\-/]+(?: \[[\w.~+\-/]+\])?)$`)
+	exitRe     = lazyre.New(`^exit status \d+$`)
 )
 
 // Cheap prefix checks in front of the per-line regular expressions.
@@ -568,7 +568,7 @@ func parseText(lines []string) *run {
 }
 
 func verdictPkg(ln string) string {
-	for _, re := range []*regexp.Regexp{okRe, failPkgRe, noFilesRe, covOnlyRe} {
+	for _, re := range []*lazyre.Regexp{okRe, failPkgRe, noFilesRe, covOnlyRe} {
 		if m := re.FindStringSubmatch(ln); m != nil {
 			return m[1]
 		}
@@ -866,7 +866,7 @@ func nonBlank(out []outLine) int {
 }
 
 // skipLocRe is the file:line prefix of a t.Skip message.
-var skipLocRe = regexp.MustCompile(`^\S+\.go:\d+: `)
+var skipLocRe = lazyre.New(`^\S+\.go:\d+: `)
 
 // skipReason is a skipped test's first output line without its location:
 // tests skipped for the same reason are shown once.
@@ -1055,7 +1055,7 @@ func (rd *renderer) segment(s *segment) (body []string, key string, collapse boo
 }
 
 // okTimeRe splits the rest of an "ok" line into its time and the suffix.
-var okTimeRe = regexp.MustCompile(`^(?:\d+(?:\.\d+)?s|\(cached\))(.*)$`)
+var okTimeRe = lazyre.New(`^(?:\d+(?:\.\d+)?s|\(cached\))(.*)$`)
 
 // okKey returns the collapse group of a passing verdict line: "" for a
 // plain "ok pkg time", the suffix for "[no tests to run]" and for a
@@ -1230,7 +1230,7 @@ func elideOutsideRace(lines []string) []string {
 }
 
 // raceFrameRe is a frame location line of a data race report.
-var raceFrameRe = regexp.MustCompile(`^\s+\S.*\.go:\d+ \+0x[0-9a-f]+$`)
+var raceFrameRe = lazyre.New(`^\s+\S.*\.go:\d+ \+0x[0-9a-f]+$`)
 
 // tidyRace drops the +0x offsets of the frame locations inside data race
 // reports ("WARNING: DATA RACE" up to the closing "=================="),

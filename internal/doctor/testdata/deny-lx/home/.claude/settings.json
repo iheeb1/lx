@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "@ROOT@/bin/lx hook claude"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "deny": [
+      "Bash(lx:*)",
+      "Bash(git push:*)",
+      "Bash(lx git push:*)",
+      "Read(./secrets/**)"
+    ],
+    "ask": [
+      "Bash(lx git:*)",
+      "Bash(npm publish:*)"
+    ]
+  }
+}

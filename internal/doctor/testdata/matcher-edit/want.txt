@@ -1,0 +1,14 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✗ hook        the lx hook in ~/.claude/settings.json has matcher "Edit|Write", which never selects the Bash tool
+              fix: set its "matcher" to "Bash" in ~/.claude/settings.json
+- hook-binary no lx hook command to check
+- hook-run    no lx hook to run
+✓ path        your shell runs lx from $ROOT/bin/lx, this binary
+✓ rtk         no rtk hook
+✓ perms       no allow rule approves every lx command
+✓ env         LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on
+✓ settings    1 settings file valid: user
+✓ storage     runs: none stored yet ($ROOT/cache/lx/runs is created on the first condensed run)
+✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
+- activity    no lx hook installed
+lx doctor: 1 failure, 0 warnings

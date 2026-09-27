@@ -2,8 +2,8 @@ package git
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -138,10 +138,10 @@ func (f *fileDiff) bodyLines() int {
 // ---- parsing ---------------------------------------------------------------
 
 var (
-	diffHeadRe  = regexp.MustCompile(`^diff --git (.+)$`)
-	diffCCRe    = regexp.MustCompile(`^diff --(?:cc|combined) (.+)$`)
-	hunkRe      = regexp.MustCompile(`^@@ -\d+(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(?: .*)?$`)
-	hunkCCRe    = regexp.MustCompile(`^(@@@+) ((?:-\d+(?:,\d+)? )+)\+(\d+)(?:,(\d+))? @@@+(?: .*)?$`)
+	diffHeadRe  = lazyre.New(`^diff --git (.+)$`)
+	diffCCRe    = lazyre.New(`^diff --(?:cc|combined) (.+)$`)
+	hunkRe      = lazyre.New(`^@@ -\d+(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(?: .*)?$`)
+	hunkCCRe    = lazyre.New(`^(@@@+) ((?:-\d+(?:,\d+)? )+)\+(\d+)(?:,(\d+))? @@@+(?: .*)?$`)
 	extPrefixes = []string{
 		"old mode ", "new mode ", "deleted file mode ", "new file mode ", "similarity index ",
 		"dissimilarity index ", "rename from ", "rename to ", "copy from ", "copy to ", "mode ",
@@ -518,7 +518,7 @@ var lockfiles = map[string]bool{
 	"mix.lock": true, "Package.resolved": true, "deno.lock": true, "go.work.sum": true,
 }
 
-var generatedRe = regexp.MustCompile(`\.min\.(?:js|css|mjs)$|\.(?:js|css|mjs)\.map$|(?:^|/)dist/|` +
+var generatedRe = lazyre.New(`\.min\.(?:js|css|mjs)$|\.(?:js|css|mjs)\.map$|(?:^|/)dist/|` +
 	`\.pb\.go$|\.pb\.gw\.go$|_pb2(?:_grpc)?\.pyi?$|\.pb\.(?:cc|h)$|\.g\.dart$|\.freezed\.dart$|` +
 	`\.generated\.|(?:^|/)__generated__/`)
 

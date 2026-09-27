@@ -2,7 +2,7 @@ package engine
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 	"unicode/utf8"
 )
@@ -98,7 +98,7 @@ func CollapseRuns(lines []string) []string {
 	return out
 }
 
-var progressRe = regexp.MustCompile(`^\s*\d{1,3}(?:\.\d+)?%\s*(?:[|\[]|$)` +
+var progressRe = lazyre.New(`^\s*\d{1,3}(?:\.\d+)?%\s*(?:[|\[]|$)` +
 	`|\[[=#>\-. ]{8,}\]` +
 	`|[█▓▒░■□━▏▎▍▌▋▊▉]{4,}` +
 	`|\d+(?:\.\d+)?\s?[KMG]i?B\s*/\s*\d+(?:\.\d+)?\s?[KMG]i?B` +

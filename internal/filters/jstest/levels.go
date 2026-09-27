@@ -2,7 +2,7 @@ package jstest
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/tokens"
@@ -76,11 +76,11 @@ func levels(render func(level int, sh *shared) (result, bool)) (result, bool) {
 var (
 	// diffHeadRe: the header lines of jest / vitest / mocha diffs, which
 	// carry no values.
-	diffHeadRe = regexp.MustCompile(`^[-+] (?:Expected|Received|Snapshot)\b|^\+ expected - actual$|^\+ actual - expected$|^- expected \+ actual$`)
+	diffHeadRe = lazyre.New(`^[-+] (?:Expected|Received|Snapshot)\b|^\+ expected - actual$|^\+ actual - expected$|^- expected \+ actual$`)
 	// briefKeepRe: value lines of jest/vitest matchers ("Expected: 2",
 	// "Received string: …", "Snapshot: …", "thrown: …") and the matcher
 	// itself ("expect(received).toBe(expected) // Object.is equality").
-	briefKeepRe = regexp.MustCompile(`^(?:Expected|Received|Snapshot|thrown|Resolved to value|Rejected to value|Number of calls)\b|^expect\(`)
+	briefKeepRe = lazyre.New(`^(?:Expected|Received|Snapshot|thrown|Resolved to value|Rejected to value|Number of calls)\b|^expect\(`)
 )
 
 // diffChange reports a changed line of a diff ("-   \"a\": 1,", "+hello").

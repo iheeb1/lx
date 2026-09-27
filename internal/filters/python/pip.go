@@ -2,7 +2,7 @@ package python
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -56,16 +56,16 @@ func (pipInstallFilter) Match(c *engine.Context) bool {
 }
 
 var (
-	pipCollectingRe = regexp.MustCompile(`^Collecting \S`)
-	pipDownloadRe   = regexp.MustCompile(`^\s*Downloading \S+(?: \([^)]*\))?$`)
-	pipCachedRe     = regexp.MustCompile(`^\s*Using cached \S+(?: \([^)]*\))?$`)
-	pipSatisfiedRe  = regexp.MustCompile(`^Requirement already satisfied: (\S+) in .*?\(([^()]*)\)$`)
-	pipObtainRe     = regexp.MustCompile(`^(?:Obtaining|Processing) \S`)
-	pipBuildRe      = regexp.MustCompile(`^\s*(?:(?:Installing build dependencies|Getting requirements to build (?:wheel|editable)|Preparing (?:editable )?metadata \([^)]*\)|Checking if build backend supports build_editable|Building (?:editable|wheel) for \S+ \([^)]*\))(?:: (?:started|finished with status 'done')| \.\.\. done)` +
+	pipCollectingRe = lazyre.New(`^Collecting \S`)
+	pipDownloadRe   = lazyre.New(`^\s*Downloading \S+(?: \([^)]*\))?$`)
+	pipCachedRe     = lazyre.New(`^\s*Using cached \S+(?: \([^)]*\))?$`)
+	pipSatisfiedRe  = lazyre.New(`^Requirement already satisfied: (\S+) in .*?\(([^()]*)\)$`)
+	pipObtainRe     = lazyre.New(`^(?:Obtaining|Processing) \S`)
+	pipBuildRe      = lazyre.New(`^\s*(?:(?:Installing build dependencies|Getting requirements to build (?:wheel|editable)|Preparing (?:editable )?metadata \([^)]*\)|Checking if build backend supports build_editable|Building (?:editable|wheel) for \S+ \([^)]*\))(?:: (?:started|finished with status 'done')| \.\.\. done)` +
 		`|Running setup\.py (?:install|develop) for \S+(?: \.\.\. done)?|Created wheel for \S+: filename=\S+ size=\d+ sha256=[0-9a-f]+|Stored in directory: \S.*|Building wheels for collected packages: .*|Installing backend dependencies: (?:started|finished with status 'done'))$`)
-	pipUninstRe = regexp.MustCompile(`^\s*(?:Attempting uninstall: \S+|Found existing installation: \S+ \S+|Uninstalling \S+:)$`)
-	pipNoticeRe = regexp.MustCompile(`^(?:\[notice\] |WARNING: |DEPRECATION: |INFO: |You should consider upgrading via )`)
-	pipKnownRe  = regexp.MustCompile(`^(?:Collecting |Requirement already satisfied: |Successfully installed |Successfully built |Obtaining |Processing |ERROR: |Installing collected packages: |Looking in indexes: |Looking in links: |Defaulting to user installation)|^\s*(?:Downloading |Using cached )`)
+	pipUninstRe = lazyre.New(`^\s*(?:Attempting uninstall: \S+|Found existing installation: \S+ \S+|Uninstalling \S+:)$`)
+	pipNoticeRe = lazyre.New(`^(?:\[notice\] |WARNING: |DEPRECATION: |INFO: |You should consider upgrading via )`)
+	pipKnownRe  = lazyre.New(`^(?:Collecting |Requirement already satisfied: |Successfully installed |Successfully built |Obtaining |Processing |ERROR: |Installing collected packages: |Looking in indexes: |Looking in links: |Defaulting to user installation)|^\s*(?:Downloading |Using cached )`)
 )
 
 func (pipInstallFilter) Apply(c *engine.Context, text string) (string, bool) {
@@ -300,7 +300,7 @@ func (pipListFilter) Match(c *engine.Context) bool {
 	return true
 }
 
-var pipListHeadRe = regexp.MustCompile(`^Package +Version\b`)
+var pipListHeadRe = lazyre.New(`^Package +Version\b`)
 
 func (pipListFilter) Apply(c *engine.Context, text string) (string, bool) {
 	lines := strings.Split(text, "\n")
@@ -331,7 +331,7 @@ func (pipShowFilter) Match(c *engine.Context) bool {
 	return sub == "show"
 }
 
-var pipFieldRe = regexp.MustCompile(`^[A-Z][\w-]*: ?`)
+var pipFieldRe = lazyre.New(`^[A-Z][\w-]*: ?`)
 
 func (pipShowFilter) Apply(c *engine.Context, text string) (string, bool) {
 	lines := strings.Split(text, "\n")

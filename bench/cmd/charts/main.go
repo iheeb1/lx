@@ -67,6 +67,7 @@ type variant struct {
 }
 
 type h2hRow struct {
+	Excluded string  `json:"excluded"`
 	ID       string  `json:"id"`
 	Category string  `json:"category"`
 	Shell    string  `json:"shell"`
@@ -99,8 +100,14 @@ func main() {
 	if len(res.Estimator) > 0 {
 		write(*out, "estimator.svg", estimatorChart(res))
 	}
-	var h2h []h2hRow
-	if readJSON(filepath.Join(*in, "h2h.json"), &h2h) {
+	var all []h2hRow
+	if readJSON(filepath.Join(*in, "h2h.json"), &all) {
+		var h2h []h2hRow
+		for _, r := range all {
+			if r.Excluded == "" {
+				h2h = append(h2h, r)
+			}
+		}
 		write(*out, "h2h-tokens.svg", h2hTokens(h2h))
 		write(*out, "h2h-fidelity.svg", h2hFidelity(h2h))
 		write(*out, "overhead.svg", overhead(h2h))
@@ -243,8 +250,14 @@ func h2hTok(v variant) float64 {
 func h2hTokens(rows []h2hRow) string {
 	sort.Slice(rows, func(i, j int) bool { return h2hTok(rows[i].Raw) > h2hTok(rows[j].Raw) })
 	var out []DumbRow
-	for _, r := range rows[:min(18, len(rows))] {
+	for _, r := range rows {
+		if !r.Rtk.Rewritten && !r.Lx.Rewritten {
+			continue // neither tool wraps it: nothing to compare
+		}
 		out = append(out, DumbRow{Label: shortShell(r.Shell), Values: []float64{h2hTok(r.Raw), h2hTok(r.Rtk), h2hTok(r.Lx)}})
+		if len(out) == 18 {
+			break
+		}
 	}
 	return Dumbbell("Head to head on live commands",
 		"same repo, same command, run raw / through rtk / through lx · o200k tokens (log scale) · label = raw ÷ lx",
@@ -268,12 +281,12 @@ func h2hFidelity(rows []h2hRow) string {
 		}
 	}
 	return HBars("lx vs rtk: savings and what survives",
-		fmt.Sprintf("%d live commands · error lines counted on failing runs only (%s in raw output)", len(rows), compact(e)),
+		fmt.Sprintf("%d live commands · error messages counted on failing runs only (%s in the raw output)", len(rows), compact(e)),
 		[]Series{sRtk, sLx},
 		[]BarRow{
 			{Label: "tokens saved, all runs", Values: []float64{100 * (raw - rtk) / raw, 100 * (raw - lx) / raw}},
 			{Label: "tokens saved, failing runs", Values: []float64{100 * (fRaw - fRtk) / fRaw, 100 * (fRaw - fLx) / fRaw}},
-			{Label: "error lines kept", Values: []float64{100 * eRtk / e, 100 * eLx / e}},
+			{Label: "error messages kept", Values: []float64{100 * eRtk / e, 100 * eLx / e}},
 		}, 100, "%")
 }
 
@@ -284,7 +297,10 @@ func overhead(rows []h2hRow) string {
 		if !r.Rtk.Rewritten || !r.Lx.Rewritten || r.Raw.MedianMs > 2000 {
 			continue
 		}
-		out = append(out, BarRow{Label: shortShell(r.Shell), Values: []float64{
+		// The capture name tells apart runs of the same command
+		// (clean / dirty / mid-merge git status).
+		label := r.ID[strings.IndexByte(r.ID, '/')+1:]
+		out = append(out, BarRow{Label: label, Values: []float64{
 			pos(r.Rtk.MedianMs - r.Raw.MedianMs), pos(r.Lx.MedianMs - r.Raw.MedianMs)}})
 		if len(out) == 10 {
 			break
@@ -302,8 +318,8 @@ var envPrefix = regexp.MustCompile(`^(?:[A-Za-z_][A-Za-z0-9_]*=\S*\s+)+`)
 func shortShell(s string) string {
 	s = strings.ReplaceAll(s, " 2>&1", "")
 	s = envPrefix.ReplaceAllString(s, "")
-	if len(s) > 34 {
-		s = s[:33] + "…"
+	if len(s) > 30 {
+		s = s[:29] + "…"
 	}
 	return s
 }

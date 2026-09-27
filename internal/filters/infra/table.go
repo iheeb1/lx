@@ -2,7 +2,7 @@ package infra
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"sort"
 	"strings"
 )
@@ -24,8 +24,8 @@ type column struct {
 }
 
 var (
-	headerNameRe = regexp.MustCompile(`^[A-Z][A-Z0-9()/%_.-]*(?: [A-Z0-9()/%_.-]+)*$`)
-	cellSplitRe  = regexp.MustCompile(`\S+(?: \S+)*`)
+	headerNameRe = lazyre.New(`^[A-Z][A-Z0-9()/%_.-]*(?: [A-Z0-9()/%_.-]+)*$`)
+	cellSplitRe  = lazyre.New(`\S+(?: \S+)*`)
 )
 
 // isPerlSpace is \s in RE2 syntax: tab, newline, form feed, carriage

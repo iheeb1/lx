@@ -4,20 +4,14 @@ package cli
 import (
 	"bufio"
 	"encoding/json"
-	"errors"
 	"flag"
 	"fmt"
 	"io"
 	"os"
-	"regexp"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/iheeb1/lx/internal/engine"
-	"github.com/iheeb1/lx/internal/runner"
-	"github.com/iheeb1/lx/internal/tee"
-	"github.com/iheeb1/lx/internal/textutil"
 	"github.com/iheeb1/lx/internal/track"
 )
 
@@ -28,18 +22,23 @@ const usage = `lx — run a command, show your coding agent only what matters.
 
 Usage:
   lx [lx-flags] <command> [args...]   run command, print a condensed view, keep its exit code
-  lx show [id] [--grep RE] [--lines A-B] [--raw]
-                                       print the full output of a condensed run (list if no id)
+  lx show [ID|last|last~N] [--errors] [--grep RE] [-C N] [--lines A-B] [--head N] [--tail N] [--full] [--raw]
+                                       print a stored run; straight to the agent it fits the output limit
+                                       (no id: this project's recent runs; --all: every run)
   lx gain [--days N] [--top N] [--json]
                                        tokens saved so far
-  lx discover [--days N] [--json]      measure what lx would save on your real Claude Code sessions
-  lx init [--project] [--uninstall] [--dry-run] [--agent NAME]
+  lx discover [--days N] [--json] [--fidelity] [--examples]
+                                       measure what lx would save on your real Claude Code sessions
+                                       (--fidelity: whether its views kept what the agent acted on)
+  lx doctor [--json]                   check that the hook, PATH, permissions and storage are working
+  lx init [--project] [--readonly|--no-readonly] [--uninstall] [--dry-run] [--agent NAME]
                                        install the Claude Code hook (or print a snippet for NAME)
-  lx rewrite <command-string>          print the lx form of a shell command (exit 1: unchanged)
-  lx hook claude                       Claude Code PreToolUse hook (reads JSON on stdin)
+  lx rewrite [-v] <command-string>     print the lx form of a shell command (exit 1: unchanged)
+  lx hook claude [--readonly] [--prefix PATH]
+                                       Claude Code PreToolUse hook (reads JSON on stdin)
   lx pipe [--as "cmd args"] [--exit N] condense stdin as if it were cmd's output
   lx filters                           list built-in filters
-  lx version
+  lx version                           version, commit, Go version and platform (include it in bug reports)
 
 lx-flags (before the command):
   -r, --raw          run without condensing (same as LX_RAW=1)
@@ -50,6 +49,10 @@ Environment:
   LX_RAW=1           disable condensing        LX_BUDGET=N    output token budget
   LX_TEE=0           don't store full outputs  LX_TRACK=0     don't record savings
   LX_HOOK=0          make the hook a no-op     LX_TEE_DIR / LX_DATA_DIR  storage locations
+  LX_MAX_CHARS=N     the agent's output limit in characters; views and lx show fit under it
+                     (0: no limit; in Claude Code: $BASH_MAX_OUTPUT_LENGTH, else 30000)
+  LX_HEARTBEAT=30s   say "still running" and store the output so far after this long (0: off)
+  LX_PROMPT_IDLE=2s  flag a prompt nobody answers after this much silence (0: off)
 
 Everything lx removes is kept: condensed output ends with
   [lx: 1,204→38 lines (−94%) · full output: lx show 7]
@@ -66,7 +69,7 @@ func Main(args []string) int {
 		fmt.Print(usage)
 		return 0
 	case "version", "--version", "-V":
-		fmt.Println("lx", Version)
+		fmt.Println(versionString())
 		return 0
 	case "show":
 		return cmdShow(args[1:])
@@ -84,106 +87,6 @@ func Main(args []string) int {
 		return code
 	}
 	return cmdRun(args)
-}
-
-type runOpts struct {
-	raw     bool
-	budget  int
-	verbose bool
-}
-
-func parseRunFlags(args []string) (runOpts, []string, error) {
-	o := runOpts{raw: os.Getenv("LX_RAW") == "1" || os.Getenv("LX_OFF") == "1"}
-	if b, err := strconv.Atoi(os.Getenv("LX_BUDGET")); err == nil && b > 0 {
-		o.budget = b
-	}
-	i := 0
-	for ; i < len(args); i++ {
-		a := args[i]
-		switch {
-		case a == "--":
-			return o, args[i+1:], nil
-		case a == "-r" || a == "--raw":
-			o.raw = true
-		case a == "-v" || a == "--verbose":
-			o.verbose = true
-		case a == "-b" || a == "--budget":
-			if i+1 >= len(args) {
-				return o, nil, errors.New("--budget needs a value")
-			}
-			i++
-			b, err := strconv.Atoi(args[i])
-			if err != nil || b <= 0 {
-				return o, nil, fmt.Errorf("bad --budget %q", args[i])
-			}
-			o.budget = b
-		case strings.HasPrefix(a, "--budget="):
-			b, err := strconv.Atoi(strings.TrimPrefix(a, "--budget="))
-			if err != nil || b <= 0 {
-				return o, nil, fmt.Errorf("bad %s", a)
-			}
-			o.budget = b
-		case strings.HasPrefix(a, "-") && len(a) > 1:
-			return o, nil, fmt.Errorf("unknown lx flag %s (put lx flags before the command)", a)
-		default:
-			return o, args[i:], nil
-		}
-	}
-	return o, nil, nil
-}
-
-func cmdRun(args []string) int {
-	o, argv, err := parseRunFlags(args)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "lx:", err)
-		return 2
-	}
-	if len(argv) == 0 {
-		fmt.Fprint(os.Stderr, usage)
-		return 2
-	}
-	cwd, _ := os.Getwd()
-	home, _ := os.UserHomeDir()
-	c := &engine.Context{Argv: argv, Cwd: cwd, Home: home}
-	if o.raw || ShouldStream(argv) || engine.MachineReadable(c) || filterStreams(c) {
-		return runner.Passthrough(argv)
-	}
-
-	res := runner.Run(argv, os.Stdin)
-	if res.NotFound {
-		fmt.Fprintln(os.Stderr, res.Output)
-		return res.ExitCode
-	}
-	c.Exit = res.ExitCode
-	pr := engine.Process(c, res.Output, engine.Options{Budget: o.budget})
-
-	switch {
-	case pr.Filter == "passthrough":
-		if !res.Replay(os.Stdout, os.Stderr) {
-			writeOut(res.Output)
-		}
-	case !pr.Lossy:
-		writeOut(pr.Output)
-	default:
-		id := 0
-		if n, err := tee.Save(tee.Meta{Argv: argv, Cwd: cwd, Exit: res.ExitCode, Filter: pr.Filter}, res.Output); err == nil {
-			id = n
-		}
-		ids := ""
-		if id > 0 {
-			ids = strconv.Itoa(id)
-		}
-		writeOut(pr.Output + "\n" + engine.Receipt(pr, ids))
-	}
-	if o.verbose {
-		fmt.Fprintf(os.Stderr, "lx: filter=%s raw=%d out=%d saved=%.1f%% guard=%d %s\n",
-			pr.Filter, pr.RawTokens, pr.OutTokens, 100*pr.Saved(), pr.GuardAdded, pr.FilterPanic)
-	}
-	_ = track.Add(track.Record{
-		Cmd: cmdKey(argv), Filter: pr.Filter, Raw: pr.RawTokens, Out: pr.OutTokens,
-		Ms: res.Duration.Milliseconds(), Exit: res.ExitCode, Lossy: pr.Lossy,
-	})
-	return res.ExitCode
 }
 
 func writeOut(s string) {
@@ -213,83 +116,6 @@ func cmdKey(argv []string) string {
 		}
 	}
 	return name
-}
-
-func cmdShow(args []string) int {
-	fs := flag.NewFlagSet("show", flag.ContinueOnError)
-	grep := fs.String("grep", "", "only lines matching this regexp (with line numbers)")
-	lines := fs.String("lines", "", "only lines A-B (1-based, inclusive)")
-	raw := fs.Bool("raw", false, "print bytes exactly as captured (ANSI included)")
-	var pos []string
-	for len(args) > 0 {
-		if err := fs.Parse(args); err != nil {
-			return 2
-		}
-		args = fs.Args()
-		if len(args) > 0 {
-			pos = append(pos, args[0])
-			args = args[1:]
-		}
-	}
-	if len(pos) == 0 {
-		runs := tee.Recent(20)
-		if len(runs) == 0 {
-			fmt.Println("lx show: no stored outputs yet (they're stored when lx condenses a view)")
-			return 0
-		}
-		for _, m := range runs {
-			fmt.Printf("%5d  %s  exit %-3d %-12s %s\n", m.ID, m.Time.Local().Format("01-02 15:04"), m.Exit, m.Filter, strings.Join(m.Argv, " "))
-		}
-		return 0
-	}
-	id, err := strconv.Atoi(strings.TrimPrefix(pos[0], "#"))
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "lx show: bad id %q\n", pos[0])
-		return 2
-	}
-	out, _, err := tee.Load(id)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "lx show:", err)
-		return 1
-	}
-	if !*raw {
-		out = textutil.Clean(out)
-	}
-	if *grep == "" && *lines == "" {
-		writeOut(out)
-		return 0
-	}
-	var re *regexp.Regexp
-	if *grep != "" {
-		if re, err = regexp.Compile(*grep); err != nil {
-			fmt.Fprintln(os.Stderr, "lx show: bad --grep:", err)
-			return 2
-		}
-	}
-	lo, hi := 1, 1<<31-1
-	if *lines != "" {
-		a, b, ok := strings.Cut(*lines, "-")
-		lo, _ = strconv.Atoi(a)
-		if ok && b != "" {
-			hi, _ = strconv.Atoi(b)
-		} else if !ok {
-			hi = lo
-		}
-		if lo < 1 || hi < lo {
-			fmt.Fprintf(os.Stderr, "lx show: bad --lines %q\n", *lines)
-			return 2
-		}
-	}
-	w := bufio.NewWriter(os.Stdout)
-	for i, ln := range strings.Split(out, "\n") {
-		n := i + 1
-		if n < lo || n > hi || re != nil && !re.MatchString(ln) {
-			continue
-		}
-		fmt.Fprintf(w, "%6d  %s\n", n, ln)
-	}
-	w.Flush()
-	return 0
 }
 
 func cmdGain(args []string) int {
@@ -337,7 +163,7 @@ func cmdPipe(args []string) int {
 	cwd, _ := os.Getwd()
 	home, _ := os.UserHomeDir()
 	c := &engine.Context{Argv: argv, Exit: *exit, Cwd: cwd, Home: home}
-	pr := engine.Process(c, string(in), engine.Options{Budget: *budget})
+	pr := engine.Process(c, string(in), engine.Options{Budget: *budget, MaxChars: hostCharCap()})
 	out := pr.Output
 	if pr.Lossy {
 		out += "\n" + engine.Receipt(pr, "")
@@ -352,8 +178,10 @@ func cmdPipe(args []string) int {
 // filterStreams asks the matching filter whether this invocation is
 // long-running (a watcher, server, or follower) and must not be buffered.
 func filterStreams(c *engine.Context) bool {
-	if st, ok := engine.Find(c).(engine.Streamer); ok {
-		return st.Stream(c)
+	if f, fc := engine.Resolve(c); f != nil {
+		if st, ok := f.(engine.Streamer); ok {
+			return st.Stream(fc)
+		}
 	}
 	return false
 }

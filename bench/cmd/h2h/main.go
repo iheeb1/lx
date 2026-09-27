@@ -1,3 +1,5 @@
+//go:build unix
+
 // Command h2h runs real commands three ways — raw, through rtk, through lx —
 // in the repositories the corpus was captured from, and records what an
 // agent would read in each case, how many of the raw output's error lines
@@ -59,6 +61,10 @@ type Row struct {
 	Raw      Variant `json:"raw"`
 	Rtk      Variant `json:"rtk"`
 	Lx       Variant `json:"lx"`
+	// Excluded explains why a row is left out of comparisons (a tool could
+	// not start the command in this environment, which says nothing about
+	// its filtering).
+	Excluded string `json:"excluded,omitempty"`
 }
 
 // runTimeout bounds one run; a test suite that leaves a server listening
@@ -125,8 +131,12 @@ func main() {
 		}
 		o, v := run(*envFile, setup, cwd, rtkCmd, *runs)
 		row.Rtk = finish(v, o, clean, row.ErrLines, rtkOK, outDir, id, "rtk")
+		row.Excluded = launchFailure("rtk", o, rawOut)
 		o, v = run(*envFile, setup, cwd, lxCmd, *runs)
 		row.Lx = finish(v, o, clean, row.ErrLines, lxOK, outDir, id, "lx")
+		if row.Excluded == "" {
+			row.Excluded = launchFailure("lx", o, rawOut)
+		}
 		rows = append(rows, row)
 	}
 	b, _ := json.MarshalIndent(rows, "", "  ")
@@ -211,3 +221,15 @@ func finish(v Variant, out, rawClean string, errLines int, rewritten bool, dir, 
 }
 
 func countErrors(s string) int { return len(fixture.ErrorMessagesMissing(s, "")) }
+
+// launchFailure reports a tool that could not start the command at all —
+// e.g. rtk re-launching vitest through a package manager that isn't
+// installed here — as opposed to filtering its output.
+func launchFailure(tool, out, raw string) string {
+	for _, m := range []string{tool + ": Failed to run", "could not determine executable to run", tool + ": command not found"} {
+		if strings.Contains(out, m) && !strings.Contains(raw, m) {
+			return tool + " could not launch the command in this environment: " + m
+		}
+	}
+	return ""
+}

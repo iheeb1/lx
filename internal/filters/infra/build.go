@@ -2,7 +2,7 @@ package infra
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -34,23 +34,23 @@ func (dockerBuild) Match(c *engine.Context) bool {
 }
 
 var (
-	bkLineRe    = regexp.MustCompile(`^#(\d+) (.*)$`)
-	bkBracketRe = regexp.MustCompile(`^\[([^\]]+)\] `)
-	bkStatusRe  = regexp.MustCompile(`^(?:DONE [\d.]+s|CACHED|CANCELED|ERROR(?:: .*)?)$`)
-	bkOutputRe  = regexp.MustCompile(`^\d+\.\d+(?: |$)`)
-	bkStepNumRe = regexp.MustCompile(`(?:^|\s)\d+/\d+$`)
+	bkLineRe    = lazyre.New(`^#(\d+) (.*)$`)
+	bkBracketRe = lazyre.New(`^\[([^\]]+)\] `)
+	bkStatusRe  = lazyre.New(`^(?:DONE [\d.]+s|CACHED|CANCELED|ERROR(?:: .*)?)$`)
+	bkOutputRe  = lazyre.New(`^\d+\.\d+(?: |$)`)
+	bkStepNumRe = lazyre.New(`(?:^|\s)\d+/\d+$`)
 	// bkNoiseRe: progress lines of pulls, context transfers and exports.
-	bkNoiseRe = regexp.MustCompile(`^(?:sha256:[0-9a-f]+ .*|extracting sha256:.*|resolve \S+ .*|transferring \S+: .*|` +
+	bkNoiseRe = lazyre.New(`^(?:sha256:[0-9a-f]+ .*|extracting sha256:.*|resolve \S+ .*|transferring \S+: .*|` +
 		`exporting (?:layers|manifest|config|attestation manifest|manifest list|cache|to \S+ .*)\b.*|preparing layers for inline cache.*|` +
 		`pushing .*|unpacking to .*|writing layer .*|loading layer .*|copying .*|computing cache key.*|done$|` +
 		`writing cache image manifest .*|preparing build cache for export.*|sending tarball.*|importing to docker.*|` +
 		`resolving provenance for metadata file.*|\[\d+/\d+\] .*)`)
-	bkKeepRe = regexp.MustCompile(`^(?:naming to |writing image )`)
+	bkKeepRe = lazyre.New(`^(?:naming to |writing image )`)
 	// Legacy builder.
-	legacyStepRe    = regexp.MustCompile(`^Step \d+/\d+ : `)
-	legacyStepNumRe = regexp.MustCompile(`^Step (\d+)/(\d+) : `)
-	legacyNoiseRe   = regexp.MustCompile(`^ ---> (?:[0-9a-f]{12}$|Running in [0-9a-f]{12}$|Removed intermediate container [0-9a-f]{12}$)|^Removing intermediate container [0-9a-f]{12}$|^Sending build context to Docker daemon`)
-	legacyHintRe    = regexp.MustCompile(`^ {2,}(?:Install the buildx component|https://docs\.docker\.com/go/buildx/)`)
+	legacyStepRe    = lazyre.New(`^Step \d+/\d+ : `)
+	legacyStepNumRe = lazyre.New(`^Step (\d+)/(\d+) : `)
+	legacyNoiseRe   = lazyre.New(`^ ---> (?:[0-9a-f]{12}$|Running in [0-9a-f]{12}$|Removed intermediate container [0-9a-f]{12}$)|^Removing intermediate container [0-9a-f]{12}$|^Sending build context to Docker daemon`)
+	legacyHintRe    = lazyre.New(`^ {2,}(?:Install the buildx component|https://docs\.docker\.com/go/buildx/)`)
 )
 
 const (
@@ -302,9 +302,9 @@ const (
 )
 
 var (
-	similarLineRe = regexp.MustCompile(`^\s*… (\d+) similar lines …$`)
-	runLineRe     = regexp.MustCompile(` \[×(\d+)\]$`)
-	gapNoteRe     = regexp.MustCompile(`^\[lx: (\d+) lines? of this step's output not shown\]$`)
+	similarLineRe = lazyre.New(`^\s*… (\d+) similar lines …$`)
+	runLineRe     = lazyre.New(` \[×(\d+)\]$`)
+	gapNoteRe     = lazyre.New(`^\[lx: (\d+) lines? of this step's output not shown\]$`)
 )
 
 func gapNote(n int) string {
@@ -315,7 +315,7 @@ func gapNote(n int) string {
 // "… N similar lines …" (engine.CollapseSimilar), "x [×N]"
 // (engine.CollapseRuns) and a gap note, else 1.
 func foldedWeight(ln string) int {
-	for _, re := range []*regexp.Regexp{similarLineRe, gapNoteRe, runLineRe} {
+	for _, re := range []*lazyre.Regexp{similarLineRe, gapNoteRe, runLineRe} {
 		if m := re.FindStringSubmatch(ln); m != nil {
 			if n, err := strconv.Atoi(m[1]); err == nil && n > 0 {
 				return n

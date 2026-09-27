@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -48,8 +48,8 @@ func (commitFilter) Match(c *engine.Context) bool {
 }
 
 var (
-	commitHeadRe = regexp.MustCompile(`^\[\S+(?: \(root-commit\))? [0-9a-f]{7,}\] `)
-	hookOKRe     = regexp.MustCompile(`^(.+?)\.{3,}(?:\(no files to check\))?(Passed|Skipped)$`)
+	commitHeadRe = lazyre.New(`^\[\S+(?: \(root-commit\))? [0-9a-f]{7,}\] `)
+	hookOKRe     = lazyre.New(`^(.+?)\.{3,}(?:\(no files to check\))?(Passed|Skipped)$`)
 )
 
 func (commitFilter) Apply(c *engine.Context, out string) (string, bool) {
@@ -178,7 +178,7 @@ func (remoteFilter) Match(c *engine.Context) bool {
 	return isGit(c) && c.Sub() == "remote" && hasArg(c, "-v", "--verbose") && len(positionals(c)) == 0
 }
 
-var remoteLineRe = regexp.MustCompile(`^(\S+)\t(\S+) \((fetch|push)\)$`)
+var remoteLineRe = lazyre.New(`^(\S+)\t(\S+) \((fetch|push)\)$`)
 
 func (remoteFilter) Apply(c *engine.Context, out string) (string, bool) {
 	lines := strings.Split(out, "\n")

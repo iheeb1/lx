@@ -2,8 +2,10 @@ package hook
 
 import (
 	"path/filepath"
-	"regexp"
 	"strings"
+
+	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 // Supported reports whether lx should wrap argv (argv[0] may be a path).
@@ -14,8 +16,19 @@ import (
 // (watch, follow, interactive, dev servers), or when it runs arbitrary
 // program output (go run, python script.py). Flags are judged per tool:
 // -f means "follow" to docker logs but "file" to docker compose and make.
+//
+// A command the table does not know may be a transparent wrapper (env,
+// timeout, nice, uv run, poetry run, uvx, pipx run…): engine.Peel finds the
+// command inside and that command's rule decides. The rewrite still goes in
+// front of the whole command line (lx uv run pytest): lx runs it as written.
 func Supported(argv []string) bool {
-	if len(argv) == 0 {
+	return supported(argv, 0)
+}
+
+func supported(argv []string, depth int) bool {
+	// Help and version text, and output meant for programs (which lx
+	// passes through byte for byte), gain nothing from a rewrite.
+	if len(argv) == 0 || has(argv[1:], "--help", "--version") || engine.MachineReadable(&engine.Context{Argv: argv}) {
 		return false
 	}
 	name := filepath.Base(argv[0])
@@ -28,13 +41,65 @@ func Supported(argv []string) bool {
 		return pythonOK(args)
 	case rePip.MatchString(name):
 		return pipOK(args)
+	case reGoVersion.MatchString(name):
+		return goOK(args)
+	}
+	if depth == 0 && argv[0] == "command" {
+		// lx goes in front of this word and must exec it, but `command` is
+		// a shell builtin: Debian, Ubuntu and Alpine have no command
+		// executable, so `lx command go test` would fail with 127. (An
+		// unquoted `command go test` never gets here: the rewriter peels
+		// it and splices lx after it. `\command` and "command" do.)
+		return false
+	}
+	if depth < engine.MaxPeel {
+		if inner, _ := engine.Peel(argv); inner != nil {
+			if lxOff(argv[:len(argv)-len(inner)]) {
+				return false
+			}
+			return supported(inner, depth+1)
+		}
 	}
 	return false
 }
 
+// lxOff reports an LX_RAW or LX_OFF assignment among a peeled wrapper's
+// words (`env -u X LX_RAW=1 go test`): the user asked for the raw command,
+// as the rewriter's own peeling honors for `LX_RAW=1 go test`.
+func lxOff(words []string) bool {
+	for _, w := range words {
+		name, val, ok := strings.Cut(w, "=")
+		if ok && (name == "LX_RAW" || name == "LX_OFF") && val != "" && val != "0" {
+			return true
+		}
+	}
+	return false
+}
+
+// wrappedTexts returns, as text, the commands engine.Peel finds inside argv,
+// one per wrapper layer, outermost first (at most engine.MaxPeel): for
+// `uv run env -u X git push` that is `env -u X git push` and `git push`.
+// Deny and ask rules are matched against them too: the host's own rules
+// see only `lx uv run …`, and Supported looks through these wrappers.
+func wrappedTexts(argv []string) []string {
+	var out []string
+	for range engine.MaxPeel {
+		inner, _ := engine.Peel(argv)
+		if inner == nil {
+			break
+		}
+		out = append(out, strings.Join(inner, " "))
+		argv = inner
+	}
+	return out
+}
+
 var (
-	rePython = regexp.MustCompile(`^python(\d+(\.\d+)?)?$`)
-	rePip    = regexp.MustCompile(`^pip(\d+(\.\d+)?)?$`)
+	rePython = lazyre.New(`^python(\d+(\.\d+)?)?$`)
+	rePip    = lazyre.New(`^pip(\d+(\.\d+)?)?$`)
+	// reGoVersion: golang.org/dl toolchains (go1.22.3, go1.23rc1), the
+	// names the go filters accept.
+	reGoVersion = lazyre.New(`^go1\.\d+(?:\.\d+)?(?:rc\d+|beta\d+)?$`)
 )
 
 type rule func(args []string) bool
@@ -46,6 +111,7 @@ func init() {
 	tools = map[string]rule{
 		"git":           gitOK,
 		"go":            goOK,
+		"gotip":         goOK,
 		"cargo":         cargoOK,
 		"npm":           func(a []string) bool { return pkgOK("npm", a) },
 		"pnpm":          func(a []string) bool { return pkgOK("pnpm", a) },
@@ -57,6 +123,8 @@ func init() {
 		"vitest":        vitestOK,
 		"mocha":         mochaOK,
 		"tsc":           tscOK,
+		"vue-tsc":       tscOK,
+		"tsgo":          tscOK,
 		"eslint":        eslintOK,
 		"prettier":      prettierOK,
 		"playwright":    func(a []string) bool { return firstPos(a, nil) == "test" && playwrightOK(a) },
@@ -69,12 +137,16 @@ func init() {
 		"golangci-lint": golangciOK,
 		"make":          makeOK,
 		"gmake":         makeOK,
+		"ninja":         ninjaOK,
+		"cmake":         cmakeOK,
 		"gradle":        gradleOK,
 		"gradlew":       gradleOK,
 		"mvn":           mvnOK,
 		"mvnw":          mvnOK,
-		"ls":            always,
+		"ls":            func(a []string) bool { return !has(a, "--zero", "--dired", "-D") },
 		"find":          findOK,
+		"fd":            fdOK,
+		"fdfind":        fdOK,
 		"grep":          grepOK,
 		"egrep":         grepOK,
 		"fgrep":         grepOK,
@@ -231,7 +303,8 @@ func hasWatch(args []string) bool {
 
 var gitSubs = set("status", "log", "diff", "show", "push", "pull", "fetch", "clone",
 	"branch", "merge", "rebase", "commit", "stash", "blame", "reflog", "cherry-pick",
-	"tag", "remote")
+	"tag", "remote", "grep", "shortlog", "worktree", "ls-remote", "submodule", "cherry",
+	"show-branch")
 
 var gitGlobalValue = set("-C", "-c", "--git-dir", "--work-tree", "--namespace", "--super-prefix", "--config-env")
 
@@ -278,11 +351,33 @@ func gitOK(args []string) bool {
 	case "commit":
 		return !has(rest, "--interactive", "-p", "--patch") && !shortFlag(rest, "p", "mFcCt")
 	case "stash":
-		return !has(rest, "-p", "--patch")
+		// git stash -p (push --patch) is interactive; stash show -p is a
+		// diff. show must be the first word: in `git stash -p show` an
+		// option comes first, so git runs push -p with "show" as a path.
+		return len(rest) > 0 && rest[0] == "show" || !has(rest, "-p", "--patch")
 	case "blame":
 		return !has(rest, "-p", "--incremental")
+	case "grep":
+		return gitGrepOK(rest)
+	case "worktree":
+		return firstPos(rest, nil) == "list"
+	case "submodule":
+		return oneOf(firstPos(rest, nil), "", "status", "summary")
 	}
 	return true
+}
+
+// gitGrepOK accepts the git grep forms the search filter renders: not
+// -z/--null (gitMachine), -q, -O/--open-files-in-pager, and none of the
+// other flags that reshape its output (counts, file lists, headings,
+// function lines, columns).
+func gitGrepOK(args []string) bool {
+	if has(args, "--quiet", "--open-files-in-pager", "--count", "--files-with-matches", "--name-only",
+		"--files-without-match", "--null", "--heading", "--break", "--show-function", "--column",
+		"--function-context") {
+		return false
+	}
+	return !shortFlag(args, "clLqzOp", "ABCefm")
 }
 
 func gitMachine(args []string) bool {
@@ -306,18 +401,43 @@ func gitMachine(args []string) bool {
 
 // ---- go / cargo ----
 
-var goModOK = set("tidy", "download", "verify", "why", "vendor", "init")
+var goModOK = set("tidy", "download", "verify", "vendor", "init")
 
+// goOK mirrors the go filters: benchmarks, fuzzing, test listings and -x/-n
+// command traces are output the agent asked for as it is.
 func goOK(args []string) bool {
 	sub, rest := posAt(args, set("-C"))
 	if hasPrefix(args, "-json", "--json") {
 		return false
 	}
 	switch sub {
-	case "test", "build", "vet", "get", "install":
-		return true
+	case "test":
+		return !goFlag(rest, "bench", "fuzz", "list", "x", "n", "h", "help")
+	case "build", "vet", "install":
+		return !goFlag(rest, "x", "n", "h", "help")
+	case "get":
+		return !goFlag(rest, "h", "help")
 	case "mod":
 		return goModOK[firstPos(rest, nil)]
+	}
+	return false
+}
+
+// goFlag reports whether a go flag is set (-name, --name, -name=v with v
+// not "false", also as -test.name), stopping at -args.
+func goFlag(args []string, names ...string) bool {
+	for _, a := range args {
+		if a == "-args" || a == "--args" || a == "--" {
+			return false
+		}
+		if !strings.HasPrefix(a, "-") {
+			continue
+		}
+		f, val, _ := strings.Cut(strings.TrimLeft(a, "-"), "=")
+		f = strings.TrimPrefix(f, "test.")
+		if val != "false" && oneOf(f, names...) {
+			return true
+		}
 	}
 	return false
 }
@@ -330,6 +450,9 @@ func cargoOK(args []string) bool {
 		return false
 	}
 	sub := firstPos(args, set("--color", "--config", "-Z", "-C", "--manifest-path"))
+	if oneOf(sub, "test", "t") && has(args, "--list", "--no-run") {
+		return false // test names or nothing: not a test run
+	}
 	return oneOf(sub, "build", "b", "test", "t", "check", "c", "clippy", "install", "update", "fetch")
 }
 
@@ -365,7 +488,7 @@ func pkgOK(name string, args []string) bool {
 	return false
 }
 
-var scriptSplit = regexp.MustCompile(`[^a-z0-9]+`)
+var scriptSplit = lazyre.New(`[^a-z0-9]+`)
 
 // scriptOK: package scripts named for one-shot checks (test, build, lint,
 // typecheck, check, compile — "test:unit", "type-check", "build:prod"), never
@@ -413,26 +536,29 @@ func execToolOK(args []string) bool {
 }
 
 func jestOK(a []string) bool {
-	return !hasWatch(a) && !has(a, "-w", "--json", "--listTests", "--showConfig")
+	return !hasWatch(a) && !has(a, "-w", "--json", "--listTests", "--showConfig", "-v", "-h", "--init", "--clearCache")
 }
 
 func vitestOK(a []string) bool {
-	if oneOf(firstPos(a, nil), "watch", "dev") || hasWatch(a) || has(a, "-w", "--ui", "--standalone") {
+	if oneOf(firstPos(a, nil), "watch", "dev", "list", "bench", "init") || hasWatch(a) ||
+		has(a, "-w", "--ui", "--standalone", "-v", "-h") {
 		return false
 	}
 	return !anyValue(optValues(a, "--reporter", ""), isJSONish)
 }
 
 func mochaOK(a []string) bool {
-	return !hasWatch(a) && !has(a, "-w") && !anyValue(optValues(a, "--reporter", "-R"), isJSONish)
+	return !hasWatch(a) && !has(a, "-w", "-V", "-h", "--list-files", "--list-reporters", "--list-interfaces", "--dry-run") &&
+		!anyValue(optValues(a, "--reporter", "-R"), isJSONish)
 }
 
 func tscOK(a []string) bool {
-	return !hasWatch(a) && !has(a, "-w", "--showConfig", "--listFilesOnly")
+	return !hasWatch(a) && !has(a, "-w", "-v", "-h", "--all", "--init", "--showConfig", "--listFilesOnly", "--listFiles",
+		"--listEmittedFiles", "--explainFiles", "--traceResolution", "--generateTrace", "--extendedDiagnostics", "--diagnostics")
 }
 
 func eslintOK(a []string) bool {
-	if has(a, "--print-config", "--init", "--inspect-config", "--mcp") {
+	if has(a, "--print-config", "--init", "--inspect-config", "--mcp", "--env-info", "-v", "-h", "-o", "--output-file") {
 		return false
 	}
 	return !anyValue(optValues(a, "--format", "-f"), func(v string) bool { return v != "stylish" })
@@ -453,7 +579,10 @@ func isJSONish(v string) bool { return strings.Contains(v, "json") }
 
 func pytestOK(a []string) bool {
 	return !has(a, "--pdb", "--trace", "--pdbcls", "-f", "--looponfail") &&
-		!hasPrefix(a, "--pdbcls=")
+		!hasPrefix(a, "--pdbcls=") &&
+		// Listings and help are not test reports (the pytest filter declines them).
+		!has(a, "--co", "--collect-only", "--collectonly", "-V", "-h", "--fixtures", "--funcargs",
+			"--fixtures-per-test", "--markers", "--trace-config", "--setup-plan")
 }
 
 func pythonOK(args []string) bool {
@@ -474,6 +603,8 @@ func pythonOK(args []string) bool {
 			return false // -c code, a script, or stdin: arbitrary output
 		case strings.ContainsAny(a[1:], "cm"):
 			return false // clustered -uc / -um forms: bail
+		case a[1] != '-' && strings.IndexByte(a[1:], 'i') >= 0:
+			return false // -i: an interactive prompt once the module is done
 		default:
 			i++
 		}
@@ -499,7 +630,7 @@ func pipOK(args []string) bool {
 	sub, rest := posAt(args, set("--proxy", "--python", "--log", "--cache-dir", "--timeout", "--retries"))
 	switch sub {
 	case "install":
-		return !has(rest, "--report")
+		return !has(rest, "--report", "--dry-run", "-h")
 	case "list":
 		return !has(rest, "--format", "--json")
 	}
@@ -507,7 +638,7 @@ func pipOK(args []string) bool {
 }
 
 func mypyOK(a []string) bool {
-	if len(optValues(a, "--output", "-O")) > 0 {
+	if len(optValues(a, "--output", "-O")) > 0 || has(a, "-V", "-h") {
 		return false
 	}
 	return !has(a, "--install-types") || has(a, "--non-interactive")
@@ -515,7 +646,7 @@ func mypyOK(a []string) bool {
 
 func ruffOK(a []string) bool {
 	sub, rest := posAt(a, set("--config"))
-	if sub != "check" || hasWatch(rest) || has(rest, "-w") {
+	if sub != "check" || hasWatch(rest) || has(rest, "-w", "-h", "--diff", "--show-settings", "--show-files", "--statistics") {
 		return false
 	}
 	for _, v := range append(optValues(rest, "--output-format", ""), optValues(rest, "--format", "")...) {
@@ -574,7 +705,10 @@ func longRunning(name string) bool {
 }
 
 func makeOK(args []string) bool {
-	if has(args, "-p", "--print-data-base") {
+	// Dry runs print the commands (they are the content); -p/-q/-d/-v/-h
+	// print data, answers or help. The make filter declines them too.
+	if has(args, "--just-print", "--dry-run", "--recon", "--print-data-base", "--question", "--debug", "--trace") ||
+		shortFlag(args, "npqdvh", "CfIoWjlEO") {
 		return false
 	}
 	for i := 0; i < len(args); i++ {
@@ -596,12 +730,69 @@ func makeOK(args []string) bool {
 	return true
 }
 
+var ninjaValueFlags = set("-C", "-f", "-j", "-k", "-l", "-d", "-w")
+
+// ninjaOK: not dry runs, help or tools (-t), and, as for make, no target
+// named like a server or watcher (a custom `run` or `serve` target).
+func ninjaOK(args []string) bool {
+	if has(args, "-n", "-h", "--version") || hasPrefix(args, "-t") {
+		return false
+	}
+	for i := 0; i < len(args); i++ {
+		switch a := args[i]; {
+		case ninjaValueFlags[a]:
+			i++
+		case strings.HasPrefix(a, "-"):
+		default:
+			if longRunning(a) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+// cmakeOK: only `cmake --build`, with no --target named like a server or
+// watcher (--target takes one or more names; after --, words go to the
+// native build tool, whose targets are judged too).
+func cmakeOK(args []string) bool {
+	if !has(args, "--build") {
+		return false
+	}
+	target := false
+	for i, a := range args {
+		switch {
+		case a == "--":
+			return makeOK(args[i+1:])
+		case a == "--target" || a == "-t":
+			target = true
+		case strings.HasPrefix(a, "--target="):
+			if longRunning(a[len("--target="):]) {
+				return false
+			}
+			target = false
+		case strings.HasPrefix(a, "-"):
+			target = false
+		case target && longRunning(a):
+			return false
+		}
+	}
+	return true
+}
+
 var gradleValueFlags = set("-p", "--project-dir", "-b", "--build-file", "-c", "--settings-file",
 	"-x", "--exclude-task", "-I", "--init-script", "-g", "--gradle-user-home", "--console", "-D", "-P")
 
 func gradleOK(args []string) bool {
-	if has(args, "--continuous", "-t", "--scan", "--debug-jvm") {
+	// Task and dependency reports are data; the gradle filter declines them.
+	if has(args, "--continuous", "-t", "--scan", "--debug-jvm", "tasks", "dependencies", "dependencyInsight",
+		"properties", "projects", "help", "-h", "-v", "--debug", "-d", "--console=rich", "--console=verbose") {
 		return false
+	}
+	for _, a := range args {
+		if strings.HasSuffix(a, ":dependencies") || strings.HasSuffix(a, ":tasks") {
+			return false
+		}
 	}
 	for i := 0; i < len(args); i++ {
 		a := args[i]
@@ -623,6 +814,16 @@ var mvnValueFlags = set("-f", "--file", "-pl", "--projects", "-rf", "--resume-fr
 	"-gs", "--global-settings", "-T", "--threads", "-P", "--activate-profiles", "-D", "-l", "--log-file")
 
 func mvnOK(args []string) bool {
+	if has(args, "-v", "-h", "-X", "--debug") {
+		return false
+	}
+	for _, a := range args {
+		// Dependency trees and help goals print data (the maven filter declines them).
+		if strings.HasPrefix(a, "dependency:tree") || strings.HasPrefix(a, "dependency:list") ||
+			strings.HasPrefix(a, "help:") || strings.HasPrefix(a, "versions:display") {
+			return false
+		}
+	}
 	for i := 0; i < len(args); i++ {
 		a := args[i]
 		switch {
@@ -644,32 +845,54 @@ func mvnOK(args []string) bool {
 // ---- file listing and search ----
 
 func findOK(a []string) bool {
-	return !has(a, "-exec", "-execdir", "-ok", "-okdir", "-delete", "-print0",
+	return !has(a, "-exec", "-execdir", "-ok", "-okdir", "-delete", "-print0", "-printf", "-ls",
 		"-fprint", "-fprint0", "-fprintf", "-fls")
 }
 
+// fdOK declines exec, long listings, NUL output and custom formats.
+func fdOK(a []string) bool {
+	return !has(a, "-x", "-X", "--exec-batch", "-l", "--list-details", "-0", "--print0", "--format", "-h", "-V",
+		"--gen-completions") && !hasPrefix(a, "--exec")
+}
+
+// grepOK and rgOK decline the flags that make the search filter bail:
+// counts, file lists, quiet, NUL output, byte offsets, headings, stats.
 func grepOK(a []string) bool {
 	if has(a, "--files-with-matches", "--files-without-match", "--count", "--quiet", "--silent",
-		"--null", "--null-data", "--json") {
+		"--null", "--null-data", "--json", "--byte-offset", "--initial-tab", "--unix-byte-offsets") {
 		return false
 	}
-	return !shortFlag(a, "lLcqzZ", "efmABCdD")
+	return !shortFlag(a, "lLcqzZbTuV", "efmABCdD")
 }
 
 func rgOK(a []string) bool {
 	if has(a, "--files-with-matches", "--files-without-match", "--count", "--count-matches",
-		"--quiet", "--json", "--null", "--null-data", "--search-zip") {
+		"--quiet", "--json", "--null", "--null-data", "--search-zip", "--byte-offset", "--heading", "--pretty",
+		"--stats", "--type-list", "--debug", "--trace", "--generate", "--pcre2-version",
+		"--field-match-separator", "--field-context-separator", "--passthru", "--passthrough") {
 		return false
 	}
-	return !shortFlag(a, "lcq0z", "ABCefgjmMrtTEd")
+	return !shortFlag(a, "lcq0zbphV", "ABCefgjmMrtTEd")
 }
 
+// treeOK declines what the tree filter does: JSON/XML/HTML, metadata
+// columns (sizes, permissions, dates), no indentation, output to a file.
 func treeOK(a []string) bool {
-	return !has(a, "-J", "-X") && !shortFlag(a, "JX", "LPIoHT")
+	for _, x := range a {
+		switch {
+		case strings.HasPrefix(x, "--"):
+			if has([]string{x}, "--du", "--inodes", "--device", "--fromfile", "--info", "--hyperlink", "--charset") {
+				return false
+			}
+		case strings.HasPrefix(x, "-") && strings.ContainsAny(x[1:], "JXHpugshDiQNqoRT"):
+			return false
+		}
+	}
+	return true
 }
 
 func duOK(a []string) bool {
-	return !has(a, "--null") && !shortFlag(a, "0", "BdtX")
+	return !has(a, "--null", "--time", "--inodes") && !shortFlag(a, "0", "BdtX")
 }
 
 // ---- containers and clusters ----
@@ -684,7 +907,7 @@ func dockerOK(args []string) bool {
 	sub, rest := posAt(args, dockerGlobalValue)
 	switch sub {
 	case "ps", "images":
-		return !hasPrefix(rest, "--format")
+		return !hasPrefix(rest, "--format") && !dockerQuiet(rest)
 	case "logs":
 		return dockerLogsOK(rest)
 	case "build":
@@ -697,17 +920,28 @@ func dockerOK(args []string) bool {
 		return firstPos(rest, set("--builder")) == "build"
 	case "image":
 		s2, r2 := posAt(rest, nil)
-		return oneOf(s2, "ls", "list", "pull", "build") && !hasPrefix(r2, "--format")
+		switch s2 {
+		case "ls", "list":
+			return !hasPrefix(r2, "--format") && !dockerQuiet(r2)
+		case "pull", "build":
+			return true
+		}
+		return false
 	case "container":
 		s2, r2 := posAt(rest, nil)
 		switch s2 {
 		case "ls", "list", "ps":
-			return !hasPrefix(r2, "--format")
+			return !hasPrefix(r2, "--format") && !dockerQuiet(r2)
 		case "logs":
 			return dockerLogsOK(r2)
 		}
 	}
 	return false
+}
+
+// dockerQuiet: -q / --quiet / -aq print bare IDs, which scripts consume.
+func dockerQuiet(a []string) bool {
+	return has(a, "-q", "--quiet") || shortFlag(a, "q", "fn")
 }
 
 func dockerLogsOK(a []string) bool {
@@ -721,7 +955,7 @@ func composeOK(args []string) bool {
 	sub, rest := posAt(args, composeGlobalValue)
 	switch sub {
 	case "ps":
-		return !hasPrefix(rest, "--format")
+		return !hasPrefix(rest, "--format") && !dockerQuiet(rest)
 	case "logs":
 		return !has(rest, "-f", "--follow") && !shortFlag(rest, "f", "n")
 	case "build", "pull":
@@ -757,7 +991,8 @@ func kubectlOK(args []string) bool {
 }
 
 func journalctlOK(a []string) bool {
-	if has(a, "-f", "--follow") || shortFlag(a, "f", "unptoSUDMgFbic") {
+	// -F/--field lists a field's values: lx streams it (cli.ShouldStream).
+	if has(a, "-f", "--follow", "-F", "--field") || shortFlag(a, "f", "unptoSUDMgFbic") {
 		return false
 	}
 	return !anyValue(optValues(a, "--output", "-o"), func(v string) bool {

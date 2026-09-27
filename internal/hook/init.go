@@ -2,6 +2,7 @@ package hook
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,8 +11,10 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"strings"
+	"time"
+
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 // InitOptions configure InitClaude.
@@ -22,7 +25,24 @@ type InitOptions struct {
 	Uninstall bool
 	DryRun    bool      // print the resulting settings.json instead of writing it
 	Out       io.Writer // messages (nil = discard)
+
+	// ReadOnly writes `--readonly`: read-only commands are approved as
+	// Claude Code approves them without lx. An existing --readonly is kept
+	// on reinstall unless NoReadOnly is set.
+	ReadOnly   bool
+	NoReadOnly bool
+	// Prefix, when set, is written as `--prefix <path>`: rewritten commands
+	// call that path instead of a bare lx.
+	Prefix string
+	// Probe looks lx up on the PATH of the shell the agent runs commands in
+	// (ProbeShellLx). When Prefix is empty and the probe fails or finds a
+	// different file than LxPath, --prefix LxPath is written. nil: no probe.
+	Probe func() (string, error)
 }
+
+// ReadOnlyTip is printed after an install without --readonly.
+const ReadOnlyTip = "tip: lx init --readonly lets read-only commands (git status/diff/log, ls, find, grep, rg, tree, du) " +
+	"run without a prompt, as they do without lx"
 
 // InitClaude installs (or removes) lx's PreToolUse hook in a Claude Code
 // settings.json. It edits only its own hook entry: every other key, hook and
@@ -68,6 +88,7 @@ func InitClaude(o InitOptions) error {
 
 	var changed bool
 	var msg string
+	readOnly := false
 	if o.Uninstall {
 		changed, err = uninstallHook(root)
 		msg = "lx: no lx hook found in " + path
@@ -79,8 +100,23 @@ func InitClaude(o InitOptions) error {
 		if lx, err = filepath.Abs(lx); err != nil {
 			return err
 		}
+		readOnly = o.ReadOnly || (!o.NoReadOnly && installedReadOnly(root))
+		prefix := o.Prefix
+		if prefix == "" && o.Probe != nil {
+			found, perr := o.Probe()
+			var note string
+			prefix, note = prefixFor(lx, found, perr)
+			if note != "" {
+				fmt.Fprintln(out, note)
+			}
+		}
+		if prefix != "" {
+			if prefix, err = filepath.Abs(prefix); err != nil {
+				return err
+			}
+		}
 		var warn string
-		changed, warn, err = installHook(root, shellQuote(lx)+" hook claude")
+		changed, warn, err = installHook(root, hookCommand(lx, readOnly, prefix))
 		if warn != "" {
 			fmt.Fprintln(out, warn)
 		}
@@ -89,8 +125,14 @@ func InitClaude(o InitOptions) error {
 	if err != nil {
 		return fmt.Errorf("%s: %v", path, err)
 	}
+	tip := func() {
+		if !o.Uninstall && !readOnly {
+			fmt.Fprintln(out, ReadOnlyTip)
+		}
+	}
 	if !changed {
 		fmt.Fprintln(out, msg)
+		tip()
 		return nil
 	}
 
@@ -132,7 +174,120 @@ func InitClaude(o InitOptions) error {
 	if existed {
 		fmt.Fprintf(out, "    previous version saved as %s.bak\n", path)
 	}
+	tip()
 	return nil
+}
+
+// hookCommand is the settings.json command for lx's Claude Code hook.
+func hookCommand(lx string, readOnly bool, prefix string) string {
+	cmd := shellQuote(lx) + " hook claude"
+	if readOnly {
+		cmd += " --readonly"
+	}
+	if prefix != "" {
+		cmd += " --prefix " + shellQuote(prefix)
+	}
+	return cmd
+}
+
+// prefixFor decides --prefix from a probe of the agent's shell: none when
+// the shell's lx is this binary, else this binary's path, with a note
+// saying why.
+func prefixFor(lx, found string, probeErr error) (prefix, note string) {
+	switch {
+	case filepath.Base(lx) != "lx":
+		// The hook ignores a --prefix not named lx (deny checks recognize lx
+		// by name) and rewrites with a plain lx: say so, don't write one.
+		note := "lx: this binary is named " + filepath.Base(lx) + ", not lx; rewritten commands call plain lx, "
+		switch {
+		case probeErr != nil:
+			note += fmt.Sprintf("and lx could not check your shell's PATH (%v)", probeErr)
+		case found == "":
+			note += "which is not on your shell's PATH: they will fail until it is"
+		default:
+			note += "which your shell finds at " + found
+		}
+		return "", note
+	case probeErr != nil:
+		return lx, fmt.Sprintf("lx: could not check your shell's PATH (%v); rewritten commands will call %s directly", probeErr, lx)
+	case found == "":
+		return lx, fmt.Sprintf("lx: lx is not on your shell's PATH; rewritten commands will call %s directly. "+
+			"To use plain lx: export PATH=%s:$PATH", lx, homeVar(filepath.Dir(lx)))
+	case !sameFile(found, lx):
+		return lx, fmt.Sprintf("lx: your shell's lx is %s, not this binary; rewritten commands will call %s directly", found, lx)
+	}
+	return "", ""
+}
+
+// homeVar writes dir with a leading $HOME when it is under the home directory.
+func homeVar(dir string) string {
+	home, err := os.UserHomeDir()
+	if err == nil && home != "" && home != "/" {
+		home = filepath.Clean(home)
+		if dir == home {
+			return "$HOME"
+		}
+		if strings.HasPrefix(dir, home+"/") {
+			return "$HOME" + dir[len(home):]
+		}
+	}
+	return shellQuote(dir)
+}
+
+// ProbeShellLx asks the user's login shell where lx is, the way the agent's
+// Bash tool will find it: `$SHELL -lic 'command -v lx'` (or `/bin/sh -lc`
+// when shell is ""), with stdin from /dev/null, in its own session so it
+// cannot touch the terminal, killed after timeout. It returns the last
+// output line that is an absolute path, or "" when lx is not found (an
+// alias or function named lx counts as not found: a rewrite must reach the
+// binary).
+func ProbeShellLx(shell string, timeout time.Duration) (string, error) {
+	args := []string{"-lic", "command -v lx"}
+	if shell == "" {
+		shell, args = "/bin/sh", []string{"-lc", "command -v lx"}
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, shell, args...)
+	var out bytes.Buffer
+	cmd.Stdout = &capWriter{b: &out, max: 64 << 10}
+	cmd.WaitDelay = 500 * time.Millisecond
+	detach(cmd)
+	err := cmd.Run()
+	if err != nil && ctx.Err() == context.DeadlineExceeded {
+		return "", fmt.Errorf("%s did not answer within %v", filepath.Base(shell), timeout)
+	}
+	var last string
+	for _, line := range strings.Split(out.String(), "\n") {
+		if line = strings.TrimSpace(line); strings.HasPrefix(line, "/") {
+			last = line
+		}
+	}
+	if last != "" {
+		return last, nil
+	}
+	var exit *exec.ExitError
+	if err != nil && !errors.As(err, &exit) {
+		return "", err // the shell could not be started
+	}
+	return "", nil
+}
+
+// capWriter keeps at most max bytes and discards the rest.
+type capWriter struct {
+	b   *bytes.Buffer
+	max int
+}
+
+func (w *capWriter) Write(p []byte) (int, error) {
+	if room := w.max - w.b.Len(); room > 0 {
+		if len(p) > room {
+			w.b.Write(p[:room])
+		} else {
+			w.b.Write(p)
+		}
+	}
+	return len(p), nil
 }
 
 func settingsDir(o InitOptions) (string, error) {
@@ -187,18 +342,62 @@ func writeAtomic(path string, data []byte, mode fs.FileMode) error {
 	return nil
 }
 
-// isLxHookCommand recognizes `<…/lx> hook claude`, with any path or quoting.
+// isLxHookCommand recognizes `<…/lx> hook claude`, with any path or
+// quoting, followed only by --readonly, --prefix V or --prefix=V. Anything
+// else is the user's own hook and is left alone.
 func isLxHookCommand(cmd string) bool {
+	_, ok := parseLxHook(cmd)
+	return ok
+}
+
+// lxHookFlags are the options of an installed lx hook command.
+type lxHookFlags struct {
+	readOnly bool
+	prefix   string
+}
+
+func parseLxHook(cmd string) (lxHookFlags, bool) {
+	var f lxHookFlags
 	l := lex(cmd)
-	if l.broken || len(l.toks) != 3 {
-		return false
+	if l.broken || len(l.unsafe) > 0 || len(l.toks) < 3 {
+		return f, false
 	}
 	for _, t := range l.toks {
 		if t.kind != tWord {
-			return false
+			return f, false
 		}
 	}
-	return filepath.Base(l.toks[0].val) == "lx" && l.toks[1].val == "hook" && l.toks[2].val == "claude"
+	w := vals(l.toks)
+	if filepath.Base(w[0]) != "lx" || w[1] != "hook" || w[2] != "claude" {
+		return f, false
+	}
+	for i := 3; i < len(w); i++ {
+		switch a := w[i]; {
+		case a == "--readonly":
+			f.readOnly = true
+		case a == "--prefix" && i+1 < len(w):
+			i++
+			f.prefix = w[i]
+		case strings.HasPrefix(a, "--prefix="):
+			f.prefix = a[len("--prefix="):]
+		default:
+			return f, false
+		}
+	}
+	return f, true
+}
+
+// installedReadOnly reports whether an lx hook in root has --readonly.
+func installedReadOnly(root *object) bool {
+	found := false
+	_, _ = hookEdit(root, func(h *object) (bool, bool) {
+		cmd, _ := h.getString("command")
+		if f, ok := parseLxHook(cmd); ok && f.readOnly {
+			found = true
+		}
+		return true, false
+	})
+	return found
 }
 
 // hookEdit walks hooks.PreToolUse[*].hooks[*] and lets fn inspect (and
@@ -339,7 +538,7 @@ func installHook(root *object, want string) (changed bool, warn string, err erro
 	return true, warn, nil
 }
 
-var reRtk = regexp.MustCompile(`(^|[/\s])rtk(\s|$)`)
+var reRtk = lazyre.New(`(^|[/\s])rtk(\s|$)`)
 
 func uninstallHook(root *object) (bool, error) {
 	return hookEdit(root, func(h *object) (bool, bool) {
@@ -351,7 +550,7 @@ func uninstallHook(root *object) (bool, error) {
 	})
 }
 
-var reShellSafe = regexp.MustCompile(`^[A-Za-z0-9_@%+=:,./-]+$`)
+var reShellSafe = lazyre.New(`^[A-Za-z0-9_@%+=:,./-]+$`)
 
 func shellQuote(s string) string {
 	if reShellSafe.MatchString(s) {

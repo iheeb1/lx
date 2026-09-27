@@ -1,15 +1,13 @@
 package cli
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
-	"github.com/iheeb1/lx/internal/discover"
 	"github.com/iheeb1/lx/internal/hook"
 )
 
@@ -23,35 +21,78 @@ func integrationCommand(args []string) (int, bool) {
 		return cmdRewrite(args[1:]), true
 	case "init":
 		return cmdInit(args[1:]), true
+	case "doctor":
+		return cmdDoctor(args[1:]), true
 	case "discover":
-		return cmdDiscover(args[1:]), true
+		return runDiscover(args[1:]), true
 	}
 	return 0, false
 }
 
+// cmdHook runs `lx hook <agent> [--readonly] [--prefix PATH | --prefix=PATH]`.
 func cmdHook(args []string) int {
-	agent := "claude"
-	if len(args) > 0 {
-		agent = args[0]
-	}
+	agent, o := parseHookArgs(args)
 	cwd, _ := os.Getwd()
 	// A hook must never block the agent: errors are swallowed, exit is 0.
-	if err := hook.Hook(agent, os.Stdin, os.Stdout, cwd); err != nil && os.Getenv("LX_HOOK_DEBUG") == "1" {
+	if err := hook.HookWith(agent, os.Stdin, os.Stdout, cwd, o); err != nil && os.Getenv("LX_HOOK_DEBUG") == "1" {
 		fmt.Fprintln(os.Stderr, "lx hook:", err)
 	}
 	return 0
 }
 
-func cmdRewrite(args []string) int {
+// parseHookArgs parses the hook's arguments by hand. Unknown flags are
+// ignored: a hook written by a newer lx must still never fail.
+func parseHookArgs(args []string) (string, hook.HookOptions) {
+	agent := "claude"
+	var o hook.HookOptions
+	if len(args) > 0 && !strings.HasPrefix(args[0], "-") {
+		agent, args = args[0], args[1:]
+	}
+	for i := 0; i < len(args); i++ {
+		switch a := args[i]; {
+		case a == "--readonly":
+			o.ReadOnly = true
+		case a == "--prefix":
+			// A path is absolute: a following flag is not its value.
+			if i+1 < len(args) && !strings.HasPrefix(args[i+1], "-") {
+				i++
+				o.Prefix = args[i]
+			}
+		case strings.HasPrefix(a, "--prefix="):
+			o.Prefix = a[len("--prefix="):]
+		}
+	}
+	return agent, o
+}
+
+func cmdRewrite(args []string) int { return runRewrite(args, os.Stdout, os.Stderr) }
+
+// runRewrite runs `lx rewrite [-v] <command>`: the lx form on stdout (exit 0),
+// or exit 1 when nothing changes. -v explains on stderr: one `target:` line
+// per command lx would wrap, or `unchanged:` and the reason.
+func runRewrite(args []string, stdout, stderr io.Writer) int {
+	verbose := false
+	if len(args) > 0 && (args[0] == "-v" || args[0] == "--verbose") {
+		verbose, args = true, args[1:]
+	}
 	if len(args) == 0 {
-		fmt.Fprintln(os.Stderr, "usage: lx rewrite '<shell command>'")
+		fmt.Fprintln(stderr, "usage: lx rewrite [-v] '<shell command>'")
 		return 2
 	}
-	out, ok := hook.Rewrite(strings.Join(args, " "))
-	if !ok {
+	in := hook.Inspect(strings.Join(args, " "))
+	if verbose {
+		if in.Changed {
+			for _, t := range in.Targets {
+				fmt.Fprintln(stderr, "target:", hook.ShellJoin(t))
+			}
+		} else {
+			fmt.Fprintln(stderr, "unchanged:", in.Reason)
+		}
+	}
+	if !in.Changed {
 		return 1
 	}
-	fmt.Println(out)
+	fmt.Fprintln(stdout, in.Rewritten)
 	return 0
 }
 
@@ -61,7 +102,13 @@ func cmdInit(args []string) int {
 	uninstall := fs.Bool("uninstall", false, "remove lx's hook (leaves everything else untouched)")
 	dry := fs.Bool("dry-run", false, "print the resulting settings.json without writing it")
 	agent := fs.String("agent", "claude", "claude, or one of: "+strings.Join(snippetAgents, ", ")+" (prints a snippet)")
+	readOnly := fs.Bool("readonly", false, "approve read-only commands (git status/diff/log, ls, find, grep, rg, tree, du) as Claude Code does without lx")
+	noReadOnly := fs.Bool("no-readonly", false, "remove --readonly from an installed hook (it is kept otherwise)")
 	if err := fs.Parse(args); err != nil {
+		return 2
+	}
+	if *readOnly && *noReadOnly {
+		fmt.Fprintln(os.Stderr, "lx init: --readonly and --no-readonly contradict each other")
 		return 2
 	}
 	lx, err := hook.LxPath()
@@ -78,7 +125,11 @@ func cmdInit(args []string) int {
 		fmt.Println(s)
 		return 0
 	}
-	err = hook.InitClaude(hook.InitOptions{Global: !*project, LxPath: lx, Uninstall: *uninstall, DryRun: *dry, Out: os.Stdout})
+	err = hook.InitClaude(hook.InitOptions{
+		Global: !*project, LxPath: lx, Uninstall: *uninstall, DryRun: *dry, Out: os.Stdout,
+		ReadOnly: *readOnly, NoReadOnly: *noReadOnly,
+		Probe: func() (string, error) { return hook.ProbeShellLx(os.Getenv("SHELL"), 3*time.Second) },
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "lx init:", err)
 		return 1
@@ -87,35 +138,3 @@ func cmdInit(args []string) int {
 }
 
 var snippetAgents = []string{"codex", "agents-md", "gemini", "copilot", "cursor"}
-
-func cmdDiscover(args []string) int {
-	fs := flag.NewFlagSet("discover", flag.ContinueOnError)
-	days := fs.Int("days", 14, "look at transcripts modified in the last N days")
-	limit := fs.Int("limit", 0, "scan at most N transcript files (newest first)")
-	asJSON := fs.Bool("json", false, "machine-readable output")
-	dir := fs.String("dir", "", "transcripts directory (default: $CLAUDE_CONFIG_DIR/projects or ~/.claude/projects)")
-	if err := fs.Parse(args); err != nil {
-		return 2
-	}
-	dirs := []string{*dir}
-	if *dir == "" {
-		base := os.Getenv("CLAUDE_CONFIG_DIR")
-		if base == "" {
-			home, _ := os.UserHomeDir()
-			base = filepath.Join(home, ".claude")
-		}
-		dirs = []string{filepath.Join(base, "projects")}
-	}
-	rep, err := discover.Scan(discover.Options{Dirs: dirs, Since: time.Now().AddDate(0, 0, -*days), Limit: *limit})
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "lx discover:", err)
-		return 1
-	}
-	if *asJSON {
-		b, _ := json.MarshalIndent(rep, "", "  ")
-		fmt.Println(string(b))
-		return 0
-	}
-	rep.Text(os.Stdout)
-	return 0
-}

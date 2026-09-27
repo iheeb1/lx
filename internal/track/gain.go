@@ -11,25 +11,36 @@ import (
 // Summary aggregates records. Savings are never clamped: a command where lx
 // made output bigger counts against the total (it shouldn't happen — the
 // never-worse gate prevents it — and if it does you should see it).
+//
+// Recalls (`lx show` of a stored run) are not commands: they add nothing to
+// Commands, Condensed, Raw, Out, Saved, Failures or Daily. The tokens they
+// printed are RecallTokens, and NetSaved = Saved − RecallTokens, which can
+// be negative: reading a run back in full costs more than its view saved.
 type Summary struct {
-	Commands  int       `json:"commands"`
-	Condensed int       `json:"condensed"` // commands where lx changed the view
-	Raw       int       `json:"raw_tokens"`
-	Out       int       `json:"out_tokens"`
-	Saved     int       `json:"saved_tokens"`
-	Pct       float64   `json:"saved_pct"`
-	Failures  int       `json:"failed_commands"`
-	ByCmd     []CmdStat `json:"by_command"`
-	Daily     []DayStat `json:"daily"`
+	Commands     int       `json:"commands"`
+	Condensed    int       `json:"condensed"` // commands where lx changed the view
+	Raw          int       `json:"raw_tokens"`
+	Out          int       `json:"out_tokens"`
+	Saved        int       `json:"saved_tokens"`
+	Pct          float64   `json:"saved_pct"`
+	Failures     int       `json:"failed_commands"`
+	Recalls      int       `json:"recalls"`       // lx show runs
+	RecallTokens int       `json:"recall_tokens"` // tokens they printed
+	NetSaved     int       `json:"net_saved_tokens"`
+	NetPct       float64   `json:"net_saved_pct"`
+	ByCmd        []CmdStat `json:"by_command"`
+	Daily        []DayStat `json:"daily"`
 }
 
 type CmdStat struct {
-	Cmd   string  `json:"cmd"`
-	Count int     `json:"count"`
-	Raw   int     `json:"raw_tokens"`
-	Saved int     `json:"saved_tokens"`
-	Pct   float64 `json:"saved_pct"`
-	AvgMs int64   `json:"avg_ms"`
+	Cmd          string  `json:"cmd"`
+	Count        int     `json:"count"`
+	Raw          int     `json:"raw_tokens"`
+	Saved        int     `json:"saved_tokens"`
+	Pct          float64 `json:"saved_pct"`
+	AvgMs        int64   `json:"avg_ms"`
+	Recalls      int     `json:"recalls"`
+	RecallTokens int     `json:"recall_tokens"`
 }
 
 type DayStat struct {
@@ -44,7 +55,23 @@ func Summarize(recs []Record, days int, now time.Time) Summary {
 	by := map[string]*CmdStat{}
 	ms := map[string]int64{}
 	daily := map[string]*DayStat{}
+	stat := func(cmd string) *CmdStat {
+		c := by[cmd]
+		if c == nil {
+			c = &CmdStat{Cmd: cmd}
+			by[cmd] = c
+		}
+		return c
+	}
 	for _, r := range recs {
+		if r.Kind == KindShow {
+			s.Recalls++
+			s.RecallTokens += r.Out
+			c := stat(r.Cmd)
+			c.Recalls++
+			c.RecallTokens += r.Out
+			continue
+		}
 		s.Commands++
 		s.Raw += r.Raw
 		s.Out += r.Out
@@ -54,11 +81,7 @@ func Summarize(recs []Record, days int, now time.Time) Summary {
 		if r.Exit != 0 {
 			s.Failures++
 		}
-		c := by[r.Cmd]
-		if c == nil {
-			c = &CmdStat{Cmd: r.Cmd}
-			by[r.Cmd] = c
-		}
+		c := stat(r.Cmd)
 		c.Count++
 		c.Raw += r.Raw
 		c.Saved += r.Raw - r.Out
@@ -72,9 +95,13 @@ func Summarize(recs []Record, days int, now time.Time) Summary {
 	}
 	s.Saved = s.Raw - s.Out
 	s.Pct = pct(s.Saved, s.Raw)
+	s.NetSaved = s.Saved - s.RecallTokens
+	s.NetPct = pct(s.NetSaved, s.Raw)
 	for k, c := range by {
 		c.Pct = pct(c.Saved, c.Raw)
-		c.AvgMs = ms[k] / int64(c.Count)
+		if c.Count > 0 {
+			c.AvgMs = ms[k] / int64(c.Count)
+		}
 		s.ByCmd = append(s.ByCmd, *c)
 	}
 	sort.Slice(s.ByCmd, func(i, j int) bool {
@@ -101,20 +128,35 @@ func pct(saved, raw int) float64 {
 	return 100 * float64(saved) / float64(raw)
 }
 
-// Text renders the report for a terminal.
+// Text renders the report for a terminal. Recall lines and the recalls
+// column appear once anything was read back with lx show.
 func (s Summary) Text(w io.Writer, top int) {
-	if s.Commands == 0 {
+	if s.Commands == 0 && s.Recalls == 0 {
 		fmt.Fprintln(w, "lx gain: no commands recorded yet. Run something through lx (e.g. `lx git status`).")
 		return
 	}
+	recalls := s.Recalls > 0
 	fmt.Fprintf(w, "lx gain — %s through lx, %s condensed\n\n", plural(s.Commands, "command"), plural(s.Condensed, "view"))
-	fmt.Fprintf(w, "  tokens the agent would have read  %10s\n", human(s.Raw))
-	fmt.Fprintf(w, "  tokens it actually read          %10s\n", human(s.Out))
-	fmt.Fprintf(w, "  saved                            %10s  (%.1f%%)\n", human(s.Saved), s.Pct)
-	fmt.Fprintf(w, "  %s\n\n", meter(s.Pct, 40))
+	row := func(label string, n int, note string) {
+		fmt.Fprintf(w, "  %-33s%10s%s\n", label, human(n), note)
+	}
+	row("tokens the agent would have read", s.Raw, "")
+	row("tokens it actually read", s.Out, "")
+	row("saved", s.Saved, fmt.Sprintf("  (%.1f%%)", s.Pct))
+	if recalls {
+		row("read back with lx show", s.RecallTokens, "  ("+plural(s.Recalls, "recall")+")")
+		row("net saved", s.NetSaved, fmt.Sprintf("  (%.1f%%)", s.NetPct))
+		fmt.Fprintf(w, "  %s\n\n", meter(s.NetPct, 40))
+	} else {
+		fmt.Fprintf(w, "  %s\n\n", meter(s.Pct, 40))
+	}
 
 	if len(s.ByCmd) > 0 {
-		fmt.Fprintf(w, "  %-22s %6s %10s %10s %7s  %s\n", "command", "runs", "raw", "saved", "saved%", "")
+		if recalls {
+			fmt.Fprintf(w, "  %-22s %6s %10s %10s %7s %7s  %s\n", "command", "runs", "raw", "saved", "saved%", "recalls", "")
+		} else {
+			fmt.Fprintf(w, "  %-22s %6s %10s %10s %7s  %s\n", "command", "runs", "raw", "saved", "saved%", "")
+		}
 		maxSaved := 1
 		for _, c := range s.ByCmd {
 			maxSaved = max(maxSaved, c.Saved)
@@ -125,7 +167,11 @@ func (s Summary) Text(w io.Writer, top int) {
 				break
 			}
 			bar := strings.Repeat("█", max(0, c.Saved*24/maxSaved))
-			fmt.Fprintf(w, "  %-22s %6d %10s %10s %6.1f%%  %s\n", trunc(c.Cmd, 22), c.Count, human(c.Raw), human(c.Saved), c.Pct, bar)
+			if recalls {
+				fmt.Fprintf(w, "  %-22s %6d %10s %10s %6.1f%% %7d  %s\n", trunc(c.Cmd, 22), c.Count, human(c.Raw), human(c.Saved), c.Pct, c.Recalls, bar)
+			} else {
+				fmt.Fprintf(w, "  %-22s %6d %10s %10s %6.1f%%  %s\n", trunc(c.Cmd, 22), c.Count, human(c.Raw), human(c.Saved), c.Pct, bar)
+			}
 		}
 		fmt.Fprintln(w)
 	}

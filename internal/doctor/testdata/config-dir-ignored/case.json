@@ -1,0 +1,6 @@
+{
+  "config_dir": "cfg",
+  "env": {
+    "CLAUDE_CONFIG_DIR": "@ROOT@/cfg"
+  }
+}

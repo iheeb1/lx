@@ -2,8 +2,8 @@ package engine
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path"
-	"regexp"
 	"slices"
 	"sort"
 	"strconv"
@@ -170,7 +170,7 @@ func sortedKeys(m map[string]bool) []string {
 	return out
 }
 
-var nameVarRe = regexp.MustCompile(`[0-9a-fA-F]{7,}|\d+`)
+var nameVarRe = lazyre.New(`[0-9a-fA-F]{7,}|\d+`)
 
 // maskName replaces digit runs with <N> and hash-like hex runs with <H>.
 func maskName(name string) string {
@@ -294,7 +294,7 @@ func commaInt(n int) string {
 	return b.String()
 }
 
-var extRe = regexp.MustCompile(`\.[A-Za-z][A-Za-z0-9]{0,7}$`)
+var extRe = lazyre.New(`\.[A-Za-z][A-Za-z0-9]{0,7}$`)
 
 // isPathLike reports whether line is a single file-system path: no
 // surrounding or doubled spaces, no tabs, colons, quotes or shell

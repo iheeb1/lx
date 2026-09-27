@@ -1,0 +1,9 @@
+{
+  "git": [
+    "project"
+  ],
+  "bins": {
+    "project/tools": "lx 6.6.6-untrusted"
+  },
+  "cwd": "project/sub"
+}

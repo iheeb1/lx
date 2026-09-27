@@ -2,8 +2,8 @@ package fs
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path"
-	"regexp"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -121,9 +121,9 @@ var (
 		`|\d{1,2} +` + months + ` +(?:\d{1,2}:\d{2}|\d{4})` +
 		`|\d{4}-\d{2}-\d{2}(?: +\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?: +[+-]\d{4})?)?` +
 		`|\d{2}-\d{2} +\d{2}:\d{2})`
-	lsRowRe = regexp.MustCompile(`^([-bcdlpsDw?])([-rwxsStTlL]{9})([@+.]?) +(.*?) +` +
+	lsRowRe = lazyre.New(`^([-bcdlpsDw?])([-rwxsStTlL]{9})([@+.]?) +(.*?) +` +
 		`(\d+(?:[.,]\d+)?[BkKMGTPEZY]?|\d+, *\d+|0x[0-9a-fA-F]+|-) +(` + lsDate + `) (.*)$`)
-	lsTotalRe = regexp.MustCompile(`^total \d+(?:[.,]\d+)?[BkKMGTPEZY]?$`)
+	lsTotalRe = lazyre.New(`^total \d+(?:[.,]\d+)?[BkKMGTPEZY]?$`)
 )
 
 type lsRow struct {

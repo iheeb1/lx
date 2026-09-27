@@ -39,8 +39,8 @@
 package jstest
 
 import (
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -61,7 +61,7 @@ type invocation struct {
 	args   []string // arguments after the runner / script name
 }
 
-var assignRe = regexp.MustCompile(`^[A-Za-z_][A-Za-z0-9_]*=`)
+var assignRe = lazyre.New(`^[A-Za-z_][A-Za-z0-9_]*=`)
 
 // peelEnv removes leading VAR=value words and an `env [-i] [-u NAME] …`
 // or `cross-env VAR=value …` wrapper.
@@ -476,18 +476,18 @@ func renderScript(c *engine.Context, out string) (result, bool) {
 }
 
 var (
-	echoCmdRe      = regexp.MustCompile(`^> (?:\S+/)?(?:npx |pnpm (?:exec )?|yarn |bunx |cross-env (?:\S+=\S+ )*|(?:[A-Z_]+=\S+ )+)?(jest|vitest|mocha|_mocha|react-scripts test|craco test)\b`)
-	jestSummaryRe  = regexp.MustCompile(`^Test Suites: .*\d+ total$`)
-	jestTestsRe    = regexp.MustCompile(`^Tests: +.*\d+ total$`)
-	vitestFilesRe  = regexp.MustCompile(`^ *Test Files {2}.*\(\d+\)$`)
-	vitestRunRe    = regexp.MustCompile(`^ RUN {2}v\d+\.\d+`)
-	mochaPassingRe = regexp.MustCompile(`^ {2}\d+ passing \(\d+(?:\.\d+)?(?:ms|s|m|h)\)$`)
+	echoCmdRe      = lazyre.New(`^> (?:\S+/)?(?:npx |pnpm (?:exec )?|yarn |bunx |cross-env (?:\S+=\S+ )*|(?:[A-Z_]+=\S+ )+)?(jest|vitest|mocha|_mocha|react-scripts test|craco test)\b`)
+	jestSummaryRe  = lazyre.New(`^Test Suites: .*\d+ total$`)
+	jestTestsRe    = lazyre.New(`^Tests: +.*\d+ total$`)
+	vitestFilesRe  = lazyre.New(`^ *Test Files {2}.*\(\d+\)$`)
+	vitestRunRe    = lazyre.New(`^ RUN {2}v\d+\.\d+`)
+	mochaPassingRe = lazyre.New(`^ {2}\d+ passing \(\d+(?:\.\d+)?(?:ms|s|m|h)\)$`)
 )
 
 // hasLine reports whether a line of s containing sub matches re. It looks
 // only at lines holding sub, which keeps it linear and fast on huge output
 // (a (?m) regexp over the whole text is not).
-func hasLine(s, sub string, re *regexp.Regexp) bool {
+func hasLine(s, sub string, re *lazyre.Regexp) bool {
 	for off := 0; off < len(s); {
 		k := strings.Index(s[off:], sub)
 		if k < 0 {

@@ -2,8 +2,8 @@ package data
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -49,13 +49,13 @@ const lockfileBudget = 2000
 
 var (
 	// fileDiagRe matches the diagnostics of the viewers themselves.
-	fileDiagRe = regexp.MustCompile(`^(?:cat|head|tail|bat|batcat|gcat|ghead|gtail): |^\[bat (?:error|warning)\]: `)
+	fileDiagRe = lazyre.New(`^(?:cat|head|tail|bat|batcat|gcat|ghead|gtail): |^\[bat (?:error|warning)\]: `)
 	// multiHeaderRe: head/tail print "==> file <==" between files.
-	multiHeaderRe = regexp.MustCompile(`^==> .+ <==$`)
+	multiHeaderRe = lazyre.New(`^==> .+ <==$`)
 	// fileDiagGluedRe: a viewer's diagnostic at the end of a line. When a
 	// file does not end with a newline, the diagnostic for the next operand
 	// ("cat a.txt missing.txt") is printed right after its last line.
-	fileDiagGluedRe = regexp.MustCompile(`(?:cat|head|tail|gcat|ghead|gtail): .*(?:No such file or directory|Is a directory|Permission denied|Input/output error|Operation not permitted)$|\[bat error\]: .+$`)
+	fileDiagGluedRe = lazyre.New(`(?:cat|head|tail|gcat|ghead|gtail): .*(?:No such file or directory|Is a directory|Permission denied|Input/output error|Operation not permitted)$|\[bat error\]: .+$`)
 )
 
 // keepFileLine reports the lines a windowed file view must list even inside

@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 )
 
@@ -18,7 +18,7 @@ var (
 	// benign spans are removed before matching so "0 errors", "no failures",
 	// "error handling" or a file named errors.go don't count as errors, while
 	// "2 failed, 0 errors" still does.
-	benignRe = regexp.MustCompile(`(?i)\b(?:0|no|zero|without)\s+(?:errors?|failures?|failed|warnings?|vulnerabilities|problems?|issues?)\b` +
+	benignRe = lazyre.New(`(?i)\b(?:0|no|zero|without)\s+(?:errors?|failures?|failed|warnings?|vulnerabilities|problems?|issues?)\b` +
 		`|\b(?:errors?|failures?|failed|warnings?)\s*[:=]\s*0\b` +
 		`|\berrors?[_-]?(?:handler|handling|handle|boundary|page|codes?|messages?|types?|utils?)\b` +
 		`|\b[\w./-]*errors?\.(?:go|ts|tsx|js|jsx|py|rs|rb|java|kt|c|h|cc|cpp)\b` +
@@ -29,7 +29,7 @@ var (
 		// not status. The error, if any, is elsewhere on the line.
 		"|\\S*/\\S*|(?:^|\\s)--?[A-Za-z][\\w=,.:+-]*")
 
-	errRe = regexp.MustCompile(`(?i)(?:\b(?:error|errors|err!|fatal|panic|panicked|exception|traceback|` +
+	errRe = lazyre.New(`(?i)(?:\b(?:error|errors|err!|fatal|panic|panicked|exception|traceback|` +
 		`fail|failed|failure|failures|failing|assertionerror|segfault|segmentation fault|core dumped|` +
 		`aborted|unhandled|uncaught|deadlock|timed out|out of memory|oom|killed|` +
 		`cannot|could not|couldn't|unable to|no such file|not found|undefined reference|` +
@@ -40,10 +40,10 @@ var (
 		`^--- FAIL|^FAIL\b|^\s*FAILED\b|^\s*!\s+\[rejected\]|` +
 		`^\s*g?make(?:\[\d+\])?: \*\*\*|\bundefined symbols?\b|\bunknown (?:options?|flags?|arguments?|commands?)\b|^\s*e: )`)
 
-	warnRe = regexp.MustCompile(`(?i)\b(?:warn|warning|warnings|deprecated|deprecation)\b|^\s*⚠`)
+	warnRe = lazyre.New(`(?i)\b(?:warn|warning|warnings|deprecated|deprecation)\b|^\s*⚠`)
 
 	// passRe vetoes lines that report success ("✓ handles error input").
-	passRe = regexp.MustCompile(`^\s*(?:✓|✔|√|PASS\b|ok\s|--- PASS|\[PASS\]|PASSED\b)|\.\.\.\s*ok$|\s(?:PASSED|passed)\s*(?:\[|$)` +
+	passRe = lazyre.New(`^\s*(?:✓|✔|√|PASS\b|ok\s|--- PASS|\[PASS\]|PASSED\b)|\.\.\.\s*ok$|\s(?:PASSED|passed)\s*(?:\[|$)` +
 		// Neutral progress/bookkeeping whose only error-ish word is a name:
 		// "=== RUN TestConflict", "go: downloading github.com/pkg/errors",
 		// "Compiling quick-error v2.0.1".
@@ -85,7 +85,7 @@ func Classify(line string) Level {
 // errSpecialRe is errRe minus its \b(word|…)\b alternation, which errMatch
 // checks by tokenizing instead (the alternation is the slow part: ~50µs a
 // line through the regexp engine, ~1µs tokenized).
-var errSpecialRe = regexp.MustCompile(`(?i)^\s*E\s{2,}\S|^\s*[✗✘✕×]\s|\bTS\d{4}\b|\berror\[E\d+\]|^\s*npm (?:ERR!|error)|` +
+var errSpecialRe = lazyre.New(`(?i)^\s*E\s{2,}\S|^\s*[✗✘✕×]\s|\bTS\d{4}\b|\berror\[E\d+\]|^\s*npm (?:ERR!|error)|` +
 	`^--- FAIL|^FAIL\b|^\s*FAILED\b|^\s*!\s+\[rejected\]|` +
 	`^\s*g?make(?:\[\d+\])?: \*\*\*|\bundefined symbols?\b|\bunknown (?:options?|flags?|arguments?|commands?)\b|^\s*e: `)
 
@@ -197,10 +197,10 @@ var classifyStems = []string{
 }
 
 // pytestELineRe is errRe's `^\s*E\s{2,}\S` alternative (errRe is (?i)).
-var pytestELineRe = regexp.MustCompile(`^\s*[eE]\s{2,}\S`)
+var pytestELineRe = lazyre.New(`^\s*[eE]\s{2,}\S`)
 
 // kotlinELineRe is errRe's `^\s*e: ` alternative (Kotlin, apt "E: …").
-var kotlinELineRe = regexp.MustCompile(`^\s*[eE]: `)
+var kotlinELineRe = lazyre.New(`^\s*[eE]: `)
 
 // mayClassify is a cheap necessary condition for Classify returning Warn or
 // Err. It returns false only when no errRe/warnRe alternative can match:

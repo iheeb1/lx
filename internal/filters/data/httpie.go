@@ -2,7 +2,7 @@ package data
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -27,10 +27,10 @@ func (httpieFilter) Match(c *engine.Context) bool {
 }
 
 var (
-	httpieDiagRe = regexp.MustCompile(`^(?:http|https|xh|xhs): (?:error|warning)\b|^(?:xh|xhs): `)
+	httpieDiagRe = lazyre.New(`^(?:http|https|xh|xhs): (?:error|warning)\b|^(?:xh|xhs): `)
 	// usageErrRe: the error line of a usage error — httpie's argparse
 	// block ("usage: …" / "error:" / "    <message>") or xh's "error: …".
-	usageErrRe = regexp.MustCompile(`^error:(?: |$)`)
+	usageErrRe = lazyre.New(`^error:(?: |$)`)
 )
 
 func httpieArgs(args []string) (headersOnly, origin bool) {

@@ -1,0 +1,78 @@
+{
+  "version": "lx 0.2.0-test",
+  "binary": "$ROOT/bin/lx",
+  "checks": [
+    {
+      "id": "binary",
+      "status": "ok",
+      "message": "lx 0.2.0-test at $ROOT/bin/lx",
+      "fix": ""
+    },
+    {
+      "id": "hook",
+      "status": "ok",
+      "message": "installed in ~/.claude/settings.json: $ROOT/bin/lx hook claude",
+      "fix": ""
+    },
+    {
+      "id": "hook-binary",
+      "status": "ok",
+      "message": "$ROOT/bin/lx is this binary",
+      "fix": ""
+    },
+    {
+      "id": "hook-run",
+      "status": "ok",
+      "message": "`git status` → `lx git status` in 7 ms",
+      "fix": ""
+    },
+    {
+      "id": "path",
+      "status": "ok",
+      "message": "your shell runs lx from $ROOT/bin/lx, the hook's binary",
+      "fix": ""
+    },
+    {
+      "id": "rtk",
+      "status": "ok",
+      "message": "no rtk hook",
+      "fix": ""
+    },
+    {
+      "id": "perms",
+      "status": "ok",
+      "message": "no allow rule approves every lx command",
+      "fix": ""
+    },
+    {
+      "id": "env",
+      "status": "ok",
+      "message": "LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on",
+      "fix": ""
+    },
+    {
+      "id": "settings",
+      "status": "ok",
+      "message": "2 settings files valid: user, project",
+      "fix": ""
+    },
+    {
+      "id": "storage",
+      "status": "ok",
+      "message": "runs: 3 stored runs, 5.9 KB in $ROOT/cache/lx/runs",
+      "fix": ""
+    },
+    {
+      "id": "storage",
+      "status": "ok",
+      "message": "history: 3 records, 266 B in $ROOT/data/lx/history.jsonl",
+      "fix": ""
+    },
+    {
+      "id": "activity",
+      "status": "ok",
+      "message": "last lx run 2 h ago",
+      "fix": ""
+    }
+  ]
+}

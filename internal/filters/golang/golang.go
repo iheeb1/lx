@@ -17,7 +17,7 @@ package golang
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -35,7 +35,7 @@ func init() {
 
 // versionedGoRe matches golang.org/dl wrappers such as go1.22.3 or go1.23rc1
 // (gotip is matched by name).
-var versionedGoRe = regexp.MustCompile(`^go1\.\d+(?:\.\d+)?(?:rc\d+|beta\d+)?$`)
+var versionedGoRe = lazyre.New(`^go1\.\d+(?:\.\d+)?(?:rc\d+|beta\d+)?$`)
 
 // isGo reports whether argv[0] is the go command.
 func isGo(c *engine.Context) bool {
@@ -125,13 +125,13 @@ var valueFlags = map[string]bool{
 
 // Lines the go command prints while fetching modules.
 var (
-	downloadRe = regexp.MustCompile(`^go: (?:downloading|extracting) (\S+) (\S+)$`)
+	downloadRe = lazyre.New(`^go: (?:downloading|extracting) (\S+) (\S+)$`)
 	// go -x module fetch trace: request and response lines.
-	getReqRe  = regexp.MustCompile(`^# get (https?://\S+)$`)
-	getRespRe = regexp.MustCompile(`^# get (https?://\S+): (\d{3}) [^()]*(?:\([\d.]+m?s\))?$`)
+	getReqRe  = lazyre.New(`^# get (https?://\S+)$`)
+	getRespRe = lazyre.New(`^# get (https?://\S+): (\d{3}) [^()]*(?:\([\d.]+m?s\))?$`)
 	// Lines that name a module the download summary need not repeat.
-	namedModRe = regexp.MustCompile(`^go: (?:upgraded|added|downgraded|removed) (\S+) |^go: found \S+ in (\S+) `)
-	zipRe      = regexp.MustCompile(`^https?://[^/]+/(.+)/@v/([^/]+)\.zip$`)
+	namedModRe = lazyre.New(`^go: (?:upgraded|added|downgraded|removed) (\S+) |^go: found \S+ in (\S+) `)
+	zipRe      = lazyre.New(`^https?://[^/]+/(.+)/@v/([^/]+)\.zip$`)
 )
 
 // condenseFetch replaces "go: downloading M V" lines with one summary line at

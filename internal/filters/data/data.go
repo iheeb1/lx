@@ -21,7 +21,7 @@ package data
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 	"unicode/utf8"
 
@@ -56,7 +56,7 @@ const (
 
 // conflictRe matches git's merge-conflict markers (<<<<<<< ours, the
 // ||||||| base of diff3/zdiff3, =======, >>>>>>> theirs).
-var conflictRe = regexp.MustCompile(`^(?:<{7}|>{7}|\|{7})(?: |$)|^={7}$`)
+var conflictRe = lazyre.New(`^(?:<{7}|>{7}|\|{7})(?: |$)|^={7}$`)
 
 // isConflictMarker is conflictRe with a cheap first-byte check.
 func isConflictMarker(ln string) bool {

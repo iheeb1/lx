@@ -1,0 +1,8 @@
+{
+  "bins": {
+    "elsewhere": "lx 6.6.6-untrusted"
+  },
+  "never_run": [
+    "elsewhere/lx"
+  ]
+}

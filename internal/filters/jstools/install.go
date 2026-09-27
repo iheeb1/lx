@@ -2,7 +2,7 @@ package jstools
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"slices"
 	"strings"
 
@@ -81,7 +81,7 @@ func (npmInstall) Apply(c *engine.Context, s string) (string, bool) {
 }
 
 var (
-	installMarkRe = regexp.MustCompile(`^(?:npm (?:warn|WARN|error|notice)\b|npm ERR! |(?:added|removed|changed|audited) \d+ packages?` +
+	installMarkRe = lazyre.New(`^(?:npm (?:warn|WARN|error|notice)\b|npm ERR! |(?:added|removed|changed|audited) \d+ packages?` +
 		`|up to date|found \d+ vulnerabilit|\d+ (?:\w+ severity )?vulnerabilit|Progress: resolved \d+|Packages: [+-]\d` +
 		`|Already up to date|Lockfile is up to date|Done in |yarn (?:install|add|remove|upgrade|create) v\d|\[\d+/\d+\] ` +
 		`|success |➤ YN\d{4}|bun (?:install|add|remove|update|create) v\d|\s*\d+ packages? installed|Checked \d+ installs?` +
@@ -89,36 +89,36 @@ var (
 	// "npm warn deprecated pkg@v: msg", pnpm's " WARN  deprecated pkg@v:
 	// msg" (pnpm pads WARN with thin spaces) and yarn's "warning a > pkg@v:
 	// msg" (a deprecation only while resolving packages).
-	npmDeprecRe  = regexp.MustCompile(`^(npm (?:warn|WARN) deprecated |[\s\x{2009}]*WARN[\s\x{2009}]+deprecated )(\S+?@[^:\s]+): (.*)$`)
-	yarnDeprecRe = regexp.MustCompile(`^(warning )((?:\S+ > )*\S+?@[^:\s]+): (.*)$`)
-	yarnPhaseRe  = regexp.MustCompile(`^\[(\d+)/\d+\] `)
-	yarnAllRe    = regexp.MustCompile(`^info All dependencies$`)
-	yarnTreeRe   = regexp.MustCompile(`^[│ ]*[├└]─ \S`)
+	npmDeprecRe  = lazyre.New(`^(npm (?:warn|WARN) deprecated |[\s\x{2009}]*WARN[\s\x{2009}]+deprecated )(\S+?@[^:\s]+): (.*)$`)
+	yarnDeprecRe = lazyre.New(`^(warning )((?:\S+ > )*\S+?@[^:\s]+): (.*)$`)
+	yarnPhaseRe  = lazyre.New(`^\[(\d+)/\d+\] `)
+	yarnAllRe    = lazyre.New(`^info All dependencies$`)
+	yarnTreeRe   = lazyre.New(`^[│ ]*[├└]─ \S`)
 
-	fundingRe    = regexp.MustCompile("^(?:\\d+ packages? (?:is|are) looking for funding|  run `npm fund` for details)$")
-	auditHintRe  = regexp.MustCompile(`^To address (?:issues that do not require attention|all issues.*), run:$`)
-	auditFixRe   = regexp.MustCompile(`^  npm audit fix(?: --force)?$`)
-	npmNoticeRe  = regexp.MustCompile(`^npm (?:notice|NOTICE)\b`)
-	eresolveRe   = regexp.MustCompile(`^npm (?:warn|WARN) ERESOLVE overriding peer dependency$`)
-	eresolveCont = regexp.MustCompile(`^npm (?:warn|WARN)(?:$| (?:While resolving|Found|node_modules/| |Could not resolve|Conflicting peer|peer|peerOptional|dev|optional|bundled|overridden|\d+ more))`)
-	whileResRe   = regexp.MustCompile(`^npm (?:warn|WARN) While resolving: (\S+)`)
-	bareNpmRe    = regexp.MustCompile(`^npm (?:warn|WARN|error|ERR!|notice)(?: allow-scripts)?$`)
-	pnpmProgRe   = regexp.MustCompile(`^Progress: resolved \d+`)
-	pnpmBarRe    = regexp.MustCompile(`^[+\-]+$`)
-	updBoxTopRe  = regexp.MustCompile(`^\s*╭─+╮$`)
-	updBoxBotRe  = regexp.MustCompile(`^\s*╰─+╯$`)
-	yarnStepRe   = regexp.MustCompile(`^\[\d+/\d+\] `)
-	yarnNoiseRe  = regexp.MustCompile(`^info Visit https://yarnpkg\.com/|^➤ YN0000: [┌└] `)
-	npmLogPathRe = regexp.MustCompile(`^npm (?:error|ERR!) A complete log of this run can be found in:`)
+	fundingRe    = lazyre.New("^(?:\\d+ packages? (?:is|are) looking for funding|  run `npm fund` for details)$")
+	auditHintRe  = lazyre.New(`^To address (?:issues that do not require attention|all issues.*), run:$`)
+	auditFixRe   = lazyre.New(`^  npm audit fix(?: --force)?$`)
+	npmNoticeRe  = lazyre.New(`^npm (?:notice|NOTICE)\b`)
+	eresolveRe   = lazyre.New(`^npm (?:warn|WARN) ERESOLVE overriding peer dependency$`)
+	eresolveCont = lazyre.New(`^npm (?:warn|WARN)(?:$| (?:While resolving|Found|node_modules/| |Could not resolve|Conflicting peer|peer|peerOptional|dev|optional|bundled|overridden|\d+ more))`)
+	whileResRe   = lazyre.New(`^npm (?:warn|WARN) While resolving: (\S+)`)
+	bareNpmRe    = lazyre.New(`^npm (?:warn|WARN|error|ERR!|notice)(?: allow-scripts)?$`)
+	pnpmProgRe   = lazyre.New(`^Progress: resolved \d+`)
+	pnpmBarRe    = lazyre.New(`^[+\-]+$`)
+	updBoxTopRe  = lazyre.New(`^\s*╭─+╮$`)
+	updBoxBotRe  = lazyre.New(`^\s*╰─+╯$`)
+	yarnStepRe   = lazyre.New(`^\[\d+/\d+\] `)
+	yarnNoiseRe  = lazyre.New(`^info Visit https://yarnpkg\.com/|^➤ YN0000: [┌└] `)
+	npmLogPathRe = lazyre.New(`^npm (?:error|ERR!) A complete log of this run can be found in:`)
 	// --loglevel http/verbose/silly: registry requests that succeeded, and
 	// the silly/timing trace.
-	npmHTTPOkRe = regexp.MustCompile(`^npm (?:http|HTTP) (?:fetch [A-Z]+ (?:2\d\d|304) |cache )`)
-	npmSillyRe  = regexp.MustCompile(`^npm (?:sill|silly|timing) `)
+	npmHTTPOkRe = lazyre.New(`^npm (?:http|HTTP) (?:fetch [A-Z]+ (?:2\d\d|304) |cache )`)
+	npmSillyRe  = lazyre.New(`^npm (?:sill|silly|timing) `)
 	// EUSAGE: the usage text npm prints after the error.
-	npmUsageCodeRe = regexp.MustCompile(`^npm (?:error|ERR!) code EUSAGE$`)
-	npmUsageOptRe  = regexp.MustCompile(`^npm (?:error|ERR!) Options:$`)
-	npmUsageEndRe  = regexp.MustCompile(`^npm (?:error|ERR!) Run "npm help ([\w-]+)" for more info$`)
-	npmUsageLineRe = regexp.MustCompile(`^npm (?:error|ERR!)(?: |$)`)
+	npmUsageCodeRe = lazyre.New(`^npm (?:error|ERR!) code EUSAGE$`)
+	npmUsageOptRe  = lazyre.New(`^npm (?:error|ERR!) Options:$`)
+	npmUsageEndRe  = lazyre.New(`^npm (?:error|ERR!) Run "npm help ([\w-]+)" for more info$`)
+	npmUsageLineRe = lazyre.New(`^npm (?:error|ERR!)(?: |$)`)
 )
 
 // maxUsageLines bounds the look-ahead for the end of npm's usage text.

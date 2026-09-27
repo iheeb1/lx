@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -147,10 +147,10 @@ func wrapList(indent string, items []string, width int) []string {
 // ---- diffstat rows ("path | 12 +++---") ----------------------------------
 
 var (
-	statRowRe = regexp.MustCompile(`^ (\S.*?) +\| +(\d+) ?([+-]*)$`)
-	statBinRe = regexp.MustCompile(`^ (\S.*?) +\| +(Bin(?: \d+ -> \d+ bytes)?)$`)
+	statRowRe = lazyre.New(`^ (\S.*?) +\| +(\d+) ?([+-]*)$`)
+	statBinRe = lazyre.New(`^ (\S.*?) +\| +(Bin(?: \d+ -> \d+ bytes)?)$`)
 	// statSumRe is git's own summary line, printed verbatim.
-	statSumRe = regexp.MustCompile(`^ (\d+) files? changed(?:, (\d+) insertions?\(\+\))?(?:, (\d+) deletions?\(-\))?$`)
+	statSumRe = lazyre.New(`^ (\d+) files? changed(?:, (\d+) insertions?\(\+\))?(?:, (\d+) deletions?\(-\))?$`)
 )
 
 // statRow is one parsed diffstat line.

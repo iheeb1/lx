@@ -2,7 +2,7 @@ package jstest
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 )
@@ -10,18 +10,18 @@ import (
 var (
 	// V8 stack frame: "    at fn (file:1:2)", "    at file:1:2", "at async fn (…)",
 	// "at fn (<anonymous>)", "at new X (native)".
-	atFrameRe = regexp.MustCompile(`^\s+at \S`)
+	atFrameRe = lazyre.New(`^\s+at \S`)
 	// vitest frame: " ❯ fn file:1:2" or " ❯ file:1:2".
 	// The file may contain spaces; only the line number is used.
-	vFrameRe = regexp.MustCompile(`^\s*❯ (?:(\S+) )?(\S.*?):(\d+):(\d+)$`)
+	vFrameRe = lazyre.New(`^\s*❯ (?:(\S+) )?(\S.*?):(\d+):(\d+)$`)
 	// mocha separates the synchronous part of a trace from its async part.
-	asyncSepRe = regexp.MustCompile(`^\s+-{4,}$`)
+	asyncSepRe = lazyre.New(`^\s+-{4,}$`)
 	// library locations: node_modules, node core (node:x, internal/x.js),
 	// frames without a location.
 	// Windows paths use backslashes.
-	nodeModRe  = regexp.MustCompile(`node_modules[/\\]((?:@[^/\\\s]+[/\\])?[^/\\\s:)]+)`)
-	nodeCoreRe = regexp.MustCompile(`\(?\b(node:[a-z_]+)|[\s(](internal)/[\w/.-]+\.js:\d`)
-	noLocRe    = regexp.MustCompile(`\((?:<anonymous>|native|index \d+)\)$|^\s*at (?:<anonymous>|native)$`)
+	nodeModRe  = lazyre.New(`node_modules[/\\]((?:@[^/\\\s]+[/\\])?[^/\\\s:)]+)`)
+	nodeCoreRe = lazyre.New(`\(?\b(node:[a-z_]+)|[\s(](internal)/[\w/.-]+\.js:\d`)
+	noLocRe    = lazyre.New(`\((?:<anonymous>|native|index \d+)\)$|^\s*at (?:<anonymous>|native)$`)
 )
 
 func isFrame(ln string) bool {
@@ -123,11 +123,11 @@ func foldFrames(d *doc, from, to int) {
 
 var (
 	// jest / babel code frame: "    > 28 |   code", "      27 |", caret line "         |    ^".
-	jestCodeRe  = regexp.MustCompile(`^\s*(>)?\s*\d+ \|`)
-	jestCaretRe = regexp.MustCompile(`^\s+\|[\s^~]*\^[\s^~]*$`)
+	jestCodeRe  = lazyre.New(`^\s*(>)?\s*\d+ \|`)
+	jestCaretRe = lazyre.New(`^\s+\|[\s^~]*\^[\s^~]*$`)
 	// vitest code frame: "     15|       code", "      3|", caret "       |     ^".
-	vCodeRe  = regexp.MustCompile(`^\s*(\d+)\|`)
-	vCaretRe = regexp.MustCompile(`^\s+\|\s*\^+\s*$`)
+	vCodeRe  = lazyre.New(`^\s*(\d+)\|`)
+	vCaretRe = lazyre.New(`^\s+\|\s*\^+\s*$`)
 )
 
 // codeFrameEnd returns the end of the jest code frame starting at i.

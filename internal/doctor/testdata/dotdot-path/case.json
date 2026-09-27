@@ -1,0 +1,12 @@
+{
+  "bins": {
+    "project/tools": "lx 6.6.6-untrusted",
+    "project/tools/deep": "lx 6.6.6-deep"
+  },
+  "symlinks": {
+    "bin/s": "project/tools/deep"
+  },
+  "never_run": [
+    "bin/s/../lx"
+  ]
+}

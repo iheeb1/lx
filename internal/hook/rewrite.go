@@ -47,19 +47,22 @@ func Inspect(cmd string) Inspection {
 	for _, t := range targets {
 		in.Targets = append(in.Targets, t.argv)
 	}
-	in.Rewritten, in.Changed = splice(cmd, targets), true
+	in.Rewritten, in.Changed = splice(cmd, targets, "lx"), true
 	return in
 }
 
-// splice inserts "lx " before each target's command word.
-func splice(src string, targets []*segment) string {
+// splice inserts prefix and a space before each target's command word.
+// Rewrite and Inspect use "lx"; the hook may use an absolute path
+// (resolvePrefix) so the rewrite works where lx is not on PATH.
+func splice(src string, targets []*segment, prefix string) string {
 	var b strings.Builder
-	b.Grow(len(src) + 3*len(targets))
+	b.Grow(len(src) + (len(prefix)+1)*len(targets))
 	last := 0
 	for _, t := range targets {
 		at := t.words[t.cmdIdx].start
 		b.WriteString(src[last:at])
-		b.WriteString("lx ")
+		b.WriteString(prefix)
+		b.WriteByte(' ')
 		last = at
 	}
 	b.WriteString(src[last:])
@@ -143,6 +146,7 @@ func (a *analysis) plan() ([]*segment, string) {
 		return nil, "shell syntax error"
 	}
 	var out []*segment
+	cutStderr := false
 	for _, l := range a.sc.lists {
 		if l.bg {
 			continue // backgrounded: output interleaves, lx must not buffer it
@@ -151,6 +155,10 @@ func (a *analysis) plan() ([]*segment, string) {
 			first := a.bySimp[p.cmds[0]]
 			if first.isLx || first.lxRaw || first.cmdIdx < 0 {
 				continue
+			}
+			if cutsLines(p) && !a.stderrMerged(p) {
+				cutStderr = true
+				continue // lx prints stderr on stdout, where the head/tail would cut it
 			}
 			ok := true
 			for k, c := range p.cmds {
@@ -170,9 +178,40 @@ func (a *analysis) plan() ([]*segment, string) {
 		}
 	}
 	if len(out) == 0 {
+		if cutStderr {
+			return nil, "a head/tail after it would cut stderr, which lx prints on stdout (write 2>&1 before the pipe)"
+		}
 		return nil, "no supported command"
 	}
 	return out, ""
+}
+
+// cutsLines: a later stage of p is head or tail, which keeps some lines of
+// what reaches it.
+func cutsLines(p pipeline) bool {
+	for _, c := range p.cmds[1:] {
+		if len(c.words) > 0 {
+			switch filepath.Base(c.words[0].val) {
+			case "head", "tail":
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// stderrMerged: the first command of p sends its stderr down the pipe too
+// (2>&1, or |&). Without that, stderr bypasses a head/tail after it, but
+// lx prints its view, stderr included, on stdout, where the cut would hide
+// errors the raw command shows (`make | tail -3`).
+func (a *analysis) stderrMerged(p pipeline) bool {
+	c := p.cmds[0]
+	for _, r := range c.redirs {
+		if r.op.text == "2>&" && r.target.text == "1" {
+			return true
+		}
+	}
+	return strings.Contains(a.src[c.end:p.cmds[1].start], "|&")
 }
 
 // redirsOK allows only 2>&1: any other redirection sends output somewhere

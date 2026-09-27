@@ -3,6 +3,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_call: # release.yml runs every job here before it publishes anything
 permissions:
   contents: read
 jobs:
@@ -12,10 +13,11 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with:
           go-version: '1.26'
+          cache: false # no dependencies, so no go.sum to key a cache on
       - name: gofmt
         run: test -z "$(gofmt -l .)"
       - name: vet
@@ -24,3 +26,39 @@ jobs:
         run: go test -race ./...
       - name: build
         run: CGO_ENABLED=0 go build -trimpath -o lx ./cmd/lx && ./lx version
+      - name: cross-compile
+        if: runner.os == 'Linux'
+        run: |
+          for p in windows/amd64 windows/arm64 linux/arm64 darwin/amd64; do
+            echo "build $p"
+            GOOS=${p%/*} GOARCH=${p#*/} CGO_ENABLED=0 go build -o /dev/null ./cmd/lx || exit 1
+          done
+      - name: no network code
+        if: runner.os == 'Linux'
+        # lx makes no network calls; keep it unable to: no networking package
+        # may be linked into the binary, on any platform we ship.
+        run: make nonet
+      - name: shellcheck install.sh
+        if: runner.os == 'Linux'
+        run: shellcheck install.sh
+
+  install-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: '1.26'
+          cache: false
+      # Every release asset builds and verifies on every change, not first
+      # at tag time.
+      - name: release build (6 platforms, SHA256SUMS)
+        if: runner.os == 'Linux'
+        run: make dist
+      # make dist for this host, install.sh from it over file:// (no network),
+      # check `lx version`, then check a corrupted archive installs nothing.
+      - name: install.sh end to end
+        run: make install-test

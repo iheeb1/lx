@@ -2,7 +2,7 @@ package jstools
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"slices"
 	"strings"
 
@@ -77,9 +77,9 @@ func (eslint) Apply(c *engine.Context, s string) (string, bool) {
 }
 
 var (
-	eslintSummaryRe = regexp.MustCompile(`^✖ \d+ problems? \(\d+ errors?, \d+ warnings?\)$`)
-	eslintFixRe     = regexp.MustCompile("^\\s+\\d+ errors? and \\d+ warnings? potentially fixable with the `--fix` option\\.$")
-	eslintMaxWarnRe = regexp.MustCompile(`^ESLint found too many warnings \(maximum: \d+\)\.$`)
+	eslintSummaryRe = lazyre.New(`^✖ \d+ problems? \(\d+ errors?, \d+ warnings?\)$`)
+	eslintFixRe     = lazyre.New("^\\s+\\d+ errors? and \\d+ warnings? potentially fixable with the `--fix` option\\.$")
+	eslintMaxWarnRe = lazyre.New(`^ESLint found too many warnings \(maximum: \d+\)\.$`)
 )
 
 type esMsg struct {

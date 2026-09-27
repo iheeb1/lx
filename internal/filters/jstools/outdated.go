@@ -2,7 +2,7 @@ package jstools
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -36,9 +36,9 @@ func (npmOutdated) Faithful(*engine.Context) bool { return true }
 // outside the table and kept as they are.
 func (npmOutdated) IsContent() bool { return true }
 
-var outdatedHeadRe = regexp.MustCompile(`^Package\s+Current\s+Wanted\s+Latest\s+Location\s+Depended by$`)
+var outdatedHeadRe = lazyre.New(`^Package\s+Current\s+Wanted\s+Latest\s+Location\s+Depended by$`)
 
-var yarnLegendRe = regexp.MustCompile(`^info Color legend : ?$|^ "<(?:red|yellow|green)>"\s+: `)
+var yarnLegendRe = lazyre.New(`^info Color legend : ?$|^ "<(?:red|yellow|green)>"\s+: `)
 
 func (npmOutdated) Apply(c *engine.Context, s string) (string, bool) {
 	lines := strings.Split(s, "\n")

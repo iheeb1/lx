@@ -2,7 +2,7 @@ package build
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -81,20 +81,20 @@ func (mavenFilter) Stream(c *engine.Context) bool {
 }
 
 var (
-	mvnLevelRe = regexp.MustCompile(`^\[(INFO|WARNING|WARN|ERROR|DEBUG)\] ?(.*)$`)
-	mvnNoiseRe = regexp.MustCompile(`^(?:$|-{3,}.*|--- \S+ \(.*\) @ \S+ ---|Scanning for projects\.\.\.|Building \S.*|  from \S+` +
+	mvnLevelRe = lazyre.New(`^\[(INFO|WARNING|WARN|ERROR|DEBUG)\] ?(.*)$`)
+	mvnNoiseRe = lazyre.New(`^(?:$|-{3,}.*|--- \S+ \(.*\) @ \S+ ---|Scanning for projects\.\.\.|Building \S.*|  from \S+` +
 		`|skip non existing resourceDirectory .*|Copying \d+ resources?.*|Using '.*' encoding to copy filtered .*` +
 		`|Changes detected - recompiling the module!.*|Compiling \d+ source files? .*|Nothing to compile.*|No sources to compile` +
 		`|Recompiling the module because of .*|Using auto detected provider .*| T E S T S|Running [\w.$]+|Results:` +
 		`|Total time: .*|Finished at: .*|Reactor Build Order:|\S+ +\[\w+\]|No tests to run\.|Installing \S+ to \S+` +
 		`|Tests run: \d+, Failures: 0, Errors: 0, Skipped: \d+, Time elapsed: .*)$`)
-	mvnDownloadRe  = regexp.MustCompile(`^(?:\[INFO\] )?Download(?:ing|ed) from \S+: |^Progress \(\d+\): `)
-	mvnReactorHdr  = regexp.MustCompile(`^Reactor Summary(?: for .*)?:$`)
-	mvnReactorRow  = regexp.MustCompile(`^\S.*? \.{2,} ?(SUCCESS|FAILURE|SKIPPED)(?: \[.*\])?$`)
-	mvnClassEndRe  = regexp.MustCompile(`^Tests run: \d+, Failures: (\d+), Errors: (\d+), Skipped: \d+, Time elapsed: .*(?:--)? in \S+$`)
-	mvnRunningRe   = regexp.MustCompile(`^Running [\w.$]+$`)
-	mvnHelpFooter  = regexp.MustCompile(`^(?:-> \[Help \d+\]|To see the full stack trace of the errors, re-run Maven with the -e switch\.|Re-run Maven using the -X switch to enable full debug logging\.|For more information about the errors and possible solutions, please read the following articles:|\[Help \d+\] https?://\S+|Please refer to dump files \(if any exist\) .*|)$`)
-	mvnTestClassRe = regexp.MustCompile(`^Tests run: `)
+	mvnDownloadRe  = lazyre.New(`^(?:\[INFO\] )?Download(?:ing|ed) from \S+: |^Progress \(\d+\): `)
+	mvnReactorHdr  = lazyre.New(`^Reactor Summary(?: for .*)?:$`)
+	mvnReactorRow  = lazyre.New(`^\S.*? \.{2,} ?(SUCCESS|FAILURE|SKIPPED)(?: \[.*\])?$`)
+	mvnClassEndRe  = lazyre.New(`^Tests run: \d+, Failures: (\d+), Errors: (\d+), Skipped: \d+, Time elapsed: .*(?:--)? in \S+$`)
+	mvnRunningRe   = lazyre.New(`^Running [\w.$]+$`)
+	mvnHelpFooter  = lazyre.New(`^(?:-> \[Help \d+\]|To see the full stack trace of the errors, re-run Maven with the -e switch\.|Re-run Maven using the -X switch to enable full debug logging\.|For more information about the errors and possible solutions, please read the following articles:|\[Help \d+\] https?://\S+|Please refer to dump files \(if any exist\) .*|)$`)
+	mvnTestClassRe = lazyre.New(`^Tests run: `)
 )
 
 func (mavenFilter) Apply(c *engine.Context, out string) (string, bool) {
@@ -379,9 +379,9 @@ func dropPassingOutput(out []string, from, counted int) ([]string, int) {
 var (
 	// mvnJavacRe: a javac diagnostic as the compiler plugin prints it after
 	// the level: "/x/A.java:[12,8] [unchecked] unchecked conversion".
-	mvnJavacRe = regexp.MustCompile(`^(\S.*?):(\[\d+,\d+\]) (.+)$`)
+	mvnJavacRe = lazyre.New(`^(\S.*?):(\[\d+,\d+\]) (.+)$`)
 	// mvnFrameRe: a stack frame (or "... N more") printed after a level.
-	mvnFrameRe = regexp.MustCompile(`^\s*(?:at \S|\.\.\. \d+ (?:more|common frames omitted)$)`)
+	mvnFrameRe = lazyre.New(`^\s*(?:at \S|\.\.\. \d+ (?:more|common frames omitted)$)`)
 )
 
 // javacGroup is the first occurrence of a javac warning message; later

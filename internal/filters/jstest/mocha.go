@@ -2,7 +2,7 @@ package jstest
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -31,18 +31,18 @@ import (
 // and a stack, and no summary.
 
 var (
-	mochaPassRe = regexp.MustCompile(`^\s+[✔✓√] `)
-	mochaFailRe = regexp.MustCompile(`^\s+(\d+)\) \S`)
-	mochaPendRe = regexp.MustCompile(`^\s+- \S`)
-	mochaDotsRe = regexp.MustCompile(`^\s*[.!,․]+$`)
+	mochaPassRe = lazyre.New(`^\s+[✔✓√] `)
+	mochaFailRe = lazyre.New(`^\s+(\d+)\) \S`)
+	mochaPendRe = lazyre.New(`^\s+- \S`)
+	mochaDotsRe = lazyre.New(`^\s*[.!,․]+$`)
 	// progress reporter bar: "  [▬▬▬▬▬▬.......]"
-	mochaBarRe     = regexp.MustCompile(`^\s*\[[▬.⋅]*\]$`)
-	mochaCountRe   = regexp.MustCompile(`^ {2}\d+ (?:passing \(.*\)|pending|failing)$`)
-	mochaPendingRe = regexp.MustCompile(`^ {2}(\d+) pending$`)
-	mochaDetailRe  = regexp.MustCompile(`^ {2}(\d+)\) (.*)$`)
-	mochaDiffRe    = regexp.MustCompile(`^(\s*)\+ expected - actual$`)
-	mochaExcRe     = regexp.MustCompile(`^\s*Exception during run: `)
-	nodeTraceHint  = regexp.MustCompile("^\\(Use `node --trace-(?:deprecation|warnings|uncaught) \\.\\.\\.` to show where the (?:warning|exception) was (?:created|thrown)\\)$")
+	mochaBarRe     = lazyre.New(`^\s*\[[▬.⋅]*\]$`)
+	mochaCountRe   = lazyre.New(`^ {2}\d+ (?:passing \(.*\)|pending|failing)$`)
+	mochaPendingRe = lazyre.New(`^ {2}(\d+) pending$`)
+	mochaDetailRe  = lazyre.New(`^ {2}(\d+)\) (.*)$`)
+	mochaDiffRe    = lazyre.New(`^(\s*)\+ expected - actual$`)
+	mochaExcRe     = lazyre.New(`^\s*Exception during run: `)
+	nodeTraceHint  = lazyre.New("^\\(Use `node --trace-(?:deprecation|warnings|uncaught) \\.\\.\\.` to show where the (?:warning|exception) was (?:created|thrown)\\)$")
 	maxOtherOutput = 30
 )
 

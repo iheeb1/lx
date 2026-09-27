@@ -1,0 +1,16 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✓ hook        installed in ~/.claude/settings.json: $ROOT/bin/lx hook claude
+✓ hook-binary $ROOT/bin/lx is this binary
+✓ hook-run    `git status` → `lx git status` in 7 ms
+✓ path        your shell runs lx from $ROOT/bin/lx, the hook's binary
+! rtk         rtk's hook is installed too (~/.claude/settings.json: rtk hook claude): two hooks rewriting the same Bash call can conflict
+              fix: rtk init -g --uninstall
+! rtk         rtk's hook is installed too ($ROOT/project/.claude/settings.local.json: ~/.claude/hooks/rtk-rewrite.sh): two hooks rewriting the same Bash call can conflict
+              fix: remove the rtk hook from $ROOT/project/.claude/settings.local.json
+✓ perms       no allow rule approves every lx command
+✓ env         LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on
+✓ settings    2 settings files valid: user, project local
+✓ storage     runs: none stored yet ($ROOT/cache/lx/runs is created on the first condensed run)
+✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
+✓ activity    no lx run recorded yet; no Claude Code session in the last day
+lx doctor: 0 failures, 2 warnings

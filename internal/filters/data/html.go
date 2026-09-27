@@ -2,15 +2,16 @@ package data
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"html"
 	"regexp"
 	"strings"
 )
 
 var (
-	htmlSniffRe = regexp.MustCompile(`(?i)^(?:\x{feff})?\s*(?:<!doctype\s+html|<html[\s>]|<head[\s>]|<!--[\s\S]*?-->\s*<!doctype\s+html)`)
-	htmlTitleRe = regexp.MustCompile(`(?is)<title[^>]*>(.*?)</title\s*>`)
-	htmlMainRe  = regexp.MustCompile(`(?is)<main\b[^>]*>(.*)</main\s*>`)
+	htmlSniffRe = lazyre.New(`(?i)^(?:\x{feff})?\s*(?:<!doctype\s+html|<html[\s>]|<head[\s>]|<!--[\s\S]*?-->\s*<!doctype\s+html)`)
+	htmlTitleRe = lazyre.New(`(?is)<title[^>]*>(.*?)</title\s*>`)
+	htmlMainRe  = lazyre.New(`(?is)<main\b[^>]*>(.*)</main\s*>`)
 	// Comments and elements whose content is never visible text, or is page
 	// chrome (navigation, footers, sidebars). RE2 has no backreferences, so
 	// each element gets its own pattern.
@@ -23,15 +24,15 @@ var (
 		}
 		return res
 	}()
-	htmlPreRe = regexp.MustCompile(`(?is)<pre\b[^>]*>(.*?)</pre\s*>`)
+	htmlPreRe = lazyre.New(`(?is)<pre\b[^>]*>(.*?)</pre\s*>`)
 	// Tags that start a new line of text.
-	htmlBlockRe   = regexp.MustCompile(`(?i)<(?:/?(?:p|div|br|hr|li|ul|ol|dl|dt|dd|tr|table|thead|tbody|section|article|header|main|blockquote|figure|figcaption|form|fieldset|details|summary|h[1-6]|option|label)\b[^>]*)>`)
-	htmlHeadingRe = regexp.MustCompile(`(?i)<h([1-6])\b[^>]*>`)
-	htmlLiRe      = regexp.MustCompile(`(?i)<li\b[^>]*>`)
-	htmlCellRe    = regexp.MustCompile(`(?i)</t[dh]\s*>`)
-	htmlTagRe     = regexp.MustCompile(`(?s)<[^>]*>`)
-	spaceRunRe    = regexp.MustCompile(`[ \t\x{a0}]+`)
-	preMarkRe     = regexp.MustCompile("^\x00pre(\\d+)\x00$")
+	htmlBlockRe   = lazyre.New(`(?i)<(?:/?(?:p|div|br|hr|li|ul|ol|dl|dt|dd|tr|table|thead|tbody|section|article|header|main|blockquote|figure|figcaption|form|fieldset|details|summary|h[1-6]|option|label)\b[^>]*)>`)
+	htmlHeadingRe = lazyre.New(`(?i)<h([1-6])\b[^>]*>`)
+	htmlLiRe      = lazyre.New(`(?i)<li\b[^>]*>`)
+	htmlCellRe    = lazyre.New(`(?i)</t[dh]\s*>`)
+	htmlTagRe     = lazyre.New(`(?s)<[^>]*>`)
+	spaceRunRe    = lazyre.New(`[ \t\x{a0}]+`)
+	preMarkRe     = lazyre.New("^\x00pre(\\d+)\x00$")
 )
 
 // isHTML reports whether a body is an HTML document.

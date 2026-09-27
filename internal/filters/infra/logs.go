@@ -2,7 +2,7 @@ package infra
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -75,7 +75,7 @@ func (logsFilter) Stream(c *engine.Context) bool {
 // services. engine.TemplateLogs does not recognize it as a log line (no
 // ISO timestamp, no level word), so such lines get a temporary "[I] "
 // level tag for templating, removed again from every output line.
-var klogRe = regexp.MustCompile(`^([IWEF])\d{4} \d{2}:\d{2}:\d{2}\.\d{6}\s+\d+ \S+:\d+\] `)
+var klogRe = lazyre.New(`^([IWEF])\d{4} \d{2}:\d{2}:\d{2}\.\d{6}\s+\d+ \S+:\d+\] `)
 
 func (logsFilter) Apply(c *engine.Context, out string) (string, bool) {
 	lines := strings.Split(out, "\n")

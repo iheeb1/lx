@@ -2,7 +2,7 @@ package jstest
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -27,14 +27,14 @@ import (
 //	Ran all test suites.
 
 var (
-	jestSuiteRe    = regexp.MustCompile(`^ ?(PASS|FAIL) +(\S.*)$`) // " PASS " badge with FORCE_COLOR
-	jestBulletRe   = regexp.MustCompile(`^  ● (.*)$`)
-	jestConsoleRe  = regexp.MustCompile(`^( +)console\.(?:log|info|warn|error|debug|trace|dir|dirxml|table|group|groupCollapsed|time|timeEnd|timeLog|count|assert)$`)
-	jestSnapNoteRe = regexp.MustCompile(`^ › \d+ snapshots? `)
-	jestTreeRe     = regexp.MustCompile(`^\s+([✓✕○✎√×]) (.*)$`)
-	jestDiffHeadRe = regexp.MustCompile(`^(\s*)- (?:Expected|Snapshot)\b`)
+	jestSuiteRe    = lazyre.New(`^ ?(PASS|FAIL) +(\S.*)$`) // " PASS " badge with FORCE_COLOR
+	jestBulletRe   = lazyre.New(`^  ● (.*)$`)
+	jestConsoleRe  = lazyre.New(`^( +)console\.(?:log|info|warn|error|debug|trace|dir|dirxml|table|group|groupCollapsed|time|timeEnd|timeLog|count|assert)$`)
+	jestSnapNoteRe = lazyre.New(`^ › \d+ snapshots? `)
+	jestTreeRe     = lazyre.New(`^\s+([✓✕○✎√×]) (.*)$`)
+	jestDiffHeadRe = lazyre.New(`^(\s*)- (?:Expected|Snapshot)\b`)
 	// file of a frame: "at Object.log (test/log.test.js:2:11)", "at test/a.js:1:2"
-	frameFileRe = regexp.MustCompile(`(?:\(|at )([^\s():]+):\d+:\d+\)?$`)
+	frameFileRe = lazyre.New(`(?:\(|at )([^\s():]+):\d+:\d+\)?$`)
 )
 
 // jestSuiteLine parses a "PASS file" / "FAIL file (5.2 s)" line (jestSuiteRe,

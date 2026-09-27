@@ -3,7 +3,7 @@ package data
 import (
 	"encoding/json"
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -20,9 +20,9 @@ type headerBlock struct {
 }
 
 var (
-	statusLineRe = regexp.MustCompile(`^HTTP/\d(?:\.\d)? (\d{3})\b`)
-	requestRe    = regexp.MustCompile(`^(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|TRACE|CONNECT) \S+ HTTP/\d(?:\.\d)?$`)
-	fieldRe      = regexp.MustCompile(`^([!#$%&'*+.^_` + "`" + `|~0-9A-Za-z-]+):(.*)$`)
+	statusLineRe = lazyre.New(`^HTTP/\d(?:\.\d)? (\d{3})\b`)
+	requestRe    = lazyre.New(`^(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|TRACE|CONNECT) \S+ HTTP/\d(?:\.\d)?$`)
+	fieldRe      = lazyre.New(`^([!#$%&'*+.^_` + "`" + `|~0-9A-Za-z-]+):(.*)$`)
 )
 
 // keepField reports whether a response header is worth showing when the

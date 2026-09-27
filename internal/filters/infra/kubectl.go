@@ -2,7 +2,7 @@ package infra
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -36,10 +36,10 @@ func (kubectlGet) Stream(c *engine.Context) bool {
 var healthyStatus = set("Running", "Completed", "Succeeded", "Ready", "Bound", "Active", "Complete", "Available", "Healthy", "True", "Established")
 
 var (
-	readyRe = regexp.MustCompile(`^(\d+)/(\d+)$`)
+	readyRe = lazyre.New(`^(\d+)/(\d+)$`)
 	// recentRestartRe: a RESTARTS cell whose last restart was under an
 	// hour ago ("57 (2m ago)", "3 (45s ago)", "12 (2m14s ago)").
-	recentRestartRe = regexp.MustCompile(`\((?:\d+s|\d+m(?:\d+s)?) ago\)$`)
+	recentRestartRe = lazyre.New(`\((?:\d+s|\d+m(?:\d+s)?) ago\)$`)
 )
 
 // unhealthy reports whether a kubectl row needs attention: a STATUS that
@@ -350,8 +350,8 @@ func (kubectlDescribe) Match(c *engine.Context) bool {
 var (
 	describeDrop = set("Volumes", "Tolerations", "QoS Class", "Node-Selectors", "Container ID", "Image ID",
 		"Mounts", "Host Port", "Host Ports", "managedFields")
-	describeKeyRe = regexp.MustCompile(`^(\s*)([A-Za-z][\w .()/-]*?):(?:\s|$)`)
-	lastAppliedRe = regexp.MustCompile(`kubectl\.kubernetes\.io/last-applied-configuration:.*$`)
+	describeKeyRe = lazyre.New(`^(\s*)([A-Za-z][\w .()/-]*?):(?:\s|$)`)
+	lastAppliedRe = lazyre.New(`kubectl\.kubernetes\.io/last-applied-configuration:.*$`)
 )
 
 func indentOf(s string) int { return len(s) - len(strings.TrimLeft(s, " ")) }

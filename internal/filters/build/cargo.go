@@ -2,7 +2,7 @@ package build
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -120,22 +120,22 @@ func cargoMachine(args []string) bool {
 
 var (
 	// cargo's right-aligned status verbs.
-	cargoStatusRe = regexp.MustCompile(`^ {0,12}([A-Z][a-z]+(?:-[a-z]+)?) (\S.*)$`)
-	rustHeadRe    = regexp.MustCompile(`^(error|warning)(\[[\w:]+\])?: (.+)$`)
-	rustSubRe     = regexp.MustCompile(`^(?:note|help|suggestion)(?:\[[\w:]+\])?: |^(?:note|help)$`)
+	cargoStatusRe = lazyre.New(`^ {0,12}([A-Z][a-z]+(?:-[a-z]+)?) (\S.*)$`)
+	rustHeadRe    = lazyre.New(`^(error|warning)(\[[\w:]+\])?: (.+)$`)
+	rustSubRe     = lazyre.New(`^(?:note|help|suggestion)(?:\[[\w:]+\])?: |^(?:note|help)$`)
 	// Body lines: locations, gutter/code lines, "= note:" lines, elisions
 	// and diff-style suggestions ("18 -     return total;", "18 +     total").
-	rustBodyRe    = regexp.MustCompile(`^\s*(?:--> |::: |= |\d*\s*\||\.\.\.$|\d+\s+[-+~](?:\s|$))`)
-	emptyGutterRe = regexp.MustCompile(`^\s*\|$`)
-	rustLocRe     = regexp.MustCompile(`^\s*--> (\S+)`)
-	warnNoteRe    = regexp.MustCompile("^\\s*= note: `#\\[warn\\([\\w:]+\\)\\]`(?: \\(part of `#\\[warn\\([\\w:]+\\)\\]`\\))? on by default$")
-	generatedRe   = regexp.MustCompile(`generated \d+ warnings?(?: \(|$|;)|could not compile|build failed, waiting|aborting due to`)
-	downloadedSum = regexp.MustCompile(`^Downloaded \d+ crates? \(`)
+	rustBodyRe    = lazyre.New(`^\s*(?:--> |::: |= |\d*\s*\||\.\.\.$|\d+\s+[-+~](?:\s|$))`)
+	emptyGutterRe = lazyre.New(`^\s*\|$`)
+	rustLocRe     = lazyre.New(`^\s*--> (\S+)`)
+	warnNoteRe    = lazyre.New("^\\s*= note: `#\\[warn\\([\\w:]+\\)\\]`(?: \\(part of `#\\[warn\\([\\w:]+\\)\\]`\\))? on by default$")
+	generatedRe   = lazyre.New(`generated \d+ warnings?(?: \(|$|;)|could not compile|build failed, waiting|aborting due to`)
+	downloadedSum = lazyre.New(`^Downloaded \d+ crates? \(`)
 
-	testLineRe    = regexp.MustCompile(`^test (.+?) \.\.\. (ok|FAILED|ignored(?:, .*)?|bench: .*)$`)
-	runningNRe    = regexp.MustCompile(`^running (\d+) tests?$`)
-	testResultRe  = regexp.MustCompile(`^test result: (\w+)\. (\d+) passed; (\d+) failed; (\d+) ignored; (\d+) measured; (\d+) filtered out(?:; finished in .*)?$`)
-	testRunningRe = regexp.MustCompile("^\\s+(?:Running [^`\\s]|Doc-tests \\S)")
+	testLineRe    = lazyre.New(`^test (.+?) \.\.\. (ok|FAILED|ignored(?:, .*)?|bench: .*)$`)
+	runningNRe    = lazyre.New(`^running (\d+) tests?$`)
+	testResultRe  = lazyre.New(`^test result: (\w+)\. (\d+) passed; (\d+) failed; (\d+) ignored; (\d+) measured; (\d+) filtered out(?:; finished in .*)?$`)
+	testRunningRe = lazyre.New("^\\s+(?:Running [^`\\s]|Doc-tests \\S)")
 )
 
 // hiddenStatus are the status verbs counted instead of shown (per
@@ -434,7 +434,7 @@ func (r *cargoRender) errNote(it *citem) bool {
 }
 
 // codeLineRe: rustc's quoted source lines (gutter, diff-style suggestion).
-var codeLineRe = regexp.MustCompile(`^\s*\d*\s*\||^\s*\d+\s+[-+~](?:\s|$)`)
+var codeLineRe = lazyre.New(`^\s*\d*\s*\||^\s*\d+\s+[-+~](?:\s|$)`)
 
 // exemptBody marks a condensed warning's code lines: source excerpts quote
 // code ("if err { fail() }"), not error reports; its header is exempt only
@@ -578,14 +578,14 @@ func collapseBlank(lines []string) []string {
 var (
 	// A frame of a Rust backtrace: "   4: demo::parser::tests::parses_negative",
 	// optionally followed by "             at ./src/parser.rs:141:9".
-	rustFrameRe   = regexp.MustCompile(`^\s+\d+:\s+(\S.*)$`)
-	rustFrameAtRe = regexp.MustCompile(`^\s+at \S`)
+	rustFrameRe   = lazyre.New(`^\s+\d+:\s+(\S.*)$`)
+	rustFrameAtRe = lazyre.New(`^\s+at \S`)
 	// Library frames: the standard library and runtime (by symbol or by a
 	// location under /rustc/<hash>/library), test harness, cargo registry
 	// crates.
-	rustLibSymRe = regexp.MustCompile(`^(?:<?(?:std|core|alloc|test|panic_unwind|panic_abort)::|rust_begin_unwind$|__rust|_start$|__libc_start|start_thread$|clone3?$|__pthread|thread_start$|<F as )`)
-	rustLibAtRe  = regexp.MustCompile(`/rustc/[0-9a-f]+/library/|/\.cargo/registry/|/\.rustup/toolchains/`)
-	rustStdAtRe  = regexp.MustCompile(`/rustc/[0-9a-f]+/library/(\w+)/`)
+	rustLibSymRe = lazyre.New(`^(?:<?(?:std|core|alloc|test|panic_unwind|panic_abort)::|rust_begin_unwind$|__rust|_start$|__libc_start|start_thread$|clone3?$|__pthread|thread_start$|<F as )`)
+	rustLibAtRe  = lazyre.New(`/rustc/[0-9a-f]+/library/|/\.cargo/registry/|/\.rustup/toolchains/`)
+	rustStdAtRe  = lazyre.New(`/rustc/[0-9a-f]+/library/(\w+)/`)
 )
 
 // foldRustBacktraces folds, in each "stack backtrace:" section of a test's

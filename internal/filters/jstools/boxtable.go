@@ -1,7 +1,7 @@
 package jstools
 
 import (
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 	"unicode/utf8"
 )
@@ -20,9 +20,9 @@ import (
 // one path per paragraph).
 
 var (
-	boxTopRe = regexp.MustCompile(`^\s*┌[─┬]+┐$`)
-	boxSepRe = regexp.MustCompile(`^\s*├[─┼]+┤$`)
-	boxEndRe = regexp.MustCompile(`^\s*└[─┴]+┘$`)
+	boxTopRe = lazyre.New(`^\s*┌[─┬]+┐$`)
+	boxSepRe = lazyre.New(`^\s*├[─┼]+┤$`)
+	boxEndRe = lazyre.New(`^\s*└[─┴]+┘$`)
 )
 
 // boxCell is one cell: its values (paragraphs), each wrapped line joined.

@@ -1,0 +1,32 @@
+lx discover: 18 transcripts, 30 Bash calls, 67k output tokens
+  would rewrite   25 calls, 62k → 23k tokens (−39k, 62.6% of those, 58.4% of all Bash output)
+  already lx      0 calls
+
+Top commands by tokens lx would save
+  command     calls  tokens  after  saved
+  go test        17     46k    13k   −33k  71%  ####################
+  grep            6     14k   7.9k  −6.0k  43%  ####
+  git status      1      13     13      0   0%
+  go vet          1    2.1k   2.1k      0   0%
+
+Not rewritten (largest output first)
+  command  calls  tokens
+  go test      2    4.2k  ####################
+  go vet       1     197  #
+  cat          1      27  #
+  sed          1       1  #
+
+Acted-on fidelity (the agent opened or edited a file a rewritten command named, within 3 tool calls)
+  command  refs  file in lx view  loc in lx view  file in head+tail  loc in head+tail
+  grep        5          1 (20%)          0 (0%)           5 (100%)          5 (100%)
+  go test     4         4 (100%)        4 (100%)           4 (100%)          4 (100%)
+  total       9        5 (55.5%)       4 (44.4%)           9 (100%)          9 (100%)
+  head+tail: the raw output cut blind to the size of lx's view.
+  not counted: 3 references in outputs discover can't replay exactly (a head/tail kept part of the output 1 · several rewritten commands on one line 1 · already an lx view 1)
+  not counted: ambiguous references 1 · outputs that already were lx views 1
+  locations not in lx's view: grep 2 (filter), grep 3 (the agent's head/tail cut lx's view)
+  (correlational: references the agent reached anyway, not errors lx hid)
+  lx discover --fidelity --examples lists them (on this terminal only)
+
+Host spills (Bash output over the host's limit, replaced by a preview): 4 · 1 from commands lx rewrites, full output recorded · lx's view fits for 1
+Pipelines cutting a rewritten command with head/tail: 7 · replayable 4 (the cut kept the whole output); with lx: view cut 3 · receipt lost 2 · error lines cut 1

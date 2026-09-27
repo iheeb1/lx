@@ -2,7 +2,7 @@ package engine
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"slices"
 	"strings"
 )
@@ -10,9 +10,9 @@ import (
 var (
 	// "goroutine 12 [chan receive, 3 minutes]:" (also the GOTRACEBACK=system
 	// form "goroutine 1 gp=0x… m=0 mp=0x… [running]:").
-	goroutineHdrRe = regexp.MustCompile(`^goroutine (\d+)(?: [^\[]*)? \[([^\]]*)\]:$`)
-	goOffsetRe     = regexp.MustCompile(` \+0x[0-9a-f]+$`)
-	goCreatedInRe  = regexp.MustCompile(` in goroutine \d+$`)
+	goroutineHdrRe = lazyre.New(`^goroutine (\d+)(?: [^\[]*)? \[([^\]]*)\]:$`)
+	goOffsetRe     = lazyre.New(` \+0x[0-9a-f]+$`)
+	goCreatedInRe  = lazyre.New(` in goroutine \d+$`)
 )
 
 // goroutineBlock is one "goroutine N [state]:" section of a dump.

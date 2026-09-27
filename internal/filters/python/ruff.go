@@ -2,7 +2,7 @@ package python
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -65,11 +65,11 @@ const ruffSnippets = 10
 
 var (
 	// Concise / pre-0.12 full header: path:line:col: CODE [*] message.
-	ruffOldHeadRe = regexp.MustCompile(`^(\S(?:.*?\S)?):(\d+):(\d+): ([A-Z]+\d+|[a-z][a-z0-9]*(?:-[a-z0-9]+)*:?|SyntaxError:) (.*)$`)
+	ruffOldHeadRe = lazyre.New(`^(\S(?:.*?\S)?):(\d+):(\d+): ([A-Z]+\d+|[a-z][a-z0-9]*(?:-[a-z0-9]+)*:?|SyntaxError:) (.*)$`)
 	// 0.12+ full format location line under the header.
-	ruffArrowRe   = regexp.MustCompile(`^\s*--> (\S(?:.*?\S)?):(\d+):(\d+)$`)
-	ruffHelpRe    = regexp.MustCompile(`^\s*(?:= )?(?:help|note|info|warning|error): `)
-	ruffSummaryRe = regexp.MustCompile(`^(?:Found \d+ errors?(?: \(\d+ fixed, \d+ remaining\))?\.|All checks passed!|\[\*\] \d+ fixable with the .*|No fixes available .*|\d+ files? (?:would be )?(?:reformatted|left unchanged).*)$`)
+	ruffArrowRe   = lazyre.New(`^\s*--> (\S(?:.*?\S)?):(\d+):(\d+)$`)
+	ruffHelpRe    = lazyre.New(`^\s*(?:= )?(?:help|note|info|warning|error): `)
+	ruffSummaryRe = lazyre.New(`^(?:Found \d+ errors?(?: \(\d+ fixed, \d+ remaining\))?\.|All checks passed!|\[\*\] \d+ fixable with the .*|No fixes available .*|\d+ files? (?:would be )?(?:reformatted|left unchanged).*)$`)
 )
 
 type ruffDiag struct {
@@ -82,12 +82,12 @@ type ruffDiag struct {
 
 var (
 	// "15 |     tags: List[str] = …" (code line of a snippet).
-	ruffCodeRe = regexp.MustCompile(`^\s*(\d+) \|(.*)$`)
+	ruffCodeRe = lazyre.New(`^\s*(\d+) \|(.*)$`)
 	// Marker line of a snippet: "   |           ^^^^", "  | |___^",
 	// "  |        -- previous definition of `os` here" (secondary label).
-	ruffMarkRe = regexp.MustCompile(`^\s*\|\s*(?:[\^~_\-/\\]|\|.*[\^_])`)
+	ruffMarkRe = lazyre.New(`^\s*\|\s*(?:[\^~_\-/\\]|\|.*[\^_])`)
 	// Secondary location of a multi-span diagnostic: "  ::: other.py:6:5".
-	ruffSecondaryRe = regexp.MustCompile(`^\s*::: \S`)
+	ruffSecondaryRe = lazyre.New(`^\s*::: \S`)
 )
 
 // snippetLine reports whether a snippet line is worth keeping: the code

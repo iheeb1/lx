@@ -2,7 +2,7 @@ package infra
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -48,8 +48,8 @@ const (
 
 var (
 	// problemStatusRe: container states worth seeing even in a long list.
-	problemStatusRe = regexp.MustCompile(`^(?:Exited \((?:[1-9]\d*|-\d+)\)|Restarting|Dead|Removal In Progress|OOMKilled)|\(unhealthy\)|\(health: starting\)`)
-	statusAgeRe     = regexp.MustCompile(`^(Up|Exited \(-?\d+\)|Restarting \(-?\d+\)|Created|Dead|Paused|Removal In Progress)(?:\s.*?)?(\((?:healthy|unhealthy|health: starting|Paused)\))?$`)
+	problemStatusRe = lazyre.New(`^(?:Exited \((?:[1-9]\d*|-\d+)\)|Restarting|Dead|Removal In Progress|OOMKilled)|\(unhealthy\)|\(health: starting\)`)
+	statusAgeRe     = lazyre.New(`^(Up|Exited \(-?\d+\)|Restarting \(-?\d+\)|Created|Dead|Paused|Removal In Progress)(?:\s.*?)?(\((?:healthy|unhealthy|health: starting|Paused)\))?$`)
 )
 
 // statusKey buckets a docker STATUS cell: "Up (healthy)", "Exited (137)".
@@ -207,9 +207,9 @@ func (dockerPull) Match(c *engine.Context) bool {
 }
 
 var (
-	layerRe        = regexp.MustCompile(`^ ?([0-9a-f]{12}):? (Pulling fs layer|Waiting|Downloading|Verifying Checksum|Download complete|Extracting|Pull complete|Already exists|Pulled|Downloaded|Exists)\b`)
-	composePullRe  = regexp.MustCompile(`^ ?\S+ (?:Pulling|Pulled|Skipped|Waiting)\b`)
-	pullProgressRe = regexp.MustCompile(`^\s*\[[=> ]*\]\s+[\d.]+[kMG]?B/[\d.]+[kMG]?B`)
+	layerRe        = lazyre.New(`^ ?([0-9a-f]{12}):? (Pulling fs layer|Waiting|Downloading|Verifying Checksum|Download complete|Extracting|Pull complete|Already exists|Pulled|Downloaded|Exists)\b`)
+	composePullRe  = lazyre.New(`^ ?\S+ (?:Pulling|Pulled|Skipped|Waiting)\b`)
+	pullProgressRe = lazyre.New(`^\s*\[[=> ]*\]\s+[\d.]+[kMG]?B/[\d.]+[kMG]?B`)
 )
 
 func (dockerPull) Apply(c *engine.Context, out string) (string, bool) {

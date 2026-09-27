@@ -76,8 +76,12 @@ func TestRewrite(t *testing.T) {
 		{`env LX_RAW=1 git status`, same},
 
 		// pipelines
-		{`ls -la | head -20`, `lx ls -la | head -20`},
-		{`go test ./... | tail -n 30`, `lx go test ./... | tail -n 30`},
+		// head/tail after lx needs stderr merged: lx prints stderr on stdout,
+		// where the cut could hide errors the raw command shows.
+		{`ls -la 2>&1 | head -20`, `lx ls -la 2>&1 | head -20`},
+		{`go test ./... 2>&1 | tail -n 30`, `lx go test ./... 2>&1 | tail -n 30`},
+		{`go test ./... |& tail -n 30`, `lx go test ./... |& tail -n 30`},
+		{`go test ./... | cat`, `lx go test ./... | cat`},
 		{`git status | cat`, `lx git status | cat`},
 		{`git status 2>&1 | head`, `lx git status 2>&1 | head`},
 		{`git status |& tail -5`, `lx git status |& tail -5`},
@@ -310,7 +314,7 @@ func TestRewriteInvariants(t *testing.T) {
 }
 
 func TestInspect(t *testing.T) {
-	in := Inspect(`FOO=1 go test ./... && git status | head && echo done`)
+	in := Inspect(`FOO=1 go test ./... && git status 2>&1 | head && echo done`)
 	want := [][]string{{"go", "test", "./..."}, {"git", "status"}}
 	if !reflect.DeepEqual(in.Targets, want) {
 		t.Errorf("Targets = %q, want %q", in.Targets, want)
@@ -422,4 +426,26 @@ func FuzzRewrite(f *testing.F) {
 			t.Fatalf("%q → %q", s, out)
 		}
 	})
+}
+
+// A head/tail after lx cuts lines of lx's stdout, where lx prints stderr too;
+// raw, stderr would bypass the cut and reach the agent. So such pipelines
+// are rewritten only when stderr already goes down the pipe.
+func TestHeadTailNeedsMergedStderr(t *testing.T) {
+	for _, in := range []string{
+		`make | tail -3`,
+		`ls -la | head -20`,
+		`go test ./... | tail -n 30`,
+		`make | cat 2>&1 | tail -2`,
+		`npm test | head`,
+	} {
+		if out, ok := Rewrite(in); ok {
+			t.Errorf("Rewrite(%q) = %q; stderr would be cut by head/tail", in, out)
+		}
+	}
+	for _, in := range []string{`make 2>&1 | tail -3`, `make |& tail -3`, `go test ./... | cat`} {
+		if _, ok := Rewrite(in); !ok {
+			t.Errorf("Rewrite(%q) not rewritten", in)
+		}
+	}
 }

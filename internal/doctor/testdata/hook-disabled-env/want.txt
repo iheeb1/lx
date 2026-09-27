@@ -1,0 +1,17 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✓ hook        installed in ~/.claude/settings.json: $ROOT/bin/lx hook claude
+✓ hook-binary $ROOT/bin/lx is this binary
+✗ hook-run    the hook printed nothing for `git status`: LX_HOOK=off in your environment turns it off
+              fix: unset LX_HOOK
+✓ path        your shell runs lx from $ROOT/bin/lx, the hook's binary
+✓ rtk         no rtk hook
+✓ perms       no allow rule approves every lx command
+! env         LX_HOOK=off in your environment turns the lx hook into a no-op
+              fix: unset LX_HOOK  # and remove it from your shell's startup files
+! env         LX_RAW=1 in your environment makes lx run every command raw, with nothing condensed
+              fix: unset LX_RAW  # and remove it from your shell's startup files
+✓ settings    1 settings file valid: user
+✓ storage     runs: none stored yet ($ROOT/cache/lx/runs is created on the first condensed run)
+✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
+✓ activity    no lx run recorded yet; no Claude Code session in the last day
+lx doctor: 1 failure, 2 warnings

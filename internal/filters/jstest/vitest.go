@@ -2,7 +2,7 @@ package jstest
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -37,24 +37,24 @@ import (
 // failing files; the layout is otherwise the same.
 
 var (
-	vRunRe = regexp.MustCompile(`^ RUN {2}v\d+\.\d+\S* |^ +Coverage enabled with \w+$`)
+	vRunRe = lazyre.New(`^ RUN {2}v\d+\.\d+\S* |^ +Coverage enabled with \w+$`)
 	// vitest ≥2: "(34 tests | 1 failed) 8ms"; vitest 1: "(34)".
-	vFileRe    = regexp.MustCompile(`^ ([✓❯×↓]) (\S.*?) \((\d+)(?: tests?)?((?: \| [^)]*)?)\)(?: .*)?$`)
-	vSkipCntRe = regexp.MustCompile(`(\d+) (?:skipped|todo)`)
-	vGroupRe   = regexp.MustCompile(`^ {3,}([❯✓×↓]) (.*)$`)
+	vFileRe    = lazyre.New(`^ ([✓❯×↓]) (\S.*?) \((\d+)(?: tests?)?((?: \| [^)]*)?)\)(?: .*)?$`)
+	vSkipCntRe = lazyre.New(`(\d+) (?:skipped|todo)`)
+	vGroupRe   = lazyre.New(`^ {3,}([❯✓×↓]) (.*)$`)
 	// a describe group of the tree reporter: "   ✓ error handling (2)"
 	// (tests end with a duration: "     ✓ works 1ms")
-	vGroupCountRe = regexp.MustCompile(` \(\d+\)$`)
-	vVerboseRe    = regexp.MustCompile(`^ ([✓×↓□]) (\S+ > .*)$`)
-	vArrowRe      = regexp.MustCompile(`^ {3}→ `)
+	vGroupCountRe = lazyre.New(` \(\d+\)$`)
+	vVerboseRe    = lazyre.New(`^ ([✓×↓□]) (\S+ > .*)$`)
+	vArrowRe      = lazyre.New(`^ {3}→ `)
 	// The dot reporter prints no newline after its dots: "··xstdout | …".
-	vConsoleRe  = regexp.MustCompile(`^[·x\-*]*(stdout|stderr) \| (.+)$`)
-	vSepRe      = regexp.MustCompile(`^⎯{3,}`)
-	vSectionRe  = regexp.MustCompile(`^⎯+ (.+?) ⎯+$`)
-	vFailRe     = regexp.MustCompile(`^ FAIL {2}(.+)$`)
-	vSummaryRe  = regexp.MustCompile(`^ *(Test Files|Tests|Errors|Snapshots|Type Errors|Start at|Duration) {2}\S`)
-	vDiffHeadRe = regexp.MustCompile(`^(\s*)- Expected\s*$`)
-	vDotsRe     = regexp.MustCompile(`^[·x\-*]+$`)
+	vConsoleRe  = lazyre.New(`^[·x\-*]*(stdout|stderr) \| (.+)$`)
+	vSepRe      = lazyre.New(`^⎯{3,}`)
+	vSectionRe  = lazyre.New(`^⎯+ (.+?) ⎯+$`)
+	vFailRe     = lazyre.New(`^ FAIL {2}(.+)$`)
+	vSummaryRe  = lazyre.New(`^ *(Test Files|Tests|Errors|Snapshots|Type Errors|Start at|Duration) {2}\S`)
+	vDiffHeadRe = lazyre.New(`^(\s*)- Expected\s*$`)
+	vDotsRe     = lazyre.New(`^[·x\-*]+$`)
 )
 
 // vTestLine returns the status mark of a test line of the default

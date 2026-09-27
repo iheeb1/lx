@@ -1,0 +1,5 @@
+{
+  "bins": {
+    "project/tools": "lx 6.6.6-untrusted"
+  }
+}

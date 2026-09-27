@@ -3,7 +3,7 @@ package data
 import (
 	"encoding/json"
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"sort"
 	"strings"
 )
@@ -194,7 +194,7 @@ func parseNpmLock(out string) (lockSummary, bool) {
 	return s, true
 }
 
-var yarnVersionRe = regexp.MustCompile(`^  version:? "?([^"\s]+)"?$`)
+var yarnVersionRe = lazyre.New(`^  version:? "?([^"\s]+)"?$`)
 
 func parseYarnLock(out string) (lockSummary, bool) {
 	s := lockSummary{format: "yarn v1", grepFor: `grep -n -A2 '^"\?<name>@' FILE`}
@@ -229,8 +229,8 @@ func parseYarnLock(out string) (lockSummary, bool) {
 }
 
 var (
-	pnpmVersionRe = regexp.MustCompile(`^lockfileVersion: '?([\d.]+)'?`)
-	pnpmPkgRe     = regexp.MustCompile(`^  '?/?((?:@[^@/\s']+/)?[^@\s']+)@([^:'(\s]+)[^:]*'?:$`)
+	pnpmVersionRe = lazyre.New(`^lockfileVersion: '?([\d.]+)'?`)
+	pnpmPkgRe     = lazyre.New(`^  '?/?((?:@[^@/\s']+/)?[^@\s']+)@([^:'(\s]+)[^:]*'?:$`)
 )
 
 func parsePnpmLock(out string) (lockSummary, bool) {
@@ -272,7 +272,7 @@ func parsePnpmLock(out string) (lockSummary, bool) {
 	return s, strings.HasPrefix(s.format, "pnpm, ") && len(s.pkgs) > 0
 }
 
-var tomlKVRe = regexp.MustCompile(`^(name|version) = "([^"]*)"$`)
+var tomlKVRe = lazyre.New(`^(name|version) = "([^"]*)"$`)
 
 // parseTomlPackages reads Cargo.lock, poetry.lock and uv.lock: one
 // [[package]] table per locked package.
@@ -309,7 +309,7 @@ func parseTomlPackages(kind, out string) (lockSummary, bool) {
 	return s, len(s.pkgs) > 0
 }
 
-var goSumRe = regexp.MustCompile(`^(\S+) (v[^/\s]+)(/go\.mod)? h1:\S+$`)
+var goSumRe = lazyre.New(`^(\S+) (v[^/\s]+)(/go\.mod)? h1:\S+$`)
 
 func parseGoSum(out string) (lockSummary, bool) {
 	s := lockSummary{format: "Go checksums", grepFor: `grep '<name> ' FILE`, noun: "module version"}
@@ -357,8 +357,8 @@ func parsePipfileLock(out string) (lockSummary, bool) {
 }
 
 var (
-	gemSpecRe   = regexp.MustCompile(`^    (\S+) \(([^)]+)\)$`)
-	gemSourceRe = regexp.MustCompile(`(?m)^(?:GEM|PATH|GIT)$`)
+	gemSpecRe   = lazyre.New(`^    (\S+) \(([^)]+)\)$`)
+	gemSourceRe = lazyre.New(`(?m)^(?:GEM|PATH|GIT)$`)
 )
 
 func parseGemfileLock(out string) (lockSummary, bool) {

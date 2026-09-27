@@ -23,7 +23,7 @@ type BarRow struct {
 func HBars(title, subtitle string, series []Series, rows []BarRow, maxV float64, unit string) string {
 	const (
 		w       = 760.0
-		left    = 190.0
+		left    = 210.0
 		right   = 64.0
 		barH    = 16.0
 		gap     = 2.0

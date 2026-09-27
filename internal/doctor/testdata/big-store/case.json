@@ -1,0 +1,7 @@
+{
+  "tee_runs": 2,
+  "tee_sparse_mb": 600,
+  "history_hours": [
+    1
+  ]
+}

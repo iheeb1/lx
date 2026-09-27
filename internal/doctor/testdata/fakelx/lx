@@ -1,0 +1,47 @@
+#!/bin/sh
+# A stand-in for lx in doctor's tests. It answers `version` from the
+# VERSION file next to it and `hook claude` like lx's hook does for
+# `git status`: the rewrite calls the --prefix path when that file exists,
+# else `lx` (or its own full path with FAKE_LX_HOOK=abs, as lx's hook does
+# when PATH's lx is not itself). FAKE_LX_HOOK=empty|garbage|fail|slow
+# changes the answer.
+dir=$(dirname "$0")
+case "$1" in
+version)
+	cat "$dir/VERSION"
+	;;
+hook)
+	cat >/dev/null
+	case "$LX_HOOK" in 0 | false | off | no) exit 0 ;; esac
+	word=lx
+	shift 2
+	while [ $# -gt 0 ]; do
+		case "$1" in
+		--prefix)
+			shift
+			[ -f "$1" ] && word=$1
+			;;
+		--prefix=*) [ -f "${1#--prefix=}" ] && word=${1#--prefix=} ;;
+		esac
+		shift
+	done
+	case "$FAKE_LX_HOOK" in
+	abs) [ "$word" = lx ] && word=$0 ;;
+	empty) exit 0 ;;
+	garbage)
+		echo "lx: something went wrong"
+		exit 0
+		;;
+	fail)
+		echo "fake lx: boom" >&2
+		exit 3
+		;;
+	slow) sleep 10 ;;
+	esac
+	printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecisionReason":"lx: condensed output (lx show <id> for full)","updatedInput":{"command":"%s git status"}}}\n' "$word"
+	;;
+*)
+	echo "fake lx: unsupported: $*" >&2
+	exit 2
+	;;
+esac

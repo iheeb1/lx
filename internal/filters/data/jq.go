@@ -2,7 +2,7 @@ package data
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -23,11 +23,11 @@ var (
 	// jqDiagRe: jq's own messages ("jq: error (at <stdin>:3): …", jq 1.7's
 	// "jq: parse error: …", jq 1.5/1.6's bare "parse error: … at line 1,
 	// column 6", gojq's "gojq: …", jaq's "Error: …").
-	jqDiagRe = regexp.MustCompile(`^(?:jq|gojq|jaq): |^jq: error|^Error: |^parse error: `)
+	jqDiagRe = lazyre.New(`^(?:jq|gojq|jaq): |^jq: error|^Error: |^parse error: `)
 	// jqGluedRe finds a jq message that starts inside a line: jq's stdout
 	// is block-buffered, its stderr is not, so an error can land in the
 	// middle of an output line.
-	jqGluedRe = regexp.MustCompile(`(?:jq|gojq): (?:error|parse error)\b|parse error: .+ at line \d+, column \d+$`)
+	jqGluedRe = lazyre.New(`(?:jq|gojq): (?:error|parse error)\b|parse error: .+ at line \d+, column \d+$`)
 )
 
 // jqGlued returns where a jq message glued inside ln starts, or -1.

@@ -3,6 +3,7 @@ package hook
 import (
 	"bytes"
 	"encoding/json"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -213,5 +214,324 @@ func BenchmarkClaudeHook(b *testing.B) {
 	for b.Loop() {
 		var out bytes.Buffer
 		_ = ClaudeHook(strings.NewReader(input), &out, "/x")
+	}
+}
+
+func runHookWith(t *testing.T, agent, input string, o HookOptions) string {
+	t.Helper()
+	var out bytes.Buffer
+	if err := HookWith(agent, strings.NewReader(input), &out, "/nonexistent", o); err != nil {
+		t.Fatalf("hook returned %v", err)
+	}
+	if s := strings.TrimSpace(out.String()); s != "" && !json.Valid([]byte(s)) {
+		t.Fatalf("invalid JSON output: %s", s)
+	}
+	return out.String()
+}
+
+// payloadIn is a Bash payload with a real cwd and a permission mode.
+func payloadIn(cmd, cwd, mode string, background bool) string {
+	top := &object{}
+	top.set("session_id", jsonString("s1"))
+	if cwd != "" {
+		top.set("cwd", jsonString(cwd))
+	}
+	if mode != "" {
+		top.set("permission_mode", jsonString(mode))
+	}
+	top.set("hook_event_name", jsonString("PreToolUse"))
+	top.set("tool_name", jsonString("Bash"))
+	in := &object{}
+	in.set("command", jsonString(cmd))
+	in.set("description", jsonString("d"))
+	if background {
+		in.set("run_in_background", rawJSON("true"))
+	}
+	top.set("tool_input", in.compact())
+	return string(top.compact())
+}
+
+type hookOut struct {
+	H struct {
+		Decision string `json:"permissionDecision"`
+		Reason   string `json:"permissionDecisionReason"`
+		Input    *struct {
+			Command    string `json:"command"`
+			Background *bool  `json:"run_in_background"`
+		} `json:"updatedInput"`
+	} `json:"hookSpecificOutput"`
+}
+
+func decode(t *testing.T, out string) hookOut {
+	t.Helper()
+	var v hookOut
+	if strings.TrimSpace(out) == "" {
+		return v
+	}
+	if err := json.Unmarshal([]byte(out), &v); err != nil {
+		t.Fatalf("%v: %s", err, out)
+	}
+	return v
+}
+
+const parityReason = RewriteReason + readOnlyReason
+
+func TestClaudeHookReadOnly(t *testing.T) {
+	ro := HookOptions{ReadOnly: true}
+	cases := []struct {
+		name, settings, cmd, mode string
+		bg                        bool
+		opts                      HookOptions
+		decision, rewritten       string
+	}{
+		{"git status", ``, `git status`, "default", false, ro, "allow", "lx git status"},
+		{"no permission_mode sent", ``, `git status`, "", false, ro, "allow", "lx git status"},
+		{"acceptEdits", ``, `git log --oneline -5`, "acceptEdits", false, ro, "allow", "lx git log --oneline -5"},
+		{"plan", ``, `git diff`, "plan", false, ro, "allow", "lx git diff"},
+		{"cd, list, head", ``, `cd src && ls -la 2>&1 | head -20`, "default", false, ro, "allow", "cd src && lx ls -la 2>&1 | head -20"},
+		{"search", ``, `rg -n foo src && grep -rn TODO src`, "default", false, ro, "allow", "lx rg -n foo src && lx grep -rn TODO src"},
+		{"one part not read-only", ``, `git status && npm test`, "default", false, ro, "", "lx git status && lx npm test"},
+		{"outside the project", ``, `ls ../..`, "default", false, ro, "", "lx ls ../.."},
+		{"env assignment", ``, `LD_PRELOAD=x git status`, "default", false, ro, "", "LD_PRELOAD=x lx git status"},
+		{"wrapper", ``, `timeout 5 git status`, "default", false, ro, "", "timeout 5 lx git status"},
+		{"git -C", ``, `git -C ../x status`, "default", false, ro, "", "lx git -C ../x status"},
+		{"bypassPermissions", ``, `git status`, "bypassPermissions", false, ro, "", "lx git status"},
+		{"dontAsk", ``, `git status`, "dontAsk", false, ro, "", "lx git status"},
+		{"without --readonly", ``, `git status`, "default", false, HookOptions{}, "", "lx git status"},
+		{"deny rule", `{"permissions":{"deny":["Bash(git status:*)"]}}`, `git status`, "default", false, ro, "", ""},
+		{"ask rule", `{"permissions":{"ask":["Bash(git log:*)"]}}`, `git log`, "default", false, ro, "ask", "lx git log"},
+		{"allow rule keeps its reason", `{"permissions":{"allow":["Bash(git status:*)"]}}`, `git status`, "default", false, ro, "allow", "lx git status"},
+		{"background", ``, `git status`, "default", true, ro, "", ""},
+		{"ask rule on lx itself", `{"permissions":{"ask":["Bash(lx:*)"]}}`, `git status`, "default", false, ro, "", "lx git status"},
+		// The rewrite would be denied while ls itself is allowed: stay out.
+		{"deny rule on lx itself", `{"permissions":{"deny":["Bash(lx ls:*)"]}}`, `ls -la`, "default", false, ro, "", ""},
+		{"unrelated allow rule, rest read-only", `{"permissions":{"allow":["Bash(npm test:*)"]}}`, `git status && ls`, "default", false, ro, "allow", "lx git status && lx ls"},
+		{"file redirect never rewritten", ``, `git status > f`, "default", false, ro, "", ""},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			project := withRules(t, c.settings)
+			if err := os.MkdirAll(filepath.Join(project, "src"), 0o755); err != nil {
+				t.Fatal(err)
+			}
+			v := decode(t, runHookWith(t, "claude", payloadIn(c.cmd, project, c.mode, c.bg), c.opts))
+			got := ""
+			if v.H.Input != nil {
+				got = v.H.Input.Command
+			}
+			if v.H.Decision != c.decision || got != c.rewritten {
+				t.Fatalf("decision=%q rewrite=%q, want %q %q (reason %q)", v.H.Decision, got, c.decision, c.rewritten, v.H.Reason)
+			}
+			switch {
+			case c.decision == "allow" && !strings.Contains(c.settings, "git status:*"):
+				if v.H.Reason != parityReason {
+					t.Errorf("reason = %q", v.H.Reason)
+				}
+			case c.rewritten != "" && c.decision != "ask":
+				if v.H.Reason != RewriteReason {
+					t.Errorf("reason = %q", v.H.Reason)
+				}
+			}
+		})
+	}
+}
+
+// Without --readonly (and with it, when parity doesn't apply) every existing
+// golden is byte-identical: TestClaudeHookGolden runs with ReadOnly too.
+func TestClaudeHookGoldenWithReadOnly(t *testing.T) {
+	// /nowhere (the goldens' cwd) does not exist, so parity never applies.
+	for _, cmd := range []string{`git status`, `cd web && npm test && git status`, `lx git push origin main`} {
+		withRules(t, "")
+		a := runHookFor(t, "claude", bashInput(cmd))
+		b := runHookWith(t, "claude", bashInput(cmd), HookOptions{ReadOnly: true})
+		if a != b {
+			t.Errorf("%s: --readonly changed the output\n%s\n%s", cmd, a, b)
+		}
+	}
+}
+
+func TestClaudeHookReadOnlyRoot(t *testing.T) {
+	ro := HookOptions{ReadOnly: true}
+	project := withRules(t, "")
+
+	// The project is the home directory: parity never applies.
+	t.Setenv("HOME", project)
+	if v := decode(t, runHookWith(t, "claude", payloadIn("git status", project, "default", false), ro)); v.H.Decision != "" {
+		t.Errorf("root = $HOME: decision %q", v.H.Decision)
+	}
+	t.Setenv("HOME", t.TempDir())
+
+	// No cwd in the payload: relative paths can't be judged.
+	if v := decode(t, runHookWith(t, "claude", payloadIn("git status", "", "default", false), ro)); v.H.Decision != "" {
+		t.Errorf("no cwd: decision %q", v.H.Decision)
+	}
+
+	// Without CLAUDE_PROJECT_DIR the payload cwd is the root.
+	t.Setenv("CLAUDE_PROJECT_DIR", "")
+	sub := filepath.Join(project, "sub")
+	if err := os.MkdirAll(sub, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if v := decode(t, runHookWith(t, "claude", payloadIn("ls ..", sub, "default", false), ro)); v.H.Decision != "" {
+		t.Errorf("ls .. above the payload cwd: decision %q", v.H.Decision)
+	}
+	if v := decode(t, runHookWith(t, "claude", payloadIn("ls .", sub, "default", false), ro)); v.H.Decision != "allow" {
+		t.Errorf("ls . in the payload cwd: decision %q", v.H.Decision)
+	}
+
+	// additionalDirectories extend the root.
+	extra := t.TempDir()
+	writeFile(t, filepath.Join(project, ".claude", "settings.json"),
+		`{"permissions":{"additionalDirectories":[`+string(jsonString(extra))+`]}}`)
+	t.Setenv("CLAUDE_PROJECT_DIR", project)
+	if v := decode(t, runHookWith(t, "claude", payloadIn("ls "+extra, project, "default", false), ro)); v.H.Decision != "allow" {
+		t.Errorf("additional directory: decision %q", v.H.Decision)
+	}
+}
+
+// Only the claude host applies parity.
+func TestReadOnlyOnlyForClaude(t *testing.T) {
+	project := withRules(t, "")
+	for _, agent := range []string{"copilot", "gemini", "cursor"} {
+		tool := map[string]string{"copilot": "Bash", "gemini": "run_shell_command", "cursor": "Shell"}[agent]
+		in := `{"tool_name":"` + tool + `","cwd":` + string(jsonString(project)) + `,"tool_input":{"command":"git status"}}`
+		out := runHookWith(t, agent, in, HookOptions{ReadOnly: true})
+		if strings.Contains(out, "allow") || strings.Contains(out, "read-only") {
+			t.Errorf("%s got a parity decision: %s", agent, out)
+		}
+		if !strings.Contains(out, "lx git status") {
+			t.Errorf("%s: not rewritten: %s", agent, out)
+		}
+	}
+}
+
+func TestClaudeHookBackground(t *testing.T) {
+	project := withRules(t, `{"permissions":{"deny":["Bash(git push:*)"],"ask":["Bash(npm publish:*)"]}}`)
+	for _, ro := range []bool{false, true} {
+		o := HookOptions{ReadOnly: ro}
+		if out := runHookWith(t, "claude", payloadIn("go test ./...", project, "default", true), o); out != "" {
+			t.Errorf("background run rewritten: %s", out)
+		}
+		v := decode(t, runHookWith(t, "claude", payloadIn("lx git push", project, "default", true), o))
+		if v.H.Decision != "deny" || v.H.Input != nil {
+			t.Errorf("background model-written lx + deny: %+v", v.H)
+		}
+		v = decode(t, runHookWith(t, "claude", payloadIn("lx npm publish", project, "default", true), o))
+		if v.H.Decision != "ask" || v.H.Input != nil {
+			t.Errorf("background model-written lx + ask: %+v", v.H)
+		}
+		v = decode(t, runHookWith(t, "claude", payloadIn("lx git push", project, "default", false), o))
+		if v.H.Decision != "deny" {
+			t.Errorf("model-written lx + deny: %+v", v.H)
+		}
+	}
+	// Anything but an explicit false counts as background.
+	for _, bg := range []string{`true`, `"true"`, `1`} {
+		in := `{"tool_name":"Bash","tool_input":{"command":"git status","run_in_background":` + bg + `}}`
+		if out := runHookFor(t, "claude", in); out != "" {
+			t.Errorf("run_in_background %s: %s", bg, out)
+		}
+	}
+	for _, bg := range []string{`false`, `null`} {
+		in := `{"tool_name":"Bash","tool_input":{"command":"git status","run_in_background":` + bg + `}}`
+		if out := runHookFor(t, "claude", in); !strings.Contains(out, `"lx git status"`) || !strings.Contains(out, `"run_in_background":`+bg) {
+			t.Errorf("run_in_background %s: %s", bg, out)
+		}
+	}
+}
+
+// Parity costs a few stat calls: the hook stays well under 2ms per call.
+func TestClaudeHookReadOnlyFast(t *testing.T) {
+	project := withRules(t, `{"permissions":{"deny":["Bash(rm:*)"]}}`)
+	if err := os.MkdirAll(filepath.Join(project, "src"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	input := payloadIn(`cd src && git status && ls -la | head -20 && rg -n foo . && grep -rn TODO .`, project, "default", false)
+	const n = 300
+	start := time.Now()
+	for i := 0; i < n; i++ {
+		var out bytes.Buffer
+		_ = HookWith("claude", strings.NewReader(input), &out, "/x", HookOptions{ReadOnly: true})
+		if !strings.Contains(out.String(), `"permissionDecision":"allow"`) {
+			t.Fatalf("not approved: %s", out.String())
+		}
+	}
+	if avg := time.Since(start) / n; avg > 2*time.Millisecond && !raceEnabled {
+		t.Errorf("--readonly hook averages %v per call, want < 2ms", avg)
+	}
+}
+
+func TestEvaluateClaude(t *testing.T) {
+	project := withRules(t, "")
+	cases := []struct {
+		cmd      string
+		readOnly bool
+		rules    Rules
+		rw, dec  string
+	}{
+		{"git status", false, Rules{}, "lx git status", ""},
+		{"git status", true, Rules{}, "lx git status", "allow"},
+		{"git status && npm test", true, Rules{}, "lx git status && lx npm test", ""},
+		{"git status", true, Rules{Deny: []string{"Bash(git:*)"}}, "", ""},
+		{"git push", true, Rules{Ask: []string{"Bash(git push:*)"}}, "lx git push", "ask"},
+		{"npm test", false, Rules{Allow: []string{"Bash(npm test:*)"}}, "lx npm test", "allow"},
+		{"lx git push", true, Rules{Deny: []string{"Bash(git push:*)"}}, "", "deny"},
+		{"echo hi", true, Rules{}, "", ""},
+	}
+	for _, c := range cases {
+		rw, dec := EvaluateClaude(c.cmd, project, c.readOnly, c.rules)
+		if rw != c.rw || dec != c.dec {
+			t.Errorf("EvaluateClaude(%q, ro=%v) = %q %q, want %q %q", c.cmd, c.readOnly, rw, dec, c.rw, c.dec)
+		}
+	}
+	// Replaying another session: this process's CLAUDE_PROJECT_DIR (the
+	// current session's project) is not that session's root.
+	t.Setenv("CLAUDE_PROJECT_DIR", t.TempDir())
+	if _, dec := EvaluateClaude("git status", project, true, Rules{}); dec != "allow" {
+		t.Errorf("EvaluateClaude under another CLAUDE_PROJECT_DIR: decision %q, want allow", dec)
+	}
+}
+
+// Review regressions, end to end through the hook.
+func TestClaudeHookReadOnlyReview(t *testing.T) {
+	ro := HookOptions{ReadOnly: true}
+	project := withRules(t, "")
+	t.Setenv("SHELL", "/bin/bash")
+
+	// bash splits $IFS: this reads /etc/passwd. Rewritten, never approved.
+	v := decode(t, runHookWith(t, "claude", payloadIn(`git status | cat -$IFS/etc/passwd`, project, "default", false), ro))
+	if v.H.Decision != "" || v.H.Input == nil {
+		t.Errorf("$IFS in a pipe filter: decision %q, input %+v", v.H.Decision, v.H.Input)
+	}
+
+	// A rule written for lx still holds when the rewrite calls lx by path.
+	const lx = "/Users/John Doe/bin/lx"
+	for _, rules := range []string{`{"permissions":{"ask":["Bash(lx:*)"]}}`, `{"permissions":{"deny":["Bash(lx git:*)"]}}`} {
+		project := withRules(t, rules)
+		v := decode(t, runHookWith(t, "claude", payloadIn("git status", project, "default", false),
+			HookOptions{ReadOnly: true, Prefix: lx}))
+		if v.H.Decision == "allow" {
+			t.Errorf("%s: --readonly approved %q", rules, v.H.Input.Command)
+		}
+	}
+}
+
+// With a deny rule on lx itself, rewriting would turn every allowed command
+// into one the host refuses; the hook must leave the original alone.
+func TestNoRewriteWhenLxIsDenied(t *testing.T) {
+	for _, rule := range []string{"Bash(lx:*)", "Bash(lx *)", "Bash(lx git status)"} {
+		rules := Rules{Deny: []string{rule}}
+		o := evaluateWith("git status", evalEnv{Cwd: "/tmp", Root: "/tmp", PermissionMode: "default"},
+			func() Rules { return rules }, func(string) string { return "lx" })
+		if o.rewritten != "" || o.decision != "" {
+			t.Errorf("%s: rewrote to %q (%q); want no output", rule, o.rewritten, o.decision)
+		}
+	}
+	// A deny rule on something else still lets the rewrite through.
+	rules := Rules{Deny: []string{"Bash(git push:*)"}}
+	o := evaluateWith("git status", evalEnv{Cwd: "/tmp", Root: "/tmp", PermissionMode: "default"},
+		func() Rules { return rules }, func(string) string { return "lx" })
+	if o.rewritten != "lx git status" {
+		t.Errorf("unrelated deny blocked the rewrite: %+v", o)
 	}
 }

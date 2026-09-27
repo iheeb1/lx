@@ -2,7 +2,7 @@ package jstools
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 	"unicode/utf8"
 
@@ -66,18 +66,18 @@ func lsFolds(c *engine.Context) bool {
 var (
 	// npm, pnpm: "│ │ ├─┬ name@1.0.0 deduped": indent units "│ " or "  ",
 	// then the branch.
-	lsTreeRe = regexp.MustCompile(`^((?:│ |  )*)[├└]─[─┬] (.+)$`)
+	lsTreeRe = lazyre.New(`^((?:│ |  )*)[├└]─[─┬] (.+)$`)
 	// yarn: "│  └─ name@1.0.0": indent units of 3.
-	lsYarnTreeRe = regexp.MustCompile(`^((?:│  |   )*)[├└]─ (.+)$`)
+	lsYarnTreeRe = lazyre.New(`^((?:│  |   )*)[├└]─ (.+)$`)
 	// pnpm: "│" spacer and "│   dependencies:" section lines, and the
 	// legend of colors that normalizing removed.
-	lsPnpmBarRe     = regexp.MustCompile(`^│\s*$`)
-	lsPnpmSectionRe = regexp.MustCompile(`^│\s+(\S.*:)$`)
-	lsPnpmLegendRe  = regexp.MustCompile(`^Legend: production dependency, optional only, dev only$`)
+	lsPnpmBarRe     = lazyre.New(`^│\s*$`)
+	lsPnpmSectionRe = lazyre.New(`^│\s+(\S.*:)$`)
+	lsPnpmLegendRe  = lazyre.New(`^Legend: production dependency, optional only, dev only$`)
 	lsValueFlags    = map[string]bool{"--depth": true, "--filter": true, "-F": true, "--prefix": true, "-w": true,
 		"--workspace": true, "--omit": true, "--include": true, "--dir": true, "-C": true, "--pattern": true}
-	lsKeepRe  = regexp.MustCompile(`\b(?:invalid|extraneous|missing|overridden)\b|UNMET`)
-	lsDedupRe = regexp.MustCompile(` deduped$`)
+	lsKeepRe  = lazyre.New(`\b(?:invalid|extraneous|missing|overridden)\b|UNMET`)
+	lsDedupRe = lazyre.New(` deduped$`)
 )
 
 func (npmLs) Apply(c *engine.Context, s string) (string, bool) {

@@ -1,7 +1,7 @@
 package jstest
 
 import (
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 )
 
@@ -10,11 +10,11 @@ import (
 var (
 	// npm / pnpm lifecycle echo: "> luxon@3.7.2 test" (pnpm adds the path),
 	// followed by "> jest --coverage".
-	npmEchoRe = regexp.MustCompile(`^> (?:@[^/\s]+/)?[^@\s]+@\S+ \S+(?: /\S.*)?$`)
+	npmEchoRe = lazyre.New(`^> (?:@[^/\s]+/)?[^@\s]+@\S+ \S+(?: /\S.*)?$`)
 	// yarn v1: "yarn run v1.22.19" then "$ jest --ci"; the trailing hint.
-	yarnRunRe  = regexp.MustCompile(`^yarn run v\d+\.\d+\.\d+$`)
-	yarnCmdRe  = regexp.MustCompile(`^\$ \S`)
-	yarnInfoRe = regexp.MustCompile(`^info Visit https://yarnpkg\.com/\S+ for documentation about this command\.$`)
+	yarnRunRe  = lazyre.New(`^yarn run v\d+\.\d+\.\d+$`)
+	yarnCmdRe  = lazyre.New(`^\$ \S`)
+	yarnInfoRe = lazyre.New(`^info Visit https://yarnpkg\.com/\S+ for documentation about this command\.$`)
 )
 
 // wrapper tracks the "> pkg@x script" / "> command" pairs already shown so

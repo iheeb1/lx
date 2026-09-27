@@ -35,8 +35,8 @@ package build
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path/filepath"
-	"regexp"
 	"sort"
 	"strings"
 
@@ -158,7 +158,7 @@ func countPart(n int, one, many string) string {
 
 // shellSafeRe matches command lines that can be split on spaces without a
 // shell: no quoting, expansion, redirection, pipes or command lists.
-var shellSafeRe = regexp.MustCompile(`^[\w@%+=:,./-]+(?: +[\w@%+=:,./*-]+)*$`)
+var shellSafeRe = lazyre.New(`^[\w@%+=:,./-]+(?: +[\w@%+=:,./*-]+)*$`)
 
 // simpleArgv splits a recipe echo into argv when it is a plain command.
 func simpleArgv(line string) ([]string, bool) {

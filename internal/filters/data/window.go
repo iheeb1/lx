@@ -2,8 +2,8 @@ package data
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -242,22 +242,22 @@ func shellQuote(p string) string {
 // Declaration patterns for outlines. They look at unindented (or, for
 // class members, lightly indented) lines only.
 var (
-	goDeclRe   = regexp.MustCompile(`^(?:func|type|var|const)\b`)
-	jsDeclRe   = regexp.MustCompile(`^(?:export\s+)?(?:default\s+)?(?:declare\s+)?(?:async\s+)?(?:function\*?|class|interface|type|enum|const|let|var|abstract\s+class|namespace)\s|^export\s+(?:default\b|\{|\*)|^module\.exports\b`)
-	pyDeclRe   = regexp.MustCompile(`^(?:    )?(?:async\s+)?(?:def|class)\s|^@\w`)
-	rsDeclRe   = regexp.MustCompile(`^\s{0,4}(?:pub(?:\([\w:]+\))?\s+)?(?:async\s+)?(?:unsafe\s+)?(?:const\s+)?(?:fn|struct|enum|trait|impl|mod|type|static|union|macro_rules!)\b|^impl\b`)
-	jvmDeclRe  = regexp.MustCompile(`^\s{0,4}(?:@\w+\s+)*(?:(?:public|private|protected|internal|static|final|abstract|sealed|open|data|override|suspend|inline|virtual|partial|readonly|async|export)\s+)*(?:class|interface|enum|record|object|fun|struct|namespace|trait)\s|^\s{0,4}(?:public|private|protected|internal)\s+(?:static\s+)?(?:final\s+)?[\w<>\[\],.? ]+\s+\w+\s*\(`)
-	cDeclRe    = regexp.MustCompile(`^(?:static\s+|extern\s+|inline\s+|const\s+|unsigned\s+|struct\s+|enum\s+)*[A-Za-z_][\w*() ]*?[\s*)]\**[A-Za-z_]\w*\s*\([^;]*$|^(?:typedef|struct|union|enum|class|namespace|template)\b|^#define\s+\w+\(`)
-	rbDeclRe   = regexp.MustCompile(`^\s{0,4}(?:def|class|module)\s`)
-	phpDeclRe  = regexp.MustCompile(`^\s{0,4}(?:(?:abstract|final|public|private|protected|static|readonly)\s+)*(?:function|class|interface|trait|enum)\s`)
-	shDeclRe   = regexp.MustCompile(`^(?:function\s+)?[\w.:-]+\s*\(\)\s*\{?\s*$|^function\s+[\w.:-]+`)
-	mdDeclRe   = regexp.MustCompile(`^#{1,6}\s+\S`)
-	yamlDeclRe = regexp.MustCompile(`^[\w.-]+:(?:\s|$)`)
-	anyDeclRe  = regexp.MustCompile(`^(?:export\s+|pub\s+|public\s+|private\s+|static\s+|async\s+|abstract\s+)*(?:func|function|def|class|interface|type|struct|enum|trait|impl|module|fn|namespace)\s+\w|^#{1,6}\s+\S`)
-	cKeywordRe = regexp.MustCompile(`^(?:if|for|while|switch|return|else|do|goto|case|sizeof)\b`)
+	goDeclRe   = lazyre.New(`^(?:func|type|var|const)\b`)
+	jsDeclRe   = lazyre.New(`^(?:export\s+)?(?:default\s+)?(?:declare\s+)?(?:async\s+)?(?:function\*?|class|interface|type|enum|const|let|var|abstract\s+class|namespace)\s|^export\s+(?:default\b|\{|\*)|^module\.exports\b`)
+	pyDeclRe   = lazyre.New(`^(?:    )?(?:async\s+)?(?:def|class)\s|^@\w`)
+	rsDeclRe   = lazyre.New(`^\s{0,4}(?:pub(?:\([\w:]+\))?\s+)?(?:async\s+)?(?:unsafe\s+)?(?:const\s+)?(?:fn|struct|enum|trait|impl|mod|type|static|union|macro_rules!)\b|^impl\b`)
+	jvmDeclRe  = lazyre.New(`^\s{0,4}(?:@\w+\s+)*(?:(?:public|private|protected|internal|static|final|abstract|sealed|open|data|override|suspend|inline|virtual|partial|readonly|async|export)\s+)*(?:class|interface|enum|record|object|fun|struct|namespace|trait)\s|^\s{0,4}(?:public|private|protected|internal)\s+(?:static\s+)?(?:final\s+)?[\w<>\[\],.? ]+\s+\w+\s*\(`)
+	cDeclRe    = lazyre.New(`^(?:static\s+|extern\s+|inline\s+|const\s+|unsigned\s+|struct\s+|enum\s+)*[A-Za-z_][\w*() ]*?[\s*)]\**[A-Za-z_]\w*\s*\([^;]*$|^(?:typedef|struct|union|enum|class|namespace|template)\b|^#define\s+\w+\(`)
+	rbDeclRe   = lazyre.New(`^\s{0,4}(?:def|class|module)\s`)
+	phpDeclRe  = lazyre.New(`^\s{0,4}(?:(?:abstract|final|public|private|protected|static|readonly)\s+)*(?:function|class|interface|trait|enum)\s`)
+	shDeclRe   = lazyre.New(`^(?:function\s+)?[\w.:-]+\s*\(\)\s*\{?\s*$|^function\s+[\w.:-]+`)
+	mdDeclRe   = lazyre.New(`^#{1,6}\s+\S`)
+	yamlDeclRe = lazyre.New(`^[\w.-]+:(?:\s|$)`)
+	anyDeclRe  = lazyre.New(`^(?:export\s+|pub\s+|public\s+|private\s+|static\s+|async\s+|abstract\s+)*(?:func|function|def|class|interface|type|struct|enum|trait|impl|module|fn|namespace)\s+\w|^#{1,6}\s+\S`)
+	cKeywordRe = lazyre.New(`^(?:if|for|while|switch|return|else|do|goto|case|sizeof)\b`)
 )
 
-// lineMatcher is a *regexp.Regexp or a pattern with an exclusion.
+// lineMatcher is a regexp or a pattern with an exclusion.
 type lineMatcher interface{ MatchString(string) bool }
 
 // outlineRe returns the declaration pattern for a file extension.
@@ -294,7 +294,7 @@ func outlineRe(ext string) lineMatcher {
 var cDeclReNoKeywords = &matcher{re: cDeclRe, not: cKeywordRe}
 
 // matcher lets outlineRe return a pattern with an exclusion.
-type matcher struct{ re, not *regexp.Regexp }
+type matcher struct{ re, not *lazyre.Regexp }
 
 func (m *matcher) MatchString(s string) bool { return m.re.MatchString(s) && !m.not.MatchString(s) }
 

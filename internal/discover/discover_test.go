@@ -343,3 +343,25 @@ func copyTree(t *testing.T, src, dst string) {
 		t.Fatal(err)
 	}
 }
+
+// Command names are printed on the user's terminal: control characters
+// (escape sequences), other non-printing runes and invalid UTF-8 become
+// '?', and a very long name is cut.
+func TestKeyPrintable(t *testing.T) {
+	for argv0, want := range map[string]string{
+		"./scripts/build.sh":        "build.sh",
+		"/bin/\x1b]0;pwned\x07tool": "?]0;pwned?tool",
+		"ev\u202eil":                "ev?il",
+		"a\x9bb":                    "a?b",
+		"my tool":                   "my tool",
+		strings.Repeat("z", 100):    strings.Repeat("z", maxKeyName) + "…",
+		"go":                        "go",
+	} {
+		if got := Key([]string{argv0, "-x"}); got != want {
+			t.Errorf("Key(%q) = %q, want %q", argv0, got, want)
+		}
+	}
+	if got := unsupportedKey("\x1b[2J", [][]string{{"\x1b[2J"}}); got != "?[2J" {
+		t.Errorf("unsupportedKey = %q", got)
+	}
+}

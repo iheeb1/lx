@@ -2,7 +2,7 @@
 package git
 
 import (
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"sort"
 	"strings"
 
@@ -45,7 +45,7 @@ func (status) Match(c *engine.Context) bool {
 
 // shortStatusRe matches a line of git's short format: "## branch…" or
 // "XY path".
-var shortStatusRe = regexp.MustCompile(`^(?:## .+|[ MTADRCU?!]{2} .+)$`)
+var shortStatusRe = lazyre.New(`^(?:## .+|[ MTADRCU?!]{2} .+)$`)
 
 // isShortStatus reports whether every non-blank line is short format.
 func isShortStatus(lines []string) bool {
@@ -63,13 +63,13 @@ func isShortStatus(lines []string) bool {
 }
 
 var (
-	aheadRe    = regexp.MustCompile(`^Your branch is ahead of '([^']+)' by (\d+) commits?`)
-	behindRe   = regexp.MustCompile(`^Your branch is behind '([^']+)' by (\d+) commits?`)
-	divergedRe = regexp.MustCompile(`^and have (\d+) and (\d+) different commits each`)
-	divergeRe  = regexp.MustCompile(`^Your branch and '([^']+)' have diverged,`)
-	uptodateRe = regexp.MustCompile(`^Your branch is up[ -]to[ -]date with '([^']+)'`) // "up-to-date" before git 2.15
-	goneRe     = regexp.MustCompile(`^Your branch is based on '([^']+)', but the upstream is gone`)
-	entryRe    = regexp.MustCompile(`^\t(?:(new file|modified|deleted|renamed|copied|typechange|both modified|both added|both deleted|added by us|added by them|deleted by us|deleted by them):\s+)?(.+)$`)
+	aheadRe    = lazyre.New(`^Your branch is ahead of '([^']+)' by (\d+) commits?`)
+	behindRe   = lazyre.New(`^Your branch is behind '([^']+)' by (\d+) commits?`)
+	divergedRe = lazyre.New(`^and have (\d+) and (\d+) different commits each`)
+	divergeRe  = lazyre.New(`^Your branch and '([^']+)' have diverged,`)
+	uptodateRe = lazyre.New(`^Your branch is up[ -]to[ -]date with '([^']+)'`) // "up-to-date" before git 2.15
+	goneRe     = lazyre.New(`^Your branch is based on '([^']+)', but the upstream is gone`)
+	entryRe    = lazyre.New(`^\t(?:(new file|modified|deleted|renamed|copied|typechange|both modified|both added|both deleted|added by us|added by them|deleted by us|deleted by them):\s+)?(.+)$`)
 )
 
 var indexCode = map[string]byte{"new file": 'A', "modified": 'M', "deleted": 'D', "renamed": 'R', "copied": 'C', "typechange": 'T'}

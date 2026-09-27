@@ -1,0 +1,15 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✓ hook        installed in $ROOT/project/.claude/settings.json: $ROOT/bin/s/../lx hook claude
+! hook-binary the hook runs $ROOT/project/tools/lx (version not checked: it is inside this project), not this binary $ROOT/bin/lx (lx 0.2.0-test)
+              fix: lx init --project
+- hook-run    not run: $ROOT/project/tools/lx is inside this project, and doctor does not run a program a project chose
+! path        your shell runs lx from $ROOT/bin/lx (lx 0.2.0-test), but the hook's lx is $ROOT/project/tools/lx (version not checked: it is inside this project): rewritten commands run the shell's
+              fix: point the hook at a trusted lx: lx init --project
+✓ rtk         no rtk hook
+✓ perms       no allow rule approves every lx command
+✓ env         LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on
+✓ settings    1 settings file valid: project
+✓ storage     runs: none stored yet ($ROOT/cache/lx/runs is created on the first condensed run)
+✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
+✓ activity    no lx run recorded yet; no Claude Code session in the last day
+lx doctor: 0 failures, 2 warnings

@@ -2,8 +2,8 @@ package git
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path"
-	"regexp"
 	"strings"
 )
 
@@ -21,19 +21,19 @@ import (
 
 var (
 	// JSON lockfiles (package-lock v1-v3, npm-shrinkwrap, composer.lock).
-	jsonKeyRe     = regexp.MustCompile(`^([ +-])\s*"([^"]+)": \{$`)
-	jsonNameRe    = regexp.MustCompile(`^([ +-])\s*"name": "([^"]+)",?$`)
-	jsonVersionRe = regexp.MustCompile(`^([ +-])\s*"version": "([^"]+)",?$`)
+	jsonKeyRe     = lazyre.New(`^([ +-])\s*"([^"]+)": \{$`)
+	jsonNameRe    = lazyre.New(`^([ +-])\s*"name": "([^"]+)",?$`)
+	jsonVersionRe = lazyre.New(`^([ +-])\s*"version": "([^"]+)",?$`)
 	// TOML lockfiles (Cargo.lock, poetry.lock, uv.lock).
-	tomlNameRe    = regexp.MustCompile(`^([ +-])name = "([^"]+)"$`)
-	tomlVersionRe = regexp.MustCompile(`^([ +-])version = "([^"]+)"$`)
+	tomlNameRe    = lazyre.New(`^([ +-])name = "([^"]+)"$`)
+	tomlVersionRe = lazyre.New(`^([ +-])version = "([^"]+)"$`)
 	// yarn.lock v1 and berry.
-	yarnKeyRe     = regexp.MustCompile(`^([ +-])([^\s#].*):$`)
-	yarnVersionRe = regexp.MustCompile(`^([ +-])  version:? "?([^"\s]+)"?$`)
+	yarnKeyRe     = lazyre.New(`^([ +-])([^\s#].*):$`)
+	yarnVersionRe = lazyre.New(`^([ +-])  version:? "?([^"\s]+)"?$`)
 	// pnpm-lock.yaml package keys ("  /name@1.2.3:", "  '@s/n@1.2.3(peer)':").
-	pnpmKeyRe = regexp.MustCompile(`^([+-])  '?/?((?:@[^/@\s']+/)?[^/@\s']+)[@/](\d[^:'(\s]*)[^:]*'?:$`)
+	pnpmKeyRe = lazyre.New(`^([+-])  '?/?((?:@[^/@\s']+/)?[^/@\s']+)[@/](\d[^:'(\s]*)[^:]*'?:$`)
 	// go.sum lines.
-	goSumRe = regexp.MustCompile(`^([+-])(\S+) (v\S+?)(?:/go\.mod)? h1:\S+$`)
+	goSumRe = lazyre.New(`^([+-])(\S+) (v\S+?)(?:/go\.mod)? h1:\S+$`)
 )
 
 // jsonSkipKeys are object keys inside a package entry, not package names.

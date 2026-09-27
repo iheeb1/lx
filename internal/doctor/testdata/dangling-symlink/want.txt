@@ -1,0 +1,14 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✗ hook        no lx hook in Claude Code's settings (checked ~/.claude and managed settings)
+              fix: lx init won't write through the symlink ~/.claude/settings.json; merge this into ~/dotfiles/gone.json: {"hooks":{"PreToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"$ROOT/bin/lx hook claude"}]}]}}
+- hook-binary no lx hook command to check
+- hook-run    no lx hook to run
+✓ path        your shell runs lx from $ROOT/bin/lx, this binary
+✓ rtk         no rtk hook
+✓ perms       no allow rule approves every lx command
+✓ env         LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on
+! settings    ~/.claude/settings.json is a symlink to ~/dotfiles/gone.json, which does not exist, so Claude Code reads no settings from it
+✓ storage     runs: none stored yet ($ROOT/cache/lx/runs is created on the first condensed run)
+✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
+- activity    no lx hook installed
+lx doctor: 1 failure, 1 warning

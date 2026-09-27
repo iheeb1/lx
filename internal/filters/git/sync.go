@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -59,13 +59,13 @@ func (mergeFilter) Apply(c *engine.Context, out string) (string, bool) {
 
 var (
 	// packStatsRe: "Total 4557 (delta 2982), reused 4557 (delta 2982), pack-reused 0 (from 0)".
-	packStatsRe = regexp.MustCompile(`^(?:remote: )?Total \d+ \(delta \d+\), reused \d+ \(delta \d+\)`)
+	packStatsRe = lazyre.New(`^(?:remote: )?Total \d+ \(delta \d+\), reused \d+ \(delta \d+\)`)
 	// syncNoiseRe: progress families engine.IsProgress does not know.
-	syncNoiseRe = regexp.MustCompile(`^(?:remote: )?(?:Unpacking objects|Checking out files|Filtering content|Checking connectivity|Updating files)[:.]|` +
+	syncNoiseRe = lazyre.New(`^(?:remote: )?(?:Unpacking objects|Checking out files|Filtering content|Checking connectivity|Updating files)[:.]|` +
 		`^Delta compression using up to \d+ threads\.?$|^remote:$`)
 	// refLineRe: " * [new tag]         v1.0       -> v1.0" and friends.
-	refLineRe  = regexp.MustCompile(`^ ([ +\-t*!=]) (\[[^\]]+\]|[0-9a-f]{4,}\.\.\.?[0-9a-f]{4,}) +(\S+) +-> +(\S+)(?: \(([^)]*)\))?$`)
-	modeLineRe = regexp.MustCompile(`^ (create|delete) mode (\d{6}) (.+)$`)
+	refLineRe  = lazyre.New(`^ ([ +\-t*!=]) (\[[^\]]+\]|[0-9a-f]{4,}\.\.\.?[0-9a-f]{4,}) +(\S+) +-> +(\S+)(?: \(([^)]*)\))?$`)
+	modeLineRe = lazyre.New(`^ (create|delete) mode (\d{6}) (.+)$`)
 )
 
 // matchRefLine is refLineRe.FindStringSubmatch with a cheap precheck.

@@ -2,7 +2,7 @@ package build
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -47,31 +47,31 @@ type nitem struct {
 }
 
 var (
-	makeLineRe  = regexp.MustCompile(`^(?:\S*/)?(?:g?make|mingw32-make|bmake|gnumake)(?:\[(\d+)\])?: (.*)$`)
-	makeDirRe   = regexp.MustCompile("^(Entering|Leaving) directory [`'](.*)'$")
-	makeQuietRe = regexp.MustCompile("^(?:Nothing to be done for [`'].*'|[`'].*' is up to date)\\.$")
+	makeLineRe  = lazyre.New(`^(?:\S*/)?(?:g?make|mingw32-make|bmake|gnumake)(?:\[(\d+)\])?: (.*)$`)
+	makeDirRe   = lazyre.New("^(Entering|Leaving) directory [`'](.*)'$")
+	makeQuietRe = lazyre.New("^(?:Nothing to be done for [`'].*'|[`'].*' is up to date)\\.$")
 	// "Makefile:12: *** missing separator.  Stop." and bmake's "*** Error code 1".
-	makeFileErrRe = regexp.MustCompile(`^[^\s:]+:\d+: \*\*\* |^\*\*\* Error code \d+|^Stop\.$`)
-	makeErrNRe    = regexp.MustCompile(`\*\*\* .*\bError (\d+)`)
+	makeFileErrRe = lazyre.New(`^[^\s:]+:\d+: \*\*\* |^\*\*\* Error code \d+|^Stop\.$`)
+	makeErrNRe    = lazyre.New(`\*\*\* .*\bError (\d+)`)
 
-	ninjaStepRe  = regexp.MustCompile(`^\[\d+/\d+\] \S`)
-	ninjaDirRe   = regexp.MustCompile("^ninja: (Entering|Leaving) directory [`'](.*)'$")
-	ninjaFailRe  = regexp.MustCompile(`^FAILED: `)
-	cmakeStepRe  = regexp.MustCompile(`^\[\s*\d{1,3}%\] \S|^(?:Scanning dependencies|Consolidate compiler generated dependencies) of target \S+$`)
-	silentStepRe = regexp.MustCompile(`^  (?:CC|CXX|CPP|AS|CCAS|LD|AR|CCLD|CXXLD|OBJCLD|GEN|HOSTCC|HOSTCXX|HOSTLD|MKDIR|INSTALL|LINK|COPY|STRIP|OBJCOPY|SYMLINK|MOC|UIC|RCC|YACC|LEX|SED|CHK|UPD|DEP|RANLIB|DTC|LDS|MODPOST|BTF|ZSTD|GZIP|XZ|FC|F77)(?: \[M\])?\s+\S+$|^Making (?:all|install|check|clean|distclean|install-exec|install-data) in \S+$`)
+	ninjaStepRe  = lazyre.New(`^\[\d+/\d+\] \S`)
+	ninjaDirRe   = lazyre.New("^ninja: (Entering|Leaving) directory [`'](.*)'$")
+	ninjaFailRe  = lazyre.New(`^FAILED: `)
+	cmakeStepRe  = lazyre.New(`^\[\s*\d{1,3}%\] \S|^(?:Scanning dependencies|Consolidate compiler generated dependencies) of target \S+$`)
+	silentStepRe = lazyre.New(`^  (?:CC|CXX|CPP|AS|CCAS|LD|AR|CCLD|CXXLD|OBJCLD|GEN|HOSTCC|HOSTCXX|HOSTLD|MKDIR|INSTALL|LINK|COPY|STRIP|OBJCOPY|SYMLINK|MOC|UIC|RCC|YACC|LEX|SED|CHK|UPD|DEP|RANLIB|DTC|LDS|MODPOST|BTF|ZSTD|GZIP|XZ|FC|F77)(?: \[M\])?\s+\S+$|^Making (?:all|install|check|clean|distclean|install-exec|install-data) in \S+$`)
 
 	// Linker output.
-	linkerRe = regexp.MustCompile(`^(?:\S*/)?(?:ld|ld\.\w+|ld64(?:\.lld)?|lld(?:-link)?|collect2|[\w.+-]+-ld)(?:\.exe)?: ` +
+	linkerRe = lazyre.New(`^(?:\S*/)?(?:ld|ld\.\w+|ld64(?:\.lld)?|lld(?:-link)?|collect2|[\w.+-]+-ld)(?:\.exe)?: ` +
 		`|^\S+:\(\.[\w.$]+(?:\+0x[0-9a-f]+)?\): `)
-	undefSymsRe = regexp.MustCompile(`^Undefined symbols for architecture \S+:$`)
+	undefSymsRe = lazyre.New(`^Undefined symbols for architecture \S+:$`)
 	// Other compiler-driver lines worth keeping verbatim.
-	ccMiscRe = regexp.MustCompile(`^[\w.+-]+: (?:all|some) warnings being treated as errors$|^compilation terminated\.$`)
+	ccMiscRe = lazyre.New(`^[\w.+-]+: (?:all|some) warnings being treated as errors$|^compilation terminated\.$`)
 	// libtool's echo of the command it runs.
-	libtoolEchoRe = regexp.MustCompile(`^libtool: (?:compile|link|install|finish|relink|uninstall|clean|execute): `)
+	libtoolEchoRe = lazyre.New(`^libtool: (?:compile|link|install|finish|relink|uninstall|clean|execute): `)
 
 	// Compiler executables: cc, c++, gcc-13, clang++-18, x86_64-linux-gnu-gcc, …
-	ccNameRe   = regexp.MustCompile(`^(?:[\w.]+-)*(?:cc|c\+\+|gcc|g\+\+|clang|clang\+\+|icc|icpc|icx|icpx|tcc|nvcc|emcc|em\+\+|gfortran|cpp)(?:-\d+(?:\.\d+)*)?$`)
-	makeNameRe = regexp.MustCompile(`^(?:g?make|mingw32-make|bmake|gnumake)$`)
+	ccNameRe   = lazyre.New(`^(?:[\w.]+-)*(?:cc|c\+\+|gcc|g\+\+|clang|clang\+\+|icc|icpc|icx|icpx|tcc|nvcc|emcc|em\+\+|gfortran|cpp)(?:-\d+(?:\.\d+)*)?$`)
+	makeNameRe = lazyre.New(`^(?:g?make|mingw32-make|bmake|gnumake)$`)
 )
 
 // isMakeFileErr is makeFileErrRe.MatchString with a cheap precheck: Go's
@@ -496,7 +496,7 @@ func isNative(name string) bool {
 }
 
 // goTestSigRe marks go test's own lines in otherwise unknown output.
-var goTestSigRe = regexp.MustCompile(`^(?:=== RUN\s|--- (?:FAIL|PASS|SKIP): |ok  \t\S|FAIL\t\S|\?   \t\S)`)
+var goTestSigRe = lazyre.New(`^(?:=== RUN\s|--- (?:FAIL|PASS|SKIP): |ok  \t\S|FAIL\t\S|\?   \t\S)`)
 
 // detectInner recognizes an inner tool's output by its content when no
 // plain recipe echo introduced it (make test running go test in a loop).

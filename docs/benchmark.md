@@ -84,6 +84,13 @@ cat, make):
    run's output is scored.
 4. Tokens are exact o200k counts. Error messages are scored against the raw
    run with the same function as the corpus benchmark.
+5. A run is **excluded**, with the reason recorded in `h2h.json`, when a tool
+   could not start the command in this environment, as opposed to filtering
+   its output. Five rtk runs fall under this: vitest (rtk re-launches it
+   through pnpm, which isn't installed here) and eslint (`npm error could not
+   determine executable to run`). A run that hangs (a test suite leaving a
+   server listening) is killed after 3 minutes and dropped for all three
+   variants.
 
 rtk ran in a sandboxed home directory with telemetry disabled. Its SQLite
 tracking stayed on, as in a default install, so its timings include that write.

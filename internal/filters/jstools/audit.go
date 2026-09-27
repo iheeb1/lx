@@ -2,7 +2,7 @@ package jstools
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -47,15 +47,15 @@ func (npmAudit) Match(c *engine.Context) bool {
 func (npmAudit) IsContent() bool { return true }
 
 var (
-	auditHeadRe    = regexp.MustCompile(`^(\S+)  (\S.*)$`)
-	auditDepHeadRe = regexp.MustCompile(`^  (\S+)  (\S.*)$`)
-	auditSevRe     = regexp.MustCompile(`^Severity: \w+$`)
-	auditGHSARe    = regexp.MustCompile(` - https://github\.com/advisories/(GHSA-[\w-]+)$`)
-	auditFixLineRe = regexp.MustCompile("^(?:fix available via `.+`|No fix available|Will install .+, which is .+)$")
-	auditPathRe    = regexp.MustCompile(`^(\s*)(\S*node_modules/\S+)$`)
-	auditDependsRe = regexp.MustCompile(`^  Depends on vulnerable versions of \S+$`)
-	auditSumRe     = regexp.MustCompile(`^(?:\d+ (?:\w+ severity )?vulnerabilit(?:y|ies)|found \d+ vulnerabilit)`)
-	auditOtherRe   = regexp.MustCompile(`^(?:No known vulnerabilities found|yarn audit v\d|\d+ vulnerabilities found)`)
+	auditHeadRe    = lazyre.New(`^(\S+)  (\S.*)$`)
+	auditDepHeadRe = lazyre.New(`^  (\S+)  (\S.*)$`)
+	auditSevRe     = lazyre.New(`^Severity: \w+$`)
+	auditGHSARe    = lazyre.New(` - https://github\.com/advisories/(GHSA-[\w-]+)$`)
+	auditFixLineRe = lazyre.New("^(?:fix available via `.+`|No fix available|Will install .+, which is .+)$")
+	auditPathRe    = lazyre.New(`^(\s*)(\S*node_modules/\S+)$`)
+	auditDependsRe = lazyre.New(`^  Depends on vulnerable versions of \S+$`)
+	auditSumRe     = lazyre.New(`^(?:\d+ (?:\w+ severity )?vulnerabilit(?:y|ies)|found \d+ vulnerabilit)`)
+	auditOtherRe   = lazyre.New(`^(?:No known vulnerabilities found|yarn audit v\d|\d+ vulnerabilities found)`)
 )
 
 func (npmAudit) Apply(c *engine.Context, s string) (string, bool) {

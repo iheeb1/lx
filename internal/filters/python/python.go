@@ -12,8 +12,8 @@ package python
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -41,8 +41,8 @@ type invocation struct {
 }
 
 var (
-	pythonRe = regexp.MustCompile(`^(?:python(?:\d+(?:\.\d+)?t?)?|pypy3?)$`)
-	pipRe    = regexp.MustCompile(`^pip(?:\d+(?:\.\d+)?)?$`)
+	pythonRe = lazyre.New(`^(?:python(?:\d+(?:\.\d+)?t?)?|pypy3?)$`)
+	pipRe    = lazyre.New(`^pip(?:\d+(?:\.\d+)?)?$`)
 )
 
 // runnerValueFlags are options of `uv run`, `poetry run`, `pdm run`,
@@ -139,7 +139,7 @@ func unwrapShell(argv []string) []string {
 	return words
 }
 
-var assignRe = regexp.MustCompile(`^[A-Za-z_][A-Za-z0-9_]*=`)
+var assignRe = lazyre.New(`^[A-Za-z_][A-Za-z0-9_]*=`)
 
 // peelWrappers drops what runs in front of the tool without changing its
 // output: VAR=value words, `env [opts] [VAR=value]…`, `timeout [opts] N`,
@@ -372,14 +372,14 @@ func argValues(args []string, long, short string) []string {
 // ---- library code ----
 
 var (
-	sitePkgRe = regexp.MustCompile(`(?:site|dist)-packages[/\\]([^/\\"]+)`)
-	stdlibRe  = regexp.MustCompile(`[/\\][Ll]ib[/\\](?:python\d(?:\.\d+)?t?[/\\])?([^/\\"]+)`)
-	frozenRe  = regexp.MustCompile(`^<frozen ([\w]+)`)
+	sitePkgRe = lazyre.New(`(?:site|dist)-packages[/\\]([^/\\"]+)`)
+	stdlibRe  = lazyre.New(`[/\\][Ll]ib[/\\](?:python\d(?:\.\d+)?t?[/\\])?([^/\\"]+)`)
+	frozenRe  = lazyre.New(`^<frozen ([\w]+)`)
 	// The standard library of CPython / PyPy on Unix (lib/python3.12/,
 	// lib64/python3.9/, lib/pypy3.10/) and Windows (Lib\). A project
 	// directory such as src/lib/python_utils/ or lib/python/ is not one.
-	stdlibPathRe = regexp.MustCompile(`/lib(?:64)?/(?:python|pypy)\d[\d.]*t?/|\\Lib\\`)
-	stdlibRootRe = regexp.MustCompile(`/lib(?:64)?/(?:python|pypy)\d[\d.]*t?/([^/]+)`)
+	stdlibPathRe = lazyre.New(`/lib(?:64)?/(?:python|pypy)\d[\d.]*t?/|\\Lib\\`)
+	stdlibRootRe = lazyre.New(`/lib(?:64)?/(?:python|pypy)\d[\d.]*t?/([^/]+)`)
 )
 
 // isLibPath reports whether a traceback path is installed library or
@@ -433,16 +433,16 @@ func foldMarker(indent string, n int, roots []string) string {
 var (
 	// `File "path", line N, in func`; faulthandler's crash dumps write
 	// `File "path", line N in func` (no comma, most recent call first).
-	pyFrameRe      = regexp.MustCompile(`^(\s*)File "([^"]+)", line \d+(?:,? in .+)?$`)
-	pyFaultFrameRe = regexp.MustCompile(`", line \d+ in \S`)
+	pyFrameRe      = lazyre.New(`^(\s*)File "([^"]+)", line \d+(?:,? in .+)?$`)
+	pyFaultFrameRe = lazyre.New(`", line \d+ in \S`)
 	// Decoration some tracebacks carry on every line: the "|" rails of
 	// exception groups (Python 3.11+), pytest's "INTERNALERROR>".
-	pyPrefixRe  = regexp.MustCompile(`^(?:INTERNALERROR>|\s*\|)`)
-	pyRepeatRe  = regexp.MustCompile(`^\s*\[Previous line repeated \d+ more times?\]$`)
-	tracebackRe = regexp.MustCompile(`^\s*(?:\+ )?(?:Exception Group )?Traceback \(most recent call last\):$`)
+	pyPrefixRe  = lazyre.New(`^(?:INTERNALERROR>|\s*\|)`)
+	pyRepeatRe  = lazyre.New(`^\s*\[Previous line repeated \d+ more times?\]$`)
+	tracebackRe = lazyre.New(`^\s*(?:\+ )?(?:Exception Group )?Traceback \(most recent call last\):$`)
 	// faulthandler (segfaults, pytest-timeout, faulthandler.dump_traceback).
-	faultRe = regexp.MustCompile(`^Fatal Python error: |^(?:Current thread|Thread) 0x[0-9a-f]+ (?:\[[^\]]*\] )?\(most recent call first\):$`)
-	chainRe = regexp.MustCompile(`^\s*(?:The above exception was the direct cause of the following exception:|During handling of the above exception, another exception occurred:)$`)
+	faultRe = lazyre.New(`^Fatal Python error: |^(?:Current thread|Thread) 0x[0-9a-f]+ (?:\[[^\]]*\] )?\(most recent call first\):$`)
+	chainRe = lazyre.New(`^\s*(?:The above exception was the direct cause of the following exception:|During handling of the above exception, another exception occurred:)$`)
 )
 
 // splitFramePrefix separates a traceback line's decoration (see pyPrefixRe)
@@ -641,7 +641,7 @@ func ensureErrorsFn(in []string, exempt []bool, out []string, isErr func(i int) 
 // criticalRe: a CRITICAL/FATAL record of Python's logging (pytest's
 // "Captured log" format starts with the level name). The line classifier
 // does not know the word.
-var criticalRe = regexp.MustCompile(`^(?:CRITICAL|FATAL)\b`)
+var criticalRe = lazyre.New(`^(?:CRITICAL|FATAL)\b`)
 
 // capLines keeps at most head+tail lines of a block of captured output,
 // plus every error-class (or CRITICAL log) line in between, with counted

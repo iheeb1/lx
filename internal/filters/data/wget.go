@@ -2,7 +2,7 @@ package data
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -21,16 +21,16 @@ func (wgetFilter) IsContent() bool { return true }
 func (wgetFilter) Match(c *engine.Context) bool { return effective(c).Name() == "wget" }
 
 var (
-	wgetReqRe      = regexp.MustCompile(`^--\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}--  \S`)
-	wgetResolveRe  = regexp.MustCompile(`^Resolving \S+ .*\.\.\. `)
-	wgetConnectRe  = regexp.MustCompile(`^Connecting to \S+.*\.\.\. `)
-	wgetReuseRe    = regexp.MustCompile(`^Reusing existing connection to `)
-	wgetAwaitRe    = regexp.MustCompile(`^(?:HTTP|Proxy) request sent, awaiting response\.\.\.`)
-	wgetKeepRe     = regexp.MustCompile(`^(?:Length: |Saving to: |Location: .*\[following\]$|Retrying\.|Giving up\.|FINISHED --|Total wall clock time: |Downloaded: \d+ files?|Converting links|Converted links|Remote file |Server file no newer|File .* already there|Cannot write to |No such file|Username/Password Authentication Failed|Authentication selected: |Unable to establish SSL connection|ERROR: |WARNING: |  Unable to locally verify|Disabling SSL due to encountered errors|Read error |Connection closed at byte )`)
-	wgetResultRe   = regexp.MustCompile(`^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} (?:\(.*\) - |ERROR \d+: |URL:)`)
-	wgetDotsRe     = regexp.MustCompile(`^ *\d+[KMG] [ .,]{10,}`)
-	wgetBarRe      = regexp.MustCompile(`^\S.* +\d{1,3}%\[[=> ]*\] +\S+ +\S+\s+(?:in |eta )`)
-	wgetDiagRe     = regexp.MustCompile(`^wget: `)
+	wgetReqRe      = lazyre.New(`^--\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}--  \S`)
+	wgetResolveRe  = lazyre.New(`^Resolving \S+ .*\.\.\. `)
+	wgetConnectRe  = lazyre.New(`^Connecting to \S+.*\.\.\. `)
+	wgetReuseRe    = lazyre.New(`^Reusing existing connection to `)
+	wgetAwaitRe    = lazyre.New(`^(?:HTTP|Proxy) request sent, awaiting response\.\.\.`)
+	wgetKeepRe     = lazyre.New(`^(?:Length: |Saving to: |Location: .*\[following\]$|Retrying\.|Giving up\.|FINISHED --|Total wall clock time: |Downloaded: \d+ files?|Converting links|Converted links|Remote file |Server file no newer|File .* already there|Cannot write to |No such file|Username/Password Authentication Failed|Authentication selected: |Unable to establish SSL connection|ERROR: |WARNING: |  Unable to locally verify|Disabling SSL due to encountered errors|Read error |Connection closed at byte )`)
+	wgetResultRe   = lazyre.New(`^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} (?:\(.*\) - |ERROR \d+: |URL:)`)
+	wgetDotsRe     = lazyre.New(`^ *\d+[KMG] [ .,]{10,}`)
+	wgetBarRe      = lazyre.New(`^\S.* +\d{1,3}%\[[=> ]*\] +\S+ +\S+\s+(?:in |eta )`)
+	wgetDiagRe     = lazyre.New(`^wget: `)
 	wgetHeaderLead = "  "
 )
 
@@ -189,8 +189,8 @@ const (
 )
 
 var (
-	wgetStatusRe  = regexp.MustCompile(`awaiting response\.\.\. (\d{3})\b`)
-	wgetSummaryRe = regexp.MustCompile(`^(?:FINISHED --|Total wall clock time: |Downloaded: \d+ files?|Converting links|Converted links)`)
+	wgetStatusRe  = lazyre.New(`awaiting response\.\.\. (\d{3})\b`)
+	wgetSummaryRe = lazyre.New(`^(?:FINISHED --|Total wall clock time: |Downloaded: \d+ files?|Converting links|Converted links)`)
 )
 
 // condenseRequests shortens the log of a many-request run (wget -r, -i):

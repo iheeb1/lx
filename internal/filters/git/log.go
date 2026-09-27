@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 	"time"
 
@@ -154,8 +154,8 @@ type logDoc struct {
 }
 
 var (
-	commitRe = regexp.MustCompile(`^commit (?:[<>-] )?([0-9a-f]{7,64})(?: \((.*)\))?$`)
-	headerRe = regexp.MustCompile(`^([A-Z][A-Za-z]*(?: [a-z]+)?):(?: +(.*))?$`)
+	commitRe = lazyre.New(`^commit (?:[<>-] )?([0-9a-f]{7,64})(?: \((.*)\))?$`)
+	headerRe = lazyre.New(`^([A-Z][A-Za-z]*(?: [a-z]+)?):(?: +(.*))?$`)
 )
 
 // parseLog parses git's medium format (the default for log and show). It
@@ -241,7 +241,7 @@ func parseCommit(lines []string, i int, c *commit) int {
 
 // gitDiagRe matches git's own diagnostics (die(), error(), warning() and
 // BUG() messages).
-var gitDiagRe = regexp.MustCompile(`^(?:fatal|error|warning|BUG): `)
+var gitDiagRe = lazyre.New(`^(?:fatal|error|warning|BUG): `)
 
 // logBudget: longer logs are cut at a commit boundary with an exact count,
 // below the engine budget (which would cut mid-commit).
@@ -390,22 +390,57 @@ func renderCommitParts(parts []part, budget int) []string {
 
 // keepBodyRe matches message lines worth keeping in a one-line-per-commit
 // log: breaking changes, issue links, reverts, security and deprecations.
-var keepBodyRe = regexp.MustCompile(`(?i)\bbreaking\b|` +
+var keepBodyRe = lazyre.New(`(?i)\bbreaking\b|` +
 	`\b(?:fix(?:e[sd])?|close[sd]?|resolve[sd]?|refs?|references|see|related(?: to)?)\b:?\s+(?:[\w.-]+/[\w.-]+)?#\d+|` +
 	`\b(?:fix(?:e[sd])?|close[sd]?|resolve[sd]?|refs?)\b:?\s+https?://\S+/(?:issues|pull)/\d+|` +
 	`^revert\b|\bthis reverts commit\b|\bsecurity\b|\bcve-\d|\bghsa-|\bdeprecat|\bvulnerab`)
+
+// keepBodyRe's alternatives each need either a standalone stem
+// (keepBodyStems) or an issue keyword together with "#" or "http". Checking
+// that first skips the regexp — a case-insensitive alternation, slow in Go's
+// backtracker — for almost every body line, including "(#1234)" subjects.
+var (
+	keepBodyStems = []string{"breaking", "revert", "security", "cve-", "ghsa-", "deprecat", "vulnerab"}
+	issueWords    = []string{"fix", "close", "resolve", "ref", "see", "related"}
+)
+
+// keepBody is keepBodyRe.MatchString with an exact prefilter.
+func keepBody(ln string) bool {
+	if !strings.ContainsAny(ln, "\u017f\u212a") { // runes that case-fold to ASCII
+		low := strings.ToLower(ln)
+		found := false
+		for _, st := range keepBodyStems {
+			if strings.Contains(low, st) {
+				found = true
+				break
+			}
+		}
+		if !found && (strings.Contains(low, "#") || strings.Contains(low, "http")) {
+			for _, w := range issueWords {
+				if strings.Contains(low, w) {
+					found = true
+					break
+				}
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return keepBodyRe.MatchString(ln)
+}
 
 // maxKept caps the body lines kept per commit in a log; the rest count
 // as omitted body lines.
 const maxKept = 12
 
 // bulletRe matches the start of a list item ("- x", "* x", "1. x").
-var bulletRe = regexp.MustCompile(`^\s*(?:[-*+]|\d+[.)])\s`)
+var bulletRe = lazyre.New(`^\s*(?:[-*+]|\d+[.)])\s`)
 
 func indentOf(s string) int { return len(s) - len(strings.TrimLeft(s, " \t")) }
 
 // trailerRe matches Signed-off-by:, Co-authored-by: and similar trailers.
-var trailerRe = regexp.MustCompile(`^[A-Z][\w-]*-[Bb]y: `)
+var trailerRe = lazyre.New(`^[A-Z][\w-]*-[Bb]y: `)
 
 func renderCommitHead(c *commit, abbrev int, show bool) []string {
 	subject, rest := splitMessage(c.body)
@@ -469,7 +504,7 @@ func renderCommitHead(c *commit, abbrev int, show bool) []string {
 			case firstMergeLine && !trailerRe.MatchString(ln):
 				firstMergeLine = false
 				kept = append(kept, "    "+ln)
-			case len(kept) < maxKept && !trailerRe.MatchString(ln) && keepBodyRe.MatchString(ln):
+			case len(kept) < maxKept && !trailerRe.MatchString(ln) && keepBody(ln):
 				kept = append(kept, "    "+ln)
 				// A kept list item keeps its wrapped continuation lines.
 				if bulletRe.MatchString(ln) {

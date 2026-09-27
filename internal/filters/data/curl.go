@@ -2,7 +2,7 @@ package data
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -138,22 +138,22 @@ func parseCurl(args []string) curlOpts {
 }
 
 var (
-	meterHeaderRe = regexp.MustCompile(`^\s*% Total\s+% Received\s+% Xferd\s+Average Speed\s+Time\s+Time\s+Time\s+Current$` +
+	meterHeaderRe = lazyre.New(`^\s*% Total\s+% Received\s+% Xferd\s+Average Speed\s+Time\s+Time\s+Time\s+Current$` +
 		`|^\s+Dload\s+Upload\s+Total\s+Spent\s+Left\s+Speed$`)
 	// meterFrameRe is one progress-meter frame (curl's lib/progress.c:
 	// %3d %5s %3d %5s %3d %5s  %5s  %5s %8s %8s %8s %5s).
-	meterFrameRe = regexp.MustCompile(`^ *\d{1,3} +` + meterSize + ` +\d{1,3} +` + meterSize + ` +\d{1,3} +` + meterSize +
+	meterFrameRe = lazyre.New(`^ *\d{1,3} +` + meterSize + ` +\d{1,3} +` + meterSize + ` +\d{1,3} +` + meterSize +
 		` +` + meterSize + ` +` + meterSize + ` +` + meterTime + ` +` + meterTime + ` +` + meterTime + ` +` + meterSize)
 	// hashBarRe is the -# bar ("###### 42.0%") and its start-up spinner.
-	hashBarRe      = regexp.MustCompile(`^#[#=O\- ]*(?: \d{1,3}\.\d%)?$`)
-	curlDiagRe     = regexp.MustCompile(`^curl: `)
-	curlExitLineRe = regexp.MustCompile(`^curl: \(\d+\) `)
-	curlWarningRe  = regexp.MustCompile(`^Warning: `)
-	dataMarkerRe   = regexp.MustCompile(`^[{}] \[\d+ bytes data\]$`)
+	hashBarRe      = lazyre.New(`^#[#=O\- ]*(?: \d{1,3}\.\d%)?$`)
+	curlDiagRe     = lazyre.New(`^curl: `)
+	curlExitLineRe = lazyre.New(`^curl: \(\d+\) `)
+	curlWarningRe  = lazyre.New(`^Warning: `)
+	dataMarkerRe   = lazyre.New(`^[{}] \[\d+ bytes data\]$`)
 	// curlInfoRe: "* " lines curl prints after a body starts. Anything else
 	// starting with "* " after a response head is body text (a markdown
 	// list), not verbose output.
-	curlInfoRe = regexp.MustCompile(`^\* (?:Connection #\d+ to host .* left intact|Closing connection(?: #?\d+)?|Connection #\d+ .*|` +
+	curlInfoRe = lazyre.New(`^\* (?:Connection #\d+ to host .* left intact|Closing connection(?: #?\d+)?|Connection #\d+ .*|` +
 		`Leftovers after chunking.*|Excess found .*|HTTP/\d stream \d+ .*|TLSv[\d.]+ \((?:IN|OUT)\), TLS .*|\(\d+\) \((?:IN|OUT)\), TLS .*|` +
 		`we are done reading and this is set to close, stop send|Found bundle for host.*|Re-using existing connection.*|` +
 		`Recv failure: .*|Send failure: .*|OpenSSL SSL_read: .*|transfer closed with .*|Operation timed out after .*|` +
@@ -161,7 +161,7 @@ var (
 		`abort upload.*|Maximum \(\d+\) redirects followed|stopped the pause stream!?)$`)
 	// curlFailRe marks "* " lines worth keeping: failures, TLS/certificate
 	// problems, and redirect-following notes.
-	curlFailRe = regexp.MustCompile(`(?i)\b(?:fail(?:ed|ure|s)?|errors?|refused|timed out|timeout|unable to|could not|couldn't|` +
+	curlFailRe = lazyre.New(`(?i)\b(?:fail(?:ed|ure|s)?|errors?|refused|timed out|timeout|unable to|could not|couldn't|` +
 		`denied|reset by peer|connection reset|problem|expired|(?:does|did)n?'?t match|not match|abort(?:ed|ing)?|rejected|` +
 		`invalid|unrecogni[sz]ed|no route to host|unreachable|bad (?:request|gateway|file|certificate)|closed with \d+ bytes|` +
 		`excess found|too many|illegal|not supported|self[- ]signed|unknown ca|revoked|untrusted|incomplete|` +

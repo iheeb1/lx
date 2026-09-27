@@ -1,0 +1,6 @@
+{
+  "bins": {
+    "other": "lx 0.1.5"
+  },
+  "shell": "@ROOT@/other/lx"
+}

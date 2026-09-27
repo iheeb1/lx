@@ -1,0 +1,14 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✓ hook        installed in ~/.claude/settings.json: $ROOT/bin/lx hook claude
+✓ hook-binary $ROOT/bin/lx is this binary
+✓ hook-run    `git status` → `lx git status` in 7 ms
+✓ path        your shell runs lx from $ROOT/bin/lx, the hook's binary
+✓ rtk         no rtk hook
+✓ perms       no allow rule approves every lx command
+✓ env         LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on
+✓ settings    1 settings file valid: user
+✗ storage     cannot write to the run store $ROOT/cache/lx/runs (permission denied): condensed views cannot be stored, so their receipts cannot offer lx show
+              fix: chmod u+rwx $ROOT/cache/lx/runs  # or: export LX_TEE_DIR=<a writable directory>
+✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
+✓ activity    no lx run recorded yet; no Claude Code session in the last day
+lx doctor: 1 failure, 0 warnings

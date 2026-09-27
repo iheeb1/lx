@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"runtime"
 	"sort"
 	"strings"
@@ -155,34 +154,18 @@ func ErrorLinesMissing(in, out string) []string {
 	return engine.MissingErrorLines(in, out)
 }
 
+// The location and message metrics live in internal/engine (locs.go), so
+// `lx discover --fidelity` scores real sessions with the same functions as
+// the benchmark and the filter tests. These names delegate to them.
+
 // LocRe matches file:line[:col] locations in compiler, linter, test and
 // stack-trace output.
-var LocRe = regexp.MustCompile(`[\w./@-]+\.(?:go|ts|tsx|js|jsx|mjs|cjs|py|rs|rb|java|kt|c|h|cc|cpp|cs|php|swift|vue|svelte)[:(]\d+`)
+var LocRe = engine.LocRe
 
 // LocationsMissing returns file:line locations present in in but absent
 // from out. Locations are compared by base name + line so relativized paths
 // still match.
-func LocationsMissing(in, out string) []string {
-	have := map[string]bool{}
-	for _, m := range LocRe.FindAllString(out, -1) {
-		have[locKey(m)] = true
-	}
-	var missing []string
-	seen := map[string]bool{}
-	for _, m := range LocRe.FindAllString(in, -1) {
-		k := locKey(m)
-		if !have[k] && !seen[k] {
-			seen[k] = true
-			missing = append(missing, m)
-		}
-	}
-	return missing
-}
-
-func locKey(m string) string {
-	m = strings.Replace(m, "(", ":", 1)
-	return filepath.Base(m)
-}
+func LocationsMissing(in, out string) []string { return engine.LocationsMissing(in, out) }
 
 // ErrorMessagesMissing is ErrorLinesMissing for filters that regroup
 // diagnostics: an error line counts as kept when its message — the line's
@@ -190,72 +173,11 @@ func locKey(m string) string {
 // durations) — still appears in out. Locations are checked separately by
 // LocationsMissing. The benchmark scores every strategy (lx, rtk, head/tail)
 // with this same function.
-func ErrorMessagesMissing(in, out string) []string {
-	var norm strings.Builder
-	for _, ln := range strings.Split(out, "\n") {
-		norm.WriteString(messageOf(ln))
-		norm.WriteByte('\n')
-	}
-	have := norm.String()
-	var missing []string
-	seen := map[string]bool{}
-	for _, ln := range strings.Split(in, "\n") {
-		m := messageOf(ln)
-		if m == "" || seen[m] || !engine.IsError(ln) {
-			continue
-		}
-		seen[m] = true
-		if !strings.Contains(have, m) {
-			missing = append(missing, strings.TrimSpace(ln))
-		}
-	}
-	return missing
-}
-
-// messageOf drops tokens containing digits and collapses whitespace.
-func messageOf(line string) string {
-	f := strings.Fields(line)
-	out := f[:0]
-	for _, w := range f {
-		if strings.ContainsAny(w, "0123456789") {
-			continue
-		}
-		out = append(out, w)
-	}
-	return strings.Join(out, " ")
-}
-
-// libLocRe marks locations inside dependencies, language runtimes and test
-// harnesses — frames lx folds into counts by design.
-var libLocRe = regexp.MustCompile(`node_modules/|site-packages/|dist-packages/|/lib/python\d|/libexec/src/|/go/src/|/go\d[\w.]*/src/|_testmain\.go|node:internal|\.cargo/registry|/rustc/|/pkg/mod/`)
+func ErrorMessagesMissing(in, out string) []string { return engine.ErrorMessagesMissing(in, out) }
 
 // AppLocations returns the distinct file:line locations in s that point at
 // application code (not dependencies or runtimes).
-func AppLocations(s string) []string {
-	var out []string
-	seen := map[string]bool{}
-	for _, m := range LocRe.FindAllString(s, -1) {
-		k := locKey(m)
-		if libLocRe.MatchString(m) || seen[k] {
-			continue
-		}
-		seen[k] = true
-		out = append(out, m)
-	}
-	return out
-}
+func AppLocations(s string) []string { return engine.AppLocations(s) }
 
 // AppLocationsMissing is LocationsMissing restricted to application code.
-func AppLocationsMissing(in, out string) []string {
-	have := map[string]bool{}
-	for _, m := range LocRe.FindAllString(out, -1) {
-		have[locKey(m)] = true
-	}
-	var missing []string
-	for _, m := range AppLocations(in) {
-		if !have[locKey(m)] {
-			missing = append(missing, m)
-		}
-	}
-	return missing
-}
+func AppLocationsMissing(in, out string) []string { return engine.AppLocationsMissing(in, out) }

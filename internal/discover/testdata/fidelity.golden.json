@@ -1,0 +1,125 @@
+{
+  "files_scanned": 18,
+  "bash_calls": 30,
+  "bash_calls_with_output": 30,
+  "bash_calls_without_output": 0,
+  "bash_output_tokens": 66948,
+  "candidates": 25,
+  "candidate_tokens": 62479,
+  "candidate_tokens_after": 23352,
+  "would_save_tokens": 39127,
+  "would_save_pct": 58.4,
+  "candidate_would_save_pct": 62.6,
+  "already_lx": 0,
+  "unparsable_lines": 0,
+  "host_spills": 4,
+  "host_spills_rewritable": 1,
+  "host_spills_avoided": 1,
+  "sliced_by_head_tail": 7,
+  "sliced_replayable": 4,
+  "sliced_view_cut": 3,
+  "sliced_receipt_lost": 2,
+  "sliced_errors_cut": 1,
+  "acted_on": {
+    "window": 3,
+    "by_command": [
+      {
+        "command": "grep",
+        "refs": 5,
+        "file_in_view": 1,
+        "loc_in_view": 0,
+        "file_in_head_tail": 5,
+        "loc_in_head_tail": 5,
+        "misses": {
+          "budget": 0,
+          "filter": 2,
+          "cut": 3
+        }
+      },
+      {
+        "command": "go test",
+        "refs": 4,
+        "file_in_view": 4,
+        "loc_in_view": 4,
+        "file_in_head_tail": 4,
+        "loc_in_head_tail": 4,
+        "misses": {
+          "budget": 0,
+          "filter": 0,
+          "cut": 0
+        }
+      }
+    ],
+    "total": {
+      "refs": 9,
+      "file_in_view": 5,
+      "loc_in_view": 4,
+      "file_in_head_tail": 9,
+      "loc_in_head_tail": 9,
+      "misses": {
+        "budget": 0,
+        "filter": 2,
+        "cut": 3
+      }
+    },
+    "ambiguous_refs": 1,
+    "unmeasured_refs": 3,
+    "unmeasured_by_cause": {
+      "cut_by_head_tail": 1,
+      "several_commands": 1,
+      "spill_without_saved_output": 0,
+      "already_lx_view": 1
+    },
+    "lx_views_skipped": 1
+  },
+  "top": [
+    {
+      "command": "go test",
+      "count": 17,
+      "tokens": 46357,
+      "tokens_after": 13270,
+      "saved": 33087
+    },
+    {
+      "command": "grep",
+      "count": 6,
+      "tokens": 13987,
+      "tokens_after": 7947,
+      "saved": 6040
+    },
+    {
+      "command": "git status",
+      "count": 1,
+      "tokens": 13,
+      "tokens_after": 13
+    },
+    {
+      "command": "go vet",
+      "count": 1,
+      "tokens": 2122,
+      "tokens_after": 2122
+    }
+  ],
+  "top_unsupported": [
+    {
+      "command": "go test",
+      "count": 2,
+      "tokens": 4244
+    },
+    {
+      "command": "go vet",
+      "count": 1,
+      "tokens": 197
+    },
+    {
+      "command": "cat",
+      "count": 1,
+      "tokens": 27
+    },
+    {
+      "command": "sed",
+      "count": 1,
+      "tokens": 1
+    }
+  ]
+}

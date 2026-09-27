@@ -2,16 +2,16 @@
 
 **Your coding agent reads every line a command prints. lx makes it read the lines that matter, and it never hides an error.**
 
-[![ci](https://github.com/iheeb1/lx/actions/workflows/ci.yml/badge.svg)](https://github.com/iheeb1/lx/actions/workflows/ci.yml) ![Go 1.26](https://img.shields.io/badge/go-1.26-00ADD8) ![dependencies: 0](https://img.shields.io/badge/dependencies-0-2a78d6) ![tests: 501 + 17 fuzz](https://img.shields.io/badge/tests-501%20%2B%2017%20fuzz-1baf7a) ![license: MIT](https://img.shields.io/badge/license-MIT-eb6834)
+[![ci](https://github.com/iheeb1/lx/actions/workflows/ci.yml/badge.svg)](https://github.com/iheeb1/lx/actions/workflows/ci.yml) ![Go 1.26](https://img.shields.io/badge/go-1.26-00ADD8) ![dependencies: 0](https://img.shields.io/badge/dependencies-0-2a78d6) ![tests: 725 + 20 fuzz](https://img.shields.io/badge/tests-725%20%2B%2020%20fuzz-1baf7a) ![license: MIT](https://img.shields.io/badge/license-MIT-eb6834)
 
-`lx` sits between an AI coding agent (Claude Code, Codex, Gemini CLI, Copilot, Cursor…) and the commands it runs (`git`, `go test`, `pytest`, `jest`, `tsc`, `eslint`, `grep`, `find`, `npm`, `docker`…). It prints a condensed view of their output. The exit code stays the same, every error survives, and anything lx removes can be printed back with one command (`lx show 7`).
+`lx` sits between an AI coding agent (Claude Code, Codex, Gemini CLI, Copilot, Cursor…) and the commands it runs (`git`, `go test`, `pytest`, `jest`, `tsc`, `eslint`, `grep`, `find`, `npm`, `docker`…). It prints a condensed view of their output. The exit code stays the same, every error survives, and anything lx removes can be printed back (`lx show 7`).
 
 | | |
 |---|---|
 | **91%** | fewer tokens across 116 real command outputs from 11 open-source repos (exact o200k counts) |
 | **99%** | of application `file:line` locations kept on failing runs, against **61%** for a head+tail cut to the same size |
 | **65** | command filters across git, Go, JS/TS, Python, search/listing, builds, HTTP/JSON and containers, plus a shape-aware engine for every other command |
-| **0** | dependencies. It is one static Go binary, with no telemetry and no network code |
+| **0** | dependencies. It is one static Go binary, with no telemetry and no network code (CI fails if a networking package is linked in) |
 
 ---
 
@@ -61,9 +61,19 @@ The obvious way to save tokens is to cut output: `| tail -40`, or head+tail trun
 
 At the same size, lx keeps 96% of the distinct error messages against 64% for head+tail and 47% for `tail -40`. For application `file:line` locations it keeps 99% against 61% and 39%. The error messages lx doesn't show are section headers and passing-test titles that the line classifier matches (for example jest's `Summary of all failing tests` and mocha's `error handling` suite name). `bench/cmd/missing` lists every one of them.
 
-### Compared with rtk
+### Head to head with rtk
 
-[rtk](https://github.com/rtk-ai/rtk) (Rust Token Killer) is the popular tool in this space and the inspiration for lx. We studied its source (v0.50.0) and issue tracker. A live head-to-head benchmark harness is in `bench/cmd/h2h`; see [docs/benchmark.md](docs/benchmark.md) for the method.
+[rtk](https://github.com/rtk-ai/rtk) (Rust Token Killer) is the popular tool in this space and the inspiration for lx. Both tools ran the same 70 read-only commands, live, in the same repositories. Each tool decided for itself whether to wrap a command (`rtk rewrite` / `lx rewrite`), exactly as its agent hook would. Five runs are excluded because rtk couldn't launch the tool in the benchmark environment (vitest through a missing pnpm, and eslint), which says nothing about its filtering. The full method is in [docs/benchmark.md](docs/benchmark.md).
+
+![Head to head on live commands](docs/img/h2h-tokens.svg)
+
+![lx vs rtk: savings and what survives](docs/img/h2h-fidelity.svg)
+
+rtk is terser on some outputs. It summarizes a passing `go test` as one line, lists `find` results compactly, and caps `git log` at 10 commits. lx saves more tokens overall because it also condenses what rtk passes through: minified grep hits, `git blame`, `rg --files`, mocha, `npm ls`. On failing runs lx keeps 95% of the error messages against rtk's 43%, which matters most there. It is also faster:
+
+![Added latency per command](docs/img/overhead.svg)
+
+The agent hook is quick too: `lx hook claude` takes about 5 ms per call including process start, against about 19 ms measured for rtk's hook.
 
 rtk covers more ground: 100+ commands, 18 agents, a large community. lx takes a different position:
 
@@ -82,37 +92,63 @@ rtk covers more ground: 100+ commands, 18 agents, a large community. lx takes a 
 ## Install
 
 ```sh
-go install github.com/iheeb1/lx/cmd/lx@latest   # or: git clone https://github.com/iheeb1/lx && cd lx && make install
+curl -fsSL https://github.com/iheeb1/lx/releases/latest/download/install.sh | sh
 lx version
 ```
 
-This needs Go 1.26+ to build. The result is a single static binary with no runtime dependencies.
+The script picks the archive for your system (macOS or Linux, amd64 or arm64) and checks it against the release's `SHA256SUMS`. It then installs one static binary to `~/.local/bin`:
+
+- It never uses sudo, and it tells you when that directory isn't on your PATH.
+- If the checksum doesn't match, it installs nothing.
+- `LX_INSTALL_DIR=/somewhere` installs elsewhere, and `LX_VERSION=v0.2.0` pins a release.
+
+Manual download and `gh attestation verify` are described in [docs/releasing.md](docs/releasing.md).
+
+With Go 1.26+:
+
+```sh
+go install github.com/iheeb1/lx/cmd/lx@latest   # or: git clone https://github.com/iheeb1/lx && cd lx && make install
+```
+
+Windows builds are published too (`lx_windows_amd64.zip`, `lx_windows_arm64.zip`), but they're experimental and untested.
 
 ## Use it with your agent
 
 ### Claude Code
 
 ```sh
-lx init            # adds a PreToolUse hook to ~/.claude/settings.json (backup kept, other hooks untouched)
-lx init --project  # or only for this repository (.claude/settings.json)
-lx init --dry-run  # show the change without writing it
+lx init             # adds a PreToolUse hook to ~/.claude/settings.json (backup kept, other hooks untouched)
+lx init --readonly  # same, and read-only commands (git status, ls, grep…) run without a prompt, as they do without lx
+lx init --project   # or only for this repository (.claude/settings.json)
+lx init --dry-run   # show the change without writing it
 lx init --uninstall
+lx doctor           # check that it's all working
 ```
 
-The hook rewrites Bash commands lx understands (`git status` → `lx git status`) and leaves everything else alone. Commands are never rewritten if they:
+The hook rewrites Bash commands lx understands (`git status` → `lx git status`) and leaves everything else alone. It looks through transparent wrappers (`env`, `timeout`, `nice`, `time`, `command`) and Python project runners (`uv run`, `uvx`, `poetry run`, `pdm run`, `pipenv run`, `hatch run`, `rye run`, `pipx run`). So `uv run pytest -x` becomes `lx uv run pytest -x`, and the command still runs exactly as written. Commands are never rewritten if they:
 
-- use pipes into anything other than `head`/`tail`/`cat`;
+- pipe into anything other than `head`/`tail`/`cat`, or into `head`/`tail` without `2>&1`. lx prints stderr on stdout, where the cut could hide an error the raw command would show;
 - use file redirects, `$(…)`, heredocs, subshells or loops;
-- run watchers, servers or interactive tools;
-- ask for machine-readable output (`--porcelain`, `--json`, `-z`, `--format=…`).
+- run watchers, servers, debuggers or interactive tools (`--watch`, `pytest --pdb`, `python -i`, `npm run dev`…), or run in the background;
+- ask for machine-readable output (`--porcelain`, `--json`, `-z`, `--format=…`, `git status -s`);
+- set `LX_RAW=1` or `LX_OFF=1`.
+
+The hook calls lx by a name your agent's shell can find. `lx init` asks your login shell where `lx` is. If it isn't on that PATH, the hook is installed with `--prefix /path/to/lx`, so a rewrite never fails with `command not found`, and the receipts name that path too.
 
 Permissions work like this:
 
-- If a deny rule matches the original command, lx doesn't rewrite it and Claude Code's own deny applies.
-- If every part matches an allow rule, the rewrite is approved.
+- If a deny rule matches the original command, or the command inside a wrapper (`git push` in `uv run git push`), lx doesn't rewrite it, and Claude Code's own deny applies.
+- If a deny rule matches lx itself (`Bash(lx:*)`), lx stays out of the way, so the original runs instead of being refused.
+- If an ask rule matches, you get the prompt.
+- If every part matches an allow rule, the rewrite is approved. Write rules for the original command (`Bash(npm test:*)`), not for its lx form.
+- With `lx init --readonly`, a rewrite is also approved when every part of it is a read-only command from lx's fixed table and reads only inside the project (or your `permissions.additionalDirectories`).
+  - The table: `git status`/`diff`/`log`/`show`/`blame` and the listing forms of `git branch`, `ls`, `tree`, `du`, `find` (no `-exec`, `-delete`, `-fprint`…), `grep` and `rg` (no `--pre`, `-z`).
+  - Plus `cd` into an existing subdirectory, and `| head`/`tail`/`cat` with only flags and a line count.
+  - Anything else gets the normal prompt: an unknown flag, a path outside the project (symlinks are resolved first), `~`, `$VAR`, an env assignment, a wrapper, a redirection, or under zsh an unquoted `^`, `#` or `{…}`.
+  - It never applies in `bypassPermissions` or `dontAsk` mode.
 - Otherwise you get the normal prompt.
 
-A command the model writes as `lx …` is checked against your deny rules as if lx weren't there.
+A command the model writes as `lx …` is checked against your deny and ask rules as if lx weren't there, wrappers included: `lx uv run git push` meets a `Bash(git push:*)` deny rule.
 
 ### Other agents
 
@@ -123,26 +159,67 @@ lx init --agent copilot     # GitHub Copilot CLI preToolUse hook
 lx init --agent cursor      # Cursor hooks.json
 ```
 
-For your own tooling, `lx rewrite '<command>'` prints the lx form of a shell command and exits 1 when there is nothing to change.
+For your own tooling, `lx rewrite '<command>'` prints the lx form of a shell command and exits 1 when there is nothing to change (`-v` says why).
 
 ## Commands
 
 ```text
 lx <command> [args…]          run it, print the condensed view, exit with its exit code
-lx show [id] [--grep RE] [--lines A-B] [--raw]
-                              print the full output of a condensed run (no id: list recent runs)
+lx show [ID|last|last~N] [--errors] [--grep RE] [-C N] [--lines A-B] [--head N] [--tail N] [--full] [--raw]
+                              print a stored run back (no id: this project's recent runs; --all: every run)
 lx gain [--days N] [--json]   tokens saved so far, by command, with a daily sparkline
-lx discover [--days N]        replay your real Claude Code transcripts through lx and measure
-                              what it would have saved (and which commands it doesn't cover)
+lx discover [--days N] [--fidelity] [--examples] [--json]
+                              replay your real Claude Code transcripts through lx and measure
+                              what it would have saved (and which commands it doesn't cover);
+                              --fidelity also checks that its views kept what the agent acted on
+lx doctor [--json]            check that the hook, PATH, permissions and storage work
 lx pipe --as "go test ./..."  condense stdin as if it were that command's output
-lx rewrite '<cmd>'            the lx form of a shell command (for hooks and scripts)
+lx rewrite [-v] '<cmd>'       the lx form of a shell command (for hooks and scripts)
 lx init / lx hook claude      agent integration
 lx filters                    list the built-in filters
+lx version                    version, commit, Go version and platform (include it in bug reports)
 ```
 
 `lx -r <cmd>` or `LX_RAW=1` runs a command untouched, and `lx -b 3000 <cmd>` sets a smaller output budget.
 
-`lx discover` is the honest way to size the benefit before you install the hook. It reads your own session transcripts, finds every Bash call lx would have rewritten, and runs lx's filters on the output that was actually recorded. The result is measured, not estimated from a table of percentages. Only command names (`git status`, `npm test`) appear in its report.
+**Getting output back.** `lx show 7` starts with a provenance line, `[lx show 7 · go test ./... · exit 1 · 14 min ago · 307 lines]`. It adds a note when a newer run of the same command exists, or when the run came from another directory.
+
+- `last` is the newest run from the current project, and `last~1` the one before it.
+- `--errors` prints the error and warning lines with 3 lines of context.
+- `--grep RE -C N` works like `grep -n -C`.
+- `--lines A-B`, `--head N` and `--tail N` narrow the selection.
+
+Printed straight to the agent, a long run stops at the last whole line under the agent's output limit and ends with the exact command for the next part. Piped into another program, `lx show` prints everything. `--full` lifts the limit, and `--raw` prints the stored bytes exactly.
+
+**Long runs.** If a command is still running after 30 s, lx says so on stderr (`[lx: still running after 30s · 1,204 lines so far … output so far: lx show 12 --tail 40]`) and stores its output as it arrives. `lx show` then works while the command runs, and still works if lx itself gets killed. If lx is interrupted, it forwards the signal, prints a partial view if the command takes more than 2 s to stop, and never kills the command itself. A command that seems to wait for input (`Ok to proceed? (y)`) gets flagged after 2 s of silence.
+
+**Measuring on your own sessions.** `lx discover` is the honest way to size the benefit before you install the hook. It reads your own session transcripts, finds every Bash call lx would have rewritten, and runs lx's filters on the output that was actually recorded. It also counts outputs that Claude Code had to spill for being over its size limit.
+
+`--fidelity` checks the other half: did lx keep what your agent needed? When the agent opened or edited a file within 3 tool calls of a command whose output named it at `file:line`, discover checks whether lx's view showed that location, and whether a blind head+tail cut of the same size would have. Only command names (`git status`, `npm test`) and counts appear in the report. `--examples` adds locations from your outputs, and only on your terminal.
+
+### Troubleshooting: `lx doctor`
+
+```text
+✓ binary      lx v0.2.0 (3f2a1c9, 2026-09-26, go1.26.5, darwin/arm64) at ~/.local/bin/lx
+✓ hook        installed in ~/.claude/settings.json: /Users/me/.local/bin/lx hook claude
+✓ hook-run    `git status` → `lx git status` in 6 ms
+✗ path        lx is not on your shell's PATH (zsh): rewritten commands will fail with command not found
+              fix: export PATH=/Users/me/.local/bin:"$PATH"  # or re-run `lx init` so rewrites call lx by its full path
+lx doctor: 1 failure
+```
+
+It checks:
+
+- **hook:** that the hook is installed, installed only once, and not disabled; that it runs this binary; and it runs it once on `git status`.
+- **path:** whether your login shell finds `lx`.
+- **rtk:** a conflicting rtk hook.
+- **perms:** permission rules that approve *any* command through lx (`Bash(lx:*)`), or that deny lx itself.
+- **env:** disabling variables (`LX_HOOK=0`, `LX_RAW=1`, `LX_TEE=0`).
+- **settings:** invalid settings files.
+- **storage:** whether the run store is writable.
+- **activity:** Claude Code running while lx records nothing.
+
+It is read-only, and it exits 1 when a check fails.
 
 ## What lx does to each tool
 
@@ -161,6 +238,8 @@ lx filters                    list the built-in filters
 | `make` / `cc` / `cmake` / `ninja` / `cargo` / `gradle` / `mvn` | compiler commands counted; every diagnostic block kept; include chains folded; `make test` output handed to the inner tool's filter |
 | `curl` / `wget` / `httpie` / `jq` / `cat` | large JSON compacted (error fields first, arrays of objects as tables); headers trimmed unless status ≥ 400; source files never altered (large ones windowed with line numbers) |
 | `docker` / `kubectl` / `journalctl` | tables trimmed; logs templated (Drain-style) with every error record kept verbatim; stack traces folded, never dropped; BuildKit noise gone |
+| `git reflog` / `shortlog` / `worktree list` / `ls-remote` / `submodule status` | kept as git prints them (every line is an item); long lists cut from the end with an exact count |
+| `uv run` / `poetry run` / `uvx` / `env` / `timeout` … in front of a command | looked through: `lx poetry run jest` reads exactly like `lx jest`; `lx uv run python` opens its REPL live |
 | anything else | generic engine: ANSI and progress stripped, repeated and similar lines collapsed, stack traces folded, JSON/log/path shapes detected |
 
 ## Guarantees
@@ -168,12 +247,14 @@ lx filters                    list the built-in filters
 These are the invariants lx is built around. Each one is enforced by tests over real captured output:
 
 1. **The exit code is never changed.** lx exits with the child's status, and 128+N if it was killed by a signal.
-2. **Error lines are never silently removed.** Command filters keep them, and their fidelity tests prove it on real captures. For everything else, a runtime guard re-appends any error line that went missing. The budget stage keeps error lines before anything else.
-3. **Never worse.** If condensing saves less than 10% of the tokens, you get the plain output.
-4. **Nothing is lost.** When anything is removed, the full output is stored (mode 0600, the newest 200 runs, at most 7 days). The receipt line says how to get it back.
-5. **Filters can't hurt you.** A filter that panics or doesn't recognize its input falls back to the generic engine.
+2. **Error lines are never silently removed.** Command filters keep them, and their fidelity tests prove it on real captures. For everything else, a runtime guard re-appends any error line that went missing. The budget stage keeps error lines before anything else. If error lines alone exceed the output limit, the rest become counted `… N lines omitted …` markers, and `lx show N --errors` prints them all.
+3. **Never worse.** If condensing saves less than 10% of the tokens, you get the plain output, unless the plain output is over the agent's output limit (see 8).
+4. **Nothing is lost.** When anything is removed, the full output is stored and the receipt line says how to get it back. Storage is mode 0600 and keeps the newest 1,000 runs plus every run from the last 24 hours, capped at 7 days and 256 MiB. Run ids never repeat, and a run is written in one step, so `lx show` never serves a half-written file as complete.
+5. **Filters can't hurt you.** A filter that panics or doesn't recognize its input falls back to the generic engine. A bug anywhere else in lx's condensing prints the output unfiltered, with the command's exit code.
 6. **The command runs as you wrote it.** It runs once, with your exact argv, stdin and environment. lx never injects flags.
-7. **Machine output is untouched.** `--json`, `--porcelain`, `-z`, `--format=…` and similar output is passed through byte for byte. So are watchers, servers and interactive programs, streamed live.
+7. **Machine output is untouched.** `--json`, `--porcelain`, `-z`, `--format=…` and similar output is passed through byte for byte. So are watchers, servers and interactive programs, streamed live, including inside wrappers (`uv run python` opens its REPL live).
+8. **Every view fits the agent's output limit.** Inside Claude Code, views and `lx show` stay under its Bash output limit (`BASH_MAX_OUTPUT_LENGTH`, 30,000 characters by default). The agent then never gets the host's 2 KB preview in place of the view.
+9. **Long runs are never silent.** A command still running after 30 s gets a stderr notice and a live stored run. An interrupted lx forwards the signal, prints a partial view, and never kills the command itself.
 
 ## How it works
 
@@ -204,12 +285,12 @@ Token counts come from an offline estimator that reproduces the cl100k/o200k pre
 - **A corpus of real output.** `testdata/corpus` holds 116 captures of real commands (git, go, npm, jest, vitest, mocha, tsc, eslint, pytest, pip, grep, rg, find, ls, curl, make…) run in 11 open-source repositories, including deliberately broken builds and failing tests. Each filter package adds its own real and synthetic variants: 422 more captures.
 - **518 golden files.** Each one is the exact text an agent reads for a capture. `make golden` regenerates them, and every diff gets reviewed.
 - **Fidelity properties on every capture.** The error guard adds nothing, error messages and `file:line` locations survive, the verdict agrees with the exit code, and a filter bails on localized or unknown formats.
-- **17 fuzz targets.** No panics; output is deterministic; the fast classifier equals the reference regex exactly.
+- **20 fuzz targets.** No panics; output is deterministic; the fast classifier equals the reference regex exactly.
 - **Adversarial review.** Every filter group was reviewed by a second engineer whose job was to produce false passes, lost errors and slow cases. Each bug found has a regression test.
 - **Scale.** Timing tests feed every filter 50,000-line inputs to catch algorithmic blowups (most take under 100 ms), and the suite passes under `-race`.
 
 ```sh
-go test ./...          # 501 tests, ~2,000 subtests
+go test ./...          # 725 tests, ~3,000 subtests
 go test -race ./...
 make golden            # after an intentional output change
 ```
@@ -235,13 +316,18 @@ A note on what these numbers mean. They measure the tokens of **command output**
 | `LX_TRACK=0` | don't record savings for `lx gain` |
 | `LX_HOOK=0` | make the agent hook a no-op |
 | `LX_TEE_DIR`, `LX_DATA_DIR` | where stored outputs and the savings log live |
+| `LX_MAX_CHARS=N` | the agent's output limit in characters; views and `lx show` stay under it. In Claude Code the default comes from `BASH_MAX_OUTPUT_LENGTH` (30,000 if unset), and lx uses 90% of it. Elsewhere there's no limit unless you set one. `0` turns it off |
+| `LX_HEARTBEAT=30s` | when a command is still running after this long, say so on stderr and start storing its output (`0` turns it off) |
+| `LX_PROMPT_IDLE=2s` | after this much silence, flag a prompt nobody is answering, such as `Ok to proceed? (y)` (`0` turns it off) |
 
-**Privacy:** `lx gain` records only the tool and subcommand (`git status`), token counts, the duration and the exit code. It never records arguments or output. Stored full outputs live in your user cache directory with mode 0600 and expire after 7 days. lx makes no network calls.
+**Privacy:** `lx gain` records only the tool and subcommand (`git status`), token counts, the duration and the exit code. It never records arguments or output. Stored full outputs live in your user cache directory with mode 0600, expire after 7 days, and are capped at 256 MiB in total. lx makes no network calls, and CI enforces it: `make nonet` fails the build if a networking package (`net`, `net/http`, `crypto/tls`…) is linked into lx for Linux, macOS or Windows.
 
 ## Limitations
 
 - Claude Code's built-in Read, Grep and Glob tools don't go through Bash, so the hook can't see them.
-- A rewritten command no longer matches Claude Code's built-in auto-approval of read-only commands. You may be prompted for `lx git status` where `git status` ran silently. Approve it once with "don't ask again", or add specific rules such as `Bash(lx git status:*)`. Never add `Bash(lx:*)`: lx runs arbitrary commands.
+- A rewritten command no longer matches Claude Code's built-in auto-approval of read-only commands. Without `--readonly`, you may be prompted for `lx git status` where `git status` ran silently. `lx init --readonly` restores the silent run for a fixed table of read-only commands (see [Permissions](#claude-code)). Never add `Bash(lx:*)` to your allow rules: lx runs arbitrary commands, and `lx doctor` warns if you have.
+- A command that waits for input still waits. lx flags a likely prompt after 2 s of silence, but it can't answer it.
+- A view has fewer tokens than the raw output, but can have more lines: grep's per-file grouping, for example. In `cmd 2>&1 | tail -n 40`, a raw output of 37 lines passes whole, while lx's 60-line view gets cut. The planned fix is for the hook to pass the slice size (`lx --fit 40`), so lx fits its view and receipt into it.
 - Shell aliases and functions named like a supported tool are bypassed by `lx <tool>`, as they are with rtk.
 - Filters for cargo, gradle, docker and kubectl are verified against synthetic fixtures in the tools' real formats, because those tools weren't available on the capture machine. Everything else is verified on real captures. Windows is untested.
 - Parsers recognize English tool output. For localized output they fall back to the generic engine rather than guess.

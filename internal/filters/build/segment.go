@@ -1,7 +1,7 @@
 package build
 
 import (
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -26,7 +26,7 @@ import (
 // "path.ext: (12, 5)" (Kotlin 1.x), after an optional one-letter severity
 // ("e: ", "w: " — Kotlin) or "vet: ", and an optional file:// scheme. Stack
 // frames start with whitespace and never match.
-var diagLineRe = regexp.MustCompile(`^(?:[a-z]: |vet: )?(?:file://)?[^\s:]*[\w-]\.[A-Za-z][\w+]{0,9}(?::\d+|:\[\d+,\d+\]|\(\d+(?:,\d+)*\)|: \(\d+, \d+\))`)
+var diagLineRe = lazyre.New(`^(?:[a-z]: |vet: )?(?:file://)?[^\s:]*[\w-]\.[A-Za-z][\w+]{0,9}(?::\d+|:\[\d+,\d+\]|\(\d+(?:,\d+)*\)|: \(\d+, \d+\))`)
 
 // genericLines runs unknown lines through the generic reducer (short runs
 // and data shapes are kept as they are).

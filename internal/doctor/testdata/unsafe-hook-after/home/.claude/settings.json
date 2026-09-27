@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "@ROOT@/bin/lx hook claude && touch @ROOT@/SENTINEL"
+          },
+          {
+            "type": "command",
+            "command": "@ROOT@/bin/lx hook claude $(touch @ROOT@/SENTINEL)"
+          },
+          {
+            "type": "command",
+            "command": "SENTINEL=1 @ROOT@/bin/lx hook claude"
+          },
+          {
+            "type": "command",
+            "command": "@ROOT@/bin/lx hook claude > @ROOT@/SENTINEL"
+          }
+        ]
+      }
+    ]
+  }
+}

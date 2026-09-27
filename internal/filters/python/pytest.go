@@ -2,7 +2,7 @@ package python
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -60,38 +60,38 @@ func (pytestFilter) Apply(c *engine.Context, out string) (string, bool) {
 
 var (
 	// The final result line, with or without the === wrapper (-q).
-	ptSummaryRe    = regexp.MustCompile(`^(?:=+ )?(?:(?:\d+ (?:subtests? )?(?:failed|passed|skipped|deselected|xfailed|xpassed|warnings?|errors?|rerun)(?:, )?)+|no tests ran) in \d+(?:\.\d+)?s(?:econds)?(?: \([\d:.]+\))?(?: =+)?$`)
-	ptSectionRe    = regexp.MustCompile(`^=+ (.+?) =+$`)
-	ptBangRe       = regexp.MustCompile(`^!{3,} .* !{3,}$`)
-	ptBlockRe      = regexp.MustCompile(`^_{3,} (.+?) _{3,}$`)
-	ptDashRe       = regexp.MustCompile(`^-{2,} (.+?) -{2,}$`)
-	ptCaptureRe    = regexp.MustCompile(`^-{3,} Captured (?:stdout|stderr|log|warnings?) (?:setup|call|teardown) -{3,}$`)
-	ptHeaderRe     = regexp.MustCompile(`^(?:platform \S+ -- Python |cachedir: |rootdir: |configfile: |inifile: |testpaths: |plugins: |hypothesis profile |asyncio: |benchmark: |django: settings|Django settings: |metadata: |timeout: |timeout method: |timeout func_only: |sensitiveurl: |base_url: |html: |cov: |anyio: |xdist: |scheduling tests via \w+$)`)
-	ptCollectRe    = regexp.MustCompile(`\bcollected \d+ items?\b|\bno tests collected\b|^\d+ workers? \[\d+ items?\]$`)
-	ptCollectingRe = regexp.MustCompile(`^collecting \.\.\. ?$|^bringing up nodes\.\.\.$|^created: \d+/\d+ workers?$`)
+	ptSummaryRe    = lazyre.New(`^(?:=+ )?(?:(?:\d+ (?:subtests? )?(?:failed|passed|skipped|deselected|xfailed|xpassed|warnings?|errors?|rerun)(?:, )?)+|no tests ran) in \d+(?:\.\d+)?s(?:econds)?(?: \([\d:.]+\))?(?: =+)?$`)
+	ptSectionRe    = lazyre.New(`^=+ (.+?) =+$`)
+	ptBangRe       = lazyre.New(`^!{3,} .* !{3,}$`)
+	ptBlockRe      = lazyre.New(`^_{3,} (.+?) _{3,}$`)
+	ptDashRe       = lazyre.New(`^-{2,} (.+?) -{2,}$`)
+	ptCaptureRe    = lazyre.New(`^-{3,} Captured (?:stdout|stderr|log|warnings?) (?:setup|call|teardown) -{3,}$`)
+	ptHeaderRe     = lazyre.New(`^(?:platform \S+ -- Python |cachedir: |rootdir: |configfile: |inifile: |testpaths: |plugins: |hypothesis profile |asyncio: |benchmark: |django: settings|Django settings: |metadata: |timeout: |timeout method: |timeout func_only: |sensitiveurl: |base_url: |html: |cov: |anyio: |xdist: |scheduling tests via \w+$)`)
+	ptCollectRe    = lazyre.New(`\bcollected \d+ items?\b|\bno tests collected\b|^\d+ workers? \[\d+ items?\]$`)
+	ptCollectingRe = lazyre.New(`^collecting \.\.\. ?$|^bringing up nodes\.\.\.$|^created: \d+/\d+ workers?$`)
 	// Progress: "tests/test_x.py ..F.s [ 42%]", "....F  [100%]", ".... [ 14%]",
 	// console_output_style=count "[ 5/23]", a lone "[100%]" (a plugin
 	// printed in the middle of the line). Group 1 is the file, group 2 the
 	// status characters (u and , are pytest 9 subtest results).
-	ptProgressRe = regexp.MustCompile(`^(?:(\S+\.py)(?:::\S+)? ?)?([.sFExXRu,]+) *(?:\[ *\d+(?:%|/\d+)\])?$|^\S+\.py \[ *\d+(?:%|/\d+)\]$|^\[ *\d+(?:%|/\d+)\]$`)
+	ptProgressRe = lazyre.New(`^(?:(\S+\.py)(?:::\S+)? ?)?([.sFExXRu,]+) *(?:\[ *\d+(?:%|/\d+)\])?$|^\S+\.py \[ *\d+(?:%|/\d+)\]$|^\[ *\d+(?:%|/\d+)\]$`)
 	// Verbose: "tests/test_x.py::test_y[p] PASSED   [ 42%]" (or "[ 5/23]"), xdist "[gw1] [ 42%] PASSED tests/…".
-	ptVerboseRe = regexp.MustCompile(`^(\S.*::.+?) (PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS)(?: \(.*\))?(?: +\[ *\d+(?:%|/\d+)\])?$`)
-	ptXdistRe   = regexp.MustCompile(`^\[gw\d+\] \[ *\d+(?:%|/\d+)\] (PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS) \S`)
+	ptVerboseRe = lazyre.New(`^(\S.*::.+?) (PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS)(?: \(.*\))?(?: +\[ *\d+(?:%|/\d+)\])?$`)
+	ptXdistRe   = lazyre.New(`^\[gw\d+\] \[ *\d+(?:%|/\d+)\] (PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS) \S`)
 	// xdist -v announces each test before a worker reports it: a bare node id.
-	ptNodeIDRe = regexp.MustCompile(`^\S+\.py::\S.*$`)
+	ptNodeIDRe = lazyre.New(`^\S+\.py::\S.*$`)
 	// Traceback frames: long-style location ("path:12: AssertionError",
 	// "path:12:"), short-style frame head ("path:12: in test_x").
-	ptLongLocRe  = regexp.MustCompile(`^(\S(?:.*?\S)?):(\d+):(?: ([A-Za-z_][\w.]*))?$`)
-	ptShortLocRe = regexp.MustCompile(`^(\S(?:.*?\S)?):(\d+): in \S.*$`)
-	ptFrameSepRe = regexp.MustCompile(`^(?:_ ){3,}_?$`)
-	ptELineRe    = regexp.MustCompile(`^E(?:\s|$)`)
-	ptObjArgRe   = regexp.MustCompile(`^(?:[A-Za-z_]\w* = <[\w.]+ object at 0x[0-9a-f]+>(?:, |$))+$`)
-	ptFuncargRe  = regexp.MustCompile(`^[A-Za-z_]\w* = `)
-	ptBracketsRe = regexp.MustCompile(`^[\])},]+$`)
+	ptLongLocRe  = lazyre.New(`^(\S(?:.*?\S)?):(\d+):(?: ([A-Za-z_][\w.]*))?$`)
+	ptShortLocRe = lazyre.New(`^(\S(?:.*?\S)?):(\d+): in \S.*$`)
+	ptFrameSepRe = lazyre.New(`^(?:_ ){3,}_?$`)
+	ptELineRe    = lazyre.New(`^E(?:\s|$)`)
+	ptObjArgRe   = lazyre.New(`^(?:[A-Za-z_]\w* = <[\w.]+ object at 0x[0-9a-f]+>(?:, |$))+$`)
+	ptFuncargRe  = lazyre.New(`^[A-Za-z_]\w* = `)
+	ptBracketsRe = lazyre.New(`^[\])},]+$`)
 	// pytest-xdist prints the worker's platform at the top of each failure.
-	ptWorkerRe = regexp.MustCompile(`^\[gw\d+\] \S+ -- Python \S+ \S+$`)
+	ptWorkerRe = lazyre.New(`^\[gw\d+\] \S+ -- Python \S+ \S+$`)
 	// A non-zero failure count in the result line ("1 xfailed" is not one).
-	ptFailCountRe = regexp.MustCompile(`(?:^|[ =])[1-9]\d* (?:subtests? )?(?:failed|errors?)\b`)
+	ptFailCountRe = lazyre.New(`(?:^|[ =])[1-9]\d* (?:subtests? )?(?:failed|errors?)\b`)
 )
 
 const (
@@ -1041,7 +1041,7 @@ func (r *ptReducer) warnings(idx []int) {
 	}
 }
 
-var warnMsgRe = regexp.MustCompile(`^\s*(\S(?:.*?\S)?):(\d+): ([A-Za-z_][\w.]*): (.*)$`)
+var warnMsgRe = lazyre.New(`^\s*(\S(?:.*?\S)?):(\d+): ([A-Za-z_][\w.]*): (.*)$`)
 
 // warnKey returns the grouping key (category + message without location)
 // and the location of a warning's message lines.

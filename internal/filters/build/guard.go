@@ -1,7 +1,7 @@
 package build
 
 import (
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -9,7 +9,7 @@ import (
 
 // countSuffixRe is the " [×N]" count this package (and CollapseRuns)
 // appends to a line kept once for N occurrences.
-var countSuffixRe = regexp.MustCompile(` \[×\d+\]$`)
+var countSuffixRe = lazyre.New(` \[×\d+\]$`)
 
 // selfGuard is the engine's error guard restricted to the lines a filter
 // answers for. Every error-class line of lines that is not exempt and whose

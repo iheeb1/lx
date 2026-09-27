@@ -2,7 +2,7 @@ package jstools
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -90,26 +90,26 @@ func (npmRun) Match(c *engine.Context) bool {
 func (npmRun) GuardsErrors() bool { return true }
 
 var (
-	viteAssetRe = regexp.MustCompile(`^(\S+)\s+([\d.,]+) (B|kB|KB|MB|GB)(?:\s+│\s+gzip:\s+[\d.,]+ (?:B|kB|KB|MB))?(?:\s+│\s+map:\s+[\d.,]+ (?:B|kB|KB|MB))?$`)
-	viteNoiseRe = regexp.MustCompile(`^(?:transforming|rendering chunks|computing gzip size)\.\.\.$`)
-	viteLimitRe = regexp.MustCompile(`^\(!\) Some chunks are larger than ([\d.]+) (kB|KB|MB)`)
-	wpAssetRe   = regexp.MustCompile(`^asset (\S+) ([\d.]+) (bytes|KiB|MiB|GiB)\b(.*)$`)
-	wpModuleRe  = regexp.MustCompile(`^\s*(?:(?:orphan|runtime|cacheable|javascript|asset|css|json) modules|modules by (?:path|layer|type)|\./\S+|\S+ \+ \d+ modules?) .*\b(?:\d+ modules?|\[built\]|\[code generated\]|bytes|KiB|MiB)(?: .*)?$`)
-	buildMarkRe = regexp.MustCompile(`^(?:vite v\d|✓ built in|✓ \d+ modules transformed|webpack(?: \d[\d.]*)? compiled|\s*▲ Next\.js|\s*✓ Compiled successfully|Route \((?:app|pages)\)|error during build:|[✗x] Build failed)`)
+	viteAssetRe = lazyre.New(`^(\S+)\s+([\d.,]+) (B|kB|KB|MB|GB)(?:\s+│\s+gzip:\s+[\d.,]+ (?:B|kB|KB|MB))?(?:\s+│\s+map:\s+[\d.,]+ (?:B|kB|KB|MB))?$`)
+	viteNoiseRe = lazyre.New(`^(?:transforming|rendering chunks|computing gzip size)\.\.\.$`)
+	viteLimitRe = lazyre.New(`^\(!\) Some chunks are larger than ([\d.]+) (kB|KB|MB)`)
+	wpAssetRe   = lazyre.New(`^asset (\S+) ([\d.]+) (bytes|KiB|MiB|GiB)\b(.*)$`)
+	wpModuleRe  = lazyre.New(`^\s*(?:(?:orphan|runtime|cacheable|javascript|asset|css|json) modules|modules by (?:path|layer|type)|\./\S+|\S+ \+ \d+ modules?) .*\b(?:\d+ modules?|\[built\]|\[code generated\]|bytes|KiB|MiB)(?: .*)?$`)
+	buildMarkRe = lazyre.New(`^(?:vite v\d|✓ built in|✓ \d+ modules transformed|webpack(?: \d[\d.]*)? compiled|\s*▲ Next\.js|\s*✓ Compiled successfully|Route \((?:app|pages)\)|error during build:|[✗x] Build failed)`)
 	// next build's route table: "┌ ○ /about  1.2 kB  89 kB" rows (the
 	// symbol is missing on a dynamic segment whose paths are listed under
 	// it), "  ├ ● /blog/a" / "  └ ● [+2 more paths]" prerendered paths,
 	// and the legend after it.
-	nextRouteRe    = regexp.MustCompile(`^[┌├└]\s+(?:([○●ƒλ◐])\s+)?/\S*`)
-	nextSubRouteRe = regexp.MustCompile(`^[│ ]\s*[├└]\s+(?:([○●ƒλ◐])\s+)?(?:/\S*|\[\+(\d+) more paths?\])`)
-	nextSharedRe   = regexp.MustCompile(`^\+ First Load JS shared by all`)
-	nextChunkRe    = regexp.MustCompile(`^\s+[├└] (?:chunks/\S+|other shared chunks \(total\)|css/\S+)\s+[\d.]+ (?:B|kB|MB)$`)
-	nextLegendRe   = regexp.MustCompile(`^([○●ƒλ◐])\s+\(([^)]+)\)`)
-	nextProgressRe = regexp.MustCompile(`^\s+Generating static pages .*\(\d+/\d+\)(?: \.\.\.)?$`)
+	nextRouteRe    = lazyre.New(`^[┌├└]\s+(?:([○●ƒλ◐])\s+)?/\S*`)
+	nextSubRouteRe = lazyre.New(`^[│ ]\s*[├└]\s+(?:([○●ƒλ◐])\s+)?(?:/\S*|\[\+(\d+) more paths?\])`)
+	nextSharedRe   = lazyre.New(`^\+ First Load JS shared by all`)
+	nextChunkRe    = lazyre.New(`^\s+[├└] (?:chunks/\S+|other shared chunks \(total\)|css/\S+)\s+[\d.]+ (?:B|kB|MB)$`)
+	nextLegendRe   = lazyre.New(`^([○●ƒλ◐])\s+\(([^)]+)\)`)
+	nextProgressRe = lazyre.New(`^\s+Generating static pages .*\(\d+/\d+\)(?: \.\.\.)?$`)
 	// webpack: "Module not found: Error: Can't resolve 'x' in 'dir'" is
 	// followed by the resolver's trace of every path it tried.
-	wpNotFoundRe = regexp.MustCompile(`^Module not found: Error: Can't resolve '.+' in '.+'$`)
-	wpResolveRe  = regexp.MustCompile(`^resolve '.+' in '.+'$`)
+	wpNotFoundRe = lazyre.New(`^Module not found: Error: Can't resolve '.+' in '.+'$`)
+	wpResolveRe  = lazyre.New(`^resolve '.+' in '.+'$`)
 )
 
 func (npmRun) Apply(c *engine.Context, s string) (string, bool) {

@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -51,7 +51,7 @@ func (branchFilter) Match(c *engine.Context) bool {
 
 // branchLineRe: marker ("* " current, "+ " checked out in another worktree,
 // "  "), name, optional symbolic target.
-var branchLineRe = regexp.MustCompile(`^([*+ ]) (\S+)(?: -> (\S+))?$`)
+var branchLineRe = lazyre.New(`^([*+ ]) (\S+)(?: -> (\S+))?$`)
 
 // minWrapLocals: at most this many local branches stay one per line.
 const minWrapLocals = 20

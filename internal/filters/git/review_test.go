@@ -541,3 +541,18 @@ func TestCleanDryRunKeepsEveryFile(t *testing.T) {
 		t.Errorf("%s:\n%s", res.Filter, res.Output)
 	}
 }
+
+// keepBody's prefilter must agree with keepBodyRe on every line it rejects.
+func TestKeepBodyPrefilterExact(t *testing.T) {
+	lines := []string{
+		"Fixes #123", "fixes owner/repo#9", "Closes: https://github.com/o/r/issues/4", "see #12",
+		"BREAKING CHANGE: x", "Revert \"y\"", "This reverts commit abc.", "security: bump", "CVE-2024-1",
+		"GHSA-xxxx", "deprecate foo", "vulnerability", "Merge pull request #1234 from x/y", "(#1234)",
+		"Refs: #7", "related to #8", "nothing here", "http://x.com/issues/3 fixed", "resolved #99",
+	}
+	for _, ln := range lines {
+		if got, want := keepBody(ln), keepBodyRe.MatchString(ln); got != want {
+			t.Errorf("keepBody(%q) = %v, keepBodyRe = %v", ln, got, want)
+		}
+	}
+}

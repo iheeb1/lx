@@ -2,7 +2,7 @@ package fs
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -41,7 +41,7 @@ func (treeCmd) Match(c *engine.Context) bool {
 	return true
 }
 
-var treeReportRe = regexp.MustCompile(`^\d+ director(?:y|ies)(?:, \d+ files?)?$`)
+var treeReportRe = lazyre.New(`^\d+ director(?:y|ies)(?:, \d+ files?)?$`)
 
 type treeEntry struct {
 	depth int

@@ -2,14 +2,14 @@ package engine
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 )
 
 // maskRe finds the variable parts of a line. Alternatives are tried left to
 // right (leftmost-first), so the longer shapes (full timestamps) win over
 // their pieces (dates, times, numbers). Each capture group is one class.
-var maskRe = regexp.MustCompile(
+var maskRe = lazyre.New(
 	// 1: full timestamps: ISO 8601, 2026/09/26 10:00:01, CLF, syslog.
 	`(\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(?::\d{2}(?:[.,]\d+)?)?(?:Z|[+-]\d{2}:?\d{2}\b)?` +
 		`|\d{4}/\d{2}/\d{2}[T ]\d{2}:\d{2}:\d{2}(?:[.,]\d+)?` +
@@ -122,7 +122,7 @@ func countDigits(s string) int {
 // locationRe finds source locations (file.go:12, x.ts(3), x.ts-45- in rg
 // context, grep's path:12:, eslint's "  12:5  error"). Lines carrying one
 // are never folded: the location is what the reader acts on.
-var locationRe = regexp.MustCompile(`[\w@-]\.[A-Za-z][A-Za-z0-9]{0,5}[:(-]\d+|^[^\s:]*[^\s:\d][^\s:]*:\d+[:-]|^\s*\d+:\d+\s`)
+var locationRe = lazyre.New(`[\w@-]\.[A-Za-z][A-Za-z0-9]{0,5}[:(-]\d+|^[^\s:]*[^\s:\d][^\s:]*:\d+[:-]|^\s*\d+:\d+\s`)
 
 const (
 	// minSimilarRun is the shortest run CollapseSimilar folds. With three

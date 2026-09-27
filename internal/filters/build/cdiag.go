@@ -1,8 +1,8 @@
 package build
 
 import (
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path"
-	"regexp"
 	"strings"
 )
 
@@ -20,25 +20,25 @@ import (
 //	          "      |     ^~~") or the older "source line" + "caret line"
 //	[notes]   note blocks that directly follow, each with its own prefix/body
 var (
-	cLocDiagRe  = regexp.MustCompile(`^([^\s:][^:]*?):(\d+):(?:(\d+):)? (fatal error|error|warning|note|remark): (.*)$`)
-	cToolDiagRe = regexp.MustCompile(`^([\w.+-]+): (fatal error|error|warning|note): (.*)$`)
-	cBareDiagRe = regexp.MustCompile(`^(fatal error|error|warning|note): (.*)$`)
+	cLocDiagRe  = lazyre.New(`^([^\s:][^:]*?):(\d+):(?:(\d+):)? (fatal error|error|warning|note|remark): (.*)$`)
+	cToolDiagRe = lazyre.New(`^([\w.+-]+): (fatal error|error|warning|note): (.*)$`)
+	cBareDiagRe = lazyre.New(`^(fatal error|error|warning|note): (.*)$`)
 
-	inclRe     = regexp.MustCompile(`^In file included from \S.*:\d+(?::\d+)?[:,]$`)
-	inclFromRe = regexp.MustCompile(`^\s+from \S.*:\d+(?::\d+)?[:,]$`)
+	inclRe     = lazyre.New(`^In file included from \S.*:\d+(?::\d+)?[:,]$`)
+	inclFromRe = lazyre.New(`^\s+from \S.*:\d+(?::\d+)?[:,]$`)
 	// gcc context lines printed before a diagnostic.
-	cContextRe  = regexp.MustCompile(`^[^\s:][^:]*?: (?:In (?:function|member function|static member function|constructor|destructor|copy constructor|instantiation of|substitution of|lambda function|lambda)|At (?:top level|global scope))\b.*:$`)
-	cRequiredRe = regexp.MustCompile(`^[^\s:][^:]*?:\d+:(?:\d+:)?\s{2,}(?:required |recursively required |in (?:constexpr )?expansion |in requirements )`)
+	cContextRe  = lazyre.New(`^[^\s:][^:]*?: (?:In (?:function|member function|static member function|constructor|destructor|copy constructor|instantiation of|substitution of|lambda function|lambda)|At (?:top level|global scope))\b.*:$`)
+	cRequiredRe = lazyre.New(`^[^\s:][^:]*?:\d+:(?:\d+:)?\s{2,}(?:required |recursively required |in (?:constexpr )?expansion |in requirements )`)
 
 	// Source excerpt lines: gcc ≥ 9 / clang ≥ 16 gutter, gcc fix-it "+++ |+".
-	gutterRe = regexp.MustCompile(`^\s*(?:\d+|\+\+\+)?\s*\|`)
-	caretRe  = regexp.MustCompile(`^\s*[~^][~^ ]*$`)
+	gutterRe = lazyre.New(`^\s*(?:\d+|\+\+\+)?\s*\|`)
+	caretRe  = lazyre.New(`^\s*[~^][~^ ]*$`)
 
 	// clang's per-translation-unit summary.
-	tuSummaryRe = regexp.MustCompile(`^\d+ (?:warnings?|errors?)(?: and \d+ (?:warnings?|errors?))? generated\.$`)
+	tuSummaryRe = lazyre.New(`^\d+ (?:warnings?|errors?)(?: and \d+ (?:warnings?|errors?))? generated\.$`)
 
 	// quotedRe masks quoted names so "unused variable 'a'" and "… 'b'" share a template.
-	quotedRe = regexp.MustCompile(`'[^']*'|‘[^’]*’|"[^"]*"|` + "`[^`]*`")
+	quotedRe = lazyre.New(`'[^']*'|‘[^’]*’|"[^"]*"|` + "`[^`]*`")
 )
 
 type cdiag struct {

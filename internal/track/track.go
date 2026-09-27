@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// Record is one wrapped command.
+// Record is one wrapped command, or one recall of a stored run.
 type Record struct {
 	Time   int64  `json:"t"`              // unix seconds
 	Cmd    string `json:"cmd"`            // "git status", "go test", "pytest"
@@ -21,7 +21,18 @@ type Record struct {
 	Ms     int64  `json:"ms"`             // wall time of the command
 	Exit   int    `json:"exit"`           // child exit status
 	Lossy  bool   `json:"lossy,omitzero"` // a full copy was stored for lx show
+
+	// Kind is "" for a wrapped command and KindShow for a recall: an
+	// `lx show` of a stored run, whose Out tokens were read back and count
+	// against what the condensed view saved. Summarize treats any other
+	// kind as a command.
+	Kind string `json:"kind,omitempty"`
+	Of   int    `json:"of,omitempty"`   // recall: the run id shown
+	Mode string `json:"mode,omitempty"` // recall: full, errors, grep, lines, head or tail
 }
+
+// KindShow marks a recall record.
+const KindShow = "show"
 
 // Path returns the history file ($LX_DATA_DIR overrides; else
 // $XDG_DATA_HOME/lx or the OS config dir).

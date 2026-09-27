@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(lx  *)",
+      "Bash(@ROOT@/bin/lx -r:*)",
+      "Bash(lx go test:*)"
+    ]
+  }
+}

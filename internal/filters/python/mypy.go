@@ -2,7 +2,7 @@ package python
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -31,16 +31,16 @@ func (mypyFilter) Match(c *engine.Context) bool {
 
 var (
 	// file:line[:col][:end_line:end_col]: severity: message
-	mypyDiagRe = regexp.MustCompile(`^(\S(?:.*?\S)?):(\d+)(?::\d+)?(?::\d+:\d+)?: (error|note|warning): (.*)$`)
+	mypyDiagRe = lazyre.New(`^(\S(?:.*?\S)?):(\d+)(?::\d+)?(?::\d+:\d+)?: (error|note|warning): (.*)$`)
 	// File-level and tool-level messages: "x.py: error: …", "mypy: error: …".
-	mypyFileDiagRe = regexp.MustCompile(`^(\S+): (error|note): (.*)$`)
-	mypySummaryRe  = regexp.MustCompile(`^(?:Found \d+ errors? in \d+ files?(?: \(.*\))?|Success: no issues found in \d+ source files?)$`)
-	mypyToolRe     = regexp.MustCompile(`^mypy: (?:can't read file|error:)`)
+	mypyFileDiagRe = lazyre.New(`^(\S+): (error|note): (.*)$`)
+	mypySummaryRe  = lazyre.New(`^(?:Found \d+ errors? in \d+ files?(?: \(.*\))?|Success: no issues found in \d+ source files?)$`)
+	mypyToolRe     = lazyre.New(`^mypy: (?:can't read file|error:)`)
 	// Notes that are generic advice: the same text says the same thing at
 	// any location, so it is shown once. Other notes ("Revealed type is",
 	// ""x" defined here", overload variants) depend on where they are and
 	// are only dropped when the whole line repeats.
-	mypyAdviceRe = regexp.MustCompile(`^(?:See https?://\S+(?: for more info)?$|Hint: "|\(or run "mypy --install-types"|Use "-> None" if function does not return a value$|By default the bodies of untyped functions are not checked|Consider using "(?:Sequence|Mapping)" instead|"(?:List|Dict)" is invariant|This violates the Liskov substitution principle$)`)
+	mypyAdviceRe = lazyre.New(`^(?:See https?://\S+(?: for more info)?$|Hint: "|\(or run "mypy --install-types"|Use "-> None" if function does not return a value$|By default the bodies of untyped functions are not checked|Consider using "(?:Sequence|Mapping)" instead|"(?:List|Dict)" is invariant|This violates the Liskov substitution principle$)`)
 )
 
 func (mypyFilter) Apply(c *engine.Context, text string) (string, bool) {

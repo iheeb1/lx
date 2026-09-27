@@ -3,11 +3,13 @@ package hook
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 )
 
 func readFile(t *testing.T, path string) string {
@@ -332,7 +334,12 @@ func TestIsLxHookCommand(t *testing.T) {
 	for cmd, want := range map[string]bool{
 		"lx hook claude": true, "/usr/local/bin/lx hook claude": true, `'/a b/lx' hook claude`: true,
 		"rtk hook claude": false, "lx hook claude --debug": false, "lx hook gemini": false, "": false,
-		"/bin/lxx hook claude": false,
+		"/bin/lxx hook claude":      false,
+		"lx hook claude --readonly": true, "lx hook claude --prefix /x/lx": true, `lx hook claude --prefix='/a b/lx'`: true,
+		"lx hook claude --readonly --prefix /x/lx": true, "lx hook claude --prefix": false,
+		"lx hook claude --readonly --debug": false, "lx hook claude --readonly && rm -rf x": false,
+		"lx hook claude --prefix $HOME/lx": true, "lx hook claude; other": false, "$HOME/go/bin/lx hook claude": true,
+		"$(which lx) hook claude": false,
 	} {
 		if got := isLxHookCommand(cmd); got != want {
 			t.Errorf("isLxHookCommand(%q) = %v", cmd, got)
@@ -357,5 +364,277 @@ func TestSnippet(t *testing.T) {
 	}
 	if _, err := Snippet("emacs", "lx"); err == nil {
 		t.Error("unknown agent accepted")
+	}
+}
+
+// hookCmd reads the single lx hook command from a settings.json.
+func hookCmd(t *testing.T, path string) string {
+	t.Helper()
+	var v struct {
+		Hooks struct {
+			Pre []struct {
+				Hooks []struct{ Command string }
+			} `json:"PreToolUse"`
+		} `json:"hooks"`
+	}
+	if err := json.Unmarshal([]byte(readFile(t, path)), &v); err != nil {
+		t.Fatal(err)
+	}
+	var found []string
+	for _, g := range v.Hooks.Pre {
+		for _, h := range g.Hooks {
+			if isLxHookCommand(h.Command) {
+				found = append(found, h.Command)
+			}
+		}
+	}
+	if len(found) != 1 {
+		t.Fatalf("lx hooks = %q", found)
+	}
+	return found[0]
+}
+
+// fakeShell writes an executable script that plays the user's $SHELL.
+func fakeShell(t *testing.T, body string) string {
+	t.Helper()
+	p := filepath.Join(t.TempDir(), "fakesh")
+	if err := os.WriteFile(p, []byte("#!/bin/sh\n"+body+"\n"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	return p
+}
+
+func TestProbeShellLx(t *testing.T) {
+	// The probe must ask exactly `-lic 'command -v lx'`, with stdin closed.
+	sh := fakeShell(t, `[ "$1" = "-lic" ] && [ "$2" = "command -v lx" ] || exit 3
+echo "Welcome to your shell"
+if read -r line; then echo /from/stdin; fi
+echo "/opt/lx/bin/lx  "`)
+	if got, err := ProbeShellLx(sh, 5*time.Second); err != nil || got != "/opt/lx/bin/lx" {
+		t.Errorf("probe = %q, %v", got, err)
+	}
+	// not found: command -v prints nothing and fails
+	if got, err := ProbeShellLx(fakeShell(t, "exit 1"), 5*time.Second); err != nil || got != "" {
+		t.Errorf("not found: %q, %v", got, err)
+	}
+	// an alias or a function is not a binary
+	if got, err := ProbeShellLx(fakeShell(t, "echo \"alias lx='ls -x'\""), 5*time.Second); err != nil || got != "" {
+		t.Errorf("alias: %q, %v", got, err)
+	}
+	// a shell that hangs is killed, with whatever it started
+	start := time.Now()
+	got, err := ProbeShellLx(fakeShell(t, "sleep 10 &\nsleep 10"), 300*time.Millisecond)
+	if err == nil || got != "" || time.Since(start) > 3*time.Second {
+		t.Errorf("hang: %q, %v after %v", got, err, time.Since(start))
+	}
+	if _, err := ProbeShellLx(filepath.Join(t.TempDir(), "nosuchshell"), time.Second); err == nil {
+		t.Error("missing shell: no error")
+	}
+	// no $SHELL: /bin/sh -lc
+	if _, err := ProbeShellLx("", 5*time.Second); err != nil {
+		t.Errorf("/bin/sh: %v", err)
+	}
+}
+
+func TestInitProbe(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	lx := filepath.Join(home, "go", "bin", "lx")
+	cases := []struct {
+		name, script string
+		wantCmd      string
+		wantMsg      string
+	}{
+		{"same file", "echo " + lx, lx + " hook claude", ""},
+		{"not on PATH", "exit 1", lx + " hook claude --prefix " + lx,
+			"lx: lx is not on your shell's PATH; rewritten commands will call " + lx +
+				" directly. To use plain lx: export PATH=$HOME/go/bin:$PATH"},
+		{"another lx", "echo /usr/local/bin/lx", lx + " hook claude --prefix " + lx,
+			"lx: your shell's lx is /usr/local/bin/lx, not this binary; rewritten commands will call " + lx + " directly"},
+		{"timeout", "sleep 10", lx + " hook claude --prefix " + lx,
+			"lx: could not check your shell's PATH (fakesh did not answer within 300ms); rewritten commands will call " + lx + " directly"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			dir := t.TempDir()
+			sh := fakeShell(t, c.script)
+			timeout := 10 * time.Second // a fresh script's first exec can be slow (macOS assesses it)
+			if c.name == "timeout" {
+				timeout = 300 * time.Millisecond
+			}
+			msg, err := initAt(t, dir, InitOptions{LxPath: lx,
+				Probe: func() (string, error) { return ProbeShellLx(sh, timeout) }})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got := hookCmd(t, filepath.Join(dir, "settings.json")); got != c.wantCmd {
+				t.Errorf("command = %q, want %q", got, c.wantCmd)
+			}
+			if c.wantMsg != "" && !strings.Contains(msg, c.wantMsg+"\n") {
+				t.Errorf("message:\n%s\nwant line:\n%s", msg, c.wantMsg)
+			}
+			if c.wantMsg == "" && strings.Contains(msg, "PATH") {
+				t.Errorf("unexpected PATH message:\n%s", msg)
+			}
+			if !strings.Contains(msg, ReadOnlyTip) {
+				t.Errorf("plain install without the --readonly tip:\n%s", msg)
+			}
+		})
+	}
+	// A path with spaces is quoted in both places.
+	dir := t.TempDir()
+	spaced := "/Users/Jane Doe/bin/lx"
+	if _, err := initAt(t, dir, InitOptions{LxPath: spaced, Probe: func() (string, error) { return "", nil }}); err != nil {
+		t.Fatal(err)
+	}
+	want := `'/Users/Jane Doe/bin/lx' hook claude --prefix '/Users/Jane Doe/bin/lx'`
+	if got := hookCmd(t, filepath.Join(dir, "settings.json")); got != want {
+		t.Errorf("command = %q, want %q", got, want)
+	}
+	if f, ok := parseLxHook(want); !ok || f.prefix != spaced {
+		t.Errorf("parseLxHook = %+v, %v", f, ok)
+	}
+	// A probe error that is not a timeout is reported the same way.
+	msg, _ := initAt(t, t.TempDir(), InitOptions{Probe: func() (string, error) { return "", errors.New("boom") }})
+	if !strings.Contains(msg, "could not check your shell's PATH (boom)") {
+		t.Errorf("message: %s", msg)
+	}
+}
+
+func TestInitReadOnlyFlagPersists(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "settings.json")
+	msg, err := initAt(t, dir, InitOptions{ReadOnly: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := hookCmd(t, path); got != "/opt/lx/bin/lx hook claude --readonly" {
+		t.Errorf("--readonly: %q", got)
+	}
+	if strings.Contains(msg, "tip:") {
+		t.Errorf("tip printed with --readonly: %s", msg)
+	}
+	// A plain re-run keeps it (and the file is unchanged).
+	before := readFile(t, path)
+	msg, _ = initAt(t, dir, InitOptions{})
+	if readFile(t, path) != before || !strings.Contains(msg, "already installed") || strings.Contains(msg, "tip:") {
+		t.Errorf("plain re-run: %s\n%s", msg, readFile(t, path))
+	}
+	// A moved binary keeps it too.
+	if _, err := initAt(t, dir, InitOptions{LxPath: "/new/lx"}); err != nil {
+		t.Fatal(err)
+	}
+	if got := hookCmd(t, path); got != "/new/lx hook claude --readonly" {
+		t.Errorf("moved binary: %q", got)
+	}
+	// --no-readonly removes it.
+	msg, _ = initAt(t, dir, InitOptions{LxPath: "/new/lx", NoReadOnly: true})
+	if got := hookCmd(t, path); got != "/new/lx hook claude" {
+		t.Errorf("--no-readonly: %q", got)
+	}
+	if !strings.Contains(msg, ReadOnlyTip) {
+		t.Errorf("no tip after --no-readonly: %s", msg)
+	}
+	// --prefix and --readonly together, in that order.
+	if _, err := initAt(t, dir, InitOptions{LxPath: "/new/lx", ReadOnly: true, Prefix: "/new/lx"}); err != nil {
+		t.Fatal(err)
+	}
+	if got := hookCmd(t, path); got != "/new/lx hook claude --readonly --prefix /new/lx" {
+		t.Errorf("both: %q", got)
+	}
+}
+
+// Install then uninstall leaves the file exactly as it was, for every form.
+func TestInitRoundTrip(t *testing.T) {
+	root, err := parseObject([]byte(otherTools))
+	if err != nil {
+		t.Fatal(err)
+	}
+	canonical := string(root.indented())
+	for name, o := range map[string]InitOptions{
+		"plain":    {},
+		"readonly": {ReadOnly: true},
+		"prefix":   {Prefix: "/Users/Jane Doe/lx"},
+		"both":     {ReadOnly: true, Probe: func() (string, error) { return "", nil }},
+	} {
+		dir := t.TempDir()
+		path := filepath.Join(dir, "settings.json")
+		if err := os.WriteFile(path, []byte(canonical), 0o600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := initAt(t, dir, o); err != nil {
+			t.Fatal(err)
+		}
+		if readFile(t, path) == canonical {
+			t.Fatalf("%s: install changed nothing", name)
+		}
+		if _, err := initAt(t, dir, InitOptions{Uninstall: true}); err != nil {
+			t.Fatal(err)
+		}
+		if got := readFile(t, path); got != canonical {
+			t.Errorf("%s: round trip changed the file:\n%s\nwant:\n%s", name, got, canonical)
+		}
+	}
+	// From no file at all: uninstall leaves an empty object.
+	dir := t.TempDir()
+	if _, err := initAt(t, dir, InitOptions{ReadOnly: true, Prefix: "/x/lx"}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := initAt(t, dir, InitOptions{Uninstall: true}); err != nil {
+		t.Fatal(err)
+	}
+	if got := readFile(t, filepath.Join(dir, "settings.json")); got != "{}\n" {
+		t.Errorf("got %q", got)
+	}
+}
+
+// Other hooks that only look like lx's are never touched.
+func TestInitLeavesLookalikes(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "settings.json")
+	orig := `{"hooks":{"PreToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"lx hook claude --debug"},` +
+		`{"type":"command","command":"lx hook claude --readonly && notify"}]}]}}`
+	if err := os.WriteFile(path, []byte(orig), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := initAt(t, dir, InitOptions{Uninstall: true}); err != nil {
+		t.Fatal(err)
+	}
+	if readFile(t, path) != orig {
+		t.Error("uninstall touched a user hook")
+	}
+	if _, err := initAt(t, dir, InitOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	got := readFile(t, path)
+	for _, s := range []string{"lx hook claude --debug", "lx hook claude --readonly \u0026\u0026 notify", "/opt/lx/bin/lx hook claude\""} {
+		if !strings.Contains(got, s) && !strings.Contains(got, strings.ReplaceAll(s, "\\u0026", "&")) {
+			t.Errorf("missing %s in:\n%s", s, got)
+		}
+	}
+}
+
+// A binary not named lx gets no --prefix (the hook would ignore it), and
+// the message says what rewrites will really call.
+func TestInitPrefixNotNamedLx(t *testing.T) {
+	for _, c := range []struct {
+		probe func() (string, error)
+		msg   string
+	}{
+		{func() (string, error) { return "", nil }, "which is not on your shell's PATH"},
+		{func() (string, error) { return "/usr/local/bin/lx", nil }, "which your shell finds at /usr/local/bin/lx"},
+		{func() (string, error) { return "", errors.New("boom") }, "could not check your shell's PATH (boom)"},
+	} {
+		dir := t.TempDir()
+		msg, err := initAt(t, dir, InitOptions{LxPath: "/opt/bin/lx-dev", Probe: c.probe})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := readFile(t, filepath.Join(dir, "settings.json")); strings.Contains(got, "--prefix") {
+			t.Errorf("--prefix written for lx-dev:\n%s", got)
+		}
+		if !strings.Contains(msg, "named lx-dev, not lx") || !strings.Contains(msg, c.msg) {
+			t.Errorf("message:\n%s\nwant %q", msg, c.msg)
+		}
 	}
 }

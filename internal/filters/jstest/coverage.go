@@ -2,7 +2,7 @@ package jstest
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"sort"
 	"strconv"
 	"strings"
@@ -19,13 +19,13 @@ import (
 //	---------------------|---------|----------|---------|---------|-------------------
 
 var (
-	covSepRe  = regexp.MustCompile(`^-+(?:\|-+)+\|?$`)
-	covHeadRe = regexp.MustCompile(`^File\s+\|\s*% Stmts\s*\|\s*% Branch\s*\|\s*% Funcs\s*\|\s*% Lines\s*\|`)
-	covRowRe  = regexp.MustCompile(`^( *)(\S.*?)\s*\|\s*([\d.]+|-)\s*\|\s*([\d.]+|-)\s*\|\s*([\d.]+|-)\s*\|\s*([\d.]+|-)\s*\|`)
+	covSepRe  = lazyre.New(`^-+(?:\|-+)+\|?$`)
+	covHeadRe = lazyre.New(`^File\s+\|\s*% Stmts\s*\|\s*% Branch\s*\|\s*% Funcs\s*\|\s*% Lines\s*\|`)
+	covRowRe  = lazyre.New(`^( *)(\S.*?)\s*\|\s*([\d.]+|-)\s*\|\s*([\d.]+|-)\s*\|\s*([\d.]+|-)\s*\|\s*([\d.]+|-)\s*\|`)
 	// jest: `Jest: "global" coverage threshold for lines (95%) not met: 40%`
 	// vitest: `ERROR: Coverage for lines (40%) does not meet global threshold (95%)`
-	jestThresholdRe   = regexp.MustCompile(`coverage threshold for \w+ \((\d+(?:\.\d+)?)%\) not met`)
-	vitestThresholdRe = regexp.MustCompile(`does not meet (?:global )?threshold \((\d+(?:\.\d+)?)%\)`)
+	jestThresholdRe   = lazyre.New(`coverage threshold for \w+ \((\d+(?:\.\d+)?)%\) not met`)
+	vitestThresholdRe = lazyre.New(`does not meet (?:global )?threshold \((\d+(?:\.\d+)?)%\)`)
 )
 
 // maxCoverageRows caps the file rows kept from a coverage table.
@@ -58,7 +58,7 @@ func coverageThreshold(lines []string) float64 {
 		if !strings.Contains(ln, "hreshold") {
 			continue
 		}
-		for _, re := range []*regexp.Regexp{jestThresholdRe, vitestThresholdRe} {
+		for _, re := range []*lazyre.Regexp{jestThresholdRe, vitestThresholdRe} {
 			if m := re.FindStringSubmatch(ln); m != nil {
 				if v, err := strconv.ParseFloat(m[1], 64); err == nil && v < th {
 					th = v

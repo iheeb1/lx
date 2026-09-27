@@ -3,7 +3,7 @@ package engine
 import (
 	"encoding/json"
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"sort"
 	"strconv"
 	"strings"
@@ -11,7 +11,7 @@ import (
 
 var (
 	// logTSRe finds a timestamp in a log line.
-	logTSRe = regexp.MustCompile(`\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:[.,]\d+)?(?:Z|[+-]\d{2}:?\d{2}\b| UTC\b)?` +
+	logTSRe = lazyre.New(`\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:[.,]\d+)?(?:Z|[+-]\d{2}:?\d{2}\b| UTC\b)?` +
 		`|\d{4}/\d{2}/\d{2}(?:[T ]| - )\d{2}:\d{2}:\d{2}(?:[.,]\d+)?` +
 		`|\d{1,2}/(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/\d{4}:\d{2}:\d{2}:\d{2}(?: [+-]\d{4})?` +
 		`|\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [ \d]\d \d{2}:\d{2}:\d{2}` +
@@ -19,7 +19,7 @@ var (
 		`|^\[?\d{2}:\d{2}:\d{2}(?:[.,]\d+)?\b` +
 		`|^\[?1\d{9}(?:\.\d+)?\b`) // epoch seconds
 	// logLevelRe finds a level token; the first non-empty group is the level.
-	logLevelRe = regexp.MustCompile(`\b(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|FATAL|CRITICAL|SEVERE)\b` +
+	logLevelRe = lazyre.New(`\b(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|FATAL|CRITICAL|SEVERE)\b` +
 		`|\[([TDIWEF]|trace|debug|info|warn|warning|error|fatal)\]` +
 		`|^([VDIWEF])/\S` +
 		`|\blevel=(\w+)` +
@@ -354,7 +354,7 @@ func isJSONTokens(raw []string) bool {
 }
 
 // blameRe matches `git blame` lines: code with a timestamp, not a log.
-var blameRe = regexp.MustCompile(`^\^?[0-9a-f]{6,40} (?:\S+ +)?\(.*\d{4}-\d{2}-\d{2} .*\d+\) `)
+var blameRe = lazyre.New(`^\^?[0-9a-f]{6,40} (?:\S+ +)?\(.*\d{4}-\d{2}-\d{2} .*\d+\) `)
 
 // logTokens splits a line into tokens and gives each a label for the vars
 // summary. JSON-object lines split on top-level fields ("key":value,

@@ -1,0 +1,14 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✓ hook        installed in ~/.claude/settings.json: $ROOT/bin/lx hook claude
+✓ hook-binary $ROOT/bin/lx is this binary
+✓ hook-run    `git status` → `lx git status` in 7 ms
+✓ path        your shell runs lx from $ROOT/bin/lx, the hook's binary
+✓ rtk         no rtk hook
+✓ perms       no allow rule approves every lx command
+✓ env         LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on
+✓ settings    1 settings file valid: user
+✓ storage     runs: none stored yet ($ROOT/cache/lx/runs is created on the first condensed run)
+✓ storage     history: 3 records, 266 B in $ROOT/data/lx/history.jsonl
+! activity    Claude Code ran today but lx recorded nothing for 3 days: is the hook running (another config dir)?
+              fix: restart Claude Code after lx init, and check that /hooks lists $ROOT/bin/lx hook claude
+lx doctor: 0 failures, 1 warning

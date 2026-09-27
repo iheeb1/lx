@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
@@ -41,7 +41,7 @@ func (blameFilter) Match(c *engine.Context) bool {
 var blameMachineFlags = []string{"-p", "--porcelain", "--line-porcelain", "--incremental"}
 
 // blameRe: "sha [file] [origline] (author date time zone lineno) code".
-var blameRe = regexp.MustCompile(`^(\^?[0-9a-f]{7,40})((?: +[^ (][^ ]*)*?) +\((.*?) +(\d{4}-\d{2}-\d{2})(?: \d{2}:\d{2}:\d{2} [+-]\d{4})? +(\d+)\)(?: (.*))?$`)
+var blameRe = lazyre.New(`^(\^?[0-9a-f]{7,40})((?: +[^ (][^ ]*)*?) +\((.*?) +(\d{4}-\d{2}-\d{2})(?: \d{2}:\d{2}:\d{2} [+-]\d{4})? +(\d+)\)(?: (.*))?$`)
 
 // blameBudget: longer blames are cut at a run boundary.
 const blameBudget = 7000

@@ -158,11 +158,21 @@ type Options struct {
 	Budget     int     // max output tokens before budget trimming (0 = DefaultBudget)
 	MinSavings float64 // fraction of tokens that must be saved to keep the filtered version
 	NoGuard    bool    // disable the error guard (tests only)
+
+	// MaxChars caps the view in bytes (0 = no cap): the host's output limit
+	// minus room for the receipt line. A host such as Claude Code replaces
+	// a longer tool result with a short preview, so over the cap reduction
+	// is mandatory (the never-worse gate is skipped) and len(Output) <=
+	// max(MaxChars, MinMaxChars) holds. MachineReadable output is the one
+	// exception: it stays byte-exact and uncapped, and the host may spill it.
+	MaxChars int
 }
 
 const (
-	// DefaultBudget keeps output well under Claude Code's ~30k-char Bash
-	// spill threshold (~2.9 bytes/token on dev output → ~23k chars).
+	// DefaultBudget is the output token budget. Tokens alone don't bound a
+	// view's length: prose and path lists run 4–5 chars/token, so 8,000
+	// tokens can pass Claude Code's 30,000-character Bash limit.
+	// Options.MaxChars is the character bound.
 	DefaultBudget = 8000
 	// DefaultMinSavings: below this, the filtered view is not worth the
 	// fidelity risk and the normalized output is shown instead.
@@ -204,7 +214,10 @@ func Process(c *Context, raw string, opt Options) (res Result) {
 	res.RawTokens = tokens.Count(raw)
 	res.RawLines = countLines(raw)
 	clean := textutil.Clean(raw)
-	cleanTokens := tokens.Count(clean)
+	cleanTokens := res.RawTokens
+	if clean != raw {
+		cleanTokens = tokens.Count(clean)
+	}
 
 	finish := func(out, name string, lossy bool) Result {
 		res.Output, res.Filter, res.Lossy = out, name, lossy
@@ -218,11 +231,19 @@ func Process(c *Context, raw string, opt Options) (res Result) {
 	}
 	natural := clean == textutil.TrimTrailingSpace(raw)
 
-	if MachineReadable(c) {
+	if MachineReadableAny(c) {
 		// Output meant for a program reaches it byte-for-byte.
 		return finish(strings.TrimRight(raw, "\n"), "passthrough", false)
 	}
-	if cleanTokens <= SmallOutput {
+	// Over the host's character cap the whole output is not an option: the
+	// host would swap it for a preview and the receipt would be lost.
+	overCap := opt.MaxChars > 0 && len(clean) > opt.MaxChars
+	if natural && opt.MaxChars > 0 && len(raw) > opt.MaxChars {
+		// "passthrough" replays the raw bytes; trailing blanks alone must
+		// not push them over the cap, so print the (fitting) clean text.
+		natural = false
+	}
+	if cleanTokens <= SmallOutput && !overCap {
 		if natural {
 			return finish(clean, "passthrough", false)
 		}
@@ -231,12 +252,12 @@ func Process(c *Context, raw string, opt Options) (res Result) {
 
 	out, name := clean, "generic"
 	guard, errorsFirst, faithful := !opt.NoGuard, true, false
-	if f := Find(c); f != nil {
-		if r, ok, perr := safeApply(f, c, clean); perr != "" {
+	if f, fc := Resolve(c); f != nil {
+		if r, ok, perr := safeApply(f, fc, clean); perr != "" {
 			res.FilterPanic = perr
 		} else if ok {
 			out, name = r, f.Name()
-			if fa, ok := f.(Faithful); ok && fa.Faithful(c) {
+			if fa, ok := f.(Faithful); ok && fa.Faithful(fc) {
 				faithful = true
 			}
 			if g, ok := f.(Guarded); ok && g.GuardsErrors() {
@@ -261,10 +282,12 @@ func Process(c *Context, raw string, opt Options) (res Result) {
 		res.GuardAdded = added
 	}
 	before := out
-	out = Budget(out, opt.Budget, c.Failed(), errorsFirst)
+	out = BudgetFit(out, opt.Budget, opt.MaxChars, c.Failed(), errorsFirst)
 	lossy := !faithful || out != before || res.GuardAdded > 0
 
-	if float64(tokens.Count(out)) > float64(cleanTokens)*(1-opt.MinSavings) {
+	// Never worse — except over the cap, where the alternative to a
+	// reduced view is the host's preview, not the whole output.
+	if !overCap && float64(tokens.Count(out)) > float64(cleanTokens)*(1-opt.MinSavings) {
 		// Not worth it: show everything, just normalized.
 		if !natural {
 			return finish(clean, "normalize", false)

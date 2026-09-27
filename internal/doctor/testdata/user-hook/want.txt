@@ -1,0 +1,13 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✓ hook        installed in ~/.claude/settings.json: $ROOT/bin/lx hook claude
+✓ hook-binary $ROOT/bin/lx is this binary
+✓ hook-run    `git status` → `lx git status` in 7 ms
+✓ path        your shell runs lx from $ROOT/bin/lx, the hook's binary
+✓ rtk         no rtk hook
+✓ perms       no allow rule approves every lx command
+✓ env         LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on
+✓ settings    2 settings files valid: user, project
+✓ storage     runs: 3 stored runs, 5.9 KB in $ROOT/cache/lx/runs
+✓ storage     history: 3 records, 266 B in $ROOT/data/lx/history.jsonl
+✓ activity    last lx run 2 h ago
+lx doctor: no problems found

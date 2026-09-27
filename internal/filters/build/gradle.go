@@ -1,7 +1,7 @@
 package build
 
 import (
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -72,11 +72,11 @@ func (gradleFilter) Stream(c *engine.Context) bool {
 }
 
 var (
-	gradleTaskRe    = regexp.MustCompile(`^> (?:Task|Configure project) (:\S*)(?: (UP-TO-DATE|NO-SOURCE|FROM-CACHE|SKIPPED|FAILED))?$`)
-	gradleNoiseRe   = regexp.MustCompile(`^(?:Download(?:ing)? https?://\S+.*|Starting a Gradle Daemon.*|Reusing configuration cache\.|Configuration cache entry (?:stored|reused)\.?.*|Calculating task graph as .*|<-*> \d+% .*|Daemon will be stopped at the end of the build.*)$`)
-	gradleTestRe    = regexp.MustCompile(`^\S.* > .+ (PASSED|FAILED|SKIPPED)$`)
-	gradleDeprHelp  = regexp.MustCompile(`^(?:You can use '--warning-mode all' to show the individual deprecation warnings.*|For more on this, please refer to https://docs\.gradle\.org/\S+ in the Gradle documentation\.)$`)
-	gradleVerdictRe = regexp.MustCompile(`^(?:BUILD (?:SUCCESSFUL|FAILED) in |\d+ actionable tasks?: |FAILURE: |\* What went wrong:|\* Exception is:|\d+ tests? completed, )`)
+	gradleTaskRe    = lazyre.New(`^> (?:Task|Configure project) (:\S*)(?: (UP-TO-DATE|NO-SOURCE|FROM-CACHE|SKIPPED|FAILED))?$`)
+	gradleNoiseRe   = lazyre.New(`^(?:Download(?:ing)? https?://\S+.*|Starting a Gradle Daemon.*|Reusing configuration cache\.|Configuration cache entry (?:stored|reused)\.?.*|Calculating task graph as .*|<-*> \d+% .*|Daemon will be stopped at the end of the build.*)$`)
+	gradleTestRe    = lazyre.New(`^\S.* > .+ (PASSED|FAILED|SKIPPED)$`)
+	gradleDeprHelp  = lazyre.New(`^(?:You can use '--warning-mode all' to show the individual deprecation warnings.*|For more on this, please refer to https://docs\.gradle\.org/\S+ in the Gradle documentation\.)$`)
+	gradleVerdictRe = lazyre.New(`^(?:BUILD (?:SUCCESSFUL|FAILED) in |\d+ actionable tasks?: |FAILURE: |\* What went wrong:|\* Exception is:|\d+ tests? completed, )`)
 )
 
 func (gradleFilter) Apply(c *engine.Context, out string) (string, bool) {

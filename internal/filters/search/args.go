@@ -1,8 +1,8 @@
 package search
 
 import (
+	"github.com/iheeb1/lx/internal/lazyre"
 	"path"
-	"regexp"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -107,7 +107,7 @@ func set(xs ...string) map[string]bool {
 	return m
 }
 
-var digitsRe = regexp.MustCompile(`^\d+$`)
+var digitsRe = lazyre.New(`^\d+$`)
 
 // parseOpts reads a grep / rg / git grep command line. It never fails;
 // o.bail reports flags whose output this package does not model.

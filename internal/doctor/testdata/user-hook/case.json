@@ -1,0 +1,8 @@
+{
+  "tee_runs": 3,
+  "history_hours": [
+    30,
+    2
+  ],
+  "transcript_hours": 1
+}

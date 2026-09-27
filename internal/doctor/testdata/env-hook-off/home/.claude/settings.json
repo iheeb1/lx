@@ -1,0 +1,20 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "@ROOT@/bin/lx hook claude"
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "LX_HOOK": "0",
+    "LX_TEE": "0",
+    "OTHER": "1"
+  }
+}

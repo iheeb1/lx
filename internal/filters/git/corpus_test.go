@@ -2,6 +2,7 @@ package git
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"regexp"
 	"strconv"
 	"strings"
@@ -392,7 +393,7 @@ func statusConverted(ln, got string) bool {
 	if !strings.HasPrefix(head, "## ") {
 		return false
 	}
-	for _, re := range []*regexp.Regexp{uptodateRe, aheadRe, behindRe, divergeRe, goneRe} {
+	for _, re := range []*lazyre.Regexp{uptodateRe, aheadRe, behindRe, divergeRe, goneRe} {
 		if m := re.FindStringSubmatch(ln); m != nil {
 			return strings.Contains(head, "..."+m[1])
 		}

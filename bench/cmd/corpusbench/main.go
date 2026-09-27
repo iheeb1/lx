@@ -20,6 +20,7 @@ import (
 	"text/tabwriter"
 	"time"
 
+	"github.com/iheeb1/lx/internal/baseline"
 	"github.com/iheeb1/lx/internal/engine"
 	_ "github.com/iheeb1/lx/internal/filters"
 	"github.com/iheeb1/lx/internal/fixture"
@@ -101,11 +102,18 @@ func main() {
 	}
 	viewDir := filepath.Join(filepath.Dir(*out), "views")
 	res := Results{Generated: time.Now().UTC().Format(time.RFC3339), Totals: map[string]Tot{}}
+	overUncapped, overCapped := 0, 0 // views over Claude Code's default cap (30,000×9/10 − 200)
 	for _, fc := range cases {
 		c := fc.Context()
 		start := time.Now()
 		pr := engine.Process(c, fc.Raw, engine.Options{})
 		us := time.Since(start).Microseconds()
+		if len(pr.Output) > 26800 {
+			overUncapped++
+		}
+		if cp := engine.Process(fc.Context(), fc.Raw, engine.Options{MaxChars: 26800}); len(cp.Output) > 26800 {
+			overCapped++
+		}
 		view := pr.Output
 		if pr.Lossy {
 			view += "\n" + engine.Receipt(pr, "1")
@@ -126,7 +134,7 @@ func main() {
 			View: filepath.Join("views", fc.Category, fc.Name+".txt"),
 		}
 		r.Tail40 = score(clean, tailLines(clean, 40), locIn)
-		r.HeadTail = score(clean, headTail(clean, r.OutTokens), locIn)
+		r.HeadTail = score(clean, baseline.HeadTail(clean, r.OutTokens), locIn)
 		if pr.Filter == "passthrough" {
 			view = fc.Raw
 		}
@@ -148,6 +156,7 @@ func main() {
 			res.Totals[k] = t
 		}
 	}
+	fmt.Fprintf(os.Stderr, "views over 26,800 chars: %d uncapped, %d with MaxChars 26800\n", overUncapped, overCapped)
 	for k, t := range res.Totals {
 		if t.RawTokens > 0 {
 			t.SavedPct = 100 * float64(t.RawTokens-t.OutTokens) / float64(t.RawTokens)
@@ -246,36 +255,6 @@ func tailLines(s string, n int) string {
 		return s
 	}
 	return strings.Join(lines[len(lines)-n:], "\n")
-}
-
-// headTail keeps the first and last lines of s, half the budget each —
-// the best a size-matched blind truncation can do.
-func headTail(s string, budget int) string {
-	lines := strings.Split(s, "\n")
-	if engineCount(s) <= budget {
-		return s
-	}
-	half := budget / 2
-	var head, tail []string
-	used := 0
-	for _, ln := range lines {
-		c := engineCount(ln) + 1
-		if used+c > half {
-			break
-		}
-		head = append(head, ln)
-		used += c
-	}
-	used = 0
-	for i := len(lines) - 1; i >= len(head); i-- {
-		c := engineCount(lines[i]) + 1
-		if used+c > half {
-			break
-		}
-		tail = append([]string{lines[i]}, tail...)
-		used += c
-	}
-	return strings.Join(head, "\n") + "\n…\n" + strings.Join(tail, "\n")
 }
 
 // estimator scores lx's offline token estimator and the bytes/N rules of

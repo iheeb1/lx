@@ -1,7 +1,7 @@
 package jstest
 
 import (
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -34,10 +34,10 @@ func (nodeFilter) Name() string { return "node-crash" }
 func (nodeFilter) Match(c *engine.Context) bool { return parseInvocation(c).runner == "node" }
 
 var (
-	nodeFooterRe = regexp.MustCompile(`^Node\.js v\d+\.\d+\.\d+$`)
+	nodeFooterRe = lazyre.New(`^Node\.js v\d+\.\d+\.\d+$`)
 	// "node:events:487", "/abs/app.js:13", "file:///abs/app.mjs:4"
-	nodeThrowLocRe = regexp.MustCompile(`^(?:node:[\w/]+|file:///\S+|/\S+|[A-Za-z]:\\\S+|\S+\.[cm]?[jt]sx?):\d+$`)
-	nodeCaretRe    = regexp.MustCompile(`^\s*\^+\s*$`)
+	nodeThrowLocRe = lazyre.New(`^(?:node:[\w/]+|file:///\S+|/\S+|[A-Za-z]:\\\S+|\S+\.[cm]?[jt]sx?):\d+$`)
+	nodeCaretRe    = lazyre.New(`^\s*\^+\s*$`)
 )
 
 // longPreamble: program output before the crash longer than this goes

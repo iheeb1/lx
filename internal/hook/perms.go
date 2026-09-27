@@ -10,7 +10,12 @@ import (
 
 // Rules are the Bash(...) permission rules from Claude Code settings, kept
 // verbatim ("Bash(git push:*)"). Other tools' rules are dropped on load.
-type Rules struct{ Allow, Ask, Deny []string }
+// Dirs holds permissions.additionalDirectories as absolute paths: read-only
+// parity treats them like the project directory.
+type Rules struct {
+	Allow, Ask, Deny []string
+	Dirs             []string
+}
 
 // Permission verdicts returned by Decide.
 const (
@@ -19,7 +24,8 @@ const (
 	VerdictAllow = "allow"
 )
 
-// LoadClaudeRules merges permissions.allow|ask|deny from, in order:
+// LoadClaudeRules merges permissions.allow|ask|deny (and
+// additionalDirectories) from, in order:
 // <project>/.claude/settings.json, <project>/.claude/settings.local.json,
 // <user>/settings.json, <user>/settings.local.json and the managed
 // (enterprise) settings file. <project> is $CLAUDE_PROJECT_DIR (set by Claude
@@ -28,27 +34,35 @@ const (
 func LoadClaudeRules(cwd string) Rules {
 	var r Rules
 	seen := map[string]bool{}
-	for _, p := range settingsPaths(cwd) {
+	paths, nProject := settingsPaths(cwd)
+	for i, p := range paths {
 		if p == "" || seen[p] {
 			continue
 		}
 		seen[p] = true
-		r.mergeFile(p)
+		r.mergeFile(p, i < nProject)
 	}
 	return r
 }
 
-func settingsPaths(cwd string) []string {
-	var paths []string
+// settingsPaths lists the settings files in order; the first nProject are
+// the project's.
+func settingsPaths(cwd string) (paths []string, nProject int) {
+	u := userClaudeDir()
 	if proj := projectDir(cwd); proj != "" {
 		paths = append(paths,
 			filepath.Join(proj, ".claude", "settings.json"),
 			filepath.Join(proj, ".claude", "settings.local.json"))
+		// With no .claude of its own, a project under $HOME finds ~/.claude:
+		// those are the user's settings, not the project's.
+		if u == "" || filepath.Join(proj, ".claude") != filepath.Clean(u) {
+			nProject = len(paths)
+		}
 	}
-	if u := userClaudeDir(); u != "" {
+	if u != "" {
 		paths = append(paths, filepath.Join(u, "settings.json"), filepath.Join(u, "settings.local.json"))
 	}
-	return append(paths, managedPath)
+	return append(paths, managedPath), nProject
 }
 
 // managedPath is a variable so tests can keep the machine's real managed
@@ -102,7 +116,7 @@ func managedSettingsPath() string {
 	return "/etc/claude-code/managed-settings.json"
 }
 
-func (r *Rules) mergeFile(path string) {
+func (r *Rules) mergeFile(path string, project bool) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return
@@ -112,6 +126,7 @@ func (r *Rules) mergeFile(path string) {
 			Allow []json.RawMessage `json:"allow"`
 			Ask   []json.RawMessage `json:"ask"`
 			Deny  []json.RawMessage `json:"deny"`
+			Dirs  []json.RawMessage `json:"additionalDirectories"`
 		} `json:"permissions"`
 	}
 	if json.Unmarshal(data, &doc) != nil {
@@ -120,6 +135,42 @@ func (r *Rules) mergeFile(path string) {
 	r.Allow = appendBash(r.Allow, doc.Permissions.Allow)
 	r.Ask = appendBash(r.Ask, doc.Permissions.Ask)
 	r.Deny = appendBash(r.Deny, doc.Permissions.Deny)
+	r.Dirs = appendDirs(r.Dirs, doc.Permissions.Dirs, path, project)
+}
+
+// appendDirs adds additionalDirectories entries from the settings file at
+// path. "~/x" is under the home directory; a relative entry in a project
+// settings file is relative to the project (the directory holding its
+// .claude folder). Relative entries in user or managed settings are skipped:
+// what they are relative to is not settled, and guessing could widen what
+// --readonly approves. Non-string entries are ignored.
+func appendDirs(dst []string, raws []json.RawMessage, path string, project bool) []string {
+	for _, raw := range raws {
+		var d string
+		if json.Unmarshal(raw, &d) != nil || strings.TrimSpace(d) == "" {
+			continue
+		}
+		switch {
+		case d == "~" || strings.HasPrefix(d, "~/"):
+			home, err := os.UserHomeDir()
+			if err != nil || home == "" {
+				continue
+			}
+			d = filepath.Join(home, strings.TrimPrefix(d[1:], "/"))
+		case filepath.IsAbs(d):
+		default:
+			settingsDir := filepath.Dir(path)
+			if !project || filepath.Base(settingsDir) != ".claude" {
+				continue
+			}
+			d = filepath.Join(filepath.Dir(settingsDir), d)
+		}
+		d = filepath.Clean(d)
+		if !contains(dst, d) {
+			dst = append(dst, d)
+		}
+	}
+	return dst
 }
 
 func appendBash(dst []string, raws []json.RawMessage) []string {
@@ -265,6 +316,11 @@ func (a *analysis) permSegment(s *segment) permSeg {
 		add(&p.lenient, peeledRaw)
 		add(&p.lenient, peeledWords)
 		add(&p.lenient, strings.Join(s.argv, " "))
+		// The command inside a wrapper only lx looks through (uv run git
+		// push): the hook rewrites it, so deny and ask rules must see it.
+		for _, t := range wrappedTexts(s.argv) {
+			add(&p.lenient, t)
+		}
 		// Wrappers (timeout, nice, …) are transparent for allow; env
 		// assignments are not: LD_PRELOAD=x git status is not git status.
 		if len(s.envNames) == 0 && onlyDup {
@@ -274,12 +330,16 @@ func (a *analysis) permSegment(s *segment) permSeg {
 			for _, inner := range lxInner(s.words[s.cmdIdx:]) {
 				add(&p.lenient, inner.text)
 				add(&p.lenient, inner.value)
+				for _, t := range wrappedTexts(strings.Fields(inner.value)) {
+					add(&p.lenient, t)
+				}
 				if inner.exact && len(s.envNames) == 0 && onlyDup {
 					add(&p.strict, inner.text)
 				}
 			}
 		}
-		if len(s.envNames) == 0 && onlyDup && s.cmdIdx == 0 && (cdNeutral(s.argv) || stdinFilter(s.argv)) {
+		if len(s.envNames) == 0 && onlyDup && s.cmdIdx == 0 && plainWords(s.words) &&
+			(cdNeutral(s.argv) || stdinFilter(s.argv)) {
 			p.neutral = true
 		}
 	}
@@ -312,18 +372,64 @@ func cdNeutral(argv []string) bool {
 	return true
 }
 
-// stdinFilter: head, tail or cat reading only stdin (flags and counts, no
-// file operands) just shows part of a pipe; it needs no rule of its own.
+// plainWords: no word is expanded by the shell ($, wildcards, ~, braces,
+// zsh's extended glob), so the words lx sees are the words the command
+// gets. `cat -$IFS/etc/passwd` is `cat - /etc/passwd` in bash.
+func plainWords(ws []token) bool {
+	for _, w := range ws {
+		if w.expand {
+			return false
+		}
+		if g, sp := wordShape(w.text, true); g || sp {
+			return false
+		}
+	}
+	return true
+}
+
+// stdinFilter: head, tail or cat reading only stdin (flags, and the count of
+// -n/-c, or tail's -b) just shows part of a pipe; it needs no rule of its
+// own. Any operand is a file to some platform: `head 5` and GNU `tail +5`
+// read a file named 5 or +5, and BSD cat reads -x in `cat - -x` (its flags
+// end at the first operand), so `-`, `--` and a count that is not the value
+// of -n/-c/-b make the command an ordinary one.
 func stdinFilter(argv []string) bool {
 	if len(argv) == 0 || !oneOf(argv[0], "head", "tail", "cat") {
 		return false
 	}
+	count := false // the next word is the value of -n/-c/-b
 	for _, a := range argv[1:] {
-		a = strings.TrimLeft(a, "+")
-		if strings.HasPrefix(a, "-") || isDigits(a) {
+		if count {
+			if !isCount(a) {
+				return false
+			}
+			count = false
 			continue
 		}
+		if a == "-" || a == "--" || !strings.HasPrefix(a, "-") {
+			return false
+		}
+		count = argv[0] != "cat" && (oneOf(a, "-n", "-c", "--lines", "--bytes") || argv[0] == "tail" && a == "-b")
+	}
+	return !count
+}
+
+// isCount: a head/tail count such as 5, +5, -5 or 5K.
+func isCount(s string) bool {
+	if s != "" && (s[0] == '+' || s[0] == '-') {
+		s = s[1:]
+	}
+	n := 0
+	for n < len(s) && s[n] >= '0' && s[n] <= '9' {
+		n++
+	}
+	if n == 0 || len(s)-n > 3 {
 		return false
+	}
+	for _, c := range s[n:] {
+		if !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
+			return false
+		}
 	}
 	return true
 }

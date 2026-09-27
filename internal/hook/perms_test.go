@@ -246,12 +246,63 @@ func FuzzDecide(f *testing.F) {
 		Ask:   []string{"Bash(git push *)", "Bash(*--force*)"},
 		Deny:  []string{"Bash(rm:*)", "Bash(* -rf *)"},
 	}
+	cwd := f.TempDir()
 	f.Fuzz(func(t *testing.T, s string) {
 		switch r.Decide(s) {
 		case "", "allow", "ask", "deny":
 		default:
 			t.Fatal("bad verdict")
 		}
-		_ = evaluate(s, func() Rules { return r })
+		_ = evaluate(s, evalEnv{}, func() Rules { return r })
+		// Parity never turns a user deny into anything but "stay out".
+		if o := evaluate(s, evalEnv{ReadOnly: true, Cwd: cwd, Root: cwd}, func() Rules { return r }); o.readOnly && r.Decide(s) != "" {
+			t.Fatalf("parity decided %q although the rules say %q", s, r.Decide(s))
+		}
 	})
+}
+
+func TestLoadClaudeRulesDirs(t *testing.T) {
+	project, user := isolate(t)
+	home, _ := os.UserHomeDir()
+	writeFile(t, filepath.Join(project, ".claude", "settings.json"), `{"permissions": {
+		"additionalDirectories": ["../docs", "~/notes", "/abs/lib", 42, {"x":1}, "", "~"]}}`)
+	writeFile(t, filepath.Join(project, ".claude", "settings.local.json"),
+		`{"permissions": {"additionalDirectories": ["/abs/lib", "vendor/"]}}`)
+	// $CLAUDE_CONFIG_DIR is not a .claude folder: relative entries there are skipped.
+	writeFile(t, filepath.Join(user, "settings.json"), `{"permissions": {"additionalDirectories": ["rel", "/u/abs"]}}`)
+	t.Setenv("CLAUDE_PROJECT_DIR", project)
+	got := LoadClaudeRules(project).Dirs
+	want := []string{filepath.Join(filepath.Dir(project), "docs"), filepath.Join(home, "notes"), "/abs/lib",
+		home, filepath.Join(project, "vendor"), "/u/abs"}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Dirs = %q\nwant   %q", got, want)
+	}
+	// Dirs alone don't make rules non-empty (Decide still says nothing).
+	if (Rules{Dirs: []string{"/x"}}).Decide("git status") != "" {
+		t.Error("Dirs changed a decision")
+	}
+}
+
+// Relative additionalDirectories count only in project settings: in user
+// settings what they are relative to is unsettled, and a guess could widen
+// what --readonly approves.
+func TestLoadClaudeRulesDirsUserRelative(t *testing.T) {
+	_, _ = isolate(t)
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("CLAUDE_CONFIG_DIR", "")
+	writeFile(t, filepath.Join(home, ".claude", "settings.json"),
+		`{"permissions": {"additionalDirectories": ["../shared", "/u/abs"]}}`)
+	// A project with no .claude of its own finds ~/.claude: still user settings.
+	work := filepath.Join(home, "work", "proj")
+	if err := os.MkdirAll(work, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if got := LoadClaudeRules(work).Dirs; !reflect.DeepEqual(got, []string{"/u/abs"}) {
+		t.Errorf("Dirs = %q, want only /u/abs", got)
+	}
+	t.Setenv("CLAUDE_PROJECT_DIR", work)
+	if got := LoadClaudeRules(work).Dirs; !reflect.DeepEqual(got, []string{"/u/abs"}) {
+		t.Errorf("with CLAUDE_PROJECT_DIR: Dirs = %q, want only /u/abs", got)
+	}
 }

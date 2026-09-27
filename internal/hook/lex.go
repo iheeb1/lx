@@ -359,9 +359,11 @@ func (c *simple) span(t token) {
 type pipeline struct{ cmds []*simple }
 
 // andOr is a list of pipelines joined by && / ||, ended by ; & or newline.
-// A trailing & backgrounds the whole list.
+// A trailing & backgrounds the whole list. ops[k] ("&&" or "||") joins
+// pipes[k] and pipes[k+1].
 type andOr struct {
 	pipes []pipeline
+	ops   []string
 	bg    bool
 }
 
@@ -419,6 +421,7 @@ func parse(toks []token) script {
 				}
 				pipe.cmds = append(pipe.cmds, cur)
 				list.pipes = append(list.pipes, pipe)
+				list.ops = append(list.ops, t.text)
 				cur, pipe = &simple{}, pipeline{}
 				needCmd = true
 			default: // ; & newline ;; ;& ( )

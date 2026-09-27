@@ -2,7 +2,7 @@ package jstools
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
@@ -71,17 +71,17 @@ func (tsc) Apply(c *engine.Context, s string) (string, bool) {
 }
 
 var (
-	tscFoundRe = regexp.MustCompile(`^Found \d+ errors?(?:\.| in .+)$`)
-	tscTableRe = regexp.MustCompile(`^Errors\s+Files$`)
-	tscRowRe   = regexp.MustCompile(`^\s+\d+\s+(\S.*?)(?::\d+)?$`)
+	tscFoundRe = lazyre.New(`^Found \d+ errors?(?:\.| in .+)$`)
+	tscTableRe = lazyre.New(`^Errors\s+Files$`)
+	tscRowRe   = lazyre.New(`^\s+\d+\s+(\S.*?)(?::\d+)?$`)
 	// Related information in --pretty output: "  file:line:col".
-	tscRelLocRe = regexp.MustCompile(`^  (\S.*):(\d+):(\d+)$`)
+	tscRelLocRe = lazyre.New(`^  (\S.*):(\d+):(\d+)$`)
 	// Code frame: "151   source" gutter lines paired with "    ~~~~" lines,
 	// and a "..." gutter for spans of more than 5 lines.
-	tscGutterRe     = regexp.MustCompile(`^\s*\d+(?: .*)?$`)
-	tscSquiggleRe   = regexp.MustCompile(`^\s+~+$`)
-	tscEllipsisRe   = regexp.MustCompile(`^\s*\.\.\.$`)
-	tscBareGutterRe = regexp.MustCompile(`^\s*\d+$`)
+	tscGutterRe     = lazyre.New(`^\s*\d+(?: .*)?$`)
+	tscSquiggleRe   = lazyre.New(`^\s+~+$`)
+	tscEllipsisRe   = lazyre.New(`^\s*\.\.\.$`)
+	tscBareGutterRe = lazyre.New(`^\s*\d+$`)
 )
 
 // tscDiag is one diagnostic.

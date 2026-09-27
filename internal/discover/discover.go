@@ -1,8 +1,12 @@
 // Package discover measures what lx would save on the user's own Claude Code
 // transcripts: it pairs every Bash tool call with its output, replays the
 // output through the engine for commands the hook would rewrite, and reports
-// the totals. It never stores or prints outputs or arguments — only command
-// keys (tool + first subcommand word) and token counts.
+// the totals. With Options.Fidelity it also checks, for each file:line the
+// agent went on to open or edit, whether lx's view showed it (fidelity.go);
+// it always counts host spills and head/tail cuts of rewritten commands
+// (spill.go, pipes.go). It never stores anything, and never prints outputs
+// or arguments — only command keys (tool + first subcommand word) and
+// counts — except the file:line examples Options.Examples asks for.
 package discover
 
 import (
@@ -18,9 +22,12 @@ import (
 	"sort"
 	"strings"
 	"time"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/iheeb1/lx/internal/engine"
 	"github.com/iheeb1/lx/internal/hook"
+	"github.com/iheeb1/lx/internal/textutil"
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
@@ -29,6 +36,14 @@ type Options struct {
 	Dirs  []string  // directories searched recursively for *.jsonl (e.g. ~/.claude/projects)
 	Since time.Time // skip files last modified before this (zero = all)
 	Limit int       // scan at most this many files, newest first (0 = all)
+
+	// Fidelity measures acted-on fidelity (Report.ActedOn): whether lx's
+	// view kept the file:line locations the agent went on to open or edit.
+	Fidelity bool
+	// Examples lists up to maxExamples locations the agent acted on that
+	// lx's view did not show (implies Fidelity). They hold paths from the
+	// user's outputs: for the local terminal only.
+	Examples bool
 }
 
 // Report is the result of Scan.
@@ -46,8 +61,27 @@ type Report struct {
 	CandidateSavePct float64 `json:"candidate_would_save_pct"` // of the candidates' tokens
 	AlreadyLx        int     `json:"already_lx"`
 	BadLines         int     `json:"unparsable_lines"`
-	Top              []Stat  `json:"top"`
-	Unsupported      []Stat  `json:"top_unsupported"`
+
+	// Host spills: Bash results the host replaced with a preview because
+	// they exceeded its output limit (Claude Code: ~30k characters).
+	HostSpills           int `json:"host_spills"`
+	HostSpillsRewritable int `json:"host_spills_rewritable"` // lx rewrites the command and the full output was recorded
+	HostSpillsAvoided    int `json:"host_spills_avoided"`    // of those, lx's view + receipt fits under spillSafeChars
+
+	// Rewritten commands piped into head/tail (cmd | head -N): with lx the
+	// cut applies to lx's view and receipt. The transcript holds only what
+	// the cut kept, so a run is replayed only when the cut kept all of it
+	// (fewer lines than N); the three counts below are over those runs.
+	Sliced            int `json:"sliced_by_head_tail"`
+	SlicedReplayable  int `json:"sliced_replayable"`
+	SlicedViewCut     int `json:"sliced_view_cut"`     // lx's view + receipt would not fit the cut (a passthrough view keeps stdout and stderr apart, as without lx)
+	SlicedReceiptLost int `json:"sliced_receipt_lost"` // head would drop the receipt line
+	SlicedErrorsCut   int `json:"sliced_errors_cut"`   // an error line the agent saw raw would be cut from lx's view
+
+	ActedOn *ActedOn `json:"acted_on,omitempty"` // Options.Fidelity only
+
+	Top         []Stat `json:"top"`
+	Unsupported []Stat `json:"top_unsupported"`
 }
 
 // Stat aggregates one command key.
@@ -78,6 +112,10 @@ func Scan(o Options) (Report, error) {
 		seen:  map[string]bool{},
 		top:   map[string]*Stat{},
 		unsup: map[string]*Stat{},
+		roots: resolvedRoots(o.Dirs),
+	}
+	if o.Fidelity || o.Examples {
+		s.fid = newFidelity(o.Examples)
 	}
 	for _, f := range files {
 		if err := s.file(f.path, &r); err != nil {
@@ -140,12 +178,15 @@ func collect(o Options) ([]fileInfo, error) {
 type pending struct {
 	command string
 	cwd     string
+	in      *hook.Inspection // set when already inspected (fidelity mode)
 }
 
 type scanner struct {
 	seen  map[string]bool // tool_use ids already counted (resumed sessions repeat history)
 	top   map[string]*Stat
 	unsup map[string]*Stat
+	roots []string  // scan roots, symlinks resolved: persisted outputs are read only below them
+	fid   *fidelity // nil unless Options.Fidelity
 }
 
 // record is the subset of a transcript line discover reads.
@@ -171,6 +212,7 @@ type block struct {
 var (
 	markBash   = []byte(`"Bash"`)
 	markResult = []byte(`"tool_result"`)
+	markUse    = []byte(`"tool_use"`)
 )
 
 func (s *scanner) file(path string, r *Report) error {
@@ -181,9 +223,13 @@ func (s *scanner) file(path string, r *Report) error {
 	defer f.Close()
 	br := bufio.NewReaderSize(f, 1<<20)
 	open := map[string]pending{}
+	if s.fid != nil {
+		s.fid.newFile()
+	}
 	for {
 		line, err := readLine(br, maxLine)
-		if len(line) > 0 && (bytes.Contains(line, markBash) || bytes.Contains(line, markResult)) {
+		if len(line) > 0 && (bytes.Contains(line, markBash) || bytes.Contains(line, markResult) ||
+			s.fid != nil && bytes.Contains(line, markUse)) {
 			s.line(line, open, r)
 		}
 		if err != nil {
@@ -246,31 +292,35 @@ func (s *scanner) line(line []byte, open map[string]pending, r *Report) {
 	for _, b := range blocks {
 		switch b.Type {
 		case "tool_use":
-			if b.Name != "Bash" || b.ID == "" || s.seen[b.ID] {
+			if b.ID == "" || s.seen[b.ID] {
 				continue
 			}
 			var in struct {
 				Command string `json:"command"`
 			}
-			if json.Unmarshal(b.Input, &in) != nil || strings.TrimSpace(in.Command) == "" {
+			if b.Name != "Bash" || json.Unmarshal(b.Input, &in) != nil || strings.TrimSpace(in.Command) == "" {
+				if s.fid != nil { // every tool call counts toward the acted-on window
+					s.seen[b.ID] = true
+					s.fid.toolUse(touchedPaths(b.Name, b.Input, rec.Cwd))
+				}
 				continue
 			}
 			s.seen[b.ID] = true
 			r.BashCalls++
-			open[b.ID] = pending{command: in.Command, cwd: rec.Cwd}
+			p := pending{command: in.Command, cwd: rec.Cwd}
+			if s.fid != nil {
+				insp := hook.Inspect(in.Command)
+				p.in = &insp
+				s.fid.toolUse(bashPaths(insp.Commands, rec.Cwd))
+			}
+			open[b.ID] = p
 		case "tool_result":
 			p, ok := open[b.ToolUseID]
 			if !ok {
 				continue // not a Bash call (or already counted)
 			}
 			delete(open, b.ToolUseID)
-			out, ok := "", false
-			if results == 1 { // toolUseResult belongs to the line's only result
-				out, ok = fullOutput(rec.ToolUseResult)
-			}
-			if !ok {
-				out = resultText(b.Content)
-			}
+			o := s.recorded(b, rec.ToolUseResult, results == 1)
 			cwd := p.cwd
 			if cwd == "" {
 				cwd = rec.Cwd
@@ -279,38 +329,65 @@ func (s *scanner) line(line []byte, open map[string]pending, r *Report) {
 			if b.IsError {
 				exit = 1
 			}
-			s.measure(p.command, cwd, out, exit, r)
+			s.measure(p, cwd, o, exit, r)
 		}
 	}
+}
+
+// recording is a Bash call's output as the transcript holds it.
+type recording struct {
+	// out is what the token accounting measures, as discover always has:
+	// toolUseResult's stdout+stderr when it belongs to this result, else the
+	// tool_result text (for a spilled result, the host's preview).
+	out string
+	// full is the command's whole output, when the transcript (or the file
+	// the host saved it to) holds it; complete says whether it does.
+	full     string
+	complete bool
+	stdout   string // stdout alone, when split
+	split    bool   // full has stdout and stderr recorded apart (toolUseResult)
+	spilled  bool   // the host replaced the result with a preview (output too large)
+}
+
+// recorded reads a Bash result. When the host spilled the output and the
+// transcript holds only a preview, the file the host saved it to is read
+// for the whole output (spill counters and fidelity; the token accounting
+// keeps measuring what the transcript recorded, as the agent read that).
+func (s *scanner) recorded(b block, tur json.RawMessage, own bool) recording {
+	text := resultText(b.Content)
+	o := recording{spilled: isSpill(text)}
+	var br bashResult
+	if own && br.parse(tur) {
+		o.out = br.joined()
+		if br.complete() && !(o.spilled && br.persistedPath == "") {
+			o.full, o.complete, o.stdout, o.split = o.out, true, br.stdout, true
+		}
+	} else {
+		o.out = text
+		if !o.spilled {
+			o.full, o.complete = text, true
+		}
+	}
+	if !o.complete && (o.spilled || br.persistedPath != "") {
+		path := br.persistedPath
+		if path == "" {
+			path = savedPath(text)
+		}
+		if full, ok := s.readPersisted(path); ok {
+			o.full, o.complete = full, true
+		}
+	}
+	return o
 }
 
 // fullOutput returns stdout+stderr from a Bash toolUseResult object, which
 // holds the untruncated output (tool_result text may be cut for the model).
 func fullOutput(raw json.RawMessage) (string, bool) {
-	if len(raw) == 0 || raw[0] != '{' {
+	var b bashResult
+	if !b.parse(raw) {
 		return "", false
 	}
-	var t struct {
-		Stdout *string `json:"stdout"`
-		Stderr *string `json:"stderr"`
-	}
-	if json.Unmarshal(raw, &t) != nil || (t.Stdout == nil && t.Stderr == nil) {
-		return "", false
-	}
-	var out, errOut string
-	if t.Stdout != nil {
-		out = *t.Stdout
-	}
-	if t.Stderr != nil {
-		errOut = *t.Stderr
-	}
-	switch {
-	case out == "":
-		return errOut, true
-	case errOut == "":
-		return out, true
-	}
-	return strings.TrimRight(out, "\n") + "\n" + errOut, true
+	return b.joined(), true
 }
 
 // resultText flattens tool_result content: a string, or text blocks.
@@ -338,44 +415,106 @@ func resultText(raw json.RawMessage) string {
 	return strings.Join(texts, "\n")
 }
 
-func (s *scanner) measure(command, cwd, out string, exit int, r *Report) {
+func (s *scanner) measure(p pending, cwd string, o recording, exit int, r *Report) {
 	r.Measured++
-	// tokens.Count never returns on a NUL rune that is not followed by a
-	// letter (its whitespace fallback advances by 0). Binary-ish outputs do
-	// occur in real transcripts; neutralize NULs so one of them cannot hang
-	// the whole scan.
-	out = strings.ReplaceAll(out, "\x00", "\uFFFD")
-	in := hook.Inspect(command)
+	if o.spilled {
+		r.HostSpills++
+	}
+	out := noNUL(o.out)
+	var in hook.Inspection
+	if p.in != nil {
+		in = *p.in
+	} else {
+		in = hook.Inspect(p.command)
+	}
 	switch {
 	case in.AlreadyLx:
 		r.AlreadyLx++
 		r.BashOutputTokens += tokens.Count(out)
 	case in.Changed:
-		ctx := &engine.Context{Argv: in.Targets[0], Exit: exit, Cwd: cwd}
-		res := engine.Process(ctx, out, engine.Options{})
-		after := res.OutTokens
-		if res.Lossy { // the agent also reads the receipt line
-			after += tokens.Count(engine.Receipt(res, "1234"))
-		}
-		if after > res.RawTokens {
-			after = res.RawTokens
-		}
-		r.BashOutputTokens += res.RawTokens
+		v := replay(in.Targets[0], exit, cwd, out)
+		r.BashOutputTokens += v.res.RawTokens
 		r.Candidates++
-		r.CandidateTokens += res.RawTokens
-		r.CandidateOut += after
-		st := stat(s.top, Key(in.Targets[0]))
+		r.CandidateTokens += v.res.RawTokens
+		r.CandidateOut += v.after
+		key := Key(in.Targets[0])
+		st := stat(s.top, key)
 		st.Count++
-		st.Tokens += res.RawTokens
-		st.TokensAfter += after
-		st.Saved += res.RawTokens - after
+		st.Tokens += v.res.RawTokens
+		st.TokensAfter += v.after
+		st.Saved += v.res.RawTokens - v.after
+
+		// Spills, cuts and fidelity need the command's whole output.
+		if o.complete && o.full != o.out {
+			v = replay(in.Targets[0], exit, cwd, noNUL(o.full))
+		}
+		if o.spilled && o.complete {
+			r.HostSpillsRewritable++
+			if len(v.res.Output)+len(v.receipt)+1 <= spillSafeChars {
+				r.HostSpillsAvoided++
+			}
+		}
+		sl := sliceOf(in, p.command, o)
+		sliceStats(sl, v, r)
+		if s.fid != nil {
+			why := ""
+			switch {
+			case !o.complete:
+				why = whySpill
+			case len(in.Targets) > 1:
+				why = whySeveral
+			case sl.sliced && !sl.replayable:
+				why = whyHeadTail
+			}
+			s.fid.candidate(key, cwd, v, why, sl)
+		}
 	default:
 		n := tokens.Count(out)
 		r.BashOutputTokens += n
-		st := stat(s.unsup, unsupportedKey(command, in.Commands))
+		st := stat(s.unsup, unsupportedKey(p.command, in.Commands))
 		st.Count++
 		st.Tokens += n
 	}
+}
+
+// noNUL neutralizes NULs: tokens.Count never returns on a NUL rune that is
+// not followed by a letter (its whitespace fallback advances by 0).
+// Binary-ish outputs do occur in real transcripts, and one of them must not
+// hang the whole scan.
+func noNUL(s string) string { return strings.ReplaceAll(s, "\x00", "\uFFFD") }
+
+// replay runs lx's pipeline over a rewritten command's output, as lx would
+// have in the agent's session.
+func replay(argv []string, exit int, cwd, out string) *view {
+	ctx := &engine.Context{Argv: argv, Exit: exit, Cwd: cwd}
+	res := engine.Process(ctx, out, engine.Options{MaxChars: viewMaxChars})
+	v := &view{res: res, raw: out, after: res.OutTokens}
+	if res.Lossy { // the agent also reads the receipt line
+		v.receipt = engine.Receipt(res, "1234")
+		v.after += tokens.Count(v.receipt)
+	}
+	v.after = min(v.after, res.RawTokens)
+	return v
+}
+
+// view is lx's replay of one candidate.
+type view struct {
+	res     engine.Result
+	receipt string // "" when the view is not lossy
+	raw     string // the output lx received
+	after   int    // tokens the agent reads: view + receipt, at most the raw tokens
+
+	clean   string // textutil.Clean(raw), computed on first use
+	cleaned bool
+}
+
+// cleanRaw is the normalized raw output (ANSI, \r frames and overstrike
+// removed), as lx's filters and the benchmark's metrics see it.
+func (v *view) cleanRaw() string {
+	if !v.cleaned {
+		v.clean, v.cleaned = textutil.Clean(v.raw), true
+	}
+	return v.clean
 }
 
 func stat(m map[string]*Stat, key string) *Stat {
@@ -388,6 +527,9 @@ func stat(m map[string]*Stat, key string) *Stat {
 }
 
 func (r *Report) finish(s *scanner) {
+	if s.fid != nil {
+		r.ActedOn = s.fid.report()
+	}
 	r.WouldSaveTokens = r.CandidateTokens - r.CandidateOut
 	if r.BashOutputTokens > 0 {
 		r.WouldSavePct = pct(r.WouldSaveTokens, r.BashOutputTokens)
@@ -441,7 +583,7 @@ func Key(argv []string) string {
 	if len(argv) == 0 {
 		return ""
 	}
-	name := filepath.Base(argv[0])
+	name := printable(filepath.Base(argv[0]))
 	args := argv[1:]
 	if strings.HasPrefix(name, "python") && len(args) >= 2 && args[0] == "-m" && safeWord(args[1]) {
 		return name + " -m " + args[1]
@@ -464,6 +606,44 @@ func Key(argv []string) string {
 	}
 	return name
 }
+
+// maxKeyName bounds a command name in a report (runes).
+const maxKeyName = 40
+
+// printable makes a command name safe to print on a terminal: control and
+// other non-printing characters (escape sequences, bidi overrides) become
+// '?', and a name longer than maxKeyName runes is cut with "…".
+func printable(name string) string {
+	n := 0
+	clean := true
+	for _, r := range name {
+		n++
+		if !printing(r) {
+			clean = false
+		}
+	}
+	if clean && n <= maxKeyName {
+		return name
+	}
+	var b strings.Builder
+	n = 0
+	for _, r := range name {
+		if n == maxKeyName {
+			b.WriteString("…")
+			break
+		}
+		if !printing(r) {
+			r = '?'
+		}
+		b.WriteRune(r)
+		n++
+	}
+	return b.String()
+}
+
+// printing: r prints as itself (invalid UTF-8, such as a lone 0x9b, a C1
+// control to some terminals, does not).
+func printing(r rune) bool { return r == ' ' || r != utf8.RuneError && unicode.IsPrint(r) }
 
 // safeWord accepts short lowercase command-like words only, so paths,
 // patterns, URLs and values never end up in a report.
@@ -551,6 +731,23 @@ func (r Report) Text(w io.Writer) {
 		}
 		table(w, []string{"command", "calls", "tokens", ""}, rows)
 	}
+	if r.ActedOn != nil {
+		r.ActedOn.text(w)
+	}
+	fmt.Fprintf(w, "\nHost spills (Bash output over the host's limit, replaced by a preview): %s", num(r.HostSpills))
+	if r.HostSpills > 0 {
+		fmt.Fprintf(w, " · %s from commands lx rewrites, full output recorded · lx's view fits for %s",
+			num(r.HostSpillsRewritable), num(r.HostSpillsAvoided))
+	}
+	fmt.Fprintf(w, "\nPipelines cutting a rewritten command with head/tail: %s", num(r.Sliced))
+	if r.Sliced > 0 {
+		fmt.Fprintf(w, " · replayable %s (the cut kept the whole output)", num(r.SlicedReplayable))
+		if r.SlicedReplayable > 0 {
+			fmt.Fprintf(w, "; with lx: view cut %s · receipt lost %s · error lines cut %s",
+				num(r.SlicedViewCut), num(r.SlicedReceiptLost), num(r.SlicedErrorsCut))
+		}
+	}
+	fmt.Fprintln(w)
 }
 
 // table prints rows with the first column left-aligned, numbers right-aligned

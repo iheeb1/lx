@@ -2,8 +2,8 @@ package fs
 
 import (
 	"fmt"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"math"
-	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -45,7 +45,7 @@ func (du) Match(c *engine.Context) bool {
 
 // duLineRe: size (blocks, or -h/--si human form, possibly right-aligned),
 // a tab, the path.
-var duLineRe = regexp.MustCompile(`^ *(\d+(?:[.,]\d+)?)([BbkKMGTPEZY]?)(?:i?B)?\t(.+)$`)
+var duLineRe = lazyre.New(`^ *(\d+(?:[.,]\d+)?)([BbkKMGTPEZY]?)(?:i?B)?\t(.+)$`)
 
 type duEntry struct {
 	line  string

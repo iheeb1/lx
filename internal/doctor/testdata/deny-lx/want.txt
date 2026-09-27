@@ -1,0 +1,16 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✓ hook        installed in ~/.claude/settings.json: $ROOT/bin/lx hook claude
+✓ hook-binary $ROOT/bin/lx is this binary
+✓ hook-run    `git status` → `lx git status` in 7 ms
+✓ path        your shell runs lx from $ROOT/bin/lx, the hook's binary
+✓ rtk         no rtk hook
+✗ perms       deny rule Bash(lx:*) in ~/.claude/settings.json matches `lx git status`, the hook's rewrite of `git status`, so Claude Code refuses the commands lx rewrites
+              fix: remove it: lx applies your deny rules to the command it wraps (a Bash(git push:*) deny also stops `lx git push`)
+! perms       ask rule Bash(lx git:*) in ~/.claude/settings.json matches `lx git status`, the hook's rewrite of `git status`, so the commands lx rewrites ask for permission
+              fix: remove it: lx applies your ask rules to the command it wraps
+✓ env         LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on
+✓ settings    1 settings file valid: user
+✓ storage     runs: none stored yet ($ROOT/cache/lx/runs is created on the first condensed run)
+✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
+✓ activity    no lx run recorded yet; no Claude Code session in the last day
+lx doctor: 1 failure, 1 warning
