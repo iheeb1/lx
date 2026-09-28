@@ -1,27 +1,13 @@
-// Package golang condenses the output of the go command: go test (text and
-// -json), go build / vet / install, go mod / go get, and go list.
-//
-// Filters (first match wins, registered in this order):
-//
-//	go-test-json  go test -json            events decoded and rendered as go test text
-//	go-test       go test                  failures in full, passing tests counted
-//	go-build      go build|vet|install, go test -c   diagnostics verbatim, downloads counted
-//	go-mod        go mod tidy|download|vendor|verify|init, go get
-//	go-list       go list                  content; only download chatter condensed
-//	go-machine    go … -json, go list -f   machine output kept verbatim (content)
-//
-// Every filter keeps each error-class line verbatim, keeps the go command's
-// own verdict lines (ok / FAIL / FAIL pkg [build failed]) and bails
-// (ok=false) when the output does not have a shape it recognizes.
+// Package golang handles the go tool.
 package golang
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 func init() {
@@ -33,19 +19,13 @@ func init() {
 	engine.Register(machine{})
 }
 
-// versionedGoRe matches golang.org/dl wrappers such as go1.22.3 or go1.23rc1
-// (gotip is matched by name).
 var versionedGoRe = lazyre.New(`^go1\.\d+(?:\.\d+)?(?:rc\d+|beta\d+)?$`)
 
-// isGo reports whether argv[0] is the go command.
 func isGo(c *engine.Context) bool {
 	n := strings.TrimSuffix(c.Name(), ".exe")
 	return n == "go" || n == "gotip" || versionedGoRe.MatchString(n)
 }
 
-// goArgs splits the go command line into the subcommand and the arguments
-// after it. The only flag the go command accepts before the subcommand is
-// -C dir.
 func goArgs(c *engine.Context) (sub string, rest []string) {
 	args := c.Args()
 	for i := 0; i < len(args); i++ {
@@ -55,7 +35,6 @@ func goArgs(c *engine.Context) (sub string, rest []string) {
 			i++
 		case strings.HasPrefix(a, "-C=") || strings.HasPrefix(a, "--C="):
 		case strings.HasPrefix(a, "-"):
-			// Unknown pre-subcommand flag: not a shape we know.
 			return "", nil
 		default:
 			return a, args[i+1:]
@@ -64,10 +43,6 @@ func goArgs(c *engine.Context) (sub string, rest []string) {
 	return "", nil
 }
 
-// flagSet reports whether any of names (given without dashes) appears in
-// args as -name, --name, -name=value or --name=value (value not "false").
-// go test also accepts the test binary's -test.name spelling. Scanning stops
-// at -args, after which flags belong to the test binary.
 func flagSet(args []string, names ...string) bool {
 	for _, a := range args {
 		if a == "-args" || a == "--args" || a == "--" {
@@ -91,8 +66,6 @@ func flagSet(args []string, names ...string) bool {
 	return false
 }
 
-// positionals returns the non-flag arguments (a crude split: go flags that
-// take a separate value are listed in valueFlags).
 func positionals(args []string) []string {
 	var out []string
 	for i := 0; i < len(args); i++ {
@@ -123,29 +96,21 @@ var valueFlags = map[string]bool{
 	"gccgoflags": true, "reuse": true, "list": true, "C": true, "fullpath": true,
 }
 
-// Lines the go command prints while fetching modules.
 var (
 	downloadRe = lazyre.New(`^go: (?:downloading|extracting) (\S+) (\S+)$`)
-	// go -x module fetch trace: request and response lines.
+
 	getReqRe  = lazyre.New(`^# get (https?://\S+)$`)
 	getRespRe = lazyre.New(`^# get (https?://\S+): (\d{3}) [^()]*(?:\([\d.]+m?s\))?$`)
-	// Lines that name a module the download summary need not repeat.
+
 	namedModRe = lazyre.New(`^go: (?:upgraded|added|downgraded|removed) (\S+) |^go: found \S+ in (\S+) `)
 	zipRe      = lazyre.New(`^https?://[^/]+/(.+)/@v/([^/]+)\.zip$`)
 )
 
-// condenseFetch replaces "go: downloading M V" lines with one summary line at
-// the first one's position, and drops the "# get URL" / "# get URL: 200 OK"
-// trace printed by -x (counted in a summary line; any non-2xx response is
-// kept verbatim). Download lines that are themselves error-class (a module
-// path such as github.com/pkg/errors) are also kept verbatim, right after
-// the summary, so the error guard finds them. It returns the new lines and
-// whether anything changed.
 func condenseFetch(lines []string) ([]string, bool) {
 	var (
 		mods, keepDL, zips []string
 		reqs, oks          int
-		slotDL, slotGet    = -1, -1 // where the summary lines go in out
+		slotDL, slotGet    = -1, -1
 	)
 	out := make([]string, 0, len(lines))
 	for _, ln := range lines {
@@ -163,7 +128,7 @@ func condenseFetch(lines []string) ([]string, bool) {
 		if strings.HasPrefix(ln, "# get ") {
 			if m := getRespRe.FindStringSubmatch(ln); m != nil {
 				if m[2][0] != '2' {
-					out = append(out, ln) // 404, 410, 5xx: kept
+					out = append(out, ln)
 					continue
 				}
 				oks++
@@ -219,12 +184,8 @@ func condenseFetch(lines []string) ([]string, bool) {
 	return res, true
 }
 
-// maxListed: longer module lists are reduced to their count.
 const maxListed = 30
 
-// downloadSummary counts the downloaded modules and lists them (up to
-// maxListed), leaving out those that a later "go: upgraded/added/…" line
-// names anyway.
 func downloadSummary(mods []string, named map[string]bool) string {
 	s := "[go: downloading " + engine.Plural(len(mods), "module", "modules")
 	var rest []string
@@ -247,7 +208,6 @@ func downloadSummary(mods []string, named map[string]bool) string {
 	return s + "]"
 }
 
-// unescapeModPath undoes the module proxy's case encoding ("!x" → "X").
 func unescapeModPath(p string) string {
 	if !strings.Contains(p, "!") {
 		return p
@@ -264,7 +224,6 @@ func unescapeModPath(p string) string {
 	return b.String()
 }
 
-// plural is engine.Plural with thousands separators.
 func plural(n int, one, many string) string {
 	if n == 1 {
 		return "1 " + one
@@ -272,7 +231,6 @@ func plural(n int, one, many string) string {
 	return num(n) + " " + many
 }
 
-// num formats n with thousands separators.
 func num(n int) string {
 	s := strconv.Itoa(n)
 	if n < 10000 {
@@ -288,8 +246,6 @@ func num(n int) string {
 	return b.String()
 }
 
-// splitLines splits normalized output into lines, dropping one trailing
-// empty line.
 func splitLines(s string) []string {
 	s = strings.TrimRight(s, "\n")
 	if s == "" {
@@ -298,8 +254,6 @@ func splitLines(s string) []string {
 	return strings.Split(s, "\n")
 }
 
-// indentWidth counts leading spaces, a tab counting as 4 (go test indents
-// with 4 spaces; compilers continue diagnostics with a tab).
 func indentWidth(s string) int {
 	n := 0
 	for i := 0; i < len(s); i++ {

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rake",
+    "lint"
+  ],
+  "shell": "rake lint",
+  "exit_code": 1,
+  "description": "REAL: rake lint whose task runs eslint (stylish) on lib/ with stricter rules (no-var, prefer-const: error) in expressjs/express: the task's echo, eslint's report, rake's failure lines",
+  "cwd": "/home/user/src/express",
+  "repo": "expressjs/express",
+  "tool": "eslint"
+}

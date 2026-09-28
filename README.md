@@ -2,7 +2,7 @@
 
 **Your coding agent reads every line a command prints. lx makes it read the lines that matter, and it never hides an error.**
 
-[![ci](https://github.com/iheeb1/lx/actions/workflows/ci.yml/badge.svg)](https://github.com/iheeb1/lx/actions/workflows/ci.yml) ![Go 1.26](https://img.shields.io/badge/go-1.26-00ADD8) ![dependencies: 0](https://img.shields.io/badge/dependencies-0-2a78d6) ![tests: 725 + 20 fuzz](https://img.shields.io/badge/tests-725%20%2B%2020%20fuzz-1baf7a) ![license: MIT](https://img.shields.io/badge/license-MIT-eb6834)
+[![ci](https://github.com/iheeb1/lx/actions/workflows/ci.yml/badge.svg)](https://github.com/iheeb1/lx/actions/workflows/ci.yml) ![Go 1.26](https://img.shields.io/badge/go-1.26-00ADD8) ![dependencies: 0](https://img.shields.io/badge/dependencies-0-2a78d6) ![tests: 952 + 23 fuzz](https://img.shields.io/badge/tests-952%20%2B%2023%20fuzz-1baf7a) ![license: MIT](https://img.shields.io/badge/license-MIT-eb6834)
 
 `lx` sits between an AI coding agent (Claude Code, Codex, Gemini CLI, Copilot, Cursor…) and the commands it runs (`git`, `go test`, `pytest`, `jest`, `tsc`, `eslint`, `grep`, `find`, `npm`, `docker`…). It prints a condensed view of their output. The exit code stays the same, every error survives, and anything lx removes can be printed back (`lx show 7`).
 
@@ -92,6 +92,8 @@ rtk covers more ground: 100+ commands, 18 agents, a large community. lx takes a 
 ## Install
 
 ```sh
+brew install iheeb1/tap/lx          # macOS / Linux with Homebrew
+# or
 curl -fsSL https://github.com/iheeb1/lx/releases/latest/download/install.sh | sh
 lx version
 ```
@@ -133,6 +135,13 @@ The hook rewrites Bash commands lx understands (`git status` → `lx git status`
 - ask for machine-readable output (`--porcelain`, `--json`, `-z`, `--format=…`, `git status -s`);
 - set `LX_RAW=1` or `LX_OFF=1`.
 
+When the output goes through `| head -n N` or `| tail -n N` (also `-N`, `-nN`, `--lines=N`, or a bare `head`/`tail` for 10), the hook tells lx which lines the cut keeps: `go test ./... 2>&1 | tail -n 40` becomes `lx --fit tail:40 go test ./... 2>&1 | tail -n 40`. A head gets `head:40`. With several cuts the smallest count is used, and a plain `40` when they keep different ends. lx then prints at most 40 lines, receipt included:
+
+- **The command printed 40 lines or fewer.** The cut would have shown them all, so lx never prints anything longer: you get its usual view when that fits, and the output as the command printed it otherwise.
+- **It printed more.** lx fits its view into 39 lines plus the receipt, so the cut shows all of it: first every error line (when they fit), then the lines the cut asked for, the last ones for a tail and the first ones for a head.
+
+Byte cuts (`-c`), `tail -n +K` and `head -n -K` get no `--fit`.
+
 The hook calls lx by a name your agent's shell can find. `lx init` asks your login shell where `lx` is. If it isn't on that PATH, the hook is installed with `--prefix /path/to/lx`, so a rewrite never fails with `command not found`, and the receipts name that path too.
 
 Permissions work like this:
@@ -161,6 +170,42 @@ lx init --agent cursor      # Cursor hooks.json
 
 For your own tooling, `lx rewrite '<command>'` prints the lx form of a shell command and exits 1 when there is nothing to change (`-v` says why).
 
+## Context-aware
+
+Inside Claude Code or Codex, lx also reads the end of the current session's transcript, so a view fits what the agent is doing right now. Here the agent fixed one of 14 failing tests and runs the same command again:
+
+```text
+$ lx go test -v ./...
+[lx: same command as lx show 1 (1 turn ago, still in your context) — only what changed:]
+fixed: example.com/shop TestTotal
+still failing:
+  example.com/shop TestSlug/Red_Shoes (cart_test.go:23)
+  example.com/shop TestSlug/Blue_Hat (cart_test.go:23)
+[… 10 more such lines, trimmed for this README]
+FAIL	example.com/shop	0.429s
+[62 passed, 13 failed (incl. subtests) · hidden: 137 === RUN/--- PASS lines, 60 lines of passing-test output]
+[lx: 250→17 lines (−92%) · mode verify→error (from your last message) · full output: lx show 2]
+```
+
+Without the session, lx prints the 12 failures again in full (53 lines), although the model still has them from the first run.
+
+**What it reads.** Only a session transcript on your disk, and only when lx runs under an agent: Claude Code sets `CLAUDE_CODE_SESSION_ID` (`~/.claude/projects/<project>/<session>.jsonl`, or under `CLAUDE_CONFIG_DIR`), Codex sets `CODEX_THREAD_ID` (`~/.codex/sessions/…/rollout-…-<session>.jsonl`, or under `CODEX_HOME`). lx reads at most the last 1 MiB of it, and the last 64 KiB of subagent transcripts changed in the last 5 minutes, to find the one that ran the command. It reads after the command exits, and only when the output is big enough to condense. That adds about 2 ms (with a 30 MB transcript). A missing, unreadable or corrupt transcript means no context, never an error.
+
+**What it derives**, in memory and for this run only:
+
+| | From | What changes |
+|---|---|---|
+| Focus | identifiers, test names, file names and quoted strings in the agent's last 3 messages and your last prompt, and the files it read or edited | when a view has to be cut, lines and failures that name them are kept first. The receipt says so: `focus: TestParseMode` |
+| Context pressure | the tokens the latest turn sent to the model, against its window | from 50% full the budget shrinks (×0.8; ×0.6 from 75%; ×0.4 from 90%, never below 1,500 tokens); error lines keep their room. Receipt: `context 92% full` |
+| Mode | cues in the agent's latest message: *verify*, *make sure*, *re-run the tests*, *should pass* → `verify`; *debug*, *investigate*, *why … fails*, *root cause* → `error` | only when neither `-m` nor `LX_MODE` is set. `verify` shrinks only a passing run of a command with a verdict (tests, builds, linters), never a diff or a listing, and a failing run still gets the error view. Receipt: `mode verify (from your last message)` |
+| Delta | an earlier run of the same command in the same directory whose receipt is still in the transcript after the last compaction, and whose view reached the model whole (no `\| tail`, `\| head` or lx flags cut it) | only what changed: new and changed failures in full, fixed ones by name, still-failing ones by name and location, and the tool's summary line. Used only when it is at least 30% smaller than the usual view, and never when the run asks for more (`-m error`, `-m debug`, a budget over 8,000) |
+
+The window is 200K tokens, or 1M for models that have it (a table in lx, and ids ending in `[1m]` or `-1m`); a session whose usage has gone past 200K gets 1M too. Codex records its window in the transcript. `LX_CONTEXT_WINDOW=1m` overrides all of this. [docs/context.md](docs/context.md) has the details.
+
+**What it never does.** lx writes nothing from the transcript anywhere: no copy, no cache, no log. It never reads one outside an agent session, and it makes no network calls.
+
+**Seeing it and turning it off.** `lx ctx` prints what lx derives for the current session: agent, model, context used and window, compactions, the mode it infers, focus terms, recent files, and recent runs as tool names (`go test`) with their `lx show` ids. Run it through the agent (or ask the agent to), since only the agent's shell has the session. `--json` is for scripts, and `lx doctor` checks that the transcript is found and readable. `LX_CONTEXT=0` turns everything off and gives back lx's usual output byte for byte. `LX_DELTA=0` turns off only the delta.
+
 ## Commands
 
 ```text
@@ -168,11 +213,16 @@ lx <command> [args…]          run it, print the condensed view, exit with its 
 lx show [ID|last|last~N] [--errors] [--grep RE] [-C N] [--lines A-B] [--head N] [--tail N] [--full] [--raw]
                               print a stored run back (no id: this project's recent runs; --all: every run)
 lx gain [--days N] [--json]   tokens saved so far, by command, with a daily sparkline
+lx tune [--json] [--all] [--reset] [CMD]
+                              commands whose views lx loosened in this project because the
+                              agent read them back in full, and why; --reset forgets them
 lx discover [--days N] [--fidelity] [--examples] [--json]
                               replay your real Claude Code transcripts through lx and measure
                               what it would have saved (and which commands it doesn't cover);
                               --fidelity also checks that its views kept what the agent acted on
 lx doctor [--json]            check that the hook, PATH, permissions and storage work
+lx ctx [--json]               what lx reads from the agent's session: context use, the mode it infers,
+                              focus terms, recent runs (see Context-aware)
 lx pipe --as "go test ./..."  condense stdin as if it were that command's output
 lx rewrite [-v] '<cmd>'       the lx form of a shell command (for hooks and scripts)
 lx init / lx hook claude      agent integration
@@ -180,7 +230,19 @@ lx filters                    list the built-in filters
 lx version                    version, commit, Go version and platform (include it in bug reports)
 ```
 
-`lx -r <cmd>` or `LX_RAW=1` runs a command untouched, and `lx -b 3000 <cmd>` sets a smaller output budget.
+`lx -r <cmd>` or `LX_RAW=1` runs a command untouched, and `lx -b 3000 <cmd>` sets a smaller output budget. `lx --fit tail:40 <cmd>` keeps everything lx prints within 40 lines, for a `| tail -n 40` after it (`head:40` for a head, a plain `40` for either end). The hook adds it.
+
+**Modes.** What an agent needs from an output depends on why it ran the command. `lx -m MODE <cmd>` (or `LX_MODE=MODE`) says why:
+
+| Mode | For | What changes |
+|---|---|---|
+| `auto` | the default | nothing: a failing run's budget already leans toward the end, where verdicts are |
+| `error` | triaging a failure | 1.5× the budget; 3 lines kept after each error line instead of 1; 2 library frames kept on each side of your code in folded stack traces instead of 1 |
+| `debug` | active debugging | 2× the budget, `error`'s context and frames, and for commands without a filter, log lines stay lines (no templates) and only runs of 8+ similar lines are folded |
+| `verify` | checking that a run is green | half the budget on success, where error lines may fill all of it that the verdict leaves; a failing run gets exactly the `error` view |
+| `minimal` | a token diet | at most 2,000 tokens (or your budget, if smaller); error lines may fill all of it that the verdict leaves; a view is shown whenever it saves anything, its receipt included |
+
+Every mode keeps every guarantee below (the exit code, errors first, the error guard, the output limit, `lx show`), and a failing run never gets a smaller budget than in `auto`, except in `minimal`. The receipt names the mode: `[lx: 307→29 lines (−71%) · mode verify→error · full output: lx show 1]`. `-m` overrides `LX_MODE`. An unknown mode in either is an error (exit 2, nothing runs), never a silent `auto`, and the hook then leaves commands alone. A mode scales your budget (`lx -m debug -b 3000` gets 6,000 tokens). An agent can write `LX_MODE=verify go test ./...` too: the hook keeps the assignment. `lx pipe` takes `--mode`. Filters keep what they always keep (`debug` still hides passing tests' logs); they get the mode's budget and, where they fold stack traces through the engine, its frames.
 
 **Getting output back.** `lx show 7` starts with a provenance line, `[lx show 7 · go test ./... · exit 1 · 14 min ago · 307 lines]`. It adds a note when a newer run of the same command exists, or when the run came from another directory.
 
@@ -195,7 +257,23 @@ Printed straight to the agent, a long run stops at the last whole line under the
 
 **Measuring on your own sessions.** `lx discover` is the honest way to size the benefit before you install the hook. It reads your own session transcripts, finds every Bash call lx would have rewritten, and runs lx's filters on the output that was actually recorded. It also counts outputs that Claude Code had to spill for being over its size limit.
 
+Each command is replayed with the context lx would have had at that point in the transcript: the agent's messages before it (focus and inferred mode) and the context used then (pressure). `LX_CONTEXT=0 lx discover` replays without it.
+
 `--fidelity` checks the other half: did lx keep what your agent needed? When the agent opened or edited a file within 3 tool calls of a command whose output named it at `file:line`, discover checks whether lx's view showed that location, and whether a blind head+tail cut of the same size would have. Only command names (`git status`, `npm test`) and counts appear in the report. `--examples` adds locations from your outputs, and only on your terminal.
+
+**Learning from recalls.** When the agent needs more than a view showed, lx remembers it for that command in that project, and shows more the next time. A *regret* is a condensed run the agent read back whole:
+
+- `lx show N` within 15 minutes of the run, with no `--errors`, `--grep`, `--lines`, `--head` or `--tail`, and not piped into another program;
+- `lx show N --full` (or `--raw`) at any time, with no such selection and not piped;
+- the same command re-run in the same directory with `lx -r`, `LX_RAW=1 lx` or `LX_OFF=1 lx` within 15 minutes.
+
+Each run counts once. Per project (the nearest directory holding `.git`) and command (tool and subcommand, as in `lx gain`):
+
+- 2 regrets within 7 days **loosen** the command's views: twice the token budget (at most 24,000), and the whole output when it fits in that budget;
+- 4 within 7 days make them **raw** until 7 days after the latest one: the whole output. Over the agent's output limit it is still condensed, so the host never swaps it for a preview: that view is the usual one with the most room, so a filter's summary (a templated log, grouped grep hits) stays a summary;
+- 20 condensed runs that exit 0 with no regret in between lower the level by one.
+
+A level only ever shows more: under an agent, context pressure, an inferred mode and the delta leave a tuned command alone, and only focus orders its view. The exit code, the error guard, the output limit and `--fit` apply at every level. A tuned view that is still condensed says so in its receipt: `[lx: 2,406→212 lines (−91%) · full output: lx show 14 · loosened after 3 full recalls: lx tune]`, or at the raw level `… · tuned to raw after 4 full recalls, but over the output limit: lx tune]`. `lx tune` lists this project's commands with regrets, their level, why and until when (`--all`: every project; `--json`). `lx tune --reset [CMD]` forgets them. `LX_TUNE=0` turns all of this off, and so does `LX_TRACK=0`.
 
 ### Troubleshooting: `lx doctor`
 
@@ -214,10 +292,11 @@ It checks:
 - **path:** whether your login shell finds `lx`.
 - **rtk:** a conflicting rtk hook.
 - **perms:** permission rules that approve *any* command through lx (`Bash(lx:*)`), or that deny lx itself.
-- **env:** disabling variables (`LX_HOOK=0`, `LX_RAW=1`, `LX_TEE=0`).
+- **env:** disabling variables (`LX_HOOK=0`, `LX_RAW=1`, `LX_TEE=0`) and an unknown `LX_MODE`.
 - **settings:** invalid settings files.
 - **storage:** whether the run store is writable.
 - **activity:** Claude Code running while lx records nothing.
+- **context:** run from an agent, whether lx finds and can read the session transcript, and the model and window it uses. Outside an agent there is no such line.
 
 It is read-only, and it exits 1 when a check fails.
 
@@ -247,8 +326,8 @@ It is read-only, and it exits 1 when a check fails.
 These are the invariants lx is built around. Each one is enforced by tests over real captured output:
 
 1. **The exit code is never changed.** lx exits with the child's status, and 128+N if it was killed by a signal.
-2. **Error lines are never silently removed.** Command filters keep them, and their fidelity tests prove it on real captures. For everything else, a runtime guard re-appends any error line that went missing. The budget stage keeps error lines before anything else. If error lines alone exceed the output limit, the rest become counted `… N lines omitted …` markers, and `lx show N --errors` prints them all.
-3. **Never worse.** If condensing saves less than 10% of the tokens, you get the plain output, unless the plain output is over the agent's output limit (see 8).
+2. **Error lines are never silently removed.** Command filters keep them, and their fidelity tests prove it on real captures. For everything else, a runtime guard re-appends any error line that went missing. The budget stage keeps error lines before anything else. If error lines alone exceed the output limit, the rest become counted `… N lines omitted …` markers, and `lx show N --errors` prints them all. A [delta](#context-aware) prints every new or changed failure in full and leaves out only what the model already saw: each line of the usual view is either in the delta or was in the earlier run's view, which the transcript shows is still in context. It names the failures it leaves out, and counts them when more than 25 are unchanged.
+3. **Never worse.** If condensing saves less than 10% of the tokens, you get the plain output, unless the plain output is over the agent's output limit (see 8). The same holds in lines: before a `| head -n N` or `| tail -n N` (`lx --fit`), an output of N lines or fewer is never replaced by a longer view. In `minimal` mode the bar is lower but still strict: the view and its receipt must cost fewer tokens than the plain output.
 4. **Nothing is lost.** When anything is removed, the full output is stored and the receipt line says how to get it back. Storage is mode 0600 and keeps the newest 1,000 runs plus every run from the last 24 hours, capped at 7 days and 256 MiB. Run ids never repeat, and a run is written in one step, so `lx show` never serves a half-written file as complete.
 5. **Filters can't hurt you.** A filter that panics or doesn't recognize its input falls back to the generic engine. A bug anywhere else in lx's condensing prints the output unfiltered, with the command's exit code.
 6. **The command runs as you wrote it.** It runs once, with your exact argv, stdin and environment. lx never injects flags.
@@ -274,6 +353,8 @@ flowchart LR
     J -->|yes| L[view + receipt<br/>full copy stored]
 ```
 
+Under an agent, the session sets the focus, the pressure on the budget and the mode before the filter runs, and a repeated run can then be replaced by its delta.
+
 The budget defaults to 8,000 tokens (`LX_BUDGET`). That keeps every view under Claude Code's ~30k-character limit, beyond which it would truncate or spill the output itself.
 
 Token counts come from an offline estimator that reproduces the cl100k/o200k pre-tokenizer and prices each piece with curves fitted against real `tiktoken` counts. Its mean error is 6%, against 19% for `bytes ÷ 4`. See [docs/tokens.md](docs/tokens.md).
@@ -285,12 +366,12 @@ Token counts come from an offline estimator that reproduces the cl100k/o200k pre
 - **A corpus of real output.** `testdata/corpus` holds 116 captures of real commands (git, go, npm, jest, vitest, mocha, tsc, eslint, pytest, pip, grep, rg, find, ls, curl, make…) run in 11 open-source repositories, including deliberately broken builds and failing tests. Each filter package adds its own real and synthetic variants: 422 more captures.
 - **518 golden files.** Each one is the exact text an agent reads for a capture. `make golden` regenerates them, and every diff gets reviewed.
 - **Fidelity properties on every capture.** The error guard adds nothing, error messages and `file:line` locations survive, the verdict agrees with the exit code, and a filter bails on localized or unknown formats.
-- **20 fuzz targets.** No panics; output is deterministic; the fast classifier equals the reference regex exactly.
+- **23 fuzz targets.** No panics; output is deterministic; the fast classifier equals the reference regex exactly.
 - **Adversarial review.** Every filter group was reviewed by a second engineer whose job was to produce false passes, lost errors and slow cases. Each bug found has a regression test.
 - **Scale.** Timing tests feed every filter 50,000-line inputs to catch algorithmic blowups (most take under 100 ms), and the suite passes under `-race`.
 
 ```sh
-go test ./...          # 725 tests, ~3,000 subtests
+go test ./...          # 952 tests, ~3,700 passing with subtests
 go test -race ./...
 make golden            # after an intentional output change
 ```
@@ -312,25 +393,34 @@ A note on what these numbers mean. They measure the tokens of **command output**
 |---|---|
 | `LX_RAW=1` | run commands untouched |
 | `LX_BUDGET=N` | output token budget (default 8000) |
+| `LX_MODE=MODE` | why commands run: `auto` (default), `error`, `debug`, `verify` or `minimal` (see [Modes](#commands)). `lx -m MODE` overrides it. An unknown value is an error: lx then exits 2 without running anything (even with `-m`), the hook leaves commands alone, and `lx doctor` warns |
 | `LX_TEE=0` | don't store full outputs (`lx show` then has nothing to show) |
-| `LX_TRACK=0` | don't record savings for `lx gain` |
+| `LX_TRACK=0` | don't record savings for `lx gain`, and don't learn from recalls (`lx tune`) |
+| `LX_TUNE=0` | don't loosen views after the agent reads runs back in full, and don't learn from it (`lx tune`) |
 | `LX_HOOK=0` | make the agent hook a no-op |
 | `LX_TEE_DIR`, `LX_DATA_DIR` | where stored outputs and the savings log live |
 | `LX_MAX_CHARS=N` | the agent's output limit in characters; views and `lx show` stay under it. In Claude Code the default comes from `BASH_MAX_OUTPUT_LENGTH` (30,000 if unset), and lx uses 90% of it. Elsewhere there's no limit unless you set one. `0` turns it off |
 | `LX_HEARTBEAT=30s` | when a command is still running after this long, say so on stderr and start storing its output (`0` turns it off) |
 | `LX_PROMPT_IDLE=2s` | after this much silence, flag a prompt nobody is answering, such as `Ok to proceed? (y)` (`0` turns it off) |
+| `LX_CONTEXT=0` | don't read the agent's session transcript: no focus, context pressure, inferred mode or delta (see [Context-aware](#context-aware)). `lx discover` then replays without context too |
+| `LX_CONTEXT_WINDOW=N` | the model's context window in tokens (`200000`, `200k`, `1m`), in place of lx's table and the transcript |
+| `LX_DELTA=0` | never replace a repeated run with what changed since the earlier one |
 
-**Privacy:** `lx gain` records only the tool and subcommand (`git status`), token counts, the duration and the exit code. It never records arguments or output. Stored full outputs live in your user cache directory with mode 0600, expire after 7 days, and are capped at 256 MiB in total. lx makes no network calls, and CI enforces it: `make nonet` fails the build if a networking package (`net`, `net/http`, `crypto/tls`…) is linked into lx for Linux, macOS or Windows.
+**Privacy:** `lx gain` records only the tool and subcommand (`git status`), token counts, the duration and the exit code. It never records arguments or output. Stored full outputs live in your user cache directory with mode 0600, expire after 7 days, and are capped at 256 MiB in total. `lx tune` keeps `tune.json` next to the savings log (mode 0600): command keys, the times and run ids of regrets, and the condensed runs of the last 15 minutes. Projects and directories appear there only as SHA-256 hashes salted with a random local key, arguments only inside such a hash, and entries expire after 30 days. Under an agent, lx reads the end of the session transcript for the run at hand and keeps nothing from it (see [Context-aware](#context-aware)). lx makes no network calls, and CI enforces it: `make nonet` fails the build if a networking package (`net`, `net/http`, `crypto/tls`…) is linked into lx for Linux, macOS or Windows.
 
 ## Limitations
 
 - Claude Code's built-in Read, Grep and Glob tools don't go through Bash, so the hook can't see them.
 - A rewritten command no longer matches Claude Code's built-in auto-approval of read-only commands. Without `--readonly`, you may be prompted for `lx git status` where `git status` ran silently. `lx init --readonly` restores the silent run for a fixed table of read-only commands (see [Permissions](#claude-code)). Never add `Bash(lx:*)` to your allow rules: lx runs arbitrary commands, and `lx doctor` warns if you have.
 - A command that waits for input still waits. lx flags a likely prompt after 2 s of silence, but it can't answer it.
-- A view has fewer tokens than the raw output, but can have more lines: grep's per-file grouping, for example. In `cmd 2>&1 | tail -n 40`, a raw output of 37 lines passes whole, while lx's 60-line view gets cut. The planned fix is for the hook to pass the slice size (`lx --fit 40`), so lx fits its view and receipt into it.
+- `--fit` handles line counts only. After a byte cut (`| head -c 2000`), `| tail -n +K` or `| head -n -K`, lx's view and receipt can still be cut. Before a cut of under 5 lines (`| tail -3`), lx prints the output as the command did, so the cut applies exactly as it would without lx.
 - Shell aliases and functions named like a supported tool are bypassed by `lx <tool>`, as they are with rtk.
 - Filters for cargo, gradle, docker and kubectl are verified against synthetic fixtures in the tools' real formats, because those tools weren't available on the capture machine. Everything else is verified on real captures. Windows is untested.
 - Parsers recognize English tool output. For localized output they fall back to the generic engine rather than guess.
+- Context awareness is a heuristic. The mode comes from English cue words in the agent's latest message, and focus terms from identifiers and quoted strings, so a message that says one thing and means another can pick the wrong mode or focus (`-m`, `LX_MODE` and `LX_CONTEXT=0` override it). It works in Claude Code and Codex only, the agents that keep a session transcript lx can find.
+- A delta needs proof that the earlier run is still in the model's context: its receipt in the transcript, and this command recorded there when lx reads it. A command that finishes before the host writes it down, the first run after a compaction, and an earlier output the host spilled to a file or truncated, piped through `head`, `tail` or `grep`, or redirected get the usual view.
+- Loosening (`lx tune`) shows more where lx cut for size: a view trimmed to the token budget, or an output small enough to show whole. A filter's summary of an output too large to show whole, such as a templated log or grouped grep hits, stays the same summary when loosened, and at the raw level too when the output is over the agent's output limit; `lx show N` is still how to read all of it. Inside Claude Code the output limit (about 27,000 characters) usually binds before the token budget, so loosening there mostly means "the whole output when it fits the limit".
+- `lx tune` learns only from what goes through lx. A raw re-run counts only as `lx -r …`, `LX_RAW=1 lx …` or `LX_OFF=1 lx …`: the hook leaves a command written as `LX_RAW=1 go test` alone, so lx never sees it. `lx show` counts only when its output is neither piped nor redirected: straight to a terminal, or to the agent as Claude Code captures it (stdout and stderr in one file). In a host that captures output through a pipe, `lx show N` looks like `lx show N | grep x`, so there only raw re-runs count. Commands are keyed as in `lx gain`, so `npm run build` and `npm run lint` share `npm run`, and a person reading a run back with `lx show` in a terminal counts the same as the agent.
 
 ## Adding a filter
 

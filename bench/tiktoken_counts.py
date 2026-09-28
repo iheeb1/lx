@@ -25,18 +25,14 @@ CORPUS = os.path.join(ROOT, "testdata", "corpus")
 ENCS = {name: tiktoken.get_encoding(name) for name in ("cl100k_base", "o200k_base")}
 ANSI = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 
-
 def count(text):
     return {name: len(enc.encode(text, disallowed_special=())) for name, enc in ENCS.items()}
-
 
 def read(path):
     with open(path, encoding="utf-8", errors="replace") as f:
         return f.read()
 
-
 def main():
-    # 1. every raw capture (ANSI stripped the way lx strips it before estimating)
     stats = []
     for cat in sorted(os.listdir(CORPUS)):
         d = os.path.join(CORPUS, cat)
@@ -52,7 +48,6 @@ def main():
         json.dump(stats, f)
     print(f"tokstats: {len(stats)} captures")
 
-    # 2. corpus bench: raw vs lx view
     rp = os.path.join(OUT, "results.json")
     if os.path.exists(rp):
         res = json.load(open(rp))
@@ -70,7 +65,6 @@ def main():
             r, l = tot["raw"][e], tot["lx"][e]
             print(f"corpus {e}: raw {r} → lx {l} ({100 * (r - l) / r:.1f}% saved)")
 
-    # 3. head-to-head
     hp = os.path.join(OUT, "h2h.json")
     if os.path.exists(hp):
         rows = json.load(open(hp))
@@ -79,7 +73,6 @@ def main():
                 row[k]["exact"] = count(read(os.path.join(OUT, row[k]["file"])))
         json.dump(rows, open(hp, "w"), indent=2)
         print(f"h2h: {len(rows)} cases")
-
 
 if __name__ == "__main__":
     main()

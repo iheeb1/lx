@@ -30,7 +30,6 @@ type syncBuf struct {
 func (s *syncBuf) Write(p []byte) (int, error) { s.mu.Lock(); defer s.mu.Unlock(); return s.b.Write(p) }
 func (s *syncBuf) String() string              { s.mu.Lock(); defer s.mu.Unlock(); return s.b.String() }
 
-// lxProc is this test binary running as `lx <args>` (see main_test.go).
 type lxProc struct {
 	t              *testing.T
 	cmd            *exec.Cmd
@@ -51,7 +50,7 @@ func startLx(t *testing.T, env []string, args ...string) *lxProc {
 	}
 	cmd.Env = append(cmd.Env, "LX_TEST_MAIN=1", "LX_TEE_DIR="+tee.Dir(), "LX_TRACK=0", "LX_DATA_DIR="+t.TempDir())
 	cmd.Env = append(cmd.Env, env...)
-	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true} // so cleanup can kill orphans too
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	p := &lxProc{t: t, cmd: cmd, stdout: &syncBuf{}, stderr: &syncBuf{}, done: make(chan struct{})}
 	cmd.Stdout, cmd.Stderr = p.stdout, p.stderr
 	p.start = time.Now()
@@ -76,7 +75,6 @@ func startLx(t *testing.T, env []string, args ...string) *lxProc {
 	return p
 }
 
-// waitOut waits until stdout or stderr (per which) contains substr.
 func (p *lxProc) waitFor(buf *syncBuf, substr string, within time.Duration) time.Time {
 	p.t.Helper()
 	deadline := time.Now().Add(within)
@@ -92,7 +90,7 @@ func (p *lxProc) waitFor(buf *syncBuf, substr string, within time.Duration) time
 
 func (p *lxProc) wait(within time.Duration) int {
 	p.t.Helper()
-	within = testenv.Scale(within) // -race slows lx's own processing 10-20×
+	within = testenv.Scale(within)
 	select {
 	case <-p.done:
 		return p.exit
@@ -112,8 +110,6 @@ func seq(n int) string {
 
 var heartbeatIDRe = regexp.MustCompile(`output so far: lx show (\d+) --tail 40\]`)
 
-// lx is SIGKILLed during a long run: the heartbeat already said where the
-// output so far is, and that stored run holds it, marked incomplete.
 func TestHeartbeatRunSurvivesSIGKILL(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	p := startLx(t, []string{"LX_HEARTBEAT=300ms", "LX_PROMPT_IDLE=off"}, "sh", "-c", "seq 1 500; sleep 30")
@@ -151,9 +147,6 @@ func TestHeartbeatRunSurvivesSIGKILL(t *testing.T) {
 	}
 }
 
-// SIGTERM while the command ignores it: within the grace period plus a
-// second, lx prints a partial view and says so; when the command finally
-// exits, lx shows what it printed meanwhile and exits with its status.
 func TestInterruptPrintsPartialView(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	script := `n=0; trap 'n=$((n+1)); if [ "$n" -ge 2 ]; then echo "error: cleanup failed" >&2; exit 7; fi' TERM; ` +
@@ -168,7 +161,7 @@ func TestInterruptPrintsPartialView(t *testing.T) {
 	sent := time.Now()
 	_ = p.cmd.Process.Signal(syscall.SIGTERM)
 	got := p.waitFor(p.stdout, "[lx: interrupted by SIGTERM after ", 10*time.Second)
-	limit := 3 * time.Second // grace (2s) + 1s
+	limit := 3 * time.Second
 	if testenv.Race {
 		limit += 2 * time.Second
 	}
@@ -189,7 +182,7 @@ func TestInterruptPrintsPartialView(t *testing.T) {
 	default:
 	}
 
-	_ = p.cmd.Process.Signal(syscall.SIGTERM) // forwarded at once: the script exits 7
+	_ = p.cmd.Process.Signal(syscall.SIGTERM)
 	if code := p.wait(5 * time.Second); code != 7 {
 		t.Fatalf("exit %d, want the command's 7", code)
 	}
@@ -208,8 +201,6 @@ func TestInterruptPrintsPartialView(t *testing.T) {
 	}
 }
 
-// A command that stops on SIGTERM: the normal view, the child's status,
-// and a receipt that says the run was interrupted.
 func TestInterruptedReceipt(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	p := startLx(t, []string{"LX_HEARTBEAT=100ms", "LX_PROMPT_IDLE=off"}, "sh", "-c", "seq 1 20000; exec sleep 30")
@@ -259,7 +250,6 @@ func TestPromptNotice(t *testing.T) {
 	}
 }
 
-// With storing off the heartbeat still speaks, without promising an id.
 func TestHeartbeatWithoutTee(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	p := startLx(t, []string{"LX_HEARTBEAT=200ms", "LX_PROMPT_IDLE=off", "LX_TEE=0"}, "sh", "-c", "echo 'error: first'; sleep 0.6; echo done")
@@ -275,8 +265,6 @@ func TestHeartbeatWithoutTee(t *testing.T) {
 	}
 }
 
-// A heartbeat promised `lx show N`: the run is stored even when the final
-// view is the plain output.
 func TestHeartbeatRunAlwaysStored(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	p := startLx(t, []string{"LX_HEARTBEAT=100ms", "LX_PROMPT_IDLE=off"}, "sh", "-c", "echo start; sleep 0.4; echo end")
@@ -352,10 +340,9 @@ func TestCountErrorLines(t *testing.T) {
 	}
 }
 
-// The live callbacks in-process: exact lines, and no typed-nil writer.
 func TestLiveRunCallbacks(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
-	t.Setenv("LX_MAX_CHARS", "0") // no host cap, wherever the tests run
+	t.Setenv("LX_MAX_CHARS", "0")
 	var so, se bytes.Buffer
 	l := &liveRun{argv: []string{"make"}, cwd: "/w", start: time.Now(), stdout: &so, stderr: &se}
 	sofar := []byte(strings.Repeat("compiling\n", 1203) + "error: boom\n")
@@ -377,7 +364,6 @@ func TestLiveRunCallbacks(t *testing.T) {
 		t.Fatalf("prompt line %q", se.String())
 	}
 
-	// After a heartbeat the interrupt reuses its run and returns no writer.
 	if w := l.interrupt(syscall.SIGTERM, 123*time.Second, sofar); w != nil {
 		t.Fatalf("interrupt returned a second spool %T", w)
 	}
@@ -389,7 +375,6 @@ func TestLiveRunCallbacks(t *testing.T) {
 		t.Fatalf("partial view %q", so.String())
 	}
 
-	// Storing off: no id is promised and no typed-nil writer escapes.
 	t.Setenv("LX_TEE", "0")
 	se.Reset()
 	l2 := &liveRun{argv: []string{"make"}, start: time.Now(), stdout: &so, stderr: &se}
@@ -408,9 +393,6 @@ func TestLiveRunCallbacks(t *testing.T) {
 	}
 }
 
-// Under a host output cap (Claude Code's limit), the partial view, what the
-// command printed while stopping and lx's lines fit in one tool result, and
-// an error printed while stopping is still shown.
 func TestInterruptViewsFitHostCap(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	t.Setenv("LX_MAX_CHARS", "8000")
@@ -444,9 +426,6 @@ func TestInterruptViewsFitHostCap(t *testing.T) {
 	}
 }
 
-// Worst case under a host cap: both views full of error lines (which the
-// budget keeps first) and 10-digit run ids. The partial view, what came
-// after and lx's own lines still fit in the cap.
 func TestInterruptViewsFitHostCapWorstCase(t *testing.T) {
 	var before, after strings.Builder
 	for i := 0; i < 800; i++ {
@@ -458,7 +437,7 @@ func TestInterruptViewsFitHostCapWorstCase(t *testing.T) {
 			dir := t.TempDir()
 			t.Setenv("LX_TEE_DIR", dir)
 			t.Setenv("LX_MAX_CHARS", strconv.Itoa(limit))
-			os.WriteFile(dir+"/.seq", []byte("1073741000\n"), 0o600) // 10-digit ids
+			os.WriteFile(dir+"/.seq", []byte("1073741000\n"), 0o600)
 			var so, se bytes.Buffer
 			l := &liveRun{argv: []string{"make"}, cwd: "/w", start: time.Now(), stdout: &so, stderr: &se}
 			l.interrupt(syscall.SIGHUP, 64*time.Minute, []byte(before.String()))
@@ -472,7 +451,7 @@ func TestInterruptViewsFitHostCapWorstCase(t *testing.T) {
 				t.Fatalf("no exit line: %q", out[max(0, len(out)-300):])
 			}
 			if limit < 2000 {
-				// A degenerate cap: everything still fits the host's limit.
+
 				if len(out) > limit {
 					t.Fatalf("partial view + rest = %d bytes, over the host limit %d", len(out), limit)
 				}
@@ -488,8 +467,6 @@ func TestInterruptViewsFitHostCapWorstCase(t *testing.T) {
 	}
 }
 
-// lx's lines around the two views fit the room kept for them, whatever
-// the run id, line counts, signal and run time.
 func TestLiveLinesFitTheirRoom(t *testing.T) {
 	const id = "1073741823"
 	if n := len(interruptedLine("SIGTERM", 999*time.Hour, 9_999_999, id)); n > liveLineRoom {
@@ -501,8 +478,6 @@ func TestLiveLinesFitTheirRoom(t *testing.T) {
 	}
 }
 
-// With storing off, a condensed view of what came after the partial view
-// still says it was condensed (there is no receipt and no lx show).
 func TestRestViewSaysCondensedWithoutTee(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	t.Setenv("LX_TEE", "0")
@@ -523,9 +498,6 @@ func TestRestViewSaysCondensedWithoutTee(t *testing.T) {
 	}
 }
 
-// A bug in lx's pipeline (a panic outside the guarded filters) never costs
-// the command's output or exit status, on the normal path and after a
-// partial view.
 func TestPipelinePanicKeepsOutputAndExit(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	env := []string{"LX_TEST_PANIC=1", "LX_HEARTBEAT=off", "LX_PROMPT_IDLE=off"}
@@ -538,8 +510,6 @@ func TestPipelinePanicKeepsOutputAndExit(t *testing.T) {
 		t.Fatalf("stdout %d bytes, stderr %q", len(p.stdout.String()), p.stderr.String())
 	}
 
-	// The first TERM is ignored past the grace period (partial view), the
-	// second one makes the command print an error and exit 6.
 	script := `n=0; trap 'n=$((n+1)); if [ "$n" -ge 2 ]; then echo "error: stopping failed"; exit 6; fi' TERM; ` +
 		`seq 1 50; while :; do sleep 0.1; done`
 	p = startLx(t, env, "sh", "-c", script)
@@ -557,7 +527,7 @@ func TestPipelinePanicKeepsOutputAndExit(t *testing.T) {
 }
 
 func TestSelfCommandFallsBackToAbsolutePath(t *testing.T) {
-	t.Setenv("PATH", t.TempDir()) // no lx on PATH
+	t.Setenv("PATH", t.TempDir())
 	got := selfCommand()
 	if got == "lx" || !filepath.IsAbs(got) {
 		t.Fatalf("selfCommand() = %q with lx off PATH; want this binary's absolute path", got)

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rake",
+    "test"
+  ],
+  "shell": "rake test",
+  "exit_code": 1,
+  "description": "REAL: rake test whose task runs mocha (spec reporter, 1261 tests) in expressjs/express with the corpus's injected regressions (lib/response.js, lib/request.js): the task's echo, mocha's report, rake's failure lines",
+  "cwd": "/home/user/src/express",
+  "repo": "expressjs/express",
+  "tool": "mocha"
+}

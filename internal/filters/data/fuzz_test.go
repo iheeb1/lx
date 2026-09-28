@@ -13,8 +13,6 @@ import (
 	"github.com/iheeb1/lx/internal/textutil"
 )
 
-// fuzzArgv gives every filter (and the modes that change parsing) a
-// command line.
 var fuzzArgv = [][]string{
 	{"curl", "-s", "https://x/a.json"},
 	{"curl", "-v", "https://x"},
@@ -35,19 +33,12 @@ var fuzzArgv = [][]string{
 	{"bash", "-c", "curl -s https://x | jq '.[]'"},
 }
 
-// keptRe: each tool's own diagnostics, which its filter must keep
-// verbatim whatever the input (another tool's message inside a curl body
-// is body text, and a condensed body may leave it out).
 var keptRe = map[string]*regexp.Regexp{
 	"curl": regexp.MustCompile(`^curl: \(\d+\) `),
 	"jq":   regexp.MustCompile(`^jq: error`),
 	"cat":  regexp.MustCompile(`^cat: [^ ].*: No such file`),
 }
 
-// FuzzDataFilters: no panic, deterministic, and curl/jq/cat error messages
-// always survive.
-//
-//	go test ./internal/filters/data -run '^$' -fuzz FuzzDataFilters -fuzztime 20s
 func FuzzDataFilters(f *testing.F) {
 	cases := fixture.All(f)
 	if local, err := fixture.ReadAll("testdata"); err == nil {
@@ -68,8 +59,7 @@ func FuzzDataFilters(f *testing.F) {
 	f.Add(uint8(9), uint8(5), "[1,\njq: error (at <stdin>:2): Cannot iterate over null")
 	f.Add(uint8(10), uint8(1), "cat: nope.go: No such file or directory\npackage main")
 	f.Add(uint8(3), uint8(0), "HTTP/2 200\nx: y\n\nHTTP/2 404")
-	// Review regressions: glued diagnostics, conflict markers, bare jq
-	// parse errors, a JSON body after a prelude.
+
 	f.Add(uint8(0), uint8(18), "[\n  {\"id\": 1, \"na"+"curl: (18) transfer closed with 10 bytes remaining to read")
 	f.Add(uint8(8), uint8(5), "{\n  \"a\": 1\n}\n  jq: parse error: Expected separator between values at line 3, column 1")
 	f.Add(uint8(9), uint8(2), "a\nparse error: Invalid numeric literal at line 1, column 6\nb")
@@ -98,15 +88,13 @@ func FuzzDataFilters(f *testing.F) {
 			return
 		}
 		lines := strings.Split(in, "\n")
-		// Complete conflict sets in a text file are always shown (binary
-		// data is summarized as a whole).
+
 		conflicts := hasConflict(lines) && utf8.ValidString(in) && strings.Count(in, "\x00") <= 8
 		for _, ln := range lines {
 			if re := keptRe[fl.Name()]; re != nil && re.MatchString(ln) && !strings.Contains(a, ln) {
 				t.Fatalf("%s dropped %q", fl.Name(), ln)
 			}
-			// cat views keep conflict markers and glued diagnostics; jq
-			// keeps its messages wherever they landed in a line.
+
 			switch {
 			case fl.Name() == "cat" && conflicts && conflictRe.MatchString(ln) && !strings.Contains(a, ln):
 				t.Fatalf("cat dropped %q", ln)

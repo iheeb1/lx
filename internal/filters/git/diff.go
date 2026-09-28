@@ -2,37 +2,17 @@ package git
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"path"
 	"strconv"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/filters/focus"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 func init() { engine.Register(diffFilter{}) }
 
-// diffFilter renders `git diff` (and `git stash show -p`, `git diff
-// --no-index`) as git's own unified diff with the per-file header folded to
-// one line:
-//
-//	diff --git a/x b/x          ← kept; index, ---/+++ lines dropped when
-//	@@ -1,4 +1,4 @@ func f()      they only repeat the paths above
-//	 hunks verbatim …
-//
-// Hunks are never rewritten, so an agent can edit against them. Lockfiles
-// and generated files become one summary (+/- counts and, for lockfiles, the
-// package versions that changed); binary files one line; files whose hunks
-// are identical to an earlier file's are listed under that file. Only when
-// the result is still over diffBudget are long new files, then very large
-// files and long hunks shortened, each with a counted marker; the files that
-// still do not fit are listed with their +/- counts (the first maxListed of
-// them by name, the rest counted). Deleted files longer than
-// summarizeMinLines always show only their line count. Conflict markers
-// (<<<<<<< ======= >>>>>>>) added by a file whose lines are not all shown are
-// listed with their new-file line numbers, so a lockfile committed with an
-// unresolved merge never reads as a clean version bump. `--stat` and other
-// summary formats, and binary patches, are left as they are.
 type diffFilter struct{}
 
 func (diffFilter) Name() string    { return "git-diff" }
@@ -52,8 +32,6 @@ func (diffFilter) Match(c *engine.Context) bool {
 	return false
 }
 
-// verbatimDiffFlags select output that is not a plain unified diff, or that
-// is meant to be applied as a patch; such output is left untouched.
 var verbatimDiffFlags = []string{
 	"--stat", "--stat=", "--numstat", "--shortstat", "--dirstat", "--dirstat=", "--summary",
 	"--compact-summary", "--name-only", "--name-status", "--raw", "--check", "-z",
@@ -63,53 +41,42 @@ var verbatimDiffFlags = []string{
 
 func (diffFilter) Apply(c *engine.Context, out string) (string, bool) {
 	if hasArg(c, verbatimDiffFlags...) || c.Sub() == "stash" && !hasArg(c, "-p", "--patch", "-u") {
-		// Summary formats (a plain `git stash show` is a diffstat) are
-		// already compact.
 		return out, true
 	}
 	lines := strings.Split(out, "\n")
 	doc, ok := parseDiffDoc(lines)
 	if !ok {
-		return out, true // a binary patch: data for git apply, byte-exact
+		return out, true
 	}
 	if doc.files == 0 {
-		// Not a diff (an error message, a --stat block from diff.stat
-		// config, …): let the generic reducer decide.
 		return "", false
 	}
-	return join(renderDiffParts(doc.parts, diffBudget)), true
+	return join(renderDiffParts(doc.parts, diffBudget, focus.New(c.Focus))), true
 }
 
-// diffBudget is the token size diff output is shortened to. The engine's
-// budget stage (8000) would cut a diff mid-hunk; staying under it keeps
-// every shown hunk whole.
 const diffBudget = 7000
 
-// ---- model -----------------------------------------------------------------
-
-// part is one element of a parsed diff: a file, or a line that is not part
-// of any file (printed verbatim).
 type part struct {
 	file *fileDiff
 	raw  string
 }
 
 type fileDiff struct {
-	head       string   // "diff --git a/x b/y", "diff --cc x"
-	combined   bool     // diff --cc / --combined
-	ext        []string // extended header lines worth printing
-	minus      string   // "--- a/x" when it adds information
-	plus       string   // "+++ b/x" when it adds information
-	binary     string   // "Binary files a/x and b/x differ"
+	head       string
+	combined   bool
+	ext        []string
+	minus      string
+	plus       string
+	binary     string
 	isNew      bool
 	isDeleted  bool
-	renamed    bool // rename or copy
+	renamed    bool
 	name       string
 	hunks      []*hunk
 	adds, dels int
-	btok       int // body tokens, computed on first use
+	btok       int
 	btokDone   bool
-	sum        int8 // summarized(): 0 unknown, 1 no, 2 yes
+	sum        int8
 }
 
 type hunk struct {
@@ -117,11 +84,9 @@ type hunk struct {
 	body      []string
 	adds      int
 	dels      int
-	conflicts []conflictLine // added conflict-marker lines
+	conflicts []conflictLine
 }
 
-// conflictLine is an added line that is a merge conflict marker, with its
-// line number in the new file.
 type conflictLine struct {
 	line int
 	text string
@@ -134,8 +99,6 @@ func (f *fileDiff) bodyLines() int {
 	}
 	return n
 }
-
-// ---- parsing ---------------------------------------------------------------
 
 var (
 	diffHeadRe  = lazyre.New(`^diff --git (.+)$`)
@@ -157,9 +120,6 @@ type diffDoc struct {
 	files int
 }
 
-// parseDiffDoc parses a whole diff. Lines outside any file are kept as raw
-// parts. It fails (ok=false) on output that must not be reshaped, such as
-// a binary patch.
 func parseDiffDoc(lines []string) (diffDoc, bool) {
 	var d diffDoc
 	for i := 0; i < len(lines); {
@@ -179,10 +139,6 @@ func parseDiffDoc(lines []string) (diffDoc, bool) {
 	return d, true
 }
 
-// parseFile parses one file section starting at lines[i] ("diff --git …").
-// It stops at the first line that cannot belong to the file; that line is
-// left for the caller. ok is false for binary patches (--binary), which are
-// data for `git apply` and must stay byte-exact.
 func parseFile(lines []string, i int) (*fileDiff, int, bool) {
 	f := &fileDiff{head: lines[i]}
 	if m := diffCCRe.FindStringSubmatch(lines[i]); m != nil {
@@ -192,7 +148,7 @@ func parseFile(lines []string, i int) (*fileDiff, int, bool) {
 	}
 	var renameFrom, renameTo string
 	i++
-	// Extended header.
+
 	for i < len(lines) {
 		ln := lines[i]
 		if strings.HasPrefix(ln, "@@") || isDiffStart(ln) {
@@ -202,7 +158,6 @@ func parseFile(lines []string, i int) (*fileDiff, int, bool) {
 		case ln == "GIT binary patch":
 			return nil, 0, false
 		case strings.HasPrefix(ln, "index "):
-			// Blob ids: never needed to read or apply the change.
 		case strings.HasPrefix(ln, "--- "):
 			f.minus = ln
 		case strings.HasPrefix(ln, "+++ "):
@@ -221,19 +176,15 @@ func parseFile(lines []string, i int) (*fileDiff, int, bool) {
 			case strings.HasPrefix(ln, "rename to "):
 				renameTo = ln
 			case strings.HasPrefix(ln, "copy from "):
-				// A copy's from/to lines are kept: without them a copy
-				// (the source still exists) reads like a rename.
 				f.renamed = true
 			}
 			f.ext = append(f.ext, ln)
 		default:
-			// Not a header line: the file (a mode-only change, an empty
-			// file) ends here.
 			return f.finish(renameFrom, renameTo), i, true
 		}
 		i++
 	}
-	// Hunks.
+
 	for i < len(lines) && strings.HasPrefix(lines[i], "@@") {
 		h, next, ok := parseHunk(lines, i, f.combined)
 		if !ok {
@@ -247,15 +198,11 @@ func parseFile(lines []string, i int) (*fileDiff, int, bool) {
 	return f.finish(renameFrom, renameTo), i, true
 }
 
-// finish drops header lines that only repeat what the diff --git line says.
-// Only a rename's "rename from/to" pair is dropped (the header's a/ and b/
-// paths plus "similarity index" say the same); "copy from/to" always stay.
 func (f *fileDiff) finish(renameFrom, renameTo string) *fileDiff {
 	if !f.combined {
 		if m := diffHeadRe.FindStringSubmatch(f.head); m != nil {
 			rest := m[1]
-			// "rename from x" / "rename to y" repeat "diff --git a/x b/y" when
-			// the paths are plain (no spaces or quotes to split on).
+
 			if renameFrom != "" && renameTo != "" {
 				from := strings.TrimPrefix(renameFrom, "rename from ")
 				to := strings.TrimPrefix(renameTo, "rename to ")
@@ -281,8 +228,6 @@ func (f *fileDiff) finish(renameFrom, renameTo string) *fileDiff {
 	return f
 }
 
-// redundantPath reports whether a ---/+++ line names a path already on the
-// diff --git line (or /dev/null for an added/deleted file).
 func redundantPath(ln, prefix, head string, devNull bool) bool {
 	if ln == "" {
 		return true
@@ -294,8 +239,6 @@ func redundantPath(ln, prefix, head string, devNull bool) bool {
 	return strings.HasPrefix(head, p+" ") || strings.HasSuffix(head, " "+p)
 }
 
-// headNewPath extracts the new path from "a/x b/x" (best effort: used only
-// for naming files in markers and classifying lockfiles).
 func headNewPath(rest string) string {
 	if i := strings.LastIndex(rest, " b/"); i >= 0 {
 		return strings.Trim(rest[i+3:], `"`)
@@ -331,15 +274,11 @@ func removeLines(lines []string, drop ...string) []string {
 	return out
 }
 
-// parseHunk consumes one hunk using the line counts in its header, so blank
-// context lines (whose single space normalization trimmed away) are counted
-// correctly and a following non-diff line is never swallowed. A hunk cut
-// short by the end of the output or a foreign line simply ends there.
 func parseHunk(lines []string, i int, combined bool) (*hunk, int, bool) {
 	h := &hunk{header: lines[i]}
-	var need []int // remaining lines per side: parents..., result
+	var need []int
 	width := 1
-	newLine := 0 // new-file line number of the next result-side line
+	newLine := 0
 	if combined {
 		m := hunkCCRe.FindStringSubmatch(lines[i])
 		if m == nil {
@@ -409,7 +348,7 @@ func parseHunk(lines []string, i int, combined bool) (*hunk, int, bool) {
 		h.body = append(h.body, ln)
 		i++
 	}
-	// "\ No newline at end of file" after the last line.
+
 	for i < len(lines) && strings.HasPrefix(lines[i], `\`) {
 		h.body = append(h.body, lines[i])
 		i++
@@ -417,9 +356,6 @@ func parseHunk(lines []string, i int, combined bool) (*hunk, int, bool) {
 	return h, i, true
 }
 
-// isConflictMarker reports whether a diff line with a width-column prefix
-// is a merge conflict marker: <<<<<<<, |||||||, ======= or >>>>>>> at the
-// start of the content, alone or followed by a space.
 func isConflictMarker(ln string, width int) bool {
 	if len(ln) < width+7 {
 		return false
@@ -432,9 +368,6 @@ func isConflictMarker(ln string, width int) bool {
 	return false
 }
 
-// conflicts returns the conflict-marker lines f adds. A lone "=======" is
-// also a Markdown or reStructuredText heading underline, so markers count
-// only when the file adds at least one <<<<<<< or >>>>>>> line.
 func (f *fileDiff) conflicts() []conflictLine {
 	var out []conflictLine
 	real := false
@@ -452,12 +385,8 @@ func (f *fileDiff) conflicts() []conflictLine {
 	return out
 }
 
-// maxConflictLines caps the conflict markers listed for one file.
 const maxConflictLines = 20
 
-// conflictNote lists f's added conflict markers when the rendering in
-// shown does not include all of them (a lockfile or generated-file summary,
-// a capped hunk, a hunk shown by its header only).
 func conflictNote(f *fileDiff, shown []string) []string {
 	cs := f.conflicts()
 	if len(cs) == 0 {
@@ -491,7 +420,6 @@ func conflictNote(f *fileDiff, shown []string) []string {
 	return out
 }
 
-// rangeCount parses "-12,4" → 4, "-12" → 1.
 func rangeCount(r string) int {
 	if _, n, ok := strings.Cut(r, ","); ok {
 		v, _ := strconv.Atoi(n)
@@ -508,8 +436,6 @@ func countOr1(s string) int {
 	return v
 }
 
-// ---- classification --------------------------------------------------------
-
 var lockfiles = map[string]bool{
 	"package-lock.json": true, "npm-shrinkwrap.json": true, "yarn.lock": true, "pnpm-lock.yaml": true,
 	"bun.lock": true, "Cargo.lock": true, "go.sum": true, "poetry.lock": true, "uv.lock": true,
@@ -522,63 +448,57 @@ var generatedRe = lazyre.New(`\.min\.(?:js|css|mjs)$|\.(?:js|css|mjs)\.map$|(?:^
 	`\.pb\.go$|\.pb\.gw\.go$|_pb2(?:_grpc)?\.pyi?$|\.pb\.(?:cc|h)$|\.g\.dart$|\.freezed\.dart$|` +
 	`\.generated\.|(?:^|/)__generated__/`)
 
-// summarizeMin: lockfile/generated diffs costing at most this many tokens
-// are shown in full; a summary would save little and could hide a detail
-// (a small lockfile edit is often the project's own version bump).
 const summarizeMin = 400
 
-// summarizeMinLines: deleted-file bodies up to this many lines stay; longer
-// ones show their line count only (the content is in the old revision).
 const summarizeMinLines = 10
 
 func isLockfile(name string) bool { return lockfiles[path.Base(name)] }
 
 func isGenerated(name string) bool { return generatedRe.MatchString(name) }
 
-// ---- rendering ---------------------------------------------------------------
-
-// Shortening levels, applied only while the output is over budget.
 const (
-	lvlBase       = iota // header folding, lockfile/generated/binary/deleted summaries, identical hunks
-	lvlNewFiles          // new files over 80 lines → first 40 lines
-	lvlLargeFiles        // files with >300 changed lines → first 2 hunks; every hunk capped (800…100 lines)
-	lvlFileList          // files past the budget → one stat list
+	lvlBase = iota
+	lvlNewFiles
+	lvlLargeFiles
+	lvlFileList
 )
 
-// renderDiffParts renders parsed diff parts, shortening level by level until
-// the result fits budget tokens.
-func renderDiffParts(parts []part, budget int) []string {
+func renderDiffParts(parts []part, budget int, fx *focus.Set) []string {
 	var out []string
+	parts, keep := focusDiff(parts, fx)
 	groups := identicalGroups(parts)
-	for lvl := lvlBase; lvl <= lvlFileList; lvl++ {
-		// Hunk length caps, loosest first, for the levels that cap hunks.
-		caps := []int{0}
-		switch lvl {
-		case lvlLargeFiles:
-			caps = []int{800, 400, 200, 100}
-		case lvlFileList:
-			caps = []int{100}
-		}
-		for _, hc := range caps {
-			out = renderLevel(parts, groups, lvl, hc, budget)
-			if fitsBudget(out, budget) {
-				return out
+	fit := func(from int, keep func(*fileDiff) bool) bool {
+		for lvl := from; lvl <= lvlFileList; lvl++ {
+			caps := []int{0}
+			switch lvl {
+			case lvlLargeFiles:
+				caps = []int{800, 400, 200, 100}
+			case lvlFileList:
+				caps = []int{100}
+			}
+			for _, hc := range caps {
+				out = renderLevel(parts, groups, lvl, hc, budget, keep)
+				if fitsBudget(out, budget) {
+					return true
+				}
 			}
 		}
+		return false
 	}
+	if fit(lvlBase, keep) || keep == nil {
+		return out
+	}
+	fit(lvlNewFiles, nil)
 	return out
 }
 
-// maxListed caps the "not shown" file list of lvlFileList.
 const maxListed = 300
 
-func renderLevel(parts []part, groups map[*fileDiff][]*fileDiff, lvl, hunkCap, budget int) []string {
+func renderLevel(parts []part, groups map[*fileDiff][]*fileDiff, lvl, hunkCap, budget int, keep func(*fileDiff) bool) []string {
 	var out []string
-	var rest []statRow // files not shown at lvlFileList
+	var rest []statRow
 	used := 0
 	if lvl >= lvlFileList {
-		// Keep room for the list of the files that will not be shown
-		// (about 8 tokens each).
 		files := 0
 		for _, p := range parts {
 			if p.file != nil {
@@ -595,9 +515,13 @@ func renderLevel(parts []part, groups map[*fileDiff][]*fileDiff, lvl, hunkCap, b
 		f := p.file
 		g, grouped := groups[f]
 		if grouped && g == nil {
-			continue // listed under the first file with the same hunks
+			continue
 		}
-		fl := renderFile(f, lvl, hunkCap)
+		flvl, fcap := lvl, hunkCap
+		if keep != nil && keep(f) {
+			flvl, fcap = lvlBase, 0
+		}
+		fl := renderFile(f, flvl, fcap)
 		if grouped {
 			names := make([]string, len(g))
 			for i, o := range g {
@@ -625,7 +549,6 @@ func renderLevel(parts []part, groups map[*fileDiff][]*fileDiff, lvl, hunkCap, b
 		out = append(out, fmt.Sprintf("[%s not shown (diff too large), with their changed lines:", engine.Plural(len(rest), "more file", "more files")))
 		listed := rest
 		if len(listed) > maxListed {
-			// Past the cap, files adding conflict markers are still named.
 			listed = append([]statRow(nil), rest[:maxListed]...)
 			for _, r := range rest[maxListed:] {
 				if strings.Contains(r.label, "conflict-marker") {
@@ -650,12 +573,10 @@ func countDesc(f *fileDiff) string {
 	case f.adds > 0:
 		return fmt.Sprintf("+%d", f.adds)
 	default:
-		return "0" // a mode change, a pure rename, an empty file: git's stat says 0
+		return "0"
 	}
 }
 
-// listDesc is countDesc for the list of files not shown, flagging files
-// that add conflict markers.
 func listDesc(f *fileDiff) string {
 	if cs := f.conflicts(); len(cs) > 0 {
 		return countDesc(f) + fmt.Sprintf(" (%s)", engine.Plural(len(cs), "conflict-marker line", "conflict-marker lines"))
@@ -663,8 +584,6 @@ func listDesc(f *fileDiff) string {
 	return countDesc(f)
 }
 
-// identicalGroups maps the first of several modified files whose hunks are
-// byte-identical to the list of the others, and each of the others to nil.
 func identicalGroups(parts []part) map[*fileDiff][]*fileDiff {
 	first := map[string]*fileDiff{}
 	groups := map[*fileDiff][]*fileDiff{}
@@ -694,8 +613,6 @@ func identicalGroups(parts []part) map[*fileDiff][]*fileDiff {
 	return groups
 }
 
-// summarized reports whether f is shown as a summary at every level
-// (computed once per file: the renderer asks at every level).
 func summarized(f *fileDiff) bool {
 	if f.sum == 0 {
 		f.sum = 1
@@ -716,9 +633,6 @@ func (f *fileDiff) bodyTokens() int {
 	return f.btok
 }
 
-// renderFile renders one file at a shortening level; hunkCap bounds hunk
-// bodies from lvlLargeFiles on. Conflict markers the rendering leaves out
-// are listed right under the file's header.
 func renderFile(f *fileDiff, lvl, hunkCap int) []string {
 	out, head := renderFileBody(f, lvl, hunkCap)
 	if note := conflictNote(f, out[head:]); note != nil {
@@ -727,10 +641,8 @@ func renderFile(f *fileDiff, lvl, hunkCap int) []string {
 	return out
 }
 
-// renderFileBody renders f and reports how many of the lines are its header.
 func renderFileBody(f *fileDiff, lvl, hunkCap int) (out []string, head int) {
 	if f.binary != "" && !f.renamed && onlyNewDeleted(f.ext) {
-		// "Binary files /dev/null and b/x differ" says it all.
 		return []string{f.binary}, 1
 	}
 	out = append(out, f.head)
@@ -783,7 +695,6 @@ func hunkDesc(h *hunk) string {
 	return fmt.Sprintf("%d lines, +%d -%d", len(h.body), h.adds, h.dels)
 }
 
-// capHunk keeps a hunk's first max body lines.
 func capHunk(h *hunk, max int) []string {
 	out := []string{h.header}
 	if len(h.body) <= max {

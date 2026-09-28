@@ -11,8 +11,6 @@ import (
 	"github.com/iheeb1/lx/internal/hook"
 )
 
-// integrationCommand handles the agent-facing subcommands. ok=false means
-// args[0] is not one of them and should be run as a command.
 func integrationCommand(args []string) (int, bool) {
 	switch args[0] {
 	case "hook":
@@ -29,19 +27,16 @@ func integrationCommand(args []string) (int, bool) {
 	return 0, false
 }
 
-// cmdHook runs `lx hook <agent> [--readonly] [--prefix PATH | --prefix=PATH]`.
 func cmdHook(args []string) int {
 	agent, o := parseHookArgs(args)
 	cwd, _ := os.Getwd()
-	// A hook must never block the agent: errors are swallowed, exit is 0.
+
 	if err := hook.HookWith(agent, os.Stdin, os.Stdout, cwd, o); err != nil && os.Getenv("LX_HOOK_DEBUG") == "1" {
 		fmt.Fprintln(os.Stderr, "lx hook:", err)
 	}
 	return 0
 }
 
-// parseHookArgs parses the hook's arguments by hand. Unknown flags are
-// ignored: a hook written by a newer lx must still never fail.
 func parseHookArgs(args []string) (string, hook.HookOptions) {
 	agent := "claude"
 	var o hook.HookOptions
@@ -53,7 +48,7 @@ func parseHookArgs(args []string) (string, hook.HookOptions) {
 		case a == "--readonly":
 			o.ReadOnly = true
 		case a == "--prefix":
-			// A path is absolute: a following flag is not its value.
+
 			if i+1 < len(args) && !strings.HasPrefix(args[i+1], "-") {
 				i++
 				o.Prefix = args[i]
@@ -67,9 +62,6 @@ func parseHookArgs(args []string) (string, hook.HookOptions) {
 
 func cmdRewrite(args []string) int { return runRewrite(args, os.Stdout, os.Stderr) }
 
-// runRewrite runs `lx rewrite [-v] <command>`: the lx form on stdout (exit 0),
-// or exit 1 when nothing changes. -v explains on stderr: one `target:` line
-// per command lx would wrap, or `unchanged:` and the reason.
 func runRewrite(args []string, stdout, stderr io.Writer) int {
 	verbose := false
 	if len(args) > 0 && (args[0] == "-v" || args[0] == "--verbose") {

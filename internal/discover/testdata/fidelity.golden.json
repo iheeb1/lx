@@ -6,10 +6,10 @@
   "bash_output_tokens": 66948,
   "candidates": 25,
   "candidate_tokens": 62479,
-  "candidate_tokens_after": 23352,
-  "would_save_tokens": 39127,
-  "would_save_pct": 58.4,
-  "candidate_would_save_pct": 62.6,
+  "candidate_tokens_after": 23571,
+  "would_save_tokens": 38908,
+  "would_save_pct": 58.1,
+  "candidate_would_save_pct": 62.3,
   "already_lx": 0,
   "unparsable_lines": 0,
   "host_spills": 4,
@@ -17,25 +17,12 @@
   "host_spills_avoided": 1,
   "sliced_by_head_tail": 7,
   "sliced_replayable": 4,
-  "sliced_view_cut": 3,
-  "sliced_receipt_lost": 2,
-  "sliced_errors_cut": 1,
+  "sliced_view_cut": 0,
+  "sliced_receipt_lost": 0,
+  "sliced_errors_cut": 0,
   "acted_on": {
     "window": 3,
     "by_command": [
-      {
-        "command": "grep",
-        "refs": 5,
-        "file_in_view": 1,
-        "loc_in_view": 0,
-        "file_in_head_tail": 5,
-        "loc_in_head_tail": 5,
-        "misses": {
-          "budget": 0,
-          "filter": 2,
-          "cut": 3
-        }
-      },
       {
         "command": "go test",
         "refs": 4,
@@ -48,18 +35,31 @@
           "filter": 0,
           "cut": 0
         }
+      },
+      {
+        "command": "grep",
+        "refs": 2,
+        "file_in_view": 1,
+        "loc_in_view": 0,
+        "file_in_head_tail": 2,
+        "loc_in_head_tail": 2,
+        "misses": {
+          "budget": 0,
+          "filter": 2,
+          "cut": 0
+        }
       }
     ],
     "total": {
-      "refs": 9,
+      "refs": 6,
       "file_in_view": 5,
       "loc_in_view": 4,
-      "file_in_head_tail": 9,
-      "loc_in_head_tail": 9,
+      "file_in_head_tail": 6,
+      "loc_in_head_tail": 6,
       "misses": {
         "budget": 0,
         "filter": 2,
-        "cut": 3
+        "cut": 0
       }
     },
     "ambiguous_refs": 1,
@@ -77,15 +77,15 @@
       "command": "go test",
       "count": 17,
       "tokens": 46357,
-      "tokens_after": 13270,
-      "saved": 33087
+      "tokens_after": 12729,
+      "saved": 33628
     },
     {
       "command": "grep",
       "count": 6,
       "tokens": 13987,
-      "tokens_after": 7947,
-      "saved": 6040
+      "tokens_after": 8707,
+      "saved": 5280
     },
     {
       "command": "git status",

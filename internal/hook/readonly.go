@@ -7,38 +7,18 @@ import (
 	"strings"
 )
 
-// Read-only parity (`lx hook claude --readonly`).
-//
-// Claude Code approves some read-only commands on its own: `git status` runs
-// without a prompt, while `lx git status` is a command it doesn't know, so it
-// prompts. With --readonly the hook gives that approval back: when none of the
-// user's own rules decides, and EVERY part of the command is in the fixed
-// table below and only reads inside the project, the rewrite is approved.
-//
-// The table is an allowlist. Anything it doesn't recognize (a tool, a flag, a
-// shell expansion, a path) returns false, which keeps the default behaviour:
-// no decision, and Claude Code's normal permission flow.
-
-// readOnlyReason is appended to RewriteReason when parity approves a rewrite.
 const readOnlyReason = "; read-only command, auto-approved as Claude Code does without lx (--readonly)"
 
-// maxGlobMatches caps the files a wildcard operand may expand to before
-// parity gives up (each match is resolved and checked).
 const maxGlobMatches = 256
 
-// roArg is one word of a command as the read-only check sees it.
 type roArg struct {
-	val     string // the word after quote removal
-	glob    bool   // has an unquoted * ? or [: the shell may replace it with file names
-	special bool   // another expansion lx doesn't model: ~, a leading = (zsh), {a,b} or {1..3}
+	val     string
+	glob    bool
+	special bool
 }
 
 func (a roArg) plain() bool { return !a.glob && !a.special }
 
-// readOnly reports whether argv only reads files inside root (or one of
-// extraDirs), resolved from cwd. argv is treated as shell words that were
-// NOT quoted, so a * or ~ anywhere counts as an expansion; the hook itself
-// uses readOnlyParity, which knows what was quoted.
 func readOnly(argv []string, cwd, root string, extraDirs []string) (ok bool, why string) {
 	c, why := newROCtx(cwd, root, extraDirs)
 	if c == nil {
@@ -51,8 +31,6 @@ func readOnly(argv []string, cwd, root string, extraDirs []string) (ok bool, why
 	return c.check(args)
 }
 
-// specialLiteral is wordShape's "special" for a word of unknown quoting,
-// plus $ and backquotes (which the hook rejects through the lexer).
 func specialLiteral(v string, zsh bool) bool {
 	if v == "" {
 		return false
@@ -68,11 +46,6 @@ func specialLiteral(v string, zsh bool) bool {
 	return braceExpands(v)
 }
 
-// shellMayBeZsh reports whether the agent's shell may be zsh. Claude Code
-// runs Bash commands in $SHELL when it is bash or zsh (CLAUDE_CODE_SHELL
-// overrides it), with the user's setopt options; anything but bash counts
-// as zsh, whose EXTENDED_GLOB (^ # ~) and BRACE_CCL expand words bash leaves
-// alone.
 func shellMayBeZsh() bool {
 	for _, v := range []string{"CLAUDE_CODE_SHELL", "SHELL"} {
 		if s := os.Getenv(v); s != "" {
@@ -82,9 +55,6 @@ func shellMayBeZsh() bool {
 	return true
 }
 
-// zshBraceCCL: with zsh's BRACE_CCL, {abc} expands to its characters, so
-// {e}sc can name esc. git's @{…} (HEAD@{1}, @{u}) is left alone: at worst it
-// names a file in the working directory.
 func zshBraceCCL(s string) bool {
 	for i := 0; i < len(s); i++ {
 		if s[i] != '{' || i > 0 && (s[i-1] == '@' || s[i-1] == '$') {
@@ -97,10 +67,6 @@ func zshBraceCCL(s string) bool {
 	return false
 }
 
-// readOnlyParity is the --readonly test for a whole command line: every
-// segment is neutral (`cd subdir`, a stdin-only head/tail/cat) or a plain
-// command (no env assignment, no wrapper, no redirection but 2>&1, no $)
-// that readOnly accepts.
 func (a *analysis) readOnlyParity(cwd, root string, extraDirs []string) (bool, string) {
 	switch {
 	case len(a.unsafe) > 0:
@@ -121,9 +87,7 @@ func (a *analysis) readOnlyParity(cwd, root string, extraDirs []string) (bool, s
 	if c == nil {
 		return false, why
 	}
-	// Follow the directories each pipeline may run in. A `cd` succeeds
-	// (new directory) or fails (old one); && runs the next pipeline only
-	// after a success, || only after a failure, ; after either.
+
 	state := c.cwds
 	for _, l := range a.sc.lists {
 		if len(l.ops) != len(l.pipes)-1 {
@@ -144,9 +108,9 @@ func (a *analysis) readOnlyParity(cwd, root string, extraDirs []string) (bool, s
 			switch {
 			case k == 0:
 				succ, fail = s, f
-			case l.ops[k-1] == "&&": // skipped after a failure: still failed
+			case l.ops[k-1] == "&&":
 				succ, fail = s, union(fail, f)
-			default: // || skipped after a success: still succeeded
+			default:
 				succ, fail = union(succ, s), f
 			}
 		}
@@ -157,13 +121,9 @@ func (a *analysis) readOnlyParity(cwd, root string, extraDirs []string) (bool, s
 	return true, ""
 }
 
-// roPipeline checks one pipeline run from any of the directories in, and
-// returns the directories it may leave the shell in on success and on
-// failure. Only a lone `cd` moves the shell: in a pipeline it runs in a
-// subshell.
 func (a *analysis) roPipeline(c *roCtx, p pipeline, in []string) (succ, fail []string, ok bool, why string) {
 	if len(in) == 0 {
-		return nil, nil, true, "" // never runs
+		return nil, nil, true, ""
 	}
 	c.cwds = in
 	for _, cmd := range p.cmds {
@@ -198,7 +158,6 @@ func (a *analysis) roPipeline(c *roCtx, p pipeline, in []string) (succ, fail []s
 	return in, in, true, ""
 }
 
-// union returns the directories of a and b, once each.
 func union(a, b []string) []string {
 	out := append([]string(nil), a...)
 	for _, x := range b {
@@ -218,14 +177,8 @@ func (c *roCtx) roArgs(ws []token) []roArg {
 	return out
 }
 
-// wordShape scans a word's raw source for expansions the shell performs on
-// unquoted text: wildcards (glob) and tilde, zsh's =cmd and brace expansion
-// (special). With zsh it also reports what EXTENDED_GLOB and BRACE_CCL
-// would expand and lx doesn't model: ^ and # anywhere, a ~ exclusion in a
-// wildcard word (esc*~x names esc), and {abc} (special). $ is not reported
-// here: the lexer's expand flag covers it.
 func wordShape(raw string, zsh bool) (glob, special bool) {
-	tilde := false // an unquoted ~ that is not a tilde expansion
+	tilde := false
 	for i := 0; i < len(raw); i++ {
 		switch c := raw[i]; c {
 		case '\\':
@@ -243,7 +196,7 @@ func wordShape(raw string, zsh bool) (glob, special bool) {
 				}
 			}
 		case '$':
-			if i+1 < len(raw) && raw[i+1] == '\'' { // $'…'
+			if i+1 < len(raw) && raw[i+1] == '\'' {
 				for i += 2; i < len(raw) && raw[i] != '\''; i++ {
 					if raw[i] == '\\' {
 						i++
@@ -279,8 +232,6 @@ func wordShape(raw string, zsh bool) (glob, special bool) {
 	return glob, special
 }
 
-// braceExpands: a { followed by a } with a comma or .. in between may be
-// brace-expanded into several words. HEAD@{1} is not.
 func braceExpands(s string) bool {
 	i := strings.IndexByte(s, '{')
 	if i < 0 {
@@ -294,11 +245,10 @@ func braceExpands(s string) bool {
 	return strings.Contains(inner, ",") || strings.Contains(inner, "..") || braceExpands(s[i+1:])
 }
 
-// roCtx holds the directories paths are resolved against and checked in.
 type roCtx struct {
-	roots []string // the project and extra directories, symlinks resolved
-	cwds  []string // every directory a relative path may be relative to
-	zsh   bool     // the agent's shell may be zsh (shellMayBeZsh)
+	roots []string
+	cwds  []string
+	zsh   bool
 }
 
 func newROCtx(cwd, root string, extraDirs []string) (*roCtx, string) {
@@ -329,7 +279,7 @@ func newROCtx(cwd, root string, extraDirs []string) (*roCtx, string) {
 		}
 		r, err := filepath.EvalSymlinks(d)
 		if err != nil || tooBroad(r, homes) {
-			continue // a missing directory adds nothing; / or ~ would allow everything
+			continue
 		}
 		c.roots = append(c.roots, r)
 	}
@@ -341,7 +291,6 @@ func newROCtx(cwd, root string, extraDirs []string) (*roCtx, string) {
 	return c, ""
 }
 
-// homeDirs is $HOME as written and with symlinks resolved.
 func homeDirs() []string {
 	h, err := os.UserHomeDir()
 	if err != nil || h == "" || !filepath.IsAbs(h) {
@@ -355,9 +304,6 @@ func homeDirs() []string {
 	return out
 }
 
-// tooBroad: / , the home directory, or any directory containing it. The
-// home directory and its parents are compared as files too, so /users/me
-// on a case-insensitive disk is still $HOME.
 func tooBroad(dir string, homes []string) bool {
 	if dir == "/" || filepath.Dir(dir) == dir {
 		return true
@@ -388,10 +334,6 @@ func (c *roCtx) inside(p string) bool {
 	return false
 }
 
-// cd checks a neutral `cd dir` run from each of c.cwds and returns where it
-// leads. dir must be an existing directory inside the project: bash's and
-// zsh's cdable_vars, or a cd replacement such as zoxide's, turn a cd to a
-// missing directory into a jump somewhere else.
 func (c *roCtx) cd(w token) ([]string, bool, string) {
 	if os.Getenv("CDPATH") != "" {
 		return nil, false, "CDPATH is set"
@@ -423,9 +365,6 @@ func contains(list []string, s string) bool {
 	return false
 }
 
-// resolvePath resolves every symlink in p, including those before a "..",
-// the way the kernel will. A path that doesn't exist yet resolves through
-// its longest existing prefix; with a ".." in it, it can't be judged.
 func resolvePath(p string) (string, bool) {
 	if r, err := filepath.EvalSymlinks(p); err == nil {
 		return r, true
@@ -458,8 +397,6 @@ func (c *roCtx) paths(ps []roArg) (bool, string) {
 	return true, ""
 }
 
-// path checks one file operand: it (and any file a wildcard in it matches)
-// must resolve inside the project.
 func (c *roCtx) path(a roArg) (bool, string) {
 	v := a.val
 	switch {
@@ -487,9 +424,6 @@ func (c *roCtx) path(a roArg) (bool, string) {
 	return true, ""
 }
 
-// globPath expands a wildcard operand as the shell would (a superset: Go's *
-// also matches dot files) and checks every match. ** and [...] are refused:
-// their meaning depends on the shell and its options.
 func (c *roCtx) globPath(v string) (bool, string) {
 	if strings.Contains(v, "**") || strings.ContainsAny(v, "[\\") {
 		return false, "wildcard lx does not model in " + v
@@ -498,9 +432,7 @@ func (c *roCtx) globPath(v string) (bool, string) {
 	if i < 0 {
 		return false, "wildcard lx does not model in " + v
 	}
-	// The shell keeps a literal . or .. after a wildcard (s*/../.. is
-	// src/../..); Go's Glob never matches them, so they can't be checked.
-	// More than two wildcard levels could make the hook walk a huge tree.
+
 	wild := 0
 	for _, part := range strings.Split(v[strings.LastIndexByte(v[:i], '/')+1:], "/") {
 		if part == "." || part == ".." {
@@ -520,15 +452,12 @@ func (c *roCtx) globPath(v string) (bool, string) {
 	}
 	leading := !filepath.IsAbs(v) && (v[0] == '*' || v[0] == '?')
 	for _, cwd := range c.cwds {
-		// Letters match either case: with bash's nocaseglob or zsh's
-		// NO_CASE_GLOB, E*/etc names esc/etc.
+
 		pat := foldCase(v)
 		if !filepath.IsAbs(v) {
 			pat = escapeGlob(cwd) + "/" + pat
 		}
-		// Go's Glob matches nothing for "*/", where the shell lists every
-		// directory (a symlink to / included): drop the slash, which only
-		// adds files to the matches.
+
 		pat = strings.TrimRight(pat, "/")
 		ms, err := filepath.Glob(pat)
 		if err != nil {
@@ -538,7 +467,7 @@ func (c *roCtx) globPath(v string) (bool, string) {
 			return false, v + " matches too many files to check"
 		}
 		for _, m := range ms {
-			// `rg foo *` with a file named --pre=sh: the name becomes a flag.
+
 			if leading && strings.HasPrefix(strings.TrimPrefix(m, cwd+"/"), "-") {
 				return false, v + " matches a file name starting with -"
 			}
@@ -550,8 +479,6 @@ func (c *roCtx) globPath(v string) (bool, string) {
 	return true, ""
 }
 
-// foldCase turns each ASCII letter of a wildcard pattern (which holds no [
-// or \ here) into a class matching both cases: [aA].
 func foldCase(p string) string {
 	var b strings.Builder
 	for i := 0; i < len(p); i++ {
@@ -583,8 +510,6 @@ func escapeGlob(s string) string {
 	return b.String()
 }
 
-// check dispatches on the command name. The name must be bare: ./grep or
-// /tmp/git is somebody else's program.
 func (c *roCtx) check(args []roArg) (bool, string) {
 	if len(args) == 0 {
 		return false, "empty command"
@@ -615,11 +540,6 @@ func (c *roCtx) check(args []roArg) (bool, string) {
 
 func isOpt(v string) bool { return len(v) > 1 && v[0] == '-' }
 
-// ---- git ----
-
-// gitDiffDanger are diff/log/show options that write a file, run a program
-// or read files outside the repository. Unique prefixes count too: git's
-// option parser accepts abbreviations.
 var gitDiffDanger = []string{"--output", "--ext-diff", "--textconv", "--no-index", "--orderfile"}
 
 func (c *roCtx) git(args []roArg) (bool, string) {
@@ -652,10 +572,6 @@ func (c *roCtx) git(args []roArg) (bool, string) {
 	return false, "git " + sub + " is not in the read-only table"
 }
 
-// gitRevs checks diff/log/show/blame: no dangerous option (or abbreviation of
-// one, or short flag in shortDanger), and every other word, which may be a
-// path to git, stays inside the project. That also catches `git diff a b`
-// turning into --no-index when a path is outside the repository.
 func (c *roCtx) gitRevs(args []roArg, longDanger []string, shortDanger string) (bool, string) {
 	opts := true
 	for _, a := range args {
@@ -692,9 +608,6 @@ var (
 	branchOptValue = roSet("--merged", "--no-merged", "--contains", "--no-contains", "--points-at")
 )
 
-// gitBranch allows only the listing forms: a positional is a pattern (with
-// -l/--list) or the commit of --merged/--contains/…; anything else would
-// create, rename or delete a branch.
 func gitBranch(args []roArg) (bool, string) {
 	list, value, opts := false, false, true
 	for _, a := range args {
@@ -741,12 +654,10 @@ func gitBranch(args []roArg) (bool, string) {
 	return true, ""
 }
 
-// ---- ls, tree, du ----
-
 var (
 	lsBool = roSet("--all", "--almost-all", "--human-readable", "--classify", "--group-directories-first",
 		"--reverse", "--recursive", "--directory", "--inode", "--size", "--dereference", "--full-time")
-	lsValue = roSet("--sort", "--time", "--time-style") // =x only
+	lsValue = roSet("--sort", "--time", "--time-style")
 )
 
 func (c *roCtx) ls(args []roArg) (bool, string) {
@@ -799,10 +710,6 @@ func isAlnum(c byte) bool {
 	return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9'
 }
 
-// fileFlag reports whether a flag-looking word also names an existing file.
-// BSD ls and du stop reading flags at the first operand (`ls src -l` on
-// macOS lists a file named -l, which may be a symlink out of the project),
-// and so does GNU getopt under POSIXLY_CORRECT: such a word is refused.
 func (c *roCtx) fileFlag(v string) bool {
 	for _, cwd := range c.cwds {
 		if _, err := os.Lstat(cwd + "/" + v); err == nil {
@@ -812,22 +719,17 @@ func (c *roCtx) fileFlag(v string) bool {
 	return false
 }
 
-// flagSpec describes a tool's single-dash and long flags for parseFlags.
 type flagSpec struct {
-	short      string          // flags without a value
-	shortValue string          // flags whose value is the rest of the cluster or the next word
-	digits     bool            // -NUM is allowed (grep context)
-	long       map[string]bool // no value
-	longValue  map[string]bool // =V or next word
-	longOpt    map[string]bool // optional =V only
-	// nextWord: a short flag's value is always the NEXT word, and the rest
-	// of its cluster is more flags (tree: -Lo 2 out.txt is -L 2 -o out.txt).
-	// Such a flag must end its cluster, or be followed only by digits.
+	short      string
+	shortValue string
+	digits     bool
+	long       map[string]bool
+	longValue  map[string]bool
+	longOpt    map[string]bool
+
 	nextWord bool
 }
 
-// parseFlags walks args with spec, calling value for every flag value and
-// returning the operands. It fails on any flag the spec doesn't list.
 func (c *roCtx) parseFlags(args []roArg, sp *flagSpec, value func(flag string, v roArg) (bool, string)) ([]roArg, bool, string) {
 	var ops []roArg
 	opts := true
@@ -902,7 +804,6 @@ func (c *roCtx) parseFlags(args []roArg, sp *flagSpec, value func(flag string, v
 	return ops, true, ""
 }
 
-// plainValue accepts a flag value that is data, not a file.
 func plainValue(flag string, v roArg) (bool, string) {
 	if flag != "" && v.val != "" && !v.plain() {
 		return false, "unquoted wildcard or expansion in the value of " + flag
@@ -911,7 +812,7 @@ func plainValue(flag string, v roArg) (bool, string) {
 }
 
 var treeSpec = &flagSpec{
-	short:      "adfxiqNQpugshDFvtcUrnCXJSA", // not -o (writes a file), -R (writes 00Tree.html), -l (follows symlinks)
+	short:      "adfxiqNQpugshDFvtcUrnCXJSA",
 	shortValue: "LPIHT",
 	long: roSet("--dirsfirst", "--filesfirst", "--noreport", "--prune", "--matchdirs", "--ignore-case",
 		"--gitignore", "--du", "--si", "--inodes", "--device", "--metafirst", "--info", "--help", "--version"),
@@ -928,7 +829,7 @@ func (c *roCtx) tree(args []roArg) (bool, string) {
 }
 
 var duSpec = &flagSpec{
-	short:      "abchkmsxHPlS0AgnrD", // not -L (follows symlinks) or -X (reads an exclude file)
+	short:      "abchkmsxHPlS0AgnrD",
 	shortValue: "dBtI",
 	long: roSet("--all", "--apparent-size", "--bytes", "--total", "--human-readable", "--si", "--summarize",
 		"--one-file-system", "--inodes", "--count-links", "--separate-dirs", "--null", "--no-dereference",
@@ -945,17 +846,12 @@ func (c *roCtx) du(args []roArg) (bool, string) {
 	return c.paths(ops)
 }
 
-// ---- find ----
-
-// findDanger are expression words that run programs, delete, write files,
-// follow symlinks out of the tree or read starting points from a file.
 var findDanger = roSet("-exec", "-execdir", "-ok", "-okdir", "-delete", "-fprint", "-fprint0", "-fprintf",
 	"-fls", "-follow", "-files0-from")
 
 func (c *roCtx) find(args []roArg) (bool, string) {
 	i := 0
-	// Leading options: -H -P (GNU, BSD), -E -X -d -s -x (BSD), -O<n> (GNU).
-	// -L follows every symlink, -D takes a value, BSD -f names a start point.
+
 leading:
 	for ; i < len(args); i++ {
 		v := args[i].val
@@ -990,7 +886,7 @@ leading:
 		if findDanger[v] {
 			return false, "find " + v
 		}
-		// Tests against another file's timestamps: that file must be inside too.
+
 		fileArg := isAny(v, "-newer", "-anewer", "-cnewer", "-mnewer", "-Bnewer", "-samefile") ||
 			len(v) == 8 && strings.HasPrefix(v, "-newer") && v[7] != 't'
 		if fileArg && i+1 < len(args) {
@@ -1003,23 +899,18 @@ leading:
 	return true, ""
 }
 
-// ---- grep, rg ----
-
 type searchSpec struct {
 	flags     *flagSpec
-	pathFlags map[string]bool // values that are files to read
-	patFlags  map[string]bool // flags that supply the pattern
-	noPattern map[string]bool // modes where every operand is a path
-	// counts are flags whose value must be a number. Anything else is an
-	// error for GNU and BSD grep and rg, but a grep whose -C takes an
-	// optional value would read `-C x /etc/passwd` as pattern x, file
-	// /etc/passwd.
+	pathFlags map[string]bool
+	patFlags  map[string]bool
+	noPattern map[string]bool
+
 	counts map[string]bool
 }
 
 var grepSpec = &searchSpec{
 	flags: &flagSpec{
-		// not -R (GNU: follows every symlink) or -S (BSD: follows symlinks)
+
 		short:      "EFGPiyvwxcLloqsbHhnTZzaUrIVuJOp",
 		shortValue: "ABCdDefm",
 		digits:     true,
@@ -1032,8 +923,7 @@ var grepSpec = &searchSpec{
 		longValue: roSet("--regexp", "--file", "--include", "--exclude", "--exclude-dir",
 			"--after-context", "--before-context", "--max-count", "--label", "--binary-files", "--devices",
 			"--directories", "--group-separator"),
-		// BSD grep (macOS): --context takes an optional =NUM, so in
-		// `grep --context x /etc/passwd` x is the pattern.
+
 		longOpt: roSet("--color", "--colour", "--context"),
 	},
 	pathFlags: roSet("-f", "--file"),
@@ -1043,7 +933,7 @@ var grepSpec = &searchSpec{
 
 var rgSpec = &searchSpec{
 	flags: &flagSpec{
-		// not -z (runs decompressors) or -L (follows symlinks)
+
 		short:      "abcFHhIilNnoPpqSsUuVvwx0.",
 		shortValue: "ABCeEfgjmMrtTd",
 		long: roSet("--binary", "--block-buffered", "--byte-offset", "--case-sensitive", "--column",
@@ -1074,8 +964,6 @@ var rgSpec = &searchSpec{
 		"--max-count"),
 }
 
-// search checks grep/egrep/fgrep/rg. Without -e/-f the first operand is the
-// pattern and the rest are paths; with rg --files every operand is a path.
 func (c *roCtx) search(args []roArg, sp *searchSpec) (bool, string) {
 	patterned, noPattern := false, false
 	ops, ok, why := c.parseFlags(args, sp.flags, func(flag string, v roArg) (bool, string) {

@@ -9,37 +9,26 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// window describes how an over-budget text is cut.
 type window struct {
-	// path is the one file the text came from, when output line N is that
-	// file's line N; the omission marker then says how to read the range
-	// with sed. Empty: the marker points at lx show.
 	path string
-	// lang picks the outline patterns (a file extension such as ".go", or ""
-	// to detect declarations of any common language).
+
 	lang string
-	// keep reports lines that must survive even inside the omitted range
-	// (the tool's own diagnostics); they are listed with their line numbers.
+
 	keep func(string) bool
-	// keepIdx lists more lines (by index) to list inside the omitted range:
-	// the whole of small merge-conflict hunks.
+
 	keepIdx map[int]bool
-	// nums, when set, holds the 1-based output line number of each line
-	// (a response body's lines are not the output's first lines, and need
-	// not be contiguous in it); nil numbers lines 1, 2, ….
+
 	nums                []int
-	head, tail, outline int // token allowances
+	head, tail, outline int
 }
 
 const (
 	windowHead    = 2500
 	windowTail    = 700
 	windowOutline = 2500
-	// maxShownLine: longer lines (minified code, data blobs) are shortened
-	// with an explicit "…[+N chars]…" marker so one line cannot eat the view.
+
 	maxShownLine = 2000
-	// outlineCut: outline entries are cut here (with "…"); they point at the
-	// real line, which the marker says how to read.
+
 	outlineCut = 120
 )
 
@@ -47,11 +36,6 @@ func defaultWindow(path, lang string, keep func(string) bool) window {
 	return window{path: path, lang: lang, keep: keep, head: windowHead, tail: windowTail, outline: windowOutline}
 }
 
-// apply cuts lines to exact head and tail windows plus, for the omitted
-// middle, an outline of its declarations (and every keep line), each with
-// its line number. Kept lines are byte-for-byte the input lines, except that
-// lines over 2000 bytes are shortened with a counted marker. When the
-// windows would cover everything it returns all lines (long ones shortened).
 func (w window) apply(lines []string) []string {
 	n := len(lines)
 	shown := make([]string, n)
@@ -63,16 +47,16 @@ func (w window) apply(lines []string) []string {
 		shown[i] = ln
 		cost[i] = countTokens(ln) + 1
 	}
-	// Head window [0, h).
+
 	h, used := 0, 0
 	for h < n && used+cost[h] <= w.head {
 		used += cost[h]
 		h++
 	}
 	if h == 0 && n > 0 {
-		h = 1 // always show the first line, even a huge one
+		h = 1
 	}
-	// Tail window [t, n).
+
 	t, used := n, 0
 	for t > h && used+cost[t-1] <= w.tail {
 		used += cost[t-1]
@@ -99,10 +83,6 @@ func (w window) apply(lines []string) []string {
 	return out
 }
 
-// snapHead moves the head cut back to a natural boundary within the last
-// quarter of the window: preferably just before an unindented line that
-// follows a blank line or a closing brace (a new top-level block), else just
-// after any blank line.
 func snapHead(lines []string, h int) int {
 	lo := max(h-h/4, 1)
 	for i := h - 1; i >= lo; i-- {
@@ -120,10 +100,6 @@ func snapHead(lines []string, h int) int {
 	return h
 }
 
-// snapTail starts the tail window at a natural boundary: it extends the
-// window back (by at most half its allowance) to the nearest unindented
-// declaration and the comment block above it, or else moves the cut forward
-// to just after a blank line within the first quarter of the window.
 func (w window) snapTail(lines []string, cost []int, re lineMatcher, h, t int) int {
 	extra := 0
 	for i := t - 1; i > h && extra+cost[i] <= w.tail/2; i-- {
@@ -147,14 +123,12 @@ func (w window) snapTail(lines []string, cost []int, re lineMatcher, h, t int) i
 	return t
 }
 
-// isCommentLine reports a doc-comment or decorator line above a declaration.
 func isCommentLine(ln string) bool {
 	t := strings.TrimSpace(ln)
 	return strings.HasPrefix(t, "//") || strings.HasPrefix(t, "/*") || strings.HasPrefix(t, "*") ||
 		strings.HasPrefix(t, "#") && !strings.HasPrefix(t, "#include") || strings.HasPrefix(t, "@") || strings.HasPrefix(t, "///")
 }
 
-// num returns the 1-based output line number of lines[i].
 func (w window) num(i int) int {
 	if i < len(w.nums) {
 		return w.nums[i]
@@ -162,8 +136,6 @@ func (w window) num(i int) int {
 	return i + 1
 }
 
-// marker names the omitted range [a, b] (1-based, inclusive) and how to
-// read it.
 func (w window) marker(a, b int) string {
 	how := fmt.Sprintf("lx show <id> --lines %d-%d, <id> is on the last line", a, b)
 	if w.path != "" {
@@ -172,10 +144,6 @@ func (w window) marker(a, b int) string {
 	return fmt.Sprintf("… lines %d-%d omitted (%s; read them: %s)", a, b, engine.Plural(b-a+1, "line", "lines"), how)
 }
 
-// outlineOf lists, for lines [a, b), the declarations and keep lines with
-// their 1-based line numbers, within the outline token allowance. keep
-// lines are always listed; declarations past the allowance are counted,
-// with the range they fall in.
 func (w window) outlineOf(lines []string, a, b int) []string {
 	re := outlineRe(w.lang)
 	var out []string
@@ -191,8 +159,7 @@ func (w window) outlineOf(lines []string, a, b int) []string {
 		case !keep:
 			entry = cutRunes(strings.TrimRight(ln, " {"), outlineCut)
 		case len(ln) > maxShownLine:
-			// A diagnostic glued to a long data line: ShortenLine keeps
-			// the line's end, where the diagnostic is.
+
 			entry = engine.ShortenLine(ln, maxShownLine/2)
 		}
 		entry = fmt.Sprintf("  L%d: %s", w.num(i), entry)
@@ -228,7 +195,6 @@ func cutRunes(s string, max int) string {
 	return string(r[:max-1]) + "…"
 }
 
-// shellQuote quotes a path for a copy-pasteable command.
 func shellQuote(p string) string {
 	for _, ch := range p {
 		if !(ch == '/' || ch == '.' || ch == '_' || ch == '-' || ch == '+' || ch == ',' || ch == '@' || ch == ':' ||
@@ -239,8 +205,6 @@ func shellQuote(p string) string {
 	return p
 }
 
-// Declaration patterns for outlines. They look at unindented (or, for
-// class members, lightly indented) lines only.
 var (
 	goDeclRe   = lazyre.New(`^(?:func|type|var|const)\b`)
 	jsDeclRe   = lazyre.New(`^(?:export\s+)?(?:default\s+)?(?:declare\s+)?(?:async\s+)?(?:function\*?|class|interface|type|enum|const|let|var|abstract\s+class|namespace)\s|^export\s+(?:default\b|\{|\*)|^module\.exports\b`)
@@ -257,10 +221,8 @@ var (
 	cKeywordRe = lazyre.New(`^(?:if|for|while|switch|return|else|do|goto|case|sizeof)\b`)
 )
 
-// lineMatcher is a regexp or a pattern with an exclusion.
 type lineMatcher interface{ MatchString(string) bool }
 
-// outlineRe returns the declaration pattern for a file extension.
 func outlineRe(ext string) lineMatcher {
 	switch strings.ToLower(ext) {
 	case ".go":
@@ -289,16 +251,12 @@ func outlineRe(ext string) lineMatcher {
 	return anyDeclRe
 }
 
-// cDeclReNoKeywords is cDeclRe minus control-flow statements that happen to
-// start at column 0 (rare, but "if (x)" at column 0 is not a declaration).
 var cDeclReNoKeywords = &matcher{re: cDeclRe, not: cKeywordRe}
 
-// matcher lets outlineRe return a pattern with an exclusion.
 type matcher struct{ re, not *lazyre.Regexp }
 
 func (m *matcher) MatchString(s string) bool { return m.re.MatchString(s) && !m.not.MatchString(s) }
 
-// langOf returns the extension used to pick outline patterns.
 func langOf(path string) string {
 	switch base := filepath.Base(path); base {
 	case "Makefile", "makefile", "GNUmakefile", "Dockerfile":

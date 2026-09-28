@@ -1,0 +1,232 @@
+> luxon@3.7.2 jest
+> jest test/datetime test/info
+
+FAIL test/datetime/format.test.js (7.698 s)
+  ● DateTime#toISO() handles negative years
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "-012345-05-25T09:23:54.123Z"
+    Received: "-12345-05-25T09:23:54.123Z"
+    > 126 |   expect(negativeYear.toISO()).toBe("-012345-05-25T09:23:54.123Z");
+          |                                ^
+      at Object.toBe (test/datetime/format.test.js:126:32)
+
+  ● DateTime#toISODate() correctly pads negative years
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "-000001-01-01"
+    Received: "0000-1-01-01"
+    > 207 |   expect(DateTime.fromObject({ year: -1, month: 1, day: 1 }, { zone: "utc" }).toISODate()).toBe(
+          |                                                                                            ^
+      at Object.toBe (test/datetime/format.test.js:207:92)
+
+FAIL test/info/listers.test.js
+  ● Info.months lists all the months
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+    > 28 |   expect(Info.months("short", { locale: "en" })).toEqual([
+         |                                                  ^
+      at Object.toEqual (test/info/listers.test.js:28:50)
+
+  ● Info.monthsFormat lists all the months
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+    @@ -5,10 +5,10 @@
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+    -   "Sep",
+    +   "Spt",
+        "Oct",
+        "Nov",
+        "Dec",
+      ]
+    > 231 |   expect(Info.monthsFormat("short", { locale: "en" })).toEqual([
+          |                                                        ^
+      at Object.toEqual (test/info/listers.test.js:231:56)
+
+FAIL test/datetime/diff.test.js
+  ● DateTime#diff handles fractional days as fractions of those specific days
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+      Object {
+    -   "days": 1.96,
+    +   "days": 1.9583333333333335,
+      }
+      240 |       "days"
+      241 |     )
+    > 242 |   ).toEqual({ days: 1 + 24 / 25 });
+          |     ^
+      at Object.toEqual (test/datetime/diff.test.js:242:5)
+
+  ● DateTime#diff is precise for lower order units
+    expect(received).toEqual(expected) // deep equality
+    - Expected  - 1
+    + Received  + 1
+      Object {
+    -   "hours": 2999,
+    +   "hours": 3000,
+      }
+      247 |   expect(
+      248 |     diffObjs({ year: 2016, month: 5, day: 5 }, { year: 2016, month: 1, day: 1 }, "hours")
+    > 249 |   ).toEqual({ hours: 2999 });
+          |     ^
+      at Object.toEqual (test/datetime/diff.test.js:249:5)
+
+FAIL test/datetime/zone.test.js
+  ● The local zone does local stuff
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "Eastern Daylight Time"
+    Received: "Central European Standard Time"
+    > 311 |   expect(DateTime.local(2016, 8, 6).offsetNameLong).toBe("Eastern Daylight Time");
+          |                                                     ^
+      at Object.toBe (test/datetime/zone.test.js:311:53)
+
+FAIL test/datetime/dst.test.js
+  ● DateTime maintains the wasHole setting properly › is set on hole times
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+    > 201 |     expect(DateTime.fromObject({ year: 2017, month: 3, day: 12, hour: 2 }).wasHole).toBe(true);
+          |                                                                                     ^
+      at Object.toBe (test/datetime/dst.test.js:201:85)
+
+  ● DateTime maintains the wasHole setting properly › is set on hole times with DateTime.local
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+    > 205 |     expect(DateTime.local(2017, 3, 12, 2).wasHole).toBe(true);
+          |                                                    ^
+      at Object.toBe (test/datetime/dst.test.js:205:52)
+
+  ● DateTime maintains the wasHole setting properly › is set on hole times with DateTime.fromISO
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+    > 209 |     expect(DateTime.fromISO("2017-03-12T02:00:00").wasHole).toBe(true);
+          |                                                             ^
+      at Object.toBe (test/datetime/dst.test.js:209:61)
+
+  ● DateTime maintains the wasHole setting properly › is true when setting hole-time on time from hole
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+    > 219 |     expect(dt.wasHole).toBe(true);
+          |                        ^
+      at Object.toBe (test/datetime/dst.test.js:219:24)
+
+  ● DateTime maintains the wasHole setting properly › is true when setting hole-time on time from non-hole
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+    > 226 |     expect(dt.set({ hour: 2 }).wasHole).toBe(true);
+          |                                         ^
+      at Object.toBe (test/datetime/dst.test.js:226:41)
+
+  ● DateTime maintains the wasHole setting properly › is kept on reconfigure
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+      238 |         locale: "es-ES",
+      239 |       }).wasHole
+    > 240 |     ).toBe(true);
+          |       ^
+      at Object.toBe (test/datetime/dst.test.js:240:7)
+
+FAIL test/datetime/tokenParse.test.js (8.687 s)
+  ● DateTime.fromFormat() defaults yy to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2060
+    Received: 1960
+    > 153 |   expect(DateTime.fromFormat("60", "yy").year).toBe(2060);
+          |                                                ^
+      at Object.toBe (test/datetime/tokenParse.test.js:153:48)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing yy to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2050
+    Received: 1950
+    > 163 |     expect(DateTime.fromFormat("50", "yy").year).toBe(2050);
+          |                                                  ^
+      at Object.toBe (test/datetime/tokenParse.test.js:163:50)
+
+  ● DateTime.fromFormat() parses standalone month names
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 1982
+    Received: NaN
+    > 262 |   expect(i.year).toBe(1982);
+          |                  ^
+      at Object.toBe (test/datetime/tokenParse.test.js:262:18)
+
+  ● DateTime.fromFormat() parses format month names
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 1982
+    Received: NaN
+    > 294 |   expect(i.year).toBe(1982);
+          |                  ^
+      at Object.toBe (test/datetime/tokenParse.test.js:294:18)
+
+  ● DateTime.fromFormat() defaults kk to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2060
+    Received: 1960
+    > 448 |   expect(DateTime.fromFormat("60", "kk").weekYear).toBe(2060);
+          |                                                    ^
+      at Object.toBe (test/datetime/tokenParse.test.js:448:52)
+
+  ● DateTime.fromFormat() respects Settings.twoDigitCutoffYear when parsing two digit weekYear to the right century
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 2050
+    Received: 1950
+    > 458 |     expect(DateTime.fromFormat("50", "kk").weekYear).toBe(2050);
+          |                                                      ^
+      at Object.toBe (test/datetime/tokenParse.test.js:458:54)
+
+  ● DateTime.format() uses local zone when setZone is false and offset in input
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 11
+    Received: 12
+    > 712 |   expect(i.day).toBe(11);
+          |                 ^
+      at Object.toBe (test/datetime/tokenParse.test.js:712:17)
+
+  ● DateTime.format() uses local zone when setZone is false and zone id in input
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 11
+    Received: 12
+    > 730 |   expect(i.day).toBe(11);
+          |                 ^
+      at Object.toBe (test/datetime/tokenParse.test.js:730:17)
+
+FAIL test/info/zones.test.js
+  ● Info.normalizeZone converts local to system Zone
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "America/New_York"
+    Received: "Africa/Tunis"
+    > 115 |     expect(Info.normalizeZone("local").name).toBe("America/New_York");
+          |                                              ^
+      at toBe (test/info/zones.test.js:115:46)
+      at Object.f [as withDefaultZone] (test/helpers.js:50:5)
+      at Object.withDefaultZone (test/info/zones.test.js:114:11)
+
+[20 passing suites hidden]
+Test Suites: 7 failed, 20 passed, 27 total
+Tests:       22 failed, 774 passed, 796 total
+Snapshots:   0 total
+Time:        9.592 s
+Ran all test suites matching /test\/datetime|test\/info/i.

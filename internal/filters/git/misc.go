@@ -2,10 +2,10 @@ package git
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 func init() {
@@ -15,9 +15,6 @@ func init() {
 	engine.Register(stashListFilter{})
 }
 
-// stashListFilter keeps `git stash list` as git prints it: every entry is
-// one short line an agent may need to pick by index, and the generic
-// reducer's folding of similar lines would hide entries.
 type stashListFilter struct{}
 
 func (stashListFilter) Name() string    { return "git-stash" }
@@ -35,10 +32,6 @@ func (stashListFilter) Apply(c *engine.Context, out string) (string, bool) {
 	return headLines(out, logBudget), true
 }
 
-// commitFilter is a light touch on `git commit`: "[branch sha] subject",
-// the "N files changed" line and everything a hook prints stay verbatim;
-// pre-commit's "hook......Passed/Skipped" lines are counted, and runs of
-// create/delete mode lines are listed on one line.
 type commitFilter struct{}
 
 func (commitFilter) Name() string { return "git-commit" }
@@ -97,9 +90,6 @@ func (commitFilter) Apply(c *engine.Context, out string) (string, bool) {
 	return join(res), true
 }
 
-// tagFilter lists `git tag` output (one name per line) on a few wrapped
-// lines with the count. Annotated listings (-n) and anything else are left
-// as they are.
 type tagFilter struct{}
 
 func (tagFilter) Name() string    { return "git-tag" }
@@ -135,9 +125,6 @@ func (tagFilter) Apply(c *engine.Context, out string) (string, bool) {
 	return join(append(res, wrapItems("", braceRuns(capItems(names, maxNames)), " ", statWidth)...)), true
 }
 
-// braceRuns writes runs of three or more consecutive names that share
-// everything up to their last "." as prefix{a,b,c} (shell brace syntax):
-// 3.16.0 3.16.1 3.16.10 → 3.16.{0,1,10}. Order is kept.
 func braceRuns(names []string) []string {
 	prefix := func(s string) string {
 		if i := strings.LastIndexByte(s, '.'); i > 0 && !strings.ContainsAny(s, "{},") {
@@ -167,8 +154,6 @@ func braceRuns(names []string) []string {
 	return out
 }
 
-// remoteFilter folds `git remote -v`: a remote whose fetch and push URLs
-// are the same is printed once as "name\turl (fetch, push)".
 type remoteFilter struct{}
 
 func (remoteFilter) Name() string    { return "git-remote" }

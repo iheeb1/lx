@@ -21,28 +21,27 @@ import (
 
 var update = flag.Bool("update", false, "rewrite the want.txt / want.json goldens")
 
-// scenario is testdata/<case>/case.json. Every field is optional.
 type scenario struct {
-	Env         map[string]string `json:"env"`          // this process's environment (Getenv and child programs)
-	ConfigDir   string            `json:"config_dir"`   // relative to the root; default home/.claude
-	Cwd         string            `json:"cwd"`          // relative; default "project" when it exists, else "home"
-	Exe         string            `json:"exe"`          // this binary, relative; default bin/lx
-	Shell       *string           `json:"shell"`        // what `command -v lx` prints (@ROOT@ expanded); default @ROOT@/bin/lx
-	ShellBanner string            `json:"shell_banner"` // what the shell's startup files print first
-	ShellError  string            `json:"shell_error"`  // the shell cannot be run
-	Bins        map[string]string `json:"bins"`         // more fake lx copies: dir → version line
-	Symlinks    map[string]string `json:"symlinks"`     // link → target, both relative
-	GitRoots    []string          `json:"git"`          // directories to give a .git entry, relative
-	NeverRun    []string          `json:"never_run"`    // programs doctor must not execute, relative
-	TeeForeign  int               `json:"tee_foreign"`  // files in the run store that lx did not write
+	Env         map[string]string `json:"env"`
+	ConfigDir   string            `json:"config_dir"`
+	Cwd         string            `json:"cwd"`
+	Exe         string            `json:"exe"`
+	Shell       *string           `json:"shell"`
+	ShellBanner string            `json:"shell_banner"`
+	ShellError  string            `json:"shell_error"`
+	Bins        map[string]string `json:"bins"`
+	Symlinks    map[string]string `json:"symlinks"`
+	GitRoots    []string          `json:"git"`
+	NeverRun    []string          `json:"never_run"`
+	TeeForeign  int               `json:"tee_foreign"`
 	TeeLocked   bool              `json:"tee_unwritable"`
-	TeeRuns     int               `json:"tee_runs"`      // stored runs to fake
-	TeeSparseMB int64             `json:"tee_sparse_mb"` // plus one sparse run of this size
-	HistoryAges []float64         `json:"history_hours"` // run records, hours before Now
+	TeeRuns     int               `json:"tee_runs"`
+	TeeSparseMB int64             `json:"tee_sparse_mb"`
+	HistoryAges []float64         `json:"history_hours"`
 	Transcript  *float64          `json:"transcript_hours"`
-	LatencyMs   []int             `json:"latency_ms"` // what the fake clock measures for each hook run (the last repeats); default 7
-	HookMode    string            `json:"hook_mode"`  // FAKE_LX_HOOK for the fake lx
-	Path        string            `json:"path"`       // PATH as Getenv reports it (@ROOT@ expanded)
+	LatencyMs   []int             `json:"latency_ms"`
+	HookMode    string            `json:"hook_mode"`
+	Path        string            `json:"path"`
 }
 
 const fakeShell = "/fake/bin/zsh"
@@ -58,12 +57,10 @@ type harness struct {
 	calls []string
 }
 
-// setup copies testdata/<name> into a temp root, expands @ROOT@ in its
-// JSON files, installs the fake lx and builds the Env.
 func setup(t *testing.T, name string) *harness {
 	t.Helper()
 	src := filepath.Join("testdata", name)
-	root, err := filepath.EvalSymlinks(t.TempDir()) // macOS: /var → /private/var
+	root, err := filepath.EvalSymlinks(t.TempDir())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -147,7 +144,6 @@ func setup(t *testing.T, name string) *harness {
 
 	h.storage(&e)
 
-	// Programs see the same environment Getenv reports.
 	child := []string{"PATH=" + penv["PATH"], "HOME=" + e.Home, "FAKE_LX_HOOK=" + sc.HookMode}
 	for k, v := range sc.Env {
 		child = append(child, k+"="+h.expand(v))
@@ -182,7 +178,7 @@ func setup(t *testing.T, name string) *harness {
 		clockMu.Lock()
 		defer clockMu.Unlock()
 		calls++
-		if calls%2 == 0 { // the second reading of each run
+		if calls%2 == 0 {
 			run := min(calls/2-1, len(lats)-1)
 			tick = tick.Add(time.Duration(lats[run]) * time.Millisecond)
 		}
@@ -209,10 +205,6 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-// fakeLx returns a copy of testdata/fakelx/lx for key, executed once.
-// Scenarios hard-link it: macOS scans every new executable on its first
-// run (a few hundred ms), which would make timeouts flaky. Each key gets
-// its own file, so "another lx" is never os.SameFile as this one.
 func fakeLx(key string) (string, error) {
 	masterMu.Lock()
 	defer masterMu.Unlock()
@@ -261,7 +253,6 @@ func (h *harness) installLx(dir, version string) {
 	}
 }
 
-// storage fakes the run store, the history and a transcript.
 func (h *harness) storage(e *Env) {
 	t, sc := h.t, h.sc
 	if sc.TeeRuns > 0 || sc.TeeLocked || sc.TeeSparseMB > 0 || sc.TeeForeign > 0 {
@@ -331,7 +322,6 @@ func (h *harness) storage(e *Env) {
 	}
 }
 
-// copyTree copies src to dst, expanding @ROOT@ in .json files.
 func copyTree(t *testing.T, src, dst, root string) {
 	t.Helper()
 	err := filepath.WalkDir(src, func(p string, d fs.DirEntry, err error) error {
@@ -359,7 +349,6 @@ func copyTree(t *testing.T, src, dst, root string) {
 
 func exists(p string) bool { _, err := os.Stat(p); return err == nil }
 
-// fileState is a file's identity for the no-write check.
 type fileState struct {
 	sum   [32]byte
 	mtime time.Time
@@ -367,8 +356,6 @@ type fileState struct {
 	link  string
 }
 
-// snapshot records every file and symlink under the root (directory
-// mtimes are not compared: the run store's changes with the write probe).
 func (h *harness) snapshot() map[string]fileState {
 	h.t.Helper()
 	m := map[string]fileState{}
@@ -389,7 +376,7 @@ func (h *harness) snapshot() map[string]fileState {
 		st := fileState{mtime: fi.ModTime(), mode: fi.Mode()}
 		if fi.Mode()&fs.ModeSymlink != 0 {
 			st.link, _ = os.Readlink(p)
-		} else if fi.Size() < 8<<20 { // big (sparse) run files: size and mtime suffice
+		} else if fi.Size() < 8<<20 {
 			b, err := os.ReadFile(p)
 			if err != nil {
 				return err
@@ -450,14 +437,11 @@ func TestScenarios(t *testing.T) {
 			got := h.normalize(out.String())
 			golden(t, filepath.Join("testdata", name, "want.txt"), got)
 
-			// Exit code agrees with the report.
 			failed := strings.Contains(got, "\n✗ ") || strings.HasPrefix(got, "✗ ")
 			if (code == 1) != failed || (code != 0 && code != 1) {
 				t.Errorf("exit %d, but failures shown: %v", code, failed)
 			}
 
-			// Read-only: every file under the root is byte-identical with
-			// the same mtime and mode; nothing was added or removed.
 			after := h.snapshot()
 			for p, st := range before {
 				a, ok := after[p]
@@ -483,8 +467,6 @@ func TestScenarios(t *testing.T) {
 				}
 			}
 
-			// No program ever ran a command string doctor could not verify,
-			// nor anything inside the project.
 			for _, c := range h.calls {
 				if strings.Contains(c, "SENTINEL") {
 					t.Errorf("doctor executed an unverified hook: %s", c)
@@ -494,7 +476,7 @@ func TestScenarios(t *testing.T) {
 					t.Errorf("doctor executed a program inside the project: %s", c)
 				}
 				for _, p := range h.sc.NeverRun {
-					if strings.HasPrefix(prog, h.root+"/"+p+" ") { // not Join: keep any ../
+					if strings.HasPrefix(prog, h.root+"/"+p+" ") {
 						t.Errorf("doctor executed %s: %s", p, c)
 					}
 				}

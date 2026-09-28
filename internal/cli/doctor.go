@@ -10,13 +10,10 @@ import (
 	"github.com/iheeb1/lx/internal/track"
 )
 
-// cmdDoctor is `lx doctor [--json]`: a read-only check that lx's Claude
-// Code hook, PATH, permissions and storage work. Exit 1 when a check fails.
 func cmdDoctor(args []string) int {
 	return doctor.Main(args, os.Stdout, os.Stderr, doctorEnv())
 }
 
-// doctorEnv describes this machine the way lx's hook and Claude Code see it.
 func doctorEnv() doctor.Env {
 	home, _ := os.UserHomeDir()
 	cwd, _ := os.Getwd()

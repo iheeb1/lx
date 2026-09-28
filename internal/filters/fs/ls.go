@@ -10,24 +10,8 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// ls condenses directory listings.
-//
-//   - Long format (-l, -la, -lh, …): columns that are the same on every row
-//     (owner, group) are named once in a header, link counts are dropped,
-//     permissions are shown only where they differ from the common file /
-//     directory mode, directories get a trailing "/", symlinks keep
-//     "name -> target". Sizes, dates and names are kept. Above lsNamesOnly
-//     entries only the names remain, several per line.
-//   - Recursive short format (-R): a directory tree (see PathTree).
-//   - Plain short format: already compact, returned unchanged.
-//
-// Diagnostics ("ls: x: No such file or directory") are kept verbatim, first.
 type ls struct{}
 
-// Long listings above lsNamesOnly rows whose compact long form would
-// still cost more than lsLongTarget tokens keep names only (with the
-// dropped columns named in the header). Below that, sizes and dates stay:
-// `ls -lt` / `ls -lS` are asked for exactly those.
 const (
 	lsNamesOnly  = 80
 	lsLongTarget = 3000
@@ -54,9 +38,9 @@ func (ls) Match(c *engine.Context) bool {
 
 type lsFlags struct {
 	long, recursive  bool
-	noOwner, noGroup bool // GNU -g / -o / -G
+	noOwner, noGroup bool
 	inode, blocks    bool
-	columns          bool // -C, -x, -m: several names per line
+	columns          bool
 	operands         []string
 }
 
@@ -114,9 +98,7 @@ func parseLsFlags(args []string) lsFlags {
 
 var (
 	months = `(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)`
-	// lsDate: "Sep 26 00:48", "Jan  3  2024", "Sep 26 00:48:12 2026" (-T),
-	// "26 Sep 00:48", "2026-09-26 00:48[:12.123 +0200]" (long-/full-iso),
-	// "09-26 00:48" (iso).
+
 	lsDate = `(?:` + months + ` +\d{1,2} +(?:\d{1,2}:\d{2}(?::\d{2})?(?: +\d{4})?|\d{4})` +
 		`|\d{1,2} +` + months + ` +(?:\d{1,2}:\d{2}|\d{4})` +
 		`|\d{4}-\d{2}-\d{2}(?: +\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?: +[+-]\d{4})?)?` +
@@ -128,7 +110,7 @@ var (
 
 type lsRow struct {
 	typ  byte
-	mode string // permission bits plus the xattr/ACL marker: "rw-r--r--@"
+	mode string
 	mid  []string
 	size string
 	date string
@@ -136,7 +118,7 @@ type lsRow struct {
 }
 
 type lsBlock struct {
-	dir       string // header without the colon; "" when the block has none
+	dir       string
 	hasHeader bool
 	total     string
 	rows      []lsRow
@@ -154,7 +136,7 @@ func (l ls) Apply(c *engine.Context, out string) (string, bool) {
 	switch {
 	case f.long:
 		if f.inode || f.blocks {
-			return "", false // leading number columns: not modeled
+			return "", false
 		}
 		return lsLong(e, lines, f, isNote)
 	case f.recursive:
@@ -163,13 +145,10 @@ func (l ls) Apply(c *engine.Context, out string) (string, bool) {
 		}
 		return lsRecursive(e, lines, f, isNote)
 	}
-	// Plain listings are already compact; claiming them keeps the generic
-	// reducer from folding similar file names.
+
 	return out, true
 }
 
-// isHeader reports whether ln opens a block: "dir:" after a blank line, or
-// as the first line when it names an operand (GNU prints ".:" for -R).
 func isHeader(ln string, prevBlank, first bool, f lsFlags) bool {
 	if !strings.HasSuffix(ln, ":") || len(ln) < 2 {
 		return false
@@ -214,7 +193,7 @@ func lsLong(e *engine.Context, lines []string, f lsFlags, isNote func(string) bo
 				nmid = len(r.mid)
 			}
 			if len(r.mid) != nmid || r.name == "" {
-				return "", false // owner/group with spaces, or a mixed format
+				return "", false
 			}
 			cur.rows = append(cur.rows, r)
 		case lsTotalRe.MatchString(ln) && len(cur.rows) == 0 && cur.total == "":
@@ -233,15 +212,11 @@ func lsLong(e *engine.Context, lines []string, f lsFlags, isNote func(string) bo
 			rows = append(rows, &b.rows[i])
 		}
 	}
-	// A failing run must be explained by a diagnostic the listing keeps
-	// (see Unexplained); otherwise it was cut short (timeout, signal) and
-	// counts would claim a complete listing.
+
 	if len(rows) == 0 || nmid < 1 || nmid > 4 || Unexplained(e, len(notes)) {
 		return "", false
 	}
 
-	// Columns between the mode and the size: the link count (dropped),
-	// then owner / group / BSD file flags.
 	var labels []string
 	switch nmid {
 	case 1:
@@ -279,9 +254,7 @@ func lsLong(e *engine.Context, lines []string, f lsFlags, isNote func(string) bo
 			keepCol[col] = true
 		}
 	}
-	// Varying owner/group columns: when one combination covers at least
-	// half the rows, name it once and print the columns only on the rows
-	// that differ (root-owned devices in a user's directory).
+
 	tuple := func(r *lsRow) string {
 		var parts []string
 		for col := 1; col < nmid; col++ {
@@ -292,7 +265,7 @@ func lsLong(e *engine.Context, lines []string, f lsFlags, isNote func(string) bo
 		return strings.Join(parts, " ")
 	}
 	majority := ""
-	ownerNote := "" // how the names-only view describes varying owners
+	ownerNote := ""
 	if slicesContains(keepCol, true) {
 		ownerNote = "owners vary"
 		count := map[string]int{}
@@ -318,7 +291,6 @@ func lsLong(e *engine.Context, lines []string, f lsFlags, isNote func(string) bo
 		}
 	}
 
-	// The usual mode per type; rows that differ show theirs.
 	defMode := map[byte]string{}
 	for _, t := range []byte{'-', 'd'} {
 		count := map[string]int{}
@@ -346,7 +318,7 @@ func lsLong(e *engine.Context, lines []string, f lsFlags, isNote func(string) bo
 	}
 	showMode := func(r *lsRow) string {
 		if r.typ == 'l' {
-			return "" // "name -> target" says it is a link
+			return ""
 		}
 		if m, ok := defMode[r.typ]; ok && m == r.mode {
 			return ""
@@ -380,8 +352,6 @@ func lsLong(e *engine.Context, lines []string, f lsFlags, isNote func(string) bo
 	hdr = append(hdr, "link counts dropped")
 	fmt.Fprintf(&cb, "[ls: %s]\n", strings.Join(hdr, " · "))
 
-	// Columns are separated by one space and not padded: alignment costs
-	// about two tokens per row and models do not need it.
 	wrote := false
 	for _, blk := range blocks {
 		if blk.hasHeader {
@@ -479,7 +449,6 @@ func lsLong(e *engine.Context, lines []string, f lsFlags, isNote func(string) bo
 	return strings.TrimRight(b.String(), "\n"), true
 }
 
-// lsLongAsTree renders a large `ls -lR` as a path tree of names only.
 func lsLongAsTree(b *strings.Builder, blocks []*lsBlock, notesHdr []string, f lsFlags, longTokens int) (string, bool) {
 	var paths []string
 	entries := 0
@@ -502,7 +471,7 @@ func lsLongAsTree(b *strings.Builder, blocks []*lsBlock, notesHdr []string, f ls
 	}
 	t := NewPathTree(paths, f.operands)
 	lines, capped := t.Render(DefaultTreeTarget)
-	listed := 0 // directories listed: every header block, and a header-less first block with rows
+	listed := 0
 	for i, blk := range blocks {
 		if blk.hasHeader || i == 0 && (len(blk.rows) > 0 || blk.total != "") {
 			listed++
@@ -527,10 +496,6 @@ func displayName(r *lsRow) string {
 	return r.name
 }
 
-// blockDir is the directory a block lists: its header, or for the
-// header-less first block the single operand (or "." with none). A first
-// block without header under several operands lists file operands, whose
-// names are already paths.
 func blockDir(i int, blk *lsBlock, f lsFlags) (string, bool) {
 	if blk.hasHeader {
 		return blk.dir, true
@@ -557,7 +522,6 @@ func joinDir(dir, name string) string {
 	return strings.TrimSuffix(dir, "/") + "/" + name
 }
 
-// lsRecursive turns `ls -R` blocks into a path tree.
 func lsRecursive(e *engine.Context, lines []string, f lsFlags, isNote func(string) bool) (string, bool) {
 	var notes []string
 	blocks := []*lsBlock{{}}
@@ -577,7 +541,7 @@ func lsRecursive(e *engine.Context, lines []string, f lsFlags, isNote func(strin
 			blocks = append(blocks, cur)
 		} else {
 			if prevBlank && !first {
-				return "", false // entries right after a blank line: not ls -R
+				return "", false
 			}
 			cur.names = append(cur.names, ln)
 		}
@@ -586,13 +550,12 @@ func lsRecursive(e *engine.Context, lines []string, f lsFlags, isNote func(strin
 	if len(blocks) < 2 || Unexplained(e, len(notes)) {
 		return "", false
 	}
-	// A name is a directory when a later block lists it.
+
 	isDir := map[string]bool{}
 	for _, blk := range blocks[1:] {
 		isDir[path.Clean(blk.dir)] = true
 	}
-	// Subdirectories are the block headers other than the listed roots
-	// (GNU prints ".:" or "src:" first; several operands each get one).
+
 	roots := map[string]bool{}
 	for _, o := range f.operands {
 		roots[path.Clean(o)] = true
@@ -674,9 +637,6 @@ func slicesContains(xs []bool, v bool) bool {
 	return false
 }
 
-// capNames wraps names (see wrapNames) and keeps whole lines while they
-// fit in budget tokens. It returns the lines and how many names were left
-// out, counted from the names themselves (a quoted name may hold "  ").
 func capNames(names []string, budget int) ([]string, int) {
 	lines, counts := wrapNamesCounted("", names)
 	used := 0

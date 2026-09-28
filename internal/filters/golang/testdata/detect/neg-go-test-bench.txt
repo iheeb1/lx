@@ -1,0 +1,8 @@
+goos: darwin
+goarch: arm64
+pkg: example.com/godemo
+cpu: Apple M1 Pro
+BenchmarkSum-8    	    2000	         4.083 ns/op
+BenchmarkJoin-8   	    2000	        41.46 ns/op
+PASS
+ok  	example.com/godemo	0.412s

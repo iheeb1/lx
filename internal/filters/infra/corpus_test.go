@@ -11,18 +11,12 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// The shared corpus has no container/cluster captures. testdata/infra holds
-// three real docker captures (docker 29.6, meta says REAL) and synthetic
-// fixtures hand-built in the exact layouts of docker 27+/compose v2/kubectl
-// 1.31/journalctl (meta says SYNTHETIC).
-
 type corpusCase struct {
 	name    string
 	filter  string
-	process string // Result.Filter of the pipeline; "" = filter
+	process string
 	why     string
-	// drops vouches for error-class input lines absent from the output
-	// (only Guarded filters may drop any).
+
 	drops func(t *testing.T, clean, got string, missing []string)
 }
 
@@ -58,7 +52,6 @@ var corpusCases = []corpusCase{
 	{name: "kubectl-get-pods-A-many", filter: "kubectl-get"},
 	{name: "kubectl-logs-panic", filter: "logs"},
 
-	// Real docker 29.5.2 captures made during the adversarial review.
 	{name: "docker-build-legacy-long", filter: "docker-build"},
 	{name: "docker-images-real", filter: "docker-table", process: "passthrough", why: small},
 	{name: "docker-logs-real", filter: "logs"},
@@ -89,8 +82,7 @@ func TestCorpusCoversEveryCapture(t *testing.T) {
 			t.Errorf("capture %s/%s has no corpus case", c.Category, c.Name)
 		}
 	}
-	// Nothing in the shared corpus is in this package's scope today; if a
-	// container or cluster capture appears there, it needs a case here.
+
 	for _, c := range fixture.All(t) {
 		if f := engine.Find(c.Context()); f != nil && !have[c.Name] {
 			for _, n := range []string{"docker-build", "docker-pull", "logs", "docker-table", "kubectl-events", "kubectl-get", "kubectl-describe"} {
@@ -155,16 +147,11 @@ func TestCorpus(t *testing.T) {
 
 var mergedRe = regexp.MustCompile(` \[×(\d+) rows(?:; others: (.*))?\]$`)
 
-// eventDrops: kubectl-events and kubectl-describe are Guarded — the only
-// error-class lines they may leave out are event rows merged into a kept
-// row with the same type, reason and message, marked "[×N rows; others:
-// AGE, …]". Each merged-away row's age must be listed there (unless the
-// list is abbreviated with "…"), so no count or time is lost.
 func eventDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	type mergedRow struct {
-		text string   // the kept row without the note, whitespace squashed
-		ages []string // the other rows' ages
+		text string
+		ages []string
 		abbr bool
 	}
 	var merged []mergedRow

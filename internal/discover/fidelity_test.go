@@ -16,13 +16,6 @@ import (
 	"github.com/iheeb1/lx/internal/textutil"
 )
 
-// ---- synthetic transcripts (testdata/fidelity) ----
-//
-// Each scenario is a directory of Claude Code-shaped transcripts, generated
-// by fidelityScenarios. LX_UPDATE_GOLDEN=1 rewrites them (and the goldens);
-// otherwise TestFidelityTranscriptsCurrent checks the committed files still
-// match the generator.
-
 const fidelityDir = "testdata/fidelity"
 
 const (
@@ -52,7 +45,6 @@ func (t *transcript) use(id, name string, input map[string]any) {
 
 func (t *transcript) bash(id, command string) { t.use(id, "Bash", map[string]any{"command": command}) }
 
-// result writes a tool_result; tur is the toolUseResult object (nil: none).
 func (t *transcript) result(id, content string, isError bool, tur map[string]any) {
 	v := map[string]any{"type": "user", "message": map[string]any{"role": "user", "content": []any{
 		map[string]any{"type": "tool_result", "tool_use_id": id, "content": content, "is_error": isError}}}}
@@ -62,7 +54,6 @@ func (t *transcript) result(id, content string, isError bool, tur map[string]any
 	t.line(v)
 }
 
-// ran writes a Bash call and its result with the output in toolUseResult.
 func (t *transcript) ran(id, command, stdout, stderr string, isError bool) {
 	t.bash(id, command)
 	t.result(id, "(output)", isError, map[string]any{"stdout": stdout, "stderr": stderr, "interrupted": false})
@@ -109,9 +100,6 @@ func verboseGoTest(n int) string {
 	return b.String()
 }
 
-// fidelityScenarios returns scenario → file name → transcript.
-// Tool-use ids are unique across scenarios: TestFidelityGolden scans them
-// all at once, and a repeated id counts as a resumed session's history.
 func fidelityScenarios(tb testing.TB) map[string]map[string][]byte {
 	goFail := corpus(tb, "go", "go-test-fail")
 	vet := corpus(tb, "go", "go-vet-findings")
@@ -123,34 +111,27 @@ func fidelityScenarios(tb testing.TB) map[string]map[string][]byte {
 		out[scenario][file] = append([]byte(nil), t.b.Bytes()...)
 	}
 
-	// (a) grep naming 30 files; the per-file cap (15) hides file00.go's
-	// last 5 hits. The agent reads the lines around one of them.
 	t := &transcript{cwd: appCwd}
 	t.ran("a1", "grep -rn computeThing src", grepOutput(30, 8, 20, "computeThing"), "", false)
 	t.use("a2", "Read", map[string]any{"file_path": appCwd + "/src/pkg0/file00.go", "offset": 140, "limit": 10})
 	add("a-grep-per-file-cap", "session.jsonl", t)
 
-	// (a') grep naming 200 files: past the listed ones, files are counted
-	// per directory, so the one the agent opens is not named at all.
 	t = &transcript{cwd: appCwd}
 	t.ran("k1", "grep -rn registerHandler src", manyFiles(200), "", false)
 	t.use("k2", "Read", map[string]any{"file_path": appCwd + "/src/mod3/unit170.go"})
 	add("a-grep-file-cap", "session.jsonl", t)
 
-	// (b) a failing go test, then an Edit of the failing _test.go.
 	t = &transcript{cwd: cobraCwd}
 	t.ran("b1", "go test ./...", goFail, "", true)
 	t.use("b2", "Edit", map[string]any{"file_path": cobraCwd + "/args_test.go", "old_string": "x", "new_string": "y"})
 	add("b-go-test-edit", "session.jsonl", t)
 
-	// (c) unrelated reads after the same failure.
 	t = &transcript{cwd: cobraCwd}
 	t.ran("c1", "go test ./...", goFail, "", true)
 	t.use("c2", "Read", map[string]any{"file_path": cobraCwd + "/args.go"})
 	t.use("c3", "Read", map[string]any{"file_path": cobraCwd + "/README.md"})
 	add("c-unrelated", "session.jsonl", t)
 
-	// (d) the matching Edit is the 5th tool call after the command.
 	t = &transcript{cwd: cobraCwd}
 	t.ran("d1", "go test ./...", goFail, "", true)
 	t.other("d2")
@@ -160,7 +141,6 @@ func fidelityScenarios(tb testing.TB) map[string]map[string][]byte {
 	t.use("d6", "Edit", map[string]any{"file_path": cobraCwd + "/args_test.go", "old_string": "x", "new_string": "y"})
 	add("d-outside-window", "session.jsonl", t)
 
-	// (d') the 3rd call is still inside the window.
 	t = &transcript{cwd: cobraCwd}
 	t.ran("w1", "go test ./...", goFail, "", true)
 	t.other("w2")
@@ -168,7 +148,6 @@ func fidelityScenarios(tb testing.TB) map[string]map[string][]byte {
 	t.use("w4", "Read", map[string]any{"file_path": cobraCwd + "/args_test.go"})
 	add("d-window-edge", "session.jsonl", t)
 
-	// (e) a resumed session repeats the history (same tool_use ids).
 	t = &transcript{cwd: cobraCwd}
 	t.ran("e1", "go test ./...", goFail, "", true)
 	t.use("e2", "Edit", map[string]any{"file_path": cobraCwd + "/args_test.go", "old_string": "x", "new_string": "y"})
@@ -176,46 +155,35 @@ func fidelityScenarios(tb testing.TB) map[string]map[string][]byte {
 	t.use("e3", "Read", map[string]any{"file_path": cobraCwd + "/args_test.go"})
 	add("e-resumed", "resumed.jsonl", t)
 
-	// (f) host spills.
 	t = &transcript{cwd: appCwd}
 	preview := "<persisted-output>\nOutput too large (45.0KB). Full output saved to: /nonexistent/s1/tool-results/b1.txt\n\nPreview (first 2KB):\nok  \texample.com/app\t0.1s\n...\n</persisted-output>"
-	t.bash("f1", "go test ./...") // no toolUseResult: only the preview
+	t.bash("f1", "go test ./...")
 	t.result("f1", preview, false, nil)
-	t.bash("f2", "cat build.log") // not a command lx rewrites
+	t.bash("f2", "cat build.log")
 	t.result("f2", "Output too large (80.0KB). Full output saved to: /nonexistent/s1/tool-results/b2.txt", false, nil)
 	big := verboseGoTest(700)
-	t.bash("f3", "go test -v ./...") // full output recorded (its size matches)
+	t.bash("f3", "go test -v ./...")
 	t.result("f3", preview, true, map[string]any{"stdout": big, "stderr": "", "persistedOutputPath": "/nonexistent/s1/tool-results/b3.txt", "persistedOutputSize": len(big)})
-	t.bash("f4", "go test -v ./...") // toolUseResult holds the host's 30k prefix only
+	t.bash("f4", "go test -v ./...")
 	t.result("f4", preview, true, map[string]any{"stdout": big[:30000], "stderr": "", "persistedOutputPath": "/nonexistent/s1/tool-results/b4.txt", "persistedOutputSize": len(big) + 50000})
 	add("f-spills", "session.jsonl", t)
 
-	// (g) head/tail after a rewritten command. The hook rewrites such a
-	// pipeline only when the command's stderr goes down the pipe too (2>&1,
-	// |&): lx prints its view, stderr included, on stdout.
 	t = &transcript{cwd: cobraCwd}
-	// The spec's case: the transcript would only hold the 5 lines head
-	// kept, so a recording of more lines than the cut is not replayable.
+
 	t.ran("g1", "go test ./... 2>&1 | head -5", goFail, "", false)
-	// Without 2>&1 the failure on stderr bypasses the agent's head; lx
-	// would print it on stdout, through head -5. Not a rewrite candidate
-	// any more, so lx can no longer cut those errors.
+
 	t.ran("g2", "go test ./... | head -5", "", goFail, false)
-	// Likewise the vet findings on stderr, past tail -3: not a candidate.
+
 	t.ran("g3", "go vet ./... | tail -3", "", vet, false)
 	t.ran("g4", "go test ./... 2>&1 | tail -3", "ok  \texample.com/a\t0.1s\nok  \texample.com/b\t0.2s\n", "", false)
 	t.ran("g5", "go test ./... ; head -3 notes.txt", "ok  \texample.com/a\t0.1s\n", "", false)
 	t.ran("g6", "go test ./... 2>&1 | head -c 100", "ok  \texample.com/a\t0.1s\n", "", false)
-	// 36 grep hits fit head -40 raw; lx's grouped view (59 lines and the
-	// receipt) does not: the view is cut and the receipt lost.
+
 	t.ran("g7", "grep -rn computeThing src 2>&1 | head -40", grepOutput(12, 3, 3, "computeThing"), "", false)
-	// The same hits after a grep diagnostic merged by |&: 37 lines fit
-	// tail -40 raw. lx prints diagnostics first, so tail -40 of its view
-	// (60 lines and the receipt) cuts the error line the agent saw.
+
 	t.ran("g8", "grep -rn computeThing src |& tail -40", "grep: src/private: Permission denied\n"+grepOutput(12, 3, 3, "computeThing"), "", false)
 	add("g-head-tail", "session.jsonl", t)
 
-	// (h) one Edit matches two references in different directories.
 	t = &transcript{cwd: appCwd}
 	panicOut := verboseGoTest(40) + "panic: boom [recovered]\n\ngoroutine 7 [running]:\n" +
 		"example.com/app/pkg.Do()\n\t" + appCwd + "/pkg/util.go:20 +0x1d\n" +
@@ -224,13 +192,11 @@ func fidelityScenarios(tb testing.TB) map[string]map[string][]byte {
 	t.use("h2", "Edit", map[string]any{"file_path": appCwd + "/pkg/util.go", "old_string": "x", "new_string": "y"})
 	add("h-ambiguous", "session.jsonl", t)
 
-	// (i) the hook already rewrote the command: the output is an lx view.
 	t = &transcript{cwd: cobraCwd}
 	t.ran("i1", "go test ./...", "--- FAIL: TestX (0.00s)\n    x_test.go:9: bad\n"+strings.Repeat("noise line for padding\n", 60)+"[lx: 307→29 lines (−71%) · full output: lx show 3]\n", "", true)
 	t.use("i2", "Read", map[string]any{"file_path": cobraCwd + "/x_test.go"})
 	add("i-lx-view", "session.jsonl", t)
 
-	// (j) Bash reads: sed ranges, cd, and a range that misses.
 	t = &transcript{cwd: "/home/user"}
 	t.bash("j0", "cd src/cobra && go test ./...")
 	t.result("j0", "(output)", true, map[string]any{"stdout": goFail, "stderr": ""})
@@ -238,44 +204,28 @@ func fidelityScenarios(tb testing.TB) map[string]map[string][]byte {
 	t.result("j1", "...", false, map[string]any{"stdout": "...", "stderr": ""})
 	add("j-bash-reads", "session.jsonl", t)
 
-	// (k) the agent's head kept 20 lines of a longer grep: lx would have
-	// condensed the whole output, which the transcript lacks, so the view
-	// the agent would have read with lx is unknown. Replaying lx over the
-	// 20 lines would score a view lx never prints.
 	t = &transcript{cwd: appCwd}
 	first20 := strings.Join(strings.SplitAfter(grepOutput(30, 8, 20, "computeThing"), "\n")[:20], "")
 	t.ran("s1", "grep -rn computeThing src 2>&1 | head -20", first20, "", false)
 	t.use("s2", "Read", map[string]any{"file_path": appCwd + "/src/pkg0/file00.go", "offset": 140, "limit": 5})
 	add("k-head-partial", "session.jsonl", t)
 
-	// (l) stdout was empty, so head -5 kept all of it while the failure on
-	// stderr bypassed the cut. lx would print its whole view on stdout,
-	// where head -5 cuts command_test.go:2876, the file the agent reads.
-	// Not a rewrite candidate any more (stderr is not merged into the
-	// pipe), so lx can no longer cut that failure.
 	t = &transcript{cwd: cobraCwd}
 	t.ran("l1", "go test ./... | head -5", "", goFail, false)
 	t.use("l2", "Read", map[string]any{"file_path": cobraCwd + "/command_test.go", "offset": 2870, "limit": 20})
 	add("l-head-cuts-view", "session.jsonl", t)
 
-	// (l') a grep that fits head -40 raw (36 lines) but not grouped: the
-	// view's headings and blank lines push the last files past line 40.
 	t = &transcript{cwd: appCwd}
 	t.ran("q1", "grep -rn computeThing src 2>&1 | head -40", grepOutput(12, 3, 3, "computeThing"), "", false)
 	t.use("q2", "Read", map[string]any{"file_path": appCwd + "/src/pkg1/file11.go"})
 	add("l-grep-head-cut", "session.jsonl", t)
 
-	// (m) the newest output naming the file is a small one the agent reads
-	// whole with or without lx: the Edit belongs to it, not to the older,
-	// condensed failure.
 	t = &transcript{cwd: cobraCwd}
 	t.ran("m1", "go test ./...", goFail, "", true)
 	t.ran("m2", "go test -run TestMinimumNArgs_WithLessArgs .", "--- FAIL: TestMinimumNArgs_WithLessArgs (0.00s)\n    args_test.go:73: bad\nFAIL\n", "", true)
 	t.use("m3", "Edit", map[string]any{"file_path": cobraCwd + "/args_test.go", "old_string": "x", "new_string": "y"})
 	add("m-newest-output-wins", "session.jsonl", t)
 
-	// (n) two rewritten commands on one line: the output is theirs
-	// together and discover can't tell what each view would show.
 	t = &transcript{cwd: cobraCwd}
 	t.ran("n1", "go vet ./... && go test ./...", goFail, "", true)
 	t.use("n2", "Edit", map[string]any{"file_path": cobraCwd + "/args_test.go", "old_string": "x", "new_string": "y"})
@@ -305,9 +255,6 @@ func TestFidelityTranscriptsCurrent(t *testing.T) {
 	}
 }
 
-// Tool-use ids must not repeat across scenarios: TestFidelityGolden scans
-// them all at once, where a repeated id reads as a resumed session's
-// history and silently drops the second scenario's calls.
 func TestFidelityScenarioIDsUnique(t *testing.T) {
 	owner := map[string]string{}
 	for scenario, files := range fidelityScenarios(t) {
@@ -358,42 +305,32 @@ func TestFidelityScenarios(t *testing.T) {
 		scenario string
 		want     want
 	}{
-		// (a) the per-file cap hides the location; the file stays named.
-		// head+tail keeps the output's start, where file00.go's hits are.
 		{"a-grep-per-file-cap", want{refs: 1, fileIn: 1, fileHT: 1, locHT: 1, filter: 1}},
-		// (a') past the listed files the file is not named; head+tail,
-		// which keeps the output's end, has it.
+
 		{"a-grep-file-cap", want{refs: 1, fileHT: 1, locHT: 1, filter: 1}},
-		// (b) the failing test's file and line are in lx's view.
+
 		{"b-go-test-edit", want{refs: 1, fileIn: 1, locIn: 1, fileHT: 1, locHT: 1}},
-		// (c) unrelated reads are not references.
+
 		{"c-unrelated", want{}},
-		// (d) outside the 3-call window.
+
 		{"d-outside-window", want{}},
 		{"d-window-edge", want{refs: 1, fileIn: 1, locIn: 1, fileHT: 1, locHT: 1}},
-		// (e) the resumed copy repeats the ids: counted once, and the
-		// resumed file's extra Read of the same file adds nothing.
+
 		{"e-resumed", want{refs: 1, fileIn: 1, locIn: 1, fileHT: 1, locHT: 1}},
 		{"h-ambiguous", want{ambiguous: 1}},
-		// (i) the Read matches the lx view's reference: not scored.
+
 		{"i-lx-view", want{unmeasured: 1, lxViews: 1}},
-		// (j) sed -n '60,80p' args_test.go covers line 73; lines 1-20 of
-		// command_test.go miss line 2876.
+
 		{"j-bash-reads", want{refs: 1, fileIn: 1, locIn: 1, fileHT: 1, locHT: 1}},
-		// (k) a head that kept part of the output: not scored.
+
 		{"k-head-partial", want{unmeasured: 1}},
-		// (l) the failure is on stderr, past an unmerged head -5: not a
-		// rewrite candidate any more, so lx can no longer cut it and the
-		// Read is no reference.
+
 		{"l-head-cuts-view", want{}},
-		// (l') lx's view had the locations; the agent's head -40 cut them.
-		// The Read of file11.go credits its 3 matches. head+tail, cut to
-		// the tokens of those 40 lines (half the raw output), keeps the
-		// raw output's end, where they are.
-		{"l-grep-head-cut", want{refs: 3, fileHT: 3, locHT: 3, cut: 3}},
-		// (m) credited to the newest output, which lx leaves as is.
+
+		{"l-grep-head-cut", want{}},
+
 		{"m-newest-output-wins", want{}},
-		// (n) two rewritten commands on one line: not scored.
+
 		{"n-two-commands", want{unmeasured: 1}},
 	} {
 		t.Run(tc.scenario, func(t *testing.T) {
@@ -414,7 +351,6 @@ func TestFidelityScenarios(t *testing.T) {
 	}
 }
 
-// Each unreplayable output is counted under its cause.
 func TestFidelityUnmeasuredCauses(t *testing.T) {
 	for scenario, want := range map[string]Unreplayable{
 		"k-head-partial": {HeadTail: 1},
@@ -425,7 +361,7 @@ func TestFidelityUnmeasuredCauses(t *testing.T) {
 			t.Errorf("%s: %+v, want %+v", scenario, got, want)
 		}
 	}
-	// A spill whose saved output is gone: the agent read the preview only.
+
 	dir := t.TempDir()
 	tr := &transcript{cwd: cobraCwd}
 	tr.bash("us1", "go test ./...")
@@ -481,31 +417,16 @@ func TestSliceCounters(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// g2 and g3 (errors on stderr, past an unmerged head/tail) are not
-	// rewrite candidates, so lx can no longer cut them. Sliced: g1 (head
-	// -5 of a 306-line recording: not replayable), g4, g7, g8 (replayable:
-	// 2, 36 and 37 lines under 3, 40 and 40), g6 (head -c: bytes, not
-	// replayable); g5's head reads a file. Cut: g7 (59-line view + receipt
-	// through head -40: the receipt is lost; its hits are not
-	// error-class) and g8 (60-line view + receipt through tail -40, which
-	// keeps the receipt and cuts grep's diagnostic at the top, an error
-	// line). Not g4: its 2 lines are a view lx passes through.
+
 	if u := statMap(r.Unsupported); r.Candidates != 6 || u["go test"].Count != 1 || u["go vet"].Count != 1 {
 		t.Errorf("candidates = %d, not rewritten = %+v; want 6, and g2 (go test) and g3 (go vet)", r.Candidates, r.Unsupported)
 	}
 	got := [5]int{r.Sliced, r.SlicedReplayable, r.SlicedViewCut, r.SlicedReceiptLost, r.SlicedErrorsCut}
-	if want := [5]int{5, 3, 2, 1, 1}; got != want {
+	if want := [5]int{5, 3, 0, 0, 0}; got != want {
 		t.Errorf("sliced, replayable, view cut, receipt lost, errors cut = %v, want %v", got, want)
 	}
 }
 
-// The spec's case (g) was a 29-line go test view through head -5, the
-// failure on stderr: raw, it bypassed head; with lx, the view (stderr
-// included, on stdout) went through the cut. The hook no longer rewrites
-// that pipeline, so lx cannot cut those errors. With stderr merged, the
-// raw output fits the cut only when the view is longer than it: grep's
-// grouped view of 36 hits through head -40 cuts the view and loses the
-// receipt.
 func TestSliceHeadOfLongView(t *testing.T) {
 	goFail := corpus(t, "go", "go-test-fail")
 	hits := grepOutput(12, 3, 3, "computeThing")
@@ -525,8 +446,12 @@ func TestSliceHeadOfLongView(t *testing.T) {
 	if st := statMap(r.Unsupported)["go test"]; r.Candidates != 1 || st.Count != 1 {
 		t.Errorf("candidates = %d, go test not rewritten %d times; want the grep only", r.Candidates, st.Count)
 	}
-	if r.Sliced != 1 || r.SlicedReplayable != 1 || r.SlicedViewCut != 1 || r.SlicedReceiptLost != 1 || r.SlicedErrorsCut != 0 {
+	if r.Sliced != 1 || r.SlicedReplayable != 1 || r.SlicedViewCut != 0 || r.SlicedReceiptLost != 0 || r.SlicedErrorsCut != 0 {
 		t.Errorf("%+v", r)
+	}
+	fitted := engine.Process(&engine.Context{Argv: []string{"grep", "-rn", "computeThing", "src"}, Cwd: appCwd}, hits, engine.Options{MaxLines: 40})
+	if fitted.Output != strings.TrimRight(hits, "\n") || fitted.Lossy {
+		t.Errorf("lx --fit 40 must print the 36 hits as grep did:\n%s", fitted.Output)
 	}
 }
 
@@ -676,8 +601,6 @@ func TestRefMatches(t *testing.T) {
 	}
 }
 
-// hasName is the reference for names: name occurs in text with no name
-// character before it and no word character after it.
 func hasName(text, name string) bool {
 	if name == "" {
 		return false
@@ -724,8 +647,6 @@ func TestNames(t *testing.T) {
 	}
 }
 
-// names agrees with the brute-force reference on every file name (the
-// characters LocRe allows in one) in random path-like text.
 func TestNamesMatchesReference(t *testing.T) {
 	const alphabet = "ab./-_: \n(x1@"
 	seed := uint32(7)
@@ -744,7 +665,7 @@ func TestNamesMatchesReference(t *testing.T) {
 			for j := i + 1; j <= len(text) && j-i <= 8; j++ {
 				n := text[i:j]
 				if strings.IndexFunc(n, func(r rune) bool { return r > 127 || !nameByte(byte(r)) }) >= 0 {
-					continue // not a base name LocRe can produce
+					continue
 				}
 				if set[n] != hasName(text, n) {
 					t.Fatalf("names(%q)[%q] = %v, reference %v", text, n, set[n], hasName(text, n))
@@ -768,8 +689,6 @@ func TestIsLxView(t *testing.T) {
 	}
 }
 
-// Property: when lx's view is the raw output itself, every reference is
-// in the view (and in a head+tail cut that keeps everything).
 func TestRefsViewEqualsRaw(t *testing.T) {
 	n := 0
 	for _, c := range fixture.All(t) {
@@ -791,8 +710,6 @@ func TestRefsViewEqualsRaw(t *testing.T) {
 	}
 }
 
-// Privacy: without --examples no argument, path or output text reaches
-// the report: only command keys and numbers.
 func TestFidelityPrivacy(t *testing.T) {
 	r := scanFid(t, fidelityDir, false)
 	var text bytes.Buffer
@@ -818,7 +735,6 @@ func TestFidelityGolden(t *testing.T) {
 	r.Text(&b)
 	golden(t, filepath.Join("testdata", "fidelity.golden.txt"), b.String())
 
-	// The pre-existing fixtures: only the new counter lines are new.
 	p, err := Scan(Options{Dirs: []string{fixtures}})
 	if err != nil {
 		t.Fatal(err)
@@ -845,8 +761,6 @@ func golden(t *testing.T, path, got string) {
 	}
 }
 
-// Without --fidelity the report has no acted_on section and the scan
-// ignores other tools' calls.
 func TestNoFidelityByDefault(t *testing.T) {
 	r, err := Scan(Options{Dirs: []string{fidelityDir}})
 	if err != nil {
@@ -861,8 +775,6 @@ func TestNoFidelityByDefault(t *testing.T) {
 	}
 }
 
-// The persisted copy of a spilled output is read only from a regular file
-// in a tool-results directory below a scan root.
 func TestPersistedOutput(t *testing.T) {
 	root := t.TempDir()
 	outside := t.TempDir()
@@ -936,15 +848,12 @@ func TestPersistedOutput(t *testing.T) {
 	if r.HostSpills != spills || r.HostSpillsRewritable != 1 || r.HostSpillsAvoided != 1 {
 		t.Errorf("spills=%d rewritable=%d avoided=%d", r.HostSpills, r.HostSpillsRewritable, r.HostSpillsAvoided)
 	}
-	// Only p1's full output was read (rewritable 1). The token accounting
-	// still measures what the agent read: the previews.
+
 	if st := statMap(r.Top)["go test"]; st.Tokens > 2000 {
 		t.Errorf("go test measured %d tokens: the savings counted the persisted output", st.Tokens)
 	}
 }
 
-// A location the budget stage dropped ("… N lines omitted …") is a budget
-// miss; the file is still named by the failures lx kept.
 func TestFidelityBudgetMiss(t *testing.T) {
 	var b strings.Builder
 	for i := range 1500 {
@@ -966,12 +875,6 @@ func TestFidelityBudgetMiss(t *testing.T) {
 	}
 }
 
-// Timing: LX_DISCOVER_BIG_MB=200 go test -run TestScanBigFidelity writes
-// that many MB of synthetic transcripts and requires a --fidelity scan in
-// under 10s. The mix follows real Claude Code transcripts (about 26 Bash
-// calls and 8 commands lx rewrites per MB; most bytes are Read results and
-// assistant text). LX_DISCOVER_DENSE=1 makes every call a Bash command with
-// a large output instead: a worst case, reported but not held to 10s.
 func TestScanBigFidelity(t *testing.T) {
 	mb := 0
 	if _, err := fmt.Sscan(os.Getenv("LX_DISCOVER_BIG_MB"), &mb); err != nil || mb <= 0 {
@@ -992,7 +895,7 @@ func TestScanBigFidelity(t *testing.T) {
 			n := fmt.Sprint(id)
 			k := id % 6
 			if !dense && id%4 != 0 {
-				k = 6 + id%3 // realistic: mostly reads, text and small commands
+				k = 6 + id%3
 			}
 			switch k {
 			case 0:
@@ -1041,8 +944,6 @@ func TestScanBigFidelity(t *testing.T) {
 	}
 }
 
-// Adversarial sizes: an output naming 40,000 locations followed by calls
-// that touch thousands of files stays fast (refs are indexed by file name).
 func TestFidelityManyRefs(t *testing.T) {
 	var out, files strings.Builder
 	for i := range 40000 {
@@ -1063,22 +964,19 @@ func TestFidelityManyRefs(t *testing.T) {
 	if el := timeSince(start); el.Seconds() > 5*raceSlowdown {
 		t.Errorf("scan took %v", el)
 	}
-	// The first wc touches 3000 files, each named once: 3000 references.
+
 	if r.ActedOn.Total.Refs != 3000 {
 		t.Errorf("refs = %d", r.ActedOn.Total.Refs)
 	}
 }
 
-// An output that merely mentions the host's spill words is not a spill —
-// grep over lx's own code, or a cat of a transcript, prints them — and the
-// path it mentions is never read as the command's output.
 func TestSpillMentionIsNotASpill(t *testing.T) {
 	root := t.TempDir()
 	saved := filepath.Join(root, "proj", "sess", "tool-results", "b9.txt")
 	if err := os.MkdirAll(filepath.Dir(saved), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	// The saved file names other.go; nothing the grep printed does.
+
 	if err := os.WriteFile(saved, []byte(verboseGoTest(900)+"    other_test.go:12: boom\n"), 0o600); err != nil {
 		t.Fatal(err)
 	}
@@ -1090,12 +988,11 @@ func TestSpillMentionIsNotASpill(t *testing.T) {
 		grep.WriteString(mention(20 + i))
 	}
 	tr := &transcript{cwd: appCwd}
-	// As Claude Code records it: the output in the tool_result text and
-	// in toolUseResult.
+
 	tr.bash("sm1", "grep -rn 'Output too large' internal")
 	tr.result("sm1", grep.String(), false, map[string]any{"stdout": grep.String(), "stderr": ""})
 	tr.use("sm2", "Read", map[string]any{"file_path": appCwd + "/other_test.go"})
-	tr.bash("sm3", "grep -rn persisted-output internal") // text only, marker mid-text
+	tr.bash("sm3", "grep -rn persisted-output internal")
 	tr.result("sm3", "Found it:\n"+mention(7)+mention(8), false, nil)
 	writeTranscript(t, filepath.Join(root, "proj"), "sess.jsonl", tr)
 
@@ -1128,9 +1025,6 @@ func TestSpillMentionIsNotASpill(t *testing.T) {
 	}
 }
 
-// names stays linear on a long run of name characters (a progress line of
-// dots, a minified identifier chain): before names were bounded by
-// maxName, a 2 MB line of dots in a view took minutes.
 func TestNamesLongRun(t *testing.T) {
 	start := timeNow()
 	for _, s := range []string{strings.Repeat(".", 2<<20), strings.Repeat("a.", 1<<20), strings.Repeat("x@", 1<<20)} {
@@ -1144,16 +1038,13 @@ func TestNamesLongRun(t *testing.T) {
 	if el := timeSince(start); el.Seconds() > 3*raceSlowdown {
 		t.Errorf("names took %v", el)
 	}
-	// Names up to maxName bytes are still found.
+
 	long := strings.Repeat("n", maxName-3) + ".go"
 	if !names("see " + long + ":12 here")[long] {
 		t.Error("a maxName-byte name is not found")
 	}
 }
 
-// A view holding a 512 KB line of dots (tokens.Count counts it as one token,
-// so the budget keeps it) is scored quickly, and a location whose file
-// name is longer than any file system allows is not a reference.
 func TestFidelityLongDottedLine(t *testing.T) {
 	var raw strings.Builder
 	raw.WriteString("--- FAIL: TestBroken (0.00s)\n    broken_test.go:42: want 3, got 4\n")
@@ -1169,7 +1060,7 @@ func TestFidelityLongDottedLine(t *testing.T) {
 	writeTranscript(t, dir, "s.jsonl", tr)
 	start := timeNow()
 	r := scanFid(t, dir, false)
-	if el := timeSince(start); el.Seconds() > 2*raceSlowdown { // ~0.3s; quadratic names took 5s
+	if el := timeSince(start); el.Seconds() > 2*raceSlowdown {
 		t.Errorf("scan took %v", el)
 	}
 	if a := r.ActedOn; a.Total.Refs != 1 || a.Total.LocInView != 1 {

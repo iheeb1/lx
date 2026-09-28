@@ -8,11 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// httpieFilter condenses httpie (http, https) and xh output: of a printed
-// request only the method line is kept (all of it when an Origin header was
-// sent), response heads are trimmed like curl's (all fields for 4xx/5xx or
-// --headers), and bodies go through renderBody. "http: error: …" and
-// warnings are kept verbatim.
 type httpieFilter struct{}
 
 func (httpieFilter) Name() string    { return "httpie" }
@@ -28,8 +23,7 @@ func (httpieFilter) Match(c *engine.Context) bool {
 
 var (
 	httpieDiagRe = lazyre.New(`^(?:http|https|xh|xhs): (?:error|warning)\b|^(?:xh|xhs): `)
-	// usageErrRe: the error line of a usage error — httpie's argparse
-	// block ("usage: …" / "error:" / "    <message>") or xh's "error: …".
+
 	usageErrRe = lazyre.New(`^error:(?: |$)`)
 )
 
@@ -51,12 +45,12 @@ func (httpieFilter) Apply(c *engine.Context, out string) (string, bool) {
 	var (
 		res       []string
 		body      []string
-		bodyNums  []int // 1-based output line number of each body line
+		bodyNums  []int
 		cur, last *headerBlock
 		inReq     bool
-		hasText   bool // body has a non-blank line
-		hidReq    int  // request header lines not shown
-		diag      bool // httpie/xh printed an error or warning
+		hasText   bool
+		hidReq    int
+		diag      bool
 	)
 	flush := func() {
 		if len(body) > 0 {
@@ -77,7 +71,7 @@ func (httpieFilter) Apply(c *engine.Context, out string) (string, bool) {
 			continue
 		}
 		if strings.HasPrefix(ln, "error:") && usageErrRe.MatchString(ln) && cur == nil && !inReq {
-			diag = true // kept in place below, with its usage block
+			diag = true
 		}
 		if inReq {
 			switch {
@@ -104,8 +98,7 @@ func (httpieFilter) Apply(c *engine.Context, out string) (string, bool) {
 			res = append(res, cur.render(headersOnly || origin || cur.status >= 400)...)
 			last, cur = cur, nil
 		}
-		// A new message starts at the top or after a blank line (httpie -v
-		// prints the request, its body, blank lines, then the response).
+
 		if !hasText || i > 0 && strings.TrimSpace(lines[i-1]) == "" {
 			switch {
 			case requestRe.MatchString(ln):
@@ -146,13 +139,11 @@ func (httpieFilter) Apply(c *engine.Context, out string) (string, bool) {
 	return joinLines(res), true
 }
 
-// httpieExit explains httpie's (and xh's) exit codes.
 var httpieExit = map[int]string{
 	1: "error", 2: "request timed out", 3: "HTTP 3xx response (--check-status)", 4: "HTTP 4xx response (--check-status)",
 	5: "HTTP 5xx response (--check-status)", 6: "too many redirects", 7: "plugin error",
 }
 
-// trimBlank drops leading and trailing blank lines, and their numbers.
 func trimBlank(lines []string, nums []int) ([]string, []int) {
 	for len(lines) > 0 && strings.TrimSpace(lines[0]) == "" {
 		lines, nums = lines[1:], nums[1:]

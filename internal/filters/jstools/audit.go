@@ -2,33 +2,12 @@ package jstools
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// npmAudit condenses `npm audit` (and the report printed by `npm audit fix`).
-// Per advisory it keeps the package and range line, the severity, every
-// distinct advisory title (the GitHub advisory URL shortened to its
-// GHSA id; npm repeats a title once per affected copy), the fix line and
-// "Will install …" note, and the dependents ("Depends on vulnerable
-// versions of …"). An install path is dropped when it is the only one and
-// just node_modules/<package>; beyond 3 paths the rest are counted. The
-// "N vulnerabilities (…)" summary and the fix commands are verbatim.
-//
-// pnpm and yarn print one box-drawn table per advisory (yarn: per advisory
-// and dependency path). Each becomes
-//
-//	high  body-parser  Patched in: >=1.20.3 · Dependency of: express
-//	  body-parser vulnerable to denial of service … - https://www.npmjs.com/advisories/1099520
-//	  Path: express > body-parser
-//
-// with tables for the same advisory merged (their paths listed together,
-// at most 5 and a count). Summary lines are verbatim.
-//
-// npm audit is Content: advisory titles ("Uncaught crash…", "…crashes with
-// TypeError…") are data, not errors of this run. npm error lines are kept.
 type npmAudit struct{}
 
 func (npmAudit) Name() string { return "npm-audit" }
@@ -80,8 +59,6 @@ func (npmAudit) Apply(c *engine.Context, s string) (string, bool) {
 		return "", false
 	}
 	if start < 0 {
-		// No report: "found 0 vulnerabilities", errors, or audit fix
-		// output without remaining issues.
 		var o out
 		installLines(lines, &o)
 		return o.String(), true
@@ -107,13 +84,11 @@ func (npmAudit) Apply(c *engine.Context, s string) (string, bool) {
 		o.add(ln)
 		i++
 	}
-	// Summary and fix commands, verbatim.
+
 	o.add(lines[i:]...)
 	return o.String(), true
 }
 
-// auditBlock renders the advisory block starting at lines[i] and returns
-// the index after it.
 func auditBlock(lines []string, i int, o *out) int {
 	pkg := auditHeadRe.FindStringSubmatch(lines[i])[1]
 	o.add(lines[i])
@@ -122,7 +97,6 @@ func auditBlock(lines []string, i int, o *out) int {
 	flushPaths := func(owner, indent string) {
 		switch {
 		case len(paths) == 1 && paths[0] == "node_modules/"+owner:
-			// The package's default location says nothing.
 		case len(paths) > 3:
 			o.add(indent+paths[0], indent+paths[1])
 			o.add(fmt.Sprintf("%s[+%d more paths]", indent, len(paths)-2))
@@ -150,7 +124,6 @@ func auditBlock(lines []string, i int, o *out) int {
 			owner = auditDepHeadRe.FindStringSubmatch(ln)[1]
 			o.add(ln)
 		default:
-			// An advisory title: once per block, URL shortened.
 			if seen[ln] {
 				continue
 			}
@@ -162,16 +135,14 @@ func auditBlock(lines []string, i int, o *out) int {
 	return j
 }
 
-// advisory is one pnpm/yarn advisory table.
 type advisory struct {
 	sev, title, pkg, info string
-	fields                []string            // "Key: value", in table order
-	multi                 map[string][]string // merged per-path fields
+	fields                []string
+	multi                 map[string][]string
 	multiOrder            []string
 	multiSeen             map[string]bool
 }
 
-// merge adds the values of a per-path field, once each.
 func (a *advisory) merge(k string, vals []string) {
 	if _, ok := a.multi[k]; !ok {
 		a.multiOrder = append(a.multiOrder, k)
@@ -184,13 +155,10 @@ func (a *advisory) merge(k string, vals []string) {
 	}
 }
 
-// boxAuditMerged are fields that differ between the tables of one advisory.
 var boxAuditMerged = map[string]bool{"Path": true, "Paths": true, "Dependency of": true}
 
 const maxAuditPaths = 5
 
-// boxAudit renders pnpm/yarn audit tables. ok is false when a table does
-// not have the advisory shape (severity and title, then key/value rows).
 func boxAudit(lines []string) (string, bool) {
 	var (
 		o      out

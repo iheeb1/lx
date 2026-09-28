@@ -15,15 +15,8 @@ import (
 	"github.com/iheeb1/lx/internal/hook"
 )
 
-// The hook ↔ filter contract: the hook rewrites a command (hook.Supported)
-// exactly when lx has a filter that condenses it: engine.Resolve finds one,
-// the output is not machine-readable, and the filter does not stream the
-// command. Every exception is listed below with its reason.
-//
-// Each entry is split with strings.Fields. The table is harvested from the
-// filter packages' Match tests and from rewrite_test.go.
 var contractCommands = []string{
-	// git
+
 	"git status", "git status -v", "git status -s", "git status -sb", "git status --porcelain", "git status -z",
 	"git log", "git log --stat", "git log --oneline -20", "git log --pretty=oneline", "git log --format=%H",
 	"git log --pretty=format:%h", "git log --follow f.go", "git -C /repo -c color.ui=always --no-pager log -p -n 3",
@@ -47,7 +40,6 @@ var contractCommands = []string{
 	"git rev-parse HEAD", "git ls-files", "git config user.email", "git cat-file -p HEAD", "git --version", "git",
 	"gitk", "hg log",
 
-	// git grep and search
 	"git grep -n foo", "git grep -n x", "git grep foo", "git -C sub grep x", "git --no-pager grep -n x", "git grep -z foo",
 	"git grep -q foo", "git grep -O foo", "git grep --open-files-in-pager foo", "git grep --heading x",
 	"git grep -p x", "git grep -c x", "git grep -l x", "git grep --name-only x", "git grep -W x", "git grep -e x -e y",
@@ -60,7 +52,6 @@ var contractCommands = []string{
 	"rg --files", "rg --files src", "rg -l x", "rg --count x", "rg --json x", "rg --heading x", "rg -p x",
 	"rg --stats x", "rg --type-list", "rg -h", "rg --files --null",
 
-	// files and listings
 	"ls", "ls -la", "/bin/ls -l", "ls -R", "ls --help", "ls --zero",
 	"find . -type f", "find . -name *.go", "/usr/bin/find src", "find . -print0", "find . -exec grep x {} ;",
 	"find . -printf %p", "find . -ls", "find . -name x -delete", "fd -e go", "fd -x rm",
@@ -69,7 +60,6 @@ var contractCommands = []string{
 	"cat a.go", "cat file.txt", "head -n 5 a.go", "tail -n 5 a.go", "tail -f app.log", "bat -p a.go",
 	"sed -n 1p f", "less f", "lsof -i",
 
-	// Go
 	"go test ./...", "go test -v ./...", "go test -run TestX -count=1 ./pkg/...", "/usr/local/go/bin/go test -v ./...",
 	"go -C sub test ./...", "go test -json ./...", "go test -bench=. ./...", "go test -fuzz=FuzzX .", "go test -x .",
 	"go test -c ./pkg", "go build ./...", "go build -x ./...", "go build -json ./...", "go vet ./...",
@@ -79,7 +69,6 @@ var contractCommands = []string{
 	"go", "gotip test ./...", "gotip build ./...", "go1.22.3 test .", "go1.23rc1 vet ./...", "gotip run .",
 	"golangci-lint run ./...", "golangci-lint run --out-format json", "gofmt -l .",
 
-	// JavaScript
 	"jest", "jest -i", "jest --ci", "npx jest --ci", "npx jest@29 test/a.test.js", "./node_modules/.bin/jest --coverage",
 	"pnpm exec jest", "yarn jest --ci", "bunx jest", "jest --watch", "jest --watchAll", "jest --json",
 	"jest --listTests", "jest --showConfig", "bunx jest --watch",
@@ -104,7 +93,6 @@ var contractCommands = []string{
 	"node examples/search/index.js", "node server.js", "node", "node --test", "react-scripts test",
 	"react-scripts test --watchAll=false", "craco test",
 
-	// Python
 	"pytest", "pytest -x", "pytest --pdb", "pytest --collect-only", "pytest --version", "py.test -q",
 	"/home/user/venv/bin/pytest -x tests", "python -m pytest -x", "python3 -m pytest", "python3.12 -m pytest",
 	"python3.12 -u -m pytest tests/", "python -m unittest", "python -munittest", "python -m http.server",
@@ -116,7 +104,6 @@ var contractCommands = []string{
 	"ruff check .", "ruff check --output-format concise src", "ruff check --output-format json .", "ruff format .",
 	"ruff check --watch", "ruff",
 
-	// Python project runners (engine.Peel)
 	"uv run pytest -x", "uv run pytest -k x", "uv run --with ruff pytest", "uv run --with pytest-xdist --frozen pytest -n 4",
 	"uv run python -m pytest", "uv run mypy .", "uv run ruff check .", "uv run python", "uv run python script.py",
 	"uv run script.py", "uv run pytest --pdb", "uv run git status", "uv run go test ./...", "uv sync", "uv pip install x",
@@ -125,14 +112,12 @@ var contractCommands = []string{
 	"poetry run jest", "poetry run jest --watch", "poetry install", "pdm run pytest", "pipenv run python -m pytest",
 	"hatch run test:cov", "rye run pytest", "pipx run ruff check .", "pipx install x",
 
-	// transparent wrappers (engine.Peel)
 	"env FOO=1 go test ./...", "env -u CLAUDECODE go test ./...", "env -i go test ./...", "env -S go test",
 	"timeout 60 pytest -x", "timeout -s KILL 60 go test ./...", "timeout --bogus 5 go test", "timeout go test",
 	"nice -n 10 make", "nohup go test ./...", "time go build ./...", "time -p go build ./...", "command git status",
 	"command -v git", "/usr/bin/env FOO=1 git status", "env FOO=1 git status -s", "timeout 5 git log --format=%H",
 	"sudo apt install foo", "env TZ=UTC npx jest", "env -u CLAUDECODE -u AI_AGENT FORCE_COLOR=1 npx jest",
 
-	// build tools
 	"make", "make test", "make dev", "make -C sub -j8 lint", "make -n", "make -p", "make run-server", "gmake all",
 	"cmake --build build", "ninja", "ninja -C build", "gcc -Wall x.c -o x", "cc -c x.c",
 	"cargo test", "cargo build", "cargo +nightly clippy", "cargo build --message-format=json", "cargo run",
@@ -140,7 +125,6 @@ var contractCommands = []string{
 	"./gradlew test", "gradle build", "./gradlew bootRun", "./gradlew test --continuous", "gradle tasks",
 	"mvn -q test", "mvn test", "./mvnw -B package", "mvn spring-boot:run", "mvn dependency:tree", "mvnw verify",
 
-	// containers, clusters, logs, network
 	"docker ps", "docker ps -a --no-trunc", "docker ps -q", "docker ps --format {{.Names}}", "docker images",
 	"docker image ls", "docker compose ps", "docker-compose ps", "docker build -f Dockerfile .",
 	"docker buildx build --platform linux/amd64 .", "docker compose build api", "docker pull node:20",
@@ -155,18 +139,15 @@ var contractCommands = []string{
 	"curl -sSL https://example.com", "curl -I https://example.com", "curl -o out.tgz https://example.com",
 	"curl -w %{http_code} https://example.com", "wget -qO- https://x", "http GET https://x", "jq . a.json",
 
-	// forms the filters decline, which the hook must decline too
 	"docker ps -aq", "docker image ls -q", "docker compose ps -q", "du --inodes .", "ls -D", "pytest --co -q",
 	"pytest --fixtures", "jest --clearCache", "mocha --dry-run", "eslint -o r.txt .", "ruff check --diff",
 	"ruff check --statistics", "cargo test --no-run", "cargo test -- --list", "make --dry-run", "make -np",
 	"gradle dependencies", "./gradlew :app:dependencies", "mvn -v", "mvn help:effective-pom", "go test -list .",
 	"go build -n", "pip install --dry-run x", "grep -rn x . --help", "tsc --listFiles", "vitest bench",
 
-	// more tools the hook knows
 	"ninja -t targets", "ninja -n", "cmake -S . -B build", "fdfind -t d", "fd -0", "vue-tsc --watch", "tsgo --noEmit",
 	"ninja serve", "ninja -C build -j 8 all", "cmake --build build --target run", "cmake --build build --target test -j 8",
 
-	// wrappers around wrappers
 	"nice -n 5 uv run pytest -x", "uv run env FOO=1 pytest", "timeout 60 poetry run mypy src",
 	"env -u X uv run pytest", "nohup nohup nohup nohup go test ./...", "nohup nohup nohup nohup nohup go test ./...",
 	"env FOO=1 timeout 5 git status", "uv run git grep -n x", "uv run git status -s", "env FOO=1 cat a.go",
@@ -175,17 +156,20 @@ var contractCommands = []string{
 	"gtimeout 60 go test ./...", "git stash -p show", "git stash --patch", "git stash push -p",
 	"python -i -m pytest", "uv run python -ui -m pytest", "python -I -m pytest", "python3 -u -m pytest -x",
 
-	// the rest of the hook table
 	"terraform plan", "terraform init", "terraform plan -json", "terraform apply", "brew install jq", "brew outdated",
 	"brew uninstall x", "swift build", "swift test", "swift run", "dotnet test", "dotnet build", "dotnet watch test",
 	"flutter test", "flutter test --machine", "dart analyze", "composer install", "bundle install",
 	"bundle exec rspec spec/a_spec.rb", "rspec", "rspec -f json", "phpunit", "vim", "ssh host",
+
+	"just test", "just lint", "task test", "task lint test", "mise run test", "turbo run test",
+	"turbo run build test lint", "nx test app", "nx run app:test", "nx run-many -t test lint", "npx nx test app",
+	"rake test", "rake spec", "rake lint", "deno test", "deno check main.ts", "deno lint", "deno task test",
+	"cargo nextest run", "composer test", "composer run-script typecheck", "npm run testonly",
+	"just dev", "just --list", "task --watch test", "mise run", "turbo run dev", "turbo run test --dry-run",
+	"nx serve app", "nx graph", "rake -T", "deno test --watch", "deno task dev", "cargo nextest list",
+	"composer run-script --list", "sh scripts/ci.sh",
 }
 
-// genericOnly: the hook rewrites these, but no dedicated filter handles
-// them; the generic engine condenses the output (ANSI and progress
-// stripped, repeats folded, stack traces folded) and the error guard
-// re-adds any error line it drops.
 var genericOnly = map[string]string{
 	"brew install jq":                  "no brew filter: download and pour progress is what the generic engine removes",
 	"brew outdated":                    "no brew filter: a short table, passed through unless it is long",
@@ -214,8 +198,31 @@ var genericOnly = map[string]string{
 	"git reflog expire --all":          "prints nothing or an error: passed through",
 }
 
-// notRewritten: a filter exists, but the hook deliberately leaves the
-// command alone. lx still condenses these when the agent types lx itself.
+var runnerOnly = map[string]string{
+	"just test":                     "just recipe: the report it prints is detected (go test, jest, pytest …) or condensed by the generic engine",
+	"just lint":                     "just recipe: eslint/tsc reports are detected",
+	"task test":                     "go-task task: the report it prints is detected or condensed by the generic engine",
+	"task lint test":                "go-task tasks: each report is detected or condensed by the generic engine",
+	"mise run test":                 "mise task: the report it prints is detected or condensed by the generic engine",
+	"turbo run test":                "turbo prefixes each line with pkg:task: (no detector matches): the generic engine condenses it",
+	"turbo run build test lint":     "turbo prefixes each line with pkg:task: (no detector matches): the generic engine condenses it",
+	"nx test app":                   "nx target: the executor's report (jest, vitest …) is detected",
+	"nx run app:test":               "nx target: the executor's report is detected",
+	"nx run-many -t test lint":      "nx targets: the executors' reports are detected or condensed by the generic engine",
+	"npx nx test app":               "nx through npx: the executor's report is detected",
+	"rake test":                     "rake task: go test, pytest, mocha … reports are detected; minitest output is condensed by the generic engine",
+	"rake spec":                     "rake spec: RSpec's report is condensed by the generic engine (no Ruby filter yet)",
+	"rake lint":                     "rake task: eslint/tsc reports are detected; rubocop output is condensed by the generic engine",
+	"deno test":                     "no Deno filter yet: deno's report is condensed by the generic engine, errors kept by the guard",
+	"deno check main.ts":            "no Deno filter yet: diagnostics are error lines the guard keeps",
+	"deno lint":                     "no Deno filter yet: diagnostics are error lines the guard keeps",
+	"deno task test":                "deno task: the report it prints is detected or condensed by the generic engine",
+	"cargo nextest run":             "no nextest filter yet: PASS lines folded by the generic engine, FAIL blocks kept by the guard",
+	"composer test":                 "composer script: the report it prints (pytest, vitest …) is detected; PHPUnit output is condensed by the generic engine",
+	"composer run-script typecheck": "composer script: tsc's report is detected",
+	"npm run testonly":              "a test script whose name no npm filter claims (npm-test takes test, test:x, test-x): vitest's report is detected",
+}
+
 var notRewritten = map[string]string{
 	"cat a.go":                                 "file read: must stay byte-exact, and a rewrite would cost a permission prompt",
 	"env FOO=1 cat a.go":                       "file read: must stay byte-exact, and a rewrite would cost a permission prompt",
@@ -261,9 +268,6 @@ var notRewritten = map[string]string{
 	"uv run env LX_OFF=1 pytest":               "LX_RAW / LX_OFF: the user asked for the raw command",
 }
 
-// coverageGaps: a filter exists and a rewrite would be safe, but the hook
-// has no rule for the command yet. These are not safety exclusions: move
-// an entry out when the hook learns the command.
 var coverageGaps = map[string]string{
 	"go list ./...":          "go list: hook rule needs the -f/-json exclusions of the go-list filter",
 	"go list -m all":         "go list: hook rule needs the -f/-json exclusions of the go-list filter",
@@ -274,8 +278,6 @@ var coverageGaps = map[string]string{
 	"wget -qO- https://x":    "wget: not in the hook table (curl is)",
 }
 
-// condenses reports whether lx would run argv through a command filter,
-// and names the filter (or why not).
 func condenses(argv []string) (bool, string) {
 	c := &engine.Context{Argv: argv}
 	if engine.MachineReadableAny(c) {
@@ -306,15 +308,16 @@ func TestHookFilterContract(t *testing.T) {
 		sup := hook.Supported(argv)
 		cond, why := condenses(argv)
 		_, generic := genericOnly[cmd]
+		_, runner := runnerOnly[cmd]
 		_, deliberate := notRewritten[cmd]
 		_, gap := coverageGaps[cmd]
 		skip := deliberate || gap
 		switch {
-		case generic && skip, deliberate && gap:
+		case generic && runner, (generic || runner) && skip, deliberate && gap:
 			bad = append(bad, fmt.Sprintf("%q: listed in more than one exception map", cmd))
-		case generic:
+		case generic || runner:
 			if !sup || cond {
-				bad = append(bad, fmt.Sprintf("%q: stale genericOnly entry (Supported=%v, filter: %s)", cmd, sup, why))
+				bad = append(bad, fmt.Sprintf("%q: stale genericOnly/runnerOnly entry (Supported=%v, filter: %s)", cmd, sup, why))
 			}
 		case skip:
 			if sup || !cond {
@@ -324,7 +327,7 @@ func TestHookFilterContract(t *testing.T) {
 			bad = append(bad, fmt.Sprintf("%q: Supported=%v but filter: %s", cmd, sup, why))
 		}
 	}
-	for name, m := range map[string]map[string]string{"genericOnly": genericOnly, "notRewritten": notRewritten, "coverageGaps": coverageGaps} {
+	for name, m := range map[string]map[string]string{"genericOnly": genericOnly, "runnerOnly": runnerOnly, "notRewritten": notRewritten, "coverageGaps": coverageGaps} {
 		for cmd, reason := range m {
 			if strings.TrimSpace(reason) == "" {
 				bad = append(bad, fmt.Sprintf("%s[%q] has no reason", name, cmd))
@@ -340,9 +343,6 @@ func TestHookFilterContract(t *testing.T) {
 	}
 }
 
-// contractWrappers are put in front of every contract command: the hook
-// (through engine.Peel), the filters' own peelers and engine.Resolve must
-// keep agreeing on the command inside.
 var contractWrappers = []string{"uv run", "poetry run", "pdm run", "uvx", "env -u X", "env A=1",
 	"timeout 5", "gtimeout 5", "nice -n 5", "nohup", "time -p"}
 
@@ -350,9 +350,10 @@ func TestHookFilterContractWrapped(t *testing.T) {
 	var bad []string
 	for _, cmd := range contractCommands {
 		_, generic := genericOnly[cmd]
+		_, runner := runnerOnly[cmd]
 		_, deliberate := notRewritten[cmd]
 		_, gap := coverageGaps[cmd]
-		if generic || deliberate || gap {
+		if generic || runner || deliberate || gap {
 			continue
 		}
 		for _, w := range contractWrappers {
@@ -370,7 +371,6 @@ func TestHookFilterContractWrapped(t *testing.T) {
 	}
 }
 
-// Resolve peels a project runner and hands the inner command to its filter.
 func TestResolveProjectRunner(t *testing.T) {
 	c := &engine.Context{Argv: []string{"poetry", "run", "jest"}, Exit: 1, Cwd: "/w"}
 	f, fc := engine.Resolve(c)
@@ -385,9 +385,6 @@ func TestResolveProjectRunner(t *testing.T) {
 	}
 }
 
-// Resolve must not change which filter handles any captured command: every
-// golden file is produced through Find, and stays byte-identical when
-// Process switches to Resolve.
 func TestResolveKeepsCorpusFilters(t *testing.T) {
 	dirs := []string{filepath.Join(fixture.Root(), "testdata", "corpus")}
 	pkgs, _ := filepath.Glob(filepath.Join(fixture.Root(), "internal", "*", "*", "testdata"))
@@ -424,7 +421,7 @@ func TestResolveKeepsCorpusFilters(t *testing.T) {
 func TestRewriteWrappers(t *testing.T) {
 	const same = "\x00same"
 	cases := []struct{ in, want string }{
-		// project runners: lx goes in front of the whole command line
+
 		{`uv run pytest -x`, `lx uv run pytest -x`},
 		{`uv run --with ruff pytest`, `lx uv run --with ruff pytest`},
 		{`poetry run mypy src`, `lx poetry run mypy src`},
@@ -433,7 +430,7 @@ func TestRewriteWrappers(t *testing.T) {
 		{`FOO=1 uv run pytest`, `FOO=1 lx uv run pytest`},
 		{`pdm run pytest -q`, `lx pdm run pytest -q`},
 		{`uv tool run ruff check .`, `lx uv tool run ruff check .`},
-		{`timeout 600 uv run pytest -x 2>&1 | tail -40`, `timeout 600 lx uv run pytest -x 2>&1 | tail -40`},
+		{`timeout 600 uv run pytest -x 2>&1`, `timeout 600 lx uv run pytest -x 2>&1`},
 		{`env -u VIRTUAL_ENV uv run pytest`, `lx env -u VIRTUAL_ENV uv run pytest`},
 		{`uv run python`, same},
 		{`uv run python script.py`, same},
@@ -445,7 +442,6 @@ func TestRewriteWrappers(t *testing.T) {
 		{`uv run lx pytest`, same},
 		{`env -i uv run pytest`, same},
 
-		// git subcommands the list and search filters handle
 		{`git grep -n foo`, `lx git grep -n foo`},
 		{`git worktree list`, `lx git worktree list`},
 		{`git shortlog -sn`, `lx git shortlog -sn`},
@@ -459,36 +455,29 @@ func TestRewriteWrappers(t *testing.T) {
 		{`git worktree add ../x`, same},
 		{`git submodule update --init`, same},
 
-		// versioned Go toolchains
 		{`gotip test ./...`, `lx gotip test ./...`},
 		{`go1.22.3 vet ./...`, `lx go1.22.3 vet ./...`},
 		{`gotip run .`, same},
 		{`go1.22.3 test -json ./...`, same},
 
-		// lx must be able to exec the word it goes in front of: `command`
-		// is a shell builtin (no executable on Debian, Ubuntu, Alpine).
 		{`command go test ./...`, `command lx go test ./...`},
 		{`\command go test ./...`, same},
 		{`"command" go test ./...`, same},
-		{`env -u X command go test ./...`, `lx env -u X command go test ./...`}, // env execs it either way
+		{`env -u X command go test ./...`, `lx env -u X command go test ./...`},
 
-		// LX_RAW / LX_OFF inside a wrapper still mean "raw".
 		{`env -u X LX_RAW=1 go test ./...`, same},
 		{`uv run env LX_OFF=yes pytest`, same},
 		{`env -u X LX_RAW=0 go test ./...`, `lx env -u X LX_RAW=0 go test ./...`},
 		{`env -u X LX_RAW= go test ./...`, `lx env -u X LX_RAW= go test ./...`},
 
-		// git stash: show must be the subcommand for -p to be a diff.
 		{`git stash show -p`, `lx git stash show -p`},
 		{`git stash show -p stash@{1}`, `lx git stash show -p stash@{1}`},
-		{`git stash -p show`, same}, // push --patch with "show" as a pathspec: interactive
+		{`git stash -p show`, same},
 		{`git stash --patch`, same},
 		{`git stash push -p`, same},
 
-		// GNU timeout as Homebrew's coreutils installs it on macOS.
 		{`gtimeout 60 go test ./...`, `lx gtimeout 60 go test ./...`},
 
-		// ninja and cmake --build: no target named like a server or watcher
 		{`ninja -C build`, `lx ninja -C build`},
 		{`ninja -C build-debug -j 8 all`, `lx ninja -C build-debug -j 8 all`},
 		{`ninja serve`, same},
@@ -513,18 +502,11 @@ func TestRewriteWrappers(t *testing.T) {
 	}
 }
 
-// The rewrite goes in front of the wrapper (lx uv run git push), where the
-// host's rules no longer see the command inside: a deny or ask rule for
-// that command must be judged by lx on the original, exactly as it is for
-// `timeout 5 git push`. (Needs the internal/hook/perms.go permSegment edit
-// of the wrapper-peel-contract item.)
 func TestRulesSeeWrappedCommands(t *testing.T) {
 	const pending = " (pending LEAD EDIT from wrapper-peel-contract? perms.go permSegment must add wrappedTexts to the lenient texts)"
 	deny := hook.Rules{Deny: []string{"Bash(git push:*)"}, Allow: []string{"Bash(lx:*)"}}
 	ask := hook.Rules{Ask: []string{"Bash(git push:*)"}}
 
-	// A command the model writes as lx … is judged as if lx weren't there,
-	// wrappers included.
 	const pendingLx = " (pending LEAD EDIT from wrapper-peel-contract? claude.go evaluateWith and perms.go permSegment must check wrappedTexts of lx's inner command)"
 	for _, cmd := range []string{"lx git push", "lx timeout 5 git push", "lx uv run git push --force",
 		"lx env -u X git push", "lx -v nice -n 5 poetry run git push"} {
@@ -537,7 +519,7 @@ func TestRulesSeeWrappedCommands(t *testing.T) {
 	}
 
 	for _, cmd := range []string{
-		"timeout 5 git push", // peeled by the rewriter itself: the reference behavior
+		"timeout 5 git push",
 		"uv run git push --force",
 		"env -u X git push origin main",
 		"poetry run git push",
@@ -546,7 +528,7 @@ func TestRulesSeeWrappedCommands(t *testing.T) {
 		if rw, dec := hook.EvaluateClaude(cmd, t.TempDir(), false, hook.Rules{}); rw == "" || dec != "" {
 			t.Fatalf("%q without rules: rewritten %q, decision %q; want a rewrite with no decision", cmd, rw, dec)
 		}
-		// Deny: lx stays out of the way and the host judges the original.
+
 		if rw, dec := hook.EvaluateClaude(cmd, t.TempDir(), false, deny); rw != "" || dec != "" {
 			t.Errorf("%q under deny Bash(git push:*): rewritten %q, decision %q; want no rewrite%s", cmd, rw, dec, pending)
 		}
@@ -556,9 +538,6 @@ func TestRulesSeeWrappedCommands(t *testing.T) {
 	}
 }
 
-// A wrapped command reads exactly like the bare one: Process resolves the
-// filter through the wrapper and hands it the inner command line. (This
-// needs the engine.Process edit of the wrapper-peel-contract item.)
 func TestProcessResolvesWrappers(t *testing.T) {
 	cases := []struct {
 		category, name string
@@ -592,7 +571,6 @@ func TestProcessResolvesWrappers(t *testing.T) {
 		}
 	}
 
-	// Machine-readable output under a wrapper is passed through too.
 	raw := strings.Repeat(" M internal/engine/engine.go\n?? internal/engine/peel.go\n", 200)
 	for _, argv := range [][]string{{"git", "status", "-s"}, {"uv", "run", "git", "status", "-s"}, {"env", "A=1", "git", "status", "-s"}} {
 		if r := engine.Process(&engine.Context{Argv: argv}, raw, engine.Options{}); r.Filter != "passthrough" {
@@ -602,8 +580,6 @@ func TestProcessResolvesWrappers(t *testing.T) {
 	}
 }
 
-// BenchmarkSupported runs the hook's decision over the whole contract table
-// (it runs on every agent command, so it must stay in the microseconds).
 func BenchmarkSupported(b *testing.B) {
 	argvs := make([][]string, len(contractCommands))
 	for i, cmd := range contractCommands {

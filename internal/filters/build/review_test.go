@@ -1,8 +1,5 @@
 package build
 
-// Regression tests for the issues found in the adversarial review of this
-// package. Each test names the failure it guards against.
-
 import (
 	"fmt"
 	"github.com/iheeb1/lx/internal/testenv"
@@ -13,8 +10,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// Fake filters for delegation tests. Neither name clashes with a real
-// command: "git lxfake-show" and "node lxfake.js".
 type fakeContent struct{}
 
 func (fakeContent) Name() string    { return "lxfake-content" }
@@ -23,7 +18,6 @@ func (fakeContent) Match(c *engine.Context) bool {
 	return len(c.Argv) > 1 && c.Name() == "git" && c.Argv[1] == "lxfake-show"
 }
 
-// Apply keeps only the first line, as a data filter may cut long data.
 func (fakeContent) Apply(c *engine.Context, out string) (string, bool) {
 	first, _, _ := strings.Cut(out, "\n")
 	return first + "\n[fake: rest of the data cut]", true
@@ -37,7 +31,6 @@ func (fakeGuarded) Match(c *engine.Context) bool {
 	return len(c.Argv) > 1 && c.Name() == "node" && c.Argv[1] == "lxfake.js"
 }
 
-// Apply summarizes whatever it gets in one line, trusting it is its own.
 func (fakeGuarded) Apply(c *engine.Context, out string) (string, bool) {
 	return fmt.Sprintf("[fake: %d lines of script output]", strings.Count(out, "\n")+1), true
 }
@@ -47,8 +40,6 @@ func init() {
 	engine.Register(fakeGuarded{})
 }
 
-// assertLines fails unless every line of want occurs in got verbatim and
-// the self-guard never had to re-add anything.
 func assertLines(t *testing.T, got string, want ...string) {
 	t.Helper()
 	for _, w := range want {
@@ -61,9 +52,6 @@ func assertLines(t *testing.T, got string, want ...string) {
 	}
 }
 
-// Issue 1 (high): the generic reducer folded compiler diagnostics without
-// an error word ("undefined: lookup", Kotlin "Type mismatch") into "… N
-// similar lines …", hiding every location but the first and last.
 func TestReviewDiagnosticsNeverFoldedAsSimilar(t *testing.T) {
 	var gobuild, kotlin, gradleJavac []string
 	for i := 1; i <= 8; i++ {
@@ -99,7 +87,7 @@ func TestReviewDiagnosticsNeverFoldedAsSimilar(t *testing.T) {
 			assertLines(t, got, tc.want...)
 		})
 	}
-	// Non-diagnostic similar lines are still folded.
+
 	var logs []string
 	for i := 10; i < 30; i++ {
 		logs = append(logs, fmt.Sprintf("generated file %d of 40", i))
@@ -110,9 +98,6 @@ func TestReviewDiagnosticsNeverFoldedAsSimilar(t *testing.T) {
 	}
 }
 
-// Issue 2 (medium): long runs of include-chain or gcc context lines with no
-// diagnostic header after them were re-scanned from every line: quadratic
-// (10k lines took 16 s).
 func TestReviewPrefixRunsLinear(t *testing.T) {
 	for _, unit := range []string{"In file included from a.h:1:\n", "a.c: In function 'f':\n", "src/x.cpp:9:12:   required from here\n"} {
 		in := strings.Repeat(unit, 50000) + "make: *** [x.o] Error 1"
@@ -125,15 +110,12 @@ func TestReviewPrefixRunsLinear(t *testing.T) {
 			t.Errorf("%q: make error lost (ok=%v)", strings.TrimSpace(unit), ok)
 		}
 	}
-	// The skip must not hide a diagnostic that follows a failed prefix run.
+
 	in := "In file included from a.h:1:\nIn file included from b.h:2:\nnot a header\nIn file included from c.h:3:\nd.h:4:1: error: boom\n1 error generated."
 	got, _ := apply(t, 1, []string{"cc", "-c", "a.c"}, in)
 	assertLines(t, got, "In file included from c.h:3:", "d.h:4:1: error: boom")
 }
 
-// Issue 3 (medium): with more than one "test result:" line lx added its
-// own total, which read "0 failed" when a test binary crashed before its
-// result line (exit 101): pass-like text on a failed run.
 func TestReviewCargoTotalNeverPassLikeOnFailure(t *testing.T) {
 	ok2 := "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
 	ok1 := "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
@@ -150,8 +132,6 @@ func TestReviewCargoTotalNeverPassLikeOnFailure(t *testing.T) {
 	}
 	assertLines(t, got, "fatal runtime error: stack overflow", "error: test failed, to rerun pass `--test api`", "(signal: 6, SIGABRT: process abort signal)")
 
-	// On a passing run, and on a failed run whose results report failures,
-	// the total stays.
 	pass := strings.Replace(crash, "\nthread 'y' has overflowed its stack\nfatal runtime error: stack overflow\nerror: test failed, to rerun pass `--test api`\n\nCaused by:\n  process didn't exit successfully: `/home/user/src/demo/target/debug/deps/api-2` (signal: 6, SIGABRT: process abort signal)\n", "\n"+ok1+"\n\n", 1)
 	if got, _ := apply(t, 0, []string{"cargo", "test"}, pass); !strings.Contains(got, "[lx: total of 3 test result lines: 4 passed; 0 failed;") {
 		t.Errorf("total missing on a passing run:\n%s", got)
@@ -162,9 +142,6 @@ func TestReviewCargoTotalNeverPassLikeOnFailure(t *testing.T) {
 	}
 }
 
-// Issue 4 (medium): make handed the lines after an echoed recipe to that
-// tool's filter and trusted it with them, even for data (Content) filters,
-// and even when a silent recipe's compiler errors followed.
 func TestReviewDelegationTrust(t *testing.T) {
 	t.Run("content filters are not delegated to", func(t *testing.T) {
 		in := "git lxfake-show\nv1.2.3\nconfigure: error: C compiler cannot create executables\nsee config.log\nmake: *** [deps] Error 1"
@@ -187,21 +164,18 @@ func TestReviewDelegationTrust(t *testing.T) {
 		}
 	})
 	t.Run("python-style diagnostics still reach the delegate", func(t *testing.T) {
-		// Only C-family files end the body: a script's own "x.py:3: error:"
-		// lines are its output.
+
 		got, _ := apply(t, 2, []string{"make"}, "node lxfake.js\nx.py:3: error: bad\nmake: *** [lint] Error 1")
 		assertLines(t, got, "[fake: 1 lines of script output]")
 	})
 }
 
-// Issue 5 (low): cc matched machine-readable diagnostics (gcc JSON/SARIF,
-// clang SARIF) and AST dumps.
 func TestReviewCcMachineOutput(t *testing.T) {
 	for argv, want := range map[string]bool{
 		"gcc -fdiagnostics-format=json -c a.c":              false,
 		"gcc -fdiagnostics-format=json-stderr -c a.c":       false,
 		"clang -fdiagnostics-format=sarif -c a.c":           false,
-		"gcc -fdiagnostics-format=sarif-file -c a.c":        true, // written to a file
+		"gcc -fdiagnostics-format=sarif-file -c a.c":        true,
 		"clang -fsyntax-only -Xclang -ast-dump a.c":         false,
 		"clang -fdiagnostics-format=clang -c a.c":           true,
 		"clang++ -fsyntax-only -fcolor-diagnostics a.cpp":   true,
@@ -214,9 +188,6 @@ func TestReviewCcMachineOutput(t *testing.T) {
 	}
 }
 
-// Issue 6 (medium): any "libtool: …" line counted as a hidden recipe
-// command, so "libtool:   error: cannot find the library …" disappeared
-// (exempt from the guard) unless it happened to precede make's error.
 func TestReviewLibtoolReportsAreNotCommands(t *testing.T) {
 	in := "libtool: compile:  gcc -DHAVE_CONFIG_H -I. -g -O2 -c foo.c  -fno-common -DPIC -o .libs/foo.o\n" +
 		"libtool: link: gcc -shared -o .libs/libfoo.so .libs/foo.o\n" +
@@ -228,18 +199,12 @@ func TestReviewLibtoolReportsAreNotCommands(t *testing.T) {
 		"libtool: warning: '/usr/lib/libbaz.la' seems to be moved", "[lx: hidden: 1 recipe command (libtool)]")
 }
 
-// Issue 7 (low): Gradle chatter patterns hid (and exempted) error-class
-// lines of the same shape.
 func TestReviewGradleErrorShapedChatterKept(t *testing.T) {
 	in := "> Task :app:compileJava UP-TO-DATE\nDownload https://repo.example.com/x.pom failed: 403 Forbidden\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':app:compileJava'.\n\nBUILD FAILED in 2s"
 	got, _ := apply(t, 1, []string{"./gradlew", "build"}, in)
 	assertLines(t, got, "Download https://repo.example.com/x.pom failed: 403 Forbidden")
 }
 
-// Issue 8 (low): "Nothing to be done" lines of sub-makes are counted, but
-// were not exempt, so an error-word target name made the guard re-add them.
-// "cc1: some warnings being treated as errors" (gcc -Werror=…) was not
-// recognized as the compiler's failure line.
 func TestReviewMakeSmallShapes(t *testing.T) {
 	got, _ := apply(t, 0, []string{"make"}, "make[1]: Nothing to be done for 'error-pages'.\nmake[1]: Nothing to be done for 'all'.\ncc -c a.c\nmake: Nothing to be done for 'install'.")
 	assertLines(t, got, "2 \"Nothing to be done\" lines")
@@ -248,9 +213,6 @@ func TestReviewMakeSmallShapes(t *testing.T) {
 	assertLines(t, got, "gcc -Werror=format -c b.c\nb.c:3:5: warning", "cc1: some warnings being treated as errors")
 }
 
-// Improvement: javac warnings under Maven were kept one by one (a hundred
-// "[WARNING] …:[l,c] found raw type" lines); now each message is kept once
-// with its detail lines and a location list.
 func TestReviewMavenJavacWarningsGrouped(t *testing.T) {
 	var b strings.Builder
 	for i := 1; i <= 30; i++ {
@@ -259,11 +221,11 @@ func TestReviewMavenJavacWarningsGrouped(t *testing.T) {
 			b.WriteString("[WARNING] /home/user/src/demo/src/main/java/B.java:[3,4] found raw type: java.util.List\n  missing type arguments for generic class java.util.List<E>\n")
 		}
 	}
-	// Same message, other detail lines: not merged.
+
 	b.WriteString("[WARNING] /home/user/src/demo/src/main/java/C.java:[5,6] found raw type: java.util.List\n  other detail\n")
-	// An exact repeat: counted on the first line.
+
 	b.WriteString("[WARNING] /home/user/src/demo/src/main/java/A.java:[1,12] found raw type: java.util.List\n  missing type arguments for generic class java.util.List<E>\n")
-	// Error-class warnings are never merged.
+
 	b.WriteString("[WARNING] /home/user/src/demo/src/main/java/D.java:[1,1] could not resolve annotation X\n[WARNING] /home/user/src/demo/src/main/java/D.java:[2,1] could not resolve annotation X\n")
 	b.WriteString("[INFO] BUILD SUCCESS")
 	got, ok := apply(t, 0, []string{"mvn", "compile"}, b.String())
@@ -282,9 +244,6 @@ func TestReviewMavenJavacWarningsGrouped(t *testing.T) {
 	}
 }
 
-// Improvement: stack traces Maven prints under its [ERROR] prefix (surefire
-// fork crashes, plugin exceptions) are folded like unprefixed ones, and a
-// block surefire prints twice is shown once.
 func TestReviewMavenErrorPrefixedTraces(t *testing.T) {
 	var b strings.Builder
 	block := "[ERROR] The forked VM terminated without properly saying goodbye. VM crash or System.exit called?\n[ERROR] Command was /bin/sh -c cd '/x' && java -jar surefirebooter.jar\n[ERROR] Process Exit Code: 3\n[ERROR] Crashed tests:\n[ERROR] com.example.ExitTest\n"
@@ -309,14 +268,14 @@ func TestReviewMavenErrorPrefixedTraces(t *testing.T) {
 	}
 	assertLines(t, got,
 		"[ERROR] \tat org.apache.maven.plugin.surefire.booterclient.ForkStarter.fork(ForkStarter.java:643)",
-		"[ERROR] \tat com.example.build.Custom.run(Custom.java:12)", // application frame kept
+		"[ERROR] \tat com.example.build.Custom.run(Custom.java:12)",
 		"library frames",
 		"[lx: 4 [ERROR] lines repeated verbatim from above]",
 		"[ERROR] org.apache.maven.surefire.booter.SurefireBooterForkException: The forked VM terminated")
 	if strings.Count(got, "Command was") != 1 {
 		t.Errorf("repeated block not collapsed:\n%s", got)
 	}
-	// Short repeats (fewer than 3 lines) stay as they are.
+
 	in := "[ERROR] a.java:[1,1] boom\n[ERROR] x\n[ERROR] Failed to execute goal g on project p: Compilation failure\n[ERROR] a.java:[1,1] boom\n[ERROR] y"
 	got, _ = apply(t, 1, []string{"mvn", "compile"}, in)
 	if strings.Count(got, "a.java:[1,1] boom") != 2 {
@@ -324,7 +283,6 @@ func TestReviewMavenErrorPrefixedTraces(t *testing.T) {
 	}
 }
 
-// Streamer: dev servers and continuous builds must not be buffered.
 func TestReviewStream(t *testing.T) {
 	for argv, want := range map[string]bool{
 		"./gradlew bootRun": true, "gradle :app:run": true, "./gradlew build --continuous": true, "gradle -t test": true,
@@ -344,16 +302,13 @@ func TestReviewStream(t *testing.T) {
 	}
 }
 
-// False-pass hunt: runs that failed must never read as a success; the
-// failure is in view (or the filter bails and the generic reducer shows
-// the tail).
 func TestReviewFailedRunsShowTheFailure(t *testing.T) {
 	cases := []struct {
 		name string
 		exit int
 		argv []string
 		in   string
-		want string // "" = the filter must bail
+		want string
 	}{
 		{"make: go test passes, a later recipe fails silently", 2, []string{"make", "check"},
 			"go test ./...\nok  \texample.com/x\t0.01s\nok  \texample.com/y\t0.01s\n./scripts/verify.sh\nmake: *** [check] Error 3", "make: *** [check] Error 3"},
@@ -396,7 +351,7 @@ func TestReviewFailedRunsShowTheFailure(t *testing.T) {
 				t.Fatal("bailed")
 			}
 			assertLines(t, got, tc.want)
-			// Nothing lx adds may read as a pass.
+
 			for _, ln := range strings.Split(got, "\n") {
 				if strings.HasPrefix(ln, "[lx:") && (strings.Contains(ln, " 0 failed") || strings.Contains(ln, "success")) {
 					t.Errorf("pass-like lx line on a failed run: %q", ln)
@@ -406,8 +361,6 @@ func TestReviewFailedRunsShowTheFailure(t *testing.T) {
 	}
 }
 
-// Variants: Windows line endings and ANSI colors are normalized before
-// filters run; the filters must still recognize the shapes.
 func TestReviewCRLFAndColor(t *testing.T) {
 	raw := "cc -c a.c\r\n\x1b[1ma.c:3:5: \x1b[0m\x1b[0;1;31merror: \x1b[0m\x1b[1muse of undeclared identifier 'x'\x1b[0m\r\n    3 |   x = 1;\r\n      |   ^\r\n1 error generated.\r\nmake: *** [a.o] Error 1\r\n"
 	c := ctx(2, "make")
@@ -420,8 +373,6 @@ func TestReviewCRLFAndColor(t *testing.T) {
 	}
 }
 
-// isErrorLine must agree with engine.IsError: on every line of every
-// fixture, and on warning lines built around error words.
 func TestIsErrorLineAgrees(t *testing.T) {
 	var lines []string
 	for _, f := range loadFixtures(t) {
@@ -438,7 +389,6 @@ func TestIsErrorLineAgrees(t *testing.T) {
 	}
 }
 
-// go test ./internal/filters/build -run '^$' -fuzz FuzzIsErrorLine -fuzztime 20s
 func FuzzIsErrorLine(f *testing.F) {
 	for _, s := range []string{"could not open", "no warnings", "0 errors", "error", "fatal", "undefined reference to `x'", "✗ x"} {
 		f.Add("a.c:1:2: ", s)
@@ -456,9 +406,6 @@ func FuzzIsErrorLine(f *testing.F) {
 	})
 }
 
-// Savings: RUST_BACKTRACE frames of the standard library and runtime are
-// folded; every application frame stays; the full format (addresses) is
-// understood; an error-class frame is never folded.
 func TestReviewRustBacktraceFold(t *testing.T) {
 	std := "/rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library"
 	in := "     Running unittests src/lib.rs (target/debug/deps/demo-1)\n\nrunning 1 test\ntest a ... FAILED\n\nfailures:\n\n---- a stdout ----\n\n" +
@@ -479,7 +426,7 @@ func TestReviewRustBacktraceFold(t *testing.T) {
 	}
 	assertLines(t, got,
 		"thread 'a' panicked at src/lib.rs:9:5:\nboom\nstack backtrace:\n   … 3 library frames (std, core)\n   3:        0x1049c8f3c - demo::a::h2\n                               at ./src/lib.rs:9:5\n",
-		// A single library frame between application frames stays.
+
 		"   4:        0x1049c8f3c - serde_json::de::from_str::h3\n",
 		"   5:        0x1049c8f3c - demo::a::{{closure}}::h4\n                               at ./src/lib.rs:7:10\n   … 3 library frames (core, test, std)\n",
 		"test result: FAILED. 0 passed; 1 failed;")
@@ -488,9 +435,6 @@ func TestReviewRustBacktraceFold(t *testing.T) {
 	}
 }
 
-// Savings: in a template error storm only the first maxSysExcerpts source
-// excerpts from system headers are shown; every header line stays, and
-// excerpts of the project's own files are never hidden.
 func TestReviewSystemHeaderExcerpts(t *testing.T) {
 	var b strings.Builder
 	for i := 1; i <= 6; i++ {
@@ -509,9 +453,6 @@ func TestReviewSystemHeaderExcerpts(t *testing.T) {
 	}
 }
 
-// A cargo test run in which no test ran at all (a name filter matching
-// nothing) keeps cargo's result lines: "16 filtered out" is the finding.
-// When other binaries ran tests, empty ones are still counted and hidden.
 func TestReviewCargoNothingRan(t *testing.T) {
 	empty := func(bin string, filtered int) string {
 		return fmt.Sprintf("     Running unittests %s (target/debug/deps/demo-1)\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; %d filtered out; finished in 0.00s\n\n", bin, filtered)
@@ -526,19 +467,14 @@ func TestReviewCargoNothingRan(t *testing.T) {
 	}
 }
 
-// Issue (medium): a line ending in a backslash (a Windows path) followed by
-// an indented error was taken for an echoed multi-line shell recipe: the
-// error line was hidden and exempt from the guard.
 func TestReviewBackslashLineIsNotARecipe(t *testing.T) {
 	got, _ := apply(t, 2, []string{"mingw32-make"}, "cc -c a.c\nCopying to C:\\build\\out\\\n    error: access denied\nmake: *** [install] Error 1")
 	assertLines(t, got, "Copying to C:\\build\\out\\", "    error: access denied", "make: *** [install] Error 1")
-	// A real echoed recipe still folds, error words in its code included.
+
 	got, _ = apply(t, 0, []string{"make"}, "for d in a b; do \\\n\tif grep -q FAIL $d.log; then \\\n\t\texit 1; \\\n\tfi; \\\n\tdone\nall good")
 	assertLines(t, got, "for d in a b; do \\\n[lx: 4 more lines of this echoed recipe hidden]")
 }
 
-// Gradle's "* Try:" advice is counted, but an error-class line in it is a
-// report and stays.
 func TestReviewGradleTryBlock(t *testing.T) {
 	in := "> Task :app:compileJava FAILED\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':app:compileJava'.\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Could not reach https://repo.example.com: connection refused\n> Run with --scan to get full insights.\n\nBUILD FAILED in 1s"
 	got, _ := apply(t, 1, []string{"gradle", "build"}, in)

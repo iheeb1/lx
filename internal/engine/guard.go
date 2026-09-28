@@ -5,27 +5,16 @@ import (
 	"strings"
 )
 
-// Guarded is implemented by filters that preserve errors themselves in a
-// reformatted shape (e.g. tsc diagnostics grouped by file) and prove it in
-// their fidelity tests. The guard is skipped for them.
 type Guarded interface {
 	GuardsErrors() bool
 }
 
-// Content is implemented by filters whose output is data (file listings,
-// search matches, diffs, commit logs) where words like "error" are content,
-// not status. The guard is skipped for them.
 type Content interface {
 	IsContent() bool
 }
 
-// maxGuardLines bounds how many missing error lines the guard re-adds.
 const maxGuardLines = 40
 
-// Guard makes invariant I2 hold at runtime: every error-class line of the
-// normalized output that no longer appears in the filtered output is appended
-// in a clearly labeled section. It returns the new output and how many lines
-// it re-added.
 func Guard(clean, out string) (string, int) {
 	missing := missingErrorLines(clean, out, guardScanLimit)
 	if len(missing) == 0 {
@@ -48,8 +37,6 @@ func Guard(clean, out string) (string, int) {
 	return strings.TrimRight(b.String(), "\n"), n
 }
 
-// MissingErrorLines returns the distinct error-class lines of in whose text
-// (with whitespace runs collapsed) does not occur in out.
 func MissingErrorLines(in, out string) []string {
 	var m []string
 	for _, ln := range missingErrorLines(in, out, -1) {
@@ -58,11 +45,6 @@ func MissingErrorLines(in, out string) []string {
 	return m
 }
 
-// guardScanLimit bounds the substring scans the runtime guard performs, so
-// outputs with tens of thousands of distinct error lines stay linear. Past
-// it, a line absent from the exact-line set is reported missing — the guard
-// may then re-add a line that was present in a different shape, never the
-// other way round.
 const guardScanLimit = 2000
 
 func missingErrorLines(in, out string, scanLimit int) []string {
@@ -71,7 +53,7 @@ func missingErrorLines(in, out string, scanLimit int) []string {
 	for _, ln := range outLines {
 		have[strings.Join(strings.Fields(ln), " ")] = true
 	}
-	var norm string // built lazily: most checks hit the set
+	var norm string
 	var missing []string
 	seen := make(map[string]bool)
 	scans := 0
@@ -95,7 +77,6 @@ func missingErrorLines(in, out string, scanLimit int) []string {
 	return missing
 }
 
-// squash collapses every whitespace run to one space, per line.
 func squash(s string) string {
 	lines := strings.Split(s, "\n")
 	for i, ln := range lines {

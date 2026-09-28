@@ -7,11 +7,10 @@ import (
 	"testing"
 )
 
-// TestMain pins the rewrite prefix: the test binary is not named lx, and the
-// machine's PATH must not decide what the goldens contain. This is the
-// package's only TestMain.
 func TestMain(m *testing.M) {
 	resolvePrefix = pinnedPrefix
+
+	os.Unsetenv("LX_MODE")
 	os.Exit(m.Run())
 }
 
@@ -22,7 +21,6 @@ func pinnedPrefix(explicit string) string {
 	return "lx"
 }
 
-// fakeLx makes an executable file named lx and points executable at it.
 func fakeLx(t *testing.T, dir string) string {
 	t.Helper()
 	exe := filepath.Join(dir, "lx")
@@ -38,7 +36,7 @@ func fakeLx(t *testing.T, dir string) string {
 
 func TestDefaultPrefixNotOnPath(t *testing.T) {
 	exe := fakeLx(t, filepath.Join(t.TempDir(), "Jane Doe", "bin"))
-	t.Setenv("PATH", t.TempDir()) // empty: no lx anywhere
+	t.Setenv("PATH", t.TempDir())
 	if got, want := defaultPrefix(""), shellQuote(exe); got != want || !strings.HasPrefix(got, "'/") {
 		t.Errorf("defaultPrefix = %q, want %q", got, want)
 	}
@@ -69,8 +67,6 @@ func TestDefaultPrefixOtherLxOnPath(t *testing.T) {
 	}
 }
 
-// The real test binary is not named lx: a prefix deny rules could not
-// recognize is never used.
 func TestDefaultPrefixNeedsLxName(t *testing.T) {
 	t.Setenv("PATH", t.TempDir())
 	if got := defaultPrefix(""); got != "lx" {
@@ -90,7 +86,7 @@ func TestDefaultPrefixExplicit(t *testing.T) {
 	if got, want := defaultPrefix(lx), shellQuote(lx); got != want || !strings.HasPrefix(got, "'") {
 		t.Errorf("defaultPrefix = %q, want %q", got, want)
 	}
-	// A --prefix whose binary was moved away: fall back, never a 127.
+
 	exe := fakeLx(t, t.TempDir())
 	t.Setenv("PATH", t.TempDir())
 	if got := defaultPrefix("/nonexistent/John Doe/bin/lx"); got != shellQuote(exe) {
@@ -98,9 +94,6 @@ func TestDefaultPrefixExplicit(t *testing.T) {
 	}
 }
 
-// End to end: --prefix goes into the rewrite, and the model copying that
-// form is still held to the deny rules. (The pinned prefix quotes the
-// explicit path as defaultPrefix does for an existing file.)
 func TestHookExplicitPrefix(t *testing.T) {
 	const lx = "/Users/John Doe/bin/lx"
 
@@ -118,7 +111,7 @@ func TestHookExplicitPrefix(t *testing.T) {
 	if !strings.Contains(out, `"permissionDecision":"deny"`) {
 		t.Errorf("model-written prefixed form escaped the deny rule: %q", out)
 	}
-	// Rewrite / Inspect (lx rewrite, discover) always say plain lx.
+
 	if got, _ := Rewrite("git status"); got != "lx git status" {
 		t.Errorf("Rewrite = %q", got)
 	}

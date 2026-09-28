@@ -32,7 +32,6 @@ func initAt(t *testing.T, dir string, o InitOptions) (string, error) {
 	return out.String(), err
 }
 
-// keys returns the top-level keys of a JSON object in file order.
 func keys(t *testing.T, data string) []string {
 	t.Helper()
 	o, err := parseObject([]byte(data))
@@ -109,7 +108,6 @@ func TestInitPreservesOtherTools(t *testing.T) {
 	}
 	got := readFile(t, path)
 
-	// Key order and every foreign value survive; only lx's group is added.
 	if k := keys(t, got); !reflect.DeepEqual(k, []string{"$schema", "permissions", "hooks", "model", "futureSetting"}) {
 		t.Errorf("key order = %q", k)
 	}
@@ -135,14 +133,14 @@ func TestInitPreservesOtherTools(t *testing.T) {
 		pre[2].Matcher != "Bash" || pre[2].Hooks[0].Command != "/opt/lx/bin/lx hook claude" {
 		t.Errorf("PreToolUse = %+v", pre)
 	}
-	// Backup holds the previous bytes; mode is preserved.
+
 	if b := readFile(t, path+".bak"); b != otherTools {
 		t.Errorf("backup differs from the original")
 	}
 	if fi, _ := os.Stat(path); fi.Mode().Perm() != 0o644 {
 		t.Errorf("mode changed to %v", fi.Mode().Perm())
 	}
-	// No temp files left behind.
+
 	entries, _ := os.ReadDir(dir)
 	if len(entries) != 2 {
 		t.Errorf("dir has %d entries", len(entries))
@@ -167,7 +165,6 @@ func TestInitIdempotentAndPathUpdate(t *testing.T) {
 		t.Error("no-op run wrote a backup")
 	}
 
-	// A moved binary updates the existing entry instead of adding one.
 	if _, err := initAt(t, dir, InitOptions{LxPath: "/Users/Jane Doe/bin/lx"}); err != nil {
 		t.Fatal(err)
 	}
@@ -175,7 +172,7 @@ func TestInitIdempotentAndPathUpdate(t *testing.T) {
 	if strings.Count(got, "hook claude") != 1 || !strings.Contains(got, `"command": "'/Users/Jane Doe/bin/lx' hook claude"`) {
 		t.Errorf("path not updated in place:\n%s", got)
 	}
-	// ...and the quoted form is recognized on the next run.
+
 	if msg, _ := initAt(t, dir, InitOptions{LxPath: "/Users/Jane Doe/bin/lx"}); !strings.Contains(msg, "already installed") {
 		t.Errorf("quoted path not recognized: %q", msg)
 	}
@@ -184,7 +181,7 @@ func TestInitIdempotentAndPathUpdate(t *testing.T) {
 func TestInitUninstall(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "settings.json")
-	// lx shares a group with another tool's hook, and also has its own group.
+
 	orig := `{"hooks": {"PreToolUse": [
 		{"matcher": "Bash", "hooks": [{"type": "command", "command": "other-tool check"}, {"type": "command", "command": "lx hook claude"}]},
 		{"matcher": "Bash", "hooks": [{"type": "command", "command": "/old/path/lx hook claude"}]},
@@ -211,7 +208,6 @@ func TestInitUninstall(t *testing.T) {
 		t.Errorf("want 2 groups left (shared + Edit), got %d:\n%s", n, got)
 	}
 
-	// Nothing left to remove: report it, don't touch the file.
 	before := readFile(t, path)
 	msg, err := initAt(t, dir, InitOptions{Uninstall: true})
 	if err != nil || !strings.Contains(msg, "no lx hook") || readFile(t, path) != before {
@@ -239,7 +235,6 @@ func TestInitRefusesSymlinks(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// settings.json is a symlink
 	dir := t.TempDir()
 	if err := os.Symlink(target, filepath.Join(dir, "settings.json")); err != nil {
 		t.Fatal(err)
@@ -247,7 +242,7 @@ func TestInitRefusesSymlinks(t *testing.T) {
 	if _, err := initAt(t, dir, InitOptions{}); err == nil || !strings.Contains(err.Error(), "symlink") {
 		t.Errorf("err = %v", err)
 	}
-	// the .claude directory itself is a symlink
+
 	link := filepath.Join(t.TempDir(), ".claude")
 	if err := os.Symlink(real, link); err != nil {
 		t.Fatal(err)
@@ -293,7 +288,7 @@ func TestInitRejectsBadFiles(t *testing.T) {
 			t.Errorf("%s: file modified", name)
 		}
 	}
-	// An empty file is treated as {}.
+
 	dir := t.TempDir()
 	if err := os.WriteFile(filepath.Join(dir, "settings.json"), []byte("\n"), 0o600); err != nil {
 		t.Fatal(err)
@@ -367,7 +362,6 @@ func TestSnippet(t *testing.T) {
 	}
 }
 
-// hookCmd reads the single lx hook command from a settings.json.
 func hookCmd(t *testing.T, path string) string {
 	t.Helper()
 	var v struct {
@@ -394,7 +388,6 @@ func hookCmd(t *testing.T, path string) string {
 	return found[0]
 }
 
-// fakeShell writes an executable script that plays the user's $SHELL.
 func fakeShell(t *testing.T, body string) string {
 	t.Helper()
 	p := filepath.Join(t.TempDir(), "fakesh")
@@ -405,7 +398,7 @@ func fakeShell(t *testing.T, body string) string {
 }
 
 func TestProbeShellLx(t *testing.T) {
-	// The probe must ask exactly `-lic 'command -v lx'`, with stdin closed.
+
 	sh := fakeShell(t, `[ "$1" = "-lic" ] && [ "$2" = "command -v lx" ] || exit 3
 echo "Welcome to your shell"
 if read -r line; then echo /from/stdin; fi
@@ -413,15 +406,15 @@ echo "/opt/lx/bin/lx  "`)
 	if got, err := ProbeShellLx(sh, 5*time.Second); err != nil || got != "/opt/lx/bin/lx" {
 		t.Errorf("probe = %q, %v", got, err)
 	}
-	// not found: command -v prints nothing and fails
+
 	if got, err := ProbeShellLx(fakeShell(t, "exit 1"), 5*time.Second); err != nil || got != "" {
 		t.Errorf("not found: %q, %v", got, err)
 	}
-	// an alias or a function is not a binary
+
 	if got, err := ProbeShellLx(fakeShell(t, "echo \"alias lx='ls -x'\""), 5*time.Second); err != nil || got != "" {
 		t.Errorf("alias: %q, %v", got, err)
 	}
-	// a shell that hangs is killed, with whatever it started
+
 	start := time.Now()
 	got, err := ProbeShellLx(fakeShell(t, "sleep 10 &\nsleep 10"), 300*time.Millisecond)
 	if err == nil || got != "" || time.Since(start) > 3*time.Second {
@@ -430,7 +423,7 @@ echo "/opt/lx/bin/lx  "`)
 	if _, err := ProbeShellLx(filepath.Join(t.TempDir(), "nosuchshell"), time.Second); err == nil {
 		t.Error("missing shell: no error")
 	}
-	// no $SHELL: /bin/sh -lc
+
 	if _, err := ProbeShellLx("", 5*time.Second); err != nil {
 		t.Errorf("/bin/sh: %v", err)
 	}
@@ -458,7 +451,7 @@ func TestInitProbe(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			dir := t.TempDir()
 			sh := fakeShell(t, c.script)
-			timeout := 10 * time.Second // a fresh script's first exec can be slow (macOS assesses it)
+			timeout := 10 * time.Second
 			if c.name == "timeout" {
 				timeout = 300 * time.Millisecond
 			}
@@ -481,7 +474,7 @@ func TestInitProbe(t *testing.T) {
 			}
 		})
 	}
-	// A path with spaces is quoted in both places.
+
 	dir := t.TempDir()
 	spaced := "/Users/Jane Doe/bin/lx"
 	if _, err := initAt(t, dir, InitOptions{LxPath: spaced, Probe: func() (string, error) { return "", nil }}); err != nil {
@@ -494,7 +487,7 @@ func TestInitProbe(t *testing.T) {
 	if f, ok := parseLxHook(want); !ok || f.prefix != spaced {
 		t.Errorf("parseLxHook = %+v, %v", f, ok)
 	}
-	// A probe error that is not a timeout is reported the same way.
+
 	msg, _ := initAt(t, t.TempDir(), InitOptions{Probe: func() (string, error) { return "", errors.New("boom") }})
 	if !strings.Contains(msg, "could not check your shell's PATH (boom)") {
 		t.Errorf("message: %s", msg)
@@ -514,20 +507,20 @@ func TestInitReadOnlyFlagPersists(t *testing.T) {
 	if strings.Contains(msg, "tip:") {
 		t.Errorf("tip printed with --readonly: %s", msg)
 	}
-	// A plain re-run keeps it (and the file is unchanged).
+
 	before := readFile(t, path)
 	msg, _ = initAt(t, dir, InitOptions{})
 	if readFile(t, path) != before || !strings.Contains(msg, "already installed") || strings.Contains(msg, "tip:") {
 		t.Errorf("plain re-run: %s\n%s", msg, readFile(t, path))
 	}
-	// A moved binary keeps it too.
+
 	if _, err := initAt(t, dir, InitOptions{LxPath: "/new/lx"}); err != nil {
 		t.Fatal(err)
 	}
 	if got := hookCmd(t, path); got != "/new/lx hook claude --readonly" {
 		t.Errorf("moved binary: %q", got)
 	}
-	// --no-readonly removes it.
+
 	msg, _ = initAt(t, dir, InitOptions{LxPath: "/new/lx", NoReadOnly: true})
 	if got := hookCmd(t, path); got != "/new/lx hook claude" {
 		t.Errorf("--no-readonly: %q", got)
@@ -535,7 +528,7 @@ func TestInitReadOnlyFlagPersists(t *testing.T) {
 	if !strings.Contains(msg, ReadOnlyTip) {
 		t.Errorf("no tip after --no-readonly: %s", msg)
 	}
-	// --prefix and --readonly together, in that order.
+
 	if _, err := initAt(t, dir, InitOptions{LxPath: "/new/lx", ReadOnly: true, Prefix: "/new/lx"}); err != nil {
 		t.Fatal(err)
 	}
@@ -544,7 +537,6 @@ func TestInitReadOnlyFlagPersists(t *testing.T) {
 	}
 }
 
-// Install then uninstall leaves the file exactly as it was, for every form.
 func TestInitRoundTrip(t *testing.T) {
 	root, err := parseObject([]byte(otherTools))
 	if err != nil {
@@ -575,7 +567,7 @@ func TestInitRoundTrip(t *testing.T) {
 			t.Errorf("%s: round trip changed the file:\n%s\nwant:\n%s", name, got, canonical)
 		}
 	}
-	// From no file at all: uninstall leaves an empty object.
+
 	dir := t.TempDir()
 	if _, err := initAt(t, dir, InitOptions{ReadOnly: true, Prefix: "/x/lx"}); err != nil {
 		t.Fatal(err)
@@ -588,7 +580,6 @@ func TestInitRoundTrip(t *testing.T) {
 	}
 }
 
-// Other hooks that only look like lx's are never touched.
 func TestInitLeavesLookalikes(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "settings.json")
@@ -614,8 +605,6 @@ func TestInitLeavesLookalikes(t *testing.T) {
 	}
 }
 
-// A binary not named lx gets no --prefix (the hook would ignore it), and
-// the message says what rewrites will really call.
 func TestInitPrefixNotNamedLx(t *testing.T) {
 	for _, c := range []struct {
 		probe func() (string, error)

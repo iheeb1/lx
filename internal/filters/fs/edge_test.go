@@ -20,7 +20,7 @@ func ctx(argv ...string) *engine.Context {
 func TestEffective(t *testing.T) {
 	cases := []struct {
 		argv []string
-		want string // joined effective argv; "" = unchanged
+		want string
 	}{
 		{[]string{"bash", "-c", "find . -name '*.js' -not -path './.git/*'"}, "find|.|-name|*.js|-not|-path|./.git/*"},
 		{[]string{"/bin/sh", "-c", `grep -rn "a b" src 2>&1 | head -50`}, "grep|-rn|a b|src"},
@@ -78,7 +78,7 @@ func TestMatchSpecific(t *testing.T) {
 		"dust":                         "",
 		"findstr x":                    "",
 		"python -m http.server":        "",
-		"bash -c ls -la":               "ls", // bash -c "ls" -la: the string is "ls"
+		"bash -c ls -la":               "ls",
 		"du -sh --null":                "",
 		"tree --du":                    "",
 		"ls --zero":                    "",
@@ -178,22 +178,22 @@ func TestUnknownBails(t *testing.T) {
 		argv []string
 		in   string
 	}{
-		// French locale: day before a lowercase month with a dot.
+
 		{ls{}, []string{"ls", "-la"}, "total 8\ndrwxr-xr-x  3 user  staff  96 26 sept. 00:48 .\n-rw-r--r--  1 user  staff  10 26 sept. 00:48 a.go"},
-		// --time-style=+%s: no date the filter knows.
+
 		{ls{}, []string{"ls", "-l", "--time-style=+%s"}, "-rw-r--r-- 1 user user 10 1758850080 a.go\n-rw-r--r-- 1 user user 10 1758850080 b.go"},
-		// Inode column.
+
 		{ls{}, []string{"ls", "-li"}, "123 -rw-r--r-- 1 user user 10 Sep 26 00:48 a.go"},
-		// Owner with a space shifts the columns.
+
 		{ls{}, []string{"ls", "-l"}, "-rw-r--r-- 1 user staff 10 Sep 26 00:48 a.go\n-rw-r--r-- 1 DOMAIN user staff 10 Sep 26 00:48 b.go"},
-		// Not du output.
+
 		{du{}, []string{"du", "-sh", "x"}, "usage: du [-H | -L | -P] [-a | -s | -d depth]"},
 		{du{}, []string{"du", "-sh", "x"}, "4.0K\tx\nsomething else"},
-		// Localized tree report becomes a second root.
+
 		{treeCmd{}, []string{"tree"}, ".\n├── a.go\n└── b.go\n\n0 répertoire, 2 fichiers"},
-		// tree -i style (no indentation) is not a tree.
+
 		{treeCmd{}, []string{"tree"}, ".\na.go\nb.go"},
-		// Only a diagnostic: nothing to render.
+
 		{find{}, []string{"find", "nosuch"}, "find: nosuch: No such file or directory"},
 		{ls{}, []string{"ls", "-R"}, "a\nb"},
 	}
@@ -204,8 +204,6 @@ func TestUnknownBails(t *testing.T) {
 	}
 }
 
-// A failing listing keeps the tool's diagnostics first and verbatim, and
-// never prints anything that reads like success.
 func TestFailureKeepsDiagnostics(t *testing.T) {
 	var b strings.Builder
 	for i := range 200 {
@@ -276,11 +274,11 @@ crw-rw-rw- 1 root root 1, 3 2026-09-01 10:00 null
 		t.Fatal("bailed on GNU long-iso listing")
 	}
 	for _, want := range []string{
-		"-rwxr-xr-x 2031 2026-09-26 00:48 build.sh", // non-default mode shown
+		"-rwxr-xr-x 2031 2026-09-26 00:48 build.sh",
 		"owner user, group user unless shown",
 		"120 2026-09-26 00:48 my file.txt",
 		"6 2026-09-26 00:48 latest -> v1.2.3",
-		"crw-rw-rw- root root 1, 3 2026-09-01 10:00 null", // owner varies: kept
+		"crw-rw-rw- root root 1, 3 2026-09-01 10:00 null",
 		"4096 2026-09-26 00:48 ./",
 		"mode -rw-r--r-- files, drwxr-xr-x dirs unless shown",
 		"total 24",
@@ -322,9 +320,6 @@ func TestLsManyEntriesNamesOnly(t *testing.T) {
 	}
 }
 
-// Regression: a listing a little over 80 entries used to lose every size
-// and date (`ls -lt` / `ls -lS` ask for exactly those). The long form is
-// kept while it stays under lsLongTarget tokens.
 func TestLsModerateListingKeepsLongForm(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("total 400\n")
@@ -362,7 +357,7 @@ func TestDuCaps(t *testing.T) {
 	if len(lines) != 1+30+1+1 {
 		t.Errorf("%d lines", len(lines))
 	}
-	// Original order is kept among the survivors.
+
 	prev := -1
 	for _, ln := range lines[1:31] {
 		var n int
@@ -375,7 +370,7 @@ func TestDuCaps(t *testing.T) {
 }
 
 func TestTreeCommand(t *testing.T) {
-	// tree ≥ 1.8 prints NBSP in its indentation.
+
 	in := ".\n" +
 		"├── LICENSE\n" +
 		"├── README.md\n" +
@@ -396,9 +391,7 @@ func TestTreeCommand(t *testing.T) {
 	if !ok {
 		t.Fatal("bailed")
 	}
-	// "empty" is a directory tree does not mark (no entries below it):
-	// the report counts 7 directories, the entries show 6, so the header
-	// says one unmarked name is a directory and counts say "entries".
+
 	want := "├── secret [error opening dir]\n" +
 		"[tree: 1 of the names without / is a directory (tree -F marks them)]\n" +
 		"LICENSE  README.md  empty\n" +
@@ -462,9 +455,6 @@ func TestHugeListings(t *testing.T) {
 	}
 }
 
-// FuzzFilters feeds corpus-seeded inputs to every fs filter under several
-// command lines: no panic, deterministic output, and ok=false never comes
-// with output.
 func FuzzFilters(f *testing.F) {
 	for _, dir := range []string{filepath.Join(fixture.Root(), "testdata", "corpus"), "testdata/corpus"} {
 		cases, _ := fixture.ReadAll(dir)
@@ -493,8 +483,7 @@ func FuzzFilters(f *testing.F) {
 	filters := []engine.Filter{ls{}, find{}, du{}, treeCmd{}}
 	f.Fuzz(func(t *testing.T, in string, which uint8) {
 		c := ctx(contexts[int(which)%len(contexts)]...)
-		// Exit codes: 0 mostly, and failing runs (with or without a
-		// diagnostic) through the high bits of which.
+
 		c.Exit = []int{0, 0, 1, 137}[int(which>>6)]
 		for _, flt := range filters {
 			if !flt.Match(c) {
@@ -511,7 +500,7 @@ func FuzzFilters(f *testing.F) {
 			if !okA || flt.Name() == "tree" {
 				continue
 			}
-			// Diagnostics survive verbatim (below CapNotes' threshold).
+
 			e := Effective(c)
 			var diags []string
 			for _, ln := range strings.Split(in, "\n") {

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "--require",
+    "test/support/env",
+    "--reporter",
+    "json",
+    "test/res.status.js"
+  ],
+  "shell": "npx mocha --require test/support/env --reporter json test/res.status.js",
+  "exit_code": 3,
+  "description": "REAL (negative): npx mocha --reporter json test/res.status.js in expressjs/express: mocha's JSON result object (the caller asked for data)",
+  "cwd": "/home/user/src/express",
+  "repo": "expressjs/express",
+  "tool": ""
+}

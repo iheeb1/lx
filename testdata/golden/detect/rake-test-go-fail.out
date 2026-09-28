@@ -1,0 +1,40 @@
+go test ./...
+--- FAIL: TestMinimumNArgs_WithLessArgs (0.00s)
+    args_test.go:73: Expected "requires at least 2 arg(s), only received 1", got "requires at least 2 arg(s), received 1"
+--- FAIL: TestMinimumNArgs_WithLessArgs_WithValid (0.00s)
+    args_test.go:73: Expected "requires at least 2 arg(s), only received 1", got "requires at least 2 arg(s), received 1"
+--- FAIL: TestMinimumNArgs_WithLessArgs_WithValid_WithInvalidArgs (0.00s)
+    args_test.go:73: Expected "requires at least 2 arg(s), only received 1", got "requires at least 2 arg(s), received 1"
+[error-like lines printed by passing tests (the rest of their output is hidden):]
+[Debug] [Error] Error while parsing flags from args [--localroot value]: unknown flag: --localroot
+Error: if any flags in the group [a b c] are set they must all be set; missing [b c]
+Error: at least one of the flags in the group [a b] is required [×4]
+Error: if any flags in the group [a b c] are set none of the others can be; [a b] were all set
+Error: if any flags in the group [a b c] are set they must all be set; missing [a b]
+Error: if any flags in the group [a b c] are set none of the others can be; [a c] were all set
+Error: if any flags in the group [a b] are set they must all be set; missing [b]
+Error: if any flags in the group [a b] are set none of the others can be; [a b] were all set
+Error: if any flags in the group [a e] are set they must all be set; missing [e]
+Error: if any flags in the group [f g] are set none of the others can be; [f g] were all set
+Error: at least one of the flags in the group [e subonly] is required
+Error: if any flags in the group [e subonly] are set none of the others can be; [e subonly] were all set
+FAIL
+FAIL	github.com/spf13/cobra	0.797s
+ok  	github.com/spf13/cobra/doc	0.778s
+FAIL
+rake aborted!
+Command failed with status (1): [go test ./...]
+Rakefile:3:in 'block in <top (required)>'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:188:in 'Rake::Application#invoke_task'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:138:in 'block (2 levels) in Rake::Application#top_level'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:138:in 'Array#each'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:138:in 'block in Rake::Application#top_level'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:147:in 'Rake::Application#run_with_threads'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:132:in 'Rake::Application#top_level'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:83:in 'block in Rake::Application#run'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:214:in 'Rake::Application#standard_exception_handling'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:80:in 'Rake::Application#run'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/exe/rake:27:in '<top (required)>'
+Tasks: TOP => test
+(See full trace by running task with --trace)
+[hidden: 237 lines of passing-test output]

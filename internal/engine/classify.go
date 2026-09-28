@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-// Level is the importance class of an output line.
 type Level int
 
 const (
@@ -15,18 +14,12 @@ const (
 )
 
 var (
-	// benign spans are removed before matching so "0 errors", "no failures",
-	// "error handling" or a file named errors.go don't count as errors, while
-	// "2 failed, 0 errors" still does.
 	benignRe = lazyre.New(`(?i)\b(?:0|no|zero|without)\s+(?:errors?|failures?|failed|warnings?|vulnerabilities|problems?|issues?)\b` +
 		`|\b(?:errors?|failures?|failed|warnings?)\s*[:=]\s*0\b` +
 		`|\berrors?[_-]?(?:handler|handling|handle|boundary|page|codes?|messages?|types?|utils?)\b` +
 		`|\b[\w./-]*errors?\.(?:go|ts|tsx|js|jsx|py|rs|rb|java|kt|c|h|cc|cpp)\b` +
 		`|\berr\s*!=\s*nil\b|\bif err\b|\bonError\b|\bon_error\b|\bErrorf?\(` +
 		`|\bfail[_-]?fast\b|\bexpect\(.*\)\.to(?:Throw|Fail)\w*|\bassertRaises\b|\bpytest\.raises\b` +
-		// Paths and URLs (any token with a slash) and command-line flags:
-		// "examples/error-pages/", "-Wfatal-errors", "--fail-fast" are names,
-		// not status. The error, if any, is elsewhere on the line.
 		"|\\S*/\\S*|(?:^|\\s)--?[A-Za-z][\\w=,.:+-]*")
 
 	errRe = lazyre.New(`(?i)(?:\b(?:error|errors|err!|fatal|panic|panicked|exception|traceback|` +
@@ -42,29 +35,17 @@ var (
 
 	warnRe = lazyre.New(`(?i)\b(?:warn|warning|warnings|deprecated|deprecation)\b|^\s*⚠`)
 
-	// passRe vetoes lines that report success ("✓ handles error input").
 	passRe = lazyre.New(`^\s*(?:✓|✔|√|PASS\b|ok\s|--- PASS|\[PASS\]|PASSED\b)|\.\.\.\s*ok$|\s(?:PASSED|passed)\s*(?:\[|$)` +
-		// Neutral progress/bookkeeping whose only error-ish word is a name:
-		// "=== RUN TestConflict", "go: downloading github.com/pkg/errors",
-		// "Compiling quick-error v2.0.1".
 		`|^=== (?:RUN|PAUSE|CONT|NAME)\s|^\s*--- SKIP|^go: (?:downloading|finding|extracting) ` +
 		`|^\s*(?:Compiling|Checking|Downloaded|Downloading|Fresh|Installing|Documenting)\s+\S+ v\d`)
 )
 
-// Classify returns the importance level of one line.
-//
-// It is classifySlow made fast: the cheap stem prefilter first, then an
-// exact tokenized equivalent of errRe, and the expensive pass-veto and
-// benign-span stripping only for lines that hold an error or warning
-// candidate. Stripping benign spans only removes matches (every benign
-// alternative starts and ends on a boundary), so a line with no candidate
-// in its original text has none after stripping either.
 func Classify(line string) Level {
 	if !mayClassify(line) {
 		return Normal
 	}
 	if strings.ContainsAny(line, "\u212a\u017f") {
-		return classifySlow(line) // case folding outside ASCII: use the reference
+		return classifySlow(line)
 	}
 	if !errMatch(line) && !warnRe.MatchString(line) {
 		return Normal
@@ -82,9 +63,6 @@ func Classify(line string) Level {
 	return Normal
 }
 
-// errSpecialRe is errRe minus its \b(word|…)\b alternation, which errMatch
-// checks by tokenizing instead (the alternation is the slow part: ~50µs a
-// line through the regexp engine, ~1µs tokenized).
 var errSpecialRe = lazyre.New(`(?i)^\s*E\s{2,}\S|^\s*[✗✘✕×]\s|\bTS\d{4}\b|\berror\[E\d+\]|^\s*npm (?:ERR!|error)|` +
 	`^--- FAIL|^FAIL\b|^\s*FAILED\b|^\s*!\s+\[rejected\]|` +
 	`^\s*g?make(?:\[\d+\])?: \*\*\*|\bundefined symbols?\b|\bunknown (?:options?|flags?|arguments?|commands?)\b|^\s*e: `)
@@ -100,15 +78,12 @@ var errWords = map[string]bool{
 	"runtimeerror": true, "nullpointerexception": true,
 }
 
-// errPhrases are errRe's multi-word alternatives, words separated by
-// exactly one space.
 var errPhrases = [][]string{
 	{"segmentation", "fault"}, {"core", "dumped"}, {"timed", "out"}, {"out", "of", "memory"},
 	{"could", "not"}, {"unable", "to"}, {"no", "such", "file"}, {"not", "found"},
 	{"undefined", "reference"}, {"data", "race"},
 }
 
-// errMatch reports errRe.MatchString(s) without running errRe.
 func errMatch(s string) bool {
 	if errSpecialRe.MatchString(s) {
 		return true
@@ -133,11 +108,11 @@ func errMatch(s string) bool {
 		if errWords[w] {
 			return true
 		}
-		// couldn't: "couldn" ' "t"
+
 		if w == "couldn" && k+1 < len(toks) && s[t.end:toks[k+1].start] == "'" && low(toks[k+1]) == "t" {
 			return true
 		}
-		// err! directly followed by a word character (\berr!\b).
+
 		if w == "err" && t.end+1 < len(s) && s[t.end] == '!' && isWordByte(s[t.end+1]) {
 			return true
 		}
@@ -161,7 +136,6 @@ func isWordByte(b byte) bool {
 	return b == '_' || b >= '0' && b <= '9' || b >= 'a' && b <= 'z' || b >= 'A' && b <= 'Z'
 }
 
-// classifySlow is the reference classifier; Classify only adds a prefilter.
 func classifySlow(line string) Level {
 	if strings.TrimSpace(line) == "" {
 		return Normal
@@ -169,9 +143,7 @@ func classifySlow(line string) Level {
 	if passRe.MatchString(line) {
 		return Normal
 	}
-	// Benign spans can only cancel a match, never create one: a stripped
-	// leading token must not let "^\s*E\s{2,}" match where the line itself
-	// didn't. So a class needs a match in the original AND after stripping.
+
 	s := benignRe.ReplaceAllString(line, " ")
 	if errRe.MatchString(line) && errRe.MatchString(s) {
 		return Err
@@ -182,11 +154,6 @@ func classifySlow(line string) Level {
 	return Normal
 }
 
-// classifyStems: every match of errRe or warnRe contains one of these
-// letter runs (ASCII case-insensitive), and every match of benignRe does
-// too (err, fail, warn, vulnerabilit, problem, issue, expect, assertraises,
-// raises). Blanking benign spans only inserts spaces, so any letter run in
-// the blanked line also occurs in the original line.
 var classifyStems = []string{
 	"err", "fatal", "panic", "exception", "traceback", "fail", "segfault", "segmentation",
 	"dumped", "abort", "unhandled", "uncaught", "deadlock", "timed", "memory", "oom",
@@ -196,19 +163,10 @@ var classifyStems = []string{
 	"unknown", "symbol",
 }
 
-// pytestELineRe is errRe's `^\s*E\s{2,}\S` alternative (errRe is (?i)).
 var pytestELineRe = lazyre.New(`^\s*[eE]\s{2,}\S`)
 
-// kotlinELineRe is errRe's `^\s*e: ` alternative (Kotlin, apt "E: …").
 var kotlinELineRe = lazyre.New(`^\s*[eE]: `)
 
-// mayClassify is a cheap necessary condition for Classify returning Warn or
-// Err. It returns false only when no errRe/warnRe alternative can match:
-// no stem (so benignRe cannot match either and the line is matched as is),
-// no status symbol, no pytest "E   " start and no "TS"+digit. Lines holding
-// the two non-ASCII runes that case-fold to ASCII letters (U+212A KELVIN
-// SIGN, U+017F LONG S) always take the full path. This keeps Classify fast
-// on large outputs (minified bundles, long logs) without changing results.
 func mayClassify(line string) bool {
 	if strings.ContainsAny(line, "✗✘✕×⚠\u212a\u017f") || pytestELineRe.MatchString(line) ||
 		strings.Contains(line, "***") || kotlinELineRe.MatchString(line) {
@@ -233,7 +191,6 @@ func mayClassify(line string) bool {
 	return false
 }
 
-// asciiLower lowercases ASCII letters only, allocating only when needed.
 func asciiLower(s string) string {
 	for i := 0; i < len(s); i++ {
 		if c := s[i]; c >= 'A' && c <= 'Z' {
@@ -249,8 +206,6 @@ func asciiLower(s string) string {
 	return s
 }
 
-// IsError reports whether a line is error-class (P0).
 func IsError(line string) bool { return Classify(line) == Err }
 
-// IsWarning reports whether a line is warning-class (P1).
 func IsWarning(line string) bool { return Classify(line) == Warn }

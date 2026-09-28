@@ -1,9 +1,3 @@
-// Command charts renders the README charts from benchmark results.
-//
-//	go run ./bench/cmd/charts -in bench/out -out docs/img
-//
-// Reads results.json (corpusbench, with exact counts from
-// bench/tiktoken_counts.py when available) and h2h.json (optional).
 package main
 
 import (
@@ -174,8 +168,6 @@ func biggest(res results) string {
 		[]Series{sRaw, sLx}, rows, "")
 }
 
-// fidelity compares, over failing runs only, how much diagnostic signal each
-// approach keeps: lx vs a head+tail cut to the SAME size vs `| tail -40`.
 func fidelity(res results) string {
 	var errIn, errLx, errHT, errTail, locIn, locLx, locHT, locTail float64
 	var tokLx, tokHT, tokTail, tokRaw float64
@@ -252,7 +244,7 @@ func h2hTokens(rows []h2hRow) string {
 	var out []DumbRow
 	for _, r := range rows {
 		if !r.Rtk.Rewritten && !r.Lx.Rewritten {
-			continue // neither tool wraps it: nothing to compare
+			continue
 		}
 		out = append(out, DumbRow{Label: shortShell(r.Shell), Values: []float64{h2hTok(r.Raw), h2hTok(r.Rtk), h2hTok(r.Lx)}})
 		if len(out) == 18 {
@@ -297,8 +289,7 @@ func overhead(rows []h2hRow) string {
 		if !r.Rtk.Rewritten || !r.Lx.Rewritten || r.Raw.MedianMs > 2000 {
 			continue
 		}
-		// The capture name tells apart runs of the same command
-		// (clean / dirty / mid-merge git status).
+
 		label := r.ID[strings.IndexByte(r.ID, '/')+1:]
 		out = append(out, BarRow{Label: label, Values: []float64{
 			pos(r.Rtk.MedianMs - r.Raw.MedianMs), pos(r.Lx.MedianMs - r.Raw.MedianMs)}})

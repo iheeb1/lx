@@ -2,52 +2,24 @@ package jstest
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
-
-// vitest's default, verbose and agent reporters (vitest 1-4):
-//
-//	 RUN  v4.1.11 /abs/project
-//	stdout | test/ok.test.ts > works             console output of a test
-//	 ✓ test/url.test.ts (6 tests) 5ms            passing file
-//	 ❯ test/query.test.ts (34 tests | 1 failed) 8ms
-//	     ✓ / with {} 0ms                          tests of a failing file
-//	     × / with {"str":"&"} 3ms
-//	 × test/a.test.ts > suite > name 4ms         --reporter=verbose
-//	   → expected 1 to be 2
-//	⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯               files that failed to load
-//	 FAIL  test/x.test.ts [ test/x.test.ts ]
-//	⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
-//	 FAIL  test/a.test.ts > suite > name
-//	AssertionError: …
-//	 ❯ test/a.test.ts:15:41                       location, then a code frame
-//	⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
-//	⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
-//	 Test Files  3 failed | 10 passed (13)        summary, kept verbatim
-//	      Tests  7 failed | 482 passed (489)
-//	     Errors  1 error
-//	   Start at  00:35:29
-//	   Duration  368ms (transform 289ms, …)
-//
-// With CLAUDECODE / AI_AGENT set, vitest's agent reporter prints only the
-// failing files; the layout is otherwise the same.
 
 var (
 	vRunRe = lazyre.New(`^ RUN {2}v\d+\.\d+\S* |^ +Coverage enabled with \w+$`)
-	// vitest ≥2: "(34 tests | 1 failed) 8ms"; vitest 1: "(34)".
+
 	vFileRe    = lazyre.New(`^ ([✓❯×↓]) (\S.*?) \((\d+)(?: tests?)?((?: \| [^)]*)?)\)(?: .*)?$`)
 	vSkipCntRe = lazyre.New(`(\d+) (?:skipped|todo)`)
 	vGroupRe   = lazyre.New(`^ {3,}([❯✓×↓]) (.*)$`)
-	// a describe group of the tree reporter: "   ✓ error handling (2)"
-	// (tests end with a duration: "     ✓ works 1ms")
+
 	vGroupCountRe = lazyre.New(` \(\d+\)$`)
 	vVerboseRe    = lazyre.New(`^ ([✓×↓□]) (\S+ > .*)$`)
 	vArrowRe      = lazyre.New(`^ {3}→ `)
-	// The dot reporter prints no newline after its dots: "··xstdout | …".
+
 	vConsoleRe  = lazyre.New(`^[·x\-*]*(stdout|stderr) \| (.+)$`)
 	vSepRe      = lazyre.New(`^⎯{3,}`)
 	vSectionRe  = lazyre.New(`^⎯+ (.+?) ⎯+$`)
@@ -57,10 +29,6 @@ var (
 	vDotsRe     = lazyre.New(`^[·x\-*]+$`)
 )
 
-// vTestLine returns the status mark of a test line of the default
-// reporter's list ("     ✓ name 3ms": ✓ × ↓ skipped □ todo · not run, after
-// --bail), or "". It runs on every line of every render, so it does without
-// a regexp.
 func vTestLine(ln string) string {
 	n := 0
 	for n < len(ln) && ln[n] == ' ' {
@@ -77,8 +45,6 @@ func vTestLine(ln string) string {
 	return ""
 }
 
-// renderVitest condenses vitest's text reporters. It bails unless the
-// "Test Files" / "Tests" summary is present.
 func renderVitest(c *engine.Context, clean string) (result, bool) {
 	if !hasVitestSummary(clean) {
 		return result{}, false
@@ -91,9 +57,8 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 	d.level = level
 	in := d.in
 	n := len(in)
+	fx := focusFor(d)
 
-	// Tests that failed, by "file > suite > test" (to tell failing tests'
-	// console output from passing tests').
 	failed := map[string]bool{}
 	for _, ln := range in {
 		if m := vFailRe.FindStringSubmatch(ln); m != nil {
@@ -109,8 +74,7 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 		th         = coverageThreshold(in)
 		summaryAt  = -1
 	)
-	// The summary is the block of summary lines around the last "Test
-	// Files" line ("Snapshots  1 failed" may come first).
+
 	for i := n - 1; i >= 0; i-- {
 		if vSummaryRe.MatchString(in[i]) && strings.HasPrefix(strings.TrimSpace(in[i]), "Test Files") {
 			summaryAt = i
@@ -144,13 +108,11 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 		d.emit(s + "]")
 	}
 
-	section := "" // "" (test list), or the section title
+	section := ""
 	inPassFile := false
-	// Level 3 lists the names of the first briefFailures failing tests in
-	// the test list; the file lines count the rest ("(10 tests | 10
-	// failed)"), and one marker says how many names were left out.
+
 	xShown, xHidden := 0, 0
-	xName := func(i int) int { // returns the last line used (arrows follow)
+	xName := func(i int) int {
 		keep := d.level < 3 || xShown < briefFailures
 		xShown++
 		for {
@@ -178,7 +140,7 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 	for i := 0; i < n; {
 		ln := in[i]
 		if !strings.HasPrefix(ln, "   ") {
-			inPassFile = false // left the file's test list (a file line sets it again)
+			inPassFile = false
 		}
 		if k := w.handle(d, i); k > 0 {
 			i += k
@@ -194,7 +156,7 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 			marker()
 			for i < n && (vSummaryRe.MatchString(in[i]) || strings.TrimSpace(in[i]) == "") {
 				if strings.HasPrefix(strings.TrimSpace(in[i]), "Start at") || strings.TrimSpace(in[i]) == "" {
-					i++ // wall-clock time of the run
+					i++
 					continue
 				}
 				d.keep(i)
@@ -202,8 +164,6 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 			}
 			section = "summary"
 		case (strings.HasPrefix(ln, " RUN  v") || strings.Contains(ln, "Coverage enabled with ")) && vRunRe.MatchString(ln):
-			// " RUN  v4.1.11 /abs/project", "Coverage enabled with v8". A
-			// RUN line starts a new run (npm workspaces): back to its list.
 			if strings.HasPrefix(ln, " RUN  v") {
 				flushOmitted(d, "")
 				section = ""
@@ -223,26 +183,35 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 				}
 				renderVitestBody(d, len(d.out), i, j, false, false)
 				if j < n {
-					j++ // closing separator
+					j++
 				}
 				i = j
 			}
 		case vSepRe.MatchString(ln):
-			d.sep() // "⎯⎯⎯[1/7]⎯" between failures
+			d.sep()
 			i++
 		case vFailRe.MatchString(ln):
-			j := i + 1
-			for j < n && !vSepRe.MatchString(in[j]) && !vFailRe.MatchString(in[j]) && j != summaryAt {
-				j++
+			failure := func(i int) int {
+				j := vitestFailEnd(in, i, summaryAt)
+				d.sep()
+				start := len(d.out)
+				d.keep(i)
+
+				test := !strings.HasPrefix(section, "Failed Suites")
+				renderVitestBody(d, start, i+1, j, test, test)
+				return j
 			}
-			d.sep()
-			start := len(d.out)
-			d.keep(i)
-			// Test failures keep only the failing source line; files that
-			// failed to load keep their whole diagnostic.
-			test := !strings.HasPrefix(section, "Failed Suites")
-			renderVitestBody(d, start, i+1, j, test, test)
-			i = j
+			units, end := vitestFailures(fx, in, i, summaryAt)
+			if units == nil {
+				i = failure(i)
+				break
+			}
+			for _, u := range units {
+				for k := u.from; k < u.to; {
+					k = failure(k)
+				}
+			}
+			i = end
 		case section == "" && vConsoleRe.MatchString(ln):
 			j := i + 1
 			for j < n && strings.TrimSpace(in[j]) != "" {
@@ -250,9 +219,6 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 			}
 			target := vConsoleRe.FindStringSubmatch(ln)[2]
 			if failed[target] {
-				// A failing test's output: up to maxConsoleLines lines,
-				// then only its error lines. Console output is never how
-				// vitest reports a failure (see noFailure).
 				d.sep()
 				start := len(d.out)
 				d.keep(i)
@@ -298,15 +264,15 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 			switch m[1] {
 			case "✓":
 				passFiles++
-				d.drop(i) // counted in the marker
+				d.drop(i)
 				t, _ := strconv.Atoi(m[3])
 				for _, sk := range vSkipCntRe.FindAllStringSubmatch(m[4], -1) {
 					k, _ := strconv.Atoi(sk[1])
-					t -= k // "(6 tests | 2 skipped)"
+					t -= k
 				}
 				passTests += max(t, 0)
 			case "↓":
-				d.drop(i) // skipped file: its title only
+				d.drop(i)
 			default:
 				d.keep(i)
 			}
@@ -316,34 +282,31 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 			switch m[1] {
 			case "✓":
 				passTests++
-				d.drop(i) // counted in the marker
+				d.drop(i)
 			case "×":
 				i = xName(i)
 			default:
-				d.drop(i) // skipped / todo test title
+				d.drop(i)
 			}
 			i++
 		case section == "" && vTestLine(ln) != "":
 			switch vTestLine(ln) {
 			case "✓":
-				// The tree reporter lists the tests of passing files,
-				// already counted from the file line, and marks passing
-				// describe groups "✓ name (N)" too.
 				if !inPassFile && !vGroupCountRe.MatchString(ln) {
 					passTests++
 				}
-				d.drop(i) // counted in the marker
+				d.drop(i)
 			case "×":
 				i = xName(i)
 			default:
-				d.drop(i) // skipped / todo test title
+				d.drop(i)
 			}
 			i++
 		case section == "" && vGroupRe.MatchString(ln) && !isFrame(ln):
-			d.drop(i) // describe group title in the test list
+			d.drop(i)
 			i++
 		case section == "" && vDotsRe.MatchString(ln):
-			i++ // dot reporter progress
+			i++
 		case coverageTableEnd(in, i) > i:
 			j := coverageTableEnd(in, i)
 			d.sep()
@@ -366,10 +329,6 @@ func renderVitestView(c *engine.Context, clean string, level int, sh *shared) (r
 	return d.finish(), true
 }
 
-// renderVitestBody renders the lines of one failure (after its FAIL line)
-// or of the unhandled-errors section: blank lines dropped, library frames
-// folded, long diffs trimmed; with trim, code frames keep only the line the
-// preceding "❯ file:line:col" points at (and its caret).
 func renderVitestBody(d *doc, start, from, to int, trim, failure bool) {
 	loc := 0
 	for i := from; i < to; {
@@ -378,8 +337,6 @@ func renderVitestBody(d *doc, start, from, to int, trim, failure bool) {
 		case strings.TrimSpace(ln) == "":
 			i++
 		case vFrameRe.MatchString(ln):
-			// A run of frames; remember the last app frame's line for
-			// the code frame that may follow (none: keep that frame whole).
 			j := i
 			loc = 0
 			for j < to && vFrameRe.MatchString(d.in[j]) {

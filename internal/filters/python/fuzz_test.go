@@ -13,7 +13,6 @@ import (
 	"github.com/iheeb1/lx/internal/textutil"
 )
 
-// fuzzContexts gives every filter a command line it would match.
 var fuzzContexts = map[string][]string{
 	"pytest":        {"pytest"},
 	"pip-install":   {"pip", "install", "x"},
@@ -25,10 +24,6 @@ var fuzzContexts = map[string][]string{
 	"python":        {"python", "x.py"},
 }
 
-// FuzzFilters checks that no filter panics, that each is deterministic,
-// and that pytest never loses its result line or an E line.
-//
-//	go test ./internal/filters/python -run '^$' -fuzz FuzzFilters -fuzztime 20s
 func FuzzFilters(f *testing.F) {
 	for _, c := range fixture.All(f) {
 		if c.Category == "python" {
@@ -71,8 +66,7 @@ func FuzzFilters(f *testing.F) {
 			if out1 != out2 || ok1 != ok2 {
 				t.Fatalf("%s is not deterministic", name)
 			}
-			// Never pass-looking on failure: a failing status leaves an
-			// error line or an "[lx: … exit…]" note in the output.
+
 			if ok1 && exit != 0 && !anyError(strings.Split(out1, "\n")) && !exitNoteRe.MatchString(out1) {
 				t.Fatalf("%s: exit %d but nothing in the output says so:\n%s", name, exit, out1)
 			}
@@ -88,7 +82,7 @@ func FuzzFilters(f *testing.F) {
 					break
 				}
 			}
-			// Every E line of a FAILURES / ERRORS section survives.
+
 			squashed := squashAll(out1)
 			section := ""
 			for _, ln := range lines {
@@ -105,8 +99,6 @@ func FuzzFilters(f *testing.F) {
 	})
 }
 
-// fuzzSlow: no input the fuzzer builds (at most a few hundred KB) may take
-// this long; that would be super-linear behavior.
 var fuzzSlow = 2 * time.Second * raceSlowdown
 
 var exitNoteRe = regexp.MustCompile(`\[lx: .*\bexit(?:ed)? -?\d+`)

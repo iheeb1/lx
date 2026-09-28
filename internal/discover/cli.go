@@ -11,11 +11,8 @@ import (
 	"time"
 )
 
-// Usage is the synopsis of `lx discover`.
 const Usage = "lx discover [--days N] [--limit N] [--dir DIR] [--json] [--fidelity] [--examples]"
 
-// Main runs `lx discover` with args (after the subcommand word) and returns
-// the exit code: 0, 1 when the transcripts can't be read, 2 on bad usage.
 func Main(args []string, stdout, stderr io.Writer) int {
 	fs := flag.NewFlagSet("discover", flag.ContinueOnError)
 	fs.SetOutput(stderr)
@@ -59,7 +56,6 @@ func Main(args []string, stdout, stderr io.Writer) int {
 	return 0
 }
 
-// defaultDir is Claude Code's transcripts directory.
 func defaultDir() string {
 	base := os.Getenv("CLAUDE_CONFIG_DIR")
 	if base == "" {

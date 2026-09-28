@@ -2,36 +2,15 @@ package jstools
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"slices"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/filters/focus"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// eslint condenses ESLint's default "stylish" report.
-//
-// File blocks keep stylish's shape with paths made relative to the working
-// directory. Inside a file, a message (same severity, text and rule) that
-// occurs 4 or more times is printed once with every line:col it occurs at:
-//
-//	lib/view.js
-//	  error  Unexpected var, use let or const instead  no-var  ×23: 16:1 17:1 18:1 …
-//	  153:29  warning  Unexpected function expression  prefer-arrow-callback
-//
-// so every error keeps its location, message and rule. Up to 60 warnings
-// are kept in place; above that they move to one section grouped by rule,
-// with exact counts, every distinct message and its first 3 locations. The
-// "✖ N problems (E errors, W warnings)" and "--fix" lines are verbatim.
-//
-// When that is still longer than ~6000 tokens (thousands of problems), the
-// problems are grouped by message instead: one line per message, then each
-// file with its exact count and its first positions (10, 3, 1 or none, the
-// most that fit), so every file and every distinct message stays visible.
-//
-// eslint is Guarded (factored error lines no longer match the originals
-// textually); warning lines that look error-class are never grouped.
 type eslint struct{}
 
 func (eslint) Name() string { return "eslint" }
@@ -52,7 +31,7 @@ func (eslint) GuardsErrors() bool { return true }
 
 func (eslint) Apply(c *engine.Context, s string) (string, bool) {
 	if strings.Contains(s, "Oops! Something went wrong!") {
-		return "", false // an ESLint crash report, not a lint report
+		return "", false
 	}
 	lines := strings.Split(s, "\n")
 	var o out
@@ -84,18 +63,18 @@ var (
 
 type esMsg struct {
 	raw       string
-	isErr     bool   // engine.IsError(raw), computed once
-	pos       string // "line:col"
+	isErr     bool
+	pos       string
 	sev, text string
 	rule      string
-	extra     []string // unrecognized indented lines that followed it
+	extra     []string
 }
 
 func (m esMsg) key() string { return m.sev + "\x00" + m.text + "\x00" + m.rule }
 
 type esFile struct {
-	header string // as printed
-	shown  string // relative to the working directory
+	header string
+	shown  string
 	msgs   []esMsg
 }
 
@@ -103,7 +82,7 @@ func parseESMsg(ln string) (esMsg, bool) {
 	if !strings.Contains(ln, ":") {
 		return esMsg{}, false
 	}
-	// "  12:5  error  message  rule" (see scan.go).
+
 	line, col, sev, rest, ok := scanESMsg(ln)
 	if !ok {
 		return esMsg{}, false
@@ -124,8 +103,6 @@ func isESHeader(lines []string, i int) bool {
 	return ok
 }
 
-// eslintFactorMin: a message repeated this many times in one file is
-// printed once with all its positions.
 const (
 	eslintFactorMin    = 4
 	eslintWarnKeepMax  = 60
@@ -134,9 +111,6 @@ const (
 	eslintFilesPerLine = 6
 )
 
-// eslintRegion consumes a stylish report starting at lines[i] (file blocks,
-// then the summary lines) and renders it. It returns i when lines[i] does
-// not start a file block.
 func eslintRegion(c *engine.Context, lines []string, i int) (int, []string) {
 	if !isESHeader(lines, i) {
 		return i, nil
@@ -152,8 +126,6 @@ func eslintRegion(c *engine.Context, lines []string, i int) (int, []string) {
 		ln := lines[j]
 		switch {
 		case ln == "":
-			// Look past blank lines: the region continues only if a file
-			// block or the summary follows.
 			k := j
 			for k < n && lines[k] == "" {
 				k++
@@ -165,7 +137,6 @@ func eslintRegion(c *engine.Context, lines []string, i int) (int, []string) {
 			}
 			goto done
 		case isESHeader(lines, j):
-			// A path is never an error, even under examples/error/.
 			cur = &esFile{header: ln, shown: engine.Relativize(c, ln)}
 			files = append(files, cur)
 			j++
@@ -185,7 +156,6 @@ func eslintRegion(c *engine.Context, lines []string, i int) (int, []string) {
 				continue
 			}
 			if (ln[0] == ' ' || ln[0] == '\t') && len(cur.msgs) > 0 {
-				// A message that itself spans lines: keep the rest with it.
 				last := &cur.msgs[len(cur.msgs)-1]
 				last.extra = append(last.extra, ln)
 				j++
@@ -197,9 +167,7 @@ func eslintRegion(c *engine.Context, lines []string, i int) (int, []string) {
 		}
 	}
 done:
-	// A warning line is error-class when its message or rule is ("'error'
-	// is defined but never used"): "l:c  warning" adds nothing error-class.
-	// Messages repeat, so each is classified once.
+
 	memo := map[string]bool{}
 	for _, f := range files {
 		for k := range f.msgs {
@@ -216,24 +184,19 @@ done:
 			m.isErr = isErr
 		}
 	}
+	files = focusFirst(focus.New(c.Focus), files, func(f *esFile) string { return f.header })
 	return j, renderESLint(files, summary)
 }
 
 type esGroup struct {
 	rule string
-	msgs []string // distinct texts in order
+	msgs []string
 	locs map[string][]string
 	n    int
 }
 
-// eslintMaxTokens: a rendering above this (the budget stage would start
-// cutting whole file blocks) is replaced by the grouped one.
 const eslintMaxTokens = 6000
 
-// renderESLint renders the report in file blocks; when that is still too
-// long it groups the problems by message instead, listing every file with
-// an exact count and at most 10, 3 or 1 positions each, or only the counts
-// (the loosest cap that fits, else the shortest rendering).
 func renderESLint(files []*esFile, summary []string) []string {
 	r := renderESFiles(files, summary)
 	if countUpTo(r, eslintMaxTokens) <= eslintMaxTokens {
@@ -248,9 +211,7 @@ func renderESLint(files []*esFile, summary []string) []string {
 		}
 		all = append(all, g)
 	}
-	// Nothing fits (thousands of distinct messages): the shortest in
-	// bytes (counting tokens again would double the run time on huge
-	// reports), which the budget stage then trims.
+
 	best, bestN := all[0], byteLen(all[0])
 	for _, g := range all[1:] {
 		if n := byteLen(g); n < bestN {
@@ -268,8 +229,6 @@ func byteLen(lines []string) int {
 	return n
 }
 
-// countUpTo returns the tokens of lines (each line plus its newline), or
-// some number above limit as soon as the count exceeds it.
 func countUpTo(lines []string, limit int) int {
 	n := 0
 	for _, ln := range lines {
@@ -281,8 +240,6 @@ func countUpTo(lines []string, limit int) int {
 	return n
 }
 
-// esWarnGroups collects the warnings moved out of the file blocks (more
-// than eslintWarnKeepMax of them) by rule.
 type esWarnGroups struct {
 	groups    map[string]*esGroup
 	ruleOrder []string
@@ -331,7 +288,6 @@ func (w *esWarnGroups) render() []string {
 	return r
 }
 
-// groupedWarning reports whether a message goes to the warnings section.
 func groupedWarning(groupWarn bool, m esMsg) bool {
 	return groupWarn && m.sev == "warning" && len(m.extra) == 0 && !m.isErr
 }
@@ -348,13 +304,11 @@ func countWarnings(files []*esFile) int {
 	return n
 }
 
-// esGrouped is every problem grouped by (severity, message, rule), built
-// once and rendered with several position caps.
 type esGrouped struct {
 	w        esWarnGroups
 	order    []string
 	byKey    map[string]*esMsgGroup
-	verbatim []string // messages spanning several lines, with their file
+	verbatim []string
 	total    int
 }
 
@@ -387,16 +341,13 @@ func groupES(files []*esFile) *esGrouped {
 			gr.total++
 		}
 	}
-	// Errors first, each severity in order of first appearance.
+
 	slices.SortStableFunc(gr.order, func(a, b string) int {
 		return strings.Compare(sevRank(gr.byKey[a].head), sevRank(gr.byKey[b].head))
 	})
 	return gr
 }
 
-// render renders the groups: one line per message, then one line per file
-// with its exact count and at most maxPos positions; a message that occurs
-// once is one line ending with its file:line:col.
 func (gr *esGrouped) render(summary []string, maxPos int) []string {
 	total, order, byKey, verbatim := gr.total, gr.order, gr.byKey, gr.verbatim
 	head := fmt.Sprintf("[%d problems grouped by message (too many for per-file blocks); at most %d positions per file]", total, maxPos)
@@ -413,7 +364,6 @@ func (gr *esGrouped) render(summary []string, maxPos int) []string {
 		}
 		r = append(r, fmt.Sprintf("%s  ×%d in %s:", g.head, g.n, engine.Plural(len(g.files), "file", "files")))
 		if maxPos == 0 {
-			// Files and counts only, several per line.
 			for s := 0; s < len(g.files); s += eslintFilesPerLine {
 				var parts []string
 				for _, f := range g.files[s:min(s+eslintFilesPerLine, len(g.files))] {
@@ -462,8 +412,6 @@ func sevRank(head string) string {
 	return "1"
 }
 
-// renderESFiles renders the report in stylish file blocks, factoring a
-// message repeated in a file.
 func renderESFiles(files []*esFile, summary []string) []string {
 	groupWarn := countWarnings(files) > eslintWarnKeepMax
 	var (
@@ -471,7 +419,7 @@ func renderESFiles(files []*esFile, summary []string) []string {
 		w esWarnGroups
 	)
 	for _, f := range files {
-		positions := map[string][]string{} // per message key, in order
+		positions := map[string][]string{}
 		for _, m := range f.msgs {
 			if len(m.extra) == 0 {
 				positions[m.key()] = append(positions[m.key()], m.pos)
@@ -517,7 +465,6 @@ func renderESFiles(files []*esFile, summary []string) []string {
 	return r
 }
 
-// factorLine renders "<head>  ×N: p1 p2 …", wrapping long position lists.
 func factorLine(head string, pos []string) []string {
 	var r []string
 	for s := 0; s < len(pos); s += eslintPosPerLine {
@@ -531,8 +478,6 @@ func factorLine(head string, pos []string) []string {
 	return r
 }
 
-// countLocs renders "×N: a b c … +K more" with the first eslintWarnLocs
-// locations.
 func countLocs(locs []string) string {
 	shown := locs[:min(len(locs), eslintWarnLocs)]
 	s := fmt.Sprintf("×%d: %s", len(locs), strings.Join(shown, " "))

@@ -11,8 +11,6 @@ import (
 	"unicode"
 )
 
-// heavyDirs are directories whose contents are almost never what the reader
-// is looking for. FactorPaths prints them as one counted line.
 var heavyDirs = map[string]bool{
 	"node_modules": true, ".git": true, "dist": true, "build": true, "target": true,
 	".venv": true, "venv": true, "__pycache__": true, ".next": true, "coverage": true,
@@ -20,47 +18,23 @@ var heavyDirs = map[string]bool{
 }
 
 const (
-	// pathLineWidth wraps a directory's file names so no line gets long
-	// enough for ShortenLine/Budget to cut it.
 	pathLineWidth = 160
-	// minNumberedGroup: this many files with the same masked name in one
-	// directory are shown as "name-<N>.log ×37".
+
 	minNumberedGroup = 6
-	// minHeavyPrune: heavy directories with at most this many files are
-	// listed normally (test fixtures often contain small node_modules).
+
 	minHeavyPrune = 20
 )
 
 type pathNode struct {
 	files map[string]bool
 	dirs  map[string]*pathNode
-	total int // files at or below this node
+	total int
 }
 
 func newPathNode() *pathNode {
 	return &pathNode{files: map[string]bool{}, dirs: map[string]*pathNode{}}
 }
 
-// FactorPaths renders a list of paths as a compact tree:
-//
-//	root.go  go.mod  README.md
-//	internal/engine/
-//	  engine.go  engine_test.go  guard.go
-//	  testdata/
-//	    fixture-<N>.log ×37
-//	node_modules/ [2,310 files]
-//
-// Directories are "name/" lines indented two spaces per level; each
-// directory's files are sorted and joined by two spaces on the line(s)
-// below it (wrapped at ~160 columns); chains of directories that hold only
-// one subdirectory are collapsed ("a/b/c/"). Heavy directories
-// (node_modules, .git, dist, build, target, .venv, venv, __pycache__, .next,
-// coverage, vendor) are pruned to "name/ [N files]" unless every path lies
-// inside that directory. Six or more files in one directory whose names
-// differ only in digits/hashes become "name-<N>.log ×37". A leading "./" is
-// dropped, paths ending in "/" and paths that are prefixes of other paths
-// are treated as directories, duplicates are ignored, and empty entries
-// are skipped. The output is deterministic (byte-order sorting).
 func FactorPaths(paths []string) []string {
 	root := newPathNode()
 	for _, p := range paths {
@@ -96,7 +70,7 @@ func FactorPaths(paths []string) []string {
 	root.normalize()
 
 	var out []string
-	// Directories on the chain every path shares are never pruned.
+
 	n, indent := root, ""
 	var chain []string
 	for len(n.files) == 0 && len(n.dirs) == 1 {
@@ -113,7 +87,6 @@ func FactorPaths(paths []string) []string {
 	return out
 }
 
-// normalize drops file entries that are also directories and computes totals.
 func (n *pathNode) normalize() int {
 	for name := range n.dirs {
 		delete(n.files, name)
@@ -172,7 +145,6 @@ func sortedKeys(m map[string]bool) []string {
 
 var nameVarRe = lazyre.New(`[0-9a-fA-F]{7,}|\d+`)
 
-// maskName replaces digit runs with <N> and hash-like hex runs with <H>.
 func maskName(name string) string {
 	return nameVarRe.ReplaceAllStringFunc(name, func(m string) string {
 		switch {
@@ -185,8 +157,6 @@ func maskName(name string) string {
 	})
 }
 
-// groupNumbered folds 6+ names with the same mask into "mask ×N", placed
-// where the first member sorted.
 func groupNumbered(names []string) []string {
 	if len(names) < minNumberedGroup {
 		return names
@@ -225,7 +195,6 @@ func groupNumbered(names []string) []string {
 	return out
 }
 
-// numberRange returns " (2–8)" for a group whose mask has a single <N>.
 func numberRange(names, masks []string, m string) string {
 	if strings.Count(m, "<N>") != 1 || strings.Contains(m, "<H>") {
 		return ""
@@ -256,7 +225,6 @@ func numberRange(names, masks []string, m string) string {
 	return fmt.Sprintf(" (%s–%s)", loS, hiS)
 }
 
-// wrapNames joins names with two spaces into lines of about pathLineWidth.
 func wrapNames(indent string, names []string) []string {
 	var out []string
 	var b strings.Builder
@@ -278,7 +246,6 @@ func wrapNames(indent string, names []string) []string {
 	return out
 }
 
-// commaInt formats 2310 as "2,310".
 func commaInt(n int) string {
 	s := fmt.Sprint(n)
 	if n < 1000 {
@@ -296,10 +263,6 @@ func commaInt(n int) string {
 
 var extRe = lazyre.New(`\.[A-Za-z][A-Za-z0-9]{0,7}$`)
 
-// isPathLike reports whether line is a single file-system path: no
-// surrounding or doubled spaces, no tabs, colons, quotes or shell
-// metacharacters, at least one letter or digit, and spaces only inside a
-// directory name or a file name that ends in an extension.
 func isPathLike(line string) bool {
 	if line == "" || len(line) > 1024 || line != strings.TrimSpace(line) {
 		return false
@@ -319,18 +282,13 @@ func isPathLike(line string) bool {
 	}
 	if sp := strings.IndexByte(line, ' '); sp >= 0 {
 		if strings.IndexByte(line[sp:], '/') >= 0 {
-			return true // space inside a directory name
+			return true
 		}
 		return extRe.MatchString(path.Base(line))
 	}
 	return true
 }
 
-// LooksLikePathList reports whether lines are a list of file-system paths
-// (find, fd, rg --files, git ls-files, ls -1): at least 4 non-empty lines,
-// at least 80% of them single path-like tokens (no colons, tabs, quotes or
-// shell metacharacters; spaces only inside names), at least half of those
-// containing a "/", and at most a fifth of them containing a space.
 func LooksLikePathList(lines []string) bool {
 	nonEmpty, like, slash, spaced := 0, 0, 0, 0
 	for _, ln := range lines {
@@ -348,15 +306,10 @@ func LooksLikePathList(lines []string) bool {
 			}
 		}
 	}
-	// Names with spaces are rare; many "word path" lines are a status
-	// listing (PASS test/x.js, M src/y.go), not paths.
+
 	return nonEmpty >= 4 && like*10 >= nonEmpty*8 && slash*2 >= like && spaced*5 <= like
 }
 
-// lsRecursivePaths turns `ls -R` output ("dir:" headers followed by the
-// directory's entries, blocks separated by blank lines) into a path list.
-// The first block may have no header; its directory is inferred from the
-// first header whose base name it lists.
 func lsRecursivePaths(lines []string) ([]string, bool) {
 	type block struct {
 		dir   string
@@ -390,7 +343,7 @@ func lsRecursivePaths(lines []string) ([]string, bool) {
 	if headers == 0 || names < 4 || bad*20 > names {
 		return nil, false
 	}
-	// Header-less first block: find its directory.
+
 	if first := blocks[0]; len(first.names) > 0 {
 		dir := ""
 		for _, b := range blocks[1:] {
@@ -416,11 +369,6 @@ func lsRecursivePaths(lines []string) ([]string, bool) {
 	return out, true
 }
 
-// braceGroup renders numbered siblings as a bash brace expansion an agent
-// can expand back into exact names: vite{2..8}.md for a contiguous run,
-// test{1,3,9}.out for up to 12 scattered values. ok=false when the names
-// vary in more than one number (or not only in a number) or there are too
-// many scattered values to list.
 func braceGroup(mask string, members []string) (string, bool) {
 	if strings.Count(mask, "<N>") != 1 || strings.Contains(mask, "<H>") {
 		return "", false
@@ -443,7 +391,7 @@ func braceGroup(mask string, members []string) (string, bool) {
 		}
 		if len(d) > 1 && d[0] == '0' {
 			if width >= 0 && width != len(d) {
-				return "", false // mixed padding: can't express as one range
+				return "", false
 			}
 			width = len(d)
 		}
@@ -458,8 +406,6 @@ func braceGroup(mask string, members []string) (string, bool) {
 		}
 	}
 	if contiguous && width >= 0 {
-		// {01..10} pads every value to the widest; only valid when every
-		// name is padded to that same width.
 		for _, n := range nums {
 			if len(n.s) != width {
 				contiguous = false

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "just",
+    "test"
+  ],
+  "shell": "just test",
+  "exit_code": 101,
+  "description": "SYNTHETIC (cargo and just are not installed on the capture machine): just test whose recipe runs cargo test: just's recipe echo, the synthetic cargo-test-fail report (real libtest format), just's failure line in its real format",
+  "cwd": "/home/user/src/demo",
+  "repo": "",
+  "tool": "cargo-test"
+}

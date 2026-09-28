@@ -9,8 +9,6 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// reference is the original corpusbench implementation (prepending to
-// tail); HeadTail must produce byte-identical cuts.
 func reference(s string, budget int) string {
 	lines := strings.Split(s, "\n")
 	if tokens.Count(s) <= budget {
@@ -72,9 +70,6 @@ func TestHeadTailShape(t *testing.T) {
 	}
 }
 
-// On every corpus capture, at the budgets the benchmark uses (lx's view
-// size) and around them, HeadTail cuts exactly as the original did: the
-// corpus benchmark's head+tail column cannot move with the refactor.
 func TestHeadTailMatchesReferenceOnCorpus(t *testing.T) {
 	n := 0
 	for _, c := range fixture.All(t) {

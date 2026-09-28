@@ -2,26 +2,13 @@ package python
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// ruffFilter condenses `ruff check` in its default ("full") format. Every
-// diagnostic keeps its header line ("F401 [*] `os` imported but unused" or,
-// in ruff < 0.12, "path:1:8: F401 [*] …") and its location, and its "help:"
-// line; the first 10 diagnostics keep the snippet's flagged code line and
-// caret line (syntax errors keep the whole snippet), the suggested-fix diff
-// is dropped. The summary lines
-// ("Found N errors.", "[*] N fixable …", "All checks passed!") are kept
-// verbatim. Concise and grouped output is already one line per
-// diagnostic and passes through unchanged.
-//
-// Snippet lines are source code that may contain words like "error", so the
-// filter implements engine.Guarded and runs ensureErrors with exactly the
-// snippet and fix-diff lines it hides exempted.
 type ruffFilter struct{}
 
 func (ruffFilter) Name() string { return "ruff" }
@@ -55,7 +42,7 @@ func (ruffFilter) Match(c *engine.Context) bool {
 		switch strings.ToLower(f) {
 		case "full", "concise", "grouped", "text":
 		default:
-			return false // json, sarif, github, …: machine output
+			return false
 		}
 	}
 	return true
@@ -64,38 +51,29 @@ func (ruffFilter) Match(c *engine.Context) bool {
 const ruffSnippets = 10
 
 var (
-	// Concise / pre-0.12 full header: path:line:col: CODE [*] message.
 	ruffOldHeadRe = lazyre.New(`^(\S(?:.*?\S)?):(\d+):(\d+): ([A-Z]+\d+|[a-z][a-z0-9]*(?:-[a-z0-9]+)*:?|SyntaxError:) (.*)$`)
-	// 0.12+ full format location line under the header.
+
 	ruffArrowRe   = lazyre.New(`^\s*--> (\S(?:.*?\S)?):(\d+):(\d+)$`)
 	ruffHelpRe    = lazyre.New(`^\s*(?:= )?(?:help|note|info|warning|error): `)
 	ruffSummaryRe = lazyre.New(`^(?:Found \d+ errors?(?: \(\d+ fixed, \d+ remaining\))?\.|All checks passed!|\[\*\] \d+ fixable with the .*|No fixes available .*|\d+ files? (?:would be )?(?:reformatted|left unchanged).*)$`)
 )
 
 type ruffDiag struct {
-	idx    []int // every line of the diagnostic block
-	header int   // header line index
-	arrow  int   // "-->" line index, -1 for the old format
-	line   int   // the diagnostic's line number
+	idx    []int
+	header int
+	arrow  int
+	line   int
 	syntax bool
 }
 
 var (
-	// "15 |     tags: List[str] = …" (code line of a snippet).
 	ruffCodeRe = lazyre.New(`^\s*(\d+) \|(.*)$`)
-	// Marker line of a snippet: "   |           ^^^^", "  | |___^",
-	// "  |        -- previous definition of `os` here" (secondary label).
+
 	ruffMarkRe = lazyre.New(`^\s*\|\s*(?:[\^~_\-/\\]|\|.*[\^_])`)
-	// Secondary location of a multi-span diagnostic: "  ::: other.py:6:5".
+
 	ruffSecondaryRe = lazyre.New(`^\s*::: \S`)
 )
 
-// snippetLine reports whether a snippet line is worth keeping: the code
-// line the diagnostic points at, every code line an annotation marks (the
-// line above a marker line: "previous definition of `f` here"), the lines
-// of a marked multi-line range ("1 | / import a", "2 | | import b") and the
-// caret/underline/label lines. The surrounding context lines and bare "|"
-// rulers are dropped.
 func (d ruffDiag) snippetLine(ln, next string) bool {
 	if ruffMarkRe.MatchString(ln) {
 		return true
@@ -128,10 +106,9 @@ func (ruffFilter) Apply(c *engine.Context, text string) (string, bool) {
 		return -1, false
 	}
 	recognized := false
-	// Blocks: a header plus the snippet lines up to the next blank line or
-	// header. Everything else is kept in place.
+
 	type item struct {
-		diag int // index into diags, or -1 for a plain line
+		diag int
 		line int
 	}
 	var items []item
@@ -188,7 +165,7 @@ func (ruffFilter) Apply(c *engine.Context, text string) (string, bool) {
 		}
 		d := diags[it.diag]
 		if len(d.idx) == 1 {
-			out = append(out, lines[d.header]) // concise line
+			out = append(out, lines[d.header])
 			continue
 		}
 		showSnippet := d.syntax || snippets < ruffSnippets
@@ -204,20 +181,20 @@ func (ruffFilter) Apply(c *engine.Context, text string) (string, bool) {
 			}
 			switch {
 			case i == d.header || i == d.arrow || ruffSecondaryRe.MatchString(ln):
-				inFix = false // a new span of the same diagnostic
+				inFix = false
 				out = append(out, ln)
 			case ruffHelpRe.MatchString(ln):
 				out = append(out, ln)
-				inFix = true // what follows a help line is the fix diff
+				inFix = true
 			case inFix:
 				exempt[i] = true
 				hadDiff = true
 			case d.syntax:
-				out = append(out, ln) // syntax errors: the whole snippet
+				out = append(out, ln)
 			case showSnippet && d.snippetLine(ln, next):
 				out = append(out, ln)
 			case showSnippet:
-				exempt[i] = true // context line of a kept snippet
+				exempt[i] = true
 			default:
 				exempt[i] = true
 				hadSnippet = true
@@ -230,7 +207,7 @@ func (ruffFilter) Apply(c *engine.Context, text string) (string, bool) {
 			hiddenDiffs++
 		}
 		if d.arrow >= 0 || showSnippet {
-			out = append(out, "") // blank line between full-format diagnostics
+			out = append(out, "")
 		}
 	}
 	out = trimBlank(collapseBlank(out))
@@ -246,16 +223,11 @@ func (ruffFilter) Apply(c *engine.Context, text string) (string, bool) {
 	}
 	out, _ = ensureErrors(lines, exempt, out)
 	if c.Exit != 0 && !anyError(out) {
-		// "All checks passed!" with a failing status (--exit-non-zero-on-fix,
-		// a crash after the report), or -q output without "Found N errors.":
-		// say so.
 		out = append(out, fmt.Sprintf("[lx: ruff exited %d]", c.Exit))
 	}
 	return strings.Join(out, "\n"), true
 }
 
-// collapseBlank squeezes runs of blank lines and drops a blank line right
-// before a summary line.
 func collapseBlank(lines []string) []string {
 	var out []string
 	for i, ln := range lines {

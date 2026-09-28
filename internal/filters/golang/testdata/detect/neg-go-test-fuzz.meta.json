@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-run=^$",
+    "-fuzz=FuzzJoin",
+    "-fuzztime=300x",
+    "."
+  ],
+  "shell": "go test -run=^$ -fuzz=FuzzJoin -fuzztime=300x .",
+  "exit_code": 0,
+  "description": "REAL (negative): go test -fuzz=FuzzJoin -fuzztime=300x: fuzzing progress lines (fuzz: elapsed \u2026) and the verdict (the go-test filter declines -fuzz)",
+  "cwd": "/home/user/src/godemo",
+  "repo": "",
+  "tool": ""
+}

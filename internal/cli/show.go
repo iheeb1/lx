@@ -22,45 +22,19 @@ import (
 	"github.com/iheeb1/lx/internal/track"
 )
 
-// lx show prints a stored run back, or lists stored runs.
-//
-//	lx show [ID|last|last~N] [--errors] [--grep RE] [-C N] [--lines A-B]
-//	        [--head N] [--tail N] [--full] [--raw]
-//	lx show [--all]
-//
-// Every run view starts with a provenance header, so an agent always knows
-// which run it is reading (`last` can race with parallel agents):
-//
-//	[lx show 7 · go test ./... · exit 1 · 14 min ago · 307 lines]
-//
-// Selection: --lines restricts the range; --errors (Classify error or
-// warning lines) and --grep select lines within it (both given: either
-// kind), with -C lines of context; --head/--tail keep the first/last N
-// selected lines. Line numbers count lines of the cleaned output (of the
-// stored bytes with --raw). Unless
-// --full or --raw, the output fits the host's output limit (hostCharCap):
-// it stops at the last whole line that fits and ends with the exact
-// command that prints the next part, sized to fit too.
-//
-// The cap is for output the agent reads directly. Piped into a program
-// (`lx show 7 | grep FAIL`) or redirected to a file, a cut would silently
-// feed it part of the run, so then nothing is cut and the header and notes
-// go to stderr, keeping the data stream clean (showStdoutPiped).
-
 const (
-	showListed        = 20 // runs the listing prints without --all
-	showArgvWidth     = 80 // command width in a header
+	showListed        = 20
+	showArgvWidth     = 80
 	showListArgv      = 120
-	showErrorsContext = 3 // -C default with --errors
+	showErrorsContext = 3
 )
 
-// showEnv is everything lx show reads from the process, so tests can pin it.
 type showEnv struct {
 	stdout, stderr io.Writer
 	now            time.Time
 	cwd, home      string
-	limit, cap     int  // host output limit and the cap output fits in (0 = none)
-	piped          bool // stdout feeds a program or a file, not the agent
+	limit, cap     int
+	piped          bool
 }
 
 func cmdShow(args []string) int {
@@ -71,17 +45,6 @@ func cmdShow(args []string) int {
 		cwd: cwd, home: home, limit: limit, cap: capc, piped: showStdoutPiped(os.Stdout, os.Stderr)})
 }
 
-// showStdoutPiped reports whether stdout goes to another program or to a
-// file rather than straight to the agent. Claude Code's Bash tool captures
-// a command's stdout and stderr in one regular file (checked in a real
-// session), so stdout is the agent's view when it is that same file or a
-// terminal; a pipe (`| grep x`, `| wc -l`, `$(…)`) or a redirect
-// (`> out.log`, stdout a regular file other than stderr's) is not. When
-// stderr is not a regular file (`2>/dev/null`, a terminal) a regular
-// stdout is taken to be the host's file, so `> out.log 2>/dev/null`, like
-// `> out.log 2>&1`, stays capped (its closing line says so). A host that
-// captures through pipes gets uncapped `lx show` output: a spill is
-// visible, a silent cut of what a pipe reads is not.
 func showStdoutPiped(stdout, stderr *os.File) bool {
 	fo, err := stdout.Stat()
 	if err != nil {
@@ -97,24 +60,21 @@ func showStdoutPiped(stdout, stderr *os.File) bool {
 	return false
 }
 
-// showSel is a selection over a run's lines.
 type showSel struct {
 	errors     bool
 	grep       string
 	re         *regexp.Regexp
-	ctx        int  // context lines around matches
-	ctxSet     bool // -C was given
-	lo, hi     int  // 1-based, inclusive; hi 0 = the end
-	linesSet   bool // --lines was given
+	ctx        int
+	ctxSet     bool
+	lo, hi     int
+	linesSet   bool
 	head, tail int
 }
 
-// numbered reports whether the view prints line numbers: any selection.
 func (s showSel) numbered() bool {
 	return s.errors || s.re != nil || s.linesSet || s.head > 0 || s.tail > 0
 }
 
-// mode names the recall for lx gain.
 func (s showSel) mode() string {
 	switch {
 	case s.errors:
@@ -197,7 +157,7 @@ func runShow(args []string, env showEnv) int {
 	proj := showFindProject(env.cwd)
 	if len(pos) == 0 {
 		if s.numbered() || *ctx >= 0 || *full || *raw {
-			// Not a listing: printing the list would ignore what was asked.
+
 			q := make([]string, len(origArgs))
 			for i, a := range origArgs {
 				q[i] = showQuote(a)
@@ -238,17 +198,17 @@ func runShow(args []string, env showEnv) int {
 	default:
 		printed = r.print(s, *full || env.cap <= 0)
 	}
-	// Piped, what reaches the agent is unknown: count all of it (an upper
-	// bound, so lx gain never overstates what was saved).
+
 	cmd := cmdKey(meta.Argv)
 	if cmd == "" {
 		cmd = "(unknown)"
 	}
 	_ = track.Add(track.Record{Kind: track.KindShow, Cmd: cmd, Of: id, Mode: s.mode(), Out: tokens.Count(printed)})
+
+	tuneRecordShow(id, meta, s, *full || *raw, env.piped, env.now)
 	return 0
 }
 
-// parseShowLines parses A-B, A- (to the end) or A.
 func parseShowLines(v string) (lo, hi int, ok bool) {
 	a, b, dash := strings.Cut(v, "-")
 	lo, err := strconv.Atoi(a)
@@ -270,15 +230,11 @@ func parseShowLines(v string) (lo, hi int, ok bool) {
 
 var showErrBadID = errors.New("bad id")
 
-// showRuns reads stored runs' metadata newest first, only as far back as
-// a question needs (the store keeps up to tee.Keep runs, and reading them
-// all costs ~20 ms).
 type showRuns struct {
 	metas []tee.Meta
-	all   bool // metas holds every stored run
+	all   bool
 }
 
-// newest returns at least the n newest runs (fewer when that is all).
 func (r *showRuns) newest(n int) []tee.Meta {
 	if !r.all && len(r.metas) < n {
 		r.metas = tee.Recent(n)
@@ -287,8 +243,6 @@ func (r *showRuns) newest(n int) []tee.Meta {
 	return r.metas
 }
 
-// each calls f on runs newest first until it returns false. It resumes
-// by id, so a run stored meanwhile by another lx is never visited twice.
 func (r *showRuns) each(f func(tee.Meta) bool) {
 	below := math.MaxInt
 	for n := 16; ; n *= 4 {
@@ -307,10 +261,6 @@ func (r *showRuns) each(f func(tee.Meta) bool) {
 	}
 }
 
-// showResolve turns N, #N, last or last~N into a run id. last is the newest
-// run whose directory is inside the current project (the nearest ancestor
-// of the cwd holding .git), or the newest run anywhere when this project
-// has none; last~N is the (N+1)-th newest in that same scope.
 func showResolve(spec string, runs *showRuns, proj showProject) (int, error) {
 	if rest, ok := strings.CutPrefix(spec, "last"); ok {
 		back := 0
@@ -354,12 +304,9 @@ func showResolve(spec string, runs *showRuns, proj showProject) (int, error) {
 	return id, nil
 }
 
-// showProject is the directory tree lx show scopes to: the nearest
-// ancestor of the cwd (itself included) that holds .git, else the cwd.
 type showProject struct {
 	root, real string
-	// resolved caches run directories' real paths ("" when gone), for
-	// runs recorded through a symlinked path.
+
 	resolved map[string]string
 }
 
@@ -386,8 +333,6 @@ func showFindProject(cwd string) showProject {
 	return p
 }
 
-// contains reports whether dir is the project root or below it. An unknown
-// directory (a run stored without metadata) is in no project.
 func (p showProject) contains(dir string) bool {
 	if dir == "" || p.root == "" {
 		return false
@@ -396,8 +341,7 @@ func (p showProject) contains(dir string) bool {
 	if p.under(dir) {
 		return true
 	}
-	// Recorded through a symlink (/tmp/x for /private/tmp/x): compare the
-	// real path. Few distinct directories, each resolved once.
+
 	real, ok := p.resolved[dir]
 	if !ok {
 		real, _ = filepath.EvalSymlinks(dir)
@@ -408,7 +352,6 @@ func (p showProject) contains(dir string) bool {
 	return real != "" && real != dir && p.under(real)
 }
 
-// under reports whether dir is the root (or its real path) or below it.
 func (p showProject) under(dir string) bool {
 	sep := string(filepath.Separator)
 	in := func(root string) bool {
@@ -417,25 +360,19 @@ func (p showProject) under(dir string) bool {
 	return in(p.root) || in(p.real)
 }
 
-// showRun is one stored run being printed.
 type showRun struct {
 	env   showEnv
 	id    int
 	meta  tee.Meta
-	text  string // the stored output (cleaned unless --raw)
+	text  string
 	lines []string
-	notes []string // provenance lines after the header
+	notes []string
 
-	// Per-line caches, filled only for lines a selection reaches (a view
-	// and the closing line's size checks ask about the same lines): the
-	// engine.Level+1, and whether grepRe matches (0 = not known yet).
 	level  []int8
 	grepRe *regexp.Regexp
 	grep   []int8
 }
 
-// showLine is one output line; n is its line number in the run (0 for
-// gap markers and notes).
 type showLine struct {
 	text string
 	n    int
@@ -449,8 +386,6 @@ func showSplit(s string) []string {
 	return strings.Split(s, "\n")
 }
 
-// provenance returns the note lines that follow the header: a newer run of
-// the same command in the same directory, and a run from elsewhere.
 func (r *showRun) provenance(runs *showRuns, proj showProject) []string {
 	var notes []string
 	if len(r.meta.Argv) > 0 {
@@ -478,8 +413,6 @@ func (r *showRun) provenance(runs *showRuns, proj showProject) []string {
 	return notes
 }
 
-// header is the provenance line: run id, command, exit status (or the
-// state of an unfinished run), age and size, then extra parts.
 func (r *showRun) header(extra ...string) string {
 	m := r.meta
 	parts := []string{fmt.Sprintf("lx show %d", r.id)}
@@ -503,8 +436,6 @@ func (r *showRun) header(extra ...string) string {
 	return "[" + strings.Join(parts, " · ") + "]"
 }
 
-// showExit is "exit N", or "exit unknown" for a run whose final metadata
-// was never written (it still holds the -1 of its reservation).
 func showExit(m tee.Meta) string {
 	if m.Exit < 0 {
 		return "exit unknown"
@@ -512,7 +443,6 @@ func showExit(m tee.Meta) string {
 	return "exit " + strconv.Itoa(m.Exit)
 }
 
-// levelAt classifies line i, once.
 func (r *showRun) levelAt(i int) engine.Level {
 	if r.level == nil {
 		r.level = make([]int8, len(r.lines))
@@ -523,7 +453,6 @@ func (r *showRun) levelAt(i int) engine.Level {
 	return engine.Level(r.level[i] - 1)
 }
 
-// grepAt reports whether re matches line i, matching each line once.
 func (r *showRun) grepAt(re *regexp.Regexp, i int) bool {
 	if r.grepRe != re {
 		r.grepRe, r.grep = re, make([]int8, len(r.lines))
@@ -537,12 +466,6 @@ func (r *showRun) grepAt(re *regexp.Regexp, i int) bool {
 	return r.grep[i] == 2
 }
 
-// pick returns the selected line indexes (ascending), which of them are
-// matches (as opposed to context), and the error, warning and grep counts
-// within the range. One pass, linear in the range whatever -C is: a
-// match's before-context is added when the match is reached (it holds no
-// earlier match, which would have kept it already), its after-context
-// while within ctx lines of it.
 func (r *showRun) pick(s showSel) (idx []int, match []bool, nerr, nwarn, ngrep int) {
 	n := len(r.lines)
 	lo, hi := 0, n-1
@@ -563,10 +486,9 @@ func (r *showRun) pick(s showSel) (idx []int, match []bool, nerr, nwarn, ngrep i
 			match = append(match, true)
 		}
 	} else {
-		// Context never reaches past the range, and clamping keeps i+ctx
-		// from overflowing (-C 9223372036854775807).
+
 		ctx := min(max(s.ctx, 0), hi-lo)
-		kept, until := lo-1, lo-1 // last index added; end of after-context
+		kept, until := lo-1, lo-1
 		for i := lo; i <= hi; i++ {
 			m := false
 			if s.errors {
@@ -599,7 +521,7 @@ func (r *showRun) pick(s showSel) (idx []int, match []bool, nerr, nwarn, ngrep i
 			}
 		}
 	}
-	// Both under len(idx), so the sum can't overflow.
+
 	if (s.head > 0 || s.tail > 0) && s.head < len(idx) && s.tail < len(idx) && s.head+s.tail < len(idx) {
 		var ni []int
 		var nm []bool
@@ -614,22 +536,16 @@ func (r *showRun) pick(s showSel) (idx []int, match []bool, nerr, nwarn, ngrep i
 	return idx, match, nerr, nwarn, ngrep
 }
 
-// render builds the view of selection s: the header and notes, then the
-// body. Nothing is cut here.
 func (r *showRun) render(s showSel) (head []string, body []showLine) {
 	head, body, _ = r.build(s, true)
 	return head, body
 }
 
-// size is the byte size of render(s)'s output (every line and its
-// newline), computed without formatting the body.
 func (r *showRun) size(s showSel) int {
 	_, _, n := r.build(s, false)
 	return n
 }
 
-// build is render (keep) or size (!keep): one code path, so the size the
-// closing line's search relies on is the size render prints.
 func (r *showRun) build(s showSel, keep bool) (head []string, body []showLine, size int) {
 	idx, match, nerr, nwarn, ngrep := r.pick(s)
 	var extra []string
@@ -665,7 +581,7 @@ func (r *showRun) build(s showSel, keep bool) (head []string, body []showLine, s
 			}
 			prev = i
 			if !keep {
-				// "%6d" + a two-byte separator + the line + newline.
+
 				size += max(6, showDigits(i+1)) + 2 + len(r.lines[i]) + 1
 				continue
 			}
@@ -682,7 +598,6 @@ func (r *showRun) build(s showSel, keep bool) (head []string, body []showLine, s
 	return head, body, size
 }
 
-// showDigits is the number of decimal digits of n >= 0.
 func showDigits(n int) int {
 	d := 1
 	for ; n >= 10; n /= 10 {
@@ -691,7 +606,6 @@ func showDigits(n int) int {
 	return d
 }
 
-// emptyNote explains an empty selection.
 func (r *showRun) emptyNote(s showSel) string {
 	n := len(r.lines)
 	switch {
@@ -720,8 +634,6 @@ func (r *showRun) emptyNote(s showSel) string {
 	return fmt.Sprintf("[lx: nothing selected in %s]", where)
 }
 
-// print writes the view to stdout, fitted to the cap unless full, and
-// returns what it printed.
 func (r *showRun) print(s showSel, full bool) string {
 	head, body := r.render(s)
 	out := head
@@ -742,9 +654,6 @@ func (r *showRun) print(s showSel, full bool) string {
 	return b.String()
 }
 
-// printPiped is print for a stdout that feeds a program or a file: the
-// whole selection, uncut, on stdout, and the header and notes on stderr,
-// where the agent still sees them and a program doesn't parse them.
 func (r *showRun) printPiped(s showSel) string {
 	head, body := r.render(s)
 	h := strings.Join(head, "\n") + "\n"
@@ -758,8 +667,6 @@ func (r *showRun) printPiped(s showSel) string {
 	return h + b.String()
 }
 
-// printRaw writes the header to stderr and the stored bytes (or the
-// selected raw lines) to stdout, uncapped.
 func (r *showRun) printRaw(s showSel) string {
 	head, body := r.render(s)
 	h := strings.Join(head, "\n") + "\n"
@@ -785,9 +692,6 @@ func showSize(ls []string) int {
 	return n
 }
 
-// fit cuts the view at the last whole line that fits the cap, leaving
-// room for a closing line that says what was not shown and gives the exact
-// command for the next part.
 func (r *showRun) fit(s showSel, head []string, body []showLine) []string {
 	capc := r.env.cap
 	hs := showSize(head)
@@ -818,7 +722,7 @@ func (r *showRun) fit(s showSel, head []string, body []showLine) []string {
 	}
 	for ; k >= 0; k-- {
 		for k > 0 && body[k-1].n == 0 {
-			k-- // don't end on a gap marker
+			k--
 		}
 		first := 0
 		for j := k; j < len(body); j++ {
@@ -828,7 +732,7 @@ func (r *showRun) fit(s showSel, head []string, body []showLine) []string {
 			}
 		}
 		if first == 0 {
-			return out(k) // only gap markers or notes left
+			return out(k)
 		}
 		tr := r.trailer(s, first, last)
 		if hs+pre[k]+len(tr)+1 <= capc || k == 0 {
@@ -838,8 +742,6 @@ func (r *showRun) fit(s showSel, head []string, body []showLine) []string {
 	return out(0)
 }
 
-// trailer is the closing line of a cut view: lines first..last were not
-// shown, and the command that shows the next part within the cap.
 func (r *showRun) trailer(s showSel, first, last int) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "… [%s not shown: over this agent's %s-character output limit", showLinesWord(first, last), showCommas(r.env.limit))
@@ -857,8 +759,7 @@ func (r *showRun) trailer(s showSel, first, last int) string {
 	}
 	lo, hi := first, last
 	if !s.errors && s.re == nil {
-		// Every line of the range is printed, at 9 bytes or more each: no
-		// longer range fits, and the search stays small on a huge run.
+
 		hi = min(hi, first+r.env.cap/9)
 	}
 	for lo < hi {
@@ -878,7 +779,6 @@ func (r *showRun) trailer(s showSel, first, last int) string {
 	return b.String()
 }
 
-// command is the lx show command line for selection s.
 func (r *showRun) command(s showSel) string {
 	c := "lx show " + strconv.Itoa(r.id)
 	if s.errors {
@@ -899,8 +799,6 @@ func (r *showRun) command(s showSel) string {
 	return c
 }
 
-// showList prints stored runs, newest first: this project's (newest 20),
-// or every run with --all.
 func showList(env showEnv, runs []tee.Meta, proj showProject, all bool) int {
 	if len(runs) == 0 {
 		fmt.Fprintln(env.stdout, "lx show: no stored outputs yet (they're stored when lx condenses a view)")
@@ -953,8 +851,7 @@ func showList(env showEnv, runs []tee.Meta, proj showProject, all bool) int {
 		lines = append(lines, "("+strings.Join(more, ", ")+": lx show --all)")
 	}
 	if env.cap > 0 && !env.piped && showSize(lines) > env.cap {
-		// Keep whole rows, with room for the closing line (the "+N" line
-		// is shorter than that room, so some row is always cut here).
+
 		k, n := 0, 0
 		for k < len(list) && n+len(lines[k])+1+120 <= env.cap {
 			n += len(lines[k]) + 1
@@ -974,7 +871,6 @@ func showList(env showEnv, runs []tee.Meta, proj showProject, all bool) int {
 	return 0
 }
 
-// showArgv joins argv for display, on one line, cut to width runes.
 func showArgv(argv []string, width int) string {
 	if len(argv) == 0 {
 		return "(unknown command)"
@@ -982,8 +878,6 @@ func showArgv(argv []string, width int) string {
 	return showCut(strings.Join(argv, " "), width)
 }
 
-// showCut puts s on one line (control characters become spaces) and cuts
-// it to width runes.
 func showCut(s string, width int) string {
 	s = strings.Map(func(r rune) rune {
 		if r < 0x20 || r == 0x7f {
@@ -997,8 +891,6 @@ func showCut(s string, width int) string {
 	return s
 }
 
-// showAgo is "just now", "14 min ago", "5 h ago" or "3 days ago" ("" for
-// an unknown time).
 func showAgo(now, t time.Time) string {
 	if t.IsZero() {
 		return ""
@@ -1022,7 +914,6 @@ func showTilde(dir, home string) string {
 	return dir
 }
 
-// showCommas groups digits: 1,100.
 func showCommas(n int) string {
 	s := strconv.Itoa(n)
 	if n < 0 {
@@ -1041,7 +932,6 @@ func showPlural(n int, one, many string) string {
 	return many
 }
 
-// showGap marks lines a..b (1-based) that the view skips.
 func showGap(a, b int) string {
 	if a == b {
 		return fmt.Sprintf("     … line %s …", showCommas(a))
@@ -1063,7 +953,6 @@ func showLinesWord(a, b int) string {
 	return "lines " + showCommas(a) + "-" + showCommas(b)
 }
 
-// showQuote quotes s for a POSIX shell when it needs it.
 func showQuote(s string) string {
 	if s != "" && strings.IndexFunc(s, func(r rune) bool {
 		return !(r == '_' || r == '-' || r == '.' || r == '/' || r == ':' || r == ',' || r == '=' ||

@@ -85,8 +85,6 @@ func TestNegativeNetShowsNegative(t *testing.T) {
 	}
 }
 
-// A recall of a run older than the window: a command row with 0 runs, no
-// division by zero.
 func TestRecallOnlyCommand(t *testing.T) {
 	s := Summarize([]Record{{Time: day(0), Cmd: "pytest", Kind: KindShow, Of: 1, Mode: "tail", Out: 80}}, 3, gainNow)
 	if s.Commands != 0 || s.Recalls != 1 || len(s.ByCmd) != 1 || s.ByCmd[0].Count != 0 || s.ByCmd[0].AvgMs != 0 {
@@ -126,7 +124,7 @@ not json at all
 	if last != `{"t":1790000200,"cmd":"go test","filter":"","raw":0,"out":321,"ms":0,"exit":0,"kind":"show","of":4,"mode":"errors"}` {
 		t.Fatalf("recall line: %s", last)
 	}
-	// Run records stay exactly as they were written before recalls existed.
+
 	r, _ := json.Marshal(Record{Time: 1, Cmd: "ls", Raw: 2, Out: 1})
 	if string(r) != `{"t":1,"cmd":"ls","filter":"","raw":2,"out":1,"ms":0,"exit":0}` {
 		t.Fatalf("run record: %s", r)
@@ -164,7 +162,6 @@ func TestGainTextGolden(t *testing.T) {
 		t.Errorf("gain text:\n%q\nwant:\n%q", got, want)
 	}
 
-	// Without recalls there are no recall lines and no recalls column.
 	b.Reset()
 	Summarize(gainRecords()[:4], 5, gainNow).Text(&b, 10)
 	if strings.Contains(b.String(), "recall") || strings.Contains(b.String(), "net saved") {

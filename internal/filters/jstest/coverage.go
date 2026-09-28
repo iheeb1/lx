@@ -2,37 +2,24 @@ package jstest
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"sort"
 	"strconv"
 	"strings"
-)
 
-// istanbul "text" coverage table (jest --coverage, vitest --coverage, nyc):
-//
-//	---------------------|---------|----------|---------|---------|-------------------
-//	File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
-//	---------------------|---------|----------|---------|---------|-------------------
-//	All files            |   96.67 |    94.58 |   95.31 |   96.68 |
-//	 src                 |   96.91 |     97.4 |   92.92 |   96.98 |
-//	  datetime.js        |   95.32 |    97.68 |   87.58 |    95.5 | 1460,1485,2094-2097
-//	---------------------|---------|----------|---------|---------|-------------------
+	"github.com/iheeb1/lx/internal/lazyre"
+)
 
 var (
 	covSepRe  = lazyre.New(`^-+(?:\|-+)+\|?$`)
 	covHeadRe = lazyre.New(`^File\s+\|\s*% Stmts\s*\|\s*% Branch\s*\|\s*% Funcs\s*\|\s*% Lines\s*\|`)
 	covRowRe  = lazyre.New(`^( *)(\S.*?)\s*\|\s*([\d.]+|-)\s*\|\s*([\d.]+|-)\s*\|\s*([\d.]+|-)\s*\|\s*([\d.]+|-)\s*\|`)
-	// jest: `Jest: "global" coverage threshold for lines (95%) not met: 40%`
-	// vitest: `ERROR: Coverage for lines (40%) does not meet global threshold (95%)`
+
 	jestThresholdRe   = lazyre.New(`coverage threshold for \w+ \((\d+(?:\.\d+)?)%\) not met`)
 	vitestThresholdRe = lazyre.New(`does not meet (?:global )?threshold \((\d+(?:\.\d+)?)%\)`)
 )
 
-// maxCoverageRows caps the file rows kept from a coverage table.
 const maxCoverageRows = 30
 
-// coverageTableEnd returns the end of the coverage table starting at line i
-// (a separator line followed by the header), or i when there is none.
 func coverageTableEnd(lines []string, i int) int {
 	if i+1 >= len(lines) || !covSepRe.MatchString(lines[i]) || !covHeadRe.MatchString(lines[i+1]) {
 		return i
@@ -50,8 +37,6 @@ func coverageTableEnd(lines []string, i int) int {
 	return j
 }
 
-// coverageThreshold returns the lowest threshold the run reported as not
-// met, or 100 when it reported none.
 func coverageThreshold(lines []string) float64 {
 	th := 101.0
 	for _, ln := range lines {
@@ -76,7 +61,7 @@ type covRow struct {
 	i      int
 	indent int
 	name   string
-	pct    [4]float64 // stmts, branch, funcs, lines; -1 when "-"
+	pct    [4]float64
 	dir    bool
 	keep   bool
 }
@@ -100,10 +85,6 @@ func (r covRow) min() float64 {
 	return m
 }
 
-// renderCoverage keeps the table header, the "All files" row, and the file
-// rows below the threshold (any metric under the lowest threshold the run
-// reported as not met, or under 100% when none was), each with its
-// directory rows; other rows are counted. Small tables are kept whole.
 func renderCoverage(d *doc, from, to int, th float64) {
 	var rows []covRow
 	for i := from; i < to; i++ {
@@ -148,7 +129,7 @@ func renderCoverage(d *doc, from, to int, th float64) {
 	}
 	for _, k := range cand {
 		rows[k].keep = true
-		// Directory rows above it (nearest shallower rows).
+
 		ind := rows[k].indent
 		for p := k - 1; p >= 0 && ind > 0; p-- {
 			if rows[p].indent < ind {
@@ -168,7 +149,7 @@ func renderCoverage(d *doc, from, to int, th float64) {
 			d.keep(i)
 			continue
 		}
-		d.drop(i) // a coverage data row (file names are data, not status)
+		d.drop(i)
 	}
 	hidden := files - len(cand) - more
 	pct := strconv.FormatFloat(th, 'f', -1, 64)

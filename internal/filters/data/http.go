@@ -10,12 +10,10 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// headerBlock is one HTTP message head: a status (or request) line and its
-// header fields, as printed by curl -i/-v/-I, httpie or wget -S.
 type headerBlock struct {
-	prefix     string // "< " for curl -v, "  " for wget -S, "" otherwise
+	prefix     string
 	statusLine string
-	status     int // 0 for a request block
+	status     int
 	fields     []string
 }
 
@@ -25,9 +23,6 @@ var (
 	fieldRe      = lazyre.New(`^([!#$%&'*+.^_` + "`" + `|~0-9A-Za-z-]+):(.*)$`)
 )
 
-// keepField reports whether a response header is worth showing when the
-// response succeeded: what an agent acts on (type, size, redirects,
-// retries, auth challenges, rate limits, pagination, downloads).
 func keepField(name string) bool {
 	switch name {
 	case "content-type", "content-length", "location", "retry-after", "www-authenticate",
@@ -38,9 +33,6 @@ func keepField(name string) bool {
 		strings.HasPrefix(name, "x-rate-limit") || strings.Contains(name, "error")
 }
 
-// render prints the block: all fields when keepAll, otherwise the status
-// line, the fields keepField selects (Set-Cookie reduced to the cookie
-// name) and one line naming the fields left out.
 func (h *headerBlock) render(keepAll bool) []string {
 	out := []string{h.statusLine}
 	var dropped []string
@@ -89,23 +81,15 @@ func parseStatus(line string) int {
 	return 0
 }
 
-// bodyView says how a response body is rendered.
 type bodyView struct {
 	contentType string
 	status      int
-	verbatim    bool   // the user shaped the output (-w): never condense
-	nums        []int  // 1-based output line number of each body line (nil: 1, 2, …)
-	joins       []bool // joins[i]: line i continues on line i+1 (another stream's message was glued into it)
-	lang        string // file extension of the URL, for outlines of big text
+	verbatim    bool
+	nums        []int
+	joins       []bool
+	lang        string
 }
 
-// renderBody condenses one response body:
-//   - binary data becomes one line with its size and type;
-//   - JSON above 1500 tokens (2000 for a 4xx/5xx response) goes through
-//     engine.CompactJSON, whose error fields come first;
-//   - HTML above 2000 tokens becomes its title and visible text, capped;
-//   - other text above the budget is cut to exact head/tail windows;
-//   - anything else is returned unchanged.
 func renderBody(lines []string, v bodyView) []string {
 	if len(v.nums) != len(lines) {
 		v.nums = make([]int, len(lines))
@@ -126,17 +110,13 @@ func renderBody(lines []string, v bodyView) []string {
 		return []string{fmt.Sprintf("[lx: binary body, ~%s (%s), not shown — save it with -o FILE]", humanBytes(len(body)), ct)}
 	}
 	n := countTokens(body)
-	// A message glued into a line of a JSON document split it in two;
-	// rejoined, the document may parse again. Line-numbered views keep the
-	// lines as captured.
+
 	if j, ok := rejoin(lines, v.joins); ok && (t[0] == '{' || t[0] == '[') && json.Valid([]byte(j)) {
 		v.joins = nil
 		return renderBody(strings.Split(j, "\n"), v)
 	}
 	if t[0] != '{' && t[0] != '[' && n > jsonBodyBudget {
-		// Lines another stream printed before the document (a Python
-		// warning from the client's libraries, a proxy notice) are kept
-		// verbatim; the document after them is rendered on its own.
+
 		if k := jsonStart(lines); k > 0 {
 			rest := v
 			rest.nums = v.nums[k:]
@@ -177,8 +157,6 @@ func renderBody(lines []string, v bodyView) []string {
 	return lines
 }
 
-// rejoin joins each line marked in joins with the next one. It reports
-// false when nothing is marked.
 func rejoin(lines []string, joins []bool) (string, bool) {
 	if len(joins) != len(lines) {
 		return "", false
@@ -197,13 +175,8 @@ func rejoin(lines []string, joins []bool) (string, bool) {
 	return b.String(), any
 }
 
-// maxPrelude: at most this many lines before a JSON document are taken
-// for a prelude from another stream.
 const maxPrelude = 20
 
-// jsonStart returns the index of the line where a JSON document that runs
-// to the end of lines starts, when it is preceded by 1-20 other lines, or
-// -1.
 func jsonStart(lines []string) int {
 	for k := 1; k < len(lines) && k <= maxPrelude; k++ {
 		ln := lines[k]
@@ -213,13 +186,11 @@ func jsonStart(lines []string) int {
 		if json.Valid([]byte(strings.Join(lines[k:], "\n"))) {
 			return k
 		}
-		return -1 // the first candidate decides: no quadratic rescans
+		return -1
 	}
 	return -1
 }
 
-// urlExt returns the file extension of the first http(s) URL argument
-// (".go" for …/strings.go), used to pick outline patterns for text bodies.
 func urlExt(args []string) string {
 	for _, a := range args {
 		if !strings.HasPrefix(a, "http://") && !strings.HasPrefix(a, "https://") {
@@ -238,7 +209,6 @@ func urlExt(args []string) string {
 	return ""
 }
 
-// curlExit explains curl exit codes, for runs that failed silently (-s).
 var curlExit = map[int]string{
 	1: "unsupported protocol", 2: "failed to initialize", 3: "malformed URL",
 	5: "could not resolve proxy", 6: "could not resolve host", 7: "failed to connect to host",

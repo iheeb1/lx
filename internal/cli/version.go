@@ -6,22 +6,10 @@ import (
 	"strings"
 )
 
-// devVersion is Version's value when no -ldflags -X set it.
 const devVersion = "0.1.0-dev"
 
-// readBuildInfo is debug.ReadBuildInfo; tests swap it.
 var readBuildInfo = debug.ReadBuildInfo
 
-// versionString is what `lx version` prints, e.g.
-//
-//	lx v0.2.0 (3f2a1c9, 2026-09-26, go1.26.5, darwin/arm64)
-//
-// The version comes from, in order: Version when -ldflags set it (make build,
-// make dist, release archives); the module version the go command stamped
-// (`go install …@v0.2.0` gives v0.2.0); else "dev". The parenthesised parts
-// are the VCS revision (7 chars, "+dirty" for a modified tree) and commit
-// date when the build recorded them, then the Go version and platform.
-// Missing parts are left out rather than guessed.
 func versionString() string {
 	bi, ok := readBuildInfo()
 	if !ok {

@@ -125,9 +125,9 @@ func TestEmptyAndUnknown(t *testing.T) {
 		{[]string{"grep", "-rn", "x", "."}, "\n"},
 		{[]string{"grep", "-rn", "x", "."}, "Usage: grep [OPTION]... PATTERNS [FILE]...\nTry 'grep --help' for more information."},
 		{[]string{"rg", "-n", "x"}, "error: unexpected argument '--foo' found\n\nUsage: rg [OPTIONS] PATTERN [PATH ...]"},
-		// Lines that are not path:NN:text under -rn.
+
 		{[]string{"grep", "-rn", "x", "."}, "x marks the spot\nand again x"},
-		// A path outside the searched directory: misread output, bail.
+
 		{[]string{"grep", "-rn", "x", "src"}, "other/a.go:1:x\nother/b.go:2:x"},
 		{[]string{"rg", "--files"}, ""},
 	}
@@ -151,8 +151,6 @@ func TestSingleLine(t *testing.T) {
 	}
 }
 
-// A failing search (exit 2) keeps its diagnostics first and verbatim, and
-// hits whose text looks like a verdict are data, not a status line.
 func TestFailureKeepsDiagnostics(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("grep: nosuch: No such file or directory\n")
@@ -182,7 +180,6 @@ func TestFailureKeepsDiagnostics(t *testing.T) {
 }
 
 func TestContextMisparse(t *testing.T) {
-	// "a.go-12-at 10:30:00" looks like path "a.go-12-at 10", line 30.
 	in := "a.go-11-// started\na.go-12-log at 10:30:00 ok\na.go:13:target()\na.go-14-}\n--\nb.go:3:target()"
 	c := ctx("rg", "-n", "-C1", "target")
 	out, ok := matches{}.Apply(c, in)
@@ -241,18 +238,18 @@ func TestWindow(t *testing.T) {
 	if n := len([]rune(got)); n > windowSize+40 {
 		t.Errorf("window too long: %d", n)
 	}
-	// Unknown pattern: the start of the line.
+
 	got = window(long, nil)
 	if !strings.HasPrefix(got, "aaaa") || !strings.HasSuffix(got, " …[+9860 chars]…") {
 		t.Fatalf("got %q", got)
 	}
-	// Multi-byte runes are never split.
+
 	u := strings.Repeat("é", 300) + "x" + strings.Repeat("ü", 300)
 	got = window(u, newMatcher(opts{patterns: []string{"x"}, flavor: 'e'}))
 	if !strings.Contains(got, "x") || strings.ContainsRune(got, '\uFFFD') {
 		t.Fatalf("got %q", got)
 	}
-	// Short lines are untouched.
+
 	if s := "short line"; window(s, mt) != s {
 		t.Error("short line changed")
 	}
@@ -316,8 +313,6 @@ func TestRgFilesHuge(t *testing.T) {
 	}
 }
 
-// FuzzSearch feeds corpus-seeded inputs to both filters under several
-// command lines: no panic, deterministic output, ok=false never with output.
 func FuzzSearch(f *testing.F) {
 	for _, dir := range []string{filepath.Join(fixture.Root(), "testdata", "corpus"), "testdata/corpus"} {
 		cases, _ := fixture.ReadAll(dir)
@@ -363,8 +358,7 @@ func FuzzSearch(f *testing.F) {
 			if !okA || flt.Name() != "search" {
 				continue
 			}
-			// Diagnostics (not "binary file" notes, which are capped)
-			// survive verbatim below CapNotes' threshold.
+
 			e := fs.Effective(c)
 			tl, _ := tool(e)
 			isNote := noteFunc(e, tl)

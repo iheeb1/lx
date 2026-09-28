@@ -1,0 +1,81 @@
+cargo test
+   Compiling demo v0.1.0 (/home/user/src/demo)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.93s
+     Running unittests src/lib.rs (target/debug/deps/demo-3b7e2c9a1f0d4e5b)
+
+running 16 tests
+test parser::tests::parses_empty ... ok
+test parser::tests::parses_ints ... ok
+test parser::tests::parses_floats ... ok
+test parser::tests::parses_negative ... FAILED
+test parser::tests::rejects_garbage ... ok
+test parser::tests::error_messages_are_stable ... ok
+test store::tests::insert_and_get ... ok
+test store::tests::delete_missing ... ok
+test store::tests::overwrite ... ok
+test store::tests::iter_order ... FAILED
+test store::tests::large_values ... ignored, slow: run with --ignored
+test store::tests::concurrent_writers ... ok
+test config::tests::defaults ... ok
+test config::tests::env_override ... ok
+test config::tests::fails_on_bad_port ... ok
+test util::tests::slugify ... ok
+
+failures:
+
+---- parser::tests::parses_negative stdout ----
+
+thread 'parser::tests::parses_negative' panicked at src/parser.rs:141:9:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+stack backtrace:
+   0: rust_begin_unwind
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/std/src/panicking.rs:665:5
+   1: core::panicking::panic_fmt
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/core/src/panicking.rs:74:14
+   2: core::result::unwrap_failed
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/core/src/result.rs:1700:5
+   3: core::result::Result<T,E>::unwrap
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/core/src/result.rs:1104:23
+   4: demo::parser::tests::parses_negative
+             at ./src/parser.rs:141:9
+   5: demo::parser::tests::parses_negative::{{closure}}
+             at ./src/parser.rs:139:25
+   6: core::ops::function::FnOnce::call_once
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/core/src/ops/function.rs:250:5
+   7: core::ops::function::FnOnce::call_once
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/core/src/ops/function.rs:250:5
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- store::tests::iter_order stdout ----
+inserted 3 rows
+
+thread 'store::tests::iter_order' panicked at src/store.rs:212:9:
+assertion `left == right` failed: rows must come back in key order
+  left: ["b", "a", "c"]
+ right: ["a", "b", "c"]
+stack backtrace:
+   0: rust_begin_unwind
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/std/src/panicking.rs:665:5
+   1: core::panicking::panic_fmt
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/core/src/panicking.rs:74:14
+   2: core::panicking::assert_failed_inner
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/core/src/panicking.rs:410:17
+   3: core::panicking::assert_failed
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/core/src/panicking.rs:365:5
+   4: demo::store::tests::iter_order
+             at ./src/store.rs:212:9
+   5: demo::store::tests::iter_order::{{closure}}
+             at ./src/store.rs:205:20
+   6: core::ops::function::FnOnce::call_once
+             at /rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf/library/core/src/ops/function.rs:250:5
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+
+failures:
+    parser::tests::parses_negative
+    store::tests::iter_order
+
+test result: FAILED. 13 passed; 2 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+error: test failed, to rerun pass `--lib`
+error: Recipe `test` failed on line 2 with exit code 101

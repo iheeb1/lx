@@ -8,29 +8,22 @@ import (
 	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// hookKind is how doctor classifies a PreToolUse hook command.
 type hookKind int
 
 const (
-	notLx      hookKind = iota
-	lxVerified          // exactly `<…/lx> hook claude [--readonly] [--prefix V]`, plain words only
-	lxOther             // mentions `lx hook` but is not that exact form: never executed
+	notLx hookKind = iota
+	lxVerified
+	lxOther
 )
 
-// lxHookCmd is a verified lx hook command, parsed.
 type lxHookCmd struct {
-	bin       string   // argv[0] after quote removal and ~ / $HOME expansion
-	args      []string // argv[1:]: hook claude [flags]
+	bin       string
+	args      []string
 	readOnly  bool
 	prefix    string
 	hasPrefix bool
 }
 
-// classify decides whether cmd is lx's own Claude Code hook. Only the
-// lxVerified kind is ever executed by doctor, and that kind is, by
-// construction, a single simple command of literal words: `sh -c cmd` can
-// do nothing but exec argv[0] with those arguments. (Doctor does not even
-// rely on that: it execs the parsed argv itself, without a shell.)
 func classify(cmd, home string) (lxHookCmd, hookKind) {
 	if words, ok := shellWords(cmd, home); ok {
 		if h, ok := parseLxHookArgv(words); ok {
@@ -43,8 +36,6 @@ func classify(cmd, home string) (lxHookCmd, hookKind) {
 	return lxHookCmd{}, notLx
 }
 
-// parseLxHookArgv accepts `lx hook claude` followed only by --readonly,
-// --prefix V or --prefix=V (the flags `lx init` may write).
 func parseLxHookArgv(w []string) (lxHookCmd, bool) {
 	if len(w) < 3 || filepath.Base(w[0]) != "lx" || strings.Contains(w[0], "=") || w[1] != "hook" || w[2] != "claude" {
 		return lxHookCmd{}, false
@@ -71,9 +62,6 @@ func parseLxHookArgv(w []string) (lxHookCmd, bool) {
 
 var reLxHookText = lazyre.New(`(^|[\s/'"])lx['"]?\s+['"]?hook\b`)
 
-// mentionsLxHook reports whether some command in cmd runs `lx hook …`,
-// whatever surrounds it. It never leads to execution; it only keeps doctor
-// from saying "no lx hook" about a hook it merely cannot verify.
 func mentionsLxHook(cmd string) (found bool) {
 	if reLxHookText.MatchString(cmd) {
 		return true
@@ -91,13 +79,6 @@ func mentionsLxHook(cmd string) (found bool) {
 	return false
 }
 
-// shellWords parses cmd as one simple command made only of literal words.
-// It accepts unquoted characters from a safe set, backslash-escaped
-// characters, '…' strings, "…" strings without expansions or escapes, a
-// leading ~ or ~/, and $HOME / ${HOME} (replaced by home). It returns
-// ok=false for anything else a shell would interpret: operators
-// (; & | && ||), redirections, other expansions ($x, $(…), `…`), globs,
-// comments, newlines, brace expansion and ~user.
 func shellWords(cmd, home string) (words []string, ok bool) {
 	var cur strings.Builder
 	inWord := false
@@ -108,8 +89,7 @@ func shellWords(cmd, home string) (words []string, ok bool) {
 			inWord = false
 		}
 	}
-	// expandHome handles $HOME or ${HOME} at s[i] ('$'); it returns the
-	// number of bytes consumed, or 0 if this is some other expansion.
+
 	expandHome := func(s string, i int, quoted bool) int {
 		n := 0
 		switch rest := s[i+1:]; {
@@ -121,7 +101,7 @@ func shellWords(cmd, home string) (words []string, ok bool) {
 			return 0
 		}
 		if home == "" || (!quoted && strings.ContainsAny(home, " \t\n*?[")) {
-			return 0 // unquoted, the shell would split or glob it
+			return 0
 		}
 		cur.WriteString(home)
 		return n
@@ -167,15 +147,10 @@ func shellWords(cmd, home string) (words []string, ok bool) {
 			inWord = true
 			i = j + 1
 		case c == '\\':
-			// An escaped character is literal (as `lx init` quotes a ').
 			if i+1 >= len(cmd) || cmd[i+1] == '\n' {
 				return nil, false
 			}
-			// In a legacy multibyte locale (Shift_JIS, GBK, Big5) a
-			// backslash can be the second byte of a character, and one
-			// before a non-ASCII byte escapes a whole character: `ぁ\;x`
-			// is then `ぁ\` `;` `x` to the shell. Refuse rather than
-			// guess the shell's locale.
+
 			if cmd[i+1] >= 0x80 || (i > 0 && cmd[i-1] >= 0x80) {
 				return nil, false
 			}
@@ -190,7 +165,6 @@ func shellWords(cmd, home string) (words []string, ok bool) {
 			inWord = true
 			i += n
 		case c == '~' && !inWord:
-			// Tilde expansion: only ~ alone or ~/…; ~user is refused.
 			if i+1 < len(cmd) && cmd[i+1] != '/' && cmd[i+1] != ' ' && cmd[i+1] != '\t' {
 				return nil, false
 			}
@@ -212,12 +186,11 @@ func shellWords(cmd, home string) (words []string, ok bool) {
 	return words, len(words) > 0
 }
 
-// safeByte: characters a POSIX shell treats literally outside quotes.
 func safeByte(c byte) bool {
 	switch {
 	case 'a' <= c && c <= 'z', 'A' <= c && c <= 'Z', '0' <= c && c <= '9':
 		return true
-	case c >= 0x80: // UTF-8 path bytes
+	case c >= 0x80:
 		return true
 	}
 	return strings.IndexByte("_@%+=:,./-~", c) >= 0
@@ -229,7 +202,6 @@ func isNameByte(c byte) bool {
 
 var reShellSafe = lazyre.New(`^[A-Za-z0-9_@%+=:,./-]+$`)
 
-// shellQuote quotes s for a POSIX shell (the same rule `lx init` uses).
 func shellQuote(s string) string {
 	if reShellSafe.MatchString(s) {
 		return s

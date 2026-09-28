@@ -6,10 +6,6 @@ import (
 	"testing"
 )
 
-// Synthetic log fixtures, generated deterministically (the public loghub
-// samples are not redistributable). Each mimics a real format.
-
-// lcg is a tiny deterministic pseudo-random sequence.
 type lcg uint64
 
 func (l *lcg) next(n int) int {
@@ -126,7 +122,7 @@ func TestTemplateLogsFixtures(t *testing.T) {
 func TestTemplateLogsDetails(t *testing.T) {
 	out, _ := TemplateLogs(hdfsLog())
 	joined := strings.Join(out, "\n")
-	// Warnings keep their own template; the exception record stays verbatim.
+
 	if !strings.Contains(joined, "WARN dfs.DataNode$DataXceiver") || !strings.Contains(joined, "java.io.IOException: Connection reset by peer") {
 		t.Errorf("warning/error record missing:\n%s", joined)
 	}

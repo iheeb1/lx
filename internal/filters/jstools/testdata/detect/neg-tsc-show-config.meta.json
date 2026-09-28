@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "tsc",
+    "--showConfig"
+  ],
+  "shell": "npx tsc --showConfig",
+  "exit_code": 0,
+  "description": "REAL (negative): npx tsc --showConfig in jquense/yup: the resolved tsconfig as JSON",
+  "cwd": "/home/user/src/yup",
+  "repo": "jquense/yup",
+  "tool": ""
+}

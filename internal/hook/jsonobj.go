@@ -8,12 +8,6 @@ import (
 	"io"
 )
 
-// A minimal order-preserving JSON object editor. Settings files belong to
-// the user: lx must change exactly the value it owns and write every other
-// key, value and ordering back as it found it. Values are kept as the raw
-// bytes they were decoded from, so numbers, escapes and unknown structures
-// survive untouched (only whitespace is normalized on re-encoding).
-
 type member struct {
 	key string
 	val json.RawMessage
@@ -48,7 +42,7 @@ func parseObject(data []byte) (*object, error) {
 		}
 		o.members = append(o.members, member{key, raw})
 	}
-	if _, err := dec.Token(); err != nil { // closing '}'
+	if _, err := dec.Token(); err != nil {
 		return nil, err
 	}
 	if _, err := dec.Token(); err != io.EOF {
@@ -66,7 +60,6 @@ func (o *object) get(key string) (json.RawMessage, bool) {
 	return nil, false
 }
 
-// set replaces the first member named key in place, or appends it.
 func (o *object) set(key string, val json.RawMessage) {
 	for i := range o.members {
 		if o.members[i].key == key {
@@ -99,7 +92,6 @@ func (o *object) getString(key string) (string, bool) {
 	return s, true
 }
 
-// compact encodes the object on one line, members in order.
 func (o *object) compact() []byte {
 	var b bytes.Buffer
 	b.WriteByte('{')
@@ -117,7 +109,6 @@ func (o *object) compact() []byte {
 	return b.Bytes()
 }
 
-// indented encodes the object with 2-space indentation and a final newline.
 func (o *object) indented() []byte {
 	var b bytes.Buffer
 	if err := json.Indent(&b, o.compact(), "", "  "); err != nil {
@@ -127,7 +118,6 @@ func (o *object) indented() []byte {
 	return b.Bytes()
 }
 
-// jsonString encodes s without HTML escaping (&& stays &&).
 func jsonString(s string) json.RawMessage {
 	var b bytes.Buffer
 	enc := json.NewEncoder(&b)

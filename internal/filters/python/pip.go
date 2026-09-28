@@ -2,14 +2,12 @@ package python
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// pipGlobalValue are pip's general options that take a separate value and
-// may come before the subcommand.
 var pipGlobalValue = map[string]bool{
 	"--proxy": true, "--python": true, "--log": true, "--log-file": true, "--cache-dir": true,
 	"--timeout": true, "--retries": true, "--exists-action": true, "--trusted-host": true,
@@ -17,7 +15,6 @@ var pipGlobalValue = map[string]bool{
 	"--root-user-action": true, "--progress-bar": true, "--keyring-provider": true, "--resume-retries": true,
 }
 
-// pipSub returns pip's subcommand and the arguments after it.
 func pipSub(c *engine.Context) (string, []string) {
 	inv := parseInvocation(c)
 	if inv.tool != "pip" {
@@ -37,15 +34,6 @@ func pipSub(c *engine.Context) (string, []string) {
 	return "", nil
 }
 
-// ---- pip install ----
-
-// pipInstallFilter condenses `pip install`: Collecting / Downloading /
-// Using cached / already-satisfied / build-step chatter becomes counts (the
-// top-level already-satisfied requirements are listed with their
-// versions); "Successfully installed …", "Successfully uninstalled …",
-// warnings and notices (once each) are kept, and from the first ERROR line
-// or error block on everything is kept verbatim (resolver conflicts,
-// subprocess-exited-with-error output, hints).
 type pipInstallFilter struct{}
 
 func (pipInstallFilter) Name() string { return "pip-install" }
@@ -90,19 +78,17 @@ func (pipInstallFilter) Apply(c *engine.Context, text string) (string, bool) {
 		installingAt                           = -1
 		installed, errMode                     bool
 		seen                                   = map[string]bool{}
-		ln0                                    string // the line being read
+		ln0                                    string
 	)
 	hide := func(n *int) bool {
 		if engine.IsError(ln0) {
-			// "Collecting pytest-error-for-skips": hiding it would make the
-			// engine's guard print it again under a heading.
 			out = append(out, ln0)
 			return false
 		}
 		*n++
 		if marker < 0 {
 			marker = len(out)
-			out = append(out, "") // filled in below
+			out = append(out, "")
 		}
 		return true
 	}
@@ -154,7 +140,7 @@ func (pipInstallFilter) Apply(c *engine.Context, text string) (string, bool) {
 			installed = true
 			out = append(out, ln)
 		case strings.HasPrefix(t, "Successfully uninstalled "):
-			out = append(out, t) // indented under the hidden "Uninstalling x:" line
+			out = append(out, t)
 		case pipNoticeRe.MatchString(ln):
 			if !seen[ln] {
 				seen[ln] = true
@@ -165,8 +151,6 @@ func (pipInstallFilter) Apply(c *engine.Context, text string) (string, bool) {
 		}
 	}
 	if installed && installingAt >= 0 && !engine.IsError(out[installingAt]) {
-		// Redundant with "Successfully installed"; kept when the install
-		// stopped halfway, where it says what was being installed.
 		out[installingAt] = "\x00"
 	}
 	if marker >= 0 {
@@ -221,7 +205,6 @@ func (pipInstallFilter) Apply(c *engine.Context, text string) (string, bool) {
 	return strings.Join(relativize(c, b), "\n"), true
 }
 
-// reqName strips the version specifier and extras from a requirement.
 func reqName(spec string) string {
 	if i := strings.IndexAny(spec, "<>=!~;[ @"); i > 0 {
 		return spec[:i]
@@ -238,11 +221,6 @@ func anyError(lines []string) bool {
 	return false
 }
 
-// ---- pip uninstall ----
-
-// pipUninstallFilter keeps "Successfully uninstalled …" and anything
-// unexpected (warnings, errors, the "Would remove" list), dropping the
-// "Found existing installation" / "Uninstalling x:" lines before each.
 type pipUninstallFilter struct{}
 
 func (pipUninstallFilter) Name() string { return "pip-uninstall" }
@@ -277,11 +255,6 @@ func (pipUninstallFilter) Apply(c *engine.Context, text string) (string, bool) {
 	return strings.Join(relativize(c, out), "\n"), true
 }
 
-// ---- pip list / pip show ----
-
-// pipListFilter recognizes the `pip list` table. It is data: package names
-// containing "error" are not errors (Content). The table is already
-// compact, so apart from relativizing editable locations it is unchanged.
 type pipListFilter struct{}
 
 func (pipListFilter) Name() string    { return "pip-list" }
@@ -294,7 +267,7 @@ func (pipListFilter) Match(c *engine.Context) bool {
 	}
 	for _, f := range argValues(args, "--format", "") {
 		if f != "columns" {
-			return false // json / freeze: machine output
+			return false
 		}
 	}
 	return true
@@ -304,7 +277,7 @@ var pipListHeadRe = lazyre.New(`^Package +Version\b`)
 
 func (pipListFilter) Apply(c *engine.Context, text string) (string, bool) {
 	lines := strings.Split(text, "\n")
-	// The header may follow warnings/notices.
+
 	for i, ln := range lines {
 		if pipListHeadRe.MatchString(ln) {
 			if i+1 >= len(lines) || strings.Trim(lines[i+1], "- ") != "" {
@@ -319,8 +292,6 @@ func (pipListFilter) Apply(c *engine.Context, text string) (string, bool) {
 	return "", false
 }
 
-// pipShowFilter keeps every field of `pip show` and factors the "Files:"
-// list of `pip show -f` into a path tree.
 type pipShowFilter struct{}
 
 func (pipShowFilter) Name() string    { return "pip-show" }
@@ -373,7 +344,6 @@ func (pipShowFilter) Apply(c *engine.Context, text string) (string, bool) {
 			inFiles = ln == "Files:"
 			out = append(out, ln)
 		default:
-			// Continuation of a multi-line field, or an unknown line.
 			flushFiles()
 			inFiles = false
 			out = append(out, ln)

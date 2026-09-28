@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "testonly"
+  ],
+  "shell": "npm run testonly",
+  "exit_code": 0,
+  "description": "REAL: npm run testonly in jquense/yup (the package's own vitest script, whose name no npm filter claims): npm's script echo, vitest's report",
+  "cwd": "/home/user/src/yup",
+  "repo": "jquense/yup",
+  "tool": "vitest"
+}

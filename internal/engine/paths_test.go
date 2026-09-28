@@ -43,7 +43,7 @@ func TestFactorPathsInsideHeavyDirAndEdges(t *testing.T) {
 	if out := FactorPaths([]string{"/abs/dir/f.txt"}); strings.Join(out, "|") != "/abs/dir/|  f.txt" {
 		t.Errorf("absolute: %q", out)
 	}
-	// A path listed as a directory and as a prefix is not a file.
+
 	if out := FactorPaths([]string{"./src", "./src/a.go", "./src/é.go"}); strings.Join(out, "|") != "src/|  a.go  é.go" {
 		t.Errorf("dir entry: %q", out)
 	}

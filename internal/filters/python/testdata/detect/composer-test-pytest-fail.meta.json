@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "composer",
+    "test"
+  ],
+  "shell": "composer test",
+  "exit_code": 1,
+  "description": "REAL: composer test whose script runs pytest on two test modules in pallets/click (same regressions): composer's script echo, pytest's report, composer's error line",
+  "cwd": "/home/user/src/click",
+  "repo": "pallets/click",
+  "tool": "pytest"
+}

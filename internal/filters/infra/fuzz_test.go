@@ -25,10 +25,6 @@ var fuzzArgv = [][]string{
 	{"kubectl", "describe", "pod", "x"},
 }
 
-// FuzzInfraFilters: no panic, deterministic, and the non-Guarded filters
-// never drop an error-class line (the Guarded ones only merge event rows).
-//
-//	go test ./internal/filters/infra -run '^$' -fuzz FuzzInfraFilters -fuzztime 20s
 func FuzzInfraFilters(f *testing.F) {
 	local, err := fixture.ReadAll("testdata")
 	if err != nil {
@@ -64,7 +60,7 @@ func FuzzInfraFilters(f *testing.F) {
 			return
 		}
 		if g, ok := fl.(engine.Guarded); ok && g.GuardsErrors() {
-			// Merged rows are marked; nothing else may go.
+
 			for _, m := range engine.MissingErrorLines(in, a) {
 				if !strings.Contains(a, " rows; others: ") && !strings.Contains(a, " rows]") {
 					t.Fatalf("%s dropped %q without merging", fl.Name(), m)

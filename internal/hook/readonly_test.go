@@ -7,14 +7,6 @@ import (
 	"testing"
 )
 
-// roProject builds a project tree:
-//
-//	root/src/main.go, root/src/util.go, root/internal/, root/node_modules/x/
-//	root/esc -> /        (a symlink escape)
-//	root/inner -> src    (a symlink that stays inside)
-//	root/sub/            (a second cwd)
-//
-// and points HOME somewhere else.
 func roProject(t testing.TB) string {
 	t.Helper()
 	root := t.TempDir()
@@ -29,14 +21,12 @@ func roProject(t testing.TB) string {
 	}
 	t.Setenv("HOME", t.TempDir())
 	t.Setenv("CDPATH", "")
-	// zsh, the stricter of the two shells lx models; tests of bash-only
-	// behaviour set SHELL themselves.
+
 	t.Setenv("SHELL", "/bin/zsh")
 	t.Setenv("CLAUDE_CODE_SHELL", "")
 	return root
 }
 
-// parity runs the whole-command check the hook uses, from cwd.
 func parity(cmd, cwd, root string, extra ...string) (bool, string) {
 	return analyze(cmd).readOnlyParity(cwd, root, extra)
 }
@@ -44,7 +34,7 @@ func parity(cmd, cwd, root string, extra ...string) (bool, string) {
 func TestReadOnlyTable(t *testing.T) {
 	root := roProject(t)
 	allowed := []string{
-		// git
+
 		`git status`, `git status -sb`, `git status --porcelain`, `git --no-pager log -5`, `git -P diff`,
 		`git diff HEAD~1 -- src/`, `git diff --cached`, `git diff --stat main...HEAD`, `git diff --no-ext-diff`,
 		`git diff --output-indicator-new=+`, `git diff --text`, `git log --oneline -20`, `git log -p -- src`,
@@ -53,40 +43,40 @@ func TestReadOnlyTable(t *testing.T) {
 		`git branch`, `git branch -vv`, `git branch -a`, `git branch -avv`, `git branch --list 'feat*'`,
 		`git branch -l x`, `git branch --merged main`, `git branch --contains HEAD`, `git branch --show-current`,
 		`git branch --sort=-committerdate`, `git branch --points-at HEAD -r`,
-		// ls, tree, du
+
 		`ls`, `ls -la`, `ls -1`, `ls src`, `ls -R src`, `ls --color=auto -la`, `ls -- src`, `ls inner`,
 		`ls src/*.go`, `ls ./src/*`, `ls s*/*.go`, `ls ./src/../src`, `ls -lh --sort=size --group-directories-first`,
 		`tree`, `tree -L 2`, `tree -L2 -a src`, `tree -a -I node_modules src`, `tree -d --dirsfirst`, `tree -P '*.go' --prune`,
 		`du`, `du -sh .`, `du -h -d 1 src`, `du --max-depth=1 .`, `du -sh src/*`, `du -a --exclude='*.o' .`,
-		// find
+
 		`find . -name '*.go'`, `find src -type f`, `find -H src -maxdepth 2`, `find . -name '*.go' -newer src/main.go`,
 		`find . -path ./node_modules -prune -o -print`, `find . -newermt 2024-01-01`, `find`, `find . \( -name a -o -name b \)`,
-		// grep
+
 		`grep -rn TODO internal`, `grep -rn TODO`, `grep -E 'a|b' src/main.go`, `grep -e foo -e bar -r src`,
 		`egrep -n x src`, `fgrep -rl x .`, `grep --include='*.go' -rn x .`, `grep -C3 foo src/main.go`,
 		`grep -A 2 foo src`, `grep -5 foo src/main.go`, `grep -f src/main.go -r .`, `grep --color=always -i x src`,
-		// rg
+
 		`rg -n foo src`, `rg foo`, `rg -S -tgo foo src`, `rg --files src`, `rg -g '*.go' foo`, `rg -e a -e b`,
 		`rg --type go foo`, `rg -uu foo`, `rg --hidden foo .`, `rg -A3 --no-heading 'x y' src internal`,
-		// compound
+
 		`cd src && ls -la | head -20`, `git log | head -5`, `git status 2>&1 | tail -3`, `cd src && ls && ls ..`,
 		`git status && git diff`, `git status; ls -la`, `git diff || git log -1`, `ls | cat`,
 	}
 	refused := []string{
-		// find
+
 		`find . -delete`, `find . -exec rm {} +`, `find . -execdir ls \;`, `find . -ok rm {} \;`, `find . -fprint out`,
 		`find . -fprintf out '%p'`, `find . -fls out`, `find . -follow`, `find . -files0-from x`, `find -L . -name x`,
 		`find -f /etc`, `find -D tree .`, `find / -name x`, `find esc`, `find . -name *.go`, `find . -newer /etc/passwd`,
 		`find ../.. -name x`,
-		// rg
+
 		`rg --pre ./x foo`, `rg --pre=x foo`, `rg --pre-glob '*' foo`, `rg -z foo`, `rg --search-zip foo`, `rg -L foo`,
 		`rg --follow foo`, `rg --hostname-bin x foo`, `rg --type-add 'x:*.x' foo`, `rg --files /etc`, `rg foo /etc`,
 		`rg --ignore-file /etc/x foo`, `rg -f /etc/passwd`, `rg foo esc/etc`,
-		// grep
+
 		`grep -R x .`, `grep --dereference-recursive x .`, `grep -S x .`, `grep --exclude-from=x y .`, `grep -rn x /etc`,
 		`grep x ../../x`, `grep -r key ~/.ssh`, `grep -f /etc/passwd x`, `grep --file=/etc/passwd x .`, `grep foo* .`,
 		`grep -f ~/.ssh/id x`, `grep --exclude-f=x y .`,
-		// git
+
 		`git -c core.pager=x log`, `git -C /tmp status`, `git -C ../x status`, `git --git-dir=x status`,
 		`git --work-tree=x status`, `git --exec-path=x status`, `git --namespace=x status`, `git -P -c x=y log`,
 		`git diff --output=/tmp/x`, `git diff --output /tmp/x`, `git diff --out=/tmp/x`, `git diff --no-index a b`,
@@ -97,15 +87,15 @@ func TestReadOnlyTable(t *testing.T) {
 		`git config user.name`, `git`, `git branch -D main`, `git branch newname`, `git branch -v newname`,
 		`git branch -m a b`, `git branch -d x`, `git branch -c x`, `git branch -f x`, `git branch -u origin/x`,
 		`git branch --set-upstream-to=x`, `git branch --edit-description`, `git branch --format=x`,
-		// ls, tree, du
+
 		`ls ../../..`, `ls ..`, `ls /etc`, `ls ~`, `ls ~root`, `ls esc`, `ls esc/`, `ls esc/etc`, `ls inner/../..`,
 		`ls */`, `ls -RL`, `ls -R --dereference src`, `ls --hide=x`, `ls src/{a,b}`, `ls {/etc,.}`, `ls =ls`,
 		`ls "$HOME"`, `ls $HOME`, `ls */*/*`, `ls "s"*/../..`, `ls s*/../..`, `ls src/*/..`, `ls ./*`, `du -sh *`,
 		`cd src && ls .. && cd .. && ls`,
-		`cd src && ls && cd sub && ls`, // sub is not in src: cdable_vars or zoxide would jump elsewhere
+		`cd src && ls && cd sub && ls`,
 		`tree -o out.txt`, `tree -R`, `tree -l`, `tree --fromfile x`, `tree /`, `tree esc`,
 		`du -L`, `du -X file .`, `du --files0-from=x`, `du /`, `du --exclude-from=x .`, `du --dereference .`,
-		// compound and shell
+
 		`git status && npm test`, `git status; rm -rf x`, `git status | sort`, `LD_PRELOAD=x git status`,
 		`timeout 5 git status`, `env git status`, `git status > f`, `git status < in`, `git status &`,
 		`git status $(x)`, "git status `x`", `cat README.md`, `cd .. && ls`, `cd esc && ls`, `cd src && ls ../..`,
@@ -138,7 +128,7 @@ func TestReadOnlyArgv(t *testing.T) {
 		{[]string{"rg", "-n", "foo", "src"}, true},
 		{[]string{"grep", "-r", "key", "~/.ssh"}, false},
 		{[]string{"ls", "../.."}, false},
-		// argv words count as unquoted: a * in a find expression is refused.
+
 		{[]string{"find", ".", "-name", "*.go"}, false},
 		{[]string{"ls", "$HOME"}, false},
 		{[]string{"find", ".", "-name", "a", "-exec", "rm", "{}", "+"}, false},
@@ -169,11 +159,11 @@ func TestReadOnlyRoot(t *testing.T) {
 	if ok, _ := parity("ls", root, filepath.Join(root, "missing")); ok {
 		t.Error("missing root allowed")
 	}
-	// cwd outside the root
+
 	if ok, _ := parity("ls", t.TempDir(), root); ok {
 		t.Error("cwd outside the root allowed")
 	}
-	// the root reached through a symlink is the same root
+
 	link := filepath.Join(t.TempDir(), "link")
 	if err := os.Symlink(root, link); err != nil {
 		t.Fatal(err)
@@ -193,7 +183,7 @@ func TestReadOnlyExtraDirs(t *testing.T) {
 	if ok, why := parity("grep -rn x "+extra, root, root, extra); !ok {
 		t.Errorf("configured extra dir refused: %s", why)
 	}
-	// / and $HOME as extra directories are ignored.
+
 	home, _ := os.UserHomeDir()
 	for _, d := range []string{"/", home, filepath.Dir(home)} {
 		if ok, _ := parity("ls /etc", root, root, d); ok {
@@ -204,7 +194,7 @@ func TestReadOnlyExtraDirs(t *testing.T) {
 
 func TestReadOnlySymlinkEscapes(t *testing.T) {
 	root := roProject(t)
-	// a symlink created inside a subdirectory, reached through a wildcard
+
 	sub := filepath.Join(root, "deep")
 	writeFile(t, filepath.Join(sub, "a", "f"), "x")
 	if err := os.Symlink("/etc", filepath.Join(sub, "b")); err != nil {
@@ -220,7 +210,6 @@ func TestReadOnlySymlinkEscapes(t *testing.T) {
 	}
 }
 
-// A wildcard that expands to a file named like an option becomes an option.
 func TestReadOnlyGlobOptionNames(t *testing.T) {
 	root := roProject(t)
 	dir := filepath.Join(root, "w")
@@ -278,7 +267,7 @@ func TestWordShape(t *testing.T) {
 			t.Errorf("bash: wordShape(%q) = %v, %v, want %v", raw, g, s, want)
 		}
 	}
-	// zsh: EXTENDED_GLOB's ^ # and ~ (in a wildcard word), BRACE_CCL's {abc}.
+
 	for raw, want := range map[string][2]bool{
 		`HEAD^`: {false, true}, `^src/etc`: {false, true}, `e#sc`: {false, true}, `'^x'`: {false, false},
 		`"a#b"`: {false, false}, `\^x`: {false, false}, `es*~x`: {true, true}, `HEAD~1`: {false, false},
@@ -292,31 +281,27 @@ func TestWordShape(t *testing.T) {
 	}
 }
 
-// fuzzBases pair allowed commands with words that make each of them unsafe
-// wherever they are inserted from index `from` on. Words that are harmless
-// for a tool (grep -c counts, ls -o is a long listing, find -o is "or")
-// are not in that tool's list.
 var fuzzBases = []struct {
 	argvs  [][]string
-	from   int  // first insertion index (-1: just after the git subcommand)
-	only   bool // insert at from only
+	from   int
+	only   bool
 	danger []string
 }{
-	{ // git: anything before the subcommand but --no-pager/-P
+	{
 		[][]string{{"git", "status"}, {"git", "diff"}, {"git", "log", "--oneline"}, {"git", "branch", "-vv"}},
 		1, true,
 		[]string{"-c", "-C", "-cx=y", "--git-dir=x", "--work-tree=x", "--exec-path=x", "--namespace=x",
 			"--config-env=a=b", "--output=x", "--no-index", "--ext-diff", "-exec", "-delete", "--pre", "-o",
 			"-D", "--files0-from=x", "~/x", "../../x", "$HOME"},
 	},
-	{ // git diff/log/show after the subcommand
+	{
 		[][]string{{"git", "diff"}, {"git", "diff", "HEAD~1", "src"}, {"git", "log", "--oneline", "-20"},
 			{"git", "show", "HEAD"}, {"git", "log", "-p", "src"}, {"git", "--no-pager", "log"}},
 		-1, false,
 		[]string{"--output=x", "--output", "--out=x", "--no-index", "--no-i", "--ext-diff", "--textconv", "-O",
 			"-Ox", "-pO", "--orderfile=x", "~/x", "../../x", "$HOME", "/etc/passwd", "esc/etc", "{a,b}"},
 	},
-	{ // git branch listing forms
+	{
 		[][]string{{"git", "branch"}, {"git", "branch", "-vv"}, {"git", "branch", "-a"}, {"git", "branch", "-r", "-v"}},
 		2, false,
 		[]string{"-D", "-d", "-m", "-M", "-c", "-C", "-f", "newname", "-u", "--set-upstream-to=x", "--delete",
@@ -374,7 +359,7 @@ func FuzzReadOnly(f *testing.F) {
 		base := fb.argvs[int(a)%len(fb.argvs)]
 		word := fb.danger[int(w)%len(fb.danger)]
 		from := fb.from
-		if from < 0 { // just after the git subcommand
+		if from < 0 {
 			from = 2
 			for from < len(base) && base[from-1] == "--no-pager" {
 				from++
@@ -398,13 +383,12 @@ func FuzzReadOnly(f *testing.F) {
 	})
 }
 
-// Any string: no panic, and the same answer twice.
 func FuzzReadOnlyParity(f *testing.F) {
 	root := roProject(f)
 	for _, s := range []string{`git status`, `cd src && ls -la | head`, `ls */*`, `find . -name '*.go'`,
 		`grep -rn "a b" src`, `rg -e x -- -y`, `ls "s"*/../..`, `git branch --merged main x`, `du -sh -- *`,
 		`tree -L 2 -P '*.go'`, `ls {a,b}`, `cd inner && ls .. && ls`,
-		// review regressions
+
 		`git status | cat -$IFS/etc/passwd`, `git log | cat - -l`, `git log | tail +5`, `grep --context x /etc/passwd`,
 		`ls ^src/etc`, `ls e#sc/etc`, `ls es*~x`, `ls {e}sc/etc`, `ls E*/etc`, `tree -Lo 2 out.txt`,
 		`cd nonexist; ls`, `cd src || ls ../..`} {
@@ -419,8 +403,7 @@ func FuzzReadOnlyParity(f *testing.F) {
 		if !a {
 			return
 		}
-		// Approved: only table commands and neutral ones, no redirection
-		// but 2>&1, nothing the lexer flags.
+
 		an := analyze(s)
 		if len(an.unsafe) > 0 || an.lx.broken {
 			t.Fatalf("parity(%q) allowed an unsafe string", s)
@@ -435,8 +418,7 @@ func FuzzReadOnlyParity(f *testing.F) {
 				"rg", "cd", "head", "tail", "cat") {
 				t.Fatalf("parity(%q) allowed %q", s, sg.argv)
 			}
-			// No word the shell rewrites with $ (bash splits $IFS), and a
-			// pipe filter never gets a file operand.
+
 			for _, w := range sg.words {
 				if w.expand {
 					t.Fatalf("parity(%q) allowed $ expansion in %q", s, w.text)
@@ -460,20 +442,19 @@ func TestReadOnlyFast(t *testing.T) {
 	}
 }
 
-// Regressions from the adversarial review: each command was approved before.
 func TestReadOnlyReviewRegressions(t *testing.T) {
 	root := roProject(t)
-	// Files named like counts, and a nested directory to cd into.
+
 	for _, f := range []string{"5", "+5", "src/deep/x"} {
 		writeFile(t, filepath.Join(root, f), "x")
 	}
 	refused := map[string]string{
-		// bash splits $IFS: `cat -$IFS/etc/passwd` is `cat - /etc/passwd`.
+
 		`git status | cat -$IFS/etc/passwd`: "expansion in a pipe filter",
 		`git log | head -$IFS/etc/passwd`:   "expansion in a pipe filter",
 		`git log | tail -n $N`:              "expansion in a pipe filter",
 		`git log | cat -*`:                  "wildcard in a pipe filter",
-		// operands of head/tail/cat are files on some platform
+
 		`git log | cat - -l`:    "BSD cat: -l after - is a file",
 		`git log | cat -- -l`:   "-l after -- is a file",
 		`git log | head 5`:      "5 is a file",
@@ -481,35 +462,35 @@ func TestReadOnlyReviewRegressions(t *testing.T) {
 		`git log | head -c 5 5`: "the second 5 is a file",
 		`git log | head -n`:     "-n without its count",
 		`git log | head -n x`:   "-n with a non-count",
-		// BSD grep's --context takes an optional =NUM: x is the pattern
+
 		`grep --context x /etc/passwd`:   "BSD grep --context",
 		`grep -C x /etc/passwd`:          "count flag with a non-number",
 		`grep -A x /etc/passwd`:          "count flag with a non-number",
 		`grep -m x /etc/passwd`:          "count flag with a non-number",
 		`grep --max-count x /etc/passwd`: "count flag with a non-number",
 		`rg -C x /etc/passwd`:            "count flag with a non-number",
-		// zsh EXTENDED_GLOB / BRACE_CCL (SHELL=zsh)
+
 		`ls ^src/etc`:    "zsh ^ glob",
 		`ls e#sc/etc`:    "zsh # glob",
 		`ls es*~x`:       "zsh ~ exclusion",
 		`ls {e}sc/etc`:   "zsh BRACE_CCL",
 		`grep ^x src`:    "zsh ^ glob in a pattern",
 		`git show HEAD^`: "zsh ^ glob in a revision",
-		// bash nocaseglob / zsh NO_CASE_GLOB
+
 		`ls E*/etc`: "case-insensitive glob reaches esc/etc",
 		`ls ES*`:    "case-insensitive glob reaches esc",
-		// tree: a value flag takes the NEXT word, the cluster goes on
+
 		`tree -Lo 2 out.txt`:  "tree -L 2 -o out.txt",
 		`tree -aLo 2 out.txt`: "tree -a -L 2 -o out.txt",
 		`tree -PL x 2`:        "tree -P x -L 2",
-		// cd to a missing directory or a file (cdable_vars, zoxide)
+
 		`cd nonexist; ls`:        "cd to a missing directory",
 		`cd nonexist || ls`:      "cd to a missing directory",
 		`cd src/main.go && ls`:   "cd to a file",
 		`cd src; cd sub && ls`:   "cd sub may run in src, where sub is missing",
 		`cd src || ls ../..`:     "ls runs where cd src failed",
 		`cd src && ls; ls ../..`: "after ;, the shell may be in the root or in src",
-		// BSD find's -Bnewer/-mnewer read another file's times
+
 		`find . -Bnewer /etc/passwd`: "find -Bnewer",
 		`find . -mnewer /etc/passwd`: "find -mnewer",
 	}
@@ -534,8 +515,6 @@ func TestReadOnlyReviewRegressions(t *testing.T) {
 		}
 	}
 
-	// BSD ls and du stop reading flags at the first operand (ls src -l
-	// lists a file named -l), as GNU tools do under POSIXLY_CORRECT.
 	fl := filepath.Join(root, "fl")
 	writeFile(t, filepath.Join(fl, "src", "a"), "x")
 	if err := os.Symlink("/etc", filepath.Join(fl, "-l")); err != nil {
@@ -550,19 +529,18 @@ func TestReadOnlyReviewRegressions(t *testing.T) {
 		t.Errorf("refused ls -a src: %s", why)
 	}
 
-	// bash leaves ^ # and {e} alone: no need to refuse them.
 	t.Setenv("SHELL", "/bin/bash")
 	for _, c := range []string{`git show HEAD^`, `git log HEAD^..HEAD`, `grep -n ^func src`, `ls {e}sc`} {
 		if ok, why := parity(c, root, root); !ok {
 			t.Errorf("bash: refused %q: %s", c, why)
 		}
 	}
-	// CLAUDE_CODE_SHELL picks the shell over $SHELL.
+
 	t.Setenv("CLAUDE_CODE_SHELL", "/usr/local/bin/zsh")
 	if ok, _ := parity(`git show HEAD^`, root, root); ok {
 		t.Error("CLAUDE_CODE_SHELL=zsh: allowed git show HEAD^")
 	}
-	// No shell known: assume zsh.
+
 	t.Setenv("CLAUDE_CODE_SHELL", "")
 	t.Setenv("SHELL", "")
 	if ok, _ := parity(`ls ^src/etc`, root, root); ok {
@@ -570,8 +548,6 @@ func TestReadOnlyReviewRegressions(t *testing.T) {
 	}
 }
 
-// The user-rule allow path shares the pipe-filter check: an allow rule for
-// git status never approves `| cat -$IFS/etc/passwd`.
 func TestDecideNeutralFilters(t *testing.T) {
 	r := Rules{Allow: []string{"Bash(git status:*)", "Bash(git log:*)"}}
 	for _, c := range []string{`git status | cat -$IFS/etc/passwd`, `git log | head 5`, `git log | cat - -x`,
@@ -587,7 +563,6 @@ func TestDecideNeutralFilters(t *testing.T) {
 	}
 }
 
-// $HOME spelled in another case on a case-insensitive disk is still $HOME.
 func TestReadOnlyHomeOtherCase(t *testing.T) {
 	base := t.TempDir()
 	home := filepath.Join(base, "Home")

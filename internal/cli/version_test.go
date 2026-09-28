@@ -30,7 +30,7 @@ func TestVersionString(t *testing.T) {
 	const rev = "3f2a1c9b8e7d6c5b4a39281706f5e4d3c2b1a098"
 	cases := []struct {
 		name    string
-		version string // cli.Version, as -ldflags -X would set it
+		version string
 		info    *debug.BuildInfo
 		want    string
 	}{
@@ -119,16 +119,12 @@ func TestVersionString(t *testing.T) {
 	}
 }
 
-// devVersion must stay equal to Version's default in cli.go (go test sets no
-// -ldflags -X), or an unstamped build would print that default as if it were
-// a release version.
 func TestVersionDefaultIsDev(t *testing.T) {
 	if Version != devVersion {
 		t.Errorf("Version defaults to %q but devVersion is %q; keep them equal", Version, devVersion)
 	}
 }
 
-// The real build info of the test binary must still give a well-formed line.
 func TestVersionStringRealBuildInfo(t *testing.T) {
 	got := versionString()
 	suffix := runtime.Version() + ", " + runtime.GOOS + "/" + runtime.GOARCH + ")"
@@ -137,7 +133,6 @@ func TestVersionStringRealBuildInfo(t *testing.T) {
 	}
 }
 
-// `lx version`, `lx --version` and `lx -V` print versionString().
 func TestVersionCommand(t *testing.T) {
 	for _, arg := range []string{"version", "--version", "-V"} {
 		out, code := relCaptureStdout(t, func() int { return Main([]string{arg}) })
@@ -167,23 +162,12 @@ func relCaptureStdout(t *testing.T, f func() int) (out string, code int) {
 	return string(<-done), code
 }
 
-// ---- install.sh ------------------------------------------------------------
-//
-// These run the real install.sh against fake releases served over file:// (or
-// by a fake curl/wget that copies from a local directory), with fake
-// uname/sysctl, so they need no network, no Go toolchain and no real binary.
-// Without LXTEST_SERVE the fake curl and wget fail loudly, so a test that
-// reached the network would fail rather than download.
-
 type relFakeRelease struct {
-	dir string // served as LX_BASE_URL=file://dir, or by the fake curl/wget
+	dir string
 }
 
 const relFakeLX = "#!/bin/sh\necho 'lx v9.9.9 (test, fake/arch)'\n"
 
-// relNewRelease writes dir/<archive> holding lx (left out when lx is ""),
-// LICENSE and README.md, and a SHA256SUMS listing it. sums, when non-nil,
-// replaces the SHA256SUMS text; each %s in it becomes the archive's digest.
 func relNewRelease(t *testing.T, archive, lx string, sums *string) relFakeRelease {
 	t.Helper()
 	dir := t.TempDir()
@@ -223,7 +207,6 @@ func relNewRelease(t *testing.T, archive, lx string, sums *string) relFakeReleas
 	return relFakeRelease{dir: dir}
 }
 
-// corrupt appends a byte to the release's archive.
 func (rel relFakeRelease) corrupt(t *testing.T, archive string) relFakeRelease {
 	t.Helper()
 	f, err := os.OpenFile(filepath.Join(rel.dir, archive), os.O_APPEND|os.O_WRONLY, 0)
@@ -250,27 +233,21 @@ func relWrite(t *testing.T, path, body string, mode os.FileMode) {
 }
 
 type relInstallRun struct {
-	uname      [2]string // uname -s, uname -m
-	translated string    // sysctl -n sysctl.proc_translated
-	env        []string  // extra KEY=VALUE, applied last (a later key wins)
+	uname      [2]string
+	translated string
+	env        []string
 	home       string
 	tmp        string
-	bin        string   // fake tools dir, first on PATH
-	shell      []string // the shell that runs install.sh; default sh
-	cwd        string   // working directory; default the test's
-	keepTmp    bool     // TMPDIR may be left non-empty
+	bin        string
+	shell      []string
+	cwd        string
+	keepTmp    bool
 }
 
 func relNewRun(t *testing.T, bin, s, m string) *relInstallRun {
 	return &relInstallRun{uname: [2]string{s, m}, translated: "0", home: t.TempDir(), tmp: t.TempDir(), bin: bin}
 }
 
-// relFakeTools writes the stand-ins install.sh finds first on PATH: uname
-// and sysctl answer from the environment; curl and wget copy the URL's last
-// path element from $LXTEST_SERVE (logging their arguments to
-// $LXTEST_SERVE/log), and without LXTEST_SERVE fail loudly. They are shared
-// by every run because macOS vets each new executable on its first exec
-// (~0.3 s, serialized).
 func relFakeTools(t *testing.T) string {
 	bin := t.TempDir()
 	relWrite(t, filepath.Join(bin, "uname"),
@@ -288,11 +265,6 @@ exec cp "$LXTEST_SERVE/${u##*/}" "$o"
 	return bin
 }
 
-// relMinimalPath returns a directory to use as the whole PATH: symlinks to
-// the real tools install.sh needs besides a downloader and a hasher, plus the
-// fake uname and sysctl, the named fakes from bin, and those of the named
-// extra real tools that exist. It is how a test takes curl, sha256sum and the
-// like away.
 func relMinimalPath(t *testing.T, bin string, fakes []string, real ...string) string {
 	t.Helper()
 	dir := t.TempDir()
@@ -307,7 +279,7 @@ func relMinimalPath(t *testing.T, bin string, fakes []string, real ...string) st
 	for _, tool := range []string{"mktemp", "cp", "awk", "cut", "mkdir", "tar", "gzip", "install", "mv", "rm"} {
 		p, err := exec.LookPath(tool)
 		if err != nil {
-			if tool == "gzip" { // only GNU tar runs gzip
+			if tool == "gzip" {
 				continue
 			}
 			t.Skipf("%s not found", tool)
@@ -379,7 +351,6 @@ func relRequireTools(t *testing.T) {
 	}
 }
 
-// relAssertNoInstall checks that a refused install did not even create dir.
 func relAssertNoInstall(t *testing.T, dir string) {
 	t.Helper()
 	if _, err := os.Lstat(dir); !os.IsNotExist(err) {
@@ -388,8 +359,6 @@ func relAssertNoInstall(t *testing.T, dir string) {
 	}
 }
 
-// relAssertInstalled checks dir holds exactly one file, lx, with the fake
-// release's content and mode 0755.
 func relAssertInstalled(t *testing.T, dir string) {
 	t.Helper()
 	lx := filepath.Join(dir, "lx")
@@ -415,9 +384,6 @@ func relRead(t *testing.T, path string) string {
 
 func relStr(s string) *string { return &s }
 
-// It only runs subprocesses (it touches no package state), so it runs
-// alongside the package's other parallel tests: on macOS most of its time is
-// the system vetting each newly installed executable.
 func TestInstallScript(t *testing.T) {
 	t.Parallel()
 	relRequireTools(t)
@@ -448,7 +414,7 @@ func relTestInstalls(t *testing.T, bin string) {
 	rel := relNewRelease(t, "lx_darwin_arm64.tar.gz", relFakeLX, nil)
 	r := relNewRun(t, bin, "Darwin", "arm64")
 	dest := filepath.Join(r.home, ".local", "bin")
-	r.env = []string{"LX_BASE_URL=file://" + rel.dir + "/"} // trailing slash is fine
+	r.env = []string{"LX_BASE_URL=file://" + rel.dir + "/"}
 	out, errOut, code := r.run(t)
 	if code != 0 {
 		t.Fatalf("exit %d\nstdout:\n%s\nstderr:\n%s", code, out, errOut)
@@ -473,8 +439,8 @@ func relTestPlatforms(t *testing.T, bin string) {
 	}{
 		{"Darwin", "arm64", "0", "lx_darwin_arm64.tar.gz"},
 		{"Darwin", "x86_64", "0", "lx_darwin_amd64.tar.gz"},
-		{"Darwin", "x86_64", "1", "lx_darwin_arm64.tar.gz"}, // Rosetta shell on Apple silicon
-		{"Linux", "x86_64", "1", "lx_linux_amd64.tar.gz"},   // proc_translated is a macOS thing
+		{"Darwin", "x86_64", "1", "lx_darwin_arm64.tar.gz"},
+		{"Linux", "x86_64", "1", "lx_linux_amd64.tar.gz"},
 		{"Linux", "amd64", "0", "lx_linux_amd64.tar.gz"},
 		{"Linux", "aarch64", "0", "lx_linux_arm64.tar.gz"},
 		{"Linux", "arm64", "0", "lx_linux_arm64.tar.gz"},
@@ -482,10 +448,7 @@ func relTestPlatforms(t *testing.T, bin string) {
 	for _, c := range cases {
 		t.Run(c.s+"/"+c.m+"/"+c.translated, func(t *testing.T) {
 			t.Parallel()
-			// Only the expected archive exists, so a wrong mapping fails
-			// to download. The archive has no lx, so a right one gets as far
-			// as extracting (and stops before running a new binary, which is
-			// slow on macOS).
+
 			rel := relNewRelease(t, c.archive, "", nil)
 			r := relNewRun(t, bin, c.s, c.m)
 			r.translated = c.translated
@@ -522,22 +485,16 @@ func relTestUnsupported(t *testing.T, bin string) {
 	}
 }
 
-// Every way the download can be wrong must install nothing and leave an
-// existing lx untouched.
 func relTestRefuses(t *testing.T, bin string) {
 	const archive = "lx_linux_amd64.tar.gz"
 	cases := []struct {
 		name    string
 		release func(t *testing.T) relFakeRelease
 		env     []string
-		want    string // in stderr
-		// The binary is tried from a temp name inside the destination (it
-		// must be able to run from there), so that failure can leave an
-		// empty destination directory behind; every earlier one must not.
+		want    string
+
 		madeDir bool
-		// newOnly: skip the over-an-existing-lx variant, which the case
-		// above it already covers on the same path (each run of a new
-		// binary costs ~0.3 s on macOS).
+
 		newOnly bool
 	}{
 		{
@@ -674,8 +631,7 @@ func relTestRefuses(t *testing.T, bin string) {
 }
 
 func relTestReplacesAndGuides(t *testing.T, bin string) {
-	// Each case installs and runs a new binary (~0.3 s on macOS), so each
-	// covers several branches. zsh is covered by relTestInstalls.
+
 	rel := relNewRelease(t, "lx_linux_arm64.tar.gz", relFakeLX, nil)
 	mac := relNewRelease(t, "lx_darwin_arm64.tar.gz", relFakeLX, nil)
 	star := relNewRelease(t, "lx_linux_arm64.tar.gz", relFakeLX, relStr("%s *lx_linux_arm64.tar.gz\n"))
@@ -683,11 +639,11 @@ func relTestReplacesAndGuides(t *testing.T, bin string) {
 	cases := []struct {
 		name    string
 		rel     relFakeRelease
-		os      string // uname -s; default Linux
+		os      string
 		shell   string
 		dest    func(r *relInstallRun) string
 		onPath  bool
-		old     string // existing lx content, "" for none
+		old     string
 		want    []string
 		notWant []string
 	}{
@@ -766,17 +722,15 @@ func relTestDestinationIsADirectory(t *testing.T, bin string) {
 	}
 }
 
-// The real download path: the URLs install.sh builds, curl's https-only
-// flags, and the wget fallback. The fake curl/wget serve a local release.
 func relTestDownloads(t *testing.T, bin string) {
 	const archive = "lx_linux_amd64.tar.gz"
 	const latest = "https://github.com/iheeb1/lx/releases/latest/download/"
 	cases := []struct {
 		name    string
-		lx      string // archive's lx; "" stops the install at extraction
+		lx      string
 		env     []string
-		minimal []string // fakes on a minimal PATH (no real curl/wget); nil: full PATH
-		want    []string // in the downloader log
+		minimal []string
+		want    []string
 		errWant string
 	}{
 		{name: "latest release with curl", lx: relFakeLX,
@@ -829,7 +783,6 @@ func relTestDownloads(t *testing.T, bin string) {
 	}
 }
 
-// sha256sum, then shasum, then openssl; with none of them nothing installs.
 func relTestToolFallbacks(t *testing.T, bin string) {
 	const archive = "lx_linux_amd64.tar.gz"
 	cases := []struct {
@@ -851,8 +804,7 @@ func relTestToolFallbacks(t *testing.T, bin string) {
 					t.Skipf("%s not found", tool)
 				}
 			}
-			// The archive has no lx: getting to extraction proves the
-			// checksum was computed and matched.
+
 			rel := relNewRelease(t, archive, "", nil)
 			if c.corrupt {
 				rel.corrupt(t, archive)
@@ -873,9 +825,6 @@ func relTestToolFallbacks(t *testing.T, bin string) {
 	}
 }
 
-// A relative LX_INSTALL_DIR is relative to the working directory: an exported
-// CDPATH must not send it elsewhere, and "-" is a directory, not $OLDPWD.
-// dash, when present, is the shell where both went wrong.
 func relTestRelativeDir(t *testing.T, bin string) {
 	shell := []string{"sh"}
 	if p, err := exec.LookPath("dash"); err == nil {
@@ -920,9 +869,6 @@ func relTestRelativeDir(t *testing.T, bin string) {
 	}
 }
 
-// GNU sha256sum escapes a file name holding a backslash and marks its digest
-// with a leading '\'; hashing stdin keeps a good download from being
-// reported as corrupted.
 func relTestOddTmpdir(t *testing.T, bin string) {
 	rel := relNewRelease(t, "lx_linux_amd64.tar.gz", "", nil)
 	r := relNewRun(t, bin, "Linux", "x86_64")
@@ -936,8 +882,6 @@ func relTestOddTmpdir(t *testing.T, bin string) {
 	}
 }
 
-// If removing the temp dir fails after a good install, the script must still
-// exit 0: its exit code is what `curl … | sh && …` and CI act on.
 func relTestCleanupFailure(t *testing.T, bin string) {
 	rel := relNewRelease(t, "lx_linux_amd64.tar.gz", relFakeLX, nil)
 	r := relNewRun(t, bin, "Linux", "x86_64")
@@ -958,8 +902,6 @@ func relTestCleanupFailure(t *testing.T, bin string) {
 	relAssertInstalled(t, dest)
 }
 
-// curl … | sh runs whatever sh is: dash (Debian, Ubuntu), bash (macOS,
-// Fedora), busybox ash (Alpine), ksh. Each must install and refuse alike.
 func relTestShells(t *testing.T, bin string) {
 	var shells [][]string
 	shPath, _ := exec.LookPath("sh")
@@ -970,7 +912,7 @@ func relTestShells(t *testing.T, bin string) {
 			continue
 		}
 		if real, _ := filepath.EvalSymlinks(p); real == shPath {
-			continue // sh itself (dash on Debian and Ubuntu, busybox on Alpine) runs every other test
+			continue
 		}
 		if name == "busybox" {
 			shells = append(shells, []string{p, "sh"})

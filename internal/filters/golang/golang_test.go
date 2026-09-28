@@ -17,7 +17,7 @@ func ctx(exit int, argv ...string) *engine.Context {
 func TestMatch(t *testing.T) {
 	cases := []struct {
 		argv []string
-		want string // filter name, "" for none of ours
+		want string
 	}{
 		{[]string{"go", "test", "./..."}, "go-test"},
 		{[]string{"/usr/local/go/bin/go", "test", "-v", "./..."}, "go-test"},
@@ -130,8 +130,6 @@ func TestSingleLines(t *testing.T) {
 	}
 }
 
-// A failing exit status with nothing but passing verdicts must never be
-// rendered as a pass: the filter bails and the generic view shows all.
 func TestFailingExitWithPassLookingText(t *testing.T) {
 	for _, in := range []string{
 		"ok  \texample.com/a\t0.012s\nok  \texample.com/b\t0.020s",
@@ -145,7 +143,7 @@ func TestFailingExitWithPassLookingText(t *testing.T) {
 			t.Errorf("detector: exit 2 with only passes: want bail, got\n%s", out)
 		}
 	}
-	// With a failure present the view is rendered and the failure shown.
+
 	in := "ok  \texample.com/a\t0.012s\n--- FAIL: TestB (0.00s)\n    b_test.go:9: boom\nFAIL\nFAIL\texample.com/b\t0.010s\nFAIL"
 	out, ok := (testText{}).Apply(ctx(1, "go", "test", "./..."), in)
 	if !ok || !strings.Contains(out, "--- FAIL: TestB") || !strings.HasSuffix(out, "FAIL") {
@@ -188,7 +186,7 @@ func TestTestShapes(t *testing.T) {
 			"[error-like lines printed by passing tests (the rest of their output is hidden):]\nError: bad flag\nok  \tex.com/a\t0.1s\n[1 passed · hidden: 2 === RUN/--- PASS lines, 52 lines of passing-test output]"},
 		{"downloads condensed, compiler errors verbatim", []string{"go", "test", "./..."}, 1,
 			"go: downloading github.com/pkg/errors v0.9.1\ngo: downloading example.com/x v1.0.0\n# ex.com/a\n./a.go:3:2: undefined: y\nFAIL\tex.com/a [build failed]\nFAIL",
-			// pkg/errors is a module name, not an error: it folds into the count.
+
 			"[go: downloading 2 modules: github.com/pkg/errors, example.com/x]\n# ex.com/a\n./a.go:3:2: undefined: y\nFAIL\tex.com/a [build failed]\nFAIL"},
 	}
 	for _, tc := range cases {
@@ -262,7 +260,7 @@ func TestElideRepeats(t *testing.T) {
 	if got := elideRepeats(in); strings.Join(got, "|") != strings.Join(want, "|") {
 		t.Errorf("got  %q\nwant %q", got, want)
 	}
-	// Short repeats are left alone.
+
 	in = []string{"a", "b", "c", "a", "b", "d"}
 	if got := elideRepeats(in); len(got) != len(in) {
 		t.Errorf("elided a 2-line repeat: %q", got)
@@ -291,7 +289,7 @@ func TestBuildDedupeAndHeaders(t *testing.T) {
 	if !ok || got != want {
 		t.Fatalf("got %v\n%s\nwant\n%s", ok, got, want)
 	}
-	// Unrecognized output (a program's own text) is not claimed.
+
 	if _, ok := (build{}).Apply(ctx(1, "go", "build"), "some other tool output\nwith no diagnostics"); ok {
 		t.Error("claimed unrecognized output")
 	}
@@ -348,7 +346,7 @@ func TestJSONShapes(t *testing.T) {
 		ev("output", "ex.com/a", "TestP/x", "=== RUN   TestP/x\n"),
 		ev("run", "ex.com/a", "TestP/y", ""),
 		ev("output", "ex.com/a", "TestP/y", "=== RUN   TestP/y\n"),
-		// Interleaved parallel output: attribution comes from the Test field.
+
 		ev("output", "ex.com/a", "TestP/y", "    a_test.go:9: y says "),
 		ev("output", "ex.com/a", "TestP/x", "    a_test.go:9: x fine\n"),
 		ev("output", "ex.com/a", "TestP/y", "boom\n"),
@@ -412,7 +410,6 @@ func deepNesting(n int) string {
 	return b.String()
 }
 
-// synth builds n lines of plausible go test -v output for one package.
 func synth(n int, fail bool) string {
 	var b strings.Builder
 	for i := range n / 3 {
@@ -439,7 +436,7 @@ func TestHugeOutputIsFast(t *testing.T) {
 		f   engine.Filter
 		c   *engine.Context
 		in  string
-		max int // max output lines
+		max int
 	}{
 		"v-pass":  {testText{}, ctx(0, "go", "test", "-v"), synth(50000, false), 5},
 		"v-fail":  {testText{}, ctx(1, "go", "test", "-v"), synth(50000, true), 10},
@@ -447,15 +444,14 @@ func TestHugeOutputIsFast(t *testing.T) {
 		"repeats": {testText{}, ctx(1, "go", "test"), strings.Repeat("Error: flag x\nUsage:\n  cmd [flags]\n\n", 12500) + "FAIL\tex.com/big\t9.9s\nFAIL", 20},
 		"build":   {build{}, ctx(1, "go", "build"), strings.Repeat("./a.go:1:1: undefined: x\n", 50000), 3},
 		"mod":     {mod{}, ctx(0, "go", "mod", "tidy"), strings.Repeat("go: downloading example.com/m v1.0.0\n", 50000), 3},
-		// 50k distinct error lines in one failing test, all kept: the error
-		// guard must not be quadratic (engine.Guard alone takes ~20 s here).
+
 		"errors": {testText{}, ctx(1, "go", "test", "-v"), distinctErrors(50000), 50010},
-		// Deeply nested result lines followed by shallow output lines.
+
 		"nesting": {testText{}, ctx(1, "go", "test"), deepNesting(20000), 60000},
-		// Abnormal exit after a failure: nothing is hidden, the run is capped.
+
 		"abnormal exit": {testText{}, ctx(1, "go", "test"),
 			"--- FAIL: TestA (0.00s)\n    a_test.go:1: boom\n" + strings.Repeat("output before the exit\n", 50000) + "FAIL\tex.com/big\t1.0s\nFAIL", 100},
-		// A "panic: " line printed by a passing test, then 100k lines.
+
 		"false crash": {testText{}, ctx(0, "go", "test", "-v"),
 			"panic: not really\n" + synth(100000, false), 5},
 		"ok lines": {testText{}, ctx(0, "go", "test"), okLines(50000), 2},
@@ -477,7 +473,7 @@ func TestHugeOutputIsFast(t *testing.T) {
 			}
 		})
 	}
-	// The same through the full pipeline, -json included.
+
 	var b strings.Builder
 	for i := range 20000 {
 		fmt.Fprintf(&b, `{"Action":"output","Package":"ex.com/big","Test":"TestCase%d","Output":"=== RUN   TestCase%d\n"}`+"\n", i, i)

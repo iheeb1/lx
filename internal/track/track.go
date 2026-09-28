@@ -1,6 +1,4 @@
-// Package track records how many tokens lx saved, locally, as one JSON line
-// per command. Only the command name and first subcommand are stored (never
-// arguments or output), so the log is safe to keep. Disable with LX_TRACK=0.
+// Package track records token savings.
 package track
 
 import (
@@ -11,31 +9,23 @@ import (
 	"time"
 )
 
-// Record is one wrapped command, or one recall of a stored run.
 type Record struct {
-	Time   int64  `json:"t"`              // unix seconds
-	Cmd    string `json:"cmd"`            // "git status", "go test", "pytest"
-	Filter string `json:"filter"`         // filter that produced the view
-	Raw    int    `json:"raw"`            // tokens the agent would have read
-	Out    int    `json:"out"`            // tokens it did read
-	Ms     int64  `json:"ms"`             // wall time of the command
-	Exit   int    `json:"exit"`           // child exit status
-	Lossy  bool   `json:"lossy,omitzero"` // a full copy was stored for lx show
+	Time   int64  `json:"t"`
+	Cmd    string `json:"cmd"`
+	Filter string `json:"filter"`
+	Raw    int    `json:"raw"`
+	Out    int    `json:"out"`
+	Ms     int64  `json:"ms"`
+	Exit   int    `json:"exit"`
+	Lossy  bool   `json:"lossy,omitzero"`
 
-	// Kind is "" for a wrapped command and KindShow for a recall: an
-	// `lx show` of a stored run, whose Out tokens were read back and count
-	// against what the condensed view saved. Summarize treats any other
-	// kind as a command.
 	Kind string `json:"kind,omitempty"`
-	Of   int    `json:"of,omitempty"`   // recall: the run id shown
-	Mode string `json:"mode,omitempty"` // recall: full, errors, grep, lines, head or tail
+	Of   int    `json:"of,omitempty"`
+	Mode string `json:"mode,omitempty"`
 }
 
-// KindShow marks a recall record.
 const KindShow = "show"
 
-// Path returns the history file ($LX_DATA_DIR overrides; else
-// $XDG_DATA_HOME/lx or the OS config dir).
 func Path() string {
 	if d := os.Getenv("LX_DATA_DIR"); d != "" {
 		return filepath.Join(d, "history.jsonl")
@@ -55,8 +45,6 @@ func Path() string {
 	return filepath.Join(base, "lx", "history.jsonl")
 }
 
-// Add appends a record. Errors are ignored by callers: tracking must never
-// break a command.
 func Add(r Record) error {
 	if os.Getenv("LX_TRACK") == "0" {
 		return nil
@@ -83,7 +71,6 @@ func Add(r Record) error {
 	return err
 }
 
-// Load reads every record newer than since (zero = all).
 func Load(since time.Time) ([]Record, error) {
 	f, err := os.Open(Path())
 	if err != nil {

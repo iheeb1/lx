@@ -1,49 +1,12 @@
-// Package jstest condenses the output of JavaScript test runners (jest,
-// vitest, mocha) and of Node.js crashes.
-//
-// Filters (first match wins, in this order):
-//
-//	jest       jest / npx jest / pnpm exec jest / yarn jest / bunx jest /
-//	           react-scripts test / node node_modules/.bin/jest
-//	vitest     vitest [run] and the same wrappers
-//	mocha      mocha / _mocha and the same wrappers (spec/dot/list reporters)
-//	npm-test   npm test, npm t, npm run test[:x], yarn test, pnpm test,
-//	           bun test, bun run test: the runner is detected from the output
-//	           (the "> command" echo line, or each runner's summary lines);
-//	           unrecognized output bails to the generic reducer
-//	node-crash node <script> ending in an uncaught exception
-//	           ("Node.js vX" footer)
-//
-// Every runner view keeps the failing tests (message, expected/received,
-// diff, the failing source line with its caret, application stack frames),
-// every suite/file that failed to load, unhandled errors, and the runner's
-// own summary lines verbatim; it drops passing tests with a count, source
-// context around the failing line, and library stack frames (folded into
-// one counted line). A non-zero exit with no failure in the view gets a
-// "[lx: <runner> exited N but reported no failing test …]" line (console
-// output of tests never counts as a failure, even when it holds "Error:").
-// Views over briefAbove tokens degrade in announced levels (levels.go):
-// failures after the first ten keep only messages, values and locations,
-// then only names and new messages, then are counted as not shown.
-//
-// npm workspaces run a runner once per package: each run is rendered on
-// its own (its own passing marker, no de-duplication across runs).
-//
-// The runner filters implement engine.Guarded: test titles, suite titles and
-// source code are often "error"-looking text ("✓ handles errors",
-// describe("error handling"), "12 |   } catch (error) {"), so instead of the
-// generic guard every view runs its own safety net that re-adds any
-// error-class line it did not structurally identify as such benign text
-// (see doc.finish). node-crash keeps every non-frame line and relies on the
-// engine guard.
+// Package jstest handles jest, vitest, mocha and node crashes.
 package jstest
 
 import (
-	"github.com/iheeb1/lx/internal/lazyre"
 	"path/filepath"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 func init() {
@@ -54,17 +17,13 @@ func init() {
 	engine.Register(nodeFilter{})
 }
 
-// invocation is argv with env assignments, `env` and package-manager
-// wrappers peeled off.
 type invocation struct {
-	runner string   // "jest", "vitest", "mocha", "script" (npm test & co), "node" or ""
-	args   []string // arguments after the runner / script name
+	runner string
+	args   []string
 }
 
 var assignRe = lazyre.New(`^[A-Za-z_][A-Za-z0-9_]*=`)
 
-// peelEnv removes leading VAR=value words and an `env [-i] [-u NAME] …`
-// or `cross-env VAR=value …` wrapper.
 func peelEnv(argv []string) []string {
 	i := 0
 	for i < len(argv) {
@@ -75,7 +34,7 @@ func peelEnv(argv []string) []string {
 		}
 		if b := filepath.Base(a); b == "cross-env" || b == "cross-env-shell" {
 			i++
-			continue // its VAR=value words are peeled by the loop
+			continue
 		}
 		if filepath.Base(a) == "env" {
 			i++
@@ -100,11 +59,10 @@ func peelEnv(argv []string) []string {
 	return argv[i:]
 }
 
-// runnerName maps an executable or package name to a runner.
 func runnerName(s string) string {
 	s = filepath.Base(s)
 	if at := strings.LastIndexByte(s, '@'); at > 0 {
-		s = s[:at] // npx jest@29
+		s = s[:at]
 	}
 	s = strings.TrimSuffix(strings.TrimSuffix(s, ".js"), ".cmd")
 	switch s {
@@ -118,8 +76,6 @@ func runnerName(s string) string {
 	return ""
 }
 
-// skipFlags returns the index of the first non-flag argument, skipping the
-// values of the given flags.
 func skipFlags(args []string, withValue ...string) int {
 	for i := 0; i < len(args); i++ {
 		a := args[i]
@@ -144,7 +100,6 @@ func isTestScript(s string) bool {
 		strings.HasPrefix(s, "test:") || strings.HasPrefix(s, "test-") || strings.HasPrefix(s, "tests:")
 }
 
-// parseInvocation recognizes the runner behind argv.
 func parseInvocation(c *engine.Context) invocation {
 	argv := peelEnv(c.Argv)
 	if len(argv) == 0 {
@@ -159,7 +114,6 @@ func parseInvocation(c *engine.Context) invocation {
 	case "npx", "bunx", "pnpx":
 		i := skipFlags(rest, "-p", "--package", "-c", "--call")
 		if i < len(rest) {
-			// npx jest@29, npx react-scripts test, npx cross-env CI=1 jest
 			return wrapped(c, rest[i:])
 		}
 	case "react-scripts", "craco", "rescripts":
@@ -194,7 +148,7 @@ func parseInvocation(c *engine.Context) invocation {
 		i := skipFlags(rest, "--prefix", "-C", "--dir", "--filter", "-F", "-w", "--workspace", "--cwd")
 		if i >= len(rest) {
 			if name == "yarn" {
-				return invocation{} // bare `yarn` is install
+				return invocation{}
 			}
 			return invocation{}
 		}
@@ -214,22 +168,16 @@ func parseInvocation(c *engine.Context) invocation {
 		case name == "yarn" && sub == "workspace" && len(after) >= 2 && isTestScript(after[1]):
 			return invocation{runner: "script", args: after[2:]}
 		case name == "bun" && sub == "test":
-			// bun's own runner prints jest-like but different output; the
-			// npm-test filter bails unless it recognizes it.
 			return invocation{runner: "script", args: after}
 		case sub == "test" || sub == "t" || sub == "tst" || (name != "npm" && isTestScript(sub)):
 			return invocation{runner: "script", args: after}
 		case name != "npm":
-			// yarn jest, pnpm vitest, bun mocha, yarn react-scripts test
 			return wrapped(c, rest[i:])
 		}
 	}
 	return invocation{}
 }
 
-// wrapped parses the command a package runner (npx, npm exec, yarn <bin>)
-// runs. It never returns "script": `npx npm test` is not a test script run
-// by the package manager that lx sees.
 func wrapped(c *engine.Context, argv []string) invocation {
 	sub := *c
 	sub.Argv = argv
@@ -239,7 +187,6 @@ func wrapped(c *engine.Context, argv []string) invocation {
 	return invocation{}
 }
 
-// flagValue returns the value of --name=value / --name value / short, or "".
 func flagValue(args []string, names ...string) (string, bool) {
 	for i, a := range args {
 		if a == "--" {
@@ -286,7 +233,6 @@ func hasArg(args []string, names ...string) bool {
 	return false
 }
 
-// firstPositional returns the first non-flag argument.
 func firstPositional(args []string) string {
 	for _, a := range args {
 		if a == "--" {
@@ -308,7 +254,7 @@ func (jestFilter) Match(c *engine.Context) bool {
 	if inv.runner != "jest" {
 		return false
 	}
-	// Listings, config dumps and machine formats are not test runs.
+
 	return !hasArg(inv.args, "--listTests", "--showConfig", "--json", "--version", "-v", "--help", "-h", "--init", "--clearCache")
 }
 
@@ -316,8 +262,6 @@ func (jestFilter) Stream(c *engine.Context) bool {
 	return watching(parseInvocation(c).args, "--watch", "--watchAll")
 }
 
-// watching reports a watch flag that is not explicitly turned off
-// (react-scripts test --watchAll=false).
 func watching(args []string, names ...string) bool {
 	for _, a := range args {
 		for _, n := range names {
@@ -340,7 +284,6 @@ type vitestFilter struct{}
 
 func (vitestFilter) Name() string { return "vitest" }
 
-// vitestTextReporters print the default reporter's failure section.
 var vitestTextReporters = map[string]bool{"": true, "default": true, "verbose": true, "basic": true, "dot": true, "agent": true, "tree": true, "minimal": true}
 
 func (vitestFilter) Match(c *engine.Context) bool {
@@ -352,8 +295,7 @@ func (vitestFilter) Match(c *engine.Context) bool {
 	case "list", "bench", "init":
 		return false
 	}
-	// Machine reporters (json, junit, …) are fine only when they write to a
-	// file next to a text reporter.
+
 	text, machine := false, false
 	for i, a := range inv.args {
 		if a == "--" {
@@ -397,8 +339,6 @@ type mochaFilter struct{}
 
 func (mochaFilter) Name() string { return "mocha" }
 
-// mochaBaseReporters end with mocha's Base epilogue (passing/failing counts
-// and numbered failures), which is what the mocha view parses.
 var mochaBaseReporters = map[string]bool{"": true, "spec": true, "dot": true, "list": true, "progress": true, "min": true, "landing": true, "nyan": true}
 
 func (mochaFilter) Match(c *engine.Context) bool {
@@ -423,8 +363,6 @@ func (mochaFilter) Apply(c *engine.Context, out string) (string, bool) {
 	return r.out, ok
 }
 
-// npmTestFilter handles package-manager test scripts, whose runner is only
-// known from the output.
 type npmTestFilter struct{}
 
 func (npmTestFilter) Name() string { return "npm-test" }
@@ -435,9 +373,6 @@ func (npmTestFilter) Match(c *engine.Context) bool {
 
 func (npmTestFilter) GuardsErrors() bool { return true }
 
-// Stream: `npm test -- --watch` and the like keep running. "-w" is a watch
-// flag only among the script's own arguments: before "--", npm's -w is
-// --workspace (`npm test -w web`).
 func (npmTestFilter) Stream(c *engine.Context) bool {
 	inv := parseInvocation(c)
 	if inv.runner != "script" {
@@ -462,7 +397,6 @@ func (npmTestFilter) Apply(c *engine.Context, out string) (string, bool) {
 	return r.out, ok
 }
 
-// renderScript detects the runner of a test script from its output.
 func renderScript(c *engine.Context, out string) (result, bool) {
 	switch detectRunner(out) {
 	case "jest":
@@ -484,9 +418,6 @@ var (
 	mochaPassingRe = lazyre.New(`^ {2}\d+ passing \(\d+(?:\.\d+)?(?:ms|s|m|h)\)$`)
 )
 
-// hasLine reports whether a line of s containing sub matches re. It looks
-// only at lines holding sub, which keeps it linear and fast on huge output
-// (a (?m) regexp over the whole text is not).
 func hasLine(s, sub string, re *lazyre.Regexp) bool {
 	for off := 0; off < len(s); {
 		k := strings.Index(s[off:], sub)
@@ -509,15 +440,12 @@ func hasLine(s, sub string, re *lazyre.Regexp) bool {
 	return false
 }
 
-// hasJestSummary: jest's "Test Suites:" and "Tests:" summary lines.
 func hasJestSummary(s string) bool {
 	return hasLine(s, "Test Suites: ", jestSummaryRe) && hasLine(s, "Tests: ", jestTestsRe)
 }
 
-// hasVitestSummary: vitest's "Test Files  3 failed | 10 passed (13)" line.
 func hasVitestSummary(s string) bool { return hasLine(s, "Test Files  ", vitestFilesRe) }
 
-// detectRunner names the runner whose output this is, or "".
 func detectRunner(out string) string {
 	for _, ln := range strings.SplitN(out, "\n", 40) {
 		if m := echoCmdRe.FindStringSubmatch(ln); m != nil {

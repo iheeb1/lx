@@ -15,17 +15,9 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// corpusCases lists every fixture of testdata/corpus/fs with the filter
-// that must claim it and what Process must report.
 var corpusCases = []struct {
 	name, filter string
-	// process is the Result.Filter Process must report; it differs from
-	// filter only where the pipeline legitimately does not use the filter's
-	// output:
-	//   - du-sh-star: 137 tokens ≤ engine.SmallOutput, passed through
-	//     before any filter runs.
-	//   - du-sh-node-modules-sorted: 40 lines ≤ duKeepAll, so du returns
-	//     the output unchanged and the never-worse gate passes it through.
+
 	process string
 }{
 	{"du-sh-node-modules-sorted", "du", "passthrough"},
@@ -38,52 +30,45 @@ var corpusCases = []struct {
 	{"ls-la-repo-root", "ls", "ls"},
 }
 
-// extraCases are real outputs captured for this package (testdata/corpus,
-// sanitized like the shared corpus) covering shapes the shared corpus lacks.
 var extraCases = []struct{ name, filter, process string }{
 	{"du-h-recursive", "du", "du"},
 	{"du-sk-many", "du", "du"},
-	{"find-missing-root", "find", "passthrough"}, // 17 paths: ≤ SmallOutput
-	{"find-perm-denied", "find", "passthrough"},  // 9 paths: ≤ SmallOutput
+	{"find-missing-root", "find", "passthrough"},
+	{"find-perm-denied", "find", "passthrough"},
 	{"find-type-d", "find", "find"},
-	{"ls-R-dot", "ls", "passthrough"}, // a flat repo: the tree saves 5% < MinSavings
+	{"ls-R-dot", "ls", "passthrough"},
 	{"ls-l-multi-operand", "ls", "ls"},
 	{"ls-la-luxon-bin", "ls", "ls"},
 	{"ls-la-perms-symlink", "ls", "ls"},
 	{"ls-lR-large", "ls", "ls"},
 	{"ls-lR-small", "ls", "ls"},
-	{"ls-missing", "ls", "passthrough"}, // 2 lines
-	// Plain ls is claimed but returned unchanged: nothing to save.
+	{"ls-missing", "ls", "passthrough"},
+
 	{"ls-plain", "ls", "passthrough"},
-	// Added in review (real captures, sanitized):
-	// find -maxdepth: leaf directories are unmarked, so counts say
-	// "entries" and the header warns.
+
 	{"find-maxdepth-2", "find", "find"},
-	// find -name matching directories (__tests__) as well as files.
+
 	{"find-name-matches-dirs", "find", "find"},
-	// Spaces, unicode, a colon in a name, an empty dir: ≤ SmallOutput.
+
 	{"find-tricky", "find", "passthrough"},
-	// /usr/bin/find with a missing root (exit 1): the diagnostic first.
+
 	{"find-abs-argv0", "find", "find"},
-	{"ls-R-tricky", "ls", "passthrough"}, // ≤ SmallOutput
-	// 84 entries: the long form (~1k tokens) is kept, not names only.
+	{"ls-R-tricky", "ls", "passthrough"},
+
 	{"ls-la-playground", "ls", "ls"},
-	// bash -c 'ls -lt | head -15': unwrapped, cut rows are still rows.
+
 	{"ls-lt-head", "ls", "ls"},
-	// bash -c 'du -sh … | sort -rh | head -12': 12 lines ≤ SmallOutput.
+
 	{"du-sort-head", "du", "passthrough"},
-	// --color=always: ANSI around names, stripped before the filter.
+
 	{"ls-la-color", "ls", "ls"},
-	{"ls-R-color", "ls", "passthrough"}, // 19 lines ≤ SmallOutput (macOS ls -R prints no color codes)
+	{"ls-R-color", "ls", "passthrough"},
 }
 
-// bailCases are real outputs the filter must refuse (ok=false), so the
-// generic reducer handles them: localized month names in ls -l, and a
-// grep-like split that would misattribute lines.
 var bailCases = []struct{ name, filter string }{
-	{"ls-la-fr", "ls"}, // "26 sept. 00:56"
-	{"ls-la-de", "ls"}, // "26 Sep. 00:56"
-	{"ls-la-ja", "ls"}, // " 9月 26 00:56"
+	{"ls-la-fr", "ls"},
+	{"ls-la-de", "ls"},
+	{"ls-la-ja", "ls"},
 }
 
 func TestBailCorpus(t *testing.T) {
@@ -167,17 +152,6 @@ func runCase(t *testing.T, fc fixture.Case, filter, process string) {
 		100*(1-float64(out)/float64(max(raw, 1))), res.Filter, res.RawTokens, res.OutTokens)
 }
 
-// checkFidelity is the listing equivalent of fixture.ErrorLinesMissing.
-//
-// ErrorLinesMissing flags every input line holding an error word; in a
-// listing those lines are file names (error-pages.js, fixtures/errors/),
-// i.e. content, which the tree format prints as "dir/" + "name". So the
-// check here is stronger and structural: every diagnostic line (ls:/find:/
-// du:) must appear verbatim, and every listed path must be reconstructable
-// from the output or be accounted for by an exact count (pruned heavy
-// directory, depth cap, per-directory cap). Error-class lines that are not
-// diagnostics are allowed to be missing verbatim only when they are paths
-// that the tree reconstructs.
 func checkFidelity(t *testing.T, e *engine.Context, clean, got string) {
 	t.Helper()
 	tool := e.Name()
@@ -207,13 +181,13 @@ func checkFidelity(t *testing.T, e *engine.Context, clean, got string) {
 			var rest []string
 			for _, m := range missing {
 				if !lsRowRe.MatchString(m) {
-					rest = append(rest, m) // rows are checked by name in the tree
+					rest = append(rest, m)
 				}
 			}
 			checkTree(t, got, lsLongPathsForTest(clean, f), rest)
 			return
 		}
-		// Long format: every name is still there.
+
 		for _, ln := range strings.Split(clean, "\n") {
 			m := lsRowRe.FindStringSubmatch(ln)
 			if m == nil {
@@ -229,14 +203,12 @@ func checkFidelity(t *testing.T, e *engine.Context, clean, got string) {
 		}
 		for _, m := range missing {
 			if lsRowRe.MatchString(m) {
-				continue // a row whose name holds an error word; name checked above
+				continue
 			}
 			t.Errorf("error line missing: %q", m)
 		}
 	case "du":
-		// Rows are data (a directory named errors/ is not an error); every
-		// row is either kept verbatim or counted in the "… N smaller
-		// entries omitted" line.
+
 		rows, kept := 0, 0
 		for _, ln := range strings.Split(clean, "\n") {
 			if duLineRe.MatchString(ln) {
@@ -273,23 +245,18 @@ func nonDiag(e *engine.Context, clean string) []string {
 }
 
 var (
-	// "name/ [12 files]", "name/ [12 files: .ts×10 …]", "name/ [3 directories]"
-	// "entries" replaces "files" when the listing may hold unmarked
-	// directories (find without -type f, ambiguous tree leaves).
 	foldedRe = regexp.MustCompile(`^(.*)/ \[([\d,]+) (files?|entry|entries|director(?:y|ies))(?:: (.*))?\]$`)
 	moreRe   = regexp.MustCompile(`^… \+([\d,]+) more (?:files?|entry|entries): (.*)$`)
-	// "… +3 more directories [40 files: …]:" followed by their names.
+
 	moreDirs = regexp.MustCompile(`^… \+[\d,]+ more director(?:y|ies)(?: \[([\d,]+) (?:files?|entry|entries)(?:: .*)?\])?:$`)
 )
 
-// parsedTree is what an agent can recover from a rendered PathTree.
 type parsedTree struct {
-	files map[string]bool // reconstructed full paths
+	files map[string]bool
 	dirs  map[string]bool
-	// counted maps a directory to the number of files under it that the
-	// output accounts for by a count instead of a name.
+
 	counted map[string]int
-	// countedDirs maps a folded directory to its "[N directories]" count.
+
 	countedDirs map[string]int
 }
 
@@ -298,7 +265,6 @@ func atoi(s string) int {
 	return n
 }
 
-// parseTree reads rendered tree lines back into paths.
 func parseTree(lines []string) parsedTree {
 	pt := parsedTree{files: map[string]bool{}, dirs: map[string]bool{}, counted: map[string]int{}, countedDirs: map[string]int{}}
 	type frame struct {
@@ -324,8 +290,7 @@ func parseTree(lines []string) parsedTree {
 		}
 		return dir + "/" + name
 	}
-	// addDir registers a directory label ("a/b/c" collapses a chain) and
-	// every directory on it.
+
 	addDir := func(parent, label string) string {
 		d := parent
 		for _, seg := range strings.Split(label, "/") {
@@ -334,7 +299,7 @@ func parseTree(lines []string) parsedTree {
 		}
 		return d
 	}
-	listing := 0 // indentation of the names under a "… +N more directories" line
+	listing := 0
 	for _, ln := range lines {
 		if ln == "" || strings.HasPrefix(ln, "[") {
 			continue
@@ -363,7 +328,7 @@ func parseTree(lines []string) parsedTree {
 			pt.counted[parent] += atoi(m[1])
 			listing = indent + 2
 		case listing > 0 && indent == listing:
-			// Names of the directories past the cap: counted above.
+
 			for _, nm := range strings.Split(body, "  ") {
 				addDir(parent, strings.TrimSuffix(nm, "/"))
 			}
@@ -393,7 +358,6 @@ func parseTree(lines []string) parsedTree {
 	return pt
 }
 
-// normPath normalizes like NewPathTree: no "./", no trailing "/".
 func normPath(p string) (string, bool) {
 	segs, _, ok := splitPath(p)
 	if !ok {
@@ -405,13 +369,11 @@ func normPath(p string) (string, bool) {
 	return strings.Join(segs, "/"), true
 }
 
-// checkTree verifies that every path in paths is reconstructable from got
-// or covered by an exact count, and that the counts add up.
 func checkTree(t *testing.T, got string, paths, missing []string) {
 	t.Helper()
 	pt := parseTree(strings.Split(got, "\n"))
 	all := map[string]bool{}
-	marked := map[string]bool{} // printed with a trailing "/"
+	marked := map[string]bool{}
 	for _, p := range paths {
 		if n, ok := normPath(p); ok {
 			all[n] = true
@@ -420,7 +382,7 @@ func checkTree(t *testing.T, got string, paths, missing []string) {
 			}
 		}
 	}
-	// Directories: any path that is a prefix of another, or marked.
+
 	isDir := map[string]bool{}
 	for p := range all {
 		if marked[p] {
@@ -477,17 +439,15 @@ func checkTree(t *testing.T, got string, paths, missing []string) {
 	}
 	for _, m := range missing {
 		if n, ok := normPath(m); ok && (all[n] || isDir[n]) {
-			continue // a path holding an error word: reconstructed above
+			continue
 		}
 		if n, ok := normPath(strings.TrimSuffix(m, ":")); ok && strings.HasSuffix(m, ":") && (isDir[n] || pt.dirs[n]) {
-			continue // an `ls -R` block header naming a directory
+			continue
 		}
 		t.Errorf("error line missing: %q", m)
 	}
 }
 
-// lsPathsForTest recomputes the path list of `ls -R` output independently
-// of the filter's tree rendering.
 func lsPathsForTest(clean string, f lsFlags) ([]string, error) {
 	dir := "."
 	if len(f.operands) == 1 {
@@ -500,7 +460,7 @@ func lsPathsForTest(clean string, f lsFlags) ([]string, error) {
 			blank = true
 			continue
 		}
-		// Several operands (or GNU's ".:"): the first line is a header.
+
 		first := i == 0 && strings.HasSuffix(ln, ":") && (len(f.operands) > 1 || ln == ".:")
 		if (blank || first) && strings.HasSuffix(ln, ":") {
 			dir = strings.TrimSuffix(ln, ":")
@@ -578,7 +538,6 @@ func TestHugeFind(t *testing.T) {
 	}
 }
 
-// lsLongPathsForTest recomputes the path list of `ls -lR` output.
 func lsLongPathsForTest(clean string, f lsFlags) []string {
 	dir := "."
 	if len(f.operands) == 1 {

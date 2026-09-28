@@ -8,7 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// hugeJest: 45,000 passing suites and 500 failing ones (~52k lines).
 func hugeJest() string {
 	var b strings.Builder
 	for i := 0; i < 45000; i++ {
@@ -21,7 +20,6 @@ func hugeJest() string {
 	return b.String()
 }
 
-// hugeVitest: one file with 50,000 passing tests and one failure.
 func hugeVitest() string {
 	var b strings.Builder
 	b.WriteString(" RUN  v4.1.11 /home/user/src/proj\n\n ❯ test/big.test.ts (50000 tests | 1 failed) 900ms\n")
@@ -46,9 +44,6 @@ func BenchmarkHugeVitest(b *testing.B) {
 	}
 }
 
-// BenchmarkManyFailures* render ~50k lines holding thousands of failures;
-// BenchmarkEngineGuard is the engine's own guard pass over the same input,
-// the floor set by engine.IsError.
 func BenchmarkManyFailuresJest(b *testing.B) {
 	in, c := synthJest(3500), ctx(1, "jest")
 	for i := 0; i < b.N; i++ {

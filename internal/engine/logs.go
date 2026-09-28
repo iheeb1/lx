@@ -10,15 +10,14 @@ import (
 )
 
 var (
-	// logTSRe finds a timestamp in a log line.
 	logTSRe = lazyre.New(`\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:[.,]\d+)?(?:Z|[+-]\d{2}:?\d{2}\b| UTC\b)?` +
 		`|\d{4}/\d{2}/\d{2}(?:[T ]| - )\d{2}:\d{2}:\d{2}(?:[.,]\d+)?` +
 		`|\d{1,2}/(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/\d{4}:\d{2}:\d{2}:\d{2}(?: [+-]\d{4})?` +
 		`|\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [ \d]\d \d{2}:\d{2}:\d{2}` +
-		`|^\d{6} \d{6}\b` + // HDFS: yymmdd hhmmss
+		`|^\d{6} \d{6}\b` +
 		`|^\[?\d{2}:\d{2}:\d{2}(?:[.,]\d+)?\b` +
-		`|^\[?1\d{9}(?:\.\d+)?\b`) // epoch seconds
-	// logLevelRe finds a level token; the first non-empty group is the level.
+		`|^\[?1\d{9}(?:\.\d+)?\b`)
+
 	logLevelRe = lazyre.New(`\b(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|FATAL|CRITICAL|SEVERE)\b` +
 		`|\[([TDIWEF]|trace|debug|info|warn|warning|error|fatal)\]` +
 		`|^([VDIWEF])/\S` +
@@ -29,18 +28,14 @@ var (
 const (
 	minLogLines      = 40
 	logSimThreshold  = 0.5
-	maxLogScan       = 200 // similarity scan is bounded per group
+	maxLogScan       = 200
 	maxLogTemplates  = 2000
 	maxVarSlots      = 4
 	maxDistinctTrack = 64
 )
 
-// logPrefix bounds where isLogLine looks: log lines carry their timestamp
-// and level near the start, and scanning megabyte-long lines is costly.
 const logPrefix = 256
 
-// isLogLine reports whether a line carries a timestamp or a level token
-// within its first 256 bytes.
 func isLogLine(ln string) bool {
 	if len(ln) > logPrefix {
 		ln = ln[:logPrefix]
@@ -53,7 +48,6 @@ func isLogLine(ln string) bool {
 
 var levelWords = []string{"TRACE", "DEBUG", "INFO", "NOTICE", "WARN", "ERROR", "FATAL", "CRITICAL", "SEVERE", "[", "level", "lvl", "severity"}
 
-// mayHaveLevel is a cheap necessary condition for logLevelRe.
 func mayHaveLevel(ln string) bool {
 	if len(ln) > 1 && ln[1] == '/' {
 		return true
@@ -116,42 +110,21 @@ func (s *slotStat) add(v string) {
 }
 
 type logTemplate struct {
-	toks    []string // masked tokens, "<*>" where lines differ
-	labels  []string // per-position variable label
+	toks    []string
+	labels  []string
 	count   int
-	first   int // line index of first occurrence
+	first   int
 	example string
 	slots   []slotStat
 }
 
-// logItem is one output unit: a template or a verbatim error record.
 type logItem struct {
 	first int
 	tmpl  *logTemplate
-	lines []string // error record
+	lines []string
 	count int
 }
 
-// TemplateLogs summarizes log-shaped output with Drain-style templating.
-// It returns ok=false unless there are at least 40 non-empty lines and at
-// least 60% of them carry a timestamp or a level token (INFO, WARN, ERROR,
-// [I], E/Tag, level=, "level":…), or when templating would not shrink the
-// output by at least a quarter.
-//
-// Output: a header "[log: N lines, K templates, <first ts> … <last ts>]",
-// then, in order of first appearance, one line per template — its first
-// real line, with " [×count]" when it matched more than once — and, for
-// templates seen 3+ times, an indented "vars:" line summarizing the variable
-// positions (low-cardinality values with counts, numeric ranges, or
-// distinct counts). Lines are tokenized on whitespace (JSON-lines logs on
-// top-level key/value pairs) and masked with Mask before clustering; lines of
-// different levels or warning/normal class never share a template.
-//
-// Error-class content is never templated: a record (a timestamped/levelled
-// line plus the non-log continuation lines after it, such as a stack trace)
-// that contains an IsError line is emitted verbatim (stack traces folded by
-// FoldStacks), each distinct record once, with " [×count]" on its first line
-// when repeated.
 func TemplateLogs(lines []string) ([]string, bool) {
 	nonEmpty, logLike := 0, 0
 	for _, ln := range lines {
@@ -162,7 +135,7 @@ func TemplateLogs(lines []string) ([]string, bool) {
 		if isLogLine(ln) {
 			logLike++
 		} else if (nonEmpty-logLike)*10 > len(lines)*4 {
-			return nil, false // can no longer reach 60%
+			return nil, false
 		}
 	}
 	if nonEmpty < minLogLines || logLike*10 < nonEmpty*6 {
@@ -175,10 +148,9 @@ func TemplateLogs(lines []string) ([]string, bool) {
 		}
 	}
 	if blame*2 > nonEmpty {
-		return nil, false // annotated source code: every line is content
+		return nil, false
 	}
 
-	// Records: a log line plus the non-log lines after it.
 	type record struct{ start, end int }
 	var recs []record
 	for i, ln := range lines {
@@ -208,7 +180,6 @@ func TemplateLogs(lines []string) ([]string, bool) {
 			key += masked[0]
 		}
 		if isJSONTokens(raw) {
-			// JSON lines: the key sequence is structure, never a variable.
 			key += "\x00" + strings.Join(labels, "\x01")
 		}
 		ek := key + "\x00" + strings.Join(masked, "\x01")
@@ -353,13 +324,8 @@ func isJSONTokens(raw []string) bool {
 	return len(raw) > 0 && strings.HasPrefix(raw[0], `"`) && strings.Contains(raw[0], `":`)
 }
 
-// blameRe matches `git blame` lines: code with a timestamp, not a log.
 var blameRe = lazyre.New(`^\^?[0-9a-f]{6,40} (?:\S+ +)?\(.*\d{4}-\d{2}-\d{2} .*\d+\) `)
 
-// logTokens splits a line into tokens and gives each a label for the vars
-// summary. JSON-object lines split on top-level fields ("key":value,
-// labelled by key); other lines split on whitespace, where key=value tokens
-// are labelled by key and others by the preceding word.
 func logTokens(ln string) (toks, labels []string) {
 	if t := strings.TrimSpace(ln); strings.HasPrefix(t, "{") && strings.HasSuffix(t, "}") {
 		if toks, labels, ok := jsonLogTokens(t); ok {
@@ -404,7 +370,6 @@ func jsonLogTokens(t string) (toks, labels []string, ok bool) {
 	return toks, labels, true
 }
 
-// slotValue strips "key=" / "\"key\":" and JSON quotes from a token.
 func slotValue(tok string) string {
 	if strings.HasPrefix(tok, `"`) {
 		if i := strings.Index(tok, `":`); i > 0 {
@@ -433,7 +398,6 @@ func isWordish(s string) bool {
 	return !isAllDigits(s)
 }
 
-// varSummary describes up to 4 variable positions of a template.
 func (t *logTemplate) varSummary() string {
 	var parts []string
 	for k, st := range t.slots {

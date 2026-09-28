@@ -112,7 +112,6 @@ func TestMatch(t *testing.T) {
 	}
 }
 
-// apply runs a filter by name, failing the test if it is not registered.
 func apply(t *testing.T, name string, c *engine.Context, in string) (string, bool) {
 	t.Helper()
 	for _, f := range engine.Filters() {
@@ -143,11 +142,7 @@ func TestBailsOnUnknown(t *testing.T) {
 	}
 }
 
-// ---- pytest ----
-
 func TestPytestSummaryVerbatim(t *testing.T) {
-	// rtk rendered "3 passed, 1 error" as "3 passed": the result line must
-	// be copied, never rebuilt.
 	for _, line := range []string{
 		"=================== 3 passed, 1 error in 0.42s ===================",
 		"==== 1 failed, 10 errors, 2 warnings in 12.01s (0:00:12) ====",
@@ -176,7 +171,7 @@ func TestPytestExitConsistency(t *testing.T) {
 	if !ok || !strings.Contains(out, "exited 1 although") || !strings.Contains(out, "FAIL Required test coverage") {
 		t.Errorf("pass-looking result with exit 1 not flagged:\n%s", out)
 	}
-	// "1 xfailed" is not a failure; "10 errors" is (rtk read it as "0 error").
+
 	xf := "collected 2 items\n\n======================== 1 passed, 1 xfailed in 0.10s ========================"
 	if out, _ := apply(t, "pytest", ctx(1, "pytest"), xf); !strings.Contains(out, "exited 1 although") {
 		t.Errorf("xfailed-only run with exit 1 not flagged:\n%s", out)
@@ -195,9 +190,6 @@ func TestPytestExitConsistency(t *testing.T) {
 }
 
 func TestPytestBailsWithoutResult(t *testing.T) {
-	// Killed mid-run (SIGKILL, OOM killer, CI timeout): no result line, no
-	// short summary, no faulthandler dump. (A run that died in a
-	// faulthandler dump is handled: see TestReviewCrashDump.)
 	crash := "============================= test session starts ==============================\n" +
 		"platform linux -- Python 3.12.1, pytest-8.3.4, pluggy-1.5.0\ncollected 400 items\n\n" +
 		"tests/test_a.py ........................................................ [ 14%]\n" +
@@ -212,7 +204,6 @@ func TestPytestBailsWithoutResult(t *testing.T) {
 }
 
 func TestPytestQuietQQ(t *testing.T) {
-	// -qq: no result line; the short test summary still identifies a report.
 	in := "..F.                                                                     [100%]\n" +
 		"=================================== FAILURES ===================================\n" +
 		"___________________________________ test_c ___________________________________\n\n" +
@@ -230,7 +221,6 @@ func TestPytestQuietQQ(t *testing.T) {
 	}
 }
 
-// Synthetic, modeled on pytest 8 long-format output.
 const pytestShapes = `============================= test session starts ==============================
 platform linux -- Python 3.12.1, pytest-8.3.4, pluggy-1.5.0
 rootdir: /home/user/src/demo
@@ -322,7 +312,7 @@ func TestPytestShapes(t *testing.T) {
 		"collected 7 items",
 		"E       fixture 'missing_fixture' not found",
 		">       available fixtures: cache, capfd, capsys, monkeypatch, tmp_path",
-		"file tests/test_x.py, line 12", // relativized: lx runs in the agent's cwd
+		"file tests/test_x.py, line 12",
 		"\ntests/test_x.py:12\n",
 		">       assert x == 3",
 		"E       assert 2 == 3",
@@ -345,14 +335,11 @@ func TestPytestShapes(t *testing.T) {
 		}
 	}
 	if got := fixture.ErrorLinesMissing(pytestShapes, out); len(got) != 1 || got[0] != "# an unrelated comment mentioning an error" {
-		// Only source code more than 3 lines above ">" may go.
 		t.Errorf("unexpected missing error lines %q", got)
 	}
 }
 
 func TestPytestLibraryFramesFolded(t *testing.T) {
-	// Synthetic long-format traceback through two library frames that
-	// carry error-looking source and locals.
 	in := `collected 1 item
 
 tests/test_api.py F                                                      [100%]
@@ -423,7 +410,7 @@ func TestPytestHuge(t *testing.T) {
 	in := b.String()
 	start := time.Now()
 	out, ok := apply(t, "pytest", ctx(1, "pytest", "-v"), in)
-	// ~70 ms on an idle machine; the bound leaves room for a loaded CI box.
+
 	if el := time.Since(start); el > 1500*time.Millisecond*raceSlowdown {
 		t.Errorf("took %v", el)
 	}
@@ -434,8 +421,6 @@ func TestPytestHuge(t *testing.T) {
 		t.Errorf("output %d tokens", n)
 	}
 }
-
-// ---- pip ----
 
 func TestPipInstallShapes(t *testing.T) {
 	in := `Looking in indexes: https://pypi.org/simple, https://pkgs.example.com/simple
@@ -565,8 +550,6 @@ func TestPipList(t *testing.T) {
 	}
 }
 
-// ---- mypy ----
-
 func TestMypyNotes(t *testing.T) {
 	in := `src/a.py:3: error: Library stubs not installed for "requests"  [import-untyped]
 src/a.py:3: note: Hint: "python3 -m pip install types-requests"
@@ -622,9 +605,6 @@ func TestMypyHuge(t *testing.T) {
 	}
 }
 
-// ---- ruff ----
-
-// Synthetic, in the pre-0.12 full format (ruff 0.5–0.11).
 const ruffOldFull = `src/app.py:1:8: F401 [*] ` + "`os`" + ` imported but unused
   |
 1 | import os
@@ -707,10 +687,7 @@ func TestRuffHuge(t *testing.T) {
 	}
 }
 
-// ---- python scripts ----
-
 func TestScriptTraceback311(t *testing.T) {
-	// Synthetic, Python 3.11+ shape with caret lines and a recursion repeat.
 	in := `starting
 Traceback (most recent call last):
   File "/home/user/src/demo/app.py", line 40, in <module>
@@ -792,7 +769,6 @@ func TestShellUnwrap(t *testing.T) {
 }
 
 func TestPytestXdist(t *testing.T) {
-	// Synthetic, pytest-xdist 3 shape (-n 4, then -v).
 	in := `============================= test session starts ==============================
 platform linux -- Python 3.12.1, pytest-8.3.4, pluggy-1.5.0
 rootdir: /home/user/src/demo
@@ -847,7 +823,7 @@ func TestPytestWarningsSummary(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("collected 40 items\n\ntests/test_w.py ........................................ [100%]\n\n")
 	b.WriteString("=============================== warnings summary ===============================\n")
-	// A warning whose message embeds a traceback (unraisable exception).
+
 	b.WriteString("tests/test_w.py::test_del\n  /home/user/venv/lib/python3.12/site-packages/_pytest/unraisableexception.py:85: PytestUnraisableExceptionWarning: Exception ignored in: <function Conn.__del__ at 0x7f00>\n  \n  Traceback (most recent call last):\n    File \"/home/user/src/demo/conn.py\", line 10, in __del__\n      self.sock.close()\n  AttributeError: 'Conn' object has no attribute 'sock'\n  \n    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))\n\n")
 	for i := 0; i < 30; i++ {
 		fmt.Fprintf(&b, "tests/test_w.py::test_%d\n  /home/user/src/demo/tests/test_w.py:%d: UserWarning: distinct warning %d\n    warn()\n\n", i, i+1, i)

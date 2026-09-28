@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-// Theme tokens: light values, overridden for dark by the media query, so
-// one SVG reads correctly on GitHub in either theme.
 const style = `<style>
 svg{--surface:#fcfcfb;--ink1:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a}
 @media (prefers-color-scheme:dark){svg{--surface:#1a1a19;--ink1:#ffffff;--ink2:#c3c2b7;--muted:#898781;--grid:#2c2c2a;--axis:#383835;--s1:#3987e5;--s2:#d95926;--s3:#199e70}}
@@ -48,8 +46,6 @@ func (c *canvas) line(x1, y1, x2, y2 float64, class string) {
 	fmt.Fprintf(&c.b, `<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" class="%s"/>`, x1, y1, x2, y2, class)
 }
 
-// hbar draws a horizontal bar from the baseline x0 with a 4px rounded data
-// end and a square end at the baseline.
 func (c *canvas) hbar(x0, y, w, h float64, class, tip string) {
 	if w <= 0 {
 		return
@@ -63,7 +59,6 @@ func (c *canvas) dot(x, y float64, class, tip string) {
 	fmt.Fprintf(&c.b, `<circle cx="%.1f" cy="%.1f" r="5" class="%s ring"><title>%s</title></circle>`, x, y, class, esc(tip))
 }
 
-// legend draws swatch+label pairs left to right starting at x.
 func (c *canvas) legend(x, y float64, items [][2]string) {
 	for _, it := range items {
 		fmt.Fprintf(&c.b, `<rect x="%.1f" y="%.1f" width="12" height="12" rx="3" class="%s"/>`, x, y-10, it[0])
@@ -76,7 +71,6 @@ func (c *canvas) String() string { return c.b.String() + "</svg>\n" }
 
 func esc(s string) string { return html.EscapeString(s) }
 
-// textWidth approximates rendered width of 12px system-ui text.
 func textWidth(s string) float64 {
 	w := 0.0
 	for _, r := range s {
@@ -92,7 +86,6 @@ func textWidth(s string) float64 {
 	return w
 }
 
-// niceTicks returns round tick values covering [0, max].
 func niceTicks(maxV float64, n int) []float64 {
 	if maxV <= 0 {
 		return []float64{0}

@@ -6,7 +6,6 @@ import (
 	"testing"
 )
 
-// The regular expressions the scanners in scan.go replace.
 var (
 	refTSCPlainRe  = regexp.MustCompile(`^(.+?)\((\d+),(\d+)\): (error|warning|message) (TS\d+): (.*)$`)
 	refTSCPrettyRe = regexp.MustCompile(`^(.+?):(\d+):(\d+) - (error|warning|message) (TS\d+): (.*)$`)
@@ -15,8 +14,6 @@ var (
 	refESRuleRe    = regexp.MustCompile(`^(.*?)\s{2,}(\S+)$`)
 )
 
-// checkScanners fails when a scanner disagrees with its regular expression
-// on ln.
 func checkScanners(t *testing.T, ln string) {
 	t.Helper()
 	cmp := func(name string, re *regexp.Regexp, got []string, ok bool) {
@@ -45,8 +42,6 @@ func checkScanners(t *testing.T, ln string) {
 	cmp("scanESRule", refESRuleRe, []string{text, rule}, ok)
 }
 
-// TestScannersMatchRegexps: on every line of every capture and on crafted
-// edge cases the scanners agree with the regular expressions.
 func TestScannersMatchRegexps(t *testing.T) {
 	edge := []string{
 		"", " ", "a(1,2): error TS1: x", "(1,2): error TS1: x", "a(1,2): error TS: x", "a(1,): error TS1: x",

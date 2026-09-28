@@ -7,21 +7,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// Effective returns the context of the command whose output a filter sees.
-//
-// lx normally receives the command itself (the hook rewrites `find .` to
-// `lx find .`), but a command can also arrive as a shell running one command
-// string: `bash -c "find . -name '*.js'"`. Effective then describes the inner
-// command, with its words unquoted the way the shell would pass them.
-//
-// Only strings whose output is exactly the inner command's output (in the
-// same shape) are unwrapped: one simple command, optionally preceded by
-// VAR=value assignments, optionally piped into stages that only select or
-// reorder whole stdin lines (head/tail -n, plain cat, sort without -o/-z),
-// and optionally with 2>&1 or 2>/dev/null, run by a shell without -x/-v.
-// Anything else (; && || & newlines, other redirections, $ expansions,
-// backquotes, subshells, comments) returns c itself. Glob characters stay literal because the shell that would expand
-// them is not modeled; filters treat such operands as "unknown".
 func Effective(c *engine.Context) *engine.Context {
 	if c == nil || len(c.Argv) < 3 {
 		return c
@@ -36,9 +21,7 @@ func Effective(c *engine.Context) *engine.Context {
 		return c
 	}
 	for _, ch := range flag[1:] {
-		// -x and -v make the shell itself print (the traced command, the
-		// script text) into the captured output; -o pipefail and friends
-		// are not modeled.
+
 		if !strings.ContainsRune("celu", ch) {
 			return c
 		}
@@ -65,11 +48,6 @@ func Effective(c *engine.Context) *engine.Context {
 	return &engine.Context{Argv: first, Exit: c.Exit, Cwd: c.Cwd, Home: c.Home}
 }
 
-// sliceConsumer reports whether a later pipeline stage only selects or
-// reorders whole lines of its standard input, so the output keeps the first
-// stage's line shape. Anything that reads a file operand instead of the
-// pipe (head -5 notes.txt), cuts bytes (head -c) or rewrites lines
-// (cat -n, sort -o) does not qualify.
 func sliceConsumer(st []string) bool {
 	if len(st) == 0 {
 		return false
@@ -79,7 +57,7 @@ func sliceConsumer(st []string) bool {
 	case "cat":
 		for _, a := range args {
 			if a != "-" && a != "-u" {
-				return false // -n, -A, -v … rewrite lines; operands add files
+				return false
 			}
 		}
 		return true
@@ -101,7 +79,7 @@ func sliceConsumer(st []string) bool {
 				strings.HasPrefix(a, "+") && isCount(a[1:]),
 				a == "-q", a == "--quiet", a == "--silent":
 			default:
-				return false // -c/--bytes, -f/--follow, file operands
+				return false
 			}
 		}
 		return true
@@ -121,16 +99,16 @@ func sliceConsumer(st []string) bool {
 					ch := a[j]
 					if ch == 'k' || ch == 't' {
 						if j == len(a)-1 {
-							i++ // the value is the next word
+							i++
 						}
 						break
 					}
 					if !strings.ContainsRune("bdfghinMrRsuV", rune(ch)) {
-						return false // -o FILE, -z, -m, -c …
+						return false
 					}
 				}
 			default:
-				return false // file operands, --output, --files0-from …
+				return false
 			}
 		}
 		return true
@@ -138,7 +116,6 @@ func sliceConsumer(st []string) bool {
 	return false
 }
 
-// isCount reports a head/tail line count: "20", "+2", "-5" (GNU head).
 func isCount(s string) bool {
 	s = strings.TrimLeft(s, "+-")
 	return isDigits(s)
@@ -159,8 +136,6 @@ func isAssignment(w string) bool {
 	return true
 }
 
-// splitShell splits a POSIX shell command string into pipeline stages of
-// unquoted words. It returns ok=false for anything beyond a plain pipeline.
 func splitShell(s string) ([][]string, bool) {
 	var (
 		stages [][]string
@@ -226,9 +201,7 @@ func splitShell(s string) ([][]string, bool) {
 			stages = append(stages, words)
 			words = nil
 		case ch == '>':
-			// Only 2>&1 (merges stderr, which lx captures anyway) and
-			// 2>/dev/null (drops diagnostics the user chose not to see) are
-			// allowed: neither changes the shape of the listing.
+
 			if !inWord || cur.String() != "2" {
 				return nil, false
 			}
@@ -258,11 +231,6 @@ func splitShell(s string) ([][]string, bool) {
 	return append(stages, words), true
 }
 
-// NoteHasPrefix reports whether ln is a diagnostic of the command e: it
-// starts with "<program>: " for the program name as invoked (GNU tools
-// print their full argv[0], so `/usr/bin/find x` reports
-// "/usr/bin/find: ‘x’: No such file or directory"), its base name, or one
-// of the given canonical names.
 func NoteHasPrefix(e *engine.Context, ln string, names ...string) bool {
 	i := strings.Index(ln, ": ")
 	if i <= 0 {
@@ -280,11 +248,6 @@ func NoteHasPrefix(e *engine.Context, ln string, names ...string) bool {
 	return false
 }
 
-// Unexplained reports a failing run (exit ≠ 0) whose output holds none of
-// the tool's diagnostics: the listing was cut short (killed by a timeout
-// or signal, 124/130/137/143) or failed in a way the filter does not
-// recognize. Filters bail then, because their counts ("[3,673 paths]")
-// would present a partial listing as complete.
 func Unexplained(e *engine.Context, notes int) bool {
 	return e.Exit != 0 && notes == 0
 }

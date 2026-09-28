@@ -5,10 +5,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/iheeb1/lx/internal/engine"
 	"github.com/iheeb1/lx/internal/hook"
 )
-
-// ---- rtk ------------------------------------------------------------------
 
 func (s *state) checkRtk() {
 	if len(s.rtk) == 0 {
@@ -29,8 +28,6 @@ func (s *state) checkRtk() {
 	}
 }
 
-// ---- perms ----------------------------------------------------------------
-
 func (s *state) checkPerms() {
 	found := false
 	for _, f := range s.files {
@@ -50,17 +47,10 @@ func (s *state) checkPerms() {
 	}
 }
 
-// checkLxGuards reports deny and ask rules aimed at lx itself: they match
-// the hook's rewrite of the probe but not the probe, so Claude Code refuses
-// (or prompts for) the commands the hook rewrites, while the same command
-// typed without lx would run. The bare form is always checked: receipts
-// tell the agent to type `lx show <id>`.
 func (s *state) checkLxGuards() (found bool) {
 	type form struct{ cmd, what, effect string }
 	forms := []form{{"lx " + probeCmd, "the hook's rewrite of `" + probeCmd + "`", "the commands lx rewrites"}}
 	if b := s.rewriteBin; b != "" && b != "lx" {
-		// Rewrites call lx by its full path; the bare form is what the
-		// agent types itself (lx show <id>).
 		forms = []form{
 			{shellQuote(b) + " " + probeCmd, "the hook's rewrite of `" + probeCmd + "`", "the commands lx rewrites"},
 			{"lx " + probeCmd, "the form the agent types itself", "the `lx …` commands the agent types (such as lx show <id>)"},
@@ -78,7 +68,7 @@ func (s *state) checkLxGuards() (found bool) {
 					one = hook.Rules{Ask: []string{rule}}
 				}
 				if one.Decide(probeCmd) != "" {
-					continue // it is about the command, not about lx
+					continue
 				}
 				for _, fm := range forms {
 					if one.Decide(fm.cmd) != verdict {
@@ -101,12 +91,6 @@ func (s *state) checkLxGuards() (found bool) {
 	return found
 }
 
-// broadLxRule reports whether an allow rule approves lx with any command:
-// Bash(lx:*), Bash(lx *), Bash(lx*), the same with a path to lx or with lx
-// flags before the wildcard (Bash(lx -r:*)), a wildcard where the command
-// goes (Bash(lx * status)), or a command runner followed by anything
-// (Bash(lx bash:*), Bash(lx env:*), Bash(lx timeout 5 *)). An exact rule
-// such as Bash(lx) only matches `lx` itself and is fine.
 func broadLxRule(rule string) bool {
 	r := strings.Join(strings.Fields(rule), " ")
 	if !strings.HasPrefix(r, "Bash(") || !strings.HasSuffix(r, ")") {
@@ -117,11 +101,10 @@ func broadLxRule(rule string) bool {
 	p = strings.TrimSpace(strings.TrimSuffix(p, ":*"))
 	words := ruleWords(p)
 	if len(words) == 0 {
-		return false // Bash(*) or Bash(:*) approves everything, lx or not
+		return false
 	}
 	w0 := words[0]
 	if strings.HasSuffix(w0, "*") {
-		// Bash(lx*) is lx followed by anything.
 		return filepath.Base(strings.TrimRight(w0, "*")) == "lx"
 	}
 	if filepath.Base(w0) != "lx" {
@@ -133,23 +116,17 @@ func broadLxRule(rule string) bool {
 		case strings.Contains(w, "*"):
 			return true
 		case w == "-b" || w == "--budget":
-			i++ // its value
+			i++
 		case strings.HasPrefix(w, "-"):
-			// An lx flag: lx takes every -word before the command as its
-			// own (and refuses one it does not know), so none of them
-			// narrows what runs.
 		case isRunner(filepath.Base(w)):
 			return anyAfterRunner(words[i+1:], colonStar)
 		default:
-			return false // a fixed command word: the rule is specific
+			return false
 		}
 	}
 	return colonStar
 }
 
-// isRunner: these run the command that follows them, so approving
-// `lx bash` with anything after it approves every command. (A switch, not
-// a map: package init stays free, and lx starts on every agent command.)
 func isRunner(name string) bool {
 	switch name {
 	case "sh", "bash", "zsh", "dash", "ksh", "fish", "env", "sudo", "doas", "xargs", "nice",
@@ -159,9 +136,6 @@ func isRunner(name string) bool {
 	return false
 }
 
-// anyAfterRunner: the words after a runner leave the command open when
-// they are only options, assignments or numbers (timeout 5, nice -n 10,
-// env A=1) before the wildcard.
 func anyAfterRunner(rest []string, colonStar bool) bool {
 	for _, w := range rest {
 		switch {
@@ -175,7 +149,6 @@ func anyAfterRunner(rest []string, colonStar bool) bool {
 	return colonStar
 }
 
-// numberish: 5, 2.5, 10s, 1m (a count or a duration).
 func numberish(w string) bool {
 	w = strings.TrimRight(w, "smhd")
 	if w == "" || w[0] < '0' || w[0] > '9' {
@@ -189,8 +162,6 @@ func numberish(w string) bool {
 	return true
 }
 
-// ruleWords splits a rule pattern on blanks outside quotes and drops the
-// quotes, keeping every other character (including *).
 func ruleWords(p string) []string {
 	var words []string
 	var cur strings.Builder
@@ -221,8 +192,6 @@ func ruleWords(p string) []string {
 	return words
 }
 
-// ---- env ------------------------------------------------------------------
-
 type envRule struct {
 	name   string
 	bad    func(string) bool
@@ -234,10 +203,16 @@ var envRules = []envRule{
 	{"LX_RAW", is1, "makes lx run every command raw, with nothing condensed"},
 	{"LX_OFF", is1, "makes lx run every command raw, with nothing condensed"},
 	{"LX_TEE", is0, "stops lx storing full outputs, so a condensed view cannot be recovered with lx show"},
+	{"LX_MODE", badMode, "is not a mode lx knows (" + engine.ModeList + "): lx stops with exit 2 without running the command, and the hook leaves commands alone"},
 }
 
 func is1(v string) bool { return v == "1" }
 func is0(v string) bool { return v == "0" }
+
+func badMode(v string) bool {
+	_, ok := engine.ParseMode(v)
+	return v != "" && !ok
+}
 
 func (s *state) checkEnv() {
 	found := false
@@ -261,8 +236,6 @@ func (s *state) checkEnv() {
 	}
 }
 
-// ---- settings -------------------------------------------------------------
-
 func (s *state) checkSettings() {
 	const id = "settings"
 	var good []string
@@ -282,7 +255,7 @@ func (s *state) checkSettings() {
 			}
 			status := Fail
 			if f.Scope == "managed" {
-				status = Warn // not the user's file; Claude Code cannot read it either
+				status = Warn
 			}
 			s.add(id, status, "cannot read "+p+": "+errText(f.ReadErr), "")
 			continue

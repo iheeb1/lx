@@ -1,6 +1,4 @@
 name: release
-# Push a tag like v0.2.0 to publish. Archive names carry no version, so
-# https://github.com/iheeb1/lx/releases/latest/download/<name> always works.
 on:
   push:
     tags: ['v*']
@@ -17,18 +15,18 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     permissions:
-      contents: write # create the release and upload its assets
-      id-token: write # sign the build provenance attestation
-      attestations: write # store it, for `gh attestation verify`
+      contents: write
+      id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          persist-credentials: false # nothing here pushes; gh uses GH_TOKEN
+          persist-credentials: false
       - uses: actions/setup-go@v7
         with:
           go-version: '1.26'
-          cache: false # no dependencies, so no go.sum to key a cache on
+          cache: false
       - name: check the tag is a version
         run: printf '%s\n' "$GITHUB_REF_NAME" | grep -qxE 'v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?'
       - name: build archives and SHA256SUMS
@@ -46,8 +44,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # v0.2.0-rc1 and the like are prereleases, so releases/latest (and
-          # therefore install.sh) keeps pointing at the last stable version.
           pre=
           case $GITHUB_REF_NAME in *-*) pre=--prerelease ;; esac
           gh release create "$GITHUB_REF_NAME" dist/*.tar.gz dist/*.zip dist/install.sh dist/SHA256SUMS \

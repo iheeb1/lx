@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-bench=.",
+    "-benchtime=2000x",
+    "-run=^$",
+    "."
+  ],
+  "shell": "go test -bench=. -benchtime=2000x -run=^$ .",
+  "exit_code": 0,
+  "description": "REAL (negative): go test -bench=. -run=^$ in a small module: goos/goarch/pkg/cpu header, benchmark result lines, PASS, ok line; a measurement, not a test report (the go-test filter declines -bench)",
+  "cwd": "/home/user/src/godemo",
+  "repo": "",
+  "tool": ""
+}

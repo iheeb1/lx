@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "pytest",
+    "-q",
+    "tests/test_types.py"
+  ],
+  "shell": "pytest -q tests/test_types.py",
+  "exit_code": 1,
+  "description": "REAL (negative for the detector): pytest -q tests/test_types.py in pallets/click with the corpus regressions: no session header, so the detector (which needs one) leaves it to the generic engine",
+  "cwd": "/home/user/src/click",
+  "repo": "pallets/click",
+  "tool": ""
+}

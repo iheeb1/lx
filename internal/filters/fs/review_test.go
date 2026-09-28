@@ -10,12 +10,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// Regression: GNU tools prefix diagnostics with argv[0] as invoked, so
-// `/usr/bin/find . nosuch` prints "/usr/bin/find: ‘nosuch’: No such file
-// or directory". The filters only knew "find: ", so find drew the message
-// into the tree as "/usr/bin/" + a file named "find: ‘nosuch’: …", and
-// ls -R split it across the "secret" directory. These are Content filters
-// (no guard), so the error was effectively hidden.
 func TestAbsoluteArgv0Diagnostics(t *testing.T) {
 	cases := []struct {
 		f    engine.Filter
@@ -35,7 +29,7 @@ func TestAbsoluteArgv0Diagnostics(t *testing.T) {
 		{du{}, []string{"/usr/bin/du", "-sh", "a", "b", "c"},
 			"4.0K\ta\n/usr/bin/du: cannot read directory 'b': Permission denied\n8.0K\tc",
 			"/usr/bin/du: cannot read directory 'b': Permission denied"},
-		// The same through bash -c, as the corpus records commands.
+
 		{find{}, []string{"bash", "-c", "/usr/bin/find . nosuch -name '*.go'"},
 			"./a.go\n/usr/bin/find: ‘nosuch’: No such file or directory",
 			"/usr/bin/find: ‘nosuch’: No such file or directory"},
@@ -57,8 +51,6 @@ func TestAbsoluteArgv0Diagnostics(t *testing.T) {
 	}
 }
 
-// Regression: bash -c pipelines were unwrapped for any head/tail/cat/sort
-// stage, including ones that rewrite lines or read another file.
 func TestEffectiveConsumers(t *testing.T) {
 	unwrapped := []string{
 		"find . | head -n 5", "find . | head -5", "find . | head -n5", "find . | head --lines=5",
@@ -67,20 +59,20 @@ func TestEffectiveConsumers(t *testing.T) {
 		"find . 2>/dev/null", "find . 2>/dev/null | sort", "find . 2>&1 | head -3",
 	}
 	kept := []string{
-		"find . | cat -n",            // numbers every line
-		"find . | cat -A",            // shows $ and ^I
-		"find . | cat - notes.txt",   // appends a file
-		"find . | head -2 other.txt", // reads another file
-		"find . | head -c 100",       // cuts mid-line
-		"find . | tail -f",           // follows
-		"find . | sort -o out.txt",   // writes elsewhere
-		"find . | sort -z",           // NUL-separated
-		"find . | sort a.txt",        // sorts a file
-		"find . > out.txt",           // redirection
-		"find . 2>/dev/nullx",        // not /dev/null
-		"find . 2>errors.log",        // stderr to a file is fine, but not modeled
-		"find . | wc -l",             // counts
-		"find . | xargs ls",          // another command
+		"find . | cat -n",
+		"find . | cat -A",
+		"find . | cat - notes.txt",
+		"find . | head -2 other.txt",
+		"find . | head -c 100",
+		"find . | tail -f",
+		"find . | sort -o out.txt",
+		"find . | sort -z",
+		"find . | sort a.txt",
+		"find . > out.txt",
+		"find . 2>/dev/nullx",
+		"find . 2>errors.log",
+		"find . | wc -l",
+		"find . | xargs ls",
 	}
 	for _, s := range unwrapped {
 		c := ctx("bash", "-c", s)
@@ -94,24 +86,19 @@ func TestEffectiveConsumers(t *testing.T) {
 			t.Errorf("%q must not unwrap (got %q)", s, e.Argv)
 		}
 	}
-	// -x / -v make the shell print into the captured output.
+
 	for _, fl := range []string{"-xc", "-vc", "-cx"} {
 		c := ctx("bash", fl, "find .")
 		if e := Effective(c); e != c {
 			t.Errorf("bash %s must not unwrap", fl)
 		}
 	}
-	// A `| cat -n` listing is not claimed by find (it would draw
-	// "     1\t./" as a directory).
+
 	if (find{}).Match(ctx("bash", "-c", "find . -type f | cat -n")) {
 		t.Error("find claimed cat -n output")
 	}
 }
 
-// Regression: find without -type f lists directories too, and those that
-// find did not descend into (-maxdepth, -name matches) are leaves printed
-// like files. Counts said "[3 files]" for node_modules/ holding three
-// package directories.
 func TestFindEntriesNoun(t *testing.T) {
 	var b strings.Builder
 	b.WriteString(".\n./src\n./src/a.go\n./node_modules\n")
@@ -122,12 +109,12 @@ func TestFindEntriesNoun(t *testing.T) {
 	if !ok || !strings.Contains(out, "node_modules/ [30 entries]") || !strings.Contains(out, "names without / may be directories") {
 		t.Fatalf("got\n%s", out)
 	}
-	// -type f: every leaf is a file.
+
 	out, ok = find{}.Apply(ctx("find", ".", "-type", "f"), "./src/a.go\n./node_modules/x/index.js\n./node_modules/y/index.js")
 	if !ok || !strings.Contains(out, "node_modules/ [2 files]") || strings.Contains(out, "may be directories") {
 		t.Fatalf("-type f: got\n%s", out)
 	}
-	// fd -t f likewise; fd without -t is ambiguous.
+
 	out, _ = find{}.Apply(ctx("fd", "-t", "f", "x"), "src/a.go\nnode_modules/x/index.js")
 	if !strings.Contains(out, "node_modules/ [1 file]") {
 		t.Fatalf("fd -t f: got\n%s", out)
@@ -138,34 +125,30 @@ func TestFindEntriesNoun(t *testing.T) {
 	}
 }
 
-// Regression: tree marks no directory, so leaf directories (empty, past
-// -L, unfollowed links) were drawn as files with "[N files]" counts.
 func TestTreeUnmarkedLeafDirs(t *testing.T) {
 	in := ".\n├── cmd\n│   └── lx\n├── internal\n│   ├── cli\n│   └── engine\n└── go.mod\n\n5 directories, 1 file"
 	out, ok := treeCmd{}.Apply(ctx("tree", "-L", "2"), in)
 	if !ok || !strings.HasPrefix(out, "[tree: 3 of the names without / are directories (tree -F marks them)]\n") {
 		t.Fatalf("got\n%s", out)
 	}
-	// -F marks them: nothing to warn about.
+
 	inF := ".\n├── cmd/\n│   └── lx/\n└── go.mod\n\n2 directories, 1 file"
 	out, ok = treeCmd{}.Apply(ctx("tree", "-F", "-L", "2"), inF)
 	if !ok || strings.Contains(out, "[tree:") || !strings.Contains(out, "cmd/lx/") {
 		t.Fatalf("-F: got\n%s", out)
 	}
-	// --noreport: no count to compare with.
+
 	out, ok = treeCmd{}.Apply(ctx("tree", "--noreport"), ".\n├── a\n│   └── b\n└── c")
 	if !ok || !strings.Contains(out, "names without / may be directories") {
 		t.Fatalf("--noreport: got\n%s", out)
 	}
-	// Counts agree: no note.
+
 	out, ok = treeCmd{}.Apply(ctx("tree"), ".\n├── a\n│   └── b.go\n└── c.go\n\n1 directory, 2 files")
 	if !ok || strings.Contains(out, "[tree:") {
 		t.Fatalf("exact: got\n%s", out)
 	}
 }
 
-// Regression: GNU ls -R prints the listed directory's own header first
-// (".:" or "src:"); it was counted as a subdirectory.
 func TestLsRecursiveCountsGNU(t *testing.T) {
 	in := ".:\na.go\nsub\n\n./sub:\nb.go\ndeep\n\n./sub/deep:\nc.go"
 	out, ok := ls{}.Apply(ctx("ls", "-R"), in)
@@ -177,7 +160,7 @@ func TestLsRecursiveCountsGNU(t *testing.T) {
 	if !ok || !strings.HasPrefix(out, "[ls -R: 2 files in 1 subdirectory]") {
 		t.Fatalf("got\n%s", out)
 	}
-	// BSD: no header for the listed directory.
+
 	in = "a.go\nsub\n\n./sub:\nb.go"
 	out, ok = ls{}.Apply(ctx("ls", "-R"), in)
 	if !ok || !strings.HasPrefix(out, "[ls -R: 2 files in 1 subdirectory]") {
@@ -185,8 +168,6 @@ func TestLsRecursiveCountsGNU(t *testing.T) {
 	}
 }
 
-// Regression: the names-only view counted left-out names by splitting
-// lines on two spaces, which miscounts quoted names holding "  ".
 func TestCapNamesExact(t *testing.T) {
 	var names []string
 	for i := range 3000 {
@@ -202,7 +183,6 @@ func TestCapNamesExact(t *testing.T) {
 	}
 }
 
-// Every fs filter stays well under 200ms on 50k-line inputs.
 func TestHugeFast(t *testing.T) {
 	var ls1, lsR, du1, tr, fd strings.Builder
 	ls1.WriteString("total 99999\n")
@@ -244,9 +224,6 @@ func TestHugeFast(t *testing.T) {
 	}
 }
 
-// Regression: a listing killed by a timeout or signal printed "[N paths]"
-// / "[ls -R: N files …]" as if complete. A failing run must come with the
-// tool's diagnostic, else the filters bail to the generic reducer.
 func TestCutShortListingBails(t *testing.T) {
 	var fnd, lsr, dus strings.Builder
 	for i := range 300 {
@@ -274,7 +251,7 @@ func TestCutShortListingBails(t *testing.T) {
 			}
 		}
 	}
-	// With the diagnostic it is a normal failing listing.
+
 	c := ctx("find", ".")
 	c.Exit = 1
 	if _, ok := (find{}).Apply(c, "find: ./x: Permission denied\n"+fnd.String()); !ok {

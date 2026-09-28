@@ -10,8 +10,6 @@ import (
 	"testing"
 )
 
-// TestCalibration compares against tiktoken counts when LX_TOKSTATS points at
-// a JSON file of [path, bytes, cl100k, o200k] rows (see bench/tokcalib.py).
 func TestCalibration(t *testing.T) {
 	stats, corpus := os.Getenv("LX_TOKSTATS"), os.Getenv("LX_CORPUS")
 	if stats == "" || corpus == "" {

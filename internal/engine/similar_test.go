@@ -37,7 +37,7 @@ func TestCollapseSimilar(t *testing.T) {
 	if strings.Join(out, "\n") != strings.Join(want, "\n") {
 		t.Fatalf("got %q", out)
 	}
-	// Short runs are left alone.
+
 	if got := CollapseSimilar(in[:3]); len(got) != 3 {
 		t.Errorf("run of 3 folded: %q", got)
 	}
@@ -78,9 +78,6 @@ func TestCollapseSimilarEdgeCases(t *testing.T) {
 	}
 }
 
-// TestClassifyPrefilter proves the Classify fast path never changes a
-// result: every corpus line and a set of adversarial lines classify the
-// same with and without it.
 func TestClassifyPrefilter(t *testing.T) {
 	lines := []string{
 		"E   no problems x", "e  x", "expect(a).toThrowE  x", "TS2322: nope", "ts1234",
@@ -97,7 +94,7 @@ func TestClassifyPrefilter(t *testing.T) {
 	}
 	for _, ln := range lines {
 		if len(ln) > 20000 {
-			continue // the reference classifier is slow on megabyte lines
+			continue
 		}
 		if got, want := Classify(ln), classifySlow(ln); got != want {
 			t.Errorf("Classify(%q) = %v, reference %v", ln, got, want)

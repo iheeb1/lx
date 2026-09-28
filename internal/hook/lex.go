@@ -2,36 +2,28 @@ package hook
 
 import "strings"
 
-// This file is a deliberately small POSIX-ish shell lexer. It is not a shell:
-// it only has to answer "where are the simple commands in this string, what
-// are their words, and is there anything here we cannot reason about?".
-// Anything it cannot reason about (substitutions, heredocs, subshells,
-// compound commands, multi-line scripts) is reported in unsafe, and callers
-// refuse to rewrite. Every token keeps its byte offsets so a rewrite can
-// splice "lx " into the original string without re-quoting anything.
-
 type tokKind uint8
 
 const (
-	tWord  tokKind = iota
-	tOp            // && || ; | |& & ;; ;& newline ( )
-	tRedir         // redirection operator, including a leading fd number
+	tWord tokKind = iota
+	tOp
+	tRedir
 )
 
 type token struct {
 	kind   tokKind
-	start  int    // byte offset of the first byte
-	end    int    // byte offset one past the last byte
-	text   string // raw source bytes
-	val    string // words: value after quote removal (best effort)
-	quoted bool   // words: contained quotes or backslash escapes
-	expand bool   // words: contains a $ expansion (unquoted or in "…")
+	start  int
+	end    int
+	text   string
+	val    string
+	quoted bool
+	expand bool
 }
 
 type lexed struct {
 	toks   []token
-	unsafe []string // constructs that make the string non-rewritable
-	broken bool     // unterminated quote: tokens are unreliable
+	unsafe []string
+	broken bool
 }
 
 type lexer struct {
@@ -64,7 +56,7 @@ func lex(s string) lexed {
 			l.emit(tOp, i, i+1)
 			i++
 		case c == '#':
-			// A comment runs to the end of the line; bash never executes it.
+
 			for i < n && s[i] != '\n' {
 				i++
 			}
@@ -118,8 +110,6 @@ func lex(s string) lexed {
 	return l.out
 }
 
-// redir lexes a redirection operator at s[i] ('<' or '>'); start is where a
-// leading fd number began (start == i when there is none).
 func (l *lexer) redir(start, i int) int {
 	rest := l.s[i:]
 	size := 1
@@ -167,7 +157,7 @@ func (l *lexer) word(i int) int {
 				continue
 			}
 			quoted = true
-			if s[i+1] == '\n' { // line continuation: both bytes vanish
+			if s[i+1] == '\n' {
 				i += 2
 				continue
 			}
@@ -199,7 +189,7 @@ func (l *lexer) word(i int) int {
 				switch s[i+1] {
 				case '(':
 					l.flag("command substitution")
-				case '\'': // ANSI-C quoting: $'…' with backslash escapes
+				case '\'':
 					quoted = true
 					j := i + 2
 					for j < n && s[j] != '\'' {
@@ -218,7 +208,7 @@ func (l *lexer) word(i int) int {
 					b.WriteString(s[i+2 : j])
 					i = j + 1
 					continue
-				case '"': // $"…" locale string: same as "…"
+				case '"':
 					i++
 					continue
 				case '{':
@@ -240,7 +230,7 @@ func (l *lexer) word(i int) int {
 			i++
 		}
 	}
-	// "2>file", "10<&0": an all-digit unquoted word glued to < or > is an fd.
+
 	if i < n && (s[i] == '<' || s[i] == '>') && !quoted && i > start && isDigits(s[start:i]) {
 		return l.redir(start, i)
 	}
@@ -251,8 +241,6 @@ func (l *lexer) word(i int) int {
 	return i
 }
 
-// double consumes a "…" string starting just after the opening quote and
-// returns the index after the closing quote.
 func (l *lexer) double(i int, b *strings.Builder) (int, bool) {
 	s, n := l.s, len(l.s)
 	expand := false
@@ -296,8 +284,6 @@ func (l *lexer) double(i int, b *strings.Builder) (int, bool) {
 	return n, expand
 }
 
-// braceEnd returns the index just past the '}' matching the '{' at s[i] of a
-// ${…} expansion, and whether the expansion hides a command substitution.
 func braceEnd(s string, i int) (int, bool) {
 	depth := 0
 	bad := false
@@ -335,11 +321,8 @@ func isDigits(s string) bool {
 	return true
 }
 
-// ---- structure ----
-
 type redirect struct{ op, target token }
 
-// simple is one simple command: words and redirections between operators.
 type simple struct {
 	words  []token
 	redirs []redirect
@@ -358,9 +341,6 @@ func (c *simple) span(t token) {
 
 type pipeline struct{ cmds []*simple }
 
-// andOr is a list of pipelines joined by && / ||, ended by ; & or newline.
-// A trailing & backgrounds the whole list. ops[k] ("&&" or "||") joins
-// pipes[k] and pipes[k+1].
 type andOr struct {
 	pipes []pipeline
 	ops   []string
@@ -377,7 +357,7 @@ func parse(toks []token) script {
 	cur := &simple{}
 	var pipe pipeline
 	var list andOr
-	needCmd := false // after | && || a command is mandatory
+	needCmd := false
 
 	closeList := func(bg bool) {
 		pipe.cmds = append(pipe.cmds, cur)
@@ -424,12 +404,12 @@ func parse(toks []token) script {
 				list.ops = append(list.ops, t.text)
 				cur, pipe = &simple{}, pipeline{}
 				needCmd = true
-			default: // ; & newline ;; ;& ( )
+			default:
 				if cur.empty() {
 					if needCmd && t.text != "\n" {
 						sc.syntaxErr = true
 					} else if !needCmd && (t.text == ";" || t.text == "&") {
-						sc.syntaxErr = true // "; x", "a; ;"
+						sc.syntaxErr = true
 					}
 					continue
 				}

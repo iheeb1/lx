@@ -2,30 +2,15 @@ package git
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 func init() { engine.Register(blameFilter{}) }
 
-// blameFilter prints `git blame` with the commit, author and date once per
-// run of consecutive lines from the same commit, instead of on every line:
-//
-//	8e5397bf (Manu Mtz-Almeida 2014-08-29)
-//	  2) // Use of this source code is governed by a MIT style
-//	  3) // license that can be found in the LICENSE file.
-//	^15216a0 (Manu Mtz-Almeida 2014-06-18) 5) package gin
-//	8e5397bf 9) // a later one-line run of a commit already shown
-//
-// A commit's author and date are printed the first time it appears; later
-// runs of the same commit print only its hash. Every line keeps its line
-// number and its text byte for byte. Only the default output shape is
-// reshaped: porcelain formats are returned byte for byte, anything else
-// unrecognized is left to the generic reducer. Past the size budget the rest of the file is cut
-// with the exact line range and the -L option that shows it.
 type blameFilter struct{}
 
 func (blameFilter) Name() string    { return "git-blame" }
@@ -35,15 +20,10 @@ func (blameFilter) Match(c *engine.Context) bool {
 	return isGit(c) && c.Sub() == "blame" && !engine.MachineReadable(c)
 }
 
-// blameMachineFlags select porcelain output, which is data for programs.
-// engine.MachineReadable does not know them, so without this the generic
-// reducer could fold its look-alike lines; it is returned byte for byte.
 var blameMachineFlags = []string{"-p", "--porcelain", "--line-porcelain", "--incremental"}
 
-// blameRe: "sha [file] [origline] (author date time zone lineno) code".
 var blameRe = lazyre.New(`^(\^?[0-9a-f]{7,40})((?: +[^ (][^ ]*)*?) +\((.*?) +(\d{4}-\d{2}-\d{2})(?: \d{2}:\d{2}:\d{2} [+-]\d{4})? +(\d+)\)(?: (.*))?$`)
 
-// blameBudget: longer blames are cut at a run boundary.
 const blameBudget = 7000
 
 func (blameFilter) Apply(c *engine.Context, out string) (string, bool) {
@@ -103,7 +83,6 @@ func (blameFilter) Apply(c *engine.Context, out string) (string, bool) {
 			run = append(run, ln)
 		}
 		if j-i == 1 {
-			// A one-line run keeps git's own shape: "sha (…) 12) code".
 			run[0] = head + " " + strings.TrimLeft(run[0], " ")
 		} else {
 			run = append([]string{head}, run...)
@@ -119,7 +98,6 @@ func (blameFilter) Apply(c *engine.Context, out string) (string, bool) {
 				res = append(res, fmt.Sprintf("[… %s not shown (lines %d-%d); add -L %d,%d to see them]",
 					plural(len(parsed)-i, "more line"), first, last, first, last))
 			} else {
-				// Several -L ranges: the rest is not one range.
 				res = append(res, fmt.Sprintf("[… %s not shown, from line %d to line %d in several ranges]",
 					plural(len(parsed)-i, "more line"), first, last))
 			}

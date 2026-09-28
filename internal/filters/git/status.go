@@ -1,53 +1,30 @@
-// Package git condenses git porcelain-for-humans output.
+// Package git handles git.
 package git
 
 import (
-	"github.com/iheeb1/lx/internal/lazyre"
 	"sort"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 func init() { engine.Register(status{}) }
 
-// status renders `git status` (long format) as git's own short format, which
-// every model reads fluently: "## branch...upstream [ahead N]" then one
-// "XY path" line per entry. Hints ("use git add…") are dropped unless the repo
-// is mid-merge/rebase/cherry-pick, where they are the next step.
 type status struct{}
 
 func (status) Name() string { return "git-status" }
 
-// Faithful: every entry, the branch/upstream state and any in-progress
-// operation survive; only the "(use git …)" hints are dropped.
 func (status) Faithful(*engine.Context) bool { return true }
 
-// GuardsErrors: status rewrites entry and branch lines into short-format
-// ones, so a path or branch that merely contains an error word
-// ("\tmodified:   src/panic.go", "On branch fix-panic") would otherwise be
-// re-added by the engine guard although it is shown. Every line the filter
-// does not convert (repository state, warnings, fatal: lines, and hints
-// that are error-class) is printed verbatim; TestStatusGuardsErrors proves
-// that every error-class input line survives either verbatim or as its
-// converted entry/branch line.
 func (status) GuardsErrors() bool { return true }
 
-// Match: exact -s/--short/--porcelain/-z are machine-readable and passed
-// through before any filter; combined short flags (-sb, -bs, -suno) are
-// not detected there, so this filter matches them and keeps git's short
-// format as it is (see Apply).
 func (status) Match(c *engine.Context) bool {
-	// Short format (-s, -sb, --short) is machine-readable: the engine passes
-	// it through before any filter runs.
 	return isGit(c) && c.Sub() == "status" && !engine.MachineReadable(c)
 }
 
-// shortStatusRe matches a line of git's short format: "## branch…" or
-// "XY path".
 var shortStatusRe = lazyre.New(`^(?:## .+|[ MTADRCU?!]{2} .+)$`)
 
-// isShortStatus reports whether every non-blank line is short format.
 func isShortStatus(lines []string) bool {
 	n := 0
 	for _, ln := range lines {
@@ -67,7 +44,7 @@ var (
 	behindRe   = lazyre.New(`^Your branch is behind '([^']+)' by (\d+) commits?`)
 	divergedRe = lazyre.New(`^and have (\d+) and (\d+) different commits each`)
 	divergeRe  = lazyre.New(`^Your branch and '([^']+)' have diverged,`)
-	uptodateRe = lazyre.New(`^Your branch is up[ -]to[ -]date with '([^']+)'`) // "up-to-date" before git 2.15
+	uptodateRe = lazyre.New(`^Your branch is up[ -]to[ -]date with '([^']+)'`)
 	goneRe     = lazyre.New(`^Your branch is based on '([^']+)', but the upstream is gone`)
 	entryRe    = lazyre.New(`^\t(?:(new file|modified|deleted|renamed|copied|typechange|both modified|both added|both deleted|added by us|added by them|deleted by us|deleted by them):\s+)?(.+)$`)
 )
@@ -87,27 +64,19 @@ type entry struct {
 func (status) Apply(c *engine.Context, out string) (string, bool) {
 	lines := strings.Split(out, "\n")
 	if isShortStatus(lines) || strings.Contains(out, "\ndiff --git ") {
-		// Short format (-sb and other combined flags) is already the
-		// target format; -v appends staged/unstaged diffs. Both are kept
-		// as they are rather than left to the generic reducer, which
-		// folds runs of look-alike lines ("?? fixture01.json" …).
 		return out, true
 	}
 	var (
 		branch, upstream, track string
 		states, hints           []string
 		entries                 = map[string]*entry{}
-		renamedTo               = map[string]string{} // "b" → "a -> b" for staged renames/copies
+		renamedTo               = map[string]string{}
 		order                   []string
 		section                 string
 		trailers                []string
 		recognized              bool
 	)
-	// Tracked entries are keyed by path, so a path staged and modified
-	// again becomes one "MM" entry. Untracked and ignored entries get keys
-	// of their own: a path can be both staged for deletion and untracked
-	// (git rm --cached), and git's short format lists it twice
-	// ("D  x" and "?? x").
+
 	get := func(key, p string) *entry {
 		if e := entries[key]; e != nil {
 			return e
@@ -180,7 +149,7 @@ func (status) Apply(c *engine.Context, out string) (string, bool) {
 				if !ok {
 					return "", false
 				}
-				// A rename is staged as "a -> b"; unstaged edits name b.
+
 				if k, ok := renamedTo[p]; ok {
 					p = k
 				}
@@ -202,10 +171,7 @@ func (status) Apply(c *engine.Context, out string) (string, bool) {
 		case strings.HasPrefix(ln, "nothing to commit"):
 			trailers = append(trailers, ln)
 		case (strings.HasPrefix(ln, "nothing added to commit") || strings.HasPrefix(ln, "no changes added to commit")) && !engine.IsError(ln):
-			// "(use "git add" …)" advice: the entries above say it.
 		default:
-			// Repository state ("You have unmerged paths.", "interactive
-			// rebase in progress; onto …", "Last command done:" …) is kept.
 			states = append(states, ln)
 		}
 	}
@@ -227,14 +193,13 @@ func (status) Apply(c *engine.Context, out string) (string, bool) {
 		b.WriteString(s + "\n")
 	}
 	if len(states) > 0 {
-		// Mid-operation: the hints are the way out, keep them.
 		for _, h := range hints {
 			b.WriteString(h + "\n")
 		}
 	}
 	type sorted struct {
 		key string
-		idx int // input order breaks ties: the sort is stable
+		idx int
 		e   *entry
 	}
 	list := make([]sorted, len(order))
@@ -261,8 +226,6 @@ func (status) Apply(c *engine.Context, out string) (string, bool) {
 	return strings.TrimRight(b.String(), "\n"), true
 }
 
-// sortKey puts conflicts first, then tracked changes, then untracked, then
-// ignored, each by path — the order an agent should act on them.
 func sortKey(e *entry) string {
 	rank := "1"
 	switch {

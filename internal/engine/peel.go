@@ -5,30 +5,8 @@ import (
 	"strings"
 )
 
-// MaxPeel is how many wrapper layers Resolve and MachineReadableAny look
-// through (`timeout 60 env FOO=1 uv run pytest` is three).
 const MaxPeel = 4
 
-// Peel returns the command a transparent wrapper runs, one layer per call:
-//
-//	FOO=1 BAR=2 cmd…
-//	env [-u NAME | -uNAME | --unset[=]NAME]… [NAME=value]… cmd…
-//	timeout (or gtimeout) [-s SIG] [-k DUR] [--preserve-status] [--foreground] [-v] DURATION cmd…
-//	nice [-n N | -nN | -N | --adjustment[=]N] cmd…
-//	nohup cmd…
-//	time [-p] cmd…
-//	command cmd…
-//	uv run | uv tool run | uvx | poetry run | pdm run | pipenv run |
-//	hatch run | rye run | pipx run  [runner options] cmd…
-//
-// via names the wrapper ("env", "timeout", "uv run", …). Peel returns nil
-// when argv is none of these, when the wrapper has an option Peel does not
-// know (env -i, timeout --bogus, command -v: the wrapper then does
-// something other than run the command) or when no command is left.
-//
-// Peel is pure: it only reads argv and never changes what runs. Filters
-// and the hook use the inner argv to recognize the tool; lx always
-// executes the full command line.
 func Peel(argv []string) (inner []string, via string) {
 	inner, via = peelLayer(argv)
 	if len(inner) == 0 {
@@ -53,7 +31,7 @@ func peelLayer(argv []string) (inner []string, via string) {
 	switch name {
 	case "env":
 		return peelEnv(args), "env"
-	case "timeout", "gtimeout": // gtimeout: GNU timeout from Homebrew coreutils on macOS
+	case "timeout", "gtimeout":
 		return peelTimeout(args), "timeout"
 	case "nice":
 		return peelNice(args), "nice"
@@ -72,7 +50,7 @@ func peelLayer(argv []string) (inner []string, via string) {
 		}
 		return peelCommand(args), "time"
 	case "command":
-		// command -v / -V print what a name resolves to; -p changes PATH.
+
 		return peelCommand(args), "command"
 	case "uv":
 		switch {
@@ -95,13 +73,6 @@ func peelLayer(argv []string) (inner []string, via string) {
 	return nil, ""
 }
 
-// Resolve returns the filter for c and the context it applies to. When no
-// filter matches c itself, it peels up to MaxPeel wrapper layers and
-// returns the first filter matching an inner command, with a copy of c
-// whose Argv is that command. It returns nil, c when nothing matches.
-//
-// Filters that already understand a wrapper (jest under `env`, pytest
-// under `uv run`) keep matching the full command line: Find(c) runs first.
 func Resolve(c *Context) (Filter, *Context) {
 	if f := Find(c); f != nil {
 		return f, c
@@ -122,9 +93,6 @@ func Resolve(c *Context) (Filter, *Context) {
 	return nil, c
 }
 
-// MachineReadableAny is MachineReadable for c or any command Peel finds
-// inside it (up to MaxPeel layers): `uv run git status -s` prints git's
-// short format just as `git status -s` does.
 func MachineReadableAny(c *Context) bool {
 	if MachineReadable(c) {
 		return true
@@ -143,8 +111,6 @@ func MachineReadableAny(c *Context) bool {
 	return false
 }
 
-// peelCommand returns args when it starts with a command word, nil when it
-// starts with an option (which the wrapper would have parsed as its own).
 func peelCommand(args []string) []string {
 	if len(args) == 0 || strings.HasPrefix(args[0], "-") {
 		return nil
@@ -152,7 +118,6 @@ func peelCommand(args []string) []string {
 	return args
 }
 
-// peelIsAssign reports a shell NAME=value word.
 func peelIsAssign(s string) bool {
 	eq := strings.IndexByte(s, '=')
 	if eq <= 0 {
@@ -168,10 +133,6 @@ func peelIsAssign(s string) bool {
 	return true
 }
 
-// peelEnv: env's options come first (getopt stops at the first operand),
-// then NAME=value operands (env treats any word with "=" as one), then the
-// command. Only -u/--unset is transparent; -i, -, -S, -C, -P, -0, -v and
-// anything else return nil.
 func peelEnv(args []string) []string {
 	i := 0
 opts:
@@ -200,7 +161,6 @@ opts:
 	return peelCommand(args[i:])
 }
 
-// peelTimeout: options, then a DURATION, then the command.
 func peelTimeout(args []string) []string {
 	i := 0
 opts:
@@ -246,8 +206,6 @@ opts:
 	return peelCommand(args[i+1:])
 }
 
-// peelIsDuration accepts timeout's DURATION: a non-negative decimal number with
-// an optional s, m, h or d suffix ("60", "1.5", "5m").
 func peelIsDuration(s string) bool {
 	if n := len(s); n > 0 && strings.IndexByte("smhd", s[n-1]) >= 0 {
 		s = s[:n-1]
@@ -266,8 +224,6 @@ func peelIsDuration(s string) bool {
 	return digits > 0
 }
 
-// peelNice: -n N, -nN, -N, --N (a negative N), --adjustment N,
-// --adjustment=N, then the command.
 func peelNice(args []string) []string {
 	i := 0
 	for i < len(args) {
@@ -291,7 +247,7 @@ func peelNice(args []string) []string {
 			}
 			i++
 		case len(a) > 1 && a[0] == '-' && peelIsInt(a[1:]):
-			i++ // -10, --5
+			i++
 		case strings.HasPrefix(a, "-"):
 			return nil
 		default:
@@ -301,7 +257,6 @@ func peelNice(args []string) []string {
 	return nil
 }
 
-// peelIsInt accepts an optionally signed decimal integer.
 func peelIsInt(s string) bool {
 	if s != "" && (s[0] == '-' || s[0] == '+') {
 		s = s[1:]
@@ -317,12 +272,6 @@ func peelIsInt(s string) bool {
 	return true
 }
 
-// peelRunnerValueFlags are options of the project runners (uv run, uv tool run,
-// uvx, poetry/pdm/pipenv/hatch/rye run, pipx run) that take a separate
-// value. It starts from internal/filters/python's copy and adds the value
-// options of uv, uvx and pipx that decide which tool runs (--from, --spec)
-// or that could otherwise be mistaken for the command. Any other "-" word is
-// a boolean flag; "--opt=value" is one word.
 var peelRunnerValueFlags = map[string]bool{
 	"--with": true, "-w": true, "--with-editable": true, "--with-requirements": true, "--python": true, "-p": true,
 	"--package": true, "--extra": true, "--group": true, "--only-group": true, "--no-group": true,
@@ -338,10 +287,6 @@ var peelRunnerValueFlags = map[string]bool{
 	"--no-extra": true, "--preview-features": true,
 }
 
-// peelRunner skips a project runner's options and returns the command.
-// A lone "-" (uv run - reads a script from stdin) is not a command. For
-// tool runners (uvx, uv tool run, pipx run) the command may carry a
-// version, "ruff@0.6": the inner argv names the tool without it.
 func peelRunner(args []string, tool bool) []string {
 	for i := 0; i < len(args); i++ {
 		a := args[i]
@@ -366,7 +311,7 @@ func peelVersionless(argv []string, tool bool) []string {
 	}
 	at := strings.IndexByte(argv[0], '@')
 	if at <= 0 || strings.ContainsAny(argv[0][:at], "/:") {
-		return argv // a URL or path, not name@version
+		return argv
 	}
 	out := make([]string, len(argv))
 	copy(out, argv)

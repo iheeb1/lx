@@ -1,0 +1,5 @@
+fuzz: elapsed: 0s, gathering baseline coverage: 0/1 completed
+fuzz: elapsed: 0s, gathering baseline coverage: 1/1 completed, now fuzzing with 8 workers
+fuzz: elapsed: 0s, execs: 300 (9698/sec), new interesting: 0 (total: 1)
+PASS
+ok  	example.com/godemo	0.400s

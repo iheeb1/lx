@@ -1,12 +1,4 @@
-// Package discover measures what lx would save on the user's own Claude Code
-// transcripts: it pairs every Bash tool call with its output, replays the
-// output through the engine for commands the hook would rewrite, and reports
-// the totals. With Options.Fidelity it also checks, for each file:line the
-// agent went on to open or edit, whether lx's view showed it (fidelity.go);
-// it always counts host spills and head/tail cuts of rewritten commands
-// (spill.go, pipes.go). It never stores anything, and never prints outputs
-// or arguments — only command keys (tool + first subcommand word) and
-// counts — except the file:line examples Options.Examples asks for.
+// Package discover replays Claude Code transcripts through lx.
 package discover
 
 import (
@@ -31,22 +23,16 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// Options select the transcripts to scan.
 type Options struct {
-	Dirs  []string  // directories searched recursively for *.jsonl (e.g. ~/.claude/projects)
-	Since time.Time // skip files last modified before this (zero = all)
-	Limit int       // scan at most this many files, newest first (0 = all)
+	Dirs  []string
+	Since time.Time
+	Limit int
 
-	// Fidelity measures acted-on fidelity (Report.ActedOn): whether lx's
-	// view kept the file:line locations the agent went on to open or edit.
 	Fidelity bool
-	// Examples lists up to maxExamples locations the agent acted on that
-	// lx's view did not show (implies Fidelity). They hold paths from the
-	// user's outputs: for the local terminal only.
+
 	Examples bool
 }
 
-// Report is the result of Scan.
 type Report struct {
 	Files            int     `json:"files_scanned"`
 	BashCalls        int     `json:"bash_calls"`
@@ -57,39 +43,32 @@ type Report struct {
 	CandidateTokens  int     `json:"candidate_tokens"`
 	CandidateOut     int     `json:"candidate_tokens_after"`
 	WouldSaveTokens  int     `json:"would_save_tokens"`
-	WouldSavePct     float64 `json:"would_save_pct"`           // of all Bash output tokens
-	CandidateSavePct float64 `json:"candidate_would_save_pct"` // of the candidates' tokens
+	WouldSavePct     float64 `json:"would_save_pct"`
+	CandidateSavePct float64 `json:"candidate_would_save_pct"`
 	AlreadyLx        int     `json:"already_lx"`
 	BadLines         int     `json:"unparsable_lines"`
 
-	// Host spills: Bash results the host replaced with a preview because
-	// they exceeded its output limit (Claude Code: ~30k characters).
 	HostSpills           int `json:"host_spills"`
-	HostSpillsRewritable int `json:"host_spills_rewritable"` // lx rewrites the command and the full output was recorded
-	HostSpillsAvoided    int `json:"host_spills_avoided"`    // of those, lx's view + receipt fits under spillSafeChars
+	HostSpillsRewritable int `json:"host_spills_rewritable"`
+	HostSpillsAvoided    int `json:"host_spills_avoided"`
 
-	// Rewritten commands piped into head/tail (cmd | head -N): with lx the
-	// cut applies to lx's view and receipt. The transcript holds only what
-	// the cut kept, so a run is replayed only when the cut kept all of it
-	// (fewer lines than N); the three counts below are over those runs.
 	Sliced            int `json:"sliced_by_head_tail"`
 	SlicedReplayable  int `json:"sliced_replayable"`
-	SlicedViewCut     int `json:"sliced_view_cut"`     // lx's view + receipt would not fit the cut (a passthrough view keeps stdout and stderr apart, as without lx)
-	SlicedReceiptLost int `json:"sliced_receipt_lost"` // head would drop the receipt line
-	SlicedErrorsCut   int `json:"sliced_errors_cut"`   // an error line the agent saw raw would be cut from lx's view
+	SlicedViewCut     int `json:"sliced_view_cut"`
+	SlicedReceiptLost int `json:"sliced_receipt_lost"`
+	SlicedErrorsCut   int `json:"sliced_errors_cut"`
 
-	ActedOn *ActedOn `json:"acted_on,omitempty"` // Options.Fidelity only
+	ActedOn *ActedOn `json:"acted_on,omitempty"`
 
 	Top         []Stat `json:"top"`
 	Unsupported []Stat `json:"top_unsupported"`
 }
 
-// Stat aggregates one command key.
 type Stat struct {
-	Command     string `json:"command"` // "git status", "npm test" — never full arguments
+	Command     string `json:"command"`
 	Count       int    `json:"count"`
-	Tokens      int    `json:"tokens"`                 // raw output tokens
-	TokensAfter int    `json:"tokens_after,omitempty"` // after lx (candidates only)
+	Tokens      int    `json:"tokens"`
+	TokensAfter int    `json:"tokens_after,omitempty"`
 	Saved       int    `json:"saved,omitempty"`
 }
 
@@ -98,10 +77,8 @@ const (
 	topUnsupport = 10
 )
 
-// maxLine: transcript lines longer than this are skipped, not buffered.
 var maxLine = 64 << 20
 
-// Scan reads every transcript under o.Dirs and builds the report.
 func Scan(o Options) (Report, error) {
 	var r Report
 	files, err := collect(o)
@@ -113,13 +90,14 @@ func Scan(o Options) (Report, error) {
 		top:   map[string]*Stat{},
 		unsup: map[string]*Stat{},
 		roots: resolvedRoots(o.Dirs),
+		ctx:   contextOn(),
 	}
 	if o.Fidelity || o.Examples {
 		s.fid = newFidelity(o.Examples)
 	}
 	for _, f := range files {
 		if err := s.file(f.path, &r); err != nil {
-			continue // unreadable transcript: skip, keep going
+			continue
 		}
 		r.Files++
 	}
@@ -141,7 +119,7 @@ func collect(o Options) ([]fileInfo, error) {
 				if p == dir {
 					return err
 				}
-				return nil // unreadable subdirectory
+				return nil
 			}
 			if d.IsDir() || !d.Type().IsRegular() || !strings.HasSuffix(p, ".jsonl") {
 				return nil
@@ -178,25 +156,42 @@ func collect(o Options) ([]fileInfo, error) {
 type pending struct {
 	command string
 	cwd     string
-	in      *hook.Inspection // set when already inspected (fidelity mode)
+	in      *hook.Inspection
+	ctx     *sessionPoint
 }
 
 type scanner struct {
-	seen  map[string]bool // tool_use ids already counted (resumed sessions repeat history)
+	seen  map[string]bool
 	top   map[string]*Stat
 	unsup map[string]*Stat
-	roots []string  // scan roots, symlinks resolved: persisted outputs are read only below them
-	fid   *fidelity // nil unless Options.Fidelity
+	roots []string
+	fid   *fidelity
+	ctx   bool
 }
 
-// record is the subset of a transcript line discover reads.
 type record struct {
-	Type    string `json:"type"`
-	Cwd     string `json:"cwd"`
-	Message struct {
+	Type      string `json:"type"`
+	Subtype   string `json:"subtype"`
+	Cwd       string `json:"cwd"`
+	Sidechain bool   `json:"isSidechain"`
+	Meta      bool   `json:"isMeta"`
+	Summary   bool   `json:"isCompactSummary"`
+	Message   struct {
+		ID      string          `json:"id"`
+		Model   string          `json:"model"`
+		Usage   usage           `json:"usage"`
 		Content json.RawMessage `json:"content"`
 	} `json:"message"`
+	Compact struct {
+		PostTokens int `json:"postTokens"`
+	} `json:"compactMetadata"`
 	ToolUseResult json.RawMessage `json:"toolUseResult"`
+}
+
+type usage struct {
+	Input         int `json:"input_tokens"`
+	CacheCreation int `json:"cache_creation_input_tokens"`
+	CacheRead     int `json:"cache_read_input_tokens"`
 }
 
 type block struct {
@@ -207,6 +202,7 @@ type block struct {
 	ToolUseID string          `json:"tool_use_id"`
 	Content   json.RawMessage `json:"content"`
 	IsError   bool            `json:"is_error"`
+	Text      string          `json:"text"`
 }
 
 var (
@@ -226,11 +222,19 @@ func (s *scanner) file(path string, r *Report) error {
 	if s.fid != nil {
 		s.fid.newFile()
 	}
+	var sess *session
+	if s.ctx {
+		sess = newSession(path)
+	}
 	for {
 		line, err := readLine(br, maxLine)
-		if len(line) > 0 && (bytes.Contains(line, markBash) || bytes.Contains(line, markResult) ||
-			s.fid != nil && bytes.Contains(line, markUse)) {
-			s.line(line, open, r)
+		if len(line) > 0 {
+			switch {
+			case bytes.Contains(line, markBash) || bytes.Contains(line, markResult) || s.fid != nil && bytes.Contains(line, markUse):
+				s.line(line, open, r, sess)
+			case sess != nil && sess.wants(line):
+				sess.scan(line)
+			}
 		}
 		if err != nil {
 			break
@@ -240,9 +244,6 @@ func (s *scanner) file(path string, r *Report) error {
 	return nil
 }
 
-// readLine returns the next line without its newline. Lines longer than max
-// are consumed and returned empty so a pathological line cannot exhaust
-// memory. err is io.EOF (or a read error) after the last line.
 func readLine(br *bufio.Reader, max int) ([]byte, error) {
 	var buf []byte
 	tooLong := false
@@ -272,11 +273,14 @@ func readLine(br *bufio.Reader, max int) ([]byte, error) {
 	}
 }
 
-func (s *scanner) line(line []byte, open map[string]pending, r *Report) {
+func (s *scanner) line(line []byte, open map[string]pending, r *Report, sess *session) {
 	var rec record
 	if json.Unmarshal(line, &rec) != nil {
 		r.BadLines++
 		return
+	}
+	if sess != nil && !sess.begin(&rec) {
+		sess = nil
 	}
 	var blocks []block
 	if len(rec.Message.Content) == 0 || rec.Message.Content[0] != '[' ||
@@ -290,6 +294,9 @@ func (s *scanner) line(line []byte, open map[string]pending, r *Report) {
 		}
 	}
 	for _, b := range blocks {
+		if sess != nil {
+			sess.recordBlock(rec.Type, b)
+		}
 		switch b.Type {
 		case "tool_use":
 			if b.ID == "" || s.seen[b.ID] {
@@ -299,7 +306,7 @@ func (s *scanner) line(line []byte, open map[string]pending, r *Report) {
 				Command string `json:"command"`
 			}
 			if b.Name != "Bash" || json.Unmarshal(b.Input, &in) != nil || strings.TrimSpace(in.Command) == "" {
-				if s.fid != nil { // every tool call counts toward the acted-on window
+				if s.fid != nil {
 					s.seen[b.ID] = true
 					s.fid.toolUse(touchedPaths(b.Name, b.Input, rec.Cwd))
 				}
@@ -307,7 +314,7 @@ func (s *scanner) line(line []byte, open map[string]pending, r *Report) {
 			}
 			s.seen[b.ID] = true
 			r.BashCalls++
-			p := pending{command: in.Command, cwd: rec.Cwd}
+			p := pending{command: in.Command, cwd: rec.Cwd, ctx: sess.point()}
 			if s.fid != nil {
 				insp := hook.Inspect(in.Command)
 				p.in = &insp
@@ -317,7 +324,7 @@ func (s *scanner) line(line []byte, open map[string]pending, r *Report) {
 		case "tool_result":
 			p, ok := open[b.ToolUseID]
 			if !ok {
-				continue // not a Bash call (or already counted)
+				continue
 			}
 			delete(open, b.ToolUseID)
 			o := s.recorded(b, rec.ToolUseResult, results == 1)
@@ -334,25 +341,16 @@ func (s *scanner) line(line []byte, open map[string]pending, r *Report) {
 	}
 }
 
-// recording is a Bash call's output as the transcript holds it.
 type recording struct {
-	// out is what the token accounting measures, as discover always has:
-	// toolUseResult's stdout+stderr when it belongs to this result, else the
-	// tool_result text (for a spilled result, the host's preview).
 	out string
-	// full is the command's whole output, when the transcript (or the file
-	// the host saved it to) holds it; complete says whether it does.
+
 	full     string
 	complete bool
-	stdout   string // stdout alone, when split
-	split    bool   // full has stdout and stderr recorded apart (toolUseResult)
-	spilled  bool   // the host replaced the result with a preview (output too large)
+	stdout   string
+	split    bool
+	spilled  bool
 }
 
-// recorded reads a Bash result. When the host spilled the output and the
-// transcript holds only a preview, the file the host saved it to is read
-// for the whole output (spill counters and fidelity; the token accounting
-// keeps measuring what the transcript recorded, as the agent read that).
 func (s *scanner) recorded(b block, tur json.RawMessage, own bool) recording {
 	text := resultText(b.Content)
 	o := recording{spilled: isSpill(text)}
@@ -380,8 +378,6 @@ func (s *scanner) recorded(b block, tur json.RawMessage, own bool) recording {
 	return o
 }
 
-// fullOutput returns stdout+stderr from a Bash toolUseResult object, which
-// holds the untruncated output (tool_result text may be cut for the model).
 func fullOutput(raw json.RawMessage) (string, bool) {
 	var b bashResult
 	if !b.parse(raw) {
@@ -390,7 +386,6 @@ func fullOutput(raw json.RawMessage) (string, bool) {
 	return b.joined(), true
 }
 
-// resultText flattens tool_result content: a string, or text blocks.
 func resultText(raw json.RawMessage) string {
 	if len(raw) == 0 {
 		return ""
@@ -432,7 +427,12 @@ func (s *scanner) measure(p pending, cwd string, o recording, exit int, r *Repor
 		r.AlreadyLx++
 		r.BashOutputTokens += tokens.Count(out)
 	case in.Changed:
-		v := replay(in.Targets[0], exit, cwd, out)
+		var fit engine.Options
+		if len(in.Fits) > 0 && len(in.FitCuts) > 0 {
+			fit.MaxLines, fit.Cut = in.Fits[0], in.FitCuts[0]
+		}
+		fit = p.ctx.options(fit, p.command, &engine.Context{Argv: in.Targets[0], Exit: exit})
+		v := replay(in.Targets[0], exit, cwd, out, fit)
 		r.BashOutputTokens += v.res.RawTokens
 		r.Candidates++
 		r.CandidateTokens += v.res.RawTokens
@@ -444,9 +444,8 @@ func (s *scanner) measure(p pending, cwd string, o recording, exit int, r *Repor
 		st.TokensAfter += v.after
 		st.Saved += v.res.RawTokens - v.after
 
-		// Spills, cuts and fidelity need the command's whole output.
 		if o.complete && o.full != o.out {
-			v = replay(in.Targets[0], exit, cwd, noNUL(o.full))
+			v = replay(in.Targets[0], exit, cwd, noNUL(o.full), fit)
 		}
 		if o.spilled && o.complete {
 			r.HostSpillsRewritable++
@@ -477,19 +476,14 @@ func (s *scanner) measure(p pending, cwd string, o recording, exit int, r *Repor
 	}
 }
 
-// noNUL neutralizes NULs: tokens.Count never returns on a NUL rune that is
-// not followed by a letter (its whitespace fallback advances by 0).
-// Binary-ish outputs do occur in real transcripts, and one of them must not
-// hang the whole scan.
 func noNUL(s string) string { return strings.ReplaceAll(s, "\x00", "\uFFFD") }
 
-// replay runs lx's pipeline over a rewritten command's output, as lx would
-// have in the agent's session.
-func replay(argv []string, exit int, cwd, out string) *view {
+func replay(argv []string, exit int, cwd, out string, o engine.Options) *view {
 	ctx := &engine.Context{Argv: argv, Exit: exit, Cwd: cwd}
-	res := engine.Process(ctx, out, engine.Options{MaxChars: viewMaxChars})
+	o.MaxChars = viewMaxChars
+	res := engine.Process(ctx, out, o)
 	v := &view{res: res, raw: out, after: res.OutTokens}
-	if res.Lossy { // the agent also reads the receipt line
+	if res.Lossy {
 		v.receipt = engine.Receipt(res, "1234")
 		v.after += tokens.Count(v.receipt)
 	}
@@ -497,19 +491,16 @@ func replay(argv []string, exit int, cwd, out string) *view {
 	return v
 }
 
-// view is lx's replay of one candidate.
 type view struct {
 	res     engine.Result
-	receipt string // "" when the view is not lossy
-	raw     string // the output lx received
-	after   int    // tokens the agent reads: view + receipt, at most the raw tokens
+	receipt string
+	raw     string
+	after   int
 
-	clean   string // textutil.Clean(raw), computed on first use
+	clean   string
 	cleaned bool
 }
 
-// cleanRaw is the normalized raw output (ANSI, \r frames and overstrike
-// removed), as lx's filters and the benchmark's metrics see it.
 func (v *view) cleanRaw() string {
 	if !v.cleaned {
 		v.clean, v.cleaned = textutil.Clean(v.raw), true
@@ -562,9 +553,6 @@ func rank(m map[string]*Stat, n int, by func(*Stat) int) []Stat {
 	return all
 }
 
-// ---- command keys ----
-
-// subcommandTools are keyed by their first subcommand word.
 var subcommandTools = map[string]bool{
 	"git": true, "go": true, "cargo": true, "npm": true, "pnpm": true, "yarn": true, "bun": true,
 	"npx": true, "bunx": true, "docker": true, "docker-compose": true, "kubectl": true, "pip": true,
@@ -576,9 +564,6 @@ var subcommandTools = map[string]bool{
 	"playwright": true, "vitest": true, "next": true, "vite": true,
 }
 
-// Key is the privacy-preserving label for argv: the tool's base name plus,
-// for tools with subcommands, the first subcommand word ("git status",
-// "npm run", "python -m pytest"). Arguments are never included.
 func Key(argv []string) string {
 	if len(argv) == 0 {
 		return ""
@@ -607,12 +592,8 @@ func Key(argv []string) string {
 	return name
 }
 
-// maxKeyName bounds a command name in a report (runes).
 const maxKeyName = 40
 
-// printable makes a command name safe to print on a terminal: control and
-// other non-printing characters (escape sequences, bidi overrides) become
-// '?', and a name longer than maxKeyName runes is cut with "…".
 func printable(name string) string {
 	n := 0
 	clean := true
@@ -641,12 +622,8 @@ func printable(name string) string {
 	return b.String()
 }
 
-// printing: r prints as itself (invalid UTF-8, such as a lone 0x9b, a C1
-// control to some terminals, does not).
 func printing(r rune) bool { return r == ' ' || r != utf8.RuneError && unicode.IsPrint(r) }
 
-// safeWord accepts short lowercase command-like words only, so paths,
-// patterns, URLs and values never end up in a report.
 func safeWord(s string) bool {
 	if len(s) == 0 || len(s) > 24 {
 		return false
@@ -660,8 +637,6 @@ func safeWord(s string) bool {
 	return s[0] >= 'a' && s[0] <= 'z'
 }
 
-// setup commands usually frame the command whose output matters
-// (cd x && cat y, echo "== y" && cat y).
 var setup = map[string]bool{
 	"cd": true, "pushd": true, "popd": true, "export": true, "set": true, "unset": true,
 	"source": true, ".": true, "true": true, ":": true, "echo": true, "printf": true, "sleep": true,
@@ -684,9 +659,6 @@ func unsupportedKey(command string, cmds [][]string) string {
 	return "(other)"
 }
 
-// ---- text output ----
-
-// Text writes the report as aligned tables with small ASCII bars.
 func (r Report) Text(w io.Writer) {
 	fmt.Fprintf(w, "lx discover: %s transcripts, %s Bash calls, %s output tokens\n",
 		num(r.Files), num(r.BashCalls), human(r.BashOutputTokens))
@@ -750,8 +722,6 @@ func (r Report) Text(w io.Writer) {
 	fmt.Fprintln(w)
 }
 
-// table prints rows with the first column left-aligned, numbers right-aligned
-// and the last column (the bar) unpadded.
 func table(w io.Writer, head []string, rows [][]string) {
 	widths := make([]int, len(head))
 	for _, row := range append([][]string{head}, rows...) {

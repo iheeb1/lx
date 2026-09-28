@@ -1,16 +1,5 @@
 //go:build unix
 
-// Command h2h runs real commands three ways — raw, through rtk, through lx —
-// in the repositories the corpus was captured from, and records what an
-// agent would read in each case, how many of the raw output's error lines
-// survive, and the wall-clock cost.
-//
-// Each tool decides for itself how to wrap a command (`rtk rewrite`,
-// `lx rewrite`), exactly as its agent hook would; a command a tool does not
-// rewrite runs raw for that tool.
-//
-//	go run ./bench/cmd/h2h -env corpus/tools/env.sh -meta corpus/out \
-//	    -rtk /path/to/rtk -lx /path/to/lx -out bench/out/h2h.json
 package main
 
 import (
@@ -42,11 +31,11 @@ type Meta struct {
 }
 
 type Variant struct {
-	Command   string  `json:"command"`   // what actually ran
-	Rewritten bool    `json:"rewritten"` // the tool chose to wrap it
+	Command   string  `json:"command"`
+	Rewritten bool    `json:"rewritten"`
 	TimedOut  bool    `json:"timed_out,omitempty"`
 	Exit      int     `json:"exit"`
-	Tokens    int     `json:"tokens"` // lx estimator; bench/tiktoken.py adds exact counts
+	Tokens    int     `json:"tokens"`
 	Bytes     int     `json:"bytes"`
 	ErrKept   int     `json:"error_lines_kept"`
 	MedianMs  float64 `json:"median_ms"`
@@ -57,22 +46,16 @@ type Row struct {
 	ID       string  `json:"id"`
 	Category string  `json:"category"`
 	Shell    string  `json:"shell"`
-	ErrLines int     `json:"error_lines"` // distinct error-class lines in the raw output
+	ErrLines int     `json:"error_lines"`
 	Raw      Variant `json:"raw"`
 	Rtk      Variant `json:"rtk"`
 	Lx       Variant `json:"lx"`
-	// Excluded explains why a row is left out of comparisons (a tool could
-	// not start the command in this environment, which says nothing about
-	// its filtering).
+
 	Excluded string `json:"excluded,omitempty"`
 }
 
-// runTimeout bounds one run; a test suite that leaves a server listening
-// (it happens: express's mocha suite, occasionally) must not stall the bench.
 const runTimeout = 3 * time.Minute
 
-// Read-only, repeatable commands only: nothing that pushes, installs,
-// downloads or mutates the checkout.
 var include = regexp.MustCompile(`^(git (status|log|diff|show|branch|blame)|go (test|build|vet|list)|npx (jest|vitest|tsc|eslint|mocha)|npm (test|run build|ls|outdated)|pytest|python3? -m pytest|grep|rg|find|ls|du|cat|make|tsc|eslint|jest|vitest|mocha)\b`)
 var exclude = regexp.MustCompile(`install|uninstall|create|push|pull|fetch|clone|merge|download|tidy|get -u|curl|audit|outdated`)
 
@@ -159,7 +142,7 @@ func rewrite(envFile, bin, cmd string, okCodes []int) (string, bool) {
 	for _, k := range okCodes {
 		if code == k {
 			s := strings.TrimSpace(string(outb))
-			// Make the binary explicit so PATH order can't pick another build.
+
 			name := filepath.Base(bin)
 			s = regexp.MustCompile(`(^|&& |; |\| )`+regexp.QuoteMeta(name)+` `).ReplaceAllString(s, "${1}"+bin+" ")
 			return s, s != "" && s != cmd
@@ -177,8 +160,7 @@ func run(envFile, setup, cwd, cmd string, runs int) (string, Variant) {
 	for i := 0; i < max(1, runs) && !timedOut.Load(); i++ {
 		c := exec.Command("bash", "-c", script)
 		c.Env = append(os.Environ(), "LX_TRACK=0", "RTK_TELEMETRY_DISABLED=1")
-		// Own process group, so a hung test server can be killed with
-		// everything it spawned.
+
 		c.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 		var buf bytes.Buffer
 		c.Stdout, c.Stderr = &buf, &buf
@@ -222,9 +204,6 @@ func finish(v Variant, out, rawClean string, errLines int, rewritten bool, dir, 
 
 func countErrors(s string) int { return len(fixture.ErrorMessagesMissing(s, "")) }
 
-// launchFailure reports a tool that could not start the command at all —
-// e.g. rtk re-launching vitest through a package manager that isn't
-// installed here — as opposed to filtering its output.
 func launchFailure(tool, out, raw string) string {
 	for _, m := range []string{tool + ": Failed to run", "could not determine executable to run", tool + ": command not found"} {
 		if strings.Contains(out, m) && !strings.Contains(raw, m) {

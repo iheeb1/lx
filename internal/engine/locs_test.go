@@ -12,8 +12,6 @@ import (
 	"github.com/iheeb1/lx/internal/fixture"
 )
 
-// The patterns moved from internal/fixture unchanged: the lazy engine.LocRe
-// matches exactly what the original compiled regexp matched.
 func TestLocReUnchanged(t *testing.T) {
 	orig := regexp.MustCompile(`[\w./@-]+\.(?:go|ts|tsx|js|jsx|mjs|cjs|py|rs|rb|java|kt|c|h|cc|cpp|cs|php|swift|vue|svelte)[:(]\d+`)
 	for _, s := range []string{
@@ -55,7 +53,7 @@ func TestAppLocations(t *testing.T) {
 	in := strings.Join([]string{
 		"    args_test.go:73: Expected x",
 		"    args_test.go:73: Expected x again",
-		"/home/u/src/app/pkg/args_test.go:73 +0x1d", // same key: counted once
+		"/home/u/src/app/pkg/args_test.go:73 +0x1d",
 		"/usr/local/go/src/testing/testing.go:1792 +0xf3",
 		"at f (/app/node_modules/lib/index.js:10:3)",
 		"src/app.ts(4,2): error",
@@ -73,17 +71,15 @@ func TestAppLocations(t *testing.T) {
 
 func TestErrorMessagesMissing(t *testing.T) {
 	in := "error: bad thing at 12:4\nok line\nerror: other thing\nerror: bad thing at 99:1"
-	out := "error: bad thing at 12:4 99:1 (×2)\n" // regrouped: positions differ, message kept
+	out := "error: bad thing at 12:4 99:1 (×2)\n"
 	if got := engine.ErrorMessagesMissing(in, out); !slices.Equal(got, []string{"error: other thing"}) {
 		t.Errorf("ErrorMessagesMissing = %q", got)
 	}
-	if got := len(engine.ErrorMessagesMissing(in, "")); got != 2 { // distinct messages
+	if got := len(engine.ErrorMessagesMissing(in, "")); got != 2 {
 		t.Errorf("distinct error messages = %d, want 2", got)
 	}
 }
 
-// engine.ViewLocKeys reads a grouped listing (lx's grep view, eslint's stylish
-// format) the way an agent does: the heading's file with each entry's line.
 func TestViewLocKeys(t *testing.T) {
 	view := strings.Join([]string{
 		"[252 matches in 30 files · showing 151]",
@@ -112,8 +108,6 @@ func TestViewLocKeys(t *testing.T) {
 	}
 }
 
-// engine.FindLocs returns exactly what engine.LocRe.FindAllString does: on every corpus
-// capture and on random location-dense text.
 func TestFindLocsMatchesRegexp(t *testing.T) {
 	check := func(name, s string) {
 		t.Helper()

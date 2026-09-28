@@ -6,18 +6,18 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/iheeb1/lx/internal/filters/focus"
 	"github.com/iheeb1/lx/internal/filters/fs"
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// detailBudget: tokens for the line-by-line part of the output; the
-// histogram and summaries come on top.
 const detailBudget = 4000
 
 type render struct {
 	o        opts
 	mt       *matcher
 	withFile bool
+	fx       *focus.Set
 	b        strings.Builder
 }
 
@@ -27,8 +27,6 @@ func (r *render) line(s string) {
 }
 
 func (r *render) run(notes []string, groups []*fileGroup, total, nfiles int) string {
-	// Dependency directories the user did not target are summarized, unless
-	// that would leave nothing to show.
 	var normal, heavy []*fileGroup
 	if r.withFile {
 		for _, g := range groups {
@@ -54,23 +52,18 @@ func (r *render) run(notes []string, groups []*fileGroup, total, nfiles int) str
 	heavyMatches := total - nMatches
 	var heavyRoots []string
 	if nMatches == 0 || heavyMatches <= minHeavy {
-		// Nothing else to show, or so few dependency hits that the
-		// summary line would cost as much as the hits: show them.
 		for _, g := range heavy {
 			g.heavy = ""
 		}
 		normal, heavy = groups, nil
 		nMatches, nFiles = total, nfiles
 	}
+	normal, focused := focusGroups(r.fx, normal)
 
-	// Which files are shown in full, which are capped, which only counted.
-	// Everything is shown when it is within the match, file and token caps;
-	// otherwise files are taken in output order, ≤perFile matches each,
-	// until one of the caps is reached.
 	type shownGroup struct {
 		g    *fileGroup
 		text string
-		n    int // matches shown
+		n    int
 	}
 	var shown []shownGroup
 	var rest []*fileGroup
@@ -106,8 +99,7 @@ func (r *render) run(notes []string, groups []*fileGroup, total, nfiles int) str
 					rest = append(rest, normal[i:]...)
 					break
 				}
-				// The first file alone is too big (long context blocks):
-				// show fewer of its matches.
+
 				for k := limit / 2; k >= 1 && used+cost > detailBudget; k /= 2 {
 					txt, n = r.group(g, k)
 					cost = tokens.Count(txt)
@@ -119,7 +111,6 @@ func (r *render) run(notes []string, groups []*fileGroup, total, nfiles int) str
 		}
 	}
 
-	// Header, only when something is not shown line by line.
 	var hdr []string
 	heavyMatches, heavyRoots = 0, []string{}
 	seenRoot := map[string]bool{}
@@ -143,6 +134,9 @@ func (r *render) run(notes []string, groups []*fileGroup, total, nfiles int) str
 	}
 	if capped {
 		s := fmt.Sprintf("showing %d from the first %s", shownMatches, plural(len(shown), "file", "files"))
+		if focused {
+			s = fmt.Sprintf("showing %d from %s, focused first", shownMatches, plural(len(shown), "file", "files"))
+		}
 		if len(rest) == 0 {
 			s = fmt.Sprintf("showing %d", shownMatches)
 		}
@@ -159,8 +153,7 @@ func (r *render) run(notes []string, groups []*fileGroup, total, nfiles int) str
 	}
 
 	r.notes(notes)
-	// Files with a single hit and no context keep grep's own one-line
-	// form; a heading would cost more than the path it factors out.
+
 	prevGroup := false
 	for i, sg := range shown {
 		single := r.withFile && len(sg.g.entries) == 1 && sg.g.entries[0].match
@@ -193,8 +186,6 @@ func (r *render) run(notes []string, groups []*fileGroup, total, nfiles int) str
 	return strings.TrimRight(r.b.String(), "\n")
 }
 
-// notes prints diagnostics verbatim (a flood is counted by message, see
-// fs.CapNotes); runs of "Binary file x matches" are capped with a count.
 func (r *render) notes(notes []string) {
 	var other, bin []string
 	for _, n := range notes {
@@ -216,27 +207,26 @@ func (r *render) notes(notes []string) {
 	}
 }
 
-// group renders one file's entries, the first limit matches (0: all), and
-// returns the text and the number of matches shown.
 func (r *render) group(g *fileGroup, limit int) (string, int) {
 	var b strings.Builder
 	line := func(s string) {
 		b.WriteString(s)
 		b.WriteByte('\n')
 	}
-	// rg's --heading layout: the path once, then its lines as "NN:text"
-	// (match) / "NN-text" (context), a blank line between files.
+
 	indent := ""
 	if r.withFile {
 		line(g.path)
 		if !r.o.numbered && !r.o.context {
-			indent = "  " // unnumbered hits must not look like path lines
+			indent = "  "
 		}
 	}
 	entries := g.entries
 	shownMatches := 0
 	cut := len(entries)
-	if limit > 0 && g.matches > limit {
+	if sel, n := focusPick(r.fx, entries, limit, g.matches); sel != nil {
+		entries, shownMatches = sel, n
+	} else if limit > 0 && g.matches > limit {
 		for i, en := range entries {
 			if en.match {
 				if shownMatches == limit {
@@ -246,13 +236,12 @@ func (r *render) group(g *fileGroup, limit int) (string, int) {
 				shownMatches++
 			}
 		}
-		// Context lines before the first hidden match stay: they may also
-		// be the after-context of the last shown one.
+
 		entries = entries[:cut]
 	} else {
 		shownMatches = g.matches
 	}
-	// Trim separators at the edges.
+
 	for len(entries) > 0 && entries[0].sep {
 		entries = entries[1:]
 	}
@@ -260,16 +249,13 @@ func (r *render) group(g *fileGroup, limit int) (string, int) {
 		entries = entries[:len(entries)-1]
 	}
 
-	// Indentation: hits alone are stripped; with context (and for -v,
-	// whose "hits" are the file's other lines) each contiguous block loses
-	// only its common indentation, so the structure stays visible.
 	blocks := r.o.context || r.o.invert
 	for start := 0; start < len(entries); {
 		end := start
 		for end < len(entries) && !entries[end].sep && (end == start || !blocks || contiguous(entries[end-1], entries[end])) {
 			end++
 		}
-		if end == start { // a separator
+		if end == start {
 			line(indent + "--")
 			start++
 			continue
@@ -304,16 +290,15 @@ func prefix(en entry, o opts) string {
 	}
 	switch {
 	case en.num != "" && en.col != "":
-		return en.num + sep + en.col + sep // --column / --vimgrep
+		return en.num + sep + en.col + sep
 	case en.num != "":
 		return en.num + sep
 	case o.context:
-		return sep // grep's own marker, path factored out
+		return sep
 	}
 	return ""
 }
 
-// contiguous reports whether b directly follows a in the file.
 func contiguous(a, b entry) bool {
 	if a.num == "" || b.num == "" {
 		return true
@@ -337,7 +322,6 @@ func atoi(s string) int {
 	return n
 }
 
-// commonIndent is the leading whitespace shared by every non-blank line.
 func commonIndent(block []entry) string {
 	common, first := "", true
 	for _, en := range block {
@@ -358,7 +342,6 @@ func commonIndent(block []entry) string {
 	return common
 }
 
-// heavy prints one line per dependency directory root with its top files.
 func (r *render) heavy(groups []*fileGroup, roots []string) {
 	if len(groups) == 0 {
 		return
@@ -402,7 +385,6 @@ func (r *render) heavy(groups []*fileGroup, roots []string) {
 	}
 }
 
-// histogram prints "path: N matches" for every file not shown, most first.
 func (r *render) histogram(rest []*fileGroup) {
 	if len(rest) == 0 {
 		return
@@ -418,7 +400,6 @@ func (r *render) histogram(rest []*fileGroup) {
 	}
 }
 
-// tail counts the files past the histogram cap per parent directory.
 func (r *render) tail(rest []*fileGroup) {
 	type dc struct {
 		dir      string

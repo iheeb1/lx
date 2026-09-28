@@ -1,11 +1,4 @@
-// Package lazyre provides regular expressions that compile on first use.
-//
-// lx links ~65 filters with several hundred package-level patterns, but a
-// run uses one filter. Compiling every pattern at init cost ~5 ms and 50k
-// allocations on every invocation (and every agent hook call). A lazyre
-// Regexp compiles once, the first time a method is called; it is safe for
-// concurrent use, and an invalid pattern still panics — at first use
-// rather than at init, which tests exercise.
+// Package lazyre compiles regular expressions on first use.
 package lazyre
 
 import (
@@ -13,7 +6,6 @@ import (
 	"sync"
 )
 
-// Regexp is a *regexp.Regexp compiled on first use.
 type Regexp struct {
 	expr string
 	once sync.Once
@@ -25,7 +17,6 @@ var (
 	all   []*Regexp
 )
 
-// New returns a lazily compiled regexp for expr.
 func New(expr string) *Regexp {
 	r := &Regexp{expr: expr}
 	allMu.Lock()
@@ -34,9 +25,6 @@ func New(expr string) *Regexp {
 	return r
 }
 
-// CompileAll compiles every Regexp created so far and returns the patterns
-// that fail to compile. Tests call it so an invalid pattern can't hide
-// behind lazy compilation.
 func CompileAll() (bad []string) {
 	allMu.Lock()
 	list := append([]*Regexp(nil), all...)
@@ -54,14 +42,12 @@ func CompileAll() (bad []string) {
 	return bad
 }
 
-// Count reports how many lazy regexps exist (compiled or not).
 func Count() int {
 	allMu.Lock()
 	defer allMu.Unlock()
 	return len(all)
 }
 
-// Get returns the compiled regexp.
 func (r *Regexp) Get() *regexp.Regexp {
 	r.once.Do(func() { r.re = regexp.MustCompile(r.expr) })
 	return r.re

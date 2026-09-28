@@ -1,0 +1,130 @@
+npx mocha --require test/support/env --reporter spec --check-leaks test/ test/acceptance/
+(node:26947) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+
+[1252 passing tests hidden]
+  1252 passing (2s)
+  9 failing
+
+  1) req
+       .subdomains
+         when present
+           should return an array:
+      Error: expected [ 'ferrets', 'tobi' ] response body, got [ 'tobi' ]
+      + expected - actual
+       [
+      +  "ferrets"
+         "tobi"
+       ]
+      at Context.<anonymous> (test/req.subdomains.js:19:10)
+      … 11 library frames (node:internal, supertest, node:events, …)
+
+  2) req
+       .subdomains
+         with trusted X-Forwarded-Host
+           should return an array:
+      Error: expected [ 'ferrets', 'tobi' ] response body, got [ 'tobi' ]
+      + expected - actual
+       [
+      +  "ferrets"
+         "tobi"
+       ]
+      at Context.<anonymous> (test/req.subdomains.js:91:10)
+      … 11 library frames (node:internal, supertest, node:events, …)
+
+  3) req
+       .subdomains
+         when subdomain offset is set
+           when subdomain offset is zero
+             should return an array with the whole domain:
+      Error: expected [ 'com', 'example', 'sub', 'ferrets', 'tobi' ] response body, got [ 'example', 'sub', 'ferrets', 'tobi' ]
+      + expected - actual
+       [
+      +  "com"
+         "example"
+         "sub"
+         "ferrets"
+         "tobi"
+      at Context.<anonymous> (test/req.subdomains.js:108:12)
+      … 11 library frames (node:internal, supertest, node:events, …)
+
+  4) req
+       .subdomains
+         when subdomain offset is set
+           when subdomain offset is zero
+             should return an array with the whole IPv4:
+      Error: expected [ '127.0.0.1' ] response body, got []
+      + expected - actual
+      -[]
+      +[
+      +  "127.0.0.1"
+      +]
+      at Context.<anonymous> (test/req.subdomains.js:122:12)
+      … 11 library frames (node:internal, supertest, node:events, …)
+
+  5) req
+       .subdomains
+         when subdomain offset is set
+           when subdomain offset is zero
+             should return an array with the whole IPv6:
+      Error: expected [ '[::1]' ] response body, got []
+      + expected - actual
+      -[]
+      +[
+      +  "[::1]"
+      +]
+      at Context.<anonymous> (test/req.subdomains.js:136:12)
+      … 11 library frames (node:internal, supertest, node:events, …)
+
+  6) req
+       .subdomains
+         when subdomain offset is set
+           when present
+             should return an array:
+      Error: expected [ 'ferrets', 'tobi' ] response body, got [ 'tobi' ]
+      + expected - actual
+       [
+      +  "ferrets"
+         "tobi"
+       ]
+      at Context.<anonymous> (test/req.subdomains.js:152:12)
+      … 11 library frames (node:internal, supertest, node:events, …)
+
+  7) res
+       .status(code)
+         accept valid ranges
+           should set the response status code to 700:
+     Error: expected 700 "undefined", got 500 "Internal Server Error"
+      at Context.<anonymous> (test/res.status.js:91:12)
+      … 10 library frames (node:internal, supertest, node:events, …)
+
+  8) res
+       .status(code)
+         accept valid ranges
+           should set the response status code to 800:
+     Error: expected 800 "undefined", got 500 "Internal Server Error"
+      at Context.<anonymous> (test/res.status.js:103:12)
+      … 10 library frames (node:internal, supertest, node:events, …)
+
+  9) res
+       .status(code)
+         accept valid ranges
+           should set the response status code to 900:
+     Error: expected 900 "undefined", got 500 "Internal Server Error"
+      at Context.<anonymous> (test/res.status.js:115:12)
+      … 10 library frames (node:internal, supertest, node:events, …)
+
+rake aborted!
+Command failed with status (9): [npx mocha --require test/support/env --reporter spec --check-leaks test/ test/acceptance/]
+Rakefile:2:in 'block in <top (required)>'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:188:in 'Rake::Application#invoke_task'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:138:in 'block (2 levels) in Rake::Application#top_level'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:138:in 'Array#each'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:138:in 'block in Rake::Application#top_level'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:147:in 'Rake::Application#run_with_threads'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:132:in 'Rake::Application#top_level'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:83:in 'block in Rake::Application#run'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:214:in 'Rake::Application#standard_exception_handling'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:80:in 'Rake::Application#run'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/exe/rake:27:in '<top (required)>'
+Tasks: TOP => test
+(See full trace by running task with --trace)

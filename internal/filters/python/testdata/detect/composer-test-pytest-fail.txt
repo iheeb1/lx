@@ -1,0 +1,211 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.5.0
+rootdir: /home/user/src/click
+configfile: pyproject.toml
+collected 152 items
+
+tests/test_options.py ....F..........................FF................. [ 32%]
+...............................................................          [ 74%]
+tests/test_types.py ........F.....F..FF.F.............s....              [100%]
+
+=================================== FAILURES ===================================
+________________________________ test_counting _________________________________
+
+runner = <click.testing.CliRunner object at 0x10846edc0>
+
+    def test_counting(runner):
+        @click.command()
+        @click.option("-v", count=True, help="Verbosity", type=click.IntRange(0, 3))
+        def cli(v):
+            click.echo(f"verbosity={v:d}")
+    
+        result = runner.invoke(cli, ["-vvv"])
+        assert not result.exception
+        assert result.output == "verbosity=3\n"
+    
+        result = runner.invoke(cli, ["-vvvv"])
+        assert result.exception
+>       assert "Invalid value for '-v': 4 is not in the range 0<=x<=3." in result.output
+E       assert "Invalid value for '-v': 4 is not in the range 0<=x<=3." in "Usage: cli [OPTIONS]\nTry 'cli --help' for help.\n\nError: Invalid value for '-v': 4 is not in the range 0<=x<3.\n"
+E        +  where "Usage: cli [OPTIONS]\nTry 'cli --help' for help.\n\nError: Invalid value for '-v': 4 is not in the range 0<=x<3.\n" = <Result SystemExit(2)>.output
+
+tests/test_options.py:69: AssertionError
+_______________ test_intrange_default_help_text[type0-1<=x<=32] ________________
+
+type = <IntRange 1<=x<32>, expect = '1<=x<=32'
+
+    @pytest.mark.parametrize(
+        ("type", "expect"),
+        [
+            (click.IntRange(1, 32), "1<=x<=32"),
+            (click.IntRange(1, 32, min_open=True, max_open=True), "1<x<32"),
+            (click.IntRange(1), "x>=1"),
+            (click.IntRange(max=32), "x<=32"),
+        ],
+    )
+    def test_intrange_default_help_text(type, expect):
+        option = click.Option(["--num"], type=type, show_default=True, default=2)
+        context = click.Context(click.Command("test"))
+        result = option.get_help_record(context)[1]
+>       assert expect in result
+E       AssertionError: assert '1<=x<=32' in '[default: 2; 1<=x<32]'
+
+tests/test_options.py:335: AssertionError
+________________ test_intrange_default_help_text[type1-1<x<32] _________________
+
+type = <IntRange 1<x<=32>, expect = '1<x<32'
+
+    @pytest.mark.parametrize(
+        ("type", "expect"),
+        [
+            (click.IntRange(1, 32), "1<=x<=32"),
+            (click.IntRange(1, 32, min_open=True, max_open=True), "1<x<32"),
+            (click.IntRange(1), "x>=1"),
+            (click.IntRange(max=32), "x<=32"),
+        ],
+    )
+    def test_intrange_default_help_text(type, expect):
+        option = click.Option(["--num"], type=type, show_default=True, default=2)
+        context = click.Context(click.Command("test"))
+        result = option.get_help_record(context)[1]
+>       assert expect in result
+E       AssertionError: assert '1<x<32' in '[default: 2; 1<x<=32]'
+
+tests/test_options.py:335: AssertionError
+____________________________ test_range[type8-5-4] _____________________________
+
+type = <IntRange x<5 clamped>, value = '5', expect = 4
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "3", 3),
+            (click.IntRange(5), "5", 5),
+            (click.IntRange(5), "100", 100),
+            (click.IntRange(max=5), "5", 5),
+            (click.IntRange(max=5), "-100", -100),
+            (click.IntRange(0, clamp=True), "-1", 0),
+            (click.IntRange(max=5, clamp=True), "6", 5),
+            (click.IntRange(0, min_open=True, clamp=True), "0", 1),
+            (click.IntRange(max=5, max_open=True, clamp=True), "5", 4),
+            (click.FloatRange(0.5, 1.5), "1.2", 1.2),
+            (click.FloatRange(0.5, min_open=True), "0.51", 0.51),
+            (click.FloatRange(max=1.5, max_open=True), "1.49", 1.49),
+            (click.FloatRange(0.5, clamp=True), "-0.0", 0.5),
+            (click.FloatRange(max=1.5, clamp=True), "inf", 1.5),
+        ],
+    )
+    def test_range(type, value, expect):
+>       assert type.convert(value, None, None) == expect
+E       AssertionError: assert 5 == 4
+E        +  where 5 = convert('5', None, None)
+E        +    where convert = <IntRange x<5 clamped>.convert
+
+tests/test_types.py:32: AssertionError
+___________ test_range_fail[type0-6-6 is not in the range 0<=x<=5.] ____________
+
+type = <IntRange 0<=x<5>, value = '6', expect = '6 is not in the range 0<=x<=5.'
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "6", "6 is not in the range 0<=x<=5."),
+            (click.IntRange(5), "4", "4 is not in the range x>=5."),
+            (click.IntRange(max=5), "6", "6 is not in the range x<=5."),
+            (click.IntRange(0, 5, min_open=True), 0, "0<x<=5"),
+            (click.IntRange(0, 5, max_open=True), 5, "0<=x<5"),
+            (click.FloatRange(0.5, min_open=True), 0.5, "x>0.5"),
+            (click.FloatRange(max=1.5, max_open=True), 1.5, "x<1.5"),
+        ],
+    )
+    def test_range_fail(type, value, expect):
+        with pytest.raises(click.BadParameter) as exc_info:
+            type.convert(value, None, None)
+    
+>       assert expect in exc_info.value.message
+E       AssertionError: assert '6 is not in the range 0<=x<=5.' in '6 is not in the range 0<=x<5.'
+E        +  where '6 is not in the range 0<=x<5.' = BadParameter('6 is not in the range 0<=x<5.').message
+E        +    where BadParameter('6 is not in the range 0<=x<5.') = <ExceptionInfo BadParameter('6 is not in the range 0<=x<5.') tblen=3>.value
+
+tests/test_types.py:51: AssertionError
+_______________________ test_range_fail[type3-0-0<x<=5] ________________________
+
+type = <IntRange 0<x<5>, value = 0, expect = '0<x<=5'
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "6", "6 is not in the range 0<=x<=5."),
+            (click.IntRange(5), "4", "4 is not in the range x>=5."),
+            (click.IntRange(max=5), "6", "6 is not in the range x<=5."),
+            (click.IntRange(0, 5, min_open=True), 0, "0<x<=5"),
+            (click.IntRange(0, 5, max_open=True), 5, "0<=x<5"),
+            (click.FloatRange(0.5, min_open=True), 0.5, "x>0.5"),
+            (click.FloatRange(max=1.5, max_open=True), 1.5, "x<1.5"),
+        ],
+    )
+    def test_range_fail(type, value, expect):
+        with pytest.raises(click.BadParameter) as exc_info:
+            type.convert(value, None, None)
+    
+>       assert expect in exc_info.value.message
+E       AssertionError: assert '0<x<=5' in '0 is not in the range 0<x<5.'
+E        +  where '0 is not in the range 0<x<5.' = BadParameter('0 is not in the range 0<x<5.').message
+E        +    where BadParameter('0 is not in the range 0<x<5.') = <ExceptionInfo BadParameter('0 is not in the range 0<x<5.') tblen=3>.value
+
+tests/test_types.py:51: AssertionError
+_______________________ test_range_fail[type4-5-0<=x<5] ________________________
+
+type = <IntRange 0<=x<=5>, value = 5, expect = '0<=x<5'
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "6", "6 is not in the range 0<=x<=5."),
+            (click.IntRange(5), "4", "4 is not in the range x>=5."),
+            (click.IntRange(max=5), "6", "6 is not in the range x<=5."),
+            (click.IntRange(0, 5, min_open=True), 0, "0<x<=5"),
+            (click.IntRange(0, 5, max_open=True), 5, "0<=x<5"),
+            (click.FloatRange(0.5, min_open=True), 0.5, "x>0.5"),
+            (click.FloatRange(max=1.5, max_open=True), 1.5, "x<1.5"),
+        ],
+    )
+    def test_range_fail(type, value, expect):
+        with pytest.raises(click.BadParameter) as exc_info:
+>           type.convert(value, None, None)
+E           Failed: DID NOT RAISE <class 'click.exceptions.BadParameter'>
+
+tests/test_types.py:49: Failed
+_______________________ test_range_fail[type6-1.5-x<1.5] _______________________
+
+type = <FloatRange x<1.5>, value = 1.5, expect = 'x<1.5'
+
+    @pytest.mark.parametrize(
+        ("type", "value", "expect"),
+        [
+            (click.IntRange(0, 5), "6", "6 is not in the range 0<=x<=5."),
+            (click.IntRange(5), "4", "4 is not in the range x>=5."),
+            (click.IntRange(max=5), "6", "6 is not in the range x<=5."),
+            (click.IntRange(0, 5, min_open=True), 0, "0<x<=5"),
+            (click.IntRange(0, 5, max_open=True), 5, "0<=x<5"),
+            (click.FloatRange(0.5, min_open=True), 0.5, "x>0.5"),
+            (click.FloatRange(max=1.5, max_open=True), 1.5, "x<1.5"),
+        ],
+    )
+    def test_range_fail(type, value, expect):
+        with pytest.raises(click.BadParameter) as exc_info:
+>           type.convert(value, None, None)
+E           Failed: DID NOT RAISE <class 'click.exceptions.BadParameter'>
+
+tests/test_types.py:49: Failed
+=========================== short test summary info ============================
+FAILED tests/test_options.py::test_counting - assert "Invalid value for '-v':...
+FAILED tests/test_options.py::test_intrange_default_help_text[type0-1<=x<=32]
+FAILED tests/test_options.py::test_intrange_default_help_text[type1-1<x<32]
+FAILED tests/test_types.py::test_range[type8-5-4] - AssertionError: assert 5 ...
+FAILED tests/test_types.py::test_range_fail[type0-6-6 is not in the range 0<=x<=5.]
+FAILED tests/test_types.py::test_range_fail[type3-0-0<x<=5] - AssertionError:...
+FAILED tests/test_types.py::test_range_fail[type4-5-0<=x<5] - Failed: DID NOT...
+FAILED tests/test_types.py::test_range_fail[type6-1.5-x<1.5] - Failed: DID NO...
+=================== 8 failed, 143 passed, 1 skipped in 0.22s ===================
+Script pytest tests/test_options.py tests/test_types.py handling the test event returned with error code 1

@@ -38,24 +38,20 @@ func TestMainFlags(t *testing.T) {
 		t.Error("examples in JSON without --examples")
 	}
 
-	// --examples implies --fidelity and lists the misses, locally.
 	code, out, _ = runMain(t, append(all, "--examples")...)
 	if code != 0 || !strings.Contains(out, "grep  src/mod3/unit170.go:182  (filter)") {
 		t.Errorf("--examples: exit %d\n%s", code, out)
 	}
 	code, out, _ = runMain(t, append(all, "--examples", "--json")...)
-	// Two filter misses (the a-* greps) and three the agent's own head cut
-	// from lx's view (l-grep-head-cut: file11.go's 3 matches). The
-	// l-head-cuts-view go test is not rewritten (its failure is on stderr,
-	// past an unmerged head), so it has no reference.
-	if code != 0 || json.Unmarshal([]byte(out), &rep) != nil || rep.ActedOn == nil || len(rep.ActedOn.Examples) != 5 {
+
+	if code != 0 || json.Unmarshal([]byte(out), &rep) != nil || rep.ActedOn == nil || len(rep.ActedOn.Examples) != 2 {
 		t.Errorf("--examples --json: exit %d\n%s", code, out)
 	}
 	reasons := map[string]int{}
 	for _, m := range rep.ActedOn.Examples {
 		reasons[m.Reason]++
 	}
-	if reasons["filter"] != 2 || reasons["cut"] != 3 {
+	if reasons["filter"] != 2 || reasons["cut"] != 0 {
 		t.Errorf("example reasons = %v", reasons)
 	}
 }

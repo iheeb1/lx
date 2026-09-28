@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-list",
+    "."
+  ],
+  "shell": "go test -list .",
+  "exit_code": 0,
+  "description": "REAL (negative): go test -list . in a small module: bare test, benchmark, fuzz and example names, then the ok line; a listing (the go-test filter declines -list)",
+  "cwd": "/home/user/src/godemo",
+  "repo": "",
+  "tool": ""
+}

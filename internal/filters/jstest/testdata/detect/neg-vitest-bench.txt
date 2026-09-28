@@ -1,0 +1,16 @@
+Benchmarking is an experimental feature.
+Breaking changes might not follow SemVer, please pin Vitest's version when using it.
+
+ RUN  v4.1.11 /home/user/src/ufo
+
+
+ ✓ bench/join.bench.ts > url helpers 2300ms
+     name                 hz     min     max    mean     p75     p99    p995    p999     rme  samples
+   · joinURL    5,330,966.64  0.0000  9.9870  0.0002  0.0002  0.0003  0.0005  0.0015  ±4.38%  2665484
+   · withQuery    583,703.18  0.0014  2.0650  0.0017  0.0016  0.0022  0.0049  0.0316  ±1.13%   291852
+
+ BENCH  Summary
+
+  joinURL - bench/join.bench.ts > url helpers
+    9.13x faster than withQuery
+

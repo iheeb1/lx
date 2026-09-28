@@ -1,0 +1,101 @@
+--- typecheck
+src/array.ts(151,3): error TS2416: Property 'clone' in type 'ArraySchema<TIn, TContext, TDefault, TFlags>' is not assignable to the same property in base type 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Type '(spec?: SchemaSpec<any> | undefined) => this' is not assignable to type '(spec: Partial<SchemaSpec<any>>, reason: string) => this'.
+    Types of parameters 'spec' and 'spec' are incompatible.
+      Type 'Partial<SchemaSpec<any>>' is not assignable to type 'SchemaSpec<any>'.
+        Types of property 'coerce' are incompatible.
+          Type 'boolean | undefined' is not assignable to type 'boolean'.
+            Type 'undefined' is not assignable to type 'boolean'.
+src/array.ts(152,24): error TS2554: Expected 2 arguments, but got 1.
+src/array.ts(163,3): error TS2416: Property 'concat' in type 'ArraySchema<TIn, TContext, TDefault, TFlags>' is not assignable to the same property in base type 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Type '{ <IIn extends Maybe<any[]>, IC, ID, IF extends Flags>(schema: ArraySchema<IIn, IC, ID, IF>): ArraySchema<Concat<TIn, IIn>, TContext & IC, Extract<...> extends never ? TDefault : ID, TFlags | IF>; (schema: this): this; }' is not assignable to type '{ (schema: this): this; (schema: AnySchema<any, any, any, Flags>): AnySchema<any, any, any, Flags>; }'.
+    Types of parameters 'schema' and 'schema' are incompatible.
+      Type 'Schema<any, any, any, Flags>' is missing the following properties from type 'ArraySchema<any, any, any, any>': json, of, length, min, and 3 more.
+src/array.ts(171,3): error TS2416: Property 'concat' in type 'ArraySchema<TIn, TContext, TDefault, TFlags>' is not assignable to the same property in base type 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Type '{ <IIn extends Maybe<any[]>, IC, ID, IF extends Flags>(schema: ArraySchema<IIn, IC, ID, IF>): ArraySchema<Concat<TIn, IIn>, TContext & IC, Extract<...> extends never ? TDefault : ID, TFlags | IF>; (schema: this): this; }' is not assignable to type '{ (schema: this): this; (schema: AnySchema<any, any, any, Flags>): AnySchema<any, any, any, Flags>; }'.
+src/array.ts(172,3): error TS2416: Property 'concat' in type 'ArraySchema<TIn, TContext, TDefault, TFlags>' is not assignable to the same property in base type 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Type '{ <IIn extends Maybe<any[]>, IC, ID, IF extends Flags>(schema: ArraySchema<IIn, IC, ID, IF>): ArraySchema<Concat<TIn, IIn>, TContext & IC, Extract<...> extends never ? TDefault : ID, TFlags | IF>; (schema: this): this; }' is not assignable to type '{ (schema: this): this; (schema: AnySchema<any, any, any, Flags>): AnySchema<any, any, any, Flags>; }'.
+src/array.ts(297,26): error TS2430: Interface 'ArraySchema<TIn, TContext, TDefault, TFlags>' incorrectly extends interface 'Schema<TIn, TContext, TDefault, TFlags>'.
+src/array.ts(297,26): error TS2430: Interface 'ArraySchema<TIn, TContext, TDefault, TFlags>' incorrectly extends interface 'Schema<TIn, TContext, TDefault, TFlags>'.
+  Types of property 'clone' are incompatible.
+    Type '(spec?: SchemaSpec<any> | undefined) => this' is not assignable to type '(spec: Partial<SchemaSpec<any>>, reason: string) => this'.
+src/boolean.ts(61,16): error TS2554: Expected 2 arguments, but got 1.
+src/boolean.ts(75,16): error TS2554: Expected 2 arguments, but got 1.
+src/locale.ts(101,3): error TS2322: Type '{ length: string; min: string; max: string; matches: string; email: string; url: string; uuid: string; datetime: string; datetime_precision: string; datetime_offset: string; trim: string; lowercase: string; uppercase: string; }' is not assignable to type 'Required<StringLocale>'.
+  Object literal may only specify known properties, and 'min' does not exist in type 'Required<StringLocale>'.
+src/number.ts(135,40): error TS2554: Expected 2 arguments, but got 1.
+src/number.ts(151,8): error TS2554: Expected 2 arguments, but got 1.
+src/object.ts(285,24): error TS2554: Expected 2 arguments, but got 1.
+src/Reference.ts(1,10): error TS2614: Module '"property-expr"' has no exported member 'getter'. Did you mean to use 'import getter from "property-expr"' instead?
+src/schema.ts(225,41): error TS6133: 'reason' is declared but its value is never read.
+src/schema.ts(255,21): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(265,21): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(289,27): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(342,23): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(391,31): error TS2554: Expected 2 arguments, but got 1.
+src/schema.ts(683,21): error TS2554: Expected 2 arguments, but got 1.
+src/schema.ts(689,17): error TS2554: Expected 2 arguments, but got 1.
+src/schema.ts(693,23): error TS2554: Expected 2 arguments, but got 1.
+src/schema.ts(705,23): error TS2554: Expected 2 arguments, but got 1.
+src/schema.ts(731,17): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(736,17): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(740,21): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(786,21): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(827,21): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(845,21): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(876,21): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(909,21): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(936,21): error TS2554: Expected 2 arguments, but got 0.
+src/schema.ts(947,59): error TS2554: Expected 2 arguments, but got 0.
+src/string.ts(40,3): error TS2554: Expected 2 arguments, but got 1.
+src/string.ts(138,48): error TS2339: Property 'min' does not exist on type 'Required<StringLocale>'.
+src/string.ts(154,48): error TS2339: Property 'max' does not exist on type 'Required<StringLocale>'.
+src/string.ts(284,8): error TS2554: Expected 2 arguments, but got 1.
+src/string.ts(291,9): error TS2554: Expected 2 arguments, but got 1.
+src/string.ts(297,8): error TS2554: Expected 2 arguments, but got 1.
+src/string.ts(304,9): error TS2554: Expected 2 arguments, but got 1.
+src/tuple.ts(169,59): error TS2554: Expected 2 arguments, but got 0.
+src/util/createValidation.ts(144,38): error TS2554: Expected 2 arguments, but got 1.
+src/util/reach.ts(1,10): error TS2614: Module '"property-expr"' has no exported member 'forEach'. Did you mean to use 'import forEach from "property-expr"' instead?
+src/util/reach.ts(21,18): error TS7006: Parameter '_part' implicitly has an 'any' type.
+src/util/reach.ts(21,25): error TS7006: Parameter 'isBracket' implicitly has an 'any' type.
+src/util/reach.ts(21,36): error TS7006: Parameter 'isArray' implicitly has an 'any' type.
+src/util/sortFields.ts(3,10): error TS2614: Module '"property-expr"' has no exported member 'split'. Did you mean to use 'import split from "property-expr"' instead?
+--- unit tests
+
+ RUN  v3.2.7 /home/user/src/yup
+
+ ✓ |sync| test/array.ts (29 tests) 14ms
+ ✓ |sync| test/object.ts (60 tests) 53ms
+ ✓ |sync| test/standardSchema.ts (48 tests) 58ms
+ ✓ |async| test/standardSchema.ts (48 tests) 49ms
+ ✓ |async| test/object.ts (60 tests) 59ms
+ ✓ |async| test/mixed.ts (84 tests) 57ms
+ ✓ |sync| test/mixed.ts (87 tests) 93ms
+ ✓ |async| test/date.ts (6 tests) 9ms
+ ✓ |async| test/number.ts (54 tests) 14ms
+ ✓ |async| test/array.ts (29 tests) 18ms
+ ✓ |async| test/string.ts (44 tests | 1 skipped) 21ms
+ ✓ |sync| test/string.ts (44 tests | 1 skipped) 18ms
+ ✓ |async| test/yup.js (23 tests) 9ms
+ ✓ |sync| test/number.ts (54 tests) 18ms
+ ✓ |sync| test/date.ts (6 tests) 9ms
+ ✓ |sync| test/setLocale.ts (5 tests) 2ms
+ ✓ |sync| test/tuple.ts (15 tests) 8ms
+ ✓ |sync| test/lazy.ts (6 tests) 7ms
+ ✓ |async| test/tuple.ts (15 tests) 10ms
+ ✓ |async| test/lazy.ts (6 tests) 7ms
+ ✓ |sync| test/yup.js (23 tests) 8ms
+ ✓ |async| test/ValidationError.ts (8 tests) 2ms
+ ✓ |sync| test/bool.ts (6 tests) 5ms
+ ✓ |sync| test/util/parseIsoDate.ts (45 tests) 4ms
+ ✓ |async| test/bool.ts (6 tests) 6ms
+ ✓ |async| test/util/parseIsoDate.ts (45 tests) 4ms
+ ✓ |sync| test/ValidationError.ts (8 tests) 3ms
+ ✓ |async| test/setLocale.ts (5 tests) 2ms
+
+ Test Files  28 passed (28)
+      Tests  867 passed | 2 skipped (869)
+   Start at  18:31:25
+   Duration  1.76s (transform 779ms, setup 3.18s, collect 992ms, tests 569ms, environment 9ms, prepare 1.51s)
+

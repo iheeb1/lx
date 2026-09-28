@@ -8,24 +8,16 @@ import (
 	"time"
 )
 
-// Summary aggregates records. Savings are never clamped: a command where lx
-// made output bigger counts against the total (it shouldn't happen — the
-// never-worse gate prevents it — and if it does you should see it).
-//
-// Recalls (`lx show` of a stored run) are not commands: they add nothing to
-// Commands, Condensed, Raw, Out, Saved, Failures or Daily. The tokens they
-// printed are RecallTokens, and NetSaved = Saved − RecallTokens, which can
-// be negative: reading a run back in full costs more than its view saved.
 type Summary struct {
 	Commands     int       `json:"commands"`
-	Condensed    int       `json:"condensed"` // commands where lx changed the view
+	Condensed    int       `json:"condensed"`
 	Raw          int       `json:"raw_tokens"`
 	Out          int       `json:"out_tokens"`
 	Saved        int       `json:"saved_tokens"`
 	Pct          float64   `json:"saved_pct"`
 	Failures     int       `json:"failed_commands"`
-	Recalls      int       `json:"recalls"`       // lx show runs
-	RecallTokens int       `json:"recall_tokens"` // tokens they printed
+	Recalls      int       `json:"recalls"`
+	RecallTokens int       `json:"recall_tokens"`
 	NetSaved     int       `json:"net_saved_tokens"`
 	NetPct       float64   `json:"net_saved_pct"`
 	ByCmd        []CmdStat `json:"by_command"`
@@ -49,7 +41,6 @@ type DayStat struct {
 	Saved int    `json:"saved_tokens"`
 }
 
-// Summarize builds the report; days bounds the daily series.
 func Summarize(recs []Record, days int, now time.Time) Summary {
 	var s Summary
 	by := map[string]*CmdStat{}
@@ -128,8 +119,6 @@ func pct(saved, raw int) float64 {
 	return 100 * float64(saved) / float64(raw)
 }
 
-// Text renders the report for a terminal. Recall lines and the recalls
-// column appear once anything was read back with lx show.
 func (s Summary) Text(w io.Writer, top int) {
 	if s.Commands == 0 && s.Recalls == 0 {
 		fmt.Fprintln(w, "lx gain: no commands recorded yet. Run something through lx (e.g. `lx git status`).")

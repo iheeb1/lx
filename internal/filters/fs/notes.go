@@ -6,15 +6,8 @@ import (
 	"strings"
 )
 
-// maxNotes bounds how many diagnostic lines are printed verbatim.
 const maxNotes = 40
 
-// CapNotes returns diagnostics ("find: ./x: Permission denied") verbatim
-// when there are at most maxNotes of them. Beyond that the first
-// maxNotes-10 are kept and the rest are counted by message, so a flood of
-// permission errors from `find /` stays exact without drowning the listing:
-//
-//	… +9,950 more: Permission denied ×9,948, No such file or directory ×2
 func CapNotes(notes []string) []string {
 	if len(notes) <= maxNotes {
 		return notes

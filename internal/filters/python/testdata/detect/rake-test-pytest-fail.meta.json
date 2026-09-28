@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rake",
+    "test"
+  ],
+  "shell": "rake test",
+  "exit_code": 1,
+  "description": "REAL: rake test whose task runs pytest tests in pallets/click with the corpus's injected regressions (types.py range bounds/help text, parser.py option normalization): pytest's report, then rake's own failure lines",
+  "cwd": "/home/user/src/click",
+  "repo": "pallets/click",
+  "tool": "pytest"
+}

@@ -4,7 +4,6 @@ package tee
 
 import "os"
 
-// No flock here: liveness falls back to the pid (pidAlive).
 const haveLocks = false
 
 func lockPart(*os.File) {}

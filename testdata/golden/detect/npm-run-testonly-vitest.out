@@ -1,0 +1,7 @@
+> yup@1.7.1 testonly
+> vitest run
+
+[28 passing files, 867 passing tests hidden]
+ Test Files  28 passed (28)
+      Tests  867 passed | 2 skipped (869)
+   Duration  2.16s (transform 863ms, setup 3.93s, collect 1.18s, tests 451ms, environment 5ms, prepare 1.87s)

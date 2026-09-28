@@ -12,59 +12,54 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// corpusCase is one real capture this package owns: from the shared corpus
-// (testdata/corpus) or, when local, from this package's testdata (captured
-// for formats the corpus lacks: pnpm, yarn, webpack, next, more tsc/eslint).
 type corpusCase struct {
 	category, name string
 	local          bool
-	filter         string // filter engine.Find must pick
-	// process is the Result.Filter engine.Process must report. It differs
-	// from filter only where the pipeline legitimately does not use the
-	// filtered view; the reason is in the comment next to the case.
+	filter         string
+
 	process string
 }
 
 var corpus = []corpusCase{
-	{"node", "tsc-noemit-errors", false, "tsc", "passthrough"},              // plain tsc is already dense: kept verbatim, nothing to save
-	{"node", "tsc-noemit-types-node-incompat", false, "tsc", "passthrough"}, // same
+	{"node", "tsc-noemit-errors", false, "tsc", "passthrough"},
+	{"node", "tsc-noemit-types-node-incompat", false, "tsc", "passthrough"},
 	{"node", "tsc-noemit-errors-pretty-color", false, "tsc", "tsc"},
 	{"node", "eslint-many-problems", false, "eslint", "eslint"},
 	{"node", "eslint-problems-color", false, "eslint", "eslint"},
 	{"node", "npm-install-deprecations", false, "npm-install", "npm-install"},
-	{"node", "npm-install-eresolve-error", false, "npm-install", "passthrough"}, // every npm error line is kept; dropping the bare "npm error" separators saves <10%
+	{"node", "npm-install-eresolve-error", false, "npm-install", "passthrough"},
 	{"node", "npm-install-no-lockfile", false, "npm-install", "npm-install"},
 	{"node", "npm-uninstall", false, "npm-install", "npm-install"},
-	{"node", "npm-create-vite", false, "npm-install", "passthrough"}, // under engine.SmallOutput tokens: never filtered
+	{"node", "npm-create-vite", false, "npm-install", "passthrough"},
 	{"node", "npm-ls", false, "npm-ls", "npm-ls"},
 	{"node", "npm-ls-all", false, "npm-ls", "npm-ls"},
 	{"node", "npm-audit", false, "npm-audit", "npm-audit"},
 	{"node", "npm-outdated", false, "npm-outdated", "npm-outdated"},
 	{"node", "npm-run-build-vite", false, "npm-run", "npm-run"},
-	{"node", "npm-run-build-vite-tsc-fail", false, "npm-run", "passthrough"}, // under engine.SmallOutput tokens
+	{"node", "npm-run-build-vite-tsc-fail", false, "npm-run", "passthrough"},
 
 	{"node", "tsc-build-pretty", true, "tsc", "tsc"},
-	{"node", "tsc-build-plain", true, "tsc", "passthrough"},    // plain tsc: kept verbatim
-	{"node", "tsc-unknown-option", true, "tsc", "passthrough"}, // one line
+	{"node", "tsc-build-plain", true, "tsc", "passthrough"},
+	{"node", "tsc-unknown-option", true, "tsc", "passthrough"},
 	{"node", "eslint-max-warnings", true, "eslint", "eslint"},
 	{"node", "eslint-distinct-warnings", true, "eslint", "eslint"},
-	{"node", "eslint-parse-error", true, "eslint", "passthrough"}, // four lines
+	{"node", "eslint-parse-error", true, "eslint", "passthrough"},
 	{"node", "vite-build-unresolved", true, "npm-run", "npm-run"},
 	{"node", "npm-run-build-vite-chunk-warning", true, "npm-run", "npm-run"},
 	{"node", "npm-run-build-webpack-warnings", true, "npm-run", "npm-run"},
 	{"node", "npm-run-build-webpack-error", true, "npm-run", "npm-run"},
 	{"node", "npm-run-build-next", true, "npm-run", "npm-run"},
-	{"node", "npm-run-build-next-error", true, "npm-run", "normalize"}, // stripping the ANSI code frame colors saves more than the filter
+	{"node", "npm-run-build-next-error", true, "npm-run", "normalize"},
 	{"node", "npm-run-lint-eslint-fail", true, "npm-run", "npm-run"},
-	{"node", "npm-ci", true, "npm-install", "passthrough"}, // under engine.SmallOutput tokens
+	{"node", "npm-ci", true, "npm-install", "passthrough"},
 	{"node", "pnpm-install", true, "npm-install", "npm-install"},
 	{"node", "pnpm-add", true, "npm-install", "npm-install"},
-	{"node", "pnpm-add-404", true, "npm-install", "passthrough"}, // only progress lines go: saves <10%
+	{"node", "pnpm-add-404", true, "npm-install", "passthrough"},
 	{"node", "yarn-install", true, "npm-install", "npm-install"},
-	{"node", "yarn-add", true, "npm-install", "passthrough"}, // under engine.SmallOutput tokens
+	{"node", "yarn-add", true, "npm-install", "passthrough"},
 	{"node", "npm-ls-problems", true, "npm-ls", "npm-ls"},
 	{"node", "npm-ls-all-problems", true, "npm-ls", "npm-ls"},
-	{"node", "pnpm-ls", true, "npm-ls", "passthrough"}, // under engine.SmallOutput tokens
+	{"node", "pnpm-ls", true, "npm-ls", "passthrough"},
 	{"node", "pnpm-ls-depth", true, "npm-ls", "npm-ls"},
 	{"node", "yarn-list", true, "npm-ls", "npm-ls"},
 	{"node", "pnpm-outdated", true, "npm-outdated", "npm-outdated"},
@@ -72,35 +67,30 @@ var corpus = []corpusCase{
 	{"node", "pnpm-audit", true, "npm-audit", "npm-audit"},
 	{"node", "yarn-audit", true, "npm-audit", "npm-audit"},
 
-	// Captured for the adversarial review: newer/other versions, flags and
-	// failure shapes.
 	{"node", "eslint9-stylish", true, "eslint", "eslint"},
 	{"node", "eslint9-quiet", true, "eslint", "eslint"},
-	{"node", "eslint9-max-warnings-only", true, "eslint", "passthrough"}, // under engine.SmallOutput tokens
-	{"node", "npm-ls-workspaces", true, "npm-ls", "passthrough"},         // under engine.SmallOutput tokens
+	{"node", "eslint9-max-warnings-only", true, "eslint", "passthrough"},
+	{"node", "npm-ls-workspaces", true, "npm-ls", "passthrough"},
 	{"node", "npm-ls-all-workspaces", true, "npm-ls", "npm-ls"},
-	{"node", "npm-outdated-workspaces", true, "npm-outdated", "passthrough"}, // under engine.SmallOutput tokens
-	{"node", "npm-install-e404", true, "npm-install", "passthrough"},         // under engine.SmallOutput tokens
-	{"node", "npm-install-etarget", true, "npm-install", "passthrough"},      // under engine.SmallOutput tokens
+	{"node", "npm-outdated-workspaces", true, "npm-outdated", "passthrough"},
+	{"node", "npm-install-e404", true, "npm-install", "passthrough"},
+	{"node", "npm-install-etarget", true, "npm-install", "passthrough"},
 	{"node", "npm-ci-out-of-sync", true, "npm-install", "npm-install"},
 	{"node", "npm-install-verbose", true, "npm-install", "npm-install"},
 	{"node", "npm-install-verbose-large", true, "npm-install", "npm-install"},
-	{"node", "npm-run-typecheck-plain", true, "npm-run", "passthrough"}, // plain tsc: kept verbatim
+	{"node", "npm-run-typecheck-plain", true, "npm-run", "passthrough"},
 	{"node", "tsc-pretty-related", true, "tsc", "tsc"},
-	{"node", "pnpm-r-build-tsc-fail", true, "npm-run", "passthrough"},       // under engine.SmallOutput tokens
-	{"node", "pnpm-build-script-recursive", true, "npm-run", "passthrough"}, // pnpm's prefixed lines are kept verbatim: nothing to save
-	{"node", "yarn-typecheck-fail", true, "npm-run", "passthrough"},         // plain tsc: kept verbatim
+	{"node", "pnpm-r-build-tsc-fail", true, "npm-run", "passthrough"},
+	{"node", "pnpm-build-script-recursive", true, "npm-run", "passthrough"},
+	{"node", "yarn-typecheck-fail", true, "npm-run", "passthrough"},
 	{"node", "yarn-lint-fail", true, "npm-run", "npm-run"},
 	{"node", "vite-build-syntax-error", true, "npm-run", "npm-run"},
 	{"node", "npm-run-lint-eslint9-maxwarn", true, "npm-run", "npm-run"},
 }
 
-// corpusBails are real captures a filter matches but must not claim: the
-// output is not in a shape it recognizes, so the generic reducer (or plain
-// passthrough) takes over.
 var corpusBails = []corpusCase{
-	{"node", "eslint9-no-config", true, "eslint", "passthrough"},    // ESLint crash report ("Oops! Something went wrong!")
-	{"node", "npm-run-lint-oxlint", true, "npm-run", "passthrough"}, // oxlint, a linter lx does not parse
+	{"node", "eslint9-no-config", true, "eslint", "passthrough"},
+	{"node", "npm-run-lint-oxlint", true, "npm-run", "passthrough"},
 }
 
 func TestCorpusBails(t *testing.T) {
@@ -175,37 +165,22 @@ func TestCorpus(t *testing.T) {
 
 func pct(in, out int) float64 { return 100 * (1 - float64(out)/float64(max(in, 1))) }
 
-// checkFidelity asserts that nothing error-class was lost. The engine's
-// check (every error-class line survives, whitespace aside) is applied
-// as is, except for the documented reformattings, which are verified
-// structurally instead:
-//   - eslint: repeated messages factored into "×N: l:c l:c" lines;
-//   - npm-ls: tree lines re-drawn with indentation (package names such as
-//     http-errors are error-class words, not errors);
-//   - npm-audit: advisory URLs shortened to the GHSA id.
 func checkFidelity(t *testing.T, filter string, c *engine.Context, clean, got string) {
 	t.Helper()
 	missing := fixture.ErrorLinesMissing(clean, got)
 	if filter == "tsc" || filter == "npm-run" {
-		// A tsc --pretty code frame quotes source ("throw new
-		// Error('failed')"); frames are dropped on purpose, the diagnostic
-		// they illustrate is kept.
 		frames := tscFrameLines(clean, got)
 		missing = without(missing, func(ln string) bool { return frames[ln] })
 	}
 	switch filter {
 	case "eslint", "npm-run":
 		missing = checkESLintFactored(t, c, clean, got, missing)
-		// File headers are shown relative to the working directory; a
-		// path under examples/error/ is not an error line.
+
 		missing = without(missing, func(ln string) bool {
 			rel := engine.Relativize(c, ln)
 			return !strings.HasPrefix(ln, " ") && rel != ln && strings.Contains(got, rel)
 		})
 	case "tsc":
-		// tsc's "Errors  Files" table header is dropped with the table when
-		// every file it lists is already named by a diagnostic; the header
-		// itself says nothing ("Errors" is what makes it error-class).
 		if !strings.Contains(got, "Errors  Files") {
 			table := tscTableLines(clean)
 			missing = without(missing, func(ln string) bool { return table[ln] })
@@ -231,9 +206,6 @@ func checkFidelity(t *testing.T, filter string, c *engine.Context, clean, got st
 	}
 	if c.Exit != 0 {
 		for _, m := range fixture.LocationsMissing(clean, got) {
-			// engine.FoldStacks folds runs of library frames (node_modules)
-			// into "… N library frames (…)"; those locations are the
-			// bundler's internals, not the user's code.
 			if strings.Contains(m, "node_modules/") && strings.Contains(got, " library frames (") {
 				continue
 			}
@@ -247,10 +219,6 @@ var (
 	frameUnderRe = regexp.MustCompile(`^\s+~+$`)
 )
 
-// tscFrameLines returns the source lines of tsc --pretty code frames in
-// clean (a "12 source" gutter line directly above a "   ~~~" underline)
-// whose diagnostic header ("file:l:c - error TS…", the nearest header
-// above) is in got; keys are trimmed like ErrorLinesMissing's results.
 func tscFrameLines(clean, got string) map[string]bool {
 	frames := map[string]bool{}
 	lines := strings.Split(clean, "\n")
@@ -267,15 +235,6 @@ func tscFrameLines(clean, got string) map[string]bool {
 	return frames
 }
 
-// installFoldedOnPurpose reports whether ln, an error-class line of clean
-// missing from got, is one the npm-install filter folds on purpose, checked
-// on the input's structure rather than with the filter's own code:
-//   - a line of npm's usage text: between "npm error Options:" and the
-//     next `npm error Run "npm help <cmd>" for more info` line of an EUSAGE
-//     failure, every line in between an npm error line, with the counted
-//     marker in got;
-//   - a successful "npm http fetch" (2xx/304) or "npm http cache" line
-//     (package names such as http-errors), with the counted marker in got.
 func installFoldedOnPurpose(clean, got, ln string) bool {
 	if strings.HasPrefix(ln, "npm http ") {
 		f := strings.Fields(ln)
@@ -320,21 +279,10 @@ var (
 	moreSuffixRe = regexp.MustCompile(` … \+\d+ more$`)
 )
 
-// checkESLintFactored accounts for the stylish message lines listed in
-// missing. Each must be represented in the output by
-//   - a factored line under its file header ("  error  text  rule  ×N: l:c
-//     l:c …") listing its line:col, or
-//   - a grouped entry ("error  text  rule  ×N in M files:" then
-//     "  file ×n: l:c …", or "error  text  rule  file:l:c" for a message
-//     seen once) listing its line:col, or, when the positions were capped
-//     ("… +K more"), declaring exactly as many occurrences as the input has
-//     for that file and message.
-//
-// It returns the lines it could not account for.
 func checkESLintFactored(t *testing.T, c *engine.Context, clean, got string, missing []string) []string {
 	t.Helper()
-	have := map[string]bool{}  // file, severity, text+rule, position
-	capped := map[string]int{} // file, severity, text+rule → declared count
+	have := map[string]bool{}
+	capped := map[string]int{}
 	file, group := "", []string(nil)
 	outLines := strings.Split(got, "\n")
 	for i, ln := range outLines {
@@ -348,7 +296,6 @@ func checkESLintFactored(t *testing.T, c *engine.Context, clean, got string, mis
 			continue
 		}
 		if group != nil && strings.HasPrefix(ln, "  ") && !strings.Contains(ln, ": ") {
-			// "  a.js ×12, b.js ×3": counts only.
 			for _, e := range strings.Split(strings.TrimSpace(ln), ", ") {
 				if i := strings.LastIndex(e, " ×"); i > 0 {
 					n, _ := strconv.Atoi(e[i+len(" ×"):])
@@ -391,7 +338,7 @@ func checkESLintFactored(t *testing.T, c *engine.Context, clean, got string, mis
 			have[file+"\x00"+m[1]+"\x00"+squash(m[2])+"\x00"+p] = true
 		}
 	}
-	// Occurrences per file and message in the input.
+
 	type occ struct{ key, pos, line string }
 	var occs []occ
 	counts := map[string]int{}
@@ -436,8 +383,6 @@ func checkESLintFactored(t *testing.T, c *engine.Context, clean, got string, mis
 	return rest
 }
 
-// TestCorpusCleanIsNormalized guards the assumption that fixtures reach
-// Apply the way the engine hands them over.
 func TestCorpusCleanIsNormalized(t *testing.T) {
 	for _, tc := range corpus {
 		fc := tc.load(t)
@@ -447,9 +392,6 @@ func TestCorpusCleanIsNormalized(t *testing.T) {
 	}
 }
 
-// TestNoStrayMatches: across the whole shared corpus, these filters claim
-// only the captures listed in corpus (npm test, jest, vitest, mocha, … go
-// to other filters).
 func TestNoStrayMatches(t *testing.T) {
 	mine := map[string]bool{}
 	for _, tc := range corpus {

@@ -7,8 +7,6 @@ import (
 	"testing"
 )
 
-// isolate points every settings location at empty temp dirs so tests never
-// read the developer's real Claude Code configuration.
 func isolate(t *testing.T) (project, user string) {
 	t.Helper()
 	project, user = t.TempDir(), t.TempDir()
@@ -89,21 +87,19 @@ func TestDecide(t *testing.T) {
 		Deny:  []string{"Bash(git push --force:*)", "Bash(rm:*)"},
 	}
 	cases := []struct{ cmd, want string }{
-		// precedence deny > ask > allow
+
 		{"git push --force origin", "deny"},
 		{"git push origin", "ask"},
 		{"git status", "allow"},
 		{"curl example.com", ""},
 		{"", ""},
 
-		// every segment must be allowed; any deny/ask wins
 		{"git status && npm test", "allow"},
 		{"git status && curl x", ""},
 		{"git status && rm -rf /tmp/x", "deny"},
 		{"npm test; git push", "ask"},
 		{"git status & rm -rf /tmp/x", "deny"},
 
-		// env assignments and wrappers
 		{"FOO=1 git push --force", "deny"},
 		{"timeout 60 rm -rf x", "deny"},
 		{"env A=1 rm x", "deny"},
@@ -111,18 +107,15 @@ func TestDecide(t *testing.T) {
 		{"LD_PRELOAD=/tmp/evil.so git status", ""},
 		{"env LD_PRELOAD=x git status", ""},
 
-		// redirects: only 2>&1 is transparent for allow
 		{"git status 2>&1", "allow"},
 		{"git status > /etc/passwd", ""},
 		{"rm x 2>/dev/null", "deny"},
 
-		// cd into a relative subdirectory needs no rule of its own
 		{"cd sub/dir && git status", "allow"},
 		{"cd /etc && git status", ""},
 		{"cd ../other && git status", ""},
 		{"cd ~ && git status", ""},
 
-		// head/tail/cat reading only the pipe need no rule of their own
 		{"git log | head -5", "allow"},
 		{"git log 2>&1 | tail -n +30", "allow"},
 		{"git log | cat", "allow"},
@@ -131,16 +124,71 @@ func TestDecide(t *testing.T) {
 		{"cd sub", ""},
 		{"cd sub && head -3", ""},
 
-		// model-written lx is judged by what it runs
 		{"lx git push --force", "deny"},
 		{"lx -v git push", "ask"},
 		{"lx --budget 100 git push --force", "deny"},
 		{"lx --unknown-flag val git push --force", "deny"},
 		{"/usr/local/bin/lx rm -rf /", "deny"},
 		{"lx git status", "allow"},
+
+		{"lx --fit 5 git push --force", "deny"},
+		{"lx --fit=5 git push", "ask"},
+		{"lx --fit 5 -v -- rm -rf x", "deny"},
+		{"lx --fit 5 uv run git push --force", "deny"},
+		{"lx --fit 5 git status", "allow"},
+		{"lx --fit=40 git status 2>&1 | tail -n 40", "allow"},
+		{"lx --fit git push --force", "deny"},
+		{"lx --fit git status", ""},
+		{"lx --fit 0 git status", ""},
+		{"lx --fit -3 git status", ""},
+		{"lx --fit 5x git push --force", "deny"},
+		{"lx --fit $N git status", ""},
+		{"lx --fit $N rm -rf x", "deny"},
+		{"lx -b $B git status", ""},
+
+		{"lx --fit tail:40 git push --force", "deny"},
+		{"lx --fit=head:5 git push", "ask"},
+		{"lx --fit tail:40 git status", "allow"},
+		{"lx --fit=tail:40 git status 2>&1 | tail -n 40", "allow"},
+		{"lx --fit tail:40 uv run git push --force", "deny"},
+		{"lx --fit tail: git push --force", "deny"},
+		{"lx --fit tail: git status", ""},
+		{"lx --fit tail:0 git status", ""},
+		{"lx --fit TAIL:5 git status", ""},
+		{"lx --fit middle:5 git status", ""},
+		{"lx --fit tail:$N git status", ""},
+		{"lx --fit tail:$N rm -rf x", "deny"},
+		{"lx --fit=tail:$N git status", ""},
+		{"lx --fit tail:5:5 git status", ""},
 		{"lx --unknown-flag git status", ""},
 
-		// unparseable commands are never allowed, but deny still sees inside
+		{"lx -m verify git push --force", "deny"},
+		{"lx --mode=debug git push", "ask"},
+		{"lx -m error -v -- rm -rf x", "deny"},
+		{"lx -m minimal uv run git push --force", "deny"},
+		{"lx -m verify git status", "allow"},
+		{"lx --mode minimal --fit tail:40 git status 2>&1 | tail -n 40", "allow"},
+		{"lx -m git push --force", "deny"},
+		{"lx -m git status", ""},
+		{"lx -m nope git status", ""},
+		{"lx -m Verify git status", ""},
+		{"lx --mode= git status", ""},
+		{"lx -m $M git status", ""},
+		{"lx -m $M rm -rf x", "deny"},
+		{"lx --mode=$M git status", ""},
+		{"lx -m 'verify' git push --force", "deny"},
+		{`lx -m "$M" git status`, ""},
+		{`lx -m "$M" git push --force`, "deny"},
+		{"lx -m verify -m error git status", "allow"},
+		{"lx -m verify -- git push --force", "deny"},
+		{"lx -m -r git push --force", "deny"},
+		{"lx -m=verify git status", ""},
+		{"lx -m=verify git push --force", "deny"},
+		{"lx -mverify git push --force", "deny"},
+		{"lx -m verify rm -rf x", "deny"},
+		{"LX_MODE=verify lx git push --force", "deny"},
+		{"lx -m verify git status && rm -rf x", "deny"},
+
 		{"git status $(true)", ""},
 		{"echo $(git push --force)", "deny"},
 		{"git status\ngit log", ""},
@@ -191,7 +239,6 @@ func TestLoadClaudeRules(t *testing.T) {
 		t.Errorf("rules = %+v\nwant   %+v", got, want)
 	}
 
-	// CLAUDE_PROJECT_DIR (set by Claude Code for hooks) wins over the walk.
 	other := t.TempDir()
 	writeFile(t, filepath.Join(other, ".claude", "settings.json"), `{"permissions": {"allow": ["Bash(make:*)"]}}`)
 	t.Setenv("CLAUDE_PROJECT_DIR", other)
@@ -227,6 +274,23 @@ func TestLxInner(t *testing.T) {
 		"lx -b 500 go test":          {"go test"},
 		"lx --budget=5 -- go test":   {"go test"},
 		"lx --what x git push":       {"x git push", "git push", "push"},
+		"lx --fit 40 git push":       {"git push"},
+		"lx --fit=40 -v git push":    {"git push"},
+		"lx -b 9 --fit 3 -- git log": {"git log"},
+		"lx --fit git push":          {"git push", "push"},
+		"lx --fit 0 git push":        {"0 git push", "git push", "push"},
+		"lx --fit=x git push":        {"git push", "push"},
+		"lx --fit $N git push":       {"$N git push", "git push", "push"},
+		"lx --fit tail:40 git push":  {"git push"},
+		"lx --fit=head:3 -- git log": {"git log"},
+		"lx -m verify git push":      {"git push"},
+		"lx --mode=debug -- git log": {"git log"},
+		"lx -m error --fit 3 -v ls":  {"ls"},
+		"lx -m nope git push":        {"nope git push", "git push", "push"},
+		"lx -m $M git push":          {"$M git push", "git push", "push"},
+		"lx --mode=x git push":       {"git push", "push"},
+		"lx --fit tail:x git push":   {"tail:x git push", "git push", "push"},
+		"lx --fit=tail: git push":    {"git push", "push"},
 		`lx git commit -m "a b"`:     {`git commit -m "a b"`},
 		"lx":                         nil,
 		"FOO=1 timeout 5 lx make up": {"make up"},
@@ -238,7 +302,9 @@ func TestLxInner(t *testing.T) {
 }
 
 func FuzzDecide(f *testing.F) {
-	for _, s := range []string{"lx -b", "lx --x", "cd", "git push && lx", "FOO=1 lx -- rm", "a | head -", "lx $(x)"} {
+	for _, s := range []string{"lx -b", "lx --x", "cd", "git push && lx", "FOO=1 lx -- rm", "a | head -", "lx $(x)",
+		"lx --fit", "lx --fit 5 rm -rf x", "lx --fit=0 git push", "git log 2>&1 | tail -n 5",
+		"lx --fit tail:5 rm -rf x", "lx --fit=head:0 git push"} {
 		f.Add(s)
 	}
 	r := Rules{
@@ -254,7 +320,7 @@ func FuzzDecide(f *testing.F) {
 			t.Fatal("bad verdict")
 		}
 		_ = evaluate(s, evalEnv{}, func() Rules { return r })
-		// Parity never turns a user deny into anything but "stay out".
+
 		if o := evaluate(s, evalEnv{ReadOnly: true, Cwd: cwd, Root: cwd}, func() Rules { return r }); o.readOnly && r.Decide(s) != "" {
 			t.Fatalf("parity decided %q although the rules say %q", s, r.Decide(s))
 		}
@@ -268,7 +334,7 @@ func TestLoadClaudeRulesDirs(t *testing.T) {
 		"additionalDirectories": ["../docs", "~/notes", "/abs/lib", 42, {"x":1}, "", "~"]}}`)
 	writeFile(t, filepath.Join(project, ".claude", "settings.local.json"),
 		`{"permissions": {"additionalDirectories": ["/abs/lib", "vendor/"]}}`)
-	// $CLAUDE_CONFIG_DIR is not a .claude folder: relative entries there are skipped.
+
 	writeFile(t, filepath.Join(user, "settings.json"), `{"permissions": {"additionalDirectories": ["rel", "/u/abs"]}}`)
 	t.Setenv("CLAUDE_PROJECT_DIR", project)
 	got := LoadClaudeRules(project).Dirs
@@ -277,15 +343,12 @@ func TestLoadClaudeRulesDirs(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Dirs = %q\nwant   %q", got, want)
 	}
-	// Dirs alone don't make rules non-empty (Decide still says nothing).
+
 	if (Rules{Dirs: []string{"/x"}}).Decide("git status") != "" {
 		t.Error("Dirs changed a decision")
 	}
 }
 
-// Relative additionalDirectories count only in project settings: in user
-// settings what they are relative to is unsettled, and a guess could widen
-// what --readonly approves.
 func TestLoadClaudeRulesDirsUserRelative(t *testing.T) {
 	_, _ = isolate(t)
 	home := t.TempDir()
@@ -293,7 +356,7 @@ func TestLoadClaudeRulesDirsUserRelative(t *testing.T) {
 	t.Setenv("CLAUDE_CONFIG_DIR", "")
 	writeFile(t, filepath.Join(home, ".claude", "settings.json"),
 		`{"permissions": {"additionalDirectories": ["../shared", "/u/abs"]}}`)
-	// A project with no .claude of its own finds ~/.claude: still user settings.
+
 	work := filepath.Join(home, "work", "proj")
 	if err := os.MkdirAll(work, 0o755); err != nil {
 		t.Fatal(err)

@@ -13,25 +13,9 @@ import (
 	"github.com/iheeb1/lx/internal/fixture"
 	"github.com/iheeb1/lx/internal/tokens"
 
-	// make recipes run go vet / go test: their output is delegated to the
-	// go filters, which must be registered as they are in the binary.
 	_ "github.com/iheeb1/lx/internal/filters/golang"
 )
 
-// A fixture is a captured output from one of three places:
-//
-//	corpus     testdata/corpus/misc (the shared corpus: make in cJSON, gin, lua)
-//	captured   internal/filters/build/testdata/captured: real runs made for
-//	           this package (clang 21 / GNU make 3.81 on macOS, Maven 3.9.16
-//	           offline, make in a copy of the gin corpus repo), paths
-//	           sanitized to /home/user; the review added parallel (-j4 -k)
-//	           and silent (-s) make, silent recipes running go build, cc on
-//	           paths with a space and a non-ASCII letter, and Maven -q, -e,
-//	           a forked-VM crash and javac -Xlint:all warnings
-//	synthetic  internal/filters/build/testdata/synthetic: hand-written in the
-//	           real formats of tools not installed on the capture machine
-//	           (cargo/rustc, Gradle, GNU gcc/ld/make 4, CMake, ninja); each
-//	           meta description starts with "SYNTHETIC"
 type fx struct {
 	fixture.Case
 	source string
@@ -65,7 +49,6 @@ func loadFixtures(t testing.TB) []fx {
 	return out
 }
 
-// expectFind is the filter engine.Find must pick for a fixture.
 func expectFind(name string) string {
 	for _, p := range []struct{ prefix, filter string }{
 		{"make-", "make"}, {"cc-", "cc"}, {"clangxx-", "cc"}, {"cmake-build-", "cmake-build"},
@@ -79,32 +62,21 @@ func expectFind(name string) string {
 	return "?"
 }
 
-// bails lists fixtures whose Apply must return ok=false, and why.
 var bails = map[string]string{
-	// "./cJSON_test" then the test binary's JSON: no line make, a compiler
-	// or a known tool printed, so nothing here knows it better than the
-	// generic reducer.
+
 	"make-cjson-test": "unrecognized recipe output",
 }
 
-// processAs lists fixtures where the full pipeline legitimately reports
-// another stage than the filter. Outputs at or under engine.SmallOutput
-// tokens are only normalized and need no entry.
 var processAs = map[string]string{
-	"make-cjson-test":             "passthrough", // filter bails; generic finds nothing to fold
-	"make-c-compile-errors":       "passthrough", // one command, kept because errors follow; every line kept
-	"make-gnu-link-error":         "passthrough", // the failing link command and every linker line kept
-	"cargo-clippy-deny-warnings":  "passthrough", // two error blocks kept whole
-	"make-silent-go-build-errors": "passthrough", // ten go build errors, each kept (none folded as "similar")
+	"make-cjson-test":             "passthrough",
+	"make-c-compile-errors":       "passthrough",
+	"make-gnu-link-error":         "passthrough",
+	"cargo-clippy-deny-warnings":  "passthrough",
+	"make-silent-go-build-errors": "passthrough",
 }
 
-// allowedMissingLocs lists, per failing fixture, file:line locations the
-// filter's view may lack, with the reason. Include chains and library stack
-// frames are recognized generically in checkLocations.
 var allowedMissingLocs = map[string]map[string]string{
-	// Log lines of tests that passed ("    context_test.go:2739: testing:
-	// JSON & XML"): the go-test filter, to which make delegates this
-	// output, hides passing tests' output and counts it.
+
 	"make-test-gin-fail": {
 		"context_test.go:2739": "passing-test output", "context_test.go:2805": "passing-test output",
 		"context_test.go:2869": "passing-test output", "context_test.go:2933": "passing-test output",
@@ -170,10 +142,6 @@ func TestCorpus(t *testing.T) {
 	}
 }
 
-// checkFidelity: every error-class line of the input is in the view unless
-// it was hidden for one of the documented reasons (justifiedDrop), the
-// filter's own guard never had to re-add anything, and for failing runs
-// every file:line location is in the view (checkLocations).
 func checkFidelity(t *testing.T, f fx, clean, got string) {
 	t.Helper()
 	orig := map[string]string{}
@@ -199,19 +167,6 @@ var (
 	inclLineRe = regexp.MustCompile(`^(?:In file included from |\s+from )`)
 )
 
-// justifiedDrop names why an error-class line may be absent from a view:
-//
-//   - a recipe command echo hidden and counted: its error words are flags
-//     (gcc … -Wfatal-errors …), not an error report;
-//   - a continuation line of an echoed multi-line shell recipe ("if grep -q
-//     '^--- FAIL' tmp.out; then \"): code, not an error report;
-//   - a cargo status line hidden and counted: the error word is part of a
-//     crate name ("Compiling quick-error v2.0.1");
-//   - Maven's constant help footer ("[ERROR] -> [Help 1]", "To see the full
-//     stack trace of the errors, re-run Maven with the -e switch." …);
-//   - a library stack frame Maven printed under its [ERROR] prefix ("[ERROR]
-//     \tat org.apache.maven.cli.MavenCli.main(MavenCli.java:207)"), folded
-//     by engine.FoldStacks into a "… N library frames" marker.
 func justifiedDrop(line string) string {
 	t := strings.TrimSpace(line)
 	switch {
@@ -231,10 +186,6 @@ func justifiedDrop(line string) string {
 	return ""
 }
 
-// checkLocations: locations may be missing only when every input line that
-// holds them is an include-chain line (long or repeated chains are folded)
-// or a library stack frame (folded by engine.FoldStacks), or when the
-// fixture's allowlist names them.
 func checkLocations(t *testing.T, name, clean, got string) {
 	t.Helper()
 	lines := strings.Split(clean, "\n")

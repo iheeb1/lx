@@ -1,0 +1,73 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.5.0
+rootdir: /home/user/src/click
+configfile: pyproject.toml
+collected 56 items
+cache -- .../_pytest/cacheprovider.py:556
+    Return a cache object that can persist state between testing sessions.
+
+capsysbinary -- .../_pytest/capture.py:1006
+    Enable bytes capturing of writes to ``sys.stdout`` and ``sys.stderr``.
+
+capfd -- .../_pytest/capture.py:1034
+    Enable text capturing of writes to file descriptors ``1`` and ``2``.
+
+capfdbinary -- .../_pytest/capture.py:1062
+    Enable bytes capturing of writes to file descriptors ``1`` and ``2``.
+
+capsys -- .../_pytest/capture.py:978
+    Enable text capturing of writes to ``sys.stdout`` and ``sys.stderr``.
+
+doctest_namespace [session scope] -- .../_pytest/doctest.py:741
+    Fixture that returns a :py:class:`dict` that will be injected into the
+    namespace of doctests.
+
+pytestconfig [session scope] -- .../_pytest/fixtures.py:1345
+    Session-scoped fixture that returns the session's :class:`pytest.Config`
+    object.
+
+record_property -- .../_pytest/junitxml.py:280
+    Add extra properties to the calling test.
+
+record_xml_attribute -- .../_pytest/junitxml.py:303
+    Add extra xml attributes to the tag for the calling test.
+
+record_testsuite_property [session scope] -- .../_pytest/junitxml.py:341
+    Record a new ``<property>`` tag as child of the root ``<testsuite>``.
+
+tmpdir_factory [session scope] -- .../_pytest/legacypath.py:298
+    Return a :class:`pytest.TempdirFactory` instance for the test session.
+
+tmpdir -- .../_pytest/legacypath.py:305
+    Return a temporary directory (as `legacy_path`_ object)
+    which is unique to each test function invocation.
+    The temporary directory is created as a subdirectory
+    of the base temporary directory, with configurable retention,
+    as discussed in :ref:`temporary directory location and retention`.
+
+caplog -- .../_pytest/logging.py:598
+    Access and control log capturing.
+
+monkeypatch -- .../_pytest/monkeypatch.py:31
+    A convenient fixture for monkey-patching.
+
+recwarn -- .../_pytest/recwarn.py:35
+    Return a :class:`WarningsRecorder` instance that records all warnings emitted by test functions.
+
+tmp_path_factory [session scope] -- .../_pytest/tmpdir.py:241
+    Return a :class:`pytest.TempPathFactory` instance for the test session.
+
+tmp_path -- .../_pytest/tmpdir.py:256
+    Return a temporary directory (as :class:`pathlib.Path` object)
+    which is unique to each test function invocation.
+    The temporary directory is created as a subdirectory
+    of the base temporary directory, with configurable retention,
+    as discussed in :ref:`temporary directory location and retention`.
+
+
+------------------------ fixtures defined from conftest ------------------------
+runner -- tests/conftest.py:7
+    no docstring available
+
+
+============================ no tests ran in 0.02s =============================

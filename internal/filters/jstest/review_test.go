@@ -1,8 +1,5 @@
 package jstest
 
-// Regression tests for the issues found in the adversarial review: each
-// test names the failure it guards against.
-
 import (
 	"fmt"
 	"regexp"
@@ -39,10 +36,6 @@ func sumMatches(lines []string, res ...*regexp.Regexp) int {
 	return n
 }
 
-// TestMarkerCountsNeverExceedSummary: a "[N passing tests hidden]" marker
-// must not claim more than the runner itself reports as passed (the tree
-// reporter used to count the tests of passing files twice, and passing
-// describe groups as tests: "8 passing tests hidden" for "6 passed").
 func TestMarkerCountsNeverExceedSummary(t *testing.T) {
 	for _, cc := range corpus {
 		fc := load(t, cc)
@@ -73,10 +66,6 @@ func TestMarkerCountsNeverExceedSummary(t *testing.T) {
 	}
 }
 
-// TestNoFailureIgnoresPassingConsole: a non-zero exit with no failing test
-// must be flagged even when a passing test logged an error line (it used to
-// suppress the "[lx: … exited N but reported no failing test …]" note, so
-// jest-passlog-threshold read "1 passed" + an unrelated console.error).
 func TestNoFailureIgnoresPassingConsole(t *testing.T) {
 	fc, err := fixture.Read("testdata", "captures", "jest-passlog-threshold")
 	if err != nil {
@@ -106,7 +95,6 @@ Error: connection refused
     at connect (lib/db.js:3:9)
     ✔ retries
 
-
   1 passing (4ms)
 `
 	for _, tc := range []struct {
@@ -134,8 +122,6 @@ Error: connection refused
 	}
 }
 
-// synthJest renders n failing tests in suites of ten; diff failures on even
-// numbers, Expected/Received on odd ones.
 func synthJest(n int) string {
 	var b strings.Builder
 	for k := 0; k < n; k++ {
@@ -185,12 +171,8 @@ func synthMocha(n int) string {
 	return b.String()
 }
 
-// TestBriefLevelKeepsValues: past fullFailures, a long run's failures are
-// brief, but still show their expected/received values, including diffs
-// (brief mode used to keep only the header and frame of a toEqual diff
-// failure), and mocha failures keep their whole title path.
 func TestBriefLevelKeepsValues(t *testing.T) {
-	r, ok := renderJest(ctx(1, "jest"), synthJest(80)) // over briefAbove in full, under it at level 1
+	r, ok := renderJest(ctx(1, "jest"), synthJest(80))
 	if !ok || r.readded != 0 {
 		t.Fatalf("ok=%v readded=%d", ok, r.readded)
 	}
@@ -229,12 +211,6 @@ func TestBriefLevelKeepsValues(t *testing.T) {
 	}
 }
 
-// TestLevelsDegradeWithExactCounts: hundreds of failures used to be left to
-// the engine budget, which kept the FAIL lines and replaced everything else
-// with "… N lines omitted …". Now every failure is either listed (full,
-// brief or by name) or counted in one "[+N more failing tests not shown …]"
-// marker, the first briefFailures keep their messages, and the view fits
-// the budget.
 func TestLevelsDegradeWithExactCounts(t *testing.T) {
 	const n = 400
 	omittedRe := regexp.MustCompile(`\[\+(\d+) more failing tests? not shown`)
@@ -281,8 +257,7 @@ func TestLevelsDegradeWithExactCounts(t *testing.T) {
 		if res.Filter != tc.f.Name() || res.OutTokens > engine.DefaultBudget {
 			t.Errorf("%s: pipeline %s, %d tokens", tc.f.Name(), res.Filter, res.OutTokens)
 		}
-		// Omitted failures' distinct error messages are not lost: the
-		// safety net lists them (up to its cap, with a count).
+
 		if tc.f.Name() != "jest" && (r.readded == 0 || !strings.Contains(r.out, "more error lines")) {
 			t.Errorf("%s: messages of omitted failures not surfaced", tc.f.Name())
 		}
@@ -291,10 +266,6 @@ func TestLevelsDegradeWithExactCounts(t *testing.T) {
 	}
 }
 
-// TestJestRunsAreIndependent: npm workspaces run jest once per package. A
-// failure identical to one in an earlier run (same file name, same block)
-// used to be dropped as a repeat of the "Summary of all failing tests"
-// section, and later runs' passing suites were not counted.
 func TestJestRunsAreIndependent(t *testing.T) {
 	run := func(pkg string) string {
 		return `
@@ -345,9 +316,6 @@ npm error workspace @mono/` + pkg + `@1.0.0`
 	}
 }
 
-// TestMochaTitlesNeedATestBelow: an indented line followed by a deeper one
-// used to be dropped as a describe() title, which hid indented console
-// output (including "  Error: …" lines followed by their stack).
 func TestMochaTitlesNeedATestBelow(t *testing.T) {
 	in := `
 
@@ -359,7 +327,6 @@ func TestMochaTitlesNeedATestBelow(t *testing.T) {
   error handling
     when the db fails
       ✔ returns 503
-
 
   2 passing (4ms)
 `
@@ -387,9 +354,6 @@ func TestMochaTitlesNeedATestBelow(t *testing.T) {
 	}
 }
 
-// TestRelativizeFileURLs: engine.Relativize turned "file:///cwd/a.mjs:3:21"
-// into the broken "file://a.mjs:3:21". Frames now read "a.mjs:3:21"; other
-// lines holding a file:// URL (an error's url property) are left as they are.
 func TestRelativizeFileURLs(t *testing.T) {
 	c := ctx(1, "node", "esm.mjs")
 	in := `node:internal/modules/esm/resolve:271
@@ -417,15 +381,12 @@ Node.js v24.18.0`
 	if strings.Contains(out, "file://esm") || strings.Contains(out, "file://nope") {
 		t.Errorf("broken file URL:\n%s", out)
 	}
-	// The same helper serves the runner views (mocha with ESM specs).
+
 	if got := relativize(ctx(1, "mocha"), "      at Context.<anonymous> (file:///home/user/src/proj/test/a.mjs:4:9)"); got != "      at Context.<anonymous> (test/a.mjs:4:9)" {
 		t.Errorf("relativize: %q", got)
 	}
 }
 
-// TestNpmWorkspaceFlagIsNotWatch: npm's own -w is --workspace; only a -w
-// passed to the script (after "--") means watch. `npm test -w web` used to
-// run unfiltered as a watcher.
 func TestNpmWorkspaceFlagIsNotWatch(t *testing.T) {
 	for _, tc := range []struct {
 		argv   string
@@ -451,8 +412,6 @@ func TestNpmWorkspaceFlagIsNotWatch(t *testing.T) {
 	}
 }
 
-// TestMatchCrossEnv: `cross-env VAR=x jest`, `npx cross-env …` and
-// `npx react-scripts test` are the runner behind a wrapper, like `env`.
 func TestMatchCrossEnv(t *testing.T) {
 	for argv, want := range map[string]string{
 		"cross-env NODE_ENV=test jest --ci":                    "jest",
@@ -479,8 +438,6 @@ func TestMatchCrossEnv(t *testing.T) {
 	}
 }
 
-// TestWindowsLibraryFrames: node_modules frames with backslashes are
-// library frames (folded), like their slash forms.
 func TestWindowsLibraryFrames(t *testing.T) {
 	for ln, root := range map[string]string{
 		`      at Object.<anonymous> (C:\proj\node_modules\jest-circus\build\utils.js:298:28)`: "jest-circus",
@@ -502,10 +459,6 @@ func TestWindowsLibraryFrames(t *testing.T) {
 	}
 }
 
-// TestVitestFramePathWithSpaces: the code frame is cut at the line the
-// "❯ file:line:col" names even when the path has spaces (the frame used not
-// to be recognized, and a stale line number from an earlier frame could be
-// used instead).
 func TestVitestFramePathWithSpaces(t *testing.T) {
 	in := `
  RUN  v4.1.11 /home/user/src/proj
@@ -536,8 +489,6 @@ AssertionError: expected 3 to be 2 // Object.is equality
 	}
 }
 
-// TestVitestNotRunTests: --bail lists tests that did not run with "·";
-// they are titles, not results, and not passing tests.
 func TestVitestNotRunTests(t *testing.T) {
 	fc, err := fixture.Read("testdata", "captures", "vitest-bail")
 	if err != nil {
@@ -552,8 +503,6 @@ func TestVitestNotRunTests(t *testing.T) {
 	}
 }
 
-// TestMochaCrashAfterReport: mocha itself crashing after its report (done()
-// called twice) keeps the crash, with its library frames folded.
 func TestMochaCrashAfterReport(t *testing.T) {
 	fc, err := fixture.Read("testdata", "captures", "mocha-uncaught")
 	if err != nil {
@@ -567,15 +516,13 @@ func TestMochaCrashAfterReport(t *testing.T) {
 	}
 }
 
-// TestHugeRunsAreFast: 50k-line outputs render well under the 200ms
-// target (asserted loosely here; BenchmarkHuge* measure it).
 func TestHugeRunsAreFast(t *testing.T) {
 	for _, tc := range []struct {
 		f  engine.Filter
 		c  *engine.Context
 		in string
 	}{
-		{jestFilter{}, ctx(1, "jest"), synthJest(3500)}, // ~50k lines, 3500 failures
+		{jestFilter{}, ctx(1, "jest"), synthJest(3500)},
 		{vitestFilter{}, ctx(1, "vitest", "run"), synthVitest(3000)},
 		{mochaFilter{}, ctx(3000, "mocha"), synthMocha(3500)},
 	} {
@@ -593,9 +540,6 @@ func TestHugeRunsAreFast(t *testing.T) {
 	}
 }
 
-// TestNoFailureIgnoresUnattributedConsole: a --verbose/single-file console
-// entry without a frame cannot be tied to a suite; it still is console
-// output, never how jest reports a failure.
 func TestNoFailureIgnoresUnattributedConsole(t *testing.T) {
 	in := `  console.error
     Error: mock server refused the connection
@@ -614,8 +558,6 @@ Time:        0.3 s`
 	}
 }
 
-// TestCRLFOutput: Windows line endings give the same view (the pipeline
-// normalizes them before the filter runs).
 func TestCRLFOutput(t *testing.T) {
 	for _, name := range []string{"jest-mixed", "vitest-mixed", "mocha-mixed"} {
 		fc, err := fixture.Read("testdata", "captures", name)
@@ -631,9 +573,6 @@ func TestCRLFOutput(t *testing.T) {
 	}
 }
 
-// TestCrashAfterPassingSummary: output after the runner's summary (a
-// crash of the process, a teardown error) is kept, and the verdict does not
-// read as a pass.
 func TestCrashAfterPassingSummary(t *testing.T) {
 	jest := `PASS test/a.test.js
 Test Suites: 1 passed, 1 total
@@ -667,9 +606,6 @@ Error: globalTeardown failed: could not stop the database container
 	}
 }
 
-// TestMochaDashLinesArePendingOnlyWhenCounted: "- title" lines were always
-// dropped as pending tests, so a logged "  - Error: …" list item vanished
-// (marked benign, never re-added).
 func TestMochaDashLinesArePendingOnlyWhenCounted(t *testing.T) {
 	in := `
 
@@ -677,7 +613,6 @@ func TestMochaDashLinesArePendingOnlyWhenCounted(t *testing.T) {
     ✔ removes temp files
   - Error: disk full while writing /tmp/x
   - retried 3 times
-
 
   1 passing (4ms)
 `
@@ -692,7 +627,6 @@ func TestMochaDashLinesArePendingOnlyWhenCounted(t *testing.T) {
     - supports prefixes
     - handles unicode
 
-
   1 passing (4ms)
   2 pending
 `
@@ -702,9 +636,6 @@ func TestMochaDashLinesArePendingOnlyWhenCounted(t *testing.T) {
 	}
 }
 
-// TestErrorCountsAreKept: rtk read "10 errors" as clean (it contains "0
-// error"). vitest's "Errors  10 errors" summary line with every test
-// passing is kept verbatim and is itself the failure an agent sees.
 func TestErrorCountsAreKept(t *testing.T) {
 	in := `
  RUN  v4.1.11 /home/user/src/proj

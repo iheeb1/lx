@@ -2,16 +2,18 @@ package hook
 
 import (
 	"reflect"
+	"regexp"
 	"strings"
 	"testing"
+
+	"github.com/iheeb1/lx/internal/engine"
 )
 
-// same marks cases that must come back unchanged (ok=false).
 const same = "\x00same"
 
 func TestRewrite(t *testing.T) {
 	cases := []struct{ in, want string }{
-		// basics
+
 		{`git status`, `lx git status`},
 		{`git diff`, `lx git diff`},
 		{`git log --oneline -20`, `lx git log --oneline -20`},
@@ -25,7 +27,6 @@ func TestRewrite(t *testing.T) {
 		{`ls *.go`, `lx ls *.go`},
 		{`ls ${HOME}`, `lx ls ${HOME}`},
 
-		// compound commands
 		{`cd dir && npm test`, `cd dir && lx npm test`},
 		{`git status; git diff`, `lx git status; lx git diff`},
 		{`git status || git diff`, `lx git status || lx git diff`},
@@ -34,7 +35,6 @@ func TestRewrite(t *testing.T) {
 		{`pytest -x; git status &`, `lx pytest -x; git status &`},
 		{`npm test & git status`, `npm test & lx git status`},
 
-		// quoting is preserved byte for byte
 		{`echo "a && b"`, same},
 		{`grep -rn 'x|y' .`, `lx grep -rn 'x|y' .`},
 		{`git commit -m "fix: a && b; c | d"`, `lx git commit -m "fix: a && b; c | d"`},
@@ -47,8 +47,7 @@ func TestRewrite(t *testing.T) {
 		{`echo 'unterminated`, same},
 		{`git commit -m "unterminated`, same},
 
-		// env assignments and wrappers are peeled and kept
-		{`FOO=1 go test ./... 2>&1 | tail -30`, `FOO=1 lx go test ./... 2>&1 | tail -30`},
+		{`FOO=1 go test ./... 2>&1 | tail -30`, `FOO=1 lx --fit tail:30 go test ./... 2>&1 | tail -30`},
 		{`FOO=1 timeout 60 pytest -x`, `FOO=1 timeout 60 lx pytest -x`},
 		{`FOO="a b" BAR='c' go vet ./...`, `FOO="a b" BAR='c' lx go vet ./...`},
 		{`time go build ./...`, `time lx go build ./...`},
@@ -67,7 +66,6 @@ func TestRewrite(t *testing.T) {
 		{`FOO=bar`, same},
 		{`sudo apt install foo`, same},
 
-		// idempotency and opt-outs
 		{`lx git status`, same},
 		{`/usr/local/bin/lx git status`, same},
 		{`lx --raw go test ./...`, same},
@@ -75,16 +73,13 @@ func TestRewrite(t *testing.T) {
 		{`LX_OFF=1 go test ./...`, same},
 		{`env LX_RAW=1 git status`, same},
 
-		// pipelines
-		// head/tail after lx needs stderr merged: lx prints stderr on stdout,
-		// where the cut could hide errors the raw command shows.
-		{`ls -la 2>&1 | head -20`, `lx ls -la 2>&1 | head -20`},
-		{`go test ./... 2>&1 | tail -n 30`, `lx go test ./... 2>&1 | tail -n 30`},
-		{`go test ./... |& tail -n 30`, `lx go test ./... |& tail -n 30`},
+		{`ls -la 2>&1 | head -20`, `lx --fit head:20 ls -la 2>&1 | head -20`},
+		{`go test ./... 2>&1 | tail -n 30`, `lx --fit tail:30 go test ./... 2>&1 | tail -n 30`},
+		{`go test ./... |& tail -n 30`, `lx --fit tail:30 go test ./... |& tail -n 30`},
 		{`go test ./... | cat`, `lx go test ./... | cat`},
 		{`git status | cat`, `lx git status | cat`},
-		{`git status 2>&1 | head`, `lx git status 2>&1 | head`},
-		{`git status |& tail -5`, `lx git status |& tail -5`},
+		{`git status 2>&1 | head`, `lx --fit head:10 git status 2>&1 | head`},
+		{`git status |& tail -5`, `lx --fit tail:5 git status |& tail -5`},
 		{`ls | wc -l`, same},
 		{`cat file | head`, same},
 		{`git log | grep fix`, same},
@@ -93,7 +88,6 @@ func TestRewrite(t *testing.T) {
 		{`git log | head -5 > out.txt`, same},
 		{`git log | sort | head`, same},
 
-		// redirects
 		{`git status 2>&1`, `lx git status 2>&1`},
 		{`git status > out.txt`, same},
 		{`git status >> out.txt`, same},
@@ -104,12 +98,10 @@ func TestRewrite(t *testing.T) {
 		{`go test ./... < input`, same},
 		{`git status >& /tmp/evil`, same},
 
-		// background
 		{`npm test &`, same},
 		{`pytest -x && git status &`, same},
 		{`git status & rm -rf /tmp/x`, same},
 
-		// constructs lx will not reason about
 		{"cat <<EOF\nhello\nEOF", same},
 		{`git status <<< "x"`, same},
 		{`git log --format=$(cat f)`, same},
@@ -137,7 +129,6 @@ func TestRewrite(t *testing.T) {
 		{``, same},
 		{`   `, same},
 
-		// git exact-bytes forms
 		{`git log --pretty=format:%h`, same},
 		{`git log --pretty=tformat:%h`, same},
 		{`git log --pretty=%h`, same},
@@ -161,7 +152,6 @@ func TestRewrite(t *testing.T) {
 		{`git blame --porcelain f.go`, same},
 		{`git log --follow f.go`, `lx git log --follow f.go`},
 
-		// package managers and runners
 		{`npm run dev`, same},
 		{`npm run start`, same},
 		{`npm run serve:prod`, same},
@@ -192,7 +182,6 @@ func TestRewrite(t *testing.T) {
 		{`eslint -f json .`, same},
 		{`eslint .`, `lx eslint .`},
 
-		// go / cargo / python
 		{`go run main.go`, same},
 		{`go test -json ./...`, same},
 		{`go test -run TestX -count=1 ./pkg/...`, `lx go test -run TestX -count=1 ./pkg/...`},
@@ -215,7 +204,6 @@ func TestRewrite(t *testing.T) {
 		{`ruff check --output-format json .`, same},
 		{`ruff format .`, same},
 
-		// build tools
 		{`make`, `lx make`},
 		{`make test`, `lx make test`},
 		{`make dev`, same},
@@ -226,7 +214,6 @@ func TestRewrite(t *testing.T) {
 		{`mvn -q test`, `lx mvn -q test`},
 		{`mvn spring-boot:run`, same},
 
-		// listing and search
 		{`find . -name '*.go'`, `lx find . -name '*.go'`},
 		{`find . -name '*.go' -exec rm {} \;`, same},
 		{`find . -print0`, same},
@@ -240,7 +227,6 @@ func TestRewrite(t *testing.T) {
 		{`du -sh *`, `lx du -sh *`},
 		{`cat file.txt`, same},
 
-		// containers, clusters, logs, network
 		{`docker logs -f x`, same},
 		{`docker logs --tail 50 x`, `lx docker logs --tail 50 x`},
 		{`docker compose -f dc.yml logs web`, `lx docker compose -f dc.yml logs web`},
@@ -261,7 +247,6 @@ func TestRewrite(t *testing.T) {
 		{`curl -sSLo out https://example.com`, same},
 		{`curl -w '%{http_code}' https://example.com`, same},
 
-		// the rest of the table
 		{`terraform plan`, `lx terraform plan`},
 		{`terraform plan -json`, same},
 		{`terraform apply`, same},
@@ -291,19 +276,22 @@ func TestRewrite(t *testing.T) {
 	}
 }
 
-// Rewriting must only ever insert "lx " — every original byte survives in
-// order — and must be idempotent.
+var lxInserted = regexp.MustCompile(`lx (?:--fit (?:head:|tail:)?[0-9]+ )?`)
+
+func stripLx(s string) string { return lxInserted.ReplaceAllString(s, "") }
+
 func TestRewriteInvariants(t *testing.T) {
 	inputs := []string{
 		`git status`, `cd a && npm test && git diff | head`, `FOO=1 timeout 60 pytest -x`,
 		`git commit -m "a; b" && make test || go vet ./...`, "git status\n", `git status; git diff; ls`,
+		`go test ./... 2>&1 | tail -n 40 && git log |& head -5`,
 	}
 	for _, in := range inputs {
 		out, ok := Rewrite(in)
 		if !ok {
 			t.Fatalf("%q not rewritten", in)
 		}
-		if strings.ReplaceAll(out, "lx ", "") != strings.ReplaceAll(in, "lx ", "") {
+		if stripLx(out) != stripLx(in) {
 			t.Errorf("%q → %q changed more than inserting lx", in, out)
 		}
 		again, ok2 := Rewrite(out)
@@ -319,6 +307,9 @@ func TestInspect(t *testing.T) {
 	if !reflect.DeepEqual(in.Targets, want) {
 		t.Errorf("Targets = %q, want %q", in.Targets, want)
 	}
+	if !reflect.DeepEqual(in.Fits, []int{0, 10}) {
+		t.Errorf("Fits = %v, want [0 10]", in.Fits)
+	}
 	if len(in.Commands) != 4 {
 		t.Errorf("Commands = %q", in.Commands)
 	}
@@ -331,7 +322,7 @@ func TestInspect(t *testing.T) {
 	if r := Inspect("echo $(date)").Reason; r != "command substitution" {
 		t.Errorf("reason = %q", r)
 	}
-	// Commands are best effort even when the string is not rewritable.
+
 	if c := Inspect("cat <<EOF\nx\nEOF").Commands; len(c) == 0 || c[0][0] != "cat" {
 		t.Errorf("Commands for heredoc = %q", c)
 	}
@@ -411,7 +402,8 @@ func TestLexOffsets(t *testing.T) {
 }
 
 func FuzzRewrite(f *testing.F) {
-	for _, s := range []string{`git status`, `a && b | c`, `"x`, `$'a\'b' git log`, "x\\\ny", `${a`} {
+	for _, s := range []string{`git status`, `a && b | c`, `"x`, `$'a\'b' git log`, "x\\\ny", `${a`,
+		`go test ./... 2>&1 | tail -n 40`, `git log |& head -5 | tail --lines=3`, `make 2>&1 | head -n +5 | cat -`} {
 		f.Add(s)
 	}
 	f.Fuzz(func(t *testing.T, s string) {
@@ -422,15 +414,15 @@ func FuzzRewrite(f *testing.F) {
 			}
 			return
 		}
-		if strings.ReplaceAll(out, "lx ", "") != strings.ReplaceAll(s, "lx ", "") {
+		if stripLx(out) != stripLx(s) {
 			t.Fatalf("%q → %q", s, out)
+		}
+		if again, ok := Rewrite(out); ok {
+			t.Fatalf("not idempotent: %q → %q → %q", s, out, again)
 		}
 	})
 }
 
-// A head/tail after lx cuts lines of lx's stdout, where lx prints stderr too;
-// raw, stderr would bypass the cut and reach the agent. So such pipelines
-// are rewritten only when stderr already goes down the pipe.
 func TestHeadTailNeedsMergedStderr(t *testing.T) {
 	for _, in := range []string{
 		`make | tail -3`,
@@ -446,6 +438,123 @@ func TestHeadTailNeedsMergedStderr(t *testing.T) {
 	for _, in := range []string{`make 2>&1 | tail -3`, `make |& tail -3`, `go test ./... | cat`} {
 		if _, ok := Rewrite(in); !ok {
 			t.Errorf("Rewrite(%q) not rewritten", in)
+		}
+	}
+}
+
+func TestRewriteFit(t *testing.T) {
+	cases := []struct {
+		in  string
+		fit string
+	}{
+		{`go test ./... 2>&1 | tail -n 40`, "tail:40"},
+		{`go test ./... 2>&1 | tail -n40`, "tail:40"},
+		{`go test ./... 2>&1 | tail -40`, "tail:40"},
+		{`go test ./... 2>&1 | tail --lines=40`, "tail:40"},
+		{`go test ./... 2>&1 | tail --lines 40`, "tail:40"},
+		{`go test ./... 2>&1 | head -n 25`, "head:25"},
+		{`go test ./... 2>&1 | head -25`, "head:25"},
+		{`go test ./... 2>&1 | head --lines=25`, "head:25"},
+		{`go test ./... 2>&1 | head -q -n 25`, "head:25"},
+		{`go test ./... 2>&1 | head -n 25 -`, "head:25"},
+		{`go test ./... 2>&1 | head -n 25 --`, "head:25"},
+		{`go test ./... 2>&1 | head -n 5 -n 7`, "head:7"},
+		{`go test ./... 2>&1 | head`, "head:10"},
+		{`go test ./... 2>&1 | tail`, "tail:10"},
+		{`go test ./... 2>&1 | head -n '12'`, "head:12"},
+		{`go test ./... |& tail -3`, "tail:3"},
+		{`go test ./... 2>&1 | cat | head -n 30`, "head:30"},
+		{`go test ./... 2>&1 | head -n 30 | cat -n`, "head:30"},
+		{`go test ./... 2>&1 | head -c 100 | tail -n 5`, "tail:5"},
+		{`go test ./... 2>&1 | head -n 007`, "head:7"},
+
+		{`go test ./... 2>&1 | head -n 100 | head -n 20`, "head:20"},
+		{`go test ./... 2>&1 | tail -n 100 | tail -20`, "tail:20"},
+		{`go test ./... 2>&1 | head -n 100 | tail -n 20`, "20"},
+		{`go test ./... 2>&1 | tail -n 20 | head -n 100`, "20"},
+
+		{`go test ./... 2>&1 | tail -v -n 40 | head -n 40`, "39"},
+		{`go test ./... 2>&1 | head -v -n 40 | head -n 40`, "head:39"},
+		{`go test ./... 2>&1 | head --verbose -n 40 | tail -n 40`, "40"},
+		{`go test ./... 2>&1 | head -v -q -n 40 | head -n 40`, "head:40"},
+		{`go test ./... 2>&1 | head -v -n 40`, "head:40"},
+
+		{`go test ./... 2>&1 | cat`, ""},
+		{`go test ./... | cat`, ""},
+		{`go test ./... 2>&1 | head -c 100`, ""},
+		{`go test ./... 2>&1 | head -c100`, ""},
+		{`go test ./... 2>&1 | head --bytes=100`, ""},
+		{`go test ./... 2>&1 | tail -c 100`, ""},
+		{`go test ./... 2>&1 | tail -n +5`, ""},
+		{`go test ./... 2>&1 | tail --lines=+5`, ""},
+		{`go test ./... 2>&1 | head -n -5`, ""},
+		{`go test ./... 2>&1 | head -n 0`, ""},
+		{`go test ./... 2>&1 | head -0`, ""},
+		{`go test ./... 2>&1 | head -n 1k`, ""},
+		{`go test ./... 2>&1 | head -n $N`, ""},
+		{`go test ./... 2>&1 | head -n "$N"`, ""},
+		{`go test ./... 2>&1 | head -z -n 5`, ""},
+		{`go test ./... 2>&1 | tail -r -n 5`, ""},
+		{`go test ./... 2>&1 | head -qn 5`, ""},
+		{`go test ./... 2>&1 | head -n 99999999999999999999`, ""},
+
+		{`go test ./... 2>&1 | head -n 5 notes.txt`, ""},
+		{`go test ./... 2>&1 | head -n 5 -- notes.txt`, ""},
+		{`go test ./... 2>&1 | cat - notes.txt | tail -n 5`, ""},
+		{`go test ./... 2>&1 | tail -n 40 | head -n 5 notes.txt`, "tail:40"},
+	}
+	for _, c := range cases {
+		in := Inspect(c.in)
+		n, cut := 0, engine.CutEither
+		if c.fit != "" {
+			var ok bool
+			if n, cut, ok = engine.ParseFit(c.fit); !ok {
+				t.Fatalf("bad case %q", c.fit)
+			}
+		}
+		if !in.Changed || len(in.Fits) != 1 || in.Fits[0] != n || len(in.FitCuts) != 1 || in.FitCuts[0] != cut {
+			t.Errorf("Inspect(%q): changed %v fits %v %v, want --fit %q (reason %q)", c.in, in.Changed, in.Fits, in.FitCuts, c.fit, in.Reason)
+			continue
+		}
+		want := strings.Replace(c.in, "go test", "lx go test", 1)
+		if c.fit != "" {
+			want = strings.Replace(c.in, "go test", "lx --fit "+c.fit+" go test", 1)
+		}
+		if in.Rewritten != want {
+			t.Errorf("Rewrite(%q) = %q, want %q", c.in, in.Rewritten, want)
+		}
+
+		if c.fit != "" {
+			if got, _ := Rewrite(c.in); !strings.Contains(got, "--fit "+engine.FitArg(n, cut)+" ") {
+				t.Errorf("FitArg(%d, %d) = %q is not what the rewrite wrote: %q", n, cut, engine.FitArg(n, cut), got)
+			}
+		}
+	}
+
+	for _, c := range []string{`go test ./... | tail -n 40`, `go test ./... 2>&1 | tail -f`, `go test ./... 2>&1 | tail -n 40 -F`} {
+		if out, ok := Rewrite(c); ok {
+			t.Errorf("Rewrite(%q) = %q", c, out)
+		}
+	}
+
+	for in, want := range map[string]string{
+		`timeout 600 uv run pytest -x 2>&1 | tail -40`: `timeout 600 lx --fit tail:40 uv run pytest -x 2>&1 | tail -40`,
+		`FOO=1 nice -n 5 make test |& head -n 60`:      `FOO=1 nice -n 5 lx --fit head:60 make test |& head -n 60`,
+	} {
+		if out, _ := Rewrite(in); out != want {
+			t.Errorf("Rewrite(%q) = %q, want %q", in, out, want)
+		}
+	}
+
+	out, _ := Rewrite(`go vet ./... 2>&1 | head -n 8 && go test ./... 2>&1 | tail -n 30; git status`)
+	if want := `lx --fit head:8 go vet ./... 2>&1 | head -n 8 && lx --fit tail:30 go test ./... 2>&1 | tail -n 30; lx git status`; out != want {
+		t.Errorf("got  %q\nwant %q", out, want)
+	}
+
+	for _, c := range []string{`lx --fit 40 go test ./... 2>&1 | tail -n 40`, `/opt/bin/lx --fit=5 git log 2>&1 | head -5`,
+		`lx --fit tail:40 go test ./... 2>&1 | tail -n 40`, `lx --fit=head:5 git log 2>&1 | head -5`} {
+		if out, ok := Rewrite(c); ok {
+			t.Errorf("Rewrite(%q) = %q; already lx", c, out)
 		}
 	}
 }

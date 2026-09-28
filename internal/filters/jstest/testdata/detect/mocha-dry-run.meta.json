@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npx",
+    "mocha",
+    "--require",
+    "test/support/env",
+    "--dry-run",
+    "test/res.status.js"
+  ],
+  "shell": "npx mocha --require test/support/env --dry-run test/res.status.js",
+  "exit_code": 0,
+  "description": "REAL (limitation): npx mocha --dry-run test/res.status.js in expressjs/express: the test tree as if every test passed, with a passing count; indistinguishable by content from a run",
+  "cwd": "/home/user/src/express",
+  "repo": "expressjs/express",
+  "tool": "mocha"
+}

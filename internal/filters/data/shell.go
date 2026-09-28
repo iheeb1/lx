@@ -7,29 +7,11 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// effective returns the context of the command whose output a filter sees.
-//
-// lx normally receives the command itself, but it can also arrive as a
-// shell running one command string: `bash -c "curl -s URL | jq '.[]'"`.
-// effective then describes the stage that shapes the output:
-//
-//   - the first command, when every later stage only selects whole lines
-//     (head, tail without -f, cat, sort);
-//   - a later jq stage (jq, gojq, jaq) followed only by such stages, since
-//     the output is then jq's rendering of whatever came before.
-//
-// Only plain pipelines are unwrapped: one pipeline of simple commands,
-// optionally preceded by VAR=value assignments, optionally with 2>&1.
-// Anything else (; && || & newlines, other redirections, $ expansions,
-// backquotes, subshells, comments) returns c itself. c is never modified.
 func effective(c *engine.Context) *engine.Context {
 	e, _ := unwrap(c)
 	return e
 }
 
-// unwrap is effective that also reports whether a later pipeline stage
-// changed which lines are shown in a way that breaks line numbering (tail,
-// sort): output line N is then not line N of the shaping command's output.
 func unwrap(c *engine.Context) (*engine.Context, bool) {
 	if c == nil || len(c.Argv) < 3 {
 		return c, false
@@ -45,7 +27,7 @@ func unwrap(c *engine.Context) (*engine.Context, bool) {
 	}
 	for _, ch := range flag[1:] {
 		if !strings.ContainsRune("celxuv", ch) {
-			return c, false // -o pipefail and friends: not modeled
+			return c, false
 		}
 	}
 	stages, ok := splitShell(c.Argv[2])
@@ -65,7 +47,7 @@ func unwrap(c *engine.Context) (*engine.Context, bool) {
 		}
 		stages[i] = st
 	}
-	// The shaping stage is the last one that is not a line slicer.
+
 	shape := len(stages) - 1
 	for shape > 0 && sliceConsumer(stages[shape]) {
 		shape--
@@ -84,8 +66,6 @@ func unwrap(c *engine.Context) (*engine.Context, bool) {
 
 func isJQ(name string) bool { return name == "jq" || name == "gojq" || name == "jaq" }
 
-// sliceConsumer reports whether a pipeline stage only selects or reorders
-// whole lines, so the output keeps the previous stage's line shape.
 func sliceConsumer(st []string) bool {
 	switch filepath.Base(st[0]) {
 	case "head", "cat", "sort":
@@ -96,7 +76,6 @@ func sliceConsumer(st []string) bool {
 	return false
 }
 
-// isFollow reports whether tail arguments ask to follow the file.
 func isFollow(args []string) bool {
 	for _, a := range args {
 		if a == "--" {
@@ -111,7 +90,7 @@ func isFollow(args []string) bool {
 					return true
 				}
 				if ch == 'n' || ch == 'c' || ch == 's' {
-					break // the rest is the flag's value
+					break
 				}
 			}
 		}
@@ -134,8 +113,6 @@ func isAssignment(w string) bool {
 	return true
 }
 
-// splitShell splits a POSIX shell command string into pipeline stages of
-// unquoted words. It returns ok=false for anything beyond a plain pipeline.
 func splitShell(s string) ([][]string, bool) {
 	var (
 		stages [][]string
@@ -201,7 +178,7 @@ func splitShell(s string) ([][]string, bool) {
 			stages = append(stages, words)
 			words = nil
 		case ch == '>':
-			// Only 2>&1 is allowed: it merges stderr, which lx captures anyway.
+
 			if !inWord || cur.String() != "2" || !strings.HasPrefix(s[i:], ">&1") {
 				return nil, false
 			}

@@ -20,7 +20,6 @@ func setKnobs(t *testing.T, k int, mb int64) {
 	t.Cleanup(func() { keep, maxBytes, minAge, maxPart = ok, omb, oma, omp })
 }
 
-// age sets every file of run id to look d old.
 func age(t *testing.T, id int, d time.Duration) {
 	t.Helper()
 	when := time.Now().Add(-d)
@@ -77,7 +76,7 @@ func TestIDsIncreaseAndPrune(t *testing.T) {
 		}
 		last = id
 	}
-	// All young: a count overflow prunes nothing younger than MinAge.
+
 	if n := len(list(Dir())); n != 12 {
 		t.Fatalf("kept %d young runs, want all 12", n)
 	}
@@ -87,7 +86,7 @@ func TestIDsIncreaseAndPrune(t *testing.T) {
 	if _, err := Save(Meta{}, "x"); err != nil {
 		t.Fatal(err)
 	}
-	// 13 runs, keep 5: the oldest go first and the young ones (11-13) stay.
+
 	if got := list(Dir()); !slices.Equal(got, []int{9, 10, 11, 12, 13}) {
 		t.Fatalf("after count prune: %v", got)
 	}
@@ -97,7 +96,7 @@ func TestIDsIncreaseAndPrune(t *testing.T) {
 	if r := Recent(3); len(r) != 3 || r[0].ID != 13 || r[2].ID != 11 {
 		t.Fatalf("Recent = %+v", r)
 	}
-	// Over MaxAge goes even when under the count.
+
 	age(t, 9, MaxAge+time.Hour)
 	if _, err := Save(Meta{}, "x"); err != nil {
 		t.Fatal(err)
@@ -123,7 +122,7 @@ func TestYoungRunsSurviveCountOverflow(t *testing.T) {
 func TestPruneByBytesOldestFirst(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	setKnobs(t, Keep, 10_000)
-	// A live spool (this process) is never pruned, even when it is oldest.
+
 	sp, err := Reserve(Meta{Argv: []string{"sleep", "100"}})
 	if err != nil {
 		t.Fatal(err)
@@ -132,17 +131,16 @@ func TestPruneByBytesOldestFirst(t *testing.T) {
 		t.Fatal(err)
 	}
 	out := strings.Repeat("y", 2999) + "\n"
-	for i := 0; i < 7; i++ { // ids 2..8; the byte check runs at id 8
+	for i := 0; i < 7; i++ {
 		if _, err := Save(Meta{}, out); err != nil {
 			t.Fatal(err)
 		}
 	}
-	// 3000 (live spool) + 7×3000 = 24000 > 10000: the oldest finished runs
-	// go until the rest fits: 1 (live) + 7 + 8 = 9000.
+
 	if got := list(Dir()); !slices.Equal(got, []int{1, 7, 8}) {
 		t.Fatalf("after byte prune: %v", got)
 	}
-	// Bytes override the 24h protection, the count limit does not.
+
 	if err := sp.Finish(Meta{Argv: []string{"sleep", "100"}}, "done\n"); err != nil {
 		t.Fatal(err)
 	}
@@ -160,14 +158,12 @@ func TestBigRunTriggersBytePrune(t *testing.T) {
 	if _, err := Save(Meta{}, strings.Repeat("z", 1<<20)); err != nil {
 		t.Fatal(err)
 	}
-	// The newest (just stored) is never pruned; the rest go oldest first.
+
 	if got := list(Dir()); !slices.Equal(got, []int{3}) {
 		t.Fatalf("after a big run: %v", got)
 	}
 }
 
-// Concurrent writers and readers: ids are unique and increase per writer,
-// and no reader ever sees a finished run's output cut short.
 func TestConcurrentSaveAndRead(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	const writers, perWriter = 16, 6
@@ -192,7 +188,7 @@ func TestConcurrentSaveAndRead(t *testing.T) {
 				for _, m := range Recent(20) {
 					out, lm, err := Load(m.ID)
 					if err != nil {
-						continue // reserved, not stored yet
+						continue
 					}
 					if lm.State == StateDone && (!strings.HasSuffix(out, "END\n") || !strings.Contains(out, payload)) {
 						errCh <- fmt.Errorf("run %d read truncated: %d bytes", m.ID, len(out))
@@ -298,7 +294,6 @@ func TestSpoolIncompleteAfterDeadLx(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// While this process (the spooling lx) is alive, the run is running.
 	out, m, err := Load(sp.ID())
 	if err != nil || out != want.String() {
 		t.Fatalf("live Load: %v, %d bytes", err, len(out))
@@ -310,13 +305,12 @@ func TestSpoolIncompleteAfterDeadLx(t *testing.T) {
 		t.Fatalf("Recent = %+v", r)
 	}
 
-	// lx dies (SIGKILL): the file stays, the pid is gone.
 	sp.f.Close()
 	path := filepath.Join(Dir(), strconv.Itoa(sp.ID())+".json")
 	b, _ := os.ReadFile(path)
 	var raw map[string]any
 	json.Unmarshal(b, &raw)
-	raw["pid"] = 1 << 30 // no such process
+	raw["pid"] = 1 << 30
 	b, _ = json.Marshal(raw)
 	os.WriteFile(path, b, 0o600)
 
@@ -330,7 +324,7 @@ func TestSpoolIncompleteAfterDeadLx(t *testing.T) {
 	if r := Recent(1); r[0].State != StateIncomplete {
 		t.Fatalf("Recent = %+v", r)
 	}
-	// An incomplete run is prunable like any other.
+
 	if statRun(Dir(), sp.ID()).live {
 		t.Fatal("a dead spool counts as live")
 	}
@@ -399,7 +393,7 @@ func TestOldStoreStillLoads(t *testing.T) {
 	os.MkdirAll(dir, 0o700)
 	os.WriteFile(filepath.Join(dir, "41.log"), []byte("old output\n"), 0o600)
 	os.WriteFile(filepath.Join(dir, "41.json"), []byte(`{"id":41,"argv":["git","log"],"cwd":"/r","exit":0,"filter":"git-log","time":"2026-09-20T10:00:00Z","bytes":11}`), 0o600)
-	os.WriteFile(filepath.Join(dir, "42.log"), []byte("no meta\n"), 0o600) // json write failed
+	os.WriteFile(filepath.Join(dir, "42.log"), []byte("no meta\n"), 0o600)
 	out, m, err := Load(41)
 	if err != nil || out != "old output\n" || m.Filter != "git-log" || m.State != StateDone {
 		t.Fatalf("Load(41) = %q %+v %v", out, m, err)
@@ -456,8 +450,6 @@ func TestStatusNote(t *testing.T) {
 	}
 }
 
-// BenchmarkSaveFullStore: one Save into a store of 2,000 young runs (over
-// Keep, protected by MinAge), the worst steady state for a heavy user.
 func BenchmarkSaveFullStore(b *testing.B) {
 	b.Setenv("LX_TEE_DIR", b.TempDir())
 	for i := 0; i < 2000; i++ {
@@ -473,8 +465,6 @@ func BenchmarkSaveFullStore(b *testing.B) {
 	}
 }
 
-// lockable reports whether this platform tells a live spool by its lock
-// (and checks the spool's lock is really held there).
 func lockable(t *testing.T, sp *Spool) bool {
 	t.Helper()
 	if !haveLocks {
@@ -486,9 +476,6 @@ func lockable(t *testing.T, sp *Spool) bool {
 	return true
 }
 
-// lx is SIGKILLed and its pid is later reused by another live process of
-// the same user: the run must read as incomplete, not "still running", and
-// must be prunable. The kernel drops the spool's lock with the process.
 func TestReusedPidIsNotRunning(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	sp, err := Reserve(Meta{Argv: []string{"go", "test"}})
@@ -499,8 +486,8 @@ func TestReusedPidIsNotRunning(t *testing.T) {
 	if !lockable(t, sp) {
 		t.Skip("no flock on this platform: liveness is the pid")
 	}
-	// The pid in the metadata is this (live) process, as after pid reuse.
-	sp.f.Close() // what the kernel does when lx dies
+
+	sp.f.Close()
 	out, m, err := Load(sp.ID())
 	if err != nil || out != "=== RUN TestA\n" {
 		t.Fatalf("Load: %v %q", err, out)
@@ -516,8 +503,6 @@ func TestReusedPidIsNotRunning(t *testing.T) {
 	}
 }
 
-// The lock, not the pid, says a spool is live: a bogus pid in the metadata
-// does not make a spool that is still being written look abandoned.
 func TestLockedSpoolIsRunning(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	sp, err := Reserve(Meta{})
@@ -543,8 +528,6 @@ func TestLockedSpoolIsRunning(t *testing.T) {
 	sp.Finish(Meta{}, "done\n")
 }
 
-// A reader racing Finish never sees a finishing run as incomplete (the
-// lock is held until the .log is in place) nor a truncated output.
 func TestFinishNeverReadsIncomplete(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	final := strings.Repeat("output line\n", 2000)
@@ -591,8 +574,6 @@ func TestFinishNeverReadsIncomplete(t *testing.T) {
 	}
 }
 
-// A reservation left empty by an lx that died between creating and writing
-// its metadata is listed nowhere and pruned like any other old run.
 func TestStaleEmptyReservation(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	setKnobs(t, 1, MaxBytes)
@@ -615,7 +596,7 @@ func TestStaleEmptyReservation(t *testing.T) {
 	if exists(empty) {
 		t.Fatal("the stale reservation was never pruned")
 	}
-	// Likewise a Save that died after reserving: no output, pid reused.
+
 	os.WriteFile(filepath.Join(dir, "9.json"), []byte(`{"id":9,"exit":-1,"state":"running","pid":`+strconv.Itoa(os.Getpid())+`}`), 0o600)
 	age(t, 9, 2*time.Minute)
 	for _, m := range Recent(10) {
@@ -625,8 +606,6 @@ func TestStaleEmptyReservation(t *testing.T) {
 	}
 }
 
-// In a shared LX_TEE_DIR, links planted where lx writes temporary files
-// must not make lx write through them.
 func TestNoWriteThroughPlantedLinks(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	dir := Dir()
@@ -648,7 +627,7 @@ func TestNoWriteThroughPlantedLinks(t *testing.T) {
 	if out, m, err := Load(1); err != nil || out != "command output\n" || m.Argv[0] != "secret" {
 		t.Fatalf("Load = %q %+v %v", out, m, err)
 	}
-	// The spool is created the same way.
+
 	part := filepath.Join(dir, "7.log.part")
 	os.Symlink(victim, part)
 	f, err := createFresh(part)
@@ -665,8 +644,6 @@ func TestNoWriteThroughPlantedLinks(t *testing.T) {
 	}
 }
 
-// A corrupt (or huge) .seq or file name never yields a negative or
-// overflowing id.
 func TestCorruptIDsIgnored(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	dir := Dir()
@@ -680,35 +657,29 @@ func TestCorruptIDsIgnored(t *testing.T) {
 	}
 }
 
-// A reader that catches a reservation's metadata half-written must not
-// list it as a finished run that exited 0.
 func TestRecentSkipsHalfWrittenMeta(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	dir := Dir()
 	os.MkdirAll(dir, 0o700)
 	os.WriteFile(filepath.Join(dir, "3.json"), []byte(`{"id":3,"argv":["go","te`), 0o600)
 	os.WriteFile(filepath.Join(dir, "4.log"), []byte("old output\n"), 0o600)
-	os.WriteFile(filepath.Join(dir, "4.json"), []byte(`{"id":4,"argv":[`), 0o600) // corrupt, with output
+	os.WriteFile(filepath.Join(dir, "4.json"), []byte(`{"id":4,"argv":[`), 0o600)
 	r := Recent(10)
 	if len(r) != 1 || r[0].ID != 4 {
 		t.Fatalf("Recent = %+v; want only run 4 (it has output)", r)
 	}
 }
 
-// A writer that listed the store long ago (descheduled under load while
-// other lx processes stored many runs) still gets an id: it skips ahead
-// instead of failing after 50 collisions.
 func TestStaleWriterStillGetsAnID(t *testing.T) {
 	t.Setenv("LX_TEE_DIR", t.TempDir())
 	dir := Dir()
 	os.MkdirAll(dir, 0o700)
-	// Runs 1..200 were reserved after this writer's listing (which saw
-	// none); .seq says so, as every reservation records it.
+
 	for id := 1; id <= 200; id++ {
 		os.WriteFile(filepath.Join(dir, strconv.Itoa(id)+".json"), []byte("{}"), 0o600)
 	}
 	os.WriteFile(filepath.Join(dir, ".seq"), []byte("200\n"), 0o600)
-	id, err := claim(dir, 1, Meta{State: StateRunning}) // from the stale listing
+	id, err := claim(dir, 1, Meta{State: StateRunning})
 	if err != nil || id != 201 {
 		t.Fatalf("claim = %d, %v; want id 201", id, err)
 	}

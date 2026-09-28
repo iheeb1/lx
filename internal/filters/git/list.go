@@ -8,17 +8,6 @@ import (
 
 func init() { engine.Register(listFilter{}) }
 
-// listFilter keeps git's listing commands as git prints them: reflog,
-// verbose branch listings (-v, -vv), annotated tag listings (tag -n),
-// worktree list, shortlog, cherry, ls-remote, remote show, submodule
-// status, show-branch and notes list, and the per-file reports of clean,
-// rm, mv and add ("Would remove x", "rm 'x'"). Every line is an item an
-// agent may act on (a reflog entry to reset to, a file a dry run would
-// delete), and the generic reducer would fold runs of look-alike items
-// (consecutive amend entries, numbered files) into "… N similar lines …"
-// or "test<N>.out ×24". Output over the budget is cut from the end with an exact
-// count, keeping the head (newest reflog entries, first branches); git's
-// own diagnostics are never cut.
 type listFilter struct{}
 
 func (listFilter) Name() string    { return "git-list" }
@@ -37,8 +26,6 @@ func (listFilter) Match(c *engine.Context) bool {
 	case "reflog":
 		return first == "" || first == "show" || !isReflogVerb(first)
 	case "branch":
-		// Read-only listings the branch filter (registered first) does
-		// not take: -v, -vv, -av, --format-free verbose forms.
 		return !hasArg(c, branchWriteFlags...) && !strings.ContainsAny(shortLetters(c), "dDmMcCuf")
 	case "tag":
 		return hasNFlag(c) && !hasArg(c, "-d", "--delete", "-v", "--verify", "-a", "-s", "-m", "-F", "-f", "--force")
@@ -56,12 +43,9 @@ func (listFilter) Match(c *engine.Context) bool {
 	return false
 }
 
-// branchWriteFlags create, delete, rename, copy or configure branches.
 var branchWriteFlags = []string{"-d", "-D", "--delete", "-m", "-M", "--move", "-c", "-C", "--copy",
 	"-u", "--set-upstream-to", "--set-upstream-to=", "--unset-upstream", "--edit-description", "-f", "--force"}
 
-// shortLetters returns the letters of combined single-dash flags ("-av"
-// → "av"); single-letter flags are left to hasArg.
 func shortLetters(c *engine.Context) string {
 	var b strings.Builder
 	for _, a := range subArgs(c) {
@@ -72,8 +56,6 @@ func shortLetters(c *engine.Context) string {
 	return b.String()
 }
 
-// isReflogVerb reports whether a reflog positional is a subcommand other
-// than show/list (expire, delete, exists); anything else is a ref to show.
 func isReflogVerb(s string) bool {
 	switch s {
 	case "expire", "delete", "exists", "drop":
@@ -82,7 +64,6 @@ func isReflogVerb(s string) bool {
 	return false
 }
 
-// hasNFlag reports a -n / -n<num> tag flag.
 func hasNFlag(c *engine.Context) bool {
 	for _, a := range subArgs(c) {
 		if a == "-n" || strings.HasPrefix(a, "-n") && len(a) > 2 && a[2] >= '0' && a[2] <= '9' {

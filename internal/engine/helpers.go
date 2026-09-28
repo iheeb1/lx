@@ -7,12 +7,7 @@ import (
 	"unicode/utf8"
 )
 
-// ShortenLine caps one line at max runes, keeping the start and the end
-// (where file:line suffixes and verdicts usually are) and saying how much
-// was cut. Error lines get 3x the room.
 func ShortenLine(line string, max int) string {
-	// Length first: classifying is far more expensive than counting runes,
-	// and short lines never need it.
 	if len(line) <= max {
 		return line
 	}
@@ -32,13 +27,10 @@ func ShortenLine(line string, max int) string {
 	return fmt.Sprintf("%s …[+%d chars]… %s", string(r[:headN]), n-headN-tailN, string(r[n-tailN:]))
 }
 
-// Relativize rewrites absolute paths under the working directory to
-// relative ones and the home directory to ~. Paths stay valid because lx
-// runs in the agent's cwd.
 func Relativize(c *Context, s string) string {
 	if c.Cwd != "" && c.Cwd != "/" {
 		cwd := strings.TrimRight(c.Cwd, "/") + "/"
-		// Some tools resolve /tmp to /private/tmp on macOS.
+
 		if strings.HasPrefix(cwd, "/tmp/") || strings.HasPrefix(cwd, "/var/") {
 			s = replacePath(s, "/private"+cwd, "")
 		}
@@ -50,8 +42,6 @@ func Relativize(c *Context, s string) string {
 	return s
 }
 
-// replacePath replaces old with repl except inside URLs (file:///x/y must
-// stay a valid URL) and where old is only the tail of a longer path.
 func replacePath(s, old, repl string) string {
 	if !strings.Contains(s, old) {
 		return s
@@ -75,8 +65,6 @@ func replacePath(s, old, repl string) string {
 	}
 }
 
-// CollapseRuns replaces runs of identical consecutive lines with one copy
-// plus a count, and runs of blank lines with a single blank line.
 func CollapseRuns(lines []string) []string {
 	out := make([]string, 0, len(lines))
 	for i := 0; i < len(lines); {
@@ -108,14 +96,10 @@ var progressRe = lazyre.New(`^\s*\d{1,3}(?:\.\d+)?%\s*(?:[|\[]|$)` +
 	`|^Progress: resolved \d+` +
 	`|^[0-9a-f]{12}: (?:Pulling fs layer|Waiting|Downloading|Verifying Checksum|Download complete|Extracting|Pull complete|Already exists)`)
 
-// IsProgress reports whether a line is a progress bar / transfer meter /
-// spinner frame that carries no information once the command has finished.
 func IsProgress(line string) bool {
 	return progressRe.MatchString(line) && !IsError(line)
 }
 
-// DropProgress removes progress lines, returning the survivors and the count
-// removed.
 func DropProgress(lines []string) ([]string, int) {
 	out := lines[:0:0]
 	n := 0
@@ -129,7 +113,6 @@ func DropProgress(lines []string) ([]string, int) {
 	return out, n
 }
 
-// Plural formats "1 file" / "3 files".
 func Plural(n int, one, many string) string {
 	if n == 1 {
 		return fmt.Sprintf("%d %s", n, one)

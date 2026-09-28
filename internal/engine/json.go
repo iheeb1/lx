@@ -11,27 +11,24 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// jv is an order-preserving JSON value.
 type jv struct {
-	kind byte     // 'o' object, 'a' array, 's' string, 'n' number, 'b' bool, 'z' null
-	keys []string // object keys, source order
-	vals []*jv    // object values / array elements
-	s    string   // string value, number text, "true"/"false"
+	kind byte
+	keys []string
+	vals []*jv
+	s    string
 }
 
 const (
 	maxJSONDepth   = 256
-	jsonCellRunes  = 80 // table cells are cut here
-	jsonInlineCell = 60 // nested values this short are shown inline in cells
+	jsonCellRunes  = 80
+	jsonInlineCell = 60
 	jsonExpandMin  = 100
-	jsonMaxItems   = 30 // arrays longer than this are cut …
-	jsonKeepItems  = 20 // … to this many items
+	jsonMaxItems   = 30
+	jsonKeepItems  = 20
 )
 
 var errJSONDepth = errors.New("json too deep")
 
-// parseJSONStream decodes one or more concatenated JSON values (a document,
-// NDJSON, or `jq` output), preserving object key order.
 func parseJSONStream(s string) ([]*jv, error) {
 	dec := json.NewDecoder(strings.NewReader(s))
 	dec.UseNumber()
@@ -86,7 +83,7 @@ func buildJV(dec *json.Decoder, tok json.Token, depth int) (*jv, error) {
 			}
 			v.vals = append(v.vals, e)
 		}
-		if _, err := dec.Token(); err != nil { // closing delimiter
+		if _, err := dec.Token(); err != nil {
 			return nil, err
 		}
 		return v, nil
@@ -116,23 +113,17 @@ func (v *jv) get(key string) *jv {
 
 func (v *jv) scalar() bool { return v.kind != 'o' && v.kind != 'a' }
 
-// jsonErrorKeys are hoisted to the top of CompactJSON output, verbatim.
 var jsonErrorKeys = map[string]bool{"error": true, "errors": true, "message": true, "detail": true, "status": true, "code": true}
 
-// jsonIdentKeys name a nested object in one word (users, labels, refs).
 var jsonIdentKeys = []string{"name", "login", "title", "key", "id"}
 
 type jsonRenderer struct {
-	dropURLs    bool // the document is hypermedia-heavy
+	dropURLs    bool
 	droppedURLs int
 }
 
-// minURLFields: URL fields are only dropped from documents that have at
-// least this many (API responses full of hypermedia links); in a config
-// file a lone "url" is content.
 const minURLFields = 10
 
-// countURLFields counts the fields isURLField would drop.
 func countURLFields(v *jv) int {
 	n := 0
 	for i, e := range v.vals {
@@ -145,7 +136,6 @@ func countURLFields(v *jv) int {
 	return n
 }
 
-// dropField reports whether an object field is dropped (and counts it).
 func (r *jsonRenderer) dropField(key string, v *jv) bool {
 	if r == nil || !r.dropURLs || !isURLField(key, v) {
 		return false
@@ -154,7 +144,6 @@ func (r *jsonRenderer) dropField(key string, v *jv) bool {
 	return true
 }
 
-// isURLField reports whether key/value is a hypermedia link to drop.
 func isURLField(key string, v *jv) bool {
 	if key == "_links" {
 		return true
@@ -165,25 +154,6 @@ func isURLField(key string, v *jv) bool {
 	return v.kind == 's' && (strings.HasPrefix(v.s, "http://") || strings.HasPrefix(v.s, "https://"))
 }
 
-// CompactJSON condenses a JSON document (or NDJSON / concatenated values)
-// whose token count exceeds budget. It returns ok=false, and s unchanged,
-// when the trimmed text does not start with '{' or '[', does not parse as
-// JSON values in full, is within budget, or would not get smaller.
-//
-// The output, deterministic and in source key order:
-//   - top-level error fields of a root object (error, errors, message,
-//     detail, status, code — and error/errors one level down) come first,
-//     verbatim as minified JSON, as "key: value" lines;
-//   - hypermedia fields (keys url, href, *_url with an http(s) value, and
-//     _links) are dropped, noted once at the end as "[dropped N *_url fields]";
-//   - arrays of 3+ objects sharing ≥80% of their keys become a table: a
-//     "keys: a, b, c" line, an "all: k=v, …" line for columns constant across
-//     items, then one line per item with cells joined by " | " (strings cut
-//     to 80 runes with "…", newlines as \n, nested objects as {…N keys} with
-//     an identifying name/login/title when present, short arrays inline);
-//   - arrays longer than 30 items keep the first 20 plus "… +N more items";
-//   - everything else is re-emitted as minified JSON, one key per line for
-//     the top two levels when a value is wider than 100 characters.
 func CompactJSON(s string, budget int) (string, bool) {
 	t := strings.TrimSpace(s)
 	if t == "" || (t[0] != '{' && t[0] != '[') {
@@ -219,7 +189,6 @@ func CompactJSON(s string, budget int) (string, bool) {
 	return res, true
 }
 
-// hoistJSONErrors splits error fields off a root object.
 func hoistJSONErrors(root *jv) ([]string, *jv) {
 	var hoisted []string
 	rest := &jv{kind: 'o'}
@@ -247,22 +216,18 @@ func hoistJSONErrors(root *jv) ([]string, *jv) {
 	return hoisted, rest
 }
 
-// verbatimJSON is minified JSON with nothing dropped or cut.
 func verbatimJSON(v *jv) string {
 	var b strings.Builder
 	writeJSON(&b, v, nil)
 	return b.String()
 }
 
-// inline is minified JSON with URL fields dropped and long arrays cut.
 func (r *jsonRenderer) inline(v *jv) string {
 	var b strings.Builder
 	writeJSON(&b, v, r)
 	return b.String()
 }
 
-// writeJSON writes minified JSON; with r != nil it drops URL fields and cuts
-// long arrays.
 func writeJSON(b *strings.Builder, v *jv, r *jsonRenderer) {
 	switch v.kind {
 	case 'o':
@@ -306,7 +271,6 @@ func writeJSON(b *strings.Builder, v *jv, r *jsonRenderer) {
 	}
 }
 
-// quoteJSON quotes s as a JSON string without HTML escaping.
 func quoteJSON(s string) string {
 	var b strings.Builder
 	b.Grow(len(s) + 2)
@@ -333,7 +297,6 @@ func quoteJSON(s string) string {
 	return b.String()
 }
 
-// block renders v as lines at the given depth and indent.
 func (r *jsonRenderer) block(v *jv, depth int, indent string) []string {
 	switch v.kind {
 	case 'o':
@@ -389,7 +352,6 @@ func (r *jsonRenderer) block(v *jv, depth int, indent string) []string {
 	return []string{indent + r.inline(v)}
 }
 
-// probe measures the inline form without counting dropped URLs.
 func (r *jsonRenderer) probe(v *jv) string {
 	saved := r.droppedURLs
 	s := r.inline(v)
@@ -397,7 +359,6 @@ func (r *jsonRenderer) probe(v *jv) string {
 	return s
 }
 
-// isTableBlock: table blocks carry their own layout; no trailing comma.
 func isTableBlock(lines []string) bool {
 	return len(lines) > 1 && strings.HasPrefix(strings.TrimLeft(lines[0], " "), `"`) &&
 		strings.Contains(lines[0], "[table: ")
@@ -412,8 +373,6 @@ func allScalars(vs []*jv) bool {
 	return true
 }
 
-// homogeneous reports whether arr is 3+ objects sharing ≥80% of their keys,
-// and returns the column order (first appearance).
 func homogeneous(arr *jv) ([]string, bool) {
 	if len(arr.vals) < 3 {
 		return nil, false
@@ -464,7 +423,6 @@ func homogeneous(arr *jv) ([]string, bool) {
 	return order, true
 }
 
-// table renders a homogeneous array of objects.
 func (r *jsonRenderer) table(arr *jv, indent string) ([]string, bool) {
 	cols, ok := homogeneous(arr)
 	if !ok {
@@ -489,8 +447,7 @@ func (r *jsonRenderer) table(arr *jv, indent string) ([]string, bool) {
 			}
 			continue
 		}
-		// Constant column: present everywhere with one identical value
-		// (compared as full JSON, not as the possibly summarized cell).
+
 		if n == len(arr.vals) {
 			v0 := verbatimJSON(arr.vals[0].get(k))
 			constant := utf8.RuneCountInString(v0) <= jsonInlineCell
@@ -539,7 +496,6 @@ func (r *jsonRenderer) table(arr *jv, indent string) ([]string, bool) {
 
 var cellEscaper = strings.NewReplacer("\r\n", `\n`, "\n", `\n`, "\r", `\r`, "\t", `\t`)
 
-// cell renders one table cell.
 func (r *jsonRenderer) cell(v *jv) string {
 	switch v.kind {
 	case 's':
@@ -588,7 +544,6 @@ func (r *jsonRenderer) cell(v *jv) string {
 	return v.s
 }
 
-// jsonIdent returns "login=octocat" for an object with an identifying key.
 func jsonIdent(v *jv) string {
 	for _, k := range jsonIdentKeys {
 		if e := v.get(k); e != nil && e.scalar() && e.kind != 'z' {
@@ -607,7 +562,6 @@ func jsonIdentValue(v *jv) string {
 	return ""
 }
 
-// cutRunes shortens s to max runes, ending with "…" when cut.
 func cutRunes(s string, max int) string {
 	if utf8.RuneCountInString(s) <= max {
 		return s

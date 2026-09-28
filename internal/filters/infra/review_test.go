@@ -1,7 +1,5 @@
 package infra
 
-// Regression tests for the defects found in the adversarial review.
-
 import (
 	"fmt"
 	"strings"
@@ -23,9 +21,6 @@ func applyInfra(t *testing.T, c *engine.Context, in string) string {
 	return got
 }
 
-// A BuildKit build killed mid-step (OOM: exit 137, no "ERROR" line) hid
-// the running step's output behind "[lx: N output lines not shown]", so
-// the view read like a build that simply stopped.
 func TestReviewBuildKilledShowsUnfinishedStep(t *testing.T) {
 	b := []string{"#1 [internal] load build definition from Dockerfile", "#1 transferring dockerfile: 734B done", "#1 DONE 0.0s",
 		"#5 [1/3] FROM docker.io/library/node:20", "#5 DONE 0.1s", "#6 [2/3] RUN npm run build"}
@@ -41,20 +36,17 @@ func TestReviewBuildKilledShowsUnfinishedStep(t *testing.T) {
 			t.Errorf("missing %q in\n%s", want, got)
 		}
 	}
-	// The same output with exit 0 is not reported as unfinished.
+
 	if got := applyInfra(t, ctx(0, "docker", "build", "."), in); strings.Contains(got, "did not finish") || strings.Contains(got, "no step reported") {
 		t.Errorf("exit 0 marked unfinished:\n%s", got)
 	}
-	// When a step failed, the steps it canceled are not "unfinished".
+
 	failed := in + "\n#6 ERROR: process \"/bin/sh -c npm run build\" did not complete successfully: exit code: 1\n#7 [3/3] COPY . .\n#7 CANCELED"
 	if got := applyInfra(t, ctx(1, "docker", "build", "."), failed); strings.Contains(got, "did not finish") {
 		t.Errorf("failed build marked unfinished:\n%s", got)
 	}
 }
 
-// Merged event rows dropped the other rows' ages, including kubectl's own
-// "(x3 over 45m)" counts, so the kept row's "(xN over M)" read as the
-// total.
 func TestReviewEventMergeKeepsAges(t *testing.T) {
 	d := "Name:         x\nNamespace:    y\nEvents:\n  Type     Reason   Age                From     Message\n  ----     ------   ----               ----     -------\n" +
 		"  Warning  BackOff  40m (x3 over 45m)  kubelet  Back-off restarting failed container\n" +
@@ -73,8 +65,7 @@ func TestReviewEventMergeKeepsAges(t *testing.T) {
 	if !strings.Contains(got, "[×9 rows; others: 90m, 80m, …, 20m]") {
 		t.Errorf("long merge not abbreviated with first and last ages:\n%s", got)
 	}
-	// -o wide: the NAME column holds each event's own name; distinct
-	// events are not merged.
+
 	wide := "LAST SEEN   TYPE      REASON    OBJECT    SUBOBJECT   SOURCE    MESSAGE   FIRST SEEN   COUNT   NAME\n" +
 		"5m          Warning   BackOff   pod/x                 kubelet   failed    10m          3       x.17a1\n" +
 		"1m          Warning   BackOff   pod/x                 kubelet   failed    4m           2       x.17a2"
@@ -83,10 +74,6 @@ func TestReviewEventMergeKeepsAges(t *testing.T) {
 	}
 }
 
-// kubectl prints "Warning: …" to stderr before the table, and errors after
-// it; the first made the filter bail, the second was counted as a row with
-// an empty STATUS. A pod that restarted minutes ago but reads Running 1/1
-// was hidden as healthy.
 func TestReviewKubectlGetMessagesAndRestarts(t *testing.T) {
 	k := []string{"Warning: v1 ComponentStatus is deprecated in v1.19+", "NAME                         READY   STATUS             RESTARTS      AGE"}
 	for i := 0; i < 80; i++ {
@@ -115,10 +102,6 @@ func TestReviewKubectlGetMessagesAndRestarts(t *testing.T) {
 	}
 }
 
-// Rows are also kept when an error word appears anywhere in them (the
-// engine guard would re-add them otherwise); the note must not claim they
-// all exited non-zero (real capture docker-ps-a-real-many: a container
-// named "lx-review-oom" that exited 0).
 func TestReviewDockerTableNoteHonest(t *testing.T) {
 	p := []string{"CONTAINER ID   IMAGE          COMMAND       CREATED        STATUS                     PORTS     NAMES"}
 	for i := 0; i < 70; i++ {
@@ -134,8 +117,6 @@ func TestReviewDockerTableNoteHonest(t *testing.T) {
 	}
 }
 
-// The legacy builder stops at the failing step; the note says how many of
-// the Dockerfile's steps ran.
 func TestReviewLegacyStepsRan(t *testing.T) {
 	in := "Step 1/3 : FROM alpine\n ---> abcdef123456\nStep 2/3 : RUN make\n ---> Running in 0123456789ab\nmain.c:3:1: error: expected ';'\nThe command '/bin/sh -c make' returned a non-zero code: 2"
 	got := applyInfra(t, ctx(2, "docker", "build", "."), in)
@@ -144,9 +125,6 @@ func TestReviewLegacyStepsRan(t *testing.T) {
 	}
 }
 
-// Dropping a constant column rewrote error-class rows (three replicas
-// whose COMMAND holds an error word), so the engine guard re-appended
-// them after the table (found by FuzzInfraFilters).
 func TestReviewConstantColumnKeepsErrorRows(t *testing.T) {
 	row := func(a ...any) string { return fmt.Sprintf("%-15s%-16s%-25s%-15s%-15s%-10s%s", a...) }
 	in := strings.Join([]string{
@@ -164,7 +142,6 @@ func TestReviewConstantColumnKeepsErrorRows(t *testing.T) {
 	}
 }
 
-// cellSpans replaces cellSplitRe for speed; it must split exactly the same.
 func TestReviewCellSpansMatchesRegexp(t *testing.T) {
 	for _, s := range []string{"", " ", "a", "a b", "a  b", "a\tb", " a b  c   d ", "CONTAINER ID   IMAGE", "x \ty", "é  ü x", "a \x00b", "a b\t c  "} {
 		var want [][2]int
@@ -190,9 +167,6 @@ func FuzzCellSpans(f *testing.F) {
 	})
 }
 
-// describe dropped Volumes/Mounts although the events reported a mount
-// failure, and Tolerations/Node-Selectors although scheduling failed: the
-// dropped block was the explanation.
 func TestReviewDescribeKeepsBlocksTheEventsNeed(t *testing.T) {
 	base := "Name:         api-0\nNamespace:    shop\nStatus:       Pending\n" +
 		"Volumes:\n  certs:\n    Type:        Secret (a volume populated by a Secret)\n    SecretName:  api-tls\n" +

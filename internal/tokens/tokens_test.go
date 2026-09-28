@@ -23,7 +23,7 @@ func TestCountTerminatesOnAnyInput(t *testing.T) {
 }
 
 func TestCountBasics(t *testing.T) {
-	cases := map[string][2]int{ // text → [min, max]
+	cases := map[string][2]int{
 		"":                         {0, 0},
 		"hello":                    {1, 1},
 		"hello world":              {2, 2},

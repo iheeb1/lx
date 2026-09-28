@@ -1,0 +1,254 @@
+npx eslint lib --rule 'no-var: error' --rule 'prefer-const: error'
+
+/home/user/src/express/lib/application.js
+   16:1   error  Unexpected var, use let or const instead  no-var
+   17:1   error  Unexpected var, use let or const instead  no-var
+   18:1   error  Unexpected var, use let or const instead  no-var
+   19:1   error  Unexpected var, use let or const instead  no-var
+   20:1   error  Unexpected var, use let or const instead  no-var
+   21:1   error  Unexpected var, use let or const instead  no-var
+   22:1   error  Unexpected var, use let or const instead  no-var
+   23:1   error  Unexpected var, use let or const instead  no-var
+   24:1   error  Unexpected var, use let or const instead  no-var
+   25:1   error  Unexpected var, use let or const instead  no-var
+   26:1   error  Unexpected var, use let or const instead  no-var
+   33:1   error  Unexpected var, use let or const instead  no-var
+   34:1   error  Unexpected var, use let or const instead  no-var
+   40:1   error  Unexpected var, use let or const instead  no-var
+   47:1   error  Unexpected var, use let or const instead  no-var
+   60:3   error  Unexpected var, use let or const instead  no-var
+   91:3   error  Unexpected var, use let or const instead  no-var
+  154:3   error  Unexpected var, use let or const instead  no-var
+  191:3   error  Unexpected var, use let or const instead  no-var
+  192:3   error  Unexpected var, use let or const instead  no-var
+  197:5   error  Unexpected var, use let or const instead  no-var
+  210:3   error  Unexpected var, use let or const instead  no-var
+  217:3   error  Unexpected var, use let or const instead  no-var
+  231:7   error  Unexpected var, use let or const instead  no-var
+  300:3   error  Unexpected var, use let or const instead  no-var
+  324:10  error  Unexpected var, use let or const instead  no-var
+  478:5   error  Unexpected var, use let or const instead  no-var
+  495:3   error  Unexpected var, use let or const instead  no-var
+  496:3   error  Unexpected var, use let or const instead  no-var
+  498:8   error  Unexpected var, use let or const instead  no-var
+  523:3   error  Unexpected var, use let or const instead  no-var
+  524:3   error  Unexpected var, use let or const instead  no-var
+  525:3   error  Unexpected var, use let or const instead  no-var
+  526:3   error  Unexpected var, use let or const instead  no-var
+  527:3   error  Unexpected var, use let or const instead  no-var
+  536:3   error  Unexpected var, use let or const instead  no-var
+  550:5   error  Unexpected var, use let or const instead  no-var
+  559:7   error  Unexpected var, use let or const instead  no-var
+  562:7   error  Unexpected var, use let or const instead  no-var
+  599:3   error  Unexpected var, use let or const instead  no-var
+  600:3   error  Unexpected var, use let or const instead  no-var
+  602:5   error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/lib/express.js
+  15:1  error  Unexpected var, use let or const instead  no-var
+  16:1  error  Unexpected var, use let or const instead  no-var
+  17:1  error  Unexpected var, use let or const instead  no-var
+  18:1  error  Unexpected var, use let or const instead  no-var
+  19:1  error  Unexpected var, use let or const instead  no-var
+  20:1  error  Unexpected var, use let or const instead  no-var
+  21:1  error  Unexpected var, use let or const instead  no-var
+  37:3  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/lib/request.js
+   16:1   error  Unexpected var, use let or const instead  no-var
+   17:1   error  Unexpected var, use let or const instead  no-var
+   18:1   error  Unexpected var, use let or const instead  no-var
+   19:1   error  Unexpected var, use let or const instead  no-var
+   20:1   error  Unexpected var, use let or const instead  no-var
+   21:1   error  Unexpected var, use let or const instead  no-var
+   22:1   error  Unexpected var, use let or const instead  no-var
+   23:1   error  Unexpected var, use let or const instead  no-var
+   30:1   error  Unexpected var, use let or const instead  no-var
+   73:3   error  Unexpected var, use let or const instead  no-var
+  128:3   error  Unexpected var, use let or const instead  no-var
+  141:3   error  Unexpected var, use let or const instead  no-var
+  215:3   error  Unexpected var, use let or const instead  no-var
+  231:3   error  Unexpected var, use let or const instead  no-var
+  238:3   error  Unexpected var, use let or const instead  no-var
+  270:3   error  Unexpected var, use let or const instead  no-var
+  275:10  error  Unexpected var, use let or const instead  no-var
+  298:3   error  Unexpected var, use let or const instead  no-var
+  301:3   error  Unexpected var, use let or const instead  no-var
+  309:3   error  Unexpected var, use let or const instead  no-var
+  310:3   error  Unexpected var, use let or const instead  no-var
+  341:3   error  Unexpected var, use let or const instead  no-var
+  358:3   error  Unexpected var, use let or const instead  no-var
+  359:3   error  Unexpected var, use let or const instead  no-var
+  384:3   error  Unexpected var, use let or const instead  no-var
+  388:3   error  Unexpected var, use let or const instead  no-var
+  389:3   error  Unexpected var, use let or const instead  no-var
+  419:3   error  Unexpected var, use let or const instead  no-var
+  420:3   error  Unexpected var, use let or const instead  no-var
+  445:3   error  Unexpected var, use let or const instead  no-var
+  450:3   error  Unexpected var, use let or const instead  no-var
+  453:3   error  Unexpected var, use let or const instead  no-var
+  470:3   error  Unexpected var, use let or const instead  no-var
+  471:3   error  Unexpected var, use let or const instead  no-var
+  472:3   error  Unexpected var, use let or const instead  no-var
+  509:3   error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/lib/response.js
+    15:1   error  Unexpected var, use let or const instead  no-var
+    16:1   error  Unexpected var, use let or const instead  no-var
+    17:1   error  Unexpected var, use let or const instead  no-var
+    18:1   error  Unexpected var, use let or const instead  no-var
+    19:1   error  Unexpected var, use let or const instead  no-var
+    20:1   error  Unexpected var, use let or const instead  no-var
+    21:1   error  Unexpected var, use let or const instead  no-var
+    22:1   error  Unexpected var, use let or const instead  no-var
+    23:1   error  Unexpected var, use let or const instead  no-var
+    24:1   error  Unexpected var, use let or const instead  no-var
+    25:1   error  Unexpected var, use let or const instead  no-var
+    26:1   error  Unexpected var, use let or const instead  no-var
+    27:1   error  Unexpected var, use let or const instead  no-var
+    28:1   error  Unexpected var, use let or const instead  no-var
+    29:1   error  Unexpected var, use let or const instead  no-var
+    30:1   error  Unexpected var, use let or const instead  no-var
+    31:1   error  Unexpected var, use let or const instead  no-var
+    32:1   error  Unexpected var, use let or const instead  no-var
+    33:1   error  Unexpected var, use let or const instead  no-var
+    34:1   error  Unexpected var, use let or const instead  no-var
+    35:1   error  Unexpected var, use let or const instead  no-var
+    43:1   error  Unexpected var, use let or const instead  no-var
+    99:3   error  Unexpected var, use let or const instead  no-var
+   127:3   error  Unexpected var, use let or const instead  no-var
+   128:3   error  Unexpected var, use let or const instead  no-var
+   129:3   error  Unexpected var, use let or const instead  no-var
+   132:3   error  Unexpected var, use let or const instead  no-var
+   162:3   error  Unexpected var, use let or const instead  no-var
+   163:3   error  Unexpected var, use let or const instead  no-var
+   165:3   error  Unexpected var, use let or const instead  no-var
+   188:3   error  Unexpected var, use let or const instead  no-var
+   238:3   error  Unexpected var, use let or const instead  no-var
+   239:3   error  Unexpected var, use let or const instead  no-var
+   240:3   error  Unexpected var, use let or const instead  no-var
+   241:3   error  Unexpected var, use let or const instead  no-var
+   242:3   error  Unexpected var, use let or const instead  no-var
+   266:3   error  Unexpected var, use let or const instead  no-var
+   267:3   error  Unexpected var, use let or const instead  no-var
+   268:3   error  Unexpected var, use let or const instead  no-var
+   269:3   error  Unexpected var, use let or const instead  no-var
+   270:3   error  Unexpected var, use let or const instead  no-var
+   271:3   error  Unexpected var, use let or const instead  no-var
+   326:3   error  Unexpected var, use let or const instead  no-var
+   376:3   error  Unexpected var, use let or const instead  no-var
+   377:3   error  Unexpected var, use let or const instead  no-var
+   378:3   error  Unexpected var, use let or const instead  no-var
+   379:3   error  Unexpected var, use let or const instead  no-var
+   380:3   error  Unexpected var, use let or const instead  no-var
+   401:3   error  Unexpected var, use let or const instead  no-var
+   405:3   error  Unexpected var, use let or const instead  no-var
+   438:3   error  Unexpected var, use let or const instead  no-var
+   439:3   error  Unexpected var, use let or const instead  no-var
+   440:3   error  Unexpected var, use let or const instead  no-var
+   460:3   error  Unexpected var, use let or const instead  no-var
+   466:5   error  Unexpected var, use let or const instead  no-var
+   467:10  error  Unexpected var, use let or const instead  no-var
+   468:7   error  Unexpected var, use let or const instead  no-var
+   480:3   error  Unexpected var, use let or const instead  no-var
+   509:3   error  Unexpected var, use let or const instead  no-var
+   574:3   error  Unexpected var, use let or const instead  no-var
+   575:3   error  Unexpected var, use let or const instead  no-var
+   577:3   error  Unexpected var, use let or const instead  no-var
+   580:3   error  Unexpected var, use let or const instead  no-var
+   635:3   error  Unexpected var, use let or const instead  no-var
+   636:3   error  Unexpected var, use let or const instead  no-var
+   672:5   error  Unexpected var, use let or const instead  no-var
+   686:10  error  Unexpected var, use let or const instead  no-var
+   748:3   error  Unexpected var, use let or const instead  no-var
+   749:3   error  Unexpected var, use let or const instead  no-var
+   750:3   error  Unexpected var, use let or const instead  no-var
+   756:3   error  Unexpected var, use let or const instead  no-var
+   765:5   error  Unexpected var, use let or const instead  no-var
+   815:3   error  Unexpected var, use let or const instead  no-var
+   816:3   error  Unexpected var, use let or const instead  no-var
+   817:3   error  Unexpected var, use let or const instead  no-var
+   847:7   error  Unexpected var, use let or const instead  no-var
+   897:3   error  Unexpected var, use let or const instead  no-var
+   898:3   error  Unexpected var, use let or const instead  no-var
+   899:3   error  Unexpected var, use let or const instead  no-var
+   900:3   error  Unexpected var, use let or const instead  no-var
+   901:3   error  Unexpected var, use let or const instead  no-var
+   924:3   error  Unexpected var, use let or const instead  no-var
+   925:3   error  Unexpected var, use let or const instead  no-var
+   932:5   error  Unexpected var, use let or const instead  no-var
+   942:5   error  Unexpected var, use let or const instead  no-var
+   999:7   error  Unexpected var, use let or const instead  no-var
+  1000:7   error  Unexpected var, use let or const instead  no-var
+  1002:12  error  Unexpected var, use let or const instead  no-var
+  1003:9   error  Unexpected var, use let or const instead  no-var
+  1028:3   error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/lib/utils.js
+   15:1  error  Unexpected var, use let or const instead  no-var
+   16:1  error  Unexpected var, use let or const instead  no-var
+   17:1  error  Unexpected var, use let or const instead  no-var
+   18:1  error  Unexpected var, use let or const instead  no-var
+   19:1  error  Unexpected var, use let or const instead  no-var
+   20:1  error  Unexpected var, use let or const instead  no-var
+   21:1  error  Unexpected var, use let or const instead  no-var
+   90:3  error  Unexpected var, use let or const instead  no-var
+   91:3  error  Unexpected var, use let or const instead  no-var
+   92:3  error  Unexpected var, use let or const instead  no-var
+   93:3  error  Unexpected var, use let or const instead  no-var
+   96:5  error  Unexpected var, use let or const instead  no-var
+   99:5  error  Unexpected var, use let or const instead  no-var
+  100:5  error  Unexpected var, use let or const instead  no-var
+  107:5  error  Unexpected var, use let or const instead  no-var
+  108:5  error  Unexpected var, use let or const instead  no-var
+  131:3  error  Unexpected var, use let or const instead  no-var
+  163:3  error  Unexpected var, use let or const instead  no-var
+  231:3  error  Unexpected var, use let or const instead  no-var
+  251:5  error  Unexpected var, use let or const instead  no-var
+
+/home/user/src/express/lib/view.js
+   16:1   error  Unexpected var, use let or const instead  no-var
+   17:1   error  Unexpected var, use let or const instead  no-var
+   18:1   error  Unexpected var, use let or const instead  no-var
+   25:1   error  Unexpected var, use let or const instead  no-var
+   26:1   error  Unexpected var, use let or const instead  no-var
+   27:1   error  Unexpected var, use let or const instead  no-var
+   28:1   error  Unexpected var, use let or const instead  no-var
+   29:1   error  Unexpected var, use let or const instead  no-var
+   53:3   error  Unexpected var, use let or const instead  no-var
+   64:3   error  Unexpected var, use let or const instead  no-var
+   77:5   error  Unexpected var, use let or const instead  no-var
+   81:5   error  Unexpected var, use let or const instead  no-var
+  105:3   error  Unexpected var, use let or const instead  no-var
+  106:3   error  Unexpected var, use let or const instead  no-var
+  110:8   error  Unexpected var, use let or const instead  no-var
+  111:5   error  Unexpected var, use let or const instead  no-var
+  114:5   error  Unexpected var, use let or const instead  no-var
+  115:5   error  Unexpected var, use let or const instead  no-var
+  116:5   error  Unexpected var, use let or const instead  no-var
+  134:3   error  Unexpected var, use let or const instead  no-var
+  145:5   error  Unexpected var, use let or const instead  no-var
+  146:5   error  Unexpected var, use let or const instead  no-var
+  148:10  error  Unexpected var, use let or const instead  no-var
+  170:3   error  Unexpected var, use let or const instead  no-var
+  173:3   error  Unexpected var, use let or const instead  no-var
+  174:3   error  Unexpected var, use let or const instead  no-var
+
+✖ 222 problems (222 errors, 0 warnings)
+  220 errors and 0 warnings potentially fixable with the `--fix` option.
+
+rake aborted!
+Command failed with status (1): [npx eslint lib --rule 'no-var: error' --rule 'prefer-const: error']
+/home/user/src/express/Rakefile:5:in 'block in <top (required)>'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:188:in 'Rake::Application#invoke_task'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:138:in 'block (2 levels) in Rake::Application#top_level'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:138:in 'Array#each'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:138:in 'block in Rake::Application#top_level'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:147:in 'Rake::Application#run_with_threads'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:132:in 'Rake::Application#top_level'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:83:in 'block in Rake::Application#run'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:214:in 'Rake::Application#standard_exception_handling'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/lib/rake/application.rb:80:in 'Rake::Application#run'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/rake-13.3.1/exe/rake:27:in '<top (required)>'
+Tasks: TOP => lint
+(See full trace by running task with --trace)

@@ -2,24 +2,16 @@ package git
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/testenv"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/iheeb1/lx/internal/engine"
 	"github.com/iheeb1/lx/internal/fixture"
+	"github.com/iheeb1/lx/internal/testenv"
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// Regression tests for the issues found in the adversarial review of the
-// git filters. Each test names the defect it pins down.
-
-// ---- status ------------------------------------------------------------------
-
-// A path staged for deletion and present again as untracked (git rm
-// --cached) is two entries in git's short format. The filter used to merge
-// them into "?? x", hiding that the next commit deletes x.
 func TestStatusStagedDeletionAndUntrackedSamePath(t *testing.T) {
 	in := "On branch main\nChanges to be committed:\n  (use \"git restore --staged <file>...\" to unstage)\n\tdeleted:    History.md\n\n" +
 		"Untracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\tHistory.md\n"
@@ -28,16 +20,13 @@ func TestStatusStagedDeletionAndUntrackedSamePath(t *testing.T) {
 	if !ok || got != want {
 		t.Errorf("got\n%s\nwant\n%s", got, want)
 	}
-	// Same for ignored files.
+
 	in = "On branch main\nChanges to be committed:\n\tdeleted:    build.log\n\nIgnored files:\n\tbuild.log\n"
 	if got, _ := (status{}).Apply(ctx(0, "git", "status", "--ignored"), in); got != "## main\nD  build.log\n!! build.log" {
 		t.Errorf("ignored: got\n%s", got)
 	}
 }
 
-// Paths and branch names that contain error words ("panic.go",
-// "fix-panic") are converted, not dropped; the guard used to re-append them
-// under "[lx: error lines from the full output]".
 func TestStatusGuardsErrorNamedPaths(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("On branch fix-panic\nYour branch is ahead of 'origin/fix-panic' by 1 commit.\n  (use \"git push\" to publish your local commits)\n\n")
@@ -65,8 +54,6 @@ func TestStatusGuardsErrorNamedPaths(t *testing.T) {
 	}
 }
 
-// Every line status does not convert is printed verbatim, including hints
-// that are error-class (normal hints are dropped).
 func TestStatusKeepsUnconvertedErrorLines(t *testing.T) {
 	in := "warning: could not open directory 'secret/': Permission denied\nOn branch main\nChanges not staged for commit:\n" +
 		"  (use \"git add <file>...\" to update what will be committed)\n  (fatal: unable to refresh the index)\n\tmodified:   a.go\n"
@@ -81,8 +68,6 @@ func TestStatusKeepsUnconvertedErrorLines(t *testing.T) {
 	}
 }
 
-// git before 2.15 wrote "up-to-date"; it was kept as an unknown state line
-// (with every hint) instead of being folded into the "## " line.
 func TestStatusOldUpToDateWording(t *testing.T) {
 	in := "On branch master\nYour branch is up-to-date with 'origin/master'.\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n\n\tmodified:   a.go\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")"
 	got, _ := status{}.Apply(ctx(0, "git", "status"), in)
@@ -91,10 +76,6 @@ func TestStatusOldUpToDateWording(t *testing.T) {
 	}
 }
 
-// ---- diff ----------------------------------------------------------------------
-
-// "copy from/copy to" used to be dropped like a rename's from/to lines, so
-// a copy (the source still exists) read like a rename.
 func TestDiffKeepsCopyLines(t *testing.T) {
 	in := "diff --git a/a.go b/b.go\nsimilarity index 100%\ncopy from a.go\ncopy to b.go\n" +
 		"diff --git a/c.go b/d.go\nsimilarity index 100%\nrename from c.go\nrename to d.go"
@@ -105,8 +86,6 @@ func TestDiffKeepsCopyLines(t *testing.T) {
 	}
 }
 
-// lockDiffWithConflict builds a lockfile diff large enough to be summarized
-// whose added lines contain an unresolved merge.
 func lockDiffWithConflict(name string) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "diff --git a/%s b/%s\nindex 1..2 100644\n--- a/%s\n+++ b/%s\n@@ -10,6 +10,66 @@\n", name, name, name, name)
@@ -122,8 +101,6 @@ func lockDiffWithConflict(name string) string {
 	return b.String()
 }
 
-// Lockfile and generated-file summaries used to hide conflict markers, so a
-// lockfile committed with an unresolved merge read as a clean change.
 func TestDiffConflictMarkersNeverHidden(t *testing.T) {
 	for _, name := range []string{"yarn.lock", "dist/app.min.js"} {
 		got := applyDiff(t, lockDiffWithConflict(name))
@@ -136,12 +113,12 @@ func TestDiffConflictMarkersNeverHidden(t *testing.T) {
 			}
 		}
 	}
-	// Shown in full: no note.
+
 	small := "diff --git a/a.go b/a.go\n@@ -1,2 +1,6 @@\n x\n+<<<<<<< HEAD\n+a\n+=======\n+b\n+>>>>>>> t\n y"
 	if got := applyDiff(t, small); strings.Contains(got, "unresolved") {
 		t.Errorf("note on a fully shown file:\n%s", got)
 	}
-	// A lone "=======" is a Markdown heading underline, not a conflict.
+
 	var md strings.Builder
 	md.WriteString("diff --git a/dist/README.md b/dist/README.md\n@@ -1,0 +1,200 @@\n+Title\n+=======\n")
 	for i := 0; i < 198; i++ {
@@ -152,8 +129,6 @@ func TestDiffConflictMarkersNeverHidden(t *testing.T) {
 	}
 }
 
-// Over budget, a large file keeps only its first two hunks; markers in the
-// later ones are listed, and files cut to the name list are flagged.
 func TestDiffConflictMarkersSurviveCuts(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("diff --git a/big.go b/big.go\nindex 1..2 100644\n--- a/big.go\n+++ b/big.go\n")
@@ -173,7 +148,7 @@ func TestDiffConflictMarkersSurviveCuts(t *testing.T) {
 	if !strings.Contains(got, "[unresolved conflict markers added (3 lines), by new-file line:\n  4121: +<<<<<<< HEAD") {
 		t.Errorf("markers in a cut hunk not listed:\n%s", got[:min(len(got), 600)])
 	}
-	// Many files: the ones past the budget are listed by name, flagged.
+
 	var many strings.Builder
 	for f := 0; f < 400; f++ {
 		fmt.Fprintf(&many, "diff --git a/f%03d.go b/f%03d.go\n@@ -1,3 +1,3 @@\n-\told := value(%d) // some padding words here\n+\tnew := value(%d) // some padding words here\n more context\n", f, f, f, f)
@@ -185,8 +160,6 @@ func TestDiffConflictMarkersSurviveCuts(t *testing.T) {
 	}
 }
 
-// Deleted-file bodies are counted at every size level (the design brief's
-// L1), not only when the diff is over budget; short ones stay.
 func TestDiffDeletedFileBodiesCounted(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("diff --git a/gone.md b/gone.md\ndeleted file mode 100644\nindex 1..0\n--- a/gone.md\n+++ /dev/null\n@@ -1,20 +0,0 @@\n")
@@ -201,17 +174,12 @@ func TestDiffDeletedFileBodiesCounted(t *testing.T) {
 	}
 }
 
-// A mode-only change listed past the budget said "+0"; git's stat says 0.
 func TestCountDescNoContent(t *testing.T) {
 	if got := countDesc(&fileDiff{}); got != "0" {
 		t.Errorf("got %q", got)
 	}
 }
 
-// ---- log -----------------------------------------------------------------------
-
-// Stat rows under a commit used the message's four-space indent, so they
-// read like body lines; they now keep git's one-space indent.
 func TestLogStatNativeIndent(t *testing.T) {
 	in := "commit 1111111aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nAuthor: A <a@b>\nDate:   Mon Jan 2 15:04:05 2006 -0700\n\n    subject\n\n    Fixes #1\n\n a.go | 2 +-\n 1 file changed, 1 insertion(+), 1 deletion(-)\n"
 	got, _ := logFilter{}.Apply(ctx(0, "git", "log", "--stat"), in)
@@ -221,10 +189,6 @@ func TestLogStatNativeIndent(t *testing.T) {
 	}
 }
 
-// With -p, commits whose diffs do not fit used to be only counted; they are
-// now listed by their header line (with kept body lines), and only git's
-// own diagnostics — not data lines such as stat rows naming "fail.go" —
-// follow the cut.
 func TestLogCutListsCommitsWithoutChanges(t *testing.T) {
 	var b strings.Builder
 	for i := 0; i < 40; i++ {
@@ -268,14 +232,10 @@ func TestLogCutListsCommitsWithoutChanges(t *testing.T) {
 	if strings.Contains(cut, "fail3") && strings.Contains(cut, "| 60") {
 		t.Errorf("stat rows of listed commits printed after the cut:\n%s", cut)
 	}
-	// logDrops accepts it: every commit accounted for, the listed ones'
-	// changes are the only lines missing.
+
 	logDrops(t, in, got, fixture.ErrorLinesMissing(in, got))
 }
 
-// ---- sync ------------------------------------------------------------------------
-
-// A failed transfer keeps its last progress line: it says where it stopped.
 func TestSyncKeepsLastProgressOnFailure(t *testing.T) {
 	in := "Cloning into 'y'...\nremote: Enumerating objects: 4593, done.\nReceiving objects:  45% (2067/4593), 756.01 KiB | 724.00 KiB/s"
 	got, _ := syncFilter{}.Apply(ctx(130, "git", "clone", "https://x/y.git"), in)
@@ -288,9 +248,6 @@ func TestSyncKeepsLastProgressOnFailure(t *testing.T) {
 	}
 }
 
-// A diffstat of thousands of files was printed in full (the engine budget
-// then cut it mid-list); it is capped with an exact count, and git's own
-// summary line keeps the totals.
 func TestDiffstatCapped(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("Updating 1234567..89abcde\nFast-forward\n")
@@ -307,10 +264,6 @@ func TestDiffstatCapped(t *testing.T) {
 	}
 }
 
-// ---- blame -----------------------------------------------------------------------
-
-// With several -L ranges the cut rest is not one range; the hint used to
-// name a single "-L a,b" covering lines that were never blamed.
 func TestBlameCutWithSeveralRanges(t *testing.T) {
 	var b strings.Builder
 	for _, r := range [][2]int{{1, 400}, {1000, 1400}} {
@@ -327,10 +280,6 @@ func TestBlameCutWithSeveralRanges(t *testing.T) {
 	}
 }
 
-// ---- false-pass hunt ---------------------------------------------------------------
-
-// Failed runs: the full pipeline shows every error line, adds no pass-like
-// word, and the failure stays visible.
 func TestFailuresStayVisible(t *testing.T) {
 	pad := strings.Repeat("remote: Counting objects: 100% (5/5), done.\n", 3)
 	cases := []struct {
@@ -389,10 +338,6 @@ func TestFailuresStayVisible(t *testing.T) {
 	}
 }
 
-// ---- speed ---------------------------------------------------------------------------
-
-// Each filter handles a realistic 50k-line output in under 200ms (best of
-// five runs, so a busy test machine does not make it flaky).
 func TestFiftyThousandLinesFast(t *testing.T) {
 	gen := func(n int, f func(b *strings.Builder, i int)) string {
 		var b strings.Builder
@@ -450,12 +395,6 @@ func TestFiftyThousandLinesFast(t *testing.T) {
 	}
 }
 
-// ---- listings the generic reducer used to fold ------------------------------------
-
-// `git status -sb` (combined flags) once escaped machine-readable detection
-// and reached the generic reducer, which folded runs of look-alike entries
-// ("?? tests/inputs/test12" … "test31") into "… 18 similar lines …". Short
-// format is now machine-readable in the engine and passes through intact.
 func TestStatusShortFormatKept(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("## master...origin/master\n M src/a.c\n")
@@ -470,16 +409,13 @@ func TestStatusShortFormatKept(t *testing.T) {
 			t.Errorf("%v: %s\n%s", argv, res.Filter, res.Output)
 		}
 	}
-	// -v appends diffs: kept as they are too.
+
 	v := "On branch main\nChanges to be committed:\n\tmodified:   a.go\n\ndiff --git a/a.go b/a.go\nindex 1..2 100644\n--- a/a.go\n+++ b/a.go\n@@ -1 +1 @@\n-x\n+y"
 	if got, ok := (status{}).Apply(ctx(0, "git", "status", "-v"), v); !ok || got != v {
 		t.Errorf("-v: %q", got)
 	}
 }
 
-// Listing commands without a reshaping filter (reflog, branch -vv, tag -n,
-// worktree list, …) are kept as git prints them; over the budget the head
-// is kept with an exact count, and git's diagnostics survive the cut.
 func TestListingsKeptWhole(t *testing.T) {
 	var b strings.Builder
 	for i := 0; i < 40; i++ {
@@ -491,7 +427,7 @@ func TestListingsKeptWhole(t *testing.T) {
 	if res.Output != in {
 		t.Errorf("reflog changed (%s):\n%s", res.Filter, res.Output)
 	}
-	// Over budget: newest entries first, exact count, fatal kept.
+
 	b.Reset()
 	for i := 0; i < 4000; i++ {
 		fmt.Fprintf(&b, "%012x HEAD@{%d}: commit (amend): wip: parser rework %d\n", 0xa7530e6bcb01+i*7919, i, i)
@@ -507,9 +443,6 @@ func TestListingsKeptWhole(t *testing.T) {
 	}
 }
 
-// wrapItems dropped a line made only of empty items, and renderLevel then
-// indexed the empty result (a fuzz-found panic on "diff --git " headers
-// with no path).
 func TestWrapItemsEmptyItem(t *testing.T) {
 	if got := wrapItems("", []string{""}, ", ", 10); len(got) != 1 {
 		t.Errorf("got %q", got)
@@ -520,7 +453,6 @@ func TestWrapItemsEmptyItem(t *testing.T) {
 	}
 }
 
-// Output made only of transfer progress rendered as nothing at all.
 func TestSyncProgressOnly(t *testing.T) {
 	in := "remote: Enumerating objects: 5, done.\nremote: Total 3 (delta 2), reused 3 (delta 2), pack-reused 0\nUnpacking objects: 100% (3/3), 1.2 KiB | 300.00 KiB/s, done."
 	if got, ok := (syncFilter{}).Apply(ctx(0, "git", "fetch"), in); !ok || got != "[3 lines of transfer progress hidden]" {
@@ -528,8 +460,6 @@ func TestSyncProgressOnly(t *testing.T) {
 	}
 }
 
-// `git clean -n` lists the files a dry run would delete; the generic
-// reducer factored numbered ones into "test<N>.out ×24".
 func TestCleanDryRunKeepsEveryFile(t *testing.T) {
 	var b strings.Builder
 	for i := 41; i <= 64; i++ {
@@ -542,7 +472,6 @@ func TestCleanDryRunKeepsEveryFile(t *testing.T) {
 	}
 }
 
-// keepBody's prefilter must agree with keepBodyRe on every line it rejects.
 func TestKeepBodyPrefilterExact(t *testing.T) {
 	lines := []string{
 		"Fixes #123", "fixes owner/repo#9", "Closes: https://github.com/o/r/issues/4", "see #12",

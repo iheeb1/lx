@@ -1,10 +1,5 @@
 package golang
 
-// Regression tests for the problems found in the adversarial review of the
-// first version of these filters. Each test names the failure it guards
-// against; the real captures behind most of them are the lxcap2-* fixtures
-// (testdata/captures/lxcap2).
-
 import (
 	"fmt"
 	"strings"
@@ -14,9 +9,6 @@ import (
 	"github.com/iheeb1/lx/internal/fixture"
 )
 
-// mustApply runs f and fails unless it rendered; it also checks that no
-// error-class line (=== markers aside) and, for a failing run, no file:line
-// location was lost.
 func mustApply(t *testing.T, f engine.Filter, c *engine.Context, in string) string {
 	t.Helper()
 	got, ok := f.Apply(c, in)
@@ -53,11 +45,6 @@ func wantNone(t *testing.T, got string, bad ...string) {
 
 func lines(ls ...string) string { return strings.Join(ls, "\n") }
 
-// Bug: everything after the last "--- FAIL" of a failing package was taken
-// for passing-test output and hidden, including what TestMain prints after
-// the binary's final FAIL line: a data race report (its locations were
-// lost), a goroutine leak report, the coverage figure. What was kept of it
-// was labelled "printed by passing tests".
 func TestReviewLinesAfterFinalFAILKept(t *testing.T) {
 	race := []string{
 		"==================",
@@ -90,7 +77,6 @@ func TestReviewLinesAfterFinalFAILKept(t *testing.T) {
 		"coverage": {[]string{"coverage: 41.2% of statements"}, []string{"coverage: 41.2% of statements"}},
 	} {
 		t.Run(name, func(t *testing.T) {
-			// Without -v.
 			in := lines(append(append(append([]string{"--- FAIL: TestA (0.00s)", "    a_test.go:3: boom"}, chatter...), "FAIL"),
 				append(tc.epilogue, "FAIL\texample.com/app\t0.3s", "FAIL")...)...)
 			got := mustApply(t, testText{}, ctx(1, "go", "test", "./..."), in)
@@ -99,7 +85,7 @@ func TestReviewLinesAfterFinalFAILKept(t *testing.T) {
 			if strings.Index(got, "FAIL\n") > strings.Index(got, tc.want[0]) {
 				t.Errorf("TestMain's output moved before the final FAIL line:\n%s", got)
 			}
-			// With -v: the same, chatter attributed to a passing test.
+
 			in = lines(append([]string{"=== RUN   TestA", "    a_test.go:3: boom", "--- FAIL: TestA (0.00s)",
 				"=== RUN   TestB", chatter[0], chatter[1], "--- PASS: TestB (0.00s)", "FAIL"},
 				append(tc.epilogue, "FAIL\texample.com/app\t0.3s", "FAIL")...)...)
@@ -110,10 +96,6 @@ func TestReviewLinesAfterFinalFAILKept(t *testing.T) {
 	}
 }
 
-// Bug: when the test binary exited without its final PASS / FAIL line
-// (log.Fatal or os.Exit in a later test, a test killed for running too
-// long), the reason was hidden as "passing-test output" if an earlier test
-// had failed: the agent saw TestA's failure but not that the binary died.
 func TestReviewAbnormalExitKeepsLastLines(t *testing.T) {
 	for name, tail := range map[string][]string{
 		"log.Fatal": {"loading config from testdata/app.yaml", "2026/09/26 10:00:00 config file testdata/app.yaml missing"},
@@ -129,19 +111,13 @@ func TestReviewAbnormalExitKeepsLastLines(t *testing.T) {
 			wantNone(t, got, "hidden:", "printed by passing tests")
 		})
 	}
-	// The real capture: log.Fatal in TestLoad after TestParse failed.
+
 	fc := loadCapture(t, "go", "lxcap2-test")
 	got := mustApply(t, testText{}, fc.Context(), fc.Clean())
 	wantAll(t, got, "loading config from testdata/app.yaml", "open testdata/app.yaml: permission issue")
 }
 
-// Bug: go test prints a result line or the final FAIL glued to test output
-// that did not end in a newline. The glued "--- FAIL" was not counted, the
-// glued "--- PASS" made its test look like it was still running when the
-// package ended ("=== RUN TestOK" shown), and the -json decoder glued the
-// partial output to the framing line that test2json had kept separate.
 func TestReviewGluedOutput(t *testing.T) {
-	// Real captures (Go 1.26): plain, -v and -json.
 	fc := loadCapture(t, "go", "lxcap2-test")
 	got := mustApply(t, testText{}, fc.Context(), fc.Clean())
 	wantAll(t, got, "progress: 3/5--- FAIL: TestNoNewline (0.00s)", "ok-no-newlineFAIL\nFAIL\texample.com/lxcap2/glued")
@@ -156,7 +132,6 @@ func TestReviewGluedOutput(t *testing.T) {
 	wantNone(t, got, "=== RUN   TestOK", "ok-no-newline--- PASS")
 	wantAll(t, got, "[16 passed, 7 failed (incl. subtests)")
 
-	// A glued FAIL result in -json must still count as a failure.
 	ev := func(action, test, output string) string {
 		s := fmt.Sprintf(`{"Action":%q,"Package":"example.com/g"`, action)
 		if test != "" {
@@ -181,9 +156,6 @@ func TestReviewGluedOutput(t *testing.T) {
 	wantAll(t, got, "--- FAIL: TestGlue (0.00s)\nhalf a line", "0 passed, 1 failed")
 }
 
-// Bug: -json test-level pass/fail/skip events were ignored; a test whose
-// "--- FAIL" line never came (older test2json, output cut short) was shown
-// as "=== RUN" (still running) and not counted as failed.
 func TestReviewJSONTestActions(t *testing.T) {
 	in := lines(
 		`{"Action":"run","Package":"example.com/h","Test":"TestHidden"}`,
@@ -199,10 +171,6 @@ func TestReviewJSONTestActions(t *testing.T) {
 	wantNone(t, got, "=== RUN   TestHidden")
 }
 
-// Bug: a test that printed a line starting with "panic: " or "runtime: "
-// started a "crash" that swallowed the rest of the package: result lines
-// were not counted, passing-test output was not hidden, and a passing
-// package was treated as failed.
 func TestReviewFalseCrash(t *testing.T) {
 	var pass []string
 	for i := range 30 {
@@ -224,21 +192,16 @@ func TestReviewFalseCrash(t *testing.T) {
 	wantAll(t, got, "runtime: 120ms", "--- FAIL: TestA (0.00s)", "[hidden: 30 lines of passing-test output]")
 	wantNone(t, got, "chatter")
 
-	// A real crash is still folded and kept.
 	in = lines("--- FAIL: TestA (0.00s)", "panic: boom [recovered]", "", "goroutine 7 [running]:",
 		"example.com/app.TestA(0xc000)", "\t/home/user/src/app/a_test.go:9 +0x1c", "FAIL\texample.com/app\t0.1s", "FAIL")
 	got = mustApply(t, testText{}, ctx(1, "go", "test"), in)
 	wantAll(t, got, "panic: boom [recovered]", "a_test.go:9", "example.com/app.TestA(...)")
 
-	// A test printing a lone "FAIL" in a package that passed is not a
-	// failure (go test's verdict says ok); the line is still shown.
 	in = lines("=== RUN   TestA", "FAIL", "--- PASS: TestA (0.00s)", "PASS", "ok  \texample.com/app\t0.1s")
 	got = mustApply(t, testText{}, ctx(0, "go", "test", "-v"), in)
 	wantAll(t, got, "ok  \texample.com/app\t0.1s", "[1 passed")
 }
 
-// Bug: when every test passed but the package failed (TestMain, a leak or
-// race check after m.Run), the footer's last word was "[30 passed · …]".
 func TestReviewFooterNeverPassLike(t *testing.T) {
 	var pass []string
 	for i := range 30 {
@@ -249,8 +212,6 @@ func TestReviewFooterNeverPassLike(t *testing.T) {
 	wantAll(t, got, "PASS\nleakcheck: 2 goroutines leaked\nFAIL\texample.com/app\t0.3s", "[30 passed, but 1 package FAILED")
 }
 
-// Bug: any go command line counted as evidence of a failure, so exit 1
-// with only "ok" lines and a "go: warning" rendered as a clean run.
 func TestReviewFailureEvidence(t *testing.T) {
 	in := lines(`go: warning: "./..." matched only vendored packages`, "ok  \texample.com/a\t0.1s", "ok  \texample.com/b\t0.1s")
 	if out, ok := (testText{}).Apply(ctx(1, "go", "test", "./..."), in); ok {
@@ -261,8 +222,6 @@ func TestReviewFailureEvidence(t *testing.T) {
 	wantAll(t, got, "signal: killed")
 }
 
-// Bug: go build / go mod with a failing exit and nothing but download
-// lines rendered only "[go: downloading N modules …]".
 func TestReviewBuildModBailWithoutFailureLine(t *testing.T) {
 	var b strings.Builder
 	for i := range 30 {
@@ -276,15 +235,12 @@ func TestReviewBuildModBailWithoutFailureLine(t *testing.T) {
 			t.Errorf("%s: exit 0 downloads not condensed", f.Name())
 		}
 	}
-	// A go: error line that the classifier does not flag still counts.
+
 	got := mustApply(t, mod{}, ctx(1, "go", "get", "example.com/x@v1.2.3"),
 		b.String()+"go: example.com/x@v1.2.3: invalid version: unknown revision v1.2.3")
 	wantAll(t, got, "go: example.com/x@v1.2.3: invalid version: unknown revision v1.2.3")
 }
 
-// Improvement: with more than 5 skipped tests the reasons were all hidden
-// ("needs docker" matters: those tests did not run); now each distinct
-// reason is shown once with a count.
 func TestReviewSkipGroups(t *testing.T) {
 	var in []string
 	for i := range 30 {
@@ -305,9 +261,6 @@ func TestReviewSkipGroups(t *testing.T) {
 		"28 lines of skipped-test output")
 }
 
-// Improvement: passing packages whose verdict lines differ only in name
-// and time collapse, also with "[no tests to run]" (a -run pattern that
-// matched nothing: kept visible) or an identical coverage figure.
 func TestReviewOKCollapse(t *testing.T) {
 	var in []string
 	for i := range 5 {
@@ -327,7 +280,6 @@ func TestReviewOKCollapse(t *testing.T) {
 		"ok  \tex.com/m/d3\t0.4s\tcoverage: 40.0% of statements")
 }
 
-// Race report frames keep their locations but lose the +0x offsets.
 func TestReviewRaceOffsets(t *testing.T) {
 	fc := loadCapture(t, "go", "lxcap2-test-race-post")
 	got := mustApply(t, testText{}, fc.Context(), fc.Clean())
@@ -335,10 +287,6 @@ func TestReviewRaceOffsets(t *testing.T) {
 	wantNone(t, got, "+0x")
 }
 
-// Bug (shared-code gap, worked around here): engine.MachineReadable lets
-// the go command's -json through to the filters, and with no filter the
-// generic reducer turned go list -json into a table. It is now kept
-// verbatim (passthrough) up to the token budget.
 func TestReviewMachineOutputVerbatim(t *testing.T) {
 	fc := loadCapture(t, "go", "lxcap2-list-json")
 	res := engine.Process(fc.Context(), fc.Raw, engine.Options{})
@@ -351,8 +299,6 @@ func TestReviewMachineOutputVerbatim(t *testing.T) {
 	}
 }
 
-// Windows line endings: Process normalizes them before the filter runs, so
-// the view is the same as for LF output.
 func TestReviewCRLF(t *testing.T) {
 	fc := fixture.Load(t, "go", "go-test-fail-v")
 	crlf := strings.ReplaceAll(fc.Raw, "\n", "\r\n")
@@ -363,9 +309,6 @@ func TestReviewCRLF(t *testing.T) {
 	}
 }
 
-// Bug: a failing Example prints its got:/want: blocks unindented after its
-// "--- FAIL" line; they were hidden as passing-test output (with and
-// without -v), leaving the failure without its assertion.
 func TestReviewExampleOutputKept(t *testing.T) {
 	for _, name := range []string{"lxcap2-example", "lxcap2-example-v", "lxcap2-example-json"} {
 		fc := loadCapture(t, "go", name)
@@ -373,16 +316,11 @@ func TestReviewExampleOutputKept(t *testing.T) {
 		got := mustApply(t, f, fc.Context(), fc.Clean())
 		wantAll(t, got, "--- FAIL: Example_greeting (0.00s)\ngot:\nhello\nworld\nwant:\nhello\nthere", "--- FAIL: TestFirst")
 		if name != "lxcap2-example" {
-			// Without -v, TestAfter's chatter precedes a --- FAIL line, so
-			// it may belong to a failing test and is kept.
 			wantNone(t, got, "after chatter")
 		}
 	}
 }
 
-// Bug: with -count=N a test name reports N times; a test that failed on
-// one run and passed on a later one was shown as passed ("4 passed"), its
-// failure message hidden, and only the guard re-added its --- FAIL line.
 func TestReviewCountKeepsEachRun(t *testing.T) {
 	for _, name := range []string{"lxcap2-flaky-count-v", "lxcap2-flaky-count-json"} {
 		fc := loadCapture(t, "go", name)
@@ -394,14 +332,12 @@ func TestReviewCountKeepsEachRun(t *testing.T) {
 			t.Errorf("%s: guard re-added lines:\n%s", name, res.Output)
 		}
 	}
-	// Without -v each run prints its own result block.
+
 	in := lines("--- FAIL: TestFlaky (0.00s)", "    f_test.go:14: run 1", "--- FAIL: TestFlaky (0.00s)", "    f_test.go:14: run 2", "FAIL", "FAIL\tex.com/f\t0.1s", "FAIL")
 	got := mustApply(t, testText{}, ctx(1, "go", "test", "-count=2"), in)
 	wantAll(t, got, "f_test.go:14: run 1", "f_test.go:14: run 2")
 }
 
-// Output shown for a passing package keeps its own "ok" line instead of
-// being folded into a collapsed line that does not say whose it is.
 func TestReviewCollapseKeepsAttribution(t *testing.T) {
 	in := lines(
 		"=== RUN   TestA", "    a_test.go:3: value=42", "--- PASS: TestA (0.00s)", "PASS", "ok  \tex.com/m/a\t0.1s",
@@ -410,8 +346,6 @@ func TestReviewCollapseKeepsAttribution(t *testing.T) {
 	wantAll(t, got, "    a_test.go:3: value=42\nok  \tex.com/m/a\t0.1s", "ok  \t4 packages under ex.com/m: b, c, d, e")
 }
 
-// Bug: -json reports a subtest before its parent; with -count=2 both runs'
-// subtests were nested under the second run of the parent.
 func TestReviewCountSubtestNesting(t *testing.T) {
 	fc := loadCapture(t, "go", "lxcap2-count-sub-json")
 	got := mustApply(t, testJSON{}, fc.Context(), fc.Clean())
@@ -419,8 +353,6 @@ func TestReviewCountSubtestNesting(t *testing.T) {
 	wantAll(t, got, block+block)
 }
 
-// Data race reports are kept whole: their stacks are not elided as
-// "lines repeated from above" (only the +0x offsets go).
 func TestReviewRaceReportNotElided(t *testing.T) {
 	fc := loadCapture(t, "go", "lxcap-test-race")
 	got := mustApply(t, testText{}, fc.Context(), fc.Clean())
@@ -428,7 +360,7 @@ func TestReviewRaceReportNotElided(t *testing.T) {
 	if n := strings.Count(got, "race/race_test.go:10\n"); n != 2 {
 		t.Errorf("both accesses' frames should be shown, got %d:\n%s", n, got)
 	}
-	// Repeats outside the report are still elided.
+
 	block := []string{"Error: bad flag", "Usage:", "  cmd [flags]", ""}
 	var in []string
 	for range 3 {
@@ -441,18 +373,12 @@ func TestReviewRaceReportNotElided(t *testing.T) {
 	}
 }
 
-// A line that merely ends in "FAIL" right before the verdict (a glued final
-// FAIL looks the same) is not taken for the binary's final line: that would
-// hide the output of a test that then called os.Exit.
 func TestReviewLineEndingInFAILIsNotFinal(t *testing.T) {
 	in := lines("--- FAIL: TestA (0.00s)", "    a_test.go:3: boom", "loading config for TestB", "Status: FAIL", "FAIL\tex.com/a\t0.1s", "FAIL")
 	got := mustApply(t, testText{}, ctx(1, "go", "test"), in)
 	wantAll(t, got, "loading config for TestB\nStatus: FAIL\nFAIL\tex.com/a\t0.1s")
 }
 
-// A real traceback followed by another package's "ok" line (its own FAIL
-// line missing, e.g. interleaved output) stays a crash: its frames are not
-// re-read as passing-test output and hidden.
 func TestReviewRealCrashBeforeOKStays(t *testing.T) {
 	in := lines("panic: boom", "", "goroutine 7 [running]:", "example.com/app.TestA(0xc000)",
 		"\t/home/user/src/app/a_test.go:9 +0x1c", "ok  \texample.com/other\t0.1s")

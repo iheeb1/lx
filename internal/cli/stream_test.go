@@ -30,7 +30,7 @@ func TestShouldStreamPeelsWrappers(t *testing.T) {
 		"nohup vite":                                     true,
 		"command vim x":                                  true,
 		"env FOO=1 docker compose up":                    true,
-		"nohup nohup nohup nohup node":                   true, // engine.MaxPeel layers
+		"nohup nohup nohup nohup node":                   true,
 		"python3.12":                                     true,
 		"python3.13t":                                    true,
 		"uv run pytest -x":                               false,
@@ -41,16 +41,15 @@ func TestShouldStreamPeelsWrappers(t *testing.T) {
 		"timeout 30 tail -n 5 app.log":                   false,
 		"nice -n 5 npm run build":                        false,
 		"uv sync":                                        false,
-		"env -i node":                                    false, // env -i is not peeled: its semantics differ
+		"env -i node":                                    false,
 		"pythonw x.py":                                   false,
 		"python-config":                                  false,
-		"nohup nohup nohup nohup nohup node":             false, // past engine.MaxPeel
+		"nohup nohup nohup nohup nohup node":             false,
 		"timeout 5 go test ./...":                        false,
 		"env GOFLAGS=-count=1 go test ./...":             false,
 		"uv run --directory sub pytest --color=yes -x":   false,
 		"poetry run pytest -p no:cacheprovider -q tests": false,
 
-		// -i before the script opens the prompt
 		"python -i":                            true,
 		"python3 -u -i":                        true,
 		"uv run python -i script.py":           true,
@@ -62,7 +61,6 @@ func TestShouldStreamPeelsWrappers(t *testing.T) {
 		"node app.js -i":                       false,
 		"gtimeout 30 tail -f app.log":          true,
 
-		// the command inside is judged by its own name, not the wrapper's
 		"env -u X ls -F":                 false,
 		"nohup ls -F":                    false,
 		"uv run git log --follow f.go":   false,
@@ -80,11 +78,10 @@ func TestShouldStreamPeelsWrappers(t *testing.T) {
 	}
 }
 
-// -f, -F and --follow mean "follow" only for some tools and positions.
 func TestShouldStreamFollowFlags(t *testing.T) {
 	cases := map[string]bool{
-		"git log --follow f.go":                 false, // follows renames
-		"docker build -f Dockerfile .":          false, // a file
+		"git log --follow f.go":                 false,
+		"docker build -f Dockerfile .":          false,
 		"docker compose -f dc.yml logs web":     false,
 		"docker compose -f dc.yml ps":           false,
 		"docker compose -f dc.yml logs -f web":  true,
@@ -110,14 +107,13 @@ func TestShouldStreamFollowFlags(t *testing.T) {
 		"ls -F":                                 false,
 		"git grep -F x":                         false,
 		"tail -F app.log":                       true,
-		"journalctl -F _SYSTEMD_UNIT":           true, // kept as before: not a follower, but not a log either
+		"journalctl -F _SYSTEMD_UNIT":           true,
 		"journalctl -f":                         true,
 		"tail --follow=name app.log":            true,
 		"stern -f api":                          true,
 		"timeout 60 docker compose logs -f web": true,
 		"env A=1 docker build -f Dockerfile .":  false,
 
-		// short-option clusters: f follows before any option taking a value
 		"tail -fn 50 app.log":                     true,
 		"tail -n 50 -f app.log":                   true,
 		"tail -5f app.log":                        true,
@@ -127,7 +123,7 @@ func TestShouldStreamFollowFlags(t *testing.T) {
 		"journalctl -fu nginx":                    true,
 		"journalctl -xef":                         true,
 		"journalctl -xe":                          false,
-		"journalctl -uf":                          false, // unit "f"
+		"journalctl -uf":                          false,
 		"journalctl -n100 -u nginx":               false,
 		"docker logs -ft web":                     true,
 		"docker logs -tf web":                     true,
@@ -135,12 +131,12 @@ func TestShouldStreamFollowFlags(t *testing.T) {
 		"docker compose logs -ft":                 true,
 		"docker-compose logs -tf web":             true,
 		"kubectl logs -fc app pod":                true,
-		"kubectl logs -cf pod":                    false, // container "f"
+		"kubectl logs -cf pod":                    false,
 		"oc logs -f pod":                          true,
 		"kubectl get pods -w":                     true,
 		"kubectl apply -fx.yaml":                  false,
 		"docker build -fDockerfile .":             false,
-		"stern api":                               true, // stern follows by default
+		"stern api":                               true,
 		"stern api --no-follow":                   false,
 		"docker --context prod stats":             true,
 		"docker -H tcp://h events":                true,
@@ -154,10 +150,6 @@ func TestShouldStreamFollowFlags(t *testing.T) {
 	}
 }
 
-// Nothing the hook rewrites may be something lx then streams: the agent
-// would get raw output from a rewrite that promised a condensed view (and
-// a watcher would be sent through lx only to be passed through). The
-// commands are the hook↔filter contract table in internal/hook.
 func TestSupportedNeverStreams(t *testing.T) {
 	cmds := contractCommands(t)
 	if len(cmds) < 200 {
@@ -165,7 +157,7 @@ func TestSupportedNeverStreams(t *testing.T) {
 	}
 	checked := 0
 	for _, cmd := range cmds {
-		// Bare, and under each wrapper the hook looks through.
+
 		for _, w := range []string{"", "uv run", "poetry run", "uvx", "env -u X", "timeout 5", "nice -n 5", "nohup", "time -p"} {
 			argv := append(strings.Fields(w), strings.Fields(cmd)...)
 			if !hook.Supported(argv) {
@@ -182,8 +174,6 @@ func TestSupportedNeverStreams(t *testing.T) {
 	}
 }
 
-// contractCommands reads the string literals of contractCommands from
-// internal/hook/contract_test.go (test files cannot be imported).
 func contractCommands(t *testing.T) []string {
 	t.Helper()
 	path := filepath.Join("..", "hook", "contract_test.go")

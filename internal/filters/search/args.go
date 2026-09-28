@@ -1,38 +1,35 @@
 package search
 
 import (
-	"github.com/iheeb1/lx/internal/lazyre"
 	"path"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// opts is what the command line says about the shape of the output.
 type opts struct {
-	tool     string // "grep", "rg" or "git-grep"
+	tool     string
 	patterns []string
 	fixed    bool
 	icase    bool
-	smart    bool // rg -S: case-insensitive unless the pattern has capitals
+	smart    bool
 	word     bool
-	flavor   byte // 'b' BRE, 'e' ERE / Rust regex, 'p' PCRE
+	flavor   byte
 	numbered bool
-	column   bool // rg --column / --vimgrep: path:line:col:text
-	// withFile: 1 path prefix printed, -1 not printed, 0 unknown (a single
-	// operand that is an unexpanded glob or might be a file or directory).
+	column   bool
+
 	withFile  int
 	recursive bool
 	context   bool
-	invert    bool     // -v: the lines printed are the ones not matching
-	only      bool     // -o: one output line per match, so line numbers repeat
-	operands  []string // search paths (grep/rg) or pathspecs (git grep)
+	invert    bool
+	only      bool
+	operands  []string
 	groupSep  string
-	files     bool // rg --files
-	bail      bool // a flag that changes the output format
+	files     bool
+	bail      bool
 }
 
-// tool returns which search tool argv runs, and its arguments.
 func tool(e *engine.Context) (string, []string) {
 	switch e.Name() {
 	case "grep", "egrep", "fgrep", "ggrep":
@@ -57,21 +54,18 @@ func tool(e *engine.Context) (string, []string) {
 	return "", nil
 }
 
-// Short flags taking a value (the rest of the cluster, or the next word).
 var shortValue = map[string]string{
 	"grep":     "ABCdDefm",
 	"rg":       "ABCeEfgjmMrtTd",
 	"git-grep": "ABCefm",
 }
 
-// Short flags that change the output format beyond what is parsed here.
 var shortBail = map[string]string{
 	"grep":     "clLqZzbTuV",
 	"rg":       "clq0bphV",
 	"git-grep": "clLqzOp",
 }
 
-// Long flags taking a value, which may be the next word.
 var longValue = map[string]map[string]bool{
 	"grep": set("--regexp", "--file", "--max-count", "--after-context", "--before-context", "--context",
 		"--include", "--exclude", "--exclude-from", "--exclude-dir", "--directories", "--devices",
@@ -86,7 +80,6 @@ var longValue = map[string]map[string]bool{
 		"--max-depth", "--threads", "--color"),
 }
 
-// Long flags that change the output format beyond what is parsed here.
 var longBail = map[string]map[string]bool{
 	"grep": set("--count", "--files-with-matches", "--files-without-match", "--quiet", "--silent",
 		"--null", "--null-data", "--byte-offset", "--initial-tab", "--version", "--help", "--unix-byte-offsets"),
@@ -109,8 +102,6 @@ func set(xs ...string) map[string]bool {
 
 var digitsRe = lazyre.New(`^\d+$`)
 
-// parseOpts reads a grep / rg / git grep command line. It never fails;
-// o.bail reports flags whose output this package does not model.
 func parseOpts(tool, name string, args []string) opts {
 	o := opts{tool: tool, flavor: 'b', groupSep: "--"}
 	switch {
@@ -122,7 +113,7 @@ func parseOpts(tool, name string, args []string) opts {
 	var positional []string
 	withH, withNoH := false, false
 	explicitPattern := false
-	lineNum := 0 // rg: last of -n / -N wins
+	lineNum := 0
 	for i := 0; i < len(args); i++ {
 		a := args[i]
 		if a == "--" {
@@ -177,7 +168,7 @@ func parseOpts(tool, name string, args []string) opts {
 					withH = true
 				}
 				if lineNum == 0 {
-					lineNum = 2 // implied
+					lineNum = 2
 				}
 			case "--with-filename":
 				withH = true
@@ -202,7 +193,7 @@ func parseOpts(tool, name string, args []string) opts {
 			positional = append(positional, a)
 			continue
 		}
-		// A short cluster: -rn, -C2, -e PATTERN, -ePATTERN, -5 (grep context).
+
 		if digitsRe.MatchString(a[1:]) && tool != "rg" {
 			o.context = o.context || a != "-0"
 			continue

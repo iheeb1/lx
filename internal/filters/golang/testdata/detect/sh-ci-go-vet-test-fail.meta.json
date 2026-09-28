@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "sh",
+    "scripts/ci.sh"
+  ],
+  "shell": "sh scripts/ci.sh",
+  "exit_code": 1,
+  "description": "REAL: a CI shell script (set -e; go vet, then go test -count=1 -cover ./...) in spf13/cobra with the same regression: echo lines, go test with coverage, the script's exit",
+  "cwd": "/home/user/src/cobra",
+  "repo": "spf13/cobra",
+  "tool": "go-test"
+}

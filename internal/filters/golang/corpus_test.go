@@ -12,14 +12,12 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// corpusCase is one real capture in this package's scope.
 type corpusCase struct {
 	cat, name string
-	filter    string // filter engine.Find must pick ("" = none of ours, see why)
-	// process is the name Process must report: the filter itself, or
-	// "passthrough" when the output is small or the view saves < 10%.
+	filter    string
+
 	process string
-	why     string // justification for any exception
+	why     string
 }
 
 var corpus = []corpusCase{
@@ -47,21 +45,11 @@ var corpus = []corpusCase{
 	{"go", "go-test-v-pass", "go-test", "go-test", ""},
 	{"go", "go-vet-findings", "go-build", "passthrough",
 		"vet diagnostics are kept verbatim; nothing to condense, so the view equals the input"},
-	// make is a generic build driver owned by another filter group; matching
-	// it here would shadow that filter for every non-Go Makefile (Find picks
-	// the first match and a bail falls to generic, not to the next filter).
-	// The go test report inside is rendered by TestTextDetect, which the
-	// make/generic owner can call; it is exercised below.
+
 	{"misc", "make-go-test-gin", "", "", "make is not a go command; see TestTextDetect"},
 	{"misc", "make-go-vet-gin", "", "", "one echoed command line, below the small-output threshold"},
 }
 
-// captures are extra real outputs recorded for this package: edge cases the
-// shared corpus does not cover (parallel subtests, a panic in a subtest, a
-// data race, log.Fatal, a deadlock timeout, setup/build/vet failures, -json
-// build-output events). They were produced by testdata/captures/capture.sh
-// running go 1.26.5 over the module in testdata/captures/lxcap (whose
-// failures are deliberate), with paths sanitized like testdata/corpus.
 var captures = []corpusCase{
 	{"go", "lxcap-test", "go-test", "go-test", ""},
 	{"go", "lxcap-test-v", "go-test", "go-test", ""},
@@ -73,28 +61,21 @@ var captures = []corpusCase{
 	{"go", "lxcap-test-v-panic-sub", "go-test", "go-test", ""},
 	{"go", "lxcap-test-v-timeout", "go-test", "go-test", ""},
 	{"go", "lxcap-test-c", "go-build", "passthrough", "three compiler lines, below the small-output threshold"},
-	// Recorded for the adversarial review (testdata/captures/lxcap2): output
-	// the first version hid or misread. A leak report TestMain prints after
-	// the final FAIL, a log.Fatal after an earlier failure (no final FAIL
-	// line), test output without a trailing newline glued to "--- FAIL" and
-	// to the final FAIL, unicode test and file names, 12 passing packages.
+
 	{"go", "lxcap2-test", "go-test", "go-test", ""},
 	{"go", "lxcap2-test-v", "go-test", "go-test", ""},
 	{"go", "lxcap2-test-json", "go-test-json", "go-test-json", ""},
 	{"go", "lxcap2-test-race-post", "go-test", "go-test", ""},
 	{"go", "lxcap2-test-cover-fail", "go-test", "go-test", ""},
 	{"go", "lxcap2-test-run-norun", "go-test", "go-test", ""},
-	// A failing Example prints got:/want: unindented after its --- FAIL
-	// line; they were hidden as passing-test output.
+
 	{"go", "lxcap2-example", "go-test", "passthrough", "small output (13 lines): the view keeps got:/want: and saves under 10%"},
 	{"go", "lxcap2-example-v", "go-test", "passthrough", "small output (19 lines), the view saves under 10%"},
 	{"go", "lxcap2-example-json", "go-test-json", "go-test-json", ""},
-	// -count=2 with a test failing on its first run only: the second run's
-	// PASS used to overwrite the failure.
+
 	{"go", "lxcap2-flaky-count-v", "go-test", "passthrough", "small output (13 lines), below the small-output threshold"},
 	{"go", "lxcap2-flaky-count-json", "go-test-json", "go-test-json", ""},
-	// -count=2 with a failing subtest: each run's subtest under its own
-	// parent (both used to be nested under the second parent).
+
 	{"go", "lxcap2-count-sub-json", "go-test-json", "go-test-json", ""},
 	{"go", "lxcap2-vet-json", "go-machine", "passthrough", "go vet -json is machine output, two lines"},
 	{"go", "lxcap2-list-json", "go-machine", "passthrough",
@@ -110,25 +91,12 @@ func loadCapture(t *testing.T, cat, name string) fixture.Case {
 	return c
 }
 
-// libLocRe matches library locations. In panics and goroutine dumps, runs
-// of library frames are folded into one "… N library frames (…)" line and
-// goroutines made only of library frames become one count line
-// (engine.FoldStacks / engine.GroupGoroutines, by design); the dropped
-// locations are all in GOROOT, the module cache or _testmain.go. Every
-// location in application code and _test.go files must survive.
 var libLocRe = regexp.MustCompile(`^(?:/opt/homebrew/Cellar/go/[^/]+/libexec/src/|/home/user/gopath/pkg/mod/|_testmain\.go:)`)
 
-// locExempt lists fixtures whose failing output legitimately loses some
-// file:line locations, and which ones may go.
 var locExempt = map[string]*regexp.Regexp{}
 
-// passingOnlyLocs returns the file:line locations that -v output shows only
-// inside tests that passed or were skipped (t.Log lines). Output of passing
-// tests is hidden by design (counted in the footer), so these may go. The
-// attribution here is deliberately independent of the filter's: the test
-// named by the last === RUN/CONT/NAME marker owns each line.
 func passingOnlyLocs(ref string) map[string]bool {
-	owner := map[string][]string{} // location → owning tests ("" = none)
+	owner := map[string][]string{}
 	status := map[string]string{}
 	cur := ""
 	for _, ln := range strings.Split(ref, "\n") {
@@ -201,9 +169,6 @@ func TestCorpus(t *testing.T) {
 			fixture.Golden(t, "golang", cc.name, got)
 			ref := clean
 			if cc.filter == "go-test-json" {
-				// The JSON lines themselves never appear in the text view;
-				// fidelity is checked against the text the events carry,
-				// decoded independently of the filter's parser.
 				ref = decodeEvents(clean)
 				if _, okd := DecodeTestJSON(clean); !okd {
 					t.Fatal("decode failed")
@@ -233,11 +198,6 @@ func checkFidelity(t *testing.T, cc corpusCase, fc fixture.Case, ref, got string
 	t.Helper()
 	gref := ref
 	if strings.HasPrefix(cc.filter, "go-test") || cc.filter == "" {
-		// The go test filters guard every error-class line except the
-		// === RUN/PAUSE/CONT/NAME markers (see guardTest): a marker is
-		// error-class only when a test's name holds a word like "conflict",
-		// and the test's outcome is always shown. Instead, every "--- FAIL"
-		// line must be in the view.
 		gref = stripMarkers(ref)
 		for _, ln := range strings.Split(ref, "\n") {
 			if m := resultRe.FindStringSubmatch(ln); m != nil && m[2] == "FAIL" && !strings.Contains(got, "--- FAIL: "+m[3]+" (") {
@@ -259,7 +219,7 @@ func checkFidelity(t *testing.T, cc corpusCase, fc fixture.Case, ref, got string
 		}
 		t.Errorf("location dropped: %s", loc)
 	}
-	// Never pass-like on failure: the final verdict must be visible.
+
 	if strings.HasPrefix(cc.filter, "go-test") && !strings.Contains(got, "FAIL") {
 		t.Errorf("failing run rendered without a FAIL line")
 	}
@@ -285,13 +245,6 @@ func logSavings(t *testing.T, raw, got string) {
 	t.Logf("savings: %d → %d tokens (%.0f%%)", rt, ot, pct)
 }
 
-// decodeEvents is an independent reading of a test2json stream for the
-// fidelity checks: the Output of every event assembled per (Package, Test)
-// (build-output per ImportPath) and cut into lines, a partial line ending
-// where test2json starts a framing line (=== marker, --- result, the final
-// PASS / FAIL, the verdict) in an event of its own. Other lines are kept as
-// they are. Tests are grouped, not interleaved, which is what the location
-// attribution in passingOnlyLocs needs.
 func decodeEvents(raw string) string {
 	type key struct{ pkg, test string }
 	buf := map[key]*strings.Builder{}

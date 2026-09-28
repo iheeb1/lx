@@ -12,9 +12,7 @@ var (
 	htmlSniffRe = lazyre.New(`(?i)^(?:\x{feff})?\s*(?:<!doctype\s+html|<html[\s>]|<head[\s>]|<!--[\s\S]*?-->\s*<!doctype\s+html)`)
 	htmlTitleRe = lazyre.New(`(?is)<title[^>]*>(.*?)</title\s*>`)
 	htmlMainRe  = lazyre.New(`(?is)<main\b[^>]*>(.*)</main\s*>`)
-	// Comments and elements whose content is never visible text, or is page
-	// chrome (navigation, footers, sidebars). RE2 has no backreferences, so
-	// each element gets its own pattern.
+
 	htmlDropEls = []string{"script", "style", "noscript", "template", "svg", "head", "iframe", "object",
 		"canvas", "math", "select", "nav", "footer", "aside", "button", "dialog"}
 	htmlDropRes = func() []*regexp.Regexp {
@@ -25,7 +23,7 @@ var (
 		return res
 	}()
 	htmlPreRe = lazyre.New(`(?is)<pre\b[^>]*>(.*?)</pre\s*>`)
-	// Tags that start a new line of text.
+
 	htmlBlockRe   = lazyre.New(`(?i)<(?:/?(?:p|div|br|hr|li|ul|ol|dl|dt|dd|tr|table|thead|tbody|section|article|header|main|blockquote|figure|figcaption|form|fieldset|details|summary|h[1-6]|option|label)\b[^>]*)>`)
 	htmlHeadingRe = lazyre.New(`(?i)<h([1-6])\b[^>]*>`)
 	htmlLiRe      = lazyre.New(`(?i)<li\b[^>]*>`)
@@ -35,7 +33,6 @@ var (
 	preMarkRe     = lazyre.New("^\x00pre(\\d+)\x00$")
 )
 
-// isHTML reports whether a body is an HTML document.
 func isHTML(body, contentType string) bool {
 	if strings.Contains(strings.ToLower(contentType), "html") {
 		return true
@@ -47,16 +44,8 @@ func isHTML(body, contentType string) bool {
 	return htmlSniffRe.MatchString(head)
 }
 
-// htmlText reduces an HTML document to its title and visible text. When the
-// page has a <main> element only its content is read; comments, scripts,
-// styles, navigation, footers and other invisible or chrome elements are
-// removed; block elements become lines, headings are marked with #, list
-// items with "- "; <pre> blocks keep their lines and indentation; entities
-// are decoded and other whitespace is collapsed. The text is cut at
-// maxTokens with an exact count of the lines not shown.
 func htmlText(doc string, maxTokens int) (title string, lines []string) {
-	// Each pattern scans the whole page; the ones whose opening tag is
-	// absent are skipped (most pages lack most of these elements).
+
 	lower := strings.ToLower(doc)
 	if strings.Contains(lower, "<title") {
 		if m := htmlTitleRe.FindStringSubmatch(doc); m != nil {

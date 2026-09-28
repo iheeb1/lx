@@ -6,9 +6,6 @@ import (
 	"testing"
 )
 
-// Benchmarks for the two filters whose inputs get largest (a monorepo's
-// type errors or lint report). Run with -bench Apply50k.
-
 func genLines(n int, line func(i int) string) string {
 	var b strings.Builder
 	for i := 0; i < n; i++ {

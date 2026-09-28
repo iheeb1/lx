@@ -1,27 +1,11 @@
-// Package engine turns a command's raw output into what an agent should read.
-//
-// Pipeline (Process):
-//
-//	raw ─► normalize (ANSI, \r frames, overstrike) ─► command filter or generic
-//	    ─► error guard (every error line survives) ─► budget ─► never-worse gate
-//	    ─► receipt line
-//
-// Invariants, each covered by tests over real captured output:
-//
-//	I1  The child's exit code is never changed (enforced by the caller).
-//	I2  Error-class lines are never silently removed: a filter keeps them, the
-//	    guard re-adds them, or the budget stage keeps them before anything else.
-//	I3  Never worse: if filtering does not save at least MinSavings of the
-//	    tokens, the normalized output is returned instead.
-//	I4  Nothing is lost for good: whenever lines are dropped the full output is
-//	    stored and the receipt says how to get it back (lx show <id>).
-//	I5  A panicking filter never loses output; Process falls back to generic.
+// Package engine turns raw command output into a condensed view.
 package engine
 
 import (
 	"fmt"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -29,19 +13,28 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// Context describes the command whose output is being processed.
 type Context struct {
-	Argv []string // exactly what was executed; Argv[0] may be a path
-	Exit int      // child's exit status (128+N when killed by signal N)
-	Cwd  string   // working directory, used to relativize paths
-	Home string   // $HOME, rendered as ~
-
-	// Budget is the output token budget in effect (set by Process), so a
-	// filter that windows large output can size itself to it.
+	Argv   []string
+	Exit   int
+	Cwd    string
+	Home   string
 	Budget int
+	Mode   Mode
+	Focus  *Focus
+
+	fm *focusMatcher
 }
 
-// Name is the base name of the executable ("git", "go", "pytest").
+func (c *Context) focus() *focusMatcher {
+	if c == nil || c.Focus.Empty() {
+		return nil
+	}
+	if c.fm == nil {
+		c.fm = newFocusMatcher(c.Focus)
+	}
+	return c.fm
+}
+
 func (c *Context) Name() string {
 	if len(c.Argv) == 0 {
 		return ""
@@ -49,7 +42,6 @@ func (c *Context) Name() string {
 	return filepath.Base(c.Argv[0])
 }
 
-// Args returns argv without the executable.
 func (c *Context) Args() []string {
 	if len(c.Argv) < 2 {
 		return nil
@@ -57,8 +49,6 @@ func (c *Context) Args() []string {
 	return c.Argv[1:]
 }
 
-// Sub returns the first positional (non-flag) argument, skipping flags that
-// take a value for the handful of tools where that matters (git -C x, go -C x).
 func (c *Context) Sub() string {
 	args := c.Args()
 	for i := 0; i < len(args); i++ {
@@ -76,8 +66,6 @@ func (c *Context) Sub() string {
 	return ""
 }
 
-// HasFlag reports whether any argument equals one of names, or starts with
-// name+"=" for long flags.
 func (c *Context) HasFlag(names ...string) bool {
 	for _, a := range c.Args() {
 		if a == "--" {
@@ -92,29 +80,18 @@ func (c *Context) HasFlag(names ...string) bool {
 	return false
 }
 
-// Failed reports a non-zero exit.
 func (c *Context) Failed() bool { return c.Exit != 0 }
 
-// Filter is a command-specific reducer. Apply receives normalized output
-// (no ANSI, no \r frames, no trailing whitespace) and returns what the agent
-// should see. Returning ok=false means "I could not parse this, use the
-// generic reducer" — filters must bail rather than guess.
 type Filter interface {
 	Name() string
 	Match(c *Context) bool
 	Apply(c *Context, out string) (result string, ok bool)
 }
 
-// Faithful is optionally implemented by filters whose view keeps all the
-// information of the original in a denser rendering (git status → short
-// format). When it reports true and no later stage trimmed anything, lx
-// stores no copy and prints no receipt: there is nothing to recover.
 type Faithful interface {
 	Faithful(c *Context) bool
 }
 
-// Streamer is optionally implemented by filters for commands that must not be
-// buffered (watchers, servers, followers). Such commands run in passthrough.
 type Streamer interface {
 	Stream(c *Context) bool
 }
@@ -124,15 +101,12 @@ var (
 	registry []Filter
 )
 
-// Register adds a filter. Filters register from init(); first match wins,
-// in registration order within a package and package init order across them.
 func Register(f Filter) {
 	regMu.Lock()
 	defer regMu.Unlock()
 	registry = append(registry, f)
 }
 
-// Filters returns all registered filters sorted by name.
 func Filters() []Filter {
 	regMu.RLock()
 	defer regMu.RUnlock()
@@ -141,7 +115,6 @@ func Filters() []Filter {
 	return out
 }
 
-// Find returns the first filter matching c, or nil.
 func Find(c *Context) Filter {
 	regMu.RLock()
 	defer regMu.RUnlock()
@@ -153,48 +126,75 @@ func Find(c *Context) Filter {
 	return nil
 }
 
-// Options tune Process. Zero value is the default behavior.
 type Options struct {
-	Budget     int     // max output tokens before budget trimming (0 = DefaultBudget)
-	MinSavings float64 // fraction of tokens that must be saved to keep the filtered version
-	NoGuard    bool    // disable the error guard (tests only)
+	Budget     int
+	MinSavings float64
+	NoGuard    bool
+	MaxChars   int
+	MaxLines   int
+	Cut        Cut
+	Mode       Mode
+	Focus      *Focus
+	Pressure   Pressure
+}
 
-	// MaxChars caps the view in bytes (0 = no cap): the host's output limit
-	// minus room for the receipt line. A host such as Claude Code replaces
-	// a longer tool result with a short preview, so over the cap reduction
-	// is mandatory (the never-worse gate is skipped) and len(Output) <=
-	// max(MaxChars, MinMaxChars) holds. MachineReadable output is the one
-	// exception: it stays byte-exact and uncapped, and the host may spill it.
-	MaxChars int
+type Cut uint8
+
+const (
+	CutEither Cut = iota
+	CutHead
+	CutTail
+)
+
+func FitArg(n int, cut Cut) string {
+	s := strconv.Itoa(n)
+	switch cut {
+	case CutHead:
+		return "head:" + s
+	case CutTail:
+		return "tail:" + s
+	}
+	return s
+}
+
+func ParseFit(s string) (n int, cut Cut, ok bool) {
+	switch {
+	case strings.HasPrefix(s, "head:"):
+		s, cut = s[len("head:"):], CutHead
+	case strings.HasPrefix(s, "tail:"):
+		s, cut = s[len("tail:"):], CutTail
+	}
+	if s == "" || strings.Trim(s, "0123456789") != "" {
+		return 0, CutEither, false
+	}
+	n, err := strconv.Atoi(s)
+	if err != nil || n < 1 {
+		return 0, CutEither, false
+	}
+	return n, cut, true
 }
 
 const (
-	// DefaultBudget is the output token budget. Tokens alone don't bound a
-	// view's length: prose and path lists run 4–5 chars/token, so 8,000
-	// tokens can pass Claude Code's 30,000-character Bash limit.
-	// Options.MaxChars is the character bound.
-	DefaultBudget = 8000
-	// DefaultMinSavings: below this, the filtered view is not worth the
-	// fidelity risk and the normalized output is shown instead.
+	DefaultBudget     = 8000
 	DefaultMinSavings = 0.10
-	// SmallOutput: outputs at or under this many tokens are only normalized.
-	SmallOutput = 150
+	SmallOutput       = 150
+	MinFitLines       = 5
 )
 
-// Result of processing.
 type Result struct {
-	Output      string // what to print (without receipt)
-	Filter      string // filter name, "generic", or "passthrough"
-	RawTokens   int    // tokens of the raw output as the agent would have seen it
-	OutTokens   int
-	RawLines    int
-	OutLines    int
-	Lossy       bool // information was dropped/summarized; full output should be stored
-	GuardAdded  int  // error lines re-added by the guard
-	FilterPanic string
+	Output         string
+	Filter         string
+	RawTokens      int
+	OutTokens      int
+	RawLines       int
+	OutLines       int
+	Lossy          bool
+	GuardAdded     int
+	FilterPanic    string
+	Mode, ViewMode Mode
+	Notes          []string
 }
 
-// Saved returns the fraction of tokens saved.
 func (r Result) Saved() float64 {
 	if r.RawTokens == 0 {
 		return 0
@@ -202,15 +202,68 @@ func (r Result) Saved() float64 {
 	return 1 - float64(r.OutTokens)/float64(r.RawTokens)
 }
 
-// Process runs the full pipeline over raw output.
-func Process(c *Context, raw string, opt Options) (res Result) {
-	if opt.Budget <= 0 {
-		opt.Budget = DefaultBudget
+func Process(c *Context, raw string, opt Options) Result {
+	res := process(c, raw, opt)
+	if opt.Focus.Empty() || !res.Lossy {
+		return res
 	}
+	// Focus may reorder what a cut keeps, never cost error lines.
+	pc := *c
+	popt := opt
+	popt.Focus = nil
+	plain := process(&pc, raw, popt)
+	clean := textutil.Clean(raw)
+	if losesErrors(clean, res.Output, plain.Output) {
+		c.Focus, c.fm = nil, nil
+		return plain
+	}
+	if !hasFocusNote(res.Notes) {
+		if n := c.fm.note(res.Output, c.fm.gain(res.Output, plain.Output)); n != "" {
+			res.Notes = append([]string{n}, res.Notes...)
+		}
+	}
+	return res
+}
+
+// losesErrors: some error line the plain view shows is missing from the
+// focused one.
+func losesErrors(clean, focused, plain string) bool {
+	gone := map[string]bool{}
+	for _, ln := range missingErrorLines(clean, plain, -1) {
+		gone[strings.Join(strings.Fields(ln), " ")] = true
+	}
+	for _, ln := range missingErrorLines(clean, focused, -1) {
+		if !gone[strings.Join(strings.Fields(ln), " ")] {
+			return true
+		}
+	}
+	return false
+}
+
+func hasFocusNote(notes []string) bool {
+	for _, n := range notes {
+		if strings.HasPrefix(n, "focus: ") {
+			return true
+		}
+	}
+	return false
+}
+
+func process(c *Context, raw string, opt Options) (res Result) {
+	res.Mode, res.ViewMode = opt.Mode, opt.Mode.View(c.Failed())
+	knobs := res.ViewMode.knobs()
+	opt.Budget = opt.Mode.Budget(opt.Budget, c.Failed())
+	modeBudget := opt.Budget
+	opt.Budget = opt.Pressure.Budget(opt.Budget)
+	receiptGate := false
 	if opt.MinSavings == 0 {
 		opt.MinSavings = DefaultMinSavings
+		if knobs.receiptGate {
+			opt.MinSavings, receiptGate = 0, true
+		}
 	}
-	c.Budget = opt.Budget
+	c.Budget, c.Mode, c.Focus = opt.Budget, res.ViewMode, opt.Focus
+	c.fm = newFocusMatcher(opt.Focus)
 	res.RawTokens = tokens.Count(raw)
 	res.RawLines = countLines(raw)
 	clean := textutil.Clean(raw)
@@ -221,10 +274,12 @@ func Process(c *Context, raw string, opt Options) (res Result) {
 
 	finish := func(out, name string, lossy bool) Result {
 		res.Output, res.Filter, res.Lossy = out, name, lossy
+		if !lossy {
+			res.Notes = nil
+		}
 		res.OutTokens = tokens.Count(out)
 		res.OutLines = countLines(out)
 		if name == "passthrough" {
-			// The raw bytes are replayed as-is; nothing was saved.
 			res.OutTokens, res.OutLines = res.RawTokens, res.RawLines
 		}
 		return res
@@ -232,30 +287,41 @@ func Process(c *Context, raw string, opt Options) (res Result) {
 	natural := clean == textutil.TrimTrailingSpace(raw)
 
 	if MachineReadableAny(c) {
-		// Output meant for a program reaches it byte-for-byte.
 		return finish(strings.TrimRight(raw, "\n"), "passthrough", false)
 	}
-	// Over the host's character cap the whole output is not an option: the
-	// host would swap it for a preview and the receipt would be lost.
+
 	overCap := opt.MaxChars > 0 && len(clean) > opt.MaxChars
 	if natural && opt.MaxChars > 0 && len(raw) > opt.MaxChars {
-		// "passthrough" replays the raw bytes; trailing blanks alone must
-		// not push them over the cap, so print the (fitting) clean text.
 		natural = false
 	}
-	if cleanTokens <= SmallOutput && !overCap {
+
+	whole := func() Result {
 		if natural {
 			return finish(clean, "passthrough", false)
 		}
 		return finish(clean, "normalize", false)
 	}
+	fit := max(opt.MaxLines, 0)
+	if fit > 0 && fit < MinFitLines {
+		if !overCap {
+			return whole()
+		}
+		fit = 0
+	}
+
+	overLines := fit > 0 && countLines(clean) > fit
+	if cleanTokens <= SmallOutput && !overCap && !overLines {
+		return whole()
+	}
 
 	out, name := clean, "generic"
 	guard, errorsFirst, faithful := !opt.NoGuard, true, false
 	if f, fc := Resolve(c); f != nil {
-		if r, ok, perr := safeApply(f, fc, clean); perr != "" {
+		h0 := c.fm.mark()
+		if r, ok, perr := safeApply(f, fc, clean); perr != "" || !ok {
 			res.FilterPanic = perr
-		} else if ok {
+			c.fm.rollback(h0)
+		} else {
 			out, name = r, f.Name()
 			if fa, ok := f.(Faithful); ok && fa.Faithful(fc) {
 				faithful = true
@@ -272,8 +338,16 @@ func Process(c *Context, raw string, opt Options) (res Result) {
 		var shape string
 		out, shape = GenericShape(c, clean)
 		if shape == "json" || shape == "paths" {
-			// Data: "error" in an issue title or a file name is content.
 			guard, errorsFirst = false, false
+		}
+		if f := DetectedFilter(shape); f != nil {
+			name = shape
+			if g, ok := f.(Guarded); ok && g.GuardsErrors() {
+				guard = false
+			}
+			if ct, ok := f.(Content); ok && ct.IsContent() {
+				guard, errorsFirst = false, false
+			}
 		}
 	}
 	if guard {
@@ -282,17 +356,72 @@ func Process(c *Context, raw string, opt Options) (res Result) {
 		res.GuardAdded = added
 	}
 	before := out
-	out = BudgetFit(out, opt.Budget, opt.MaxChars, c.Failed(), errorsFirst)
+	maxLines := 0
+	if overLines {
+		maxLines = fit - 1
+	}
+	budget, pressured := modeBudget, false
+	var errs []string
+	if b := opt.Budget; b < modeBudget && len(before) > b && tokens.Count(before) > b {
+		if errorsFirst {
+			var need int
+			need, errs = errorNeed(before, knobs.errs)
+			b = max(b, min(modeBudget, need))
+		}
+		budget, pressured = b, b < modeBudget
+	}
+	pressed := false
+	var hits []focusHit
+	view := func(lines int, cut Cut) string {
+		cutTo := func(b int) (string, []focusHit) {
+			return budgetFocus(before, b, opt.MaxChars, lines, cut, c.Failed(), errorsFirst, knobs.errs, c.fm)
+		}
+		v, h := cutTo(budget)
+		pressed = false
+		if pressured && v != before {
+			full, fh := cutTo(modeBudget)
+			if lostErrors(errs, v, full) {
+				v, h = full, fh
+				if mid := (budget + modeBudget) / 2; mid > budget {
+					if mv, mh := cutTo(mid); !lostErrors(errs, mv, full) {
+						v, h = mv, mh
+					}
+				}
+			}
+			pressed = v != full
+		}
+		hits = h
+		return v
+	}
+	out = view(maxLines, opt.Cut)
 	lossy := !faithful || out != before || res.GuardAdded > 0
 
-	// Never worse — except over the cap, where the alternative to a
-	// reduced view is the host's preview, not the whole output.
-	if !overCap && float64(tokens.Count(out)) > float64(cleanTokens)*(1-opt.MinSavings) {
-		// Not worth it: show everything, just normalized.
-		if !natural {
-			return finish(clean, "normalize", false)
+	if fit > 0 && !overLines && viewLines(out, lossy) > fit {
+		if !overCap {
+			return whole()
 		}
-		return finish(clean, "passthrough", false)
+
+		out = view(fit-1, CutEither)
+		lossy = !faithful || out != before || res.GuardAdded > 0
+	}
+	if lossy {
+		if n := c.fm.note(out, hits); n != "" {
+			res.Notes = append(res.Notes, n)
+		}
+		if pressed {
+			res.Notes = append(res.Notes, opt.Pressure.note())
+		}
+	}
+
+	if !overCap && !overLines {
+		outTokens := tokens.Count(out)
+		worse := float64(outTokens) > float64(cleanTokens)*(1-opt.MinSavings)
+		if receiptGate && lossy {
+			worse = outTokens+receiptTokens(res, out, outTokens)+notesTokens(res.Notes) >= cleanTokens
+		}
+		if worse {
+			return whole()
+		}
 	}
 	return finish(out, name, lossy)
 }
@@ -307,15 +436,41 @@ func safeApply(f Filter, c *Context, in string) (out string, ok bool, panicMsg s
 	return out, ok, ""
 }
 
-// Receipt is the one line appended to lossy output so the agent knows the
-// view is condensed and exactly how to get everything back.
 func Receipt(r Result, id string) string {
 	pct := int(r.Saved()*100 + 0.5)
 	s := fmt.Sprintf("[lx: %s→%s lines (−%d%%)", humanInt(r.RawLines), humanInt(r.OutLines), pct)
+	if note := modeNote(r.Mode, r.ViewMode); note != "" {
+		s += " · " + note
+	}
 	if id != "" {
 		s += " · full output: lx show " + id
 	}
 	return s + "]"
+}
+
+func notesTokens(notes []string) int {
+	if len(notes) == 0 {
+		return 0
+	}
+	return tokens.Count(" · " + strings.Join(notes, " · "))
+}
+
+func WithNotes(receipt string, notes []string, room int) string {
+	for _, n := range notes {
+		s := strings.TrimSuffix(receipt, "]") + " · " + n + "]"
+		if room > 0 && len(s) >= room {
+			continue
+		}
+		receipt = s
+	}
+	return receipt
+}
+
+func viewLines(out string, lossy bool) int {
+	if lossy {
+		return countLines(out) + 1
+	}
+	return countLines(out)
 }
 
 func countLines(s string) int {

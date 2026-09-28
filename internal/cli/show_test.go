@@ -23,12 +23,11 @@ import (
 	"github.com/iheeb1/lx/internal/track"
 )
 
-// showWorld is an isolated store, history, home and project for lx show.
 type showWorld struct {
 	t       *testing.T
 	now     time.Time
 	home    string
-	project string // a directory holding .git
+	project string
 	cwd     string
 }
 
@@ -52,7 +51,6 @@ func newShowWorld(t *testing.T) *showWorld {
 	return w
 }
 
-// save stores a run that finished ago before now.
 func (w *showWorld) save(argv string, cwd string, exit int, ago time.Duration, out string) int {
 	w.t.Helper()
 	id, err := tee.Save(tee.Meta{Argv: strings.Fields(argv), Cwd: cwd, Exit: exit, Filter: "generic", Time: w.now.Add(-ago)}, out)
@@ -62,8 +60,6 @@ func (w *showWorld) save(argv string, cwd string, exit int, ago time.Duration, o
 	return id
 }
 
-// show runs lx show with the world's cwd and the host limits of the
-// current environment.
 func (w *showWorld) show(args ...string) (stdout, stderr string, code int) {
 	w.t.Helper()
 	var o, e bytes.Buffer
@@ -77,8 +73,6 @@ func firstLine(s string) string {
 	return l
 }
 
-// numbered is a numbered output of n lines, some of them errors and
-// warnings.
 func numberedOutput(n int) string {
 	var b strings.Builder
 	for i := 1; i <= n; i++ {
@@ -104,7 +98,7 @@ func TestShowHeader(t *testing.T) {
 	if got, want := firstLine(out), "[lx show 1 · go test ./... · exit 1 · 14 min ago · 307 lines]"; got != want {
 		t.Fatalf("header\n got %s\nwant %s", got, want)
 	}
-	// The body is the stored output, unnumbered.
+
 	if !strings.HasPrefix(out, "[lx show 1 · go test ./... · exit 1 · 14 min ago · 307 lines]\nstep 1 ok\nstep 2 ok\n") ||
 		!strings.HasSuffix(out, "step 307 ok\n") {
 		t.Fatalf("body:\n%.300s", out)
@@ -114,7 +108,6 @@ func TestShowHeader(t *testing.T) {
 		t.Fatalf("--errors header\n got %s\nwant %s", got, want)
 	}
 
-	// Long and multi-line argv: one line, cut to 80 characters.
 	long := "sh -c " + strings.Repeat("x", 100)
 	id = w.save(long, w.project, 0, 3*time.Hour, "a\nb\n")
 	id2, err := tee.Save(tee.Meta{Argv: []string{"sh", "-c", "echo a\necho b"}, Cwd: w.project, Time: w.now.Add(-50 * time.Hour)}, "a\n")
@@ -130,7 +123,6 @@ func TestShowHeader(t *testing.T) {
 		t.Fatalf("multi-line argv\n got %s\nwant %s", got, want)
 	}
 
-	// A run whose metadata is gone claims no exit status.
 	id = w.save("make", w.project, 2, time.Minute, "x\ny\nz\n")
 	os.Remove(filepath.Join(tee.Dir(), strconv.Itoa(id)+".json"))
 	out, _, _ = w.show(strconv.Itoa(id))
@@ -139,8 +131,6 @@ func TestShowHeader(t *testing.T) {
 	}
 }
 
-// A run still going (reserved by a live lx) has no exit status yet: the
-// header says so instead of "exit -1".
 func TestShowHeaderRunningRun(t *testing.T) {
 	w := newShowWorld(t)
 	sp, err := tee.Reserve(tee.Meta{Argv: []string{"npm", "test"}, Cwd: w.project, Time: w.now.Add(-2 * time.Minute)})
@@ -162,7 +152,7 @@ func TestShowLastScopedToProject(t *testing.T) {
 	b := w.save("go build", other, 0, 40*time.Minute, "b\n")
 	c := w.save("go vet ./...", filepath.Join(w.project, "pkg", "sub"), 1, 30*time.Minute, "c\n")
 	d := w.save("ls -R", other, 0, 20*time.Minute, "d\n")
-	w.cwd = filepath.Join(w.project, "pkg") // anywhere inside the project
+	w.cwd = filepath.Join(w.project, "pkg")
 
 	for spec, want := range map[string]int{"last": c, "last~0": c, "last~1": a} {
 		out, _, code := w.show(spec)
@@ -177,8 +167,6 @@ func TestShowLastScopedToProject(t *testing.T) {
 		t.Errorf("last~2 past the project's runs: exit %d %q", code, errOut)
 	}
 
-	// A directory with no runs of its own falls back to the newest anywhere,
-	// and says where that run came from.
 	w.cwd = filepath.Join(w.home, "empty")
 	os.MkdirAll(w.cwd, 0o700)
 	for spec, want := range map[string]int{"last": d, "last~1": c, "last~3": a} {
@@ -198,10 +186,10 @@ func TestShowNewerRunNote(t *testing.T) {
 	w := newShowWorld(t)
 	other := filepath.Join(w.home, "projects", "other")
 	old := w.save("go test ./...", w.project, 1, 30*time.Minute, "FAIL\n")
-	w.save("go test ./pkg", w.project, 1, 20*time.Minute, "x\n")          // other argv
-	w.save("go test ./...", other, 0, 10*time.Minute, "ok\n")             // other cwd
-	newer := w.save("go test ./...", w.project, 0, 2*time.Minute, "ok\n") // the same command, again
-	w.save("go test ./...", w.project+"x", 0, time.Minute, "ok\n")        // a sibling directory, not the same
+	w.save("go test ./pkg", w.project, 1, 20*time.Minute, "x\n")
+	w.save("go test ./...", other, 0, 10*time.Minute, "ok\n")
+	newer := w.save("go test ./...", w.project, 0, 2*time.Minute, "ok\n")
+	w.save("go test ./...", w.project+"x", 0, time.Minute, "ok\n")
 
 	out, _, _ := w.show(strconv.Itoa(old))
 	want := fmt.Sprintf("[lx: a newer run of this command exists: lx show %d (exit 0, 2 min ago)]", newer)
@@ -213,7 +201,7 @@ func TestShowNewerRunNote(t *testing.T) {
 			t.Errorf("run %d: no newer run has its argv and cwd:\n%s", id, out)
 		}
 	}
-	// Run 3 ran elsewhere: it gets the cwd note, run 5's sibling too.
+
 	if out, _, _ := w.show("3"); !strings.Contains(out, "[lx: run 3 ran in ~/projects/other, not in this project]") {
 		t.Errorf("cwd note for run 3:\n%s", out)
 	}
@@ -222,7 +210,6 @@ func TestShowNewerRunNote(t *testing.T) {
 	}
 }
 
-// --errors on every failing capture of the corpus selects every error line.
 func TestShowErrorsCorpus(t *testing.T) {
 	w := newShowWorld(t)
 	matchRe := regexp.MustCompile(`^\s*(\d+): `)
@@ -293,7 +280,7 @@ func TestShowGrepContextGolden(t *testing.T) {
 	if out != want {
 		t.Fatalf("--grep -C 2:\n%s\nwant:\n%s", out, want)
 	}
-	// No context: the plain numbered form.
+
 	out, _, _ = w.show(strconv.Itoa(id), "--grep", "case 2[12]$")
 	want = `[lx show 1 · pytest -q · exit 1 · 5 min ago · 30 lines · 1 line matches --grep]
     21  ok   case 21
@@ -301,7 +288,7 @@ func TestShowGrepContextGolden(t *testing.T) {
 	if out != want {
 		t.Fatalf("--grep:\n%s\nwant:\n%s", out, want)
 	}
-	// Selection order: --lines, then --grep, then --head/--tail.
+
 	out, _, _ = w.show(strconv.Itoa(id), "--lines", "6-25", "--grep", "FAIL", "-C", "1", "--tail", "2")
 	want = `[lx show 1 · pytest -q · exit 1 · 5 min ago · 30 lines · 2 lines match --grep]
     22: FAIL case 22: want 1, got 2
@@ -333,7 +320,6 @@ func TestShowGrepContextGolden(t *testing.T) {
 	}
 }
 
-// The spec's example: no errors at all in the run.
 func TestShowErrorsNone(t *testing.T) {
 	w := newShowWorld(t)
 	w.save("git log", w.project, 0, time.Minute, "a\nb\n")
@@ -345,9 +331,6 @@ func TestShowErrorsNone(t *testing.T) {
 
 var nextRe = regexp.MustCompile(`next: (lx show \d+(?: --errors)? --lines (\d+)-(\d+))`)
 
-// The 343 KB git log capture, read back under a 27,000-character limit:
-// the view and the next part it suggests both fit, and the next part picks
-// up exactly where the view stopped.
 func TestShowCapGitLog(t *testing.T) {
 	w := newShowWorld(t)
 	t.Setenv("LX_MAX_CHARS", "27000")
@@ -364,13 +347,13 @@ func TestShowCapGitLog(t *testing.T) {
 	}
 	lines := strings.Split(strings.TrimSuffix(out, "\n"), "\n")
 	tr := lines[len(lines)-1]
-	shown := len(lines) - 2 // header and closing line
+	shown := len(lines) - 2
 	wantPrefix := fmt.Sprintf("… [lines %s-%s not shown: over this agent's 27,000-character output limit · next: lx show %d --lines %d-",
 		showCommas(shown+1), showCommas(total), id, shown+1)
 	if !strings.HasPrefix(tr, wantPrefix) || !strings.HasSuffix(tr, " · or --errors / --grep RE]") {
 		t.Fatalf("closing line:\n%s\nwant prefix:\n%s", tr, wantPrefix)
 	}
-	// Every line before it is whole and in order.
+
 	clean := showSplit(textutil.Clean(c.Raw))
 	for i := 1; i <= shown; i++ {
 		if lines[i] != clean[i-1] {
@@ -378,7 +361,6 @@ func TestShowCapGitLog(t *testing.T) {
 		}
 	}
 
-	// Walk the whole run through the suggested commands.
 	next := shown + 1
 	for steps := 0; next <= total; steps++ {
 		m := nextRe.FindStringSubmatch(tr)
@@ -398,7 +380,7 @@ func TestShowCapGitLog(t *testing.T) {
 		if len(got) != hi-lo+1 || !strings.HasPrefix(got[0], fmt.Sprintf("%6d  ", lo)) {
 			t.Fatalf("suggested %q printed %d lines", m[1], len(got))
 		}
-		// The largest end that fits: one more line would not.
+
 		if hi < total {
 			more, _, _ := w.show(strconv.Itoa(id), "--lines", fmt.Sprintf("%d-%d", lo, hi+1))
 			if !strings.Contains(more, "not shown") {
@@ -409,7 +391,7 @@ func TestShowCapGitLog(t *testing.T) {
 		if next > total {
 			break
 		}
-		// The capped --lines view of the rest gives the step after.
+
 		out, _, _ = w.show(strconv.Itoa(id), "--lines", fmt.Sprintf("%d-", next))
 		ls := strings.Split(strings.TrimSuffix(out, "\n"), "\n")
 		tr = ls[len(ls)-1]
@@ -423,7 +405,6 @@ func TestShowCapGitLog(t *testing.T) {
 		}
 	}
 
-	// --full and --raw bypass the cap; --raw is byte-exact on stdout.
 	out, _, _ = w.show(strconv.Itoa(id), "--full")
 	if len(out) < 300_000 || strings.Contains(out, "not shown") || !strings.HasSuffix(out, clean[len(clean)-1]+"\n") {
 		t.Fatalf("--full: %d bytes", len(out))
@@ -437,8 +418,6 @@ func TestShowCapGitLog(t *testing.T) {
 	}
 }
 
-// Capped --errors keeps its selection in the suggested command, and the
-// closing line doesn't offer --errors again.
 func TestShowCapErrors(t *testing.T) {
 	w := newShowWorld(t)
 	t.Setenv("LX_MAX_CHARS", "3000")
@@ -457,8 +436,6 @@ func TestShowCapErrors(t *testing.T) {
 	}
 }
 
-// One line longer than the whole limit can't be cut to fit: say so and
-// point at --full.
 func TestShowCapHugeLine(t *testing.T) {
 	w := newShowWorld(t)
 	t.Setenv("LX_MAX_CHARS", "2000")
@@ -472,8 +449,6 @@ func TestShowCapHugeLine(t *testing.T) {
 	}
 }
 
-// Nothing is capped without a host limit, and LX_MAX_CHARS=0 turns the
-// cap off inside Claude Code.
 func TestShowNoCap(t *testing.T) {
 	w := newShowWorld(t)
 	id := w.save("seq 5000", w.project, 0, time.Minute, numberedOutput(5000))
@@ -494,9 +469,9 @@ func TestShowNoCap(t *testing.T) {
 func TestShowRecallRecords(t *testing.T) {
 	w := newShowWorld(t)
 	id := w.save("go test ./...", w.project, 1, time.Minute, numberedOutput(300))
-	w.show()      // listing: no record
-	w.show("99")  // missing run: no record
-	w.show("abc") // bad id: no record
+	w.show()
+	w.show("99")
+	w.show("abc")
 	out, _, _ := w.show(strconv.Itoa(id), "--errors")
 	out2, _, _ := w.show("last", "--tail", "5")
 	recs, err := track.Load(time.Time{})
@@ -532,7 +507,7 @@ func TestShowRecallRecords(t *testing.T) {
 			t.Errorf("%v: mode %s", c.args, s.mode())
 		}
 	}
-	// LX_TRACK=0 records nothing.
+
 	t.Setenv("LX_TRACK", "0")
 	w.show(strconv.Itoa(id))
 	if recs, _ := track.Load(time.Time{}); len(recs) != 2 {
@@ -567,7 +542,7 @@ func TestShowListing(t *testing.T) {
 	if n := strings.Count(out, "\n"); n != 56 || !strings.Contains(out, "other-cmd 0 --secret-flag") {
 		t.Fatalf("--all lists every run: %d lines", n)
 	}
-	// Capped: whole rows, then a count of the rest.
+
 	t.Setenv("LX_MAX_CHARS", "1500")
 	out, _, _ = w.show("--all")
 	if len(out) > hostCharCap() || !strings.Contains(out, "more runs not shown: over this agent's 1,500-character output limit]") {
@@ -601,7 +576,7 @@ func TestShowBadInput(t *testing.T) {
 			t.Errorf("%v: exit %d, stdout %q, stderr %q", c.args, code, out, errOut)
 		}
 	}
-	// A run that printed nothing.
+
 	w.save("true", w.project, 0, time.Minute, "")
 	if out, _, _ := w.show("2", "--errors"); !strings.Contains(out, "[lx: run 2 printed nothing]") {
 		t.Errorf("empty run: %s", out)
@@ -628,18 +603,16 @@ func TestShowQuote(t *testing.T) {
 	}
 }
 
-// Metadata is read newest first in growing batches: answers that need
-// older runs must still find them.
 func TestShowManyRuns(t *testing.T) {
 	w := newShowWorld(t)
 	other := filepath.Join(w.home, "projects", "other")
-	w.save("go test ./...", w.project, 1, time.Hour, "FAIL\n") // 1
-	w.save("go vet ./...", w.project, 0, time.Hour, "ok\n")    // 2
-	for i := 0; i < 100; i++ {                                 // 3..102
+	w.save("go test ./...", w.project, 1, time.Hour, "FAIL\n")
+	w.save("go vet ./...", w.project, 0, time.Hour, "ok\n")
+	for i := 0; i < 100; i++ {
 		w.save(fmt.Sprintf("npm run x%d", i), other, 0, time.Hour, "x\n")
 	}
-	w.save("go test ./...", w.project, 0, time.Minute, "ok\n") // 103
-	for i := 0; i < 70; i++ {                                  // 104..173
+	w.save("go test ./...", w.project, 0, time.Minute, "ok\n")
+	for i := 0; i < 70; i++ {
 		w.save(fmt.Sprintf("npm run y%d", i), other, 0, time.Hour, "y\n")
 	}
 	for spec, want := range map[string]int{"last": 103, "last~1": 2, "last~2": 1} {
@@ -659,8 +632,6 @@ func TestShowManyRuns(t *testing.T) {
 	}
 }
 
-// Property: whatever the run and the selection, a capped view fits the
-// cap, and its suggested next command fits too and is not itself cut.
 func TestShowCapProperty(t *testing.T) {
 	w := newShowWorld(t)
 	r := rand.New(rand.NewSource(11))
@@ -722,7 +693,7 @@ func TestShowCapProperty(t *testing.T) {
 			if len(next) > capc || strings.Contains(next, " not shown: ") {
 				t.Fatalf("iter %d: suggested %v does not fit (%d bytes, cap %d)", iter, args, len(next), capc)
 			}
-			// Continue from the end of that range.
+
 			_, hi, _ := strings.Cut(args[len(args)-1], "-")
 			h, _ := strconv.Atoi(hi)
 			args[len(args)-1] = strconv.Itoa(h+1) + "-"
@@ -730,9 +701,6 @@ func TestShowCapProperty(t *testing.T) {
 	}
 }
 
-// A context count too large to add to a line index must not wrap around:
-// with -C 9223372036854775807 the view once selected nothing and said "no
-// error or warning lines" under a header counting them.
 func TestShowContextOverflow(t *testing.T) {
 	w := newShowWorld(t)
 	id := w.save("go test ./...", w.project, 1, time.Minute, numberedOutput(300))
@@ -750,14 +718,13 @@ func TestShowContextOverflow(t *testing.T) {
 			t.Fatalf("-C %s: every line is within context: %d lines", c, n)
 		}
 	}
-	// Huge --head and --tail don't wrap either.
+
 	out, _, _ := w.show(strconv.Itoa(id), "--head", "9223372036854775807", "--tail", "9223372036854775807")
 	if strings.Count(out, "\n") != 301 {
 		t.Fatalf("huge --head/--tail: %d lines", strings.Count(out, "\n"))
 	}
 }
 
-// pickNaive is the obvious selection, for checking pick's one-pass form.
 func pickNaive(r *showRun, s showSel) (idx []int, match []bool) {
 	n := len(r.lines)
 	lo, hi := 0, n-1
@@ -808,8 +775,6 @@ func pickNaive(r *showRun, s showSel) (idx []int, match []bool) {
 	return idx, match
 }
 
-// pick (one pass, cached classification) selects exactly what the obvious
-// definition does, and size is exactly what render prints.
 func TestShowPickAndSizeProperty(t *testing.T) {
 	r := rand.New(rand.NewSource(23))
 	re := regexp.MustCompile(`x[0-9]`)
@@ -859,9 +824,6 @@ func TestShowPickAndSizeProperty(t *testing.T) {
 	}
 }
 
-// Piped into a program or redirected to a file, lx show prints the whole
-// selection with nothing cut, and the header and notes go to stderr:
-// `lx show 7 | grep FAIL` must search all of run 7, not its first 27 KB.
 func TestShowPiped(t *testing.T) {
 	w := newShowWorld(t)
 	t.Setenv("CLAUDECODE", "1")
@@ -887,11 +849,11 @@ func TestShowPiped(t *testing.T) {
 	if strings.Count(out, "--- FAIL") != 60 || strings.Contains(out, "not shown") || !strings.HasPrefix(errOut, "[lx show 1 · ") {
 		t.Fatalf("piped --errors: %d FAIL lines\n%s", strings.Count(out, "--- FAIL"), errOut)
 	}
-	// Straight to the agent the same command is cut to the cap.
+
 	if out, _, _ := w.show(strconv.Itoa(id)); len(out) > hostCharCap() || !strings.Contains(out, "not shown") {
 		t.Fatalf("to the agent: %d bytes", len(out))
 	}
-	// The listing isn't cut when piped either.
+
 	for i := 0; i < 40; i++ {
 		w.save(fmt.Sprintf("go vet ./pkg%d", i), w.project, 0, time.Minute, "x\n")
 	}
@@ -903,8 +865,6 @@ func TestShowPiped(t *testing.T) {
 	}
 }
 
-// showStdoutPiped on real descriptors: Claude Code's Bash tool gives a
-// command one regular file for both stdout and stderr.
 func TestShowStdoutPiped(t *testing.T) {
 	dir := t.TempDir()
 	open := func(name string) *os.File {
@@ -948,8 +908,6 @@ func TestShowStdoutPiped(t *testing.T) {
 	}
 }
 
-// Selection flags need a run: printing the listing would silently ignore
-// them.
 func TestShowSelectionNeedsRun(t *testing.T) {
 	w := newShowWorld(t)
 	w.save("go test", w.project, 1, time.Minute, "x\n")
@@ -967,8 +925,6 @@ func TestShowSelectionNeedsRun(t *testing.T) {
 	}
 }
 
-// A finished run whose final metadata was never written still holds its
-// reservation's exit -1: that is not an exit status.
 func TestShowExitUnknown(t *testing.T) {
 	w := newShowWorld(t)
 	sp, err := tee.Reserve(tee.Meta{Argv: []string{"make", "test"}, Cwd: w.project, Time: w.now.Add(-3 * time.Minute)})
@@ -987,13 +943,12 @@ func TestShowExitUnknown(t *testing.T) {
 	}
 	w.save("make test", w.project, 0, time.Minute, "ok\n")
 	w.save("make test", w.project, 0, time.Minute, "ok\n")
-	// The newer-run note names the newest identical run.
+
 	if out, _, _ := w.show("1"); !strings.Contains(out, "[lx: a newer run of this command exists: lx show 3 (exit 0, 1 min ago)]") {
 		t.Fatalf("note:\n%s", out)
 	}
 }
 
-// A run recorded through a symlinked path to the project is in the project.
 func TestShowProjectThroughSymlink(t *testing.T) {
 	w := newShowWorld(t)
 	link := filepath.Join(w.home, "link-to-app")
@@ -1011,9 +966,6 @@ func TestShowProjectThroughSymlink(t *testing.T) {
 	}
 }
 
-// The closing line's search measures sizes instead of formatting the rest
-// of the run again at every step: capped, a huge run costs about what
-// printing it in full does.
 func TestShowCapHugeRunCost(t *testing.T) {
 	if testenv.Race || testing.Short() {
 		t.Skip("timing")
@@ -1044,8 +996,6 @@ func TestShowCapHugeRunCost(t *testing.T) {
 	}
 }
 
-// A recall of a run without metadata is recorded under "(unknown)", not a
-// blank command name.
 func TestShowRecallUnknownCommand(t *testing.T) {
 	w := newShowWorld(t)
 	id := w.save("make", w.project, 2, time.Minute, "x\n")

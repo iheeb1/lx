@@ -7,10 +7,6 @@ import (
 	"unicode/utf8"
 )
 
-// matcher finds where the user's pattern matches inside a long line, so the
-// window shown is the part the search was about. It is best effort: nil
-// when the pattern does not compile under RE2 (backreferences, lookaround),
-// and then windows start at the beginning of the line.
 type matcher struct {
 	re, fold *regexp.Regexp
 }
@@ -22,7 +18,6 @@ func newMatcher(o opts) *matcher {
 	var parts []string
 	upper := false
 	for _, p := range o.patterns {
-		// grep -e 'a\nb' style multi-pattern values: one per line.
 		for _, q := range strings.Split(p, "\n") {
 			if q == "" {
 				continue
@@ -65,7 +60,6 @@ func newMatcher(o opts) *matcher {
 	return m
 }
 
-// find returns the byte span of the first match in s, or ok=false.
 func (m *matcher) find(s string) (int, int, bool) {
 	if m == nil {
 		return 0, 0, false
@@ -73,7 +67,7 @@ func (m *matcher) find(s string) (int, int, bool) {
 	if loc := m.re.FindStringIndex(s); loc != nil {
 		return loc[0], loc[1], true
 	}
-	// Case may differ (rg smart-case from a config file, grep -i in an alias).
+
 	if m.fold != nil {
 		if loc := m.fold.FindStringIndex(s); loc != nil {
 			return loc[0], loc[1], true
@@ -82,9 +76,6 @@ func (m *matcher) find(s string) (int, int, bool) {
 	return 0, 0, false
 }
 
-// breToRE2 converts a POSIX basic regular expression (with the GNU
-// extensions \| \+ \? \{ \}) to RE2 syntax: in BRE the bare characters
-// ( ) { } | + ? are literals and their backslashed forms are operators.
 func breToRE2(p string) string {
 	var b strings.Builder
 	inBracket := false
@@ -101,7 +92,7 @@ func breToRE2(p string) string {
 		case c == '[':
 			inBracket = true
 			b.WriteByte(c)
-			// A leading ] or ^] is part of the set.
+
 			if i+1 < len(p) && p[i+1] == '^' {
 				b.WriteByte('^')
 				i++
@@ -126,7 +117,7 @@ func breToRE2(p string) string {
 			b.WriteByte('\\')
 			b.WriteByte(c)
 		case c == '*' && (i == 0 || p[i-1] == '^' && i == 1):
-			b.WriteString(`\*`) // a leading * is literal in BRE
+			b.WriteString(`\*`)
 		default:
 			b.WriteByte(c)
 		}
@@ -134,7 +125,6 @@ func breToRE2(p string) string {
 	return b.String()
 }
 
-// wordBounds maps the GNU word anchors \< \> to \b.
 func wordBounds(p string) string {
 	if !strings.Contains(p, `\<`) && !strings.Contains(p, `\>`) {
 		return p
@@ -143,16 +133,11 @@ func wordBounds(p string) string {
 }
 
 const (
-	// longLine: lines with more runes than this are shown as a window.
 	longLine = 200
-	// windowSize is the number of runes kept around the match.
+
 	windowSize = 160
 )
 
-// window shortens a long line to windowSize runes around the first match
-// of m (or the start of the line), marking what was cut on each side:
-//
-//	…[+1204 chars]… ,process.env.NODE_ENV!=="production"&&… …[+88312 chars]…
 func window(s string, m *matcher) string {
 	if len(s) <= longLine {
 		return s
@@ -162,7 +147,7 @@ func window(s string, m *matcher) string {
 		return s
 	}
 	startB, endB, ok := m.find(s)
-	start := 0 // rune index of the window start
+	start := 0
 	if ok {
 		ms := utf8.RuneCountInString(s[:startB])
 		ml := utf8.RuneCountInString(s[startB:endB])
@@ -170,15 +155,14 @@ func window(s string, m *matcher) string {
 		if ml >= windowSize {
 			start = ms
 		}
-		// Prefer a few runes of context before the match over a cut that
-		// only saves a handful of characters.
+
 		start = max(0, min(start, n-windowSize))
 		if start < 20 {
 			start = 0
 		}
 	}
 	end := min(n, start+windowSize)
-	// Byte offsets of the rune window.
+
 	bs, be := runeOffset(s, start), runeOffset(s, end)
 	body := s[bs:be]
 	var b strings.Builder
@@ -200,7 +184,6 @@ func window(s string, m *matcher) string {
 	return b.String()
 }
 
-// runeOffset returns the byte offset of the i-th rune of s.
 func runeOffset(s string, i int) int {
 	if i <= 0 {
 		return 0

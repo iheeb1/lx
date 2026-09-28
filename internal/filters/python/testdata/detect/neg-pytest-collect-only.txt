@@ -1,0 +1,67 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.5.0
+rootdir: /home/user/src/click
+configfile: pyproject.toml
+collected 56 items
+
+<Dir click>
+  <Dir tests>
+    <Module test_basic.py>
+      <Function test_basic_functionality>
+      <Function test_repr>
+      <Function test_return_values>
+      <Function test_basic_group>
+      <Function test_group_commands_dict>
+      <Function test_group_from_list>
+      <Function test_string_option[args0-S:[no value]]>
+      <Function test_string_option[args1-S:[42]]>
+      <Function test_string_option[args2-Error: Option '--s' requires an argument.]>
+      <Function test_string_option[args3-S:[]]>
+      <Function test_string_option[args4-S:[\u2603]]>
+      <Function test_int_option[args0-I:[84]]>
+      <Function test_int_option[args1-I:[46]]>
+      <Function test_int_option[args2-Error: Invalid value for '--i': 'x' is not a valid integer.]>
+      <Function test_uuid_option[args0-U:[ba122011-349f-423b-873b-9d6a79c688ab]]>
+      <Function test_uuid_option[args1-U:[821592c1-c50e-4971-9cd6-e89dc6832f86]]>
+      <Function test_uuid_option[args2-Error: Invalid value for '--u': 'x' is not a valid UUID.]>
+      <Function test_float_option[args0-F:[42.0]]>
+      <Function test_float_option[--f=23.5-F:[23.5]]>
+      <Function test_float_option[--f=x-Error: Invalid value for '--f': 'x' is not a valid float.]>
+      <Function test_boolean_switch[args0-True-True]>
+      <Function test_boolean_switch[args0-True-False]>
+      <Function test_boolean_switch[args1-False-True]>
+      <Function test_boolean_switch[args1-False-False]>
+      <Function test_boolean_switch[args2-None-True]>
+      <Function test_boolean_switch[args2-None-False]>
+      <Function test_boolean_flag[args0-True-True]>
+      <Function test_boolean_flag[args0-True-False]>
+      <Function test_boolean_flag[args1-False-True]>
+      <Function test_boolean_flag[args1-False-False]>
+      <Function test_boolean_conversion[1-True]>
+      <Function test_boolean_conversion[true-True]>
+      <Function test_boolean_conversion[t-True]>
+      <Function test_boolean_conversion[yes-True]>
+      <Function test_boolean_conversion[y-True]>
+      <Function test_boolean_conversion[on-True]>
+      <Function test_boolean_conversion[0-False]>
+      <Function test_boolean_conversion[false-False]>
+      <Function test_boolean_conversion[f-False]>
+      <Function test_boolean_conversion[no-False]>
+      <Function test_boolean_conversion[n-False]>
+      <Function test_boolean_conversion[off-False]>
+      <Function test_file_option>
+      <Function test_file_lazy_mode>
+      <Function test_path_option>
+      <Function test_choice_option>
+      <Function test_choice_argument>
+      <Function test_datetime_option_default>
+      <Function test_datetime_option_custom>
+      <Function test_required_option>
+      <Function test_evaluation_order>
+      <Function test_hidden_option>
+      <Function test_hidden_command>
+      <Function test_hidden_group>
+      <Function test_summary_line>
+      <Function test_help_invalid_default>
+
+========================= 56 tests collected in 0.01s ==========================

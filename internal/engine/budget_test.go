@@ -59,8 +59,7 @@ func TestBudgetHugeLineAndSpeed(t *testing.T) {
 	}
 	start := time.Now()
 	Budget(strings.Join(lines, "\n"), 8000, true, true)
-	// 50k lines that all hold warning words is an extreme case; each still
-	// needs the benign-span pass (~30µs). Guard against regressions only.
+
 	if d := time.Since(start); d > testenv.Scale(6*time.Second) {
 		t.Fatalf("Budget on 50k classified lines took %v", d)
 	}
@@ -88,7 +87,7 @@ func TestBudgetFitHonoursBothCaps(t *testing.T) {
 		lines = append(lines, fmt.Sprintf("commit %04d: refactor the widget factory module so it reads well", i))
 	}
 	in := strings.Join(lines, "\n")
-	// Characters bind: plenty of tokens, few bytes.
+
 	out := BudgetFit(in, 1_000_000, 5000, false, false)
 	if len(out) > 5000 || len(out) < 4000 {
 		t.Fatalf("char cap 5000 produced %d bytes; should fill most of it", len(out))
@@ -96,31 +95,28 @@ func TestBudgetFitHonoursBothCaps(t *testing.T) {
 	if !strings.HasPrefix(out, "commit 0000") || !strings.Contains(out, "commit 4999") || !strings.Contains(out, "lines omitted") {
 		t.Fatalf("head, tail and a counted gap must survive:\n%s", out)
 	}
-	// Tokens bind: plenty of bytes, few tokens.
+
 	out = BudgetFit(in, 1000, 1_000_000, false, false)
 	if tokens.Count(out) > 1000 {
 		t.Fatalf("token budget 1000 produced %d tokens", tokens.Count(out))
 	}
-	// Both given: the tighter one wins.
+
 	for _, tc := range []struct{ tok, chars int }{{800, 20000}, {20000, 3000}, {2000, 7000}} {
 		out := BudgetFit(in, tc.tok, tc.chars, true, true)
 		if tokens.Count(out) > tc.tok || len(out) > tc.chars {
 			t.Errorf("caps %d tokens / %d chars: got %d tokens, %d bytes", tc.tok, tc.chars, tokens.Count(out), len(out))
 		}
 	}
-	// Within both caps: untouched.
+
 	if got := BudgetFit("a\nb\nc", 100, 100, true, true); got != "a\nb\nc" {
 		t.Fatalf("fitting input changed: %q", got)
 	}
-	// No char cap: exactly Budget.
+
 	if BudgetFit(in, 3000, 0, true, true) != Budget(in, 3000, true, true) {
 		t.Fatal("BudgetFit with maxChars 0 must equal Budget")
 	}
 }
 
-// Scattered error lines make a gap marker each. The markers must count
-// toward the character cap, or a cap that the kept lines alone meet would
-// be blown by "… N lines omitted …" lines.
 func TestBudgetFitCountsGapMarkers(t *testing.T) {
 	var lines []string
 	n := 20000
@@ -129,7 +125,7 @@ func TestBudgetFitCountsGapMarkers(t *testing.T) {
 	}
 	for i := 0; i < n; i++ {
 		if i%7 == 3 {
-			lines = append(lines, fmt.Sprintf("FAIL %d", i)) // short lines, long markers
+			lines = append(lines, fmt.Sprintf("FAIL %d", i))
 			continue
 		}
 		lines = append(lines, fmt.Sprintf("x%d", i))
@@ -151,9 +147,7 @@ func TestBudgetFitCountsGapMarkers(t *testing.T) {
 			}
 		}
 	}
-	// Scattered real errors, many gaps: every error kept while the errors,
-	// the line after each and a marker per gap fit the errors' share (the
-	// tail's quarter comes first, the errors stop at 60%).
+
 	lines = lines[:0]
 	for i := 0; i < 6000; i++ {
 		if i%150 == 75 {
@@ -196,10 +190,6 @@ func TestBudgetFitAdversarial(t *testing.T) {
 	}
 }
 
-// Under a small character cap a long error line is shortened, never
-// dropped whole: ShortenLine keeps error lines up to 1,200 characters,
-// which caps of a few thousand bytes could otherwise only replace with an
-// "… N lines omitted …" marker.
 func TestBudgetFitShortensLongErrorLine(t *testing.T) {
 	var lines []string
 	for i := 0; i < 400; i++ {
@@ -218,8 +208,7 @@ func TestBudgetFitShortensLongErrorLine(t *testing.T) {
 			t.Errorf("cap %d: the error line (start and end) must survive, shortened:\n%s", maxChars, out)
 		}
 	}
-	// Claude Code's default cap leaves ShortenLine's result alone, even
-	// for its longest (1,200 four-byte runes of an error line).
+
 	huge := "error: " + strings.Repeat("😀", 5000)
 	in = strings.Repeat("filler line\n", 3000) + huge + "\n" + strings.Repeat("more filler\n", 3000)
 	if out := BudgetFit(in, 1_000_000, 26800, true, true); !strings.Contains(out, ShortenLine(huge, 400)) {
@@ -258,6 +247,244 @@ func TestShortenBytes(t *testing.T) {
 		n, err := strconv.Atoi(num)
 		if !ok || err != nil || !strings.HasSuffix(line, tail) || utf8.RuneCountInString(line) != utf8.RuneCountInString(head)+n+utf8.RuneCountInString(tail) {
 			t.Fatalf("limit %d: marker or tail wrong: %q", lim, got)
+		}
+	}
+}
+
+func TestBudgetFitLines(t *testing.T) {
+	var lines []string
+	for i := 0; i < 500; i++ {
+		lines = append(lines, fmt.Sprintf("commit %04d: refactor the widget factory", i))
+	}
+	in := strings.Join(lines, "\n")
+	for _, maxLines := range []int{1, 2, 3, 4, 5, 10, 39, 99, 499, 500} {
+		for _, errorsFirst := range []bool{false, true} {
+			out := BudgetFitLines(in, 1_000_000, 0, maxLines, CutEither, true, errorsFirst)
+			got := countLines(out)
+			if got > maxLines {
+				t.Errorf("cap %d: %d lines", maxLines, got)
+			}
+			if maxLines >= 3 && got < maxLines {
+				t.Errorf("cap %d: only %d lines used", maxLines, got)
+			}
+			if maxLines == 500 && out != in {
+				t.Errorf("cap %d: a fitting output changed", maxLines)
+			}
+			if maxLines >= 5 && maxLines < 500 {
+				if !strings.HasPrefix(out, "commit 0000") && errorsFirst == false {
+					t.Errorf("cap %d: the head must survive:\n%s", maxLines, out)
+				}
+				if !strings.HasSuffix(out, "commit 0499: refactor the widget factory") || !strings.Contains(out, "lines omitted") {
+					t.Errorf("cap %d: the tail and a counted gap must survive:\n%s", maxLines, out)
+				}
+			}
+		}
+	}
+
+	if BudgetFitLines(in, 3000, 5000, 0, CutHead, true, true) != BudgetFit(in, 3000, 5000, true, true) {
+		t.Fatal("BudgetFitLines with maxLines 0 must equal BudgetFit")
+	}
+
+	for _, tc := range []struct{ tok, chars, lines int }{{300, 20000, 100}, {20000, 900, 100}, {20000, 20000, 12}} {
+		out := BudgetFitLines(in, tc.tok, tc.chars, tc.lines, CutEither, true, true)
+		if tokens.Count(out) > tc.tok || len(out) > tc.chars || countLines(out) > tc.lines {
+			t.Errorf("caps %+v: %d tokens, %d bytes, %d lines", tc, tokens.Count(out), len(out), countLines(out))
+		}
+	}
+}
+
+func TestBudgetFitLinesErrorsFirst(t *testing.T) {
+	var lines []string
+	for i := 0; i < 2000; i++ {
+		if i%200 == 100 {
+			lines = append(lines, fmt.Sprintf("ERROR: shard %d failed", i))
+			continue
+		}
+		lines = append(lines, fmt.Sprintf("shard %d processed %d records", i, i*31))
+	}
+	lines = append(lines, "done: 10 shards failed")
+	in := strings.Join(lines, "\n")
+
+	for _, maxLines := range []int{22, 25, 39, 60} {
+		out := BudgetFitLines(in, 1_000_000, 0, maxLines, CutEither, true, true)
+		if countLines(out) > maxLines {
+			t.Fatalf("cap %d: %d lines", maxLines, countLines(out))
+		}
+		for i := 100; i < 2000; i += 200 {
+			if !strings.Contains(out, fmt.Sprintf("ERROR: shard %d failed", i)) {
+				t.Errorf("cap %d: error %d dropped:\n%s", maxLines, i, out)
+			}
+		}
+	}
+
+	for maxLines, want := range map[int]int{10: 3, 21: 7} {
+		out := BudgetFitLines(in, 1_000_000, 0, maxLines, CutEither, true, true)
+		kept := strings.Count(out, "ERROR: shard")
+		if countLines(out) > maxLines || !strings.HasSuffix(out, "done: 10 shards failed") || kept != want {
+			t.Errorf("cap %d: %d error lines kept, want %d:\n%s", maxLines, kept, want, out)
+		}
+	}
+
+	lines = lines[:0]
+	for i := 0; i < 300; i++ {
+		switch i % 100 {
+		case 50:
+			lines = append(lines, fmt.Sprintf("--- FAIL: TestShard%d (0.00s)", i))
+		case 51:
+			lines = append(lines, fmt.Sprintf("    shard_test.go:%d: want 1 record, got 0", i))
+		default:
+			lines = append(lines, fmt.Sprintf("=== RUN   TestOther%d", i))
+		}
+	}
+	out := BudgetFitLines(strings.Join(lines, "\n")+"\nFAIL", 1_000_000, 0, 19, CutEither, true, true)
+	for _, i := range []int{51, 151, 251} {
+		if !strings.Contains(out, fmt.Sprintf("shard_test.go:%d: want 1 record", i)) {
+			t.Errorf("the message after failure %d was dropped:\n%s", i-1, out)
+		}
+	}
+}
+
+func TestBudgetFitLinesRandom(t *testing.T) {
+	r := rand.New(rand.NewSource(11))
+	iters := 3000
+	if testenv.Race {
+		iters = 300
+	}
+	for iter := 0; iter < iters; iter++ {
+		n := r.Intn(80)
+		var lines []string
+		for i := 0; i < n; i++ {
+			switch r.Intn(6) {
+			case 0:
+				lines = append(lines, "")
+			case 1:
+				lines = append(lines, fmt.Sprintf("error: %d broke", i))
+			case 2:
+				lines = append(lines, "warning: x")
+			default:
+				lines = append(lines, strings.Repeat("w", r.Intn(90)))
+			}
+		}
+		in := strings.Join(lines, "\n")
+		maxLines := 1 + r.Intn(40)
+		maxChars := 0
+		if r.Intn(3) == 0 {
+			maxChars = 64 + r.Intn(3000)
+		}
+		out := BudgetFitLines(in, 50+r.Intn(3000), maxChars, maxLines, Cut(r.Intn(3)), r.Intn(2) == 0, r.Intn(2) == 0)
+		if countLines(out) > maxLines {
+			t.Fatalf("iter %d: cap %d, %d lines:\n%q", iter, maxLines, countLines(out), out)
+		}
+		if maxChars > 0 && len(out) > maxChars {
+			t.Fatalf("iter %d: cap %d bytes, %d", iter, maxChars, len(out))
+		}
+	}
+}
+
+func FuzzBudgetFitLines(f *testing.F) {
+	f.Add("a\nb\nerror: c\n\nd", 3, 100, 64, true, uint8(0))
+	f.Add(strings.Repeat("x\n", 50)+"FAIL", 5, 1000, 0, false, uint8(1))
+	f.Add("", 1, 1, 0, true, uint8(2))
+	f.Add("\n\n\n", 2, 10, 70, true, uint8(0))
+	f.Fuzz(func(t *testing.T, in string, maxLines, maxTokens, maxChars int, errorsFirst bool, cutN uint8) {
+		if len(in) > 1<<16 {
+			return
+		}
+		maxLines = 1 + fitAbs(maxLines)%200
+		maxTokens = fitAbs(maxTokens) % 20000
+		maxChars = fitAbs(maxChars) % 50000
+		cut := Cut(cutN % 3)
+		out := BudgetFitLines(in, maxTokens, maxChars, maxLines, cut, true, errorsFirst)
+		if countLines(out) > maxLines {
+			t.Fatalf("cap %d lines: %d", maxLines, countLines(out))
+		}
+		if maxChars > 0 && len(out) > max(maxChars, MinMaxChars) {
+			t.Fatalf("cap %d bytes: %d", maxChars, len(out))
+		}
+		if again := BudgetFitLines(in, maxTokens, maxChars, maxLines, cut, true, errorsFirst); again != out {
+			t.Fatal("not deterministic")
+		}
+	})
+}
+
+func fitAbs(n int) int {
+	if n < 0 {
+		if n == -n {
+			return 0
+		}
+		return -n
+	}
+	return n
+}
+
+func TestBudgetFitLinesCut(t *testing.T) {
+	var lines []string
+	for i := 0; i < 500; i++ {
+		lines = append(lines, fmt.Sprintf("commit %04d: refactor the widget factory", i))
+	}
+	in := strings.Join(lines, "\n")
+	for _, errorsFirst := range []bool{true, false} {
+		head := BudgetFitLines(in, 1_000_000, 0, 20, CutHead, false, errorsFirst)
+		if want := strings.Join(lines[:19], "\n") + "\n… 481 lines omitted …"; head != want {
+			t.Errorf("head cut (errorsFirst %v):\n%s", errorsFirst, head)
+		}
+		tail := BudgetFitLines(in, 1_000_000, 0, 20, CutTail, false, errorsFirst)
+		if want := "… 481 lines omitted …\n" + strings.Join(lines[481:], "\n"); tail != want {
+			t.Errorf("tail cut (errorsFirst %v):\n%s", errorsFirst, tail)
+		}
+		either := BudgetFitLines(in, 1_000_000, 0, 20, CutEither, false, errorsFirst)
+		if !strings.HasPrefix(either, lines[0]+"\n") || !strings.HasSuffix(either, "\n"+lines[499]) || countLines(either) != 20 {
+			t.Errorf("either end (errorsFirst %v): both ends:\n%s", errorsFirst, either)
+		}
+	}
+
+	lines[250] = "ERROR: commit 0250 broke the build"
+	lines[400] = "ERROR: commit 0400 broke the build"
+	in = strings.Join(lines, "\n")
+	for _, cut := range []Cut{CutHead, CutTail, CutEither} {
+		out := BudgetFitLines(in, 1_000_000, 0, 20, cut, true, true)
+		if countLines(out) > 20 || !strings.Contains(out, lines[250]) || !strings.Contains(out, lines[400]) {
+			t.Errorf("cut %d: the error lines must come first:\n%s", cut, out)
+		}
+		switch cut {
+		case CutHead:
+			if !strings.HasPrefix(out, strings.Join(lines[:10], "\n")) || strings.Contains(out, lines[499]) {
+				t.Errorf("head cut: the head, not the tail:\n%s", out)
+			}
+		case CutTail:
+			if !strings.HasSuffix(out, strings.Join(lines[491:], "\n")) || strings.Contains(out, lines[0]) {
+				t.Errorf("tail cut: the tail, not the head:\n%s", out)
+			}
+		}
+	}
+
+	for _, cut := range []Cut{CutHead, CutTail} {
+		if BudgetFitLines(in, 300, 2000, 0, cut, true, true) != BudgetFit(in, 300, 2000, true, true) {
+			t.Errorf("cut %d without a line cap must equal BudgetFit", cut)
+		}
+	}
+}
+
+func TestParseFit(t *testing.T) {
+	for s, want := range map[string]struct {
+		n   int
+		cut Cut
+	}{
+		"1": {1, CutEither}, "40": {40, CutEither}, "007": {7, CutEither},
+		"head:40": {40, CutHead}, "tail:40": {40, CutTail}, "tail:1": {1, CutTail},
+	} {
+		n, cut, ok := ParseFit(s)
+		if !ok || n != want.n || cut != want.cut {
+			t.Errorf("ParseFit(%q) = %d, %d, %v", s, n, cut, ok)
+		}
+		if back := FitArg(n, cut); strings.TrimLeft(strings.TrimPrefix(strings.TrimPrefix(back, "head:"), "tail:"), "0") != strings.TrimLeft(strings.TrimPrefix(strings.TrimPrefix(s, "head:"), "tail:"), "0") {
+			t.Errorf("FitArg(%d, %d) = %q, from %q", n, cut, back, s)
+		}
+	}
+	for _, s := range []string{"", "0", "-3", "+3", "4x", " 3", "3 ", "1.5", "99999999999999999999",
+		"head:", "tail:0", "head:-1", "TAIL:3", "both:3", "tail:3:3", ":3", "head3", "tail:+3", "head: 3"} {
+		if n, cut, ok := ParseFit(s); ok {
+			t.Errorf("ParseFit(%q) = %d, %d, ok", s, n, cut)
 		}
 	}
 }

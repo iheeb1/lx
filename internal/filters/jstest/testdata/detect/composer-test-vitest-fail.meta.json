@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "composer",
+    "test"
+  ],
+  "shell": "composer test",
+  "exit_code": 1,
+  "description": "REAL: composer test whose script runs npx vitest run in unjs/ufo with the corpus's injected regressions (src/utils.ts, src/encoding.ts): vitest's report, composer's error line",
+  "cwd": "/home/user/src/ufo",
+  "repo": "unjs/ufo",
+  "tool": "vitest"
+}

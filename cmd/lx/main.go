@@ -1,5 +1,3 @@
-// Command lx runs a command and prints a condensed view of its output for
-// LLM coding agents, keeping the exit code and every error line.
 package main
 
 import (

@@ -1,5 +1,4 @@
-// Package runner executes the wrapped command and captures its combined
-// output while preserving the exit status exactly.
+// Package runner runs commands and captures their output.
 package runner
 
 import (
@@ -14,80 +13,48 @@ import (
 	"time"
 )
 
-// MaxCapture bounds how much output is held in memory. Past it, lx keeps the
-// head, keeps a rolling tail, and reports how much was elided.
 const MaxCapture = 64 << 20
 
 const tailKeep = 4 << 20
 
-// DefaultGrace is how long lx waits, after forwarding the first signal, for
-// the command to stop before it shows what it has so far.
 const DefaultGrace = 2 * time.Second
 
-// Result of a finished command.
 type Result struct {
 	Output   string
 	ExitCode int
 	Duration time.Duration
-	Elided   int64 // bytes dropped from the middle because of MaxCapture
+	Elided   int64
 	NotFound bool
-	// Interrupted names the first signal (SIGINT, SIGTERM, SIGHUP) lx
-	// received and forwarded while the command ran; "" when there was none.
+
 	Interrupted string
 
 	chunks []chunk
 }
 
-// Options tune RunWith. The zero value is Run's behavior: no heartbeat, no
-// prompt detection, signals forwarded, a DefaultGrace grace period.
-//
-// Callbacks run one at a time on a single goroutine (never concurrently with
-// each other) and all of them have returned by the time RunWith returns.
 type Options struct {
 	Stdin io.Reader
 
-	// Heartbeat > 0 calls OnHeartbeat once, that long after the start, if
-	// the command is still running. sofar is the capture up to then. A
-	// non-nil writer it returns (a spool) receives every byte captured
-	// afterwards, in order and with nothing missing; a write error drops
-	// the spool silently.
 	Heartbeat   time.Duration
 	OnHeartbeat func(elapsed time.Duration, sofar []byte) io.Writer
 
-	// PromptIdle > 0 calls OnPrompt at most once, when the command has been
-	// silent for PromptIdle and its output ends in an unterminated line that
-	// looks like a question to the user ("Proceed? [y/N] ", "Password:").
 	PromptIdle time.Duration
 	OnPrompt   func(line string)
 
-	// Grace is how long after the first forwarded signal the command may
-	// take to exit before OnInterrupt is called with the capture so far
-	// (0 = DefaultGrace). lx never kills the command: it keeps waiting, and
-	// the Result is the command's real status. OnInterrupt is called at most
-	// once; like OnHeartbeat, a non-nil writer it returns becomes the spool
-	// for later bytes when no spool is attached yet.
 	Grace       time.Duration
 	OnInterrupt func(sig os.Signal, elapsed time.Duration, sofar []byte) io.Writer
 }
 
-// notifySignals subscribes ch to the signals lx forwards to the command. It
-// is a variable so tests can deliver signals without real OS signals.
 var notifySignals = func(ch chan<- os.Signal) (stop func()) {
 	signal.Notify(ch, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP)
 	return func() { signal.Stop(ch) }
 }
 
-// testHookCapture, when set by tests, receives the live capture.
 var testHookCapture func(*capture)
 
-// Run executes argv with stdin inherited and stdout+stderr interleaved into a
-// single capture, in the order the child wrote them.
 func Run(argv []string, stdin io.Reader) Result {
 	return RunWith(argv, Options{Stdin: stdin})
 }
 
-// RunWith is Run with a heartbeat, prompt detection and a bounded wait after
-// a signal (see Options).
 func RunWith(argv []string, o Options) Result {
 	start := time.Now()
 	path, err := exec.LookPath(argv[0])
@@ -108,8 +75,6 @@ func RunWith(argv []string, o Options) Result {
 		testHookCapture(buf)
 	}
 
-	// The child shares our process group, so the terminal delivers ^C to it
-	// directly. lx must survive long enough to report the child's status.
 	sigs := make(chan os.Signal, 4)
 	stop := notifySignals(sigs)
 	defer stop()
@@ -159,7 +124,7 @@ func RunWith(argv []string, o Options) Result {
 	sig := interrupted
 	sigMu.Unlock()
 	close(exited)
-	<-monDone // every callback has returned
+	<-monDone
 
 	res := Result{
 		Output:   buf.String(),
@@ -176,8 +141,6 @@ func RunWith(argv []string, o Options) Result {
 	return res
 }
 
-// monitor fires the heartbeat, the prompt check and the post-signal grace
-// timer from one goroutine, so callbacks never run concurrently.
 type monitor struct {
 	o        Options
 	c        *capture
@@ -192,7 +155,6 @@ func (m *monitor) needed() bool {
 		m.o.OnInterrupt != nil
 }
 
-// promptTick is how often the prompt detector looks at the capture.
 func promptTick(idle time.Duration) time.Duration {
 	return max(min(500*time.Millisecond, idle/4), 10*time.Millisecond)
 }
@@ -255,8 +217,6 @@ func (m *monitor) run() {
 	}
 }
 
-// alive reports that the command has not exited yet (a timer that fires as
-// the command exits must not report on a finished run).
 func (m *monitor) alive() bool {
 	select {
 	case <-m.exited:
@@ -266,9 +226,6 @@ func (m *monitor) alive() bool {
 	}
 }
 
-// tap snapshots the capture and calls fn with it outside the capture lock,
-// so the command never blocks on lx's callback. Bytes that arrive meanwhile
-// are held and handed to the writer fn returns, ahead of every later byte.
 func (m *monitor) tap(fn func(sofar []byte) io.Writer) {
 	c := m.c
 	c.mu.Lock()
@@ -299,15 +256,11 @@ func (m *monitor) tap(fn func(sofar []byte) io.Writer) {
 	c.tapping, c.pending, c.pendingLost = false, nil, false
 }
 
-// safely runs a callback so that a bug in it can never take lx down while
-// the command is still running: lx must survive to report its exit status.
 func safely(fn func()) {
 	defer func() { _ = recover() }()
 	fn()
 }
 
-// spoolWrite writes p to a spool, reporting false on any failure (a panic
-// included: the spool is best effort, capturing the command is not).
 func spoolWrite(w io.Writer, p []byte) (ok bool) {
 	defer func() {
 		if recover() != nil {
@@ -318,7 +271,6 @@ func spoolWrite(w io.Writer, p []byte) (ok bool) {
 	return err == nil && n == len(p)
 }
 
-// SignalName is the conventional name of a forwarded signal ("SIGTERM").
 func SignalName(s os.Signal) string {
 	switch s {
 	case os.Interrupt:
@@ -331,7 +283,6 @@ func SignalName(s os.Signal) string {
 	return s.String()
 }
 
-// SignalNumber is s's number (the N in exit status 128+N), or 0.
 func SignalNumber(s os.Signal) int {
 	if n, ok := s.(syscall.Signal); ok {
 		return int(n)
@@ -339,9 +290,6 @@ func SignalNumber(s os.Signal) int {
 	return 0
 }
 
-// Replay writes the captured output to stdout/stderr exactly as the child
-// wrote it, preserving which stream each byte went to. It reports false when
-// the output was too large to keep per-stream (callers then print Output).
 func (r Result) Replay(stdout, stderr io.Writer) bool {
 	if r.chunks == nil && r.Output != "" {
 		return false
@@ -358,8 +306,6 @@ func (r Result) Replay(stdout, stderr io.Writer) bool {
 	return true
 }
 
-// Passthrough runs argv wired straight to the terminal, used for raw mode and
-// for commands lx must not buffer (watchers, servers, interactive tools).
 func Passthrough(argv []string) int {
 	path, err := exec.LookPath(argv[0])
 	if err != nil {
@@ -398,27 +344,23 @@ func exitCode(err error) int {
 	return 1
 }
 
-// capture is shared by stdout and stderr. It records the interleaved byte
-// stream (for filtering) and, while small, the per-stream chunks in order so
-// unfiltered output can be replayed to the right file descriptors.
 type capture struct {
 	mu     sync.Mutex
 	head   bytes.Buffer
 	tail   []byte
 	elided int64
 	chunks []chunk
-	noRepl bool // chunks abandoned (too large to be worth replaying)
+	noRepl bool
 
-	total int64     // bytes written so far
-	last  time.Time // when the last bytes arrived
+	total int64
+	last  time.Time
 
-	spool       io.Writer // receives every byte once attached (heartbeat)
-	tapping     bool      // a callback is choosing a spool: hold new bytes
+	spool       io.Writer
+	tapping     bool
 	pending     []byte
 	pendingLost bool
 }
 
-// pendingMax bounds the bytes held while a callback runs.
 const pendingMax = 32 << 20
 
 type chunk struct {
@@ -443,7 +385,7 @@ func (c *capture) write(p []byte, stderr bool) (int, error) {
 	c.last = time.Now()
 	if c.spool != nil {
 		if !spoolWrite(c.spool, p) {
-			c.spool = nil // the spool is best effort; the capture is not
+			c.spool = nil
 		}
 	} else if c.tapping {
 		if len(c.pending)+len(p) <= pendingMax {
@@ -484,7 +426,6 @@ func (c *capture) String() string {
 	return string(c.snapshotLocked())
 }
 
-// snapshotLocked copies the capture as String renders it. c.mu must be held.
 func (c *capture) snapshotLocked() []byte {
 	out := make([]byte, 0, c.head.Len()+len(elisionMarker)+len(c.tail))
 	out = append(out, c.head.Bytes()...)
@@ -494,7 +435,6 @@ func (c *capture) snapshotLocked() []byte {
 	return append(out, c.tail...)
 }
 
-// lastBytes returns up to n of the most recently captured bytes.
 func (c *capture) lastBytesLocked(n int) []byte {
 	if len(c.tail) >= n {
 		return c.tail[len(c.tail)-n:]
@@ -506,8 +446,6 @@ func (c *capture) lastBytesLocked(n int) []byte {
 	return append(out, c.tail...)
 }
 
-// promptLine reports the capture's unterminated last line when the command
-// has been silent for idle and that line looks like a prompt.
 func (c *capture) promptLine(idle time.Duration) (string, bool) {
 	c.mu.Lock()
 	if c.total == 0 || time.Since(c.last) < idle {

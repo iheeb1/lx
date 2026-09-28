@@ -12,34 +12,31 @@ import (
 	"strings"
 )
 
-// settingsFile is one Claude Code settings file, read (never written).
 type settingsFile struct {
 	Path  string
-	Label string // "user", "user local", "project", "project local", "managed"
-	Scope string // "user", "project" or "managed"
-	Local bool   // settings.local.json
+	Label string
+	Scope string
+	Local bool
 
 	Exists   bool
-	ReadErr  error  // exists but could not be read
-	ParseErr error  // not a JSON object
-	Shape    string // a structural problem with "hooks" (the file is still usable)
-	Linked   string // Path, or its directory, when that is a symlink
-	Symlink  string // …and where it points
-	Dangling bool   // the symlink points at nothing
+	ReadErr  error
+	ParseErr error
+	Shape    string
+	Linked   string
+	Symlink  string
+	Dangling bool
 
 	Hooks           []hookEntry
-	Allow           []string // permissions.allow strings, verbatim
+	Allow           []string
 	Ask, Deny       []string
-	Env             []envVar // the "env" object, sorted by name
+	Env             []envVar
 	DisableAllHooks bool
-	// AllowManagedHooksOnly (honored in managed settings only): Claude Code
-	// runs no user or project hooks.
+
 	AllowManagedHooksOnly bool
 }
 
 type envVar struct{ Name, Value string }
 
-// hookEntry is one hooks.PreToolUse[*].hooks[*] object.
 type hookEntry struct {
 	File       *settingsFile
 	Matcher    string
@@ -48,9 +45,6 @@ type hookEntry struct {
 	Command    string
 }
 
-// coversBash reports whether the group's matcher selects the Bash tool.
-// Claude Code matches tool names exactly or as a regular expression; an
-// empty or missing matcher and "*" match every tool.
 func (h hookEntry) coversBash() bool {
 	m := h.Matcher
 	if !h.HasMatcher || m == "" || m == "*" || m == "Bash" {
@@ -59,9 +53,6 @@ func (h hookEntry) coversBash() bool {
 	return matchesBash(m)
 }
 
-// settingsFiles lists the files Claude Code (and lx's hook) read, in the
-// same set as hook.LoadClaudeRules, deduplicated: when the project walk
-// reaches the user's own config directory, it is read once, as "user".
 func (e *Env) settingsFiles() []*settingsFile {
 	var out []*settingsFile
 	add := func(path, label, scope string, local bool) {
@@ -91,7 +82,6 @@ func (e *Env) settingsFiles() []*settingsFile {
 	return out
 }
 
-// maxSettingsBytes bounds what doctor reads from one settings file.
 const maxSettingsBytes = 8 << 20
 
 func (f *settingsFile) load() {
@@ -133,7 +123,7 @@ func (f *settingsFile) load() {
 func (f *settingsFile) parse(data []byte) {
 	data = bytes.TrimPrefix(data, []byte("\xef\xbb\xbf"))
 	if len(bytes.TrimSpace(data)) == 0 {
-		return // an empty file is an empty object (as for lx init)
+		return
 	}
 	var top map[string]json.RawMessage
 	dec := json.NewDecoder(bytes.NewReader(data))
@@ -166,7 +156,7 @@ func (f *settingsFile) parse(data []byte) {
 			for k, v := range env {
 				var s string
 				if json.Unmarshal(v, &s) != nil {
-					s = strings.TrimSpace(string(v)) // Claude Code stringifies numbers
+					s = strings.TrimSpace(string(v))
 				}
 				f.Env = append(f.Env, envVar{k, s})
 			}
@@ -208,7 +198,6 @@ func (f *settingsFile) parse(data []byte) {
 		if json.Unmarshal(g, &group) != nil {
 			var probe map[string]json.RawMessage
 			if json.Unmarshal(g, &probe) == nil {
-				// matcher or hooks of the wrong type: try hooks alone
 				_ = json.Unmarshal(probe["hooks"], &group.Hooks)
 			}
 		}
@@ -243,7 +232,6 @@ func rawStrings(raws []json.RawMessage) []string {
 	return out
 }
 
-// jsonErr adds a line:column position to a JSON syntax error.
 func jsonErr(data []byte, err error) error {
 	var se *json.SyntaxError
 	if errors.As(err, &se) {

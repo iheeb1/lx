@@ -9,12 +9,6 @@ import (
 	"time"
 )
 
-// ---- path -----------------------------------------------------------------
-
-// probeScript asks the login shell where lx is. The begin marker separates
-// the answer from whatever the shell's startup files print (a line such as
-// /usr/local/bin/brew: … must not pass for lx), and the not-found marker
-// tells "not found" apart from a shell that could not run the script.
 const (
 	beginMark    = "lx-doctor:begin"
 	notFoundMark = "lx-doctor:not-found"
@@ -23,8 +17,8 @@ const (
 
 type shellProbe struct {
 	shell string
-	path  string // lx as the login shell resolves it ("" = not found)
-	err   error  // the shell could not be asked
+	path  string
+	err   error
 }
 
 func (s *state) probeShell() *shellProbe {
@@ -44,7 +38,6 @@ func (s *state) probeShell() *shellProbe {
 		line = strings.TrimSpace(line)
 		switch {
 		case line == beginMark:
-			// Only what follows the marker answers the question.
 			begun, notFound, last, p.path = true, false, "", ""
 		case !begun:
 		case strings.HasPrefix(line, "/"):
@@ -56,7 +49,7 @@ func (s *state) probeShell() *shellProbe {
 		}
 	}
 	if notFound {
-		p.path = "" // `command -v lx` failed, whatever else was printed
+		p.path = ""
 	}
 	switch {
 	case p.path != "" || notFound:
@@ -75,8 +68,6 @@ func (s *state) probeShell() *shellProbe {
 	return p
 }
 
-// reference is the binary rewritten commands are expected to run: the
-// first lx hook's binary, else this one.
 func (s *state) reference() (path, label string, from *foundHook) {
 	for _, h := range s.hooks {
 		if h.kind == lxVerified && h.path != "" && h.missing == "" {
@@ -95,11 +86,6 @@ func (s *state) hookHasPrefix() bool {
 	return false
 }
 
-// rewritesByPath reports whether rewritten commands call lx by an absolute
-// path, so they work whatever the shell's PATH holds. The self-test's
-// actual rewrite decides; without one, a --prefix on the hook. (Without
-// --prefix, lx's hook uses its own full path whenever PATH's lx is not the
-// hook's binary.) how names the reason for messages.
 func (s *state) rewritesByPath() (yes bool, how string) {
 	if s.rewriteBin != "" {
 		return s.rewriteBin != "lx", "rewrites call " + s.show(s.rewriteBin) + " by its full path"
@@ -115,7 +101,7 @@ func (s *state) checkPath() {
 	exportFix := func() string {
 		dir := ref
 		if !s.canRun(dir) {
-			dir = s.e.Executable // never advise putting a project's own directory on PATH
+			dir = s.e.Executable
 		}
 		if dir == "" {
 			return ""
@@ -126,7 +112,6 @@ func (s *state) checkPath() {
 	case p.path == "" && p.err != nil:
 		s.add(id, Warn, "could not ask your shell where lx is: "+errText(p.err), "check by hand: "+shellQuote(p.shell)+" -lic 'command -v lx'")
 	case p.path == "" && prefix:
-		// Rewrites work, but receipts tell the agent to run `lx show <id>`.
 		s.add(id, Warn, "lx is not on your shell's PATH: "+how+
 			", but the `lx show <id>` a receipt suggests will fail with command not found", exportFix())
 	case p.path == "":

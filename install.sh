@@ -1,16 +1,4 @@
 #!/bin/sh
-# Install lx from its GitHub release, verified against the release's SHA256SUMS.
-#
-#   curl -fsSL https://github.com/iheeb1/lx/releases/latest/download/install.sh | sh
-#
-# Environment:
-#   LX_VERSION=v0.2.0   install that release instead of the latest one
-#   LX_INSTALL_DIR=DIR  where lx goes (default: $HOME/.local/bin); never uses sudo
-#   LX_BASE_URL=URL     download the archive and SHA256SUMS from URL instead
-#                       (https:// or file://, e.g. file://$PWD/dist after make dist)
-#
-# Nothing is installed unless the archive's SHA-256 matches SHA256SUMS and the
-# binary runs as lx (`lx version`). It replaces any old lx with a single rename.
 set -eu
 
 releases=https://github.com/iheeb1/lx/releases
@@ -22,7 +10,6 @@ die() {
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
-# fetch URL FILE
 fetch() {
 	case $1 in
 	file://*) cp "${1#file://}" "$2" || die "cannot read $1" ;;
@@ -61,7 +48,6 @@ main() {
 	arm64 | aarch64) arch=arm64 ;;
 	*) die "no prebuilt lx for $(uname -m): go install github.com/iheeb1/lx/cmd/lx@latest" ;;
 	esac
-	# An x86_64 shell under Rosetta on Apple silicon: take the native binary.
 	if [ "$os" = darwin ] && [ "$arch" = amd64 ] && [ "$(sysctl -n sysctl.proc_translated 2>/dev/null || true)" = 1 ]; then
 		arch=arm64
 	fi

@@ -20,9 +20,9 @@ func TestParseHookArgs(t *testing.T) {
 		{[]string{"--readonly"}, "claude", hook.HookOptions{ReadOnly: true}},
 		{[]string{"claude", "--prefix", "/a b/lx", "--readonly"}, "claude", hook.HookOptions{ReadOnly: true, Prefix: "/a b/lx"}},
 		{[]string{"claude", "--prefix=/x/lx"}, "claude", hook.HookOptions{Prefix: "/x/lx"}},
-		// unknown flags and a dangling --prefix are ignored: a hook never fails
+
 		{[]string{"claude", "--future-flag", "x", "--prefix"}, "claude", hook.HookOptions{}},
-		// a flag after --prefix is not its value
+
 		{[]string{"claude", "--prefix", "--readonly"}, "claude", hook.HookOptions{ReadOnly: true}},
 	}
 	for _, c := range cases {

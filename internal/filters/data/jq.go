@@ -8,10 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// jqFilter keeps jq output — data the user already shaped — unchanged up
-// to the budget. Above it, JSON output goes through engine.CompactJSON and
-// raw (-r) output is cut to exact head/tail windows. "jq: error …" lines are
-// always kept verbatim.
 type jqFilter struct{}
 
 func (jqFilter) Name() string    { return "jq" }
@@ -20,17 +16,11 @@ func (jqFilter) IsContent() bool { return true }
 func (jqFilter) Match(c *engine.Context) bool { return isJQ(effective(c).Name()) }
 
 var (
-	// jqDiagRe: jq's own messages ("jq: error (at <stdin>:3): …", jq 1.7's
-	// "jq: parse error: …", jq 1.5/1.6's bare "parse error: … at line 1,
-	// column 6", gojq's "gojq: …", jaq's "Error: …").
 	jqDiagRe = lazyre.New(`^(?:jq|gojq|jaq): |^jq: error|^Error: |^parse error: `)
-	// jqGluedRe finds a jq message that starts inside a line: jq's stdout
-	// is block-buffered, its stderr is not, so an error can land in the
-	// middle of an output line.
+
 	jqGluedRe = lazyre.New(`(?:jq|gojq): (?:error|parse error)\b|parse error: .+ at line \d+, column \d+$`)
 )
 
-// jqGlued returns where a jq message glued inside ln starts, or -1.
 func jqGlued(ln string) int {
 	if !strings.Contains(ln, "jq: ") && !strings.Contains(ln, "parse error: ") {
 		return -1
@@ -41,16 +31,12 @@ func jqGlued(ln string) int {
 	return -1
 }
 
-// isJQDiag reports a line holding one of jq's messages, at its start or
-// glued inside it.
 func isJQDiag(ln string) bool { return jqDiagAt(ln) || jqGlued(ln) > 0 }
 
-// jqDiagAt is jqDiagRe with a cheap first-byte check.
 func jqDiagAt(ln string) bool {
 	return ln != "" && strings.IndexByte("jgEp", ln[0]) >= 0 && jqDiagRe.MatchString(ln)
 }
 
-// jqRaw reports whether jq prints raw strings (-r, -j, --raw-output0).
 func jqRaw(args []string) bool {
 	for _, a := range args {
 		if a == "--" {

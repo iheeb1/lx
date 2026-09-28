@@ -1,33 +1,31 @@
-// Package hook integrates lx with coding agents: it rewrites the shell
-// commands an agent is about to run so supported ones go through lx, answers
-// Claude Code's PreToolUse hook (honoring the user's permission rules), and
-// installs that hook into settings.json without disturbing anything else.
+// Package hook connects lx to coding agents.
 package hook
 
 import (
 	"path/filepath"
+	"strconv"
 	"strings"
+
+	"github.com/iheeb1/lx/internal/engine"
 )
 
-// Inspection is how Rewrite sees a command. Reporting tools (lx discover,
-// lx rewrite -v) use it; hooks only need Rewrite.
 type Inspection struct {
-	Rewritten string     // the command with "lx " spliced in (== input when !Changed)
-	Changed   bool       // at least one command was prefixed
-	Reason    string     // why the whole string was left alone, if it was
-	Targets   [][]string // argv (after env/wrapper peeling) of each command lx will wrap
-	Commands  [][]string // argv of every simple command, best effort even when unsafe
-	AlreadyLx bool       // some command already runs through lx
+	Rewritten string
+	Changed   bool
+	Reason    string
+	Targets   [][]string
+
+	Fits      []int
+	FitCuts   []engine.Cut
+	Commands  [][]string
+	AlreadyLx bool
 }
 
-// Rewrite returns cmd with "lx " inserted before each command lx supports,
-// preserving every other byte. ok is false when nothing changes.
 func Rewrite(cmd string) (string, bool) {
 	in := Inspect(cmd)
 	return in.Rewritten, in.Changed
 }
 
-// Inspect analyzes cmd the same way Rewrite does and reports the details.
 func Inspect(cmd string) Inspection {
 	a := analyze(cmd)
 	in := Inspection{Rewritten: cmd}
@@ -46,22 +44,25 @@ func Inspect(cmd string) Inspection {
 	}
 	for _, t := range targets {
 		in.Targets = append(in.Targets, t.argv)
+		in.Fits = append(in.Fits, t.fit)
+		in.FitCuts = append(in.FitCuts, t.fitCut)
 	}
 	in.Rewritten, in.Changed = splice(cmd, targets, "lx"), true
 	return in
 }
 
-// splice inserts prefix and a space before each target's command word.
-// Rewrite and Inspect use "lx"; the hook may use an absolute path
-// (resolvePrefix) so the rewrite works where lx is not on PATH.
 func splice(src string, targets []*segment, prefix string) string {
 	var b strings.Builder
-	b.Grow(len(src) + (len(prefix)+1)*len(targets))
+	b.Grow(len(src) + (len(prefix)+12)*len(targets))
 	last := 0
 	for _, t := range targets {
 		at := t.words[t.cmdIdx].start
 		b.WriteString(src[last:at])
 		b.WriteString(prefix)
+		if t.fit > 0 {
+			b.WriteString(" --fit ")
+			b.WriteString(engine.FitArg(t.fit, t.fitCut))
+		}
 		b.WriteByte(' ')
 		last = at
 	}
@@ -69,15 +70,16 @@ func splice(src string, targets []*segment, prefix string) string {
 	return b.String()
 }
 
-// segment is a simple command plus what peeling learned about it.
 type segment struct {
 	*simple
-	cmdIdx   int      // index in words of the command word, -1 if none
-	argv     []string // word values from cmdIdx on (redirections excluded)
-	envNames []string // peeled NAME=value assignments (incl. those after env)
-	wrapped  bool     // a wrapper (time, timeout, nice, …) was peeled
-	lxRaw    bool     // LX_RAW / LX_OFF assignment: user wants the raw command
-	isLx     bool     // the command word is lx itself
+	cmdIdx   int
+	argv     []string
+	envNames []string
+	wrapped  bool
+	lxRaw    bool
+	isLx     bool
+	fit      int
+	fitCut   engine.Cut
 }
 
 type analysis struct {
@@ -92,7 +94,7 @@ type analysis struct {
 func analyze(src string) *analysis {
 	a := &analysis{src: src, lx: lex(src)}
 	a.unsafe = append(a.unsafe, a.lx.unsafe...)
-	// Multi-line: a newline outside quotes followed by more tokens.
+
 	for k, t := range a.lx.toks {
 		if t.kind == tOp && t.text == "\n" {
 			for _, u := range a.lx.toks[k+1:] {
@@ -123,8 +125,6 @@ func analyze(src string) *analysis {
 	return a
 }
 
-// controlWords start compound commands whose bodies this lexer does not
-// model (and in which && < > can mean something else, as in [[ a < b ]]).
 var controlWords = map[string]bool{
 	"if": true, "then": true, "else": true, "elif": true, "fi": true,
 	"for": true, "while": true, "until": true, "do": true, "done": true,
@@ -132,8 +132,6 @@ var controlWords = map[string]bool{
 	"coproc": true, "{": true, "}": true, "[[": true, "]]": true, "!": true,
 }
 
-// plan picks the commands to prefix. A non-empty reason means the whole
-// string is off limits.
 func (a *analysis) plan() ([]*segment, string) {
 	switch {
 	case strings.TrimSpace(a.src) == "":
@@ -149,7 +147,7 @@ func (a *analysis) plan() ([]*segment, string) {
 	cutStderr := false
 	for _, l := range a.sc.lists {
 		if l.bg {
-			continue // backgrounded: output interleaves, lx must not buffer it
+			continue
 		}
 		for _, p := range l.pipes {
 			first := a.bySimp[p.cmds[0]]
@@ -158,7 +156,7 @@ func (a *analysis) plan() ([]*segment, string) {
 			}
 			if cutsLines(p) && !a.stderrMerged(p) {
 				cutStderr = true
-				continue // lx prints stderr on stdout, where the head/tail would cut it
+				continue
 			}
 			ok := true
 			for k, c := range p.cmds {
@@ -174,6 +172,11 @@ func (a *analysis) plan() ([]*segment, string) {
 			if cw.expand || strings.ContainsAny(cw.val, "*?[") || !Supported(first.argv) {
 				continue
 			}
+
+			first.fit, first.fitCut = 0, engine.CutEither
+			if cutsLines(p) {
+				first.fit, first.fitCut = sliceFit(p)
+			}
 			out = append(out, first)
 		}
 	}
@@ -186,8 +189,6 @@ func (a *analysis) plan() ([]*segment, string) {
 	return out, ""
 }
 
-// cutsLines: a later stage of p is head or tail, which keeps some lines of
-// what reaches it.
 func cutsLines(p pipeline) bool {
 	for _, c := range p.cmds[1:] {
 		if len(c.words) > 0 {
@@ -200,10 +201,116 @@ func cutsLines(p pipeline) bool {
 	return false
 }
 
-// stderrMerged: the first command of p sends its stderr down the pipe too
-// (2>&1, or |&). Without that, stderr bypasses a head/tail after it, but
-// lx prints its view, stderr included, on stdout, where the cut would hide
-// errors the raw command shows (`make | tail -3`).
+func sliceFit(p pipeline) (int, engine.Cut) {
+	fit, cut, headers := 0, engine.CutEither, 0
+	var ends []engine.Cut
+	for _, c := range p.cmds[1:] {
+		st := stageLines(c)
+		if !st.stdin {
+			break
+		}
+		if st.n > 0 {
+			n := st.n
+			if st.end == engine.CutHead {
+				n = max(n-headers, 1)
+			}
+			if fit == 0 || n < fit {
+				fit = n
+			}
+			ends = append(ends, st.end)
+		}
+		if st.header {
+			headers++
+		}
+	}
+	for i, e := range ends {
+		if i == 0 {
+			cut = e
+		} else if e != cut {
+			cut = engine.CutEither
+		}
+	}
+	return fit, cut
+}
+
+type stage struct {
+	n      int
+	end    engine.Cut
+	stdin  bool
+	header bool
+}
+
+func stageLines(c *simple) stage {
+	if len(c.words) == 0 {
+		return stage{}
+	}
+	name := filepath.Base(c.words[0].val)
+	args := c.words[1:]
+	if name == "cat" {
+		for _, w := range args {
+			if w.val != "-" && !strings.HasPrefix(w.val, "-") {
+				return stage{}
+			}
+		}
+		return stage{stdin: true}
+	}
+	st := stage{n: 10, end: engine.CutHead, stdin: true}
+	if name == "tail" {
+		st.end = engine.CutTail
+	}
+	known := true
+	count := func(w token) {
+		v, ok := lineCount(w)
+		st.n, known = v, known && ok
+	}
+	for i := 0; i < len(args); i++ {
+		w := args[i]
+		a := w.val
+		switch {
+		case a == "-":
+		case a == "--":
+			if i+1 < len(args) {
+				return stage{}
+			}
+		case a == "-n" || a == "--lines":
+			if i+1 >= len(args) {
+				return stage{stdin: true, header: st.header}
+			}
+			i++
+			count(args[i])
+		case strings.HasPrefix(a, "--lines="):
+			count(token{val: a[len("--lines="):], expand: w.expand})
+		case strings.HasPrefix(a, "-n"):
+			count(token{val: a[2:], expand: w.expand})
+		case a == "-v" || a == "--verbose":
+			st.header = true
+		case a == "-q" || a == "--quiet" || a == "--silent":
+			st.header = false
+		case len(a) > 1 && a[0] == '-' && isDigits(a[1:]):
+			count(token{val: a[1:], expand: w.expand})
+		case strings.HasPrefix(a, "-"):
+			known = false
+			if a == "-c" || a == "--bytes" {
+				i++
+			}
+		default:
+			return stage{}
+		}
+	}
+	if !known {
+		st.n = 0
+	}
+	return st
+}
+
+func lineCount(w token) (int, bool) {
+	if w.expand || !isDigits(w.val) {
+		return 0, false
+	}
+	n, err := strconv.Atoi(w.val)
+	return n, err == nil && n >= 1
+}
+
 func (a *analysis) stderrMerged(p pipeline) bool {
 	c := p.cmds[0]
 	for _, r := range c.redirs {
@@ -214,8 +321,6 @@ func (a *analysis) stderrMerged(p pipeline) bool {
 	return strings.Contains(a.src[c.end:p.cmds[1].start], "|&")
 }
 
-// redirsOK allows only 2>&1: any other redirection sends output somewhere
-// other than the agent (or reads input from a file), so lx stays out.
 func redirsOK(c *simple) bool {
 	for _, r := range c.redirs {
 		if r.op.text != "2>&" || r.target.text != "1" {
@@ -225,9 +330,6 @@ func redirsOK(c *simple) bool {
 	return true
 }
 
-// downstreamOK: pipeline stages after the first may only be head, tail
-// (not following) or cat — consumers that just show a slice of lines, so
-// condensing upstream cannot change what they compute.
 func downstreamOK(c *simple) bool {
 	if len(c.words) == 0 {
 		return false
@@ -266,9 +368,6 @@ func vals(ts []token) []string {
 	return out
 }
 
-// peel skips env assignments and transparent wrappers to find the command
-// word. A wrapper whose options it cannot parse is left as the command word
-// (and is then simply not supported).
 func peel(c *simple) *segment {
 	s := &segment{simple: c, cmdIdx: -1}
 	w := c.words
@@ -281,7 +380,7 @@ func peel(c *simple) *segment {
 			continue
 		}
 		next, ok := i, false
-		switch t.text { // raw text: a quoted "time" is not the keyword
+		switch t.text {
 		case "time":
 			next, ok = i+1, true
 			for next < len(w) && (w[next].text == "-p" || w[next].text == "--") {
@@ -308,7 +407,7 @@ func peel(c *simple) *segment {
 				j++
 			}
 			if j < len(w) && strings.HasPrefix(w[j].val, "-") {
-				break // env -i, env -u X, env -S …: not transparent
+				break
 			}
 			next, ok = j, true
 		}
@@ -331,10 +430,16 @@ func (s *segment) addEnv(name, val string) {
 	if (name == "LX_RAW" || name == "LX_OFF") && val != "" && val != "0" {
 		s.lxRaw = true
 	}
+	if name == "LX_MODE" && !modeOK(val) {
+		s.lxRaw = true
+	}
 }
 
-// assignment recognizes NAME=value (and NAME+=value). The name must be
-// unquoted literal text; the value may be quoted.
+func modeOK(v string) bool {
+	_, ok := engine.ParseMode(v)
+	return v == "" || ok
+}
+
 func assignment(t token) (name, val string, ok bool) {
 	raw := t.text
 	i := 0
@@ -363,7 +468,6 @@ func assignment(t token) (name, val string, ok bool) {
 	return name, val, true
 }
 
-// skipNice parses nice's options: -n N, -nN, -N, --adjustment[=]N.
 func skipNice(w []token, i int) (int, bool) {
 	for i < len(w) {
 		a := w[i].val
@@ -384,7 +488,6 @@ func skipNice(w []token, i int) (int, bool) {
 	return i, true
 }
 
-// skipTimeout parses timeout's options and its mandatory DURATION.
 func skipTimeout(w []token, i int) (int, bool) {
 	for i < len(w) {
 		a := w[i].val

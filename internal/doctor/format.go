@@ -11,8 +11,6 @@ import (
 	"time"
 )
 
-// show abbreviates the home directory to ~ (messages only; fixes use full,
-// quoted paths).
 func (s *state) show(p string) string {
 	h := s.e.Home
 	if h == "" || h == "/" || p == "" {
@@ -91,8 +89,6 @@ func fmtBytes(n int64) string {
 	return strings.TrimSuffix(fmt.Sprintf("%.1f", float64(n)/div), ".0") + " " + unit
 }
 
-// stripEscapes removes terminal escape sequences (shell integrations print
-// them from interactive shells) and carriage returns.
 func stripEscapes(s string) string {
 	if !strings.ContainsAny(s, "\x1b\r") {
 		return s
@@ -102,7 +98,7 @@ func stripEscapes(s string) string {
 		c := s[i]
 		switch {
 		case c == '\r':
-		case c == 0x1b && i+1 < len(s) && s[i+1] == ']': // OSC … BEL or ST
+		case c == 0x1b && i+1 < len(s) && s[i+1] == ']':
 			j := i + 2
 			for j < len(s) && s[j] != 0x07 && !(s[j] == 0x1b && j+1 < len(s) && s[j+1] == '\\') {
 				j++
@@ -111,7 +107,7 @@ func stripEscapes(s string) string {
 				j++
 			}
 			i = j
-		case c == 0x1b && i+1 < len(s) && s[i+1] == '[': // CSI … final byte
+		case c == 0x1b && i+1 < len(s) && s[i+1] == '[':
 			j := i + 2
 			for j < len(s) && (s[j] < 0x40 || s[j] > 0x7e) {
 				j++
@@ -126,11 +122,9 @@ func stripEscapes(s string) string {
 	return b.String()
 }
 
-// matchesBash: a matcher that is not "Bash" may still be a regular
-// expression selecting it ("Bash|Edit", ".*").
 func matchesBash(m string) bool {
 	if reSimpleMatcher.MatchString(m) {
-		return false // a plain tool name matches exactly, and it is not "Bash"
+		return false
 	}
 	re, err := regexp.Compile(m)
 	return err == nil && re.MatchString("Bash")

@@ -131,8 +131,6 @@ func TestEmptyAndSingleLine(t *testing.T) {
 	}
 }
 
-// A failed build whose steps all look fine: nothing pass-like is added and
-// every error line survives.
 func TestFailedBuildLooksDone(t *testing.T) {
 	in := strings.Join([]string{
 		"#1 [internal] load build definition from Dockerfile", "#1 DONE 0.0s",
@@ -161,7 +159,7 @@ func TestTableParsing(t *testing.T) {
 	if !ok || len(cols) != 7 || cols[0].name != "CONTAINER ID" {
 		t.Fatalf("%v %v", cols, ok)
 	}
-	// Right-aligned size cells wider than their header.
+
 	tb, ok := parseTable([]string{
 		"IMAGE          ID             DISK USAGE   EXTRA",
 		"alpine:3.20    d9e853e87e55       13.7MB   U",
@@ -170,7 +168,7 @@ func TestTableParsing(t *testing.T) {
 	if !ok || tb.cells[0][2] != "13.7MB" || tb.cells[1][2] != "1234.5678MB" || tb.cells[1][3] != "" || tb.cells[0][3] != "U" {
 		t.Fatalf("%q %v", tb.cells, ok)
 	}
-	// Free text in the last column keeps its double spaces.
+
 	tb, ok = parseTable([]string{"LAST SEEN   TYPE      REASON    OBJECT    MESSAGE", "5m          Warning   BackOff   pod/x     a  b   c"})
 	if !ok || tb.cells[0][4] != "a  b   c" {
 		t.Fatalf("%q %v", tb.cells, ok)
@@ -244,7 +242,7 @@ func TestPull(t *testing.T) {
 }
 
 func TestLogsFallback(t *testing.T) {
-	// Not log-shaped (no timestamps/levels): only folded, errors intact.
+
 	var b strings.Builder
 	for i := range 30 {
 		fmt.Fprintf(&b, "processed batch %d of 30\n", i+10)
@@ -283,13 +281,13 @@ func TestDescribeKeepsErrorBlocks(t *testing.T) {
 		t.Fatal("bailed")
 	}
 	for _, want := range []string{"Status:       Pending", `30s (x2 over 1m)   kubelet  MountVolume.SetUp failed for volume "certs" : secret "api-tls" not found [×2 rows; others: 2m (x5 over 10m)]`,
-		"SecretName:  api-tls", // the events report a mount failure: Volumes explains it
+		"SecretName:  api-tls",
 		"[lx: not shown: QoS Class, Tolerations]"} {
 		if !strings.Contains(got, want) {
 			t.Errorf("missing %q in\n%s", want, got)
 		}
 	}
-	// Without a mount failure Volumes goes, unless it holds an error line.
+
 	noMount := strings.ReplaceAll(strings.ReplaceAll(in, "FailedMount", "BackOff    "), "MountVolume.SetUp failed for volume \"certs\" : secret \"api-tls\" not found", "Back-off restarting failed container")
 	if got, _ := engine.Find(c).Apply(c, noMount); strings.Contains(got, "SecretName:  api-tls") {
 		t.Errorf("Volumes kept without a mount failure:\n%s", got)

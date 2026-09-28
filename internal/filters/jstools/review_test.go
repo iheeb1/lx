@@ -1,8 +1,5 @@
 package jstools
 
-// Regression tests for the issues found in the adversarial review of this
-// package. Each test names the issue it pins down.
-
 import (
 	"fmt"
 	"strings"
@@ -14,10 +11,6 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// Issue: npm-ls declared itself Faithful (no receipt, nothing stored) for
-// `npm ls` without --all, but folded the deduped entries npm prints under
-// workspaces at depth 1 — a lossy view with no way back. Folding now
-// happens exactly when Faithful is false.
 func TestLsFoldsOnlyWhenNotFaithful(t *testing.T) {
 	fc, err := fixture.Read("testdata", "node", "npm-ls-workspaces")
 	if err != nil {
@@ -48,10 +41,6 @@ func TestLsFoldsOnlyWhenNotFaithful(t *testing.T) {
 	}
 }
 
-// Issue: summary lines listing packages had no cap. A single line longer
-// than the whole budget is dropped by engine.Budget, which then prints
-// nothing but "… 1 lines omitted …" (see the report): the whole view was
-// lost on huge installs.
 func TestInstallListsAreCapped(t *testing.T) {
 	var b strings.Builder
 	for i := 0; i < 20000; i++ {
@@ -91,17 +80,13 @@ func TestInstallListsAreCapped(t *testing.T) {
 	}
 }
 
-// Issue: when a build/lint/install failed (exit ≠ 0) but printed no error
-// line — killed by a signal, a post-step failing silently after the tool's
-// own success line — the condensed view read as a success. Such views now
-// end with an explicit note.
 func TestSilentFailureIsFlagged(t *testing.T) {
 	cases := []struct {
 		name     string
 		exit     int
 		argv     string
 		in       string
-		wantNote string // "" = no note expected
+		wantNote string
 	}{
 		{"webpack success line, exit 1", 1, "npx webpack",
 			"asset main.js 1 KiB [emitted] (name: main)\n./src/index.js 20 bytes [built] [code generated]\nwebpack 5.90.0 compiled successfully in 100 ms",
@@ -145,8 +130,6 @@ func TestSilentFailureIsFlagged(t *testing.T) {
 	}
 }
 
-// Issue: "[resolve trace: N lines hidden]" counted the trace lines that
-// were kept because they are error-class ("Failed to alias …").
 func TestWebpackResolveTraceCount(t *testing.T) {
 	in := strings.Join([]string{
 		"ERROR in ./src/broken.js 1:0-18",
@@ -163,15 +146,12 @@ func TestWebpackResolveTraceCount(t *testing.T) {
 	if !ok {
 		t.Fatal("bailed")
 	}
-	// 4 trace lines, 1 of them kept.
+
 	if !strings.Contains(got, "[resolve trace: 3 lines hidden]\n    Failed to alias") {
 		t.Errorf("got\n%s", got)
 	}
 }
 
-// Issue: `npm ci` with an out-of-sync lock file printed ~90 "npm error"
-// usage lines after the two that matter; they were all kept (1119 tokens).
-// The option list is now one counted line and nothing else is dropped.
 func TestEUsageFold(t *testing.T) {
 	fc, err := fixture.Read("testdata", "node", "npm-ci-out-of-sync")
 	if err != nil {
@@ -200,7 +180,7 @@ func TestEUsageFold(t *testing.T) {
 			t.Errorf("line outside the option list dropped: %q", ln)
 		}
 	}
-	// Without EUSAGE the same shape is not touched.
+
 	plain := strings.Replace(in, "npm error code EUSAGE", "npm error code EOTHER", 1)
 	got, _ = npmInstall{}.Apply(fc.Context(), plain)
 	if strings.Contains(got, "[npm usage text") || !strings.Contains(got, "npm error   --omit") {
@@ -208,9 +188,6 @@ func TestEUsageFold(t *testing.T) {
 	}
 }
 
-// Issue: --loglevel verbose/silly installs kept every "npm http fetch"
-// line (33k tokens on express), including those naming packages such as
-// http-errors. Successful requests are counted; failed ones stay.
 func TestVerboseInstallFold(t *testing.T) {
 	in := strings.Join([]string{
 		"npm verbose cli /usr/local/bin/node /usr/local/bin/npm",
@@ -233,7 +210,7 @@ func TestVerboseInstallFold(t *testing.T) {
 		"[npm http: 3 fetch/cache lines (status 2xx/304) hidden]",
 		"npm http fetch GET 404 https://registry.npmjs.org/nope 50ms (cache skip)",
 		"[npm silly/timing: 4 lines hidden]",
-		"npm silly audit report error: fetch failed", // error-class: kept
+		"npm silly audit report error: fetch failed",
 		"npm verbose cli /usr/local/bin/node /usr/local/bin/npm",
 		"added 5 packages in 693ms",
 	} {
@@ -246,9 +223,6 @@ func TestVerboseInstallFold(t *testing.T) {
 	}
 }
 
-// Issue: a table row with an unexpected number of columns ended the
-// parsed table early; the rows after it were kept as they were, under a
-// note claiming "every row" had the hidden values.
 func TestOutdatedPartialTableBails(t *testing.T) {
 	in := "Package  Current  Wanted  Latest  Location              Depended by\n" +
 		"lodash   4.17.20  4.17.21  4.17.21  node_modules/lodash  app\n" +
@@ -257,16 +231,13 @@ func TestOutdatedPartialTableBails(t *testing.T) {
 	if got, ok := (npmOutdated{}).Apply(ctx(1, "npm", "outdated"), in); ok {
 		t.Errorf("claimed a table it did not fully parse:\n%s", got)
 	}
-	// Trailing npm lines are fine.
+
 	ok2 := in[:strings.Index(in, "odd")] + "npm warn config production Use `--omit=dev` instead."
 	if got, ok := (npmOutdated{}).Apply(ctx(1, "npm", "outdated"), ok2); !ok || !strings.Contains(got, "npm warn config") {
 		t.Errorf("ok=%v\n%s", ok, got)
 	}
 }
 
-// Issue: deprecation groups were emitted kept-first, hidden-last, out of
-// the order npm printed them; a lone hidden message was replaced by a
-// longer "[1 deprecated package, messages hidden]" note.
 func TestDeprecationOrder(t *testing.T) {
 	in := "npm warn deprecated a@1.0.0: use b\n" +
 		"npm warn deprecated c@1.0.0: has a security hole\n" +
@@ -281,8 +252,6 @@ func TestDeprecationOrder(t *testing.T) {
 	}
 }
 
-// False-pass hunt: failures in unusual places stay visible and keep every
-// error line, whatever the filter reformats around them.
 func TestFailuresInUnusualPlaces(t *testing.T) {
 	cases := []struct {
 		name, argv string
@@ -326,7 +295,7 @@ func TestFailuresInUnusualPlaces(t *testing.T) {
 		}
 		got, ok := f.Apply(c, tc.in)
 		if !ok {
-			continue // the generic reducer and the guard take over
+			continue
 		}
 		for _, w := range tc.want {
 			if !strings.Contains(got, w) {
@@ -344,7 +313,6 @@ func TestFailuresInUnusualPlaces(t *testing.T) {
 	}
 }
 
-// Variants: other versions and flags of the same tools.
 func TestVariants(t *testing.T) {
 	cases := []struct {
 		name, argv string
@@ -367,8 +335,7 @@ func TestVariants(t *testing.T) {
 			"<text>\n  1:1  error  Unexpected var, use let or const instead  no-var\n\n✖ 1 problem (1 error, 0 warnings)",
 			true, []string{"<text>", "1:1  error  Unexpected var"}},
 		{"eslint compact format is not claimed", "eslint -f compact .", 1, "", false, nil},
-		// Issue: "npm ERR!\b" never matched ("!" then a space is no word
-		// boundary), so npm ≤ 8 failures were not recognized.
+
 		{"npm 6 ERR! lines", "npm install", 1,
 			"npm ERR! code E404\nnpm ERR! 404 Not Found - GET https://registry.npmjs.org/nope - Not found\n\nnpm ERR! A complete log of this run can be found in:\nnpm ERR!     /home/user/.npm/_logs/2020-01-01T00_00_00_000Z-debug.log",
 			true, []string{"npm ERR! code E404", "npm ERR!     /home/user/.npm/_logs/2020-01-01T00_00_00_000Z-debug.log"}},
@@ -401,9 +368,6 @@ func TestVariants(t *testing.T) {
 	}
 }
 
-// TestApplyFast: every filter handles 50k lines well within 200 ms of CPU
-// on an idle machine (measured: tsc ≈40 ms, eslint ≈100 ms, the others
-// less); the bound here is loose so a loaded CI machine does not flake.
 func TestApplyFast(t *testing.T) {
 	gen := func(n int, line func(i int) string) string {
 		var b strings.Builder

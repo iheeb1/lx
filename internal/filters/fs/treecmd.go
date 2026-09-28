@@ -8,12 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// treeCmd re-renders `tree` output in the compact path-tree format: every
-// directory once as "dir/", its files joined on the lines below, heavy
-// directories folded to a counted line, and depth / per-directory caps when
-// the listing is large. tree's own report line ("12 directories, 80 files")
-// is kept verbatim, last; "[error opening dir]" entries are kept verbatim,
-// first.
 type treeCmd struct{}
 
 func (treeCmd) Name() string    { return "tree" }
@@ -34,7 +28,7 @@ func (treeCmd) Match(c *engine.Context) bool {
 			continue
 		}
 		if strings.HasPrefix(a, "-") && strings.ContainsAny(a[1:], "JXHpugshDiQNqoRT") {
-			// JSON/XML/HTML, metadata columns, no indentation, output file.
+
 			return false
 		}
 	}
@@ -48,7 +42,6 @@ type treeEntry struct {
 	name  string
 }
 
-// treeUnit is one 4-rune indentation step; NBSP is normalized to a space.
 func treeUnit(r []rune) (kind byte, ok bool) {
 	if len(r) < 4 {
 		return 0, false
@@ -57,9 +50,9 @@ func treeUnit(r []rune) (kind byte, ok bool) {
 	u = strings.ReplaceAll(u, " ", " ")
 	switch u {
 	case "│   ", "|   ", "    ":
-		return 'c', true // continuation
+		return 'c', true
 	case "├── ", "└── ", "|-- ", "`-- ":
-		return 'e', true // entry marker
+		return 'e', true
 	}
 	return 0, false
 }
@@ -86,7 +79,7 @@ func (t treeCmd) Apply(c *engine.Context, out string) (string, bool) {
 			fullPath = fullPath || strings.Contains(a, "f")
 			dirsOnly = dirsOnly || strings.Contains(a, "d")
 			if last := a[len(a)-1]; len(a) >= 2 && strings.IndexByte("LPI", last) >= 0 {
-				i++ // -L 2, -I 'node_modules|dist': the value is the next word
+				i++
 			}
 		default:
 			operands = append(operands, a)
@@ -95,12 +88,12 @@ func (t treeCmd) Apply(c *engine.Context, out string) (string, bool) {
 
 	var notes, report []string
 	var paths []string
-	var stack []string // names of the current ancestors, stack[0] = root
+	var stack []string
 	var entries []treeEntry
 	root := ""
 	roots := 0
 	flush := func() bool {
-		// Directories are the entries followed by a deeper one.
+
 		for i, en := range entries {
 			isDir := dirsOnly || i+1 < len(entries) && entries[i+1].depth > en.depth
 			name := en.name
@@ -115,7 +108,7 @@ func (t treeCmd) Apply(c *engine.Context, out string) (string, bool) {
 			seg := name
 			if isDir {
 				if i := strings.Index(seg, " -> "); i > 0 {
-					seg = seg[:i] // followed symlink: its children live under the link name
+					seg = seg[:i]
 				}
 				seg = strings.TrimSuffix(seg, "/")
 			}
@@ -166,7 +159,7 @@ func (t treeCmd) Apply(c *engine.Context, out string) (string, bool) {
 			if pos > 0 {
 				return "", false
 			}
-			// A root line starts a new tree.
+
 			if !flush() {
 				return "", false
 			}
@@ -190,10 +183,7 @@ func (t treeCmd) Apply(c *engine.Context, out string) (string, bool) {
 		return "", false
 	}
 	pt := NewPathTree(paths, operands)
-	// tree marks no directory (unless -F), so a directory is known only
-	// by the entries below it. A leaf directory (empty, past -L, not
-	// followed) would read as a file: compare with tree's own count and,
-	// when some are unaccounted for, say so and count "entries".
+
 	var hdr []string
 	if !dirsOnly {
 		inferred := 0
@@ -232,8 +222,6 @@ func (t treeCmd) Apply(c *engine.Context, out string) (string, bool) {
 	return b.String(), true
 }
 
-// reportDirs returns the directory count of tree's last report line, or -1
-// without one (--noreport).
 func reportDirs(report []string) int {
 	if len(report) == 0 {
 		return -1

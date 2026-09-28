@@ -14,8 +14,6 @@ import (
 	"github.com/iheeb1/lx/internal/hook"
 )
 
-// ---- hook -----------------------------------------------------------------
-
 func (s *state) checkHook() {
 	for _, f := range s.files {
 		if f.DisableAllHooks {
@@ -38,7 +36,6 @@ func (s *state) checkHook() {
 	}
 	switch n := len(verified); {
 	case n == 0 && len(s.hooks) > 0:
-		// Only unverifiable lx hooks: reported above.
 	case n == 0 && len(s.offBash) > 0:
 		h := s.offBash[0]
 		s.add("hook", Fail, fmt.Sprintf("the lx hook in %s has matcher %q, which never selects the Bash tool",
@@ -61,7 +58,6 @@ func (s *state) checkHook() {
 		msg := fmt.Sprintf("installed %d times (%s) with different commands: Claude Code runs each of them on every Bash call",
 			n, s.hookPlaces(verified))
 		if same {
-			// Claude Code deduplicates identical hook commands.
 			msg = fmt.Sprintf("installed %d times (%s): the commands are identical, so Claude Code runs it once, "+
 				"but the copies drift apart when one is reinstalled", n, s.hookPlaces(verified))
 		}
@@ -70,8 +66,6 @@ func (s *state) checkHook() {
 	s.checkManagedOnly(verified)
 }
 
-// checkManagedOnly: with "allowManagedHooksOnly" in the managed settings,
-// Claude Code ignores user and project hooks.
 func (s *state) checkManagedOnly(verified []*foundHook) {
 	var managed *settingsFile
 	for _, f := range s.files {
@@ -92,7 +86,6 @@ func (s *state) checkManagedOnly(verified []*foundHook) {
 		"ask your administrator to add the lx hook to the managed settings")
 }
 
-// verified lists the lx hooks doctor can check and run.
 func (s *state) verified() []*foundHook {
 	var out []*foundHook
 	for _, h := range s.hooks {
@@ -124,8 +117,6 @@ func (s *state) whereChecked() string {
 	return joinAnd(dirs)
 }
 
-// ignoredDefaultHook notes an lx hook in ~/.claude/settings.json that
-// Claude Code does not read because the config dir is elsewhere.
 func (s *state) ignoredDefaultHook() string {
 	if s.e.Home == "" || s.e.ConfigDir == "" {
 		return ""
@@ -162,7 +153,6 @@ func (s *state) hookPlaces(hooks []*foundHook) string {
 	return strings.Join(out, ", ")
 }
 
-// userSettings is ConfigDir/settings.json, the file `lx init` edits.
 func (s *state) userSettings() *settingsFile {
 	for _, f := range s.files {
 		if f.Scope == "user" && !f.Local {
@@ -172,8 +162,6 @@ func (s *state) userSettings() *settingsFile {
 	return nil
 }
 
-// initRefuses reports whether `lx init` would refuse to write f (symlinked
-// file or directory).
 func initRefuses(f *settingsFile) bool {
 	return f.Symlink != "" || isSymlink(filepath.Dir(f.Path)) || isSymlink(f.Path)
 }
@@ -210,8 +198,6 @@ func (s *state) installFix() string {
 	return "lx init"
 }
 
-// initCmd is the `lx init` form that edits f, or "" when init cannot
-// (local, managed or symlinked files).
 func (s *state) initCmd(f *settingsFile, flags string) string {
 	if f.Local || initRefuses(f) {
 		return ""
@@ -229,8 +215,6 @@ func (s *state) initCmd(f *settingsFile, flags string) string {
 	return ""
 }
 
-// editFix is fix, unless f is the organization's managed settings file,
-// which the user cannot change.
 func (s *state) editFix(f *settingsFile, fix string) string {
 	if f.Scope == "managed" {
 		return "this comes from your organization's managed settings (" + f.Path + "); ask their administrator"
@@ -263,7 +247,7 @@ func (s *state) dupFix(hooks []*foundHook) string {
 		flags := ""
 		for _, h := range hooks {
 			if h.cmd.readOnly {
-				flags = " --readonly" // reinstalling must not drop it
+				flags = " --readonly"
 			}
 		}
 		if c := s.initCmd(f, " --uninstall"); c != "" {
@@ -271,7 +255,7 @@ func (s *state) dupFix(hooks []*foundHook) string {
 		}
 		return "keep one lx hook entry in " + s.show(f.Path)
 	}
-	// Project copies first: the user-level hook covers every project.
+
 	var fixes []string
 	for _, scope := range []string{"project", "user", "managed"} {
 		for _, f := range files {
@@ -283,15 +267,12 @@ func (s *state) dupFix(hooks []*foundHook) string {
 	return "keep one: " + strings.Join(fixes, "  or  ")
 }
 
-// hookFixFor is how to point hook h at this binary.
 func (s *state) hookFixFor(h *foundHook) string {
 	if c := s.initCmd(h.entry.File, ""); c != "" && s.e.Executable != "" {
 		return c
 	}
 	return s.replaceFix(h.entry.File)
 }
-
-// ---- hook-binary ----------------------------------------------------------
 
 func (s *state) checkHookBinary() {
 	seen := map[string]bool{}
@@ -329,27 +310,13 @@ func (s *state) isSelf(p string) bool {
 	return p != "" && s.e.Executable != "" && (filepath.Clean(p) == filepath.Clean(s.e.Executable) || sameFile(p, s.e.Executable))
 }
 
-// canRun reports whether doctor may execute p (see runBlock).
 func (s *state) canRun(p string) bool { return s.runBlock(p) == "" }
 
-// Reasons runBlock gives.
 const (
 	blockInside  = "is inside this project"
 	blockProject = "is named only by this project's settings"
 )
 
-// runBlock says why doctor must not execute p, or "" when it may. A cloned
-// repository's settings or files must never get code run by `lx doctor`:
-//
-//   - this very binary may always run;
-//   - nothing inside the project may: the project directory, or the git
-//     work tree holding it or the working directory (a repository can ship
-//     a nested .claude directory, so the project directory alone is not
-//     its whole extent);
-//   - elsewhere, a program runs only when something other than a
-//     project's settings vouches for it: the user's or managed settings,
-//     a PATH lookup, or the login shell's `command -v lx`. A path that only
-//     a project's settings name is never run, wherever it points.
 func (s *state) runBlock(p string) string {
 	if p == "" {
 		return "is unknown"
@@ -368,10 +335,6 @@ func (s *state) runBlock(p string) string {
 	return ""
 }
 
-// zones are the directories whose programs doctor never runs: the project
-// and the git work trees holding it or the working directory. A zone that
-// is / or holds the home directory is dropped (it would hold everything,
-// including the user's own lx).
 func (s *state) zones() []string {
 	if s.zoneList != nil {
 		return *s.zoneList
@@ -393,8 +356,6 @@ func (s *state) zones() []string {
 	return out
 }
 
-// gitRoot is the nearest ancestor of dir (dir included) holding a .git
-// entry, or "".
 func gitRoot(dir string) string {
 	if dir == "" || !filepath.IsAbs(dir) {
 		return ""
@@ -411,9 +372,6 @@ func gitRoot(dir string) string {
 	}
 }
 
-// vouched reports whether something besides a project's settings names p:
-// a hook in the user's or managed settings, a PATH lookup, or the login
-// shell.
 func (s *state) vouched(p string) bool {
 	for _, list := range [][]*foundHook{s.hooks, s.offBash} {
 		for _, h := range list {
@@ -432,7 +390,6 @@ func samePath(a, b string) bool {
 	return filepath.Clean(a) == filepath.Clean(b) || sameFile(a, b)
 }
 
-// inside reports whether p is dir or below it (symlinks resolved).
 func inside(p, dir string) bool {
 	rp, rd := realPath(p), realPath(dir)
 	rel, err := filepath.Rel(rd, rp)
@@ -446,14 +403,13 @@ func realPath(p string) string {
 	if r, err := filepath.EvalSymlinks(p); err == nil {
 		return r
 	}
-	// Resolve the parent when the leaf does not exist.
+
 	if r, err := filepath.EvalSymlinks(filepath.Dir(p)); err == nil {
 		return filepath.Join(r, filepath.Base(p))
 	}
 	return filepath.Clean(p)
 }
 
-// versionOf runs `<p> version` (2 s) and returns its first line.
 func (s *state) versionOf(p string) string {
 	if s.isSelf(p) {
 		return s.version()
@@ -482,8 +438,6 @@ func (s *state) versionOf(p string) string {
 	s.versions[p] = v
 	return v
 }
-
-// ---- hook-run -------------------------------------------------------------
 
 func (s *state) checkHookRun() {
 	seen := map[string]bool{}
@@ -525,10 +479,6 @@ func (s *state) payload() string {
 
 var errTimeout = errors.New("timed out")
 
-// runHook runs a verified hook as Claude Code would, except that doctor
-// execs the argv it verified (the resolved binary and its words) instead of
-// handing the settings string to a shell: no shell quirk can make the
-// string mean more than what doctor checked.
 func (s *state) runHook(h *foundHook, payload string) (string, time.Duration, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), hookTimeout)
 	defer cancel()
@@ -570,7 +520,6 @@ func (s *state) selfTest(h *foundHook) {
 	out, dt, err := s.runHook(h, payload)
 	rewritten, bin, problem := s.parseHookOutput(out)
 	if err == nil && problem == "" && dt > slowHook {
-		// The first run may pay for a cold start; judge the faster of two.
 		if out2, dt2, err2 := s.runHook(h, payload); err2 == nil && dt2 < dt {
 			if r2, b2, p2 := s.parseHookOutput(out2); p2 == "" {
 				rewritten, bin, dt = r2, b2, dt2
@@ -596,8 +545,6 @@ func (s *state) selfTest(h *foundHook) {
 		}
 		msg := fmt.Sprintf("`%s` → `%s` in %s", probeCmd, rewritten, fmtLatency(dt))
 		if bin != "lx" && !samePath(bin, h.path) {
-			// A --prefix naming another program: every rewritten command
-			// the agent runs goes through it, not through the hook's lx.
 			what := "not the hook's lx " + s.show(h.path)
 			if s.runBlock(bin) == blockInside {
 				what = "a program inside this project, not the hook's lx " + s.show(h.path)
@@ -619,9 +566,6 @@ func (s *state) selfTest(h *foundHook) {
 	}
 }
 
-// parseHookOutput checks the hook's answer: a JSON object whose
-// hookSpecificOutput.updatedInput.command is `<lx> git status`.
-// bin is the program the rewrite calls: "lx" or an absolute path.
 func (s *state) parseHookOutput(out string) (rewritten, bin, problem string) {
 	out = strings.TrimSpace(out)
 	if out == "" {
@@ -662,7 +606,6 @@ func (s *state) parseHookOutput(out string) (rewritten, bin, problem string) {
 	return cmd, w[0], ""
 }
 
-// ruleFor returns the user's deny rule matching cmd, if any.
 func (s *state) ruleFor(cmd string) string {
 	var r hook.Rules
 	for _, f := range s.files {
@@ -679,7 +622,6 @@ func (s *state) ruleFor(cmd string) string {
 	return "?"
 }
 
-// hookOff mirrors the hook's own LX_HOOK test.
 func hookOff(v string) bool {
 	switch strings.ToLower(v) {
 	case "0", "false", "off", "no":
@@ -695,8 +637,6 @@ func (s *state) hookOffInProcess() string {
 	return ""
 }
 
-// settingsEnv returns the first settings file whose env sets name to a
-// value bad reports true for.
 func (s *state) settingsEnv(name string, bad func(string) bool) (*settingsFile, string) {
 	for _, f := range s.files {
 		for _, v := range f.Env {

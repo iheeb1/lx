@@ -34,10 +34,10 @@ func TestScanFixtures(t *testing.T) {
 			t.Errorf("%s = %d, want %d", name, got, want)
 		}
 	}
-	check("Files", r.Files, 3) // notes.txt is not a transcript
+	check("Files", r.Files, 3)
 	check("BashCalls", r.BashCalls, 8)
 	check("Measured", r.Measured, 7)
-	check("MissingResults", r.MissingResults, 1) // npm run dev never returned
+	check("MissingResults", r.MissingResults, 1)
 	check("AlreadyLx", r.AlreadyLx, 1)
 	check("Candidates", r.Candidates, 5)
 	check("BadLines", r.BadLines, 1)
@@ -68,8 +68,7 @@ func TestScanFixtures(t *testing.T) {
 			t.Errorf("Top not sorted by saved tokens: %+v", r.Top)
 		}
 	}
-	// git status output came from toolUseResult (150 lines), not the
-	// truncated tool_result text ("TRUNCATED").
+
 	if top["git status"].Tokens < 500 {
 		t.Errorf("git status measured %d tokens; toolUseResult not preferred", top["git status"].Tokens)
 	}
@@ -78,7 +77,6 @@ func TestScanFixtures(t *testing.T) {
 	}
 }
 
-// Reports carry command keys and numbers only: no outputs, no arguments.
 func TestScanPrivacy(t *testing.T) {
 	r, err := Scan(Options{Dirs: []string{fixtures}})
 	if err != nil {
@@ -135,7 +133,7 @@ func TestScanMissingDir(t *testing.T) {
 func TestScanHugeLines(t *testing.T) {
 	dir := t.TempDir()
 	var big strings.Builder
-	for big.Len() < 3<<20 { // 3 MiB of output on one JSON line (> the 1 MiB read buffer)
+	for big.Len() < 3<<20 {
 		big.WriteString("ok  \texample.com/app/pkg 0.010s\n")
 	}
 	var f bytes.Buffer
@@ -156,7 +154,7 @@ func TestScanHugeLines(t *testing.T) {
 	use("t1", "go test ./...")
 	res("t1", big.String())
 	use("t2", "go vet ./...")
-	res("t2", big.String()+big.String()) // over the cap below: skipped
+	res("t2", big.String()+big.String())
 	use("t3", "go build ./...")
 	res("t3", "ok\n")
 	if err := os.WriteFile(filepath.Join(dir, "big.jsonl"), f.Bytes(), 0o600); err != nil {
@@ -178,7 +176,6 @@ func TestScanHugeLines(t *testing.T) {
 	}
 }
 
-// A NUL in an output once hung the whole scan (tokens.Count loops on it).
 func TestScanNULOutput(t *testing.T) {
 	dir := t.TempDir()
 	lines := `{"type":"assistant","message":{"content":[{"type":"tool_use","id":"n1","name":"Bash","input":{"command":"ls -la"}}]}}
@@ -308,8 +305,7 @@ func TestTextLayout(t *testing.T) {
 			t.Errorf("text missing %q:\n%s", s, out)
 		}
 	}
-	// Columns line up: every table row starts with two spaces and the
-	// numeric columns end at the same offset.
+
 	lines := strings.Split(out, "\n")
 	var rows []string
 	for _, l := range lines {
@@ -344,9 +340,6 @@ func copyTree(t *testing.T, src, dst string) {
 	}
 }
 
-// Command names are printed on the user's terminal: control characters
-// (escape sequences), other non-printing runes and invalid UTF-8 become
-// '?', and a very long name is cut.
 func TestKeyPrintable(t *testing.T) {
 	for argv0, want := range map[string]string{
 		"./scripts/build.sh":        "build.sh",

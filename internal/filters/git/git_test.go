@@ -2,7 +2,6 @@ package git
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/testenv"
 	"regexp"
 	"strings"
 	"testing"
@@ -10,6 +9,7 @@ import (
 
 	"github.com/iheeb1/lx/internal/engine"
 	"github.com/iheeb1/lx/internal/fixture"
+	"github.com/iheeb1/lx/internal/testenv"
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
@@ -26,19 +26,17 @@ func find(t *testing.T, c *engine.Context) engine.Filter {
 	return f
 }
 
-// ---- matching --------------------------------------------------------------
-
 func TestMatch(t *testing.T) {
 	cases := []struct {
 		argv string
-		want string // "" = no git filter
+		want string
 	}{
 		{"git log", "git-log"},
 		{"/usr/local/bin/git log --stat", "git-log"},
 		{"git.exe log", "git-log"},
 		{"git -C /repo -c color.ui=always --no-pager log -p -n 3", "git-log"},
-		{"git log --pretty=oneline", "git-log"}, // matched, printed as is
-		{"git log --format=%H", ""},             // machine-readable
+		{"git log --pretty=oneline", "git-log"},
+		{"git log --format=%H", ""},
 		{"git log --pretty=format:%h", ""},
 		{"git show HEAD", "git-show"},
 		{"git show HEAD:README.md", "git-show"},
@@ -50,17 +48,17 @@ func TestMatch(t *testing.T) {
 		{"git stash list", "git-stash"},
 		{"git blame gin.go", "git-blame"},
 		{"git blame --porcelain gin.go", ""},
-		{"git blame -p gin.go", ""}, // porcelain kept byte for byte (see blameMachineFlags)
+		{"git blame -p gin.go", ""},
 		{"git blame --line-porcelain gin.go", ""},
 		{"git branch -a", "git-branch"},
 		{"git branch -r --sort=-committerdate", "git-branch"},
 		{"git branch -d old", ""},
-		{"git branch -vv", "git-list"}, // kept as git prints it (see listFilter)
+		{"git branch -vv", "git-list"},
 		{"git branch -av", "git-list"},
 		{"git branch -D old", ""},
 		{"git branch -dr origin/x", ""},
 		{"git branch -m old new", ""},
-		{"git branch new-feature", "git-branch"}, // prints nothing, or an error the generic path keeps
+		{"git branch new-feature", "git-branch"},
 		{"git push origin main", "git-sync"},
 		{"git pull --rebase", "git-sync"},
 		{"git fetch --all --prune", "git-sync"},
@@ -71,13 +69,13 @@ func TestMatch(t *testing.T) {
 		{"git tag", "git-tag"},
 		{"git tag -n", "git-list"},
 		{"git tag -n5 -l 'v1*'", "git-list"},
-		{"git tag -a v1 -m x", "git-tag"}, // prints nothing or an error: the filter bails
+		{"git tag -a v1 -m x", "git-tag"},
 		{"git tag -d v1", ""},
 		{"git remote -v", "git-remote"},
 		{"git remote add origin x", ""},
 		{"git status", "git-status"},
-		{"git status -sb", ""}, // short format, combined flags: machine-readable, passed through
-		{"git status -s", ""},  // machine-readable
+		{"git status -sb", ""},
+		{"git status -s", ""},
 		{"git status -v", "git-status"},
 		{"git reflog", "git-list"},
 		{"git reflog show feature", "git-list"},
@@ -110,7 +108,6 @@ func TestMatch(t *testing.T) {
 	}
 }
 
-// allFilters pairs each git filter with an argv that selects it.
 var allFilters = [][]string{
 	{"git", "log"}, {"git", "log", "--stat"}, {"git", "log", "-p"}, {"git", "show"}, {"git", "diff"},
 	{"git", "blame", "f.go"}, {"git", "branch", "-a"}, {"git", "push"}, {"git", "pull"}, {"git", "fetch"},
@@ -118,8 +115,6 @@ var allFilters = [][]string{
 	{"git", "status"}, {"git", "stash", "list"}, {"git", "stash", "show", "-p"},
 	{"git", "reflog"}, {"git", "branch", "-vv"}, {"git", "tag", "-n"},
 }
-
-// ---- edge cases common to every filter -----------------------------------
 
 func TestEmptyAndOneLine(t *testing.T) {
 	for _, argv := range allFilters {
@@ -151,7 +146,7 @@ func TestUnknownOutputBails(t *testing.T) {
 		{[]string{"git", "diff"}, "Usage: git diff [<options>]"},
 		{[]string{"git", "blame", "x"}, "4b68a5f1 x.go 12 some other layout"},
 		{[]string{"git", "branch"}, "* main\n  dev  abc1234 [origin/dev] subject"},
-		// Localized git: nothing positively recognized.
+
 		{[]string{"git", "merge", "topic"}, "Fusion automatique de a.go\nCONFLIT (contenu) : Conflit de fusion dans a.go\nLa fusion automatique a échoué ; réglez les conflits et validez le résultat."},
 		{[]string{"git", "pull"}, "Mise à jour 1a2b3c4..5d6e7f8\nAvance rapide\n a.go | 2 +-\n 1 fichier modifié, 1 insertion(+), 1 suppression(-)"},
 		{[]string{"git", "commit"}, "Sur la branche main\nrien à valider, la copie de travail est propre"},
@@ -169,8 +164,6 @@ func TestUnknownOutputBails(t *testing.T) {
 
 var passWordRe = regexp.MustCompile(`(?i)\b(?:ok|pass(?:ed)?|success(?:ful(?:ly)?)?|clean|up.to.date|done|no (?:errors|changes|conflicts))\b`)
 
-// TestFailingRunsAddNoVerdict: with exit≠0 no filter adds pass-like words;
-// the output never claims more success than the tool printed.
 func TestFailingRunsAddNoVerdict(t *testing.T) {
 	cases := []struct {
 		argv []string
@@ -188,7 +181,7 @@ func TestFailingRunsAddNoVerdict(t *testing.T) {
 		f := find(t, c)
 		got, ok := f.Apply(c, tc.out)
 		if !ok {
-			continue // generic path: its own tests cover it
+			continue
 		}
 		if n, m := len(passWordRe.FindAllString(got, -1)), len(passWordRe.FindAllString(tc.out, -1)); n > m {
 			t.Errorf("%s added pass-like words (%d > %d):\n%s", f.Name(), n, m, got)
@@ -199,14 +192,12 @@ func TestFailingRunsAddNoVerdict(t *testing.T) {
 	}
 }
 
-// ---- huge outputs ------------------------------------------------------------
-
 func TestHugeOutputs(t *testing.T) {
 	type gen struct {
 		name string
 		argv []string
 		out  func() string
-		max  int // output token cap (0 = no check)
+		max  int
 	}
 	var b strings.Builder
 	gens := []gen{
@@ -318,8 +309,6 @@ func TestHugeLogCountsEveryCommit(t *testing.T) {
 	}
 }
 
-// ---- diffstat ----------------------------------------------------------------
-
 func TestParseStatRow(t *testing.T) {
 	cases := []struct{ in, want string }{
 		{" context.go      |  3 +--", "+1 -2"},
@@ -358,7 +347,7 @@ func TestResolveStat(t *testing.T) {
 	if got := rows[1].desc(); got != "+34 -4" {
 		t.Errorf("resolved %q", got)
 	}
-	// Two unknown rows: nothing can be derived.
+
 	a, _ := parseStatRow(" a.go | 38 ++++++++++++++++++++++++++++++++----")
 	b, _ := parseStatRow(" b.go | 38 ++++++++++++++++++++++++++++++++----")
 	two := []statRow{a, b}
@@ -366,7 +355,7 @@ func TestResolveStat(t *testing.T) {
 	if two[0].exact || two[1].exact {
 		t.Error("guessed a split")
 	}
-	// A summary that does not account for the rows is ignored.
+
 	one := []statRow{a}
 	resolveStat(one, " 3 files changed, 34 insertions(+), 4 deletions(-)")
 	if one[0].exact {
@@ -388,8 +377,6 @@ func TestRenderStatGroupsByDir(t *testing.T) {
 		t.Errorf("got  %s\nwant %s", got, want)
 	}
 }
-
-// ---- diff ----------------------------------------------------------------------
 
 func applyDiff(t *testing.T, in string) string {
 	t.Helper()
@@ -482,9 +469,6 @@ func TestDiffKeepsForeignLines(t *testing.T) {
 }
 
 func TestDiffHunkCounting(t *testing.T) {
-	// Blank context lines lost their space to normalization; the counts in
-	// the header still place every line, and the text after the hunk is
-	// not swallowed.
 	in := "diff --git a/a b/a\n--- a/a\n+++ b/a\n@@ -1,4 +1,4 @@\n a\n\n-b\n+c\n\nnot part of the hunk"
 	got := applyDiff(t, in)
 	if !strings.HasSuffix(got, "+c\n\nnot part of the hunk") {
@@ -494,7 +478,7 @@ func TestDiffHunkCounting(t *testing.T) {
 	if h := d.parts[0].file.hunks[0]; len(h.body) != 5 || h.adds != 1 || h.dels != 1 {
 		t.Errorf("hunk body %q adds %d dels %d", h.body, h.adds, h.dels)
 	}
-	// A hunk cut short by the end of the output.
+
 	short := "diff --git a/a b/a\n@@ -1,10 +1,10 @@\n a\n-b"
 	if got := applyDiff(t, short); got != short {
 		t.Errorf("truncated hunk changed:\n%s", got)
@@ -578,8 +562,7 @@ func TestDiffVerbatimFlags(t *testing.T) {
 
 func TestDiffLevelsKeepFileList(t *testing.T) {
 	var b strings.Builder
-	// A deleted file, a large new file and many modified files: well over
-	// budget, so every level applies; every file must still be named.
+
 	b.WriteString("diff --git a/gone.txt b/gone.txt\ndeleted file mode 100644\nindex 1..0\n--- a/gone.txt\n+++ /dev/null\n@@ -1,300 +0,0 @@\n")
 	for i := 0; i < 300; i++ {
 		fmt.Fprintf(&b, "-deleted line %d with some words in it\n", i)
@@ -664,7 +647,6 @@ func TestLockfileSummaries(t *testing.T) {
 +      "version": "9.9.10"`, []string{"changed (1): a 1.0.0→2.0.0", "(+2 version lines outside the shown context)"}},
 	}
 	for _, tc := range cases {
-		// Pad the hunk with context so it is over the summary threshold.
 		body := tc.body
 		n := strings.Count(body, "\n") + 1
 		pad := strings.Repeat(" padding line that keeps the lockfile hunk large enough to summarize\n", 40)
@@ -683,8 +665,6 @@ func TestLockfileSummaries(t *testing.T) {
 	}
 }
 
-// growHunk adds k context lines to the last hunk of body (header counts
-// included) so that the hunk parser consumes the padding that follows.
 func growHunk(body string, k int) string {
 	lines := strings.Split(body, "\n")
 	last := -1
@@ -699,7 +679,7 @@ func growHunk(body string, k int) string {
 	fmt.Sscan(m[2], &b)
 	fmt.Sscan(m[3], &c)
 	fmt.Sscan(m[4], &d)
-	// Recount the body so that the header matches it exactly.
+
 	b, d = 0, 0
 	for _, ln := range lines[last+1:] {
 		switch {
@@ -732,8 +712,6 @@ func TestGeneratedFileSummary(t *testing.T) {
 		t.Errorf("got\n%s", got)
 	}
 }
-
-// ---- log -----------------------------------------------------------------------
 
 func TestLogRendering(t *testing.T) {
 	in := `commit 1111111aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa (HEAD -> main, origin/main)
@@ -783,7 +761,7 @@ Date:   Thu Sep 24 10:00:00 2026 -0400
 func TestLogDates(t *testing.T) {
 	for in, want := range map[string]string{
 		"Fri Sep 25 08:01:37 2026 +0200":  "2026-09-25",
-		"Fri Sep 25 23:59:59 2026 -1100":  "2026-09-25", // the commit's own zone
+		"Fri Sep 25 23:59:59 2026 -1100":  "2026-09-25",
 		"Fri, 25 Sep 2026 08:01:37 +0200": "2026-09-25",
 		"2026-09-25 08:01:37 +0200":       "2026-09-25",
 		"2026-09-25T08:01:37+02:00":       "2026-09-25",
@@ -814,7 +792,7 @@ func TestLogUserFormatsVerbatim(t *testing.T) {
 			t.Errorf("%v: not verbatim", flags)
 		}
 	}
-	// --pretty=medium is the default format.
+
 	med := "commit 1111111aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nAuthor: A <a>\nDate:   Mon Jan 2 15:04:05 2006 -0700\n\n    s"
 	if got, _ := (logFilter{}).Apply(ctx(0, "git", "log", "--pretty=medium"), med); got != "1111111 2006-01-02 [A] s" {
 		t.Errorf("--pretty=medium: %q", got)
@@ -835,8 +813,6 @@ func TestShowKeepsMessageAndBlobs(t *testing.T) {
 	}
 }
 
-// ---- sync / merge / commit -----------------------------------------------------
-
 func TestSyncKeepsRejectionsAndGroupsRefs(t *testing.T) {
 	in := `To github.com:o/r.git
  ! [rejected]        main -> main (non-fast-forward)
@@ -853,7 +829,7 @@ hint: Updates were rejected because the tip of your current branch is behind`
 	}
 	for _, ln := range []string{
 		" ! [rejected]        main -> main (non-fast-forward)",
-		" * [new branch]      fix-failing-build -> fix-failing-build", // error-class name: verbatim
+		" * [new branch]      fix-failing-build -> fix-failing-build",
 		"error: failed to push some refs to 'github.com:o/r.git'",
 		"hint: Updates were rejected because the tip of your current branch is behind",
 	} {
@@ -897,7 +873,7 @@ Fast-forward
 func TestMergeAutoMerging(t *testing.T) {
 	in := "Auto-merging a.go\nAuto-merging src/fail.go\nAuto-merging my file.go\nCONFLICT (content): Merge conflict in a.go\nAuto-merging b.go\nAutomatic merge failed; fix conflicts and then commit the result."
 	got, _ := mergeFilter{}.Apply(ctx(1, "git", "merge", "x"), in)
-	// src/fail.go is a file name, not a failure: it groups with the rest.
+
 	want := "Auto-merging (3): a.go src/fail.go b.go\nAuto-merging my file.go\nCONFLICT (content): Merge conflict in a.go\nAutomatic merge failed; fix conflicts and then commit the result."
 	if got != want {
 		t.Errorf("got\n%s", got)
@@ -923,8 +899,6 @@ a.py:1:1: F401 'os' imported but unused`
 	}
 }
 
-// ---- blame / branch / tag / remote ---------------------------------------------
-
 func TestBlameShapes(t *testing.T) {
 	in := `4b68a5f1 (Jane Doe  2022-05-28 10:42:28 +0800 1) a
 4b68a5f1 (Jane Doe  2022-05-28 10:42:28 +0800 2)
@@ -935,17 +909,17 @@ func TestBlameShapes(t *testing.T) {
 	if got != want {
 		t.Errorf("got\n%q\nwant\n%q", got, want)
 	}
-	// Lines from another file (-C, renames) carry a filename column.
+
 	withFile := "4b68a5f1 old.go (Jane 2022-05-28 10:42:28 +0800 1) a\n4b68a5f1 old.go (Jane 2022-05-28 10:42:28 +0800 2) b\n5c5c5c5c new.go (Bob  2023-01-01 00:00:00 +0000 3) c"
 	got, ok := blameFilter{}.Apply(ctx(0, "git", "blame", "x"), withFile)
 	if !ok || !strings.Contains(got, "4b68a5f1 old.go (Jane 2022-05-28)\n 1) a\n 2) b") {
 		t.Errorf("filename column: %q", got)
 	}
-	// --date=short.
+
 	if _, ok := (blameFilter{}).Apply(ctx(0, "git", "blame", "x"), "4b68a5f1 (Jane 2022-05-28 1) a"); !ok {
 		t.Error("short date bailed")
 	}
-	// Porcelain output is data: byte for byte.
+
 	porc := "4b68a5f1 1 1 2\nauthor Jane\nauthor-time 1653705748\n\ta\n4b68a5f1 2 2\n\tb"
 	for _, flag := range []string{"-p", "--line-porcelain", "--incremental"} {
 		if got, ok := (blameFilter{}).Apply(ctx(0, "git", "blame", flag, "x"), porc); !ok || got != porc {
@@ -980,7 +954,6 @@ func TestRemoteV(t *testing.T) {
 	}
 }
 
-// TestPathologicalShapes: worst-case shapes for each filter stay linear.
 func TestPathologicalShapes(t *testing.T) {
 	var b strings.Builder
 	rep := func(n int, format string, args ...func(int) any) string {

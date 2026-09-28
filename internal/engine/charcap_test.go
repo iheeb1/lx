@@ -10,19 +10,23 @@ import (
 	"testing"
 
 	"github.com/iheeb1/lx/internal/engine"
-	_ "github.com/iheeb1/lx/internal/filters" // every filter, as in the binary
+	_ "github.com/iheeb1/lx/internal/filters"
 	"github.com/iheeb1/lx/internal/fixture"
 	"github.com/iheeb1/lx/internal/testenv"
 	"github.com/iheeb1/lx/internal/textutil"
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// claudeCap models Claude Code's default Bash limit (30,000 characters) the
-// way the CLI sets it: 30000×9/10 − 200 for the receipt line.
 const claudeCap = 26800
 
-// allCaptures is the shared corpus plus every filter package's captures.
 func allCaptures(t *testing.T) []fixture.Case {
+	t.Helper()
+	return raceSample(fullCaptures(t))
+}
+
+// fullCaptures is every capture, also under -race, for the cheap tests
+// that check how many captures they reached.
+func fullCaptures(t *testing.T) []fixture.Case {
 	t.Helper()
 	cases := fixture.All(t)
 	root := fixture.Root()
@@ -58,7 +62,21 @@ func allCaptures(t *testing.T) []fixture.Case {
 	return cases
 }
 
-// errorBytes is the size of the distinct error-class lines of s.
+// raceSample keeps every 4th capture under -race: the corpus sweeps are
+// single-threaded, and the full set runs without -race.
+func raceSample(cases []fixture.Case) []fixture.Case {
+	if !testenv.Race {
+		return cases
+	}
+	var out []fixture.Case
+	for i, c := range cases {
+		if i%4 == 0 {
+			out = append(out, c)
+		}
+	}
+	return out
+}
+
 func errorBytes(s string) int {
 	n := 0
 	seen := map[string]bool{}
@@ -73,9 +91,6 @@ func errorBytes(s string) int {
 	return n
 }
 
-// contentView reports whether Process treated res as data, where words
-// like "error" are content and error lines get no priority (a Content
-// filter, or the generic engine's json/paths shapes).
 func contentView(c *engine.Context, clean string, res engine.Result) bool {
 	if f := engine.Find(c); f != nil && f.Name() == res.Filter {
 		if ct, ok := f.(engine.Content); ok && ct.IsContent() {
@@ -89,8 +104,6 @@ func contentView(c *engine.Context, clean string, res engine.Result) bool {
 	return false
 }
 
-// faithful reports whether res came from a Faithful filter (a denser
-// rendering that loses nothing, so it needs no stored copy).
 func faithful(c *engine.Context, res engine.Result) bool {
 	f := engine.Find(c)
 	if f == nil || f.Name() != res.Filter {
@@ -100,14 +113,6 @@ func faithful(c *engine.Context, res engine.Result) bool {
 	return ok && fa.Faithful(c)
 }
 
-// TestCharCapCorpus runs every capture (the shared corpus and every filter
-// package's) through Process with no cap, Claude Code's default cap and a
-// small one. Every capped view fits its cap, a view that already fit is
-// unchanged, a changed view is lossy (stored, with a receipt), and the cap
-// costs no error line that the uncapped view keeps while the error lines
-// take under half the cap. At the small cap that last property holds for
-// status output; in data (source, diffs, listings, JSON) error words are
-// content and get no priority, capped or not.
 func TestCharCapCorpus(t *testing.T) {
 	over := map[int]int{}
 	n := 0
@@ -115,8 +120,7 @@ func TestCharCapCorpus(t *testing.T) {
 		name := c.Category + "/" + c.Name
 		clean := c.Clean()
 		if testenv.Race && len(clean) <= claudeCap {
-			// Process is single-threaded: under -race keep only the
-			// captures the default cap can change.
+
 			continue
 		}
 		base := engine.Process(c.Context(), c.Raw, engine.Options{})
@@ -124,7 +128,7 @@ func TestCharCapCorpus(t *testing.T) {
 		if len(base.Output) > claudeCap {
 			over[0]++
 		}
-		var missBase map[string]bool // error lines the uncapped view lacks already
+		var missBase map[string]bool
 		eb := -1
 		caps := []int{claudeCap, 9800}
 		if testenv.Race {
@@ -133,7 +137,7 @@ func TestCharCapCorpus(t *testing.T) {
 		for _, maxChars := range caps {
 			res := engine.Process(c.Context(), c.Raw, engine.Options{MaxChars: maxChars})
 			if res.Filter == "passthrough" && engine.MachineReadable(c.Context()) {
-				continue // byte-exact by design, and documented as uncapped
+				continue
 			}
 			if len(res.Output) > maxChars {
 				t.Errorf("%s: cap %d: view is %d bytes", name, maxChars, len(res.Output))
@@ -174,9 +178,6 @@ func TestCharCapCorpus(t *testing.T) {
 		n, claudeCap, over[0], over[claudeCap], claudeCap)
 }
 
-// synthShape is one kind of output that the generic engine or a content
-// filter cannot shrink much, so near the token budget it passes through
-// whole today.
 type synthShape struct {
 	name string
 	argv []string
@@ -190,7 +191,6 @@ var synthWords = strings.Fields(`the of and to in is for that with on as by this
 	initialization authentication serialization transformation environment deployment middleware
 	subscription notification specification optimization parallelism infrastructure observability`)
 
-// synthLong is the long tail of synthWords, for denser columns.
 var synthLong = synthWords[len(synthWords)-18:]
 
 func synthWord(r *rand.Rand) string     { return synthWords[r.Intn(len(synthWords))] }
@@ -224,8 +224,6 @@ var synthShapes = []synthShape{
 	}},
 }
 
-// synth builds shape output until it reaches size bytes (or, when size is
-// negative, -size tokens), with errs error lines spread through it.
 func synth(sh synthShape, size, errs int, seed int64) (string, []string) {
 	r := rand.New(rand.NewSource(seed))
 	var lines []string
@@ -249,16 +247,10 @@ func synth(sh synthShape, size, errs int, seed int64) (string, []string) {
 	return strings.Join(lines, "\n"), inserted
 }
 
-// TestCharCapSynthetic: 25–60 KB of prose, ls -R listings, CSV and log
-// lines at 2.5–4.5 chars/token, plus sizes that land in the window just
-// over the token budget where the never-worse gate hands back everything.
-// Uncapped, the spill cases pass through whole (and a host would replace
-// them with a preview); capped, every case is a view within the cap that
-// keeps every inserted error line, and a changed view is lossy.
 func TestCharCapSynthetic(t *testing.T) {
 	sizes := []int{25000, 30000, 36000, 42000, 50000, 60000, -8000, -8300, -8600, -8850}
 	if testenv.Race {
-		sizes = []int{30000, -8600} // single-threaded code: a sample suffices
+		sizes = []int{30000, -8600}
 	}
 	spills, over := map[string]int{}, map[string]int{}
 	total := 0
@@ -279,7 +271,7 @@ func TestCharCapSynthetic(t *testing.T) {
 				spills[sh.name]++
 			}
 			if len(base.Output) > claudeCap {
-				over[sh.name]++ // whole, or trimmed to the token budget yet still too long
+				over[sh.name]++
 			}
 			total++
 			res := engine.Process(ctx, in, engine.Options{MaxChars: claudeCap})
@@ -310,14 +302,11 @@ func TestCharCapSynthetic(t *testing.T) {
 		total, claudeCap, over, spills)
 }
 
-// TestCharCapProcessEdges covers the paths around the budget stage: the
-// small-output shortcut, the raw-replay passthrough, machine-readable
-// output and a zero cap.
 func TestCharCapProcessEdges(t *testing.T) {
 	ctx := func(argv ...string) *engine.Context {
 		return &engine.Context{Argv: argv, Exit: 1, Cwd: "/w", Home: "/home/u"}
 	}
-	// Under SmallOutput tokens yet over a (small) cap: still capped.
+
 	var b strings.Builder
 	for i := 0; i < 12; i++ {
 		fmt.Fprintf(&b, "line %d of a short report\n", i)
@@ -335,8 +324,6 @@ func TestCharCapProcessEdges(t *testing.T) {
 		t.Errorf("uncapped small output must pass through: %+v", got)
 	}
 
-	// Clean text within the cap, raw bytes (trailing blanks) over it: the
-	// raw replay would spill, so the clean text is printed instead.
 	r := rand.New(rand.NewSource(3))
 	var pad strings.Builder
 	for i := 0; i < 200; i++ {
@@ -356,7 +343,6 @@ func TestCharCapProcessEdges(t *testing.T) {
 		t.Errorf("raw over the cap must not be replayed; the clean text fits: filter %s, %d bytes", res.Filter, len(res.Output))
 	}
 
-	// Machine-readable output stays byte-exact, whatever the cap.
 	var por strings.Builder
 	for i := 0; i < 2000; i++ {
 		fmt.Fprintf(&por, " M internal/pkg%d/file%d.go\n", i%40, i)
@@ -366,7 +352,6 @@ func TestCharCapProcessEdges(t *testing.T) {
 		t.Errorf("machine-readable output must pass through byte-exact: filter %s", res.Filter)
 	}
 
-	// A tiny cap is raised to MinMaxChars, never below one marker.
 	in, _ := synth(synthShapes[0], 30000, 0, 7)
 	res = engine.Process(ctx("./gen-docs"), in, engine.Options{MaxChars: 10})
 	if len(res.Output) > engine.MinMaxChars || !res.Lossy {
@@ -374,13 +359,11 @@ func TestCharCapProcessEdges(t *testing.T) {
 	}
 }
 
-// TestCharCapRandom is a property test: random mixes of shapes, error
-// lines, huge and multi-byte lines, at random caps.
 func TestCharCapRandom(t *testing.T) {
 	r := rand.New(rand.NewSource(42))
 	checked, iters := 0, 40
 	if testenv.Race {
-		iters = 6 // the race detector slows the engine ~20x
+		iters = 6
 	}
 	for iter := 0; iter < iters; iter++ {
 		var lines, errs []string
@@ -389,7 +372,7 @@ func TestCharCapRandom(t *testing.T) {
 			switch k := r.Intn(40); {
 			case k == 0:
 				e := fmt.Sprintf("error: step %d failed: %s", i, synthWord(r))
-				// An error line and the ordinary line after it.
+
 				lines = append(lines, e, synthShapes[0].line(r, i))
 				errs = append(errs, e)
 			case k == 1:
@@ -410,7 +393,7 @@ func TestCharCapRandom(t *testing.T) {
 		}
 		errBytes, errTokens := 0, 0
 		for _, e := range errs {
-			// The line, the one after it and a marker.
+
 			errBytes += len(e) + 200 + 30
 			errTokens += tokens.Count(e) + 50 + 8
 		}

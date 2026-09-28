@@ -37,8 +37,6 @@ func TestFailedAndExitCode(t *testing.T) {
 	}
 }
 
-// emptyEnv is a machine with nothing on it: no settings, no store, and no
-// program can run.
 func emptyEnv(t *testing.T) Env {
 	root := t.TempDir()
 	return Env{
@@ -50,7 +48,7 @@ func emptyEnv(t *testing.T) Env {
 }
 
 func TestMainExitCodeMatchesReport(t *testing.T) {
-	e := emptyEnv(t) // no hook: the hook check fails
+	e := emptyEnv(t)
 	var out, errb bytes.Buffer
 	code := Main(nil, &out, &errb, e)
 	r := Run(e)
@@ -61,7 +59,6 @@ func TestMainExitCodeMatchesReport(t *testing.T) {
 		t.Errorf("text output:\n%s", out.String())
 	}
 
-	// --json: same verdict, valid JSON with the documented fields.
 	out.Reset()
 	if code := Main([]string{"--json"}, &out, &errb, e); code != 1 {
 		t.Errorf("--json exit %d", code)
@@ -77,13 +74,12 @@ func TestMainExitCodeMatchesReport(t *testing.T) {
 	}
 	checks := raw["checks"].([]any)
 	first := checks[0].(map[string]any)
-	for _, k := range []string{"id", "status", "message", "fix"} { // a stable schema
+	for _, k := range []string{"id", "status", "message", "fix"} {
 		if _, ok := first[k]; !ok {
 			t.Errorf("check lacks %q", k)
 		}
 	}
 
-	// Usage errors exit 2 and print nothing on stdout.
 	out.Reset()
 	errb.Reset()
 	if code := Main([]string{"--fix"}, &out, &errb, e); code != 2 || out.Len() != 0 || !strings.Contains(errb.String(), Usage) {
@@ -117,7 +113,6 @@ func TestCheckOrderAndIDs(t *testing.T) {
 	}
 }
 
-// With no Exec, Getenv or Clock, Run still works and never runs anything.
 func TestRunWithoutInjectedFuncs(t *testing.T) {
 	e := emptyEnv(t)
 	cfg := e.ConfigDir
@@ -161,11 +156,11 @@ func TestFindProjectDir(t *testing.T) {
 	if got := FindProjectDir(filepath.Join(proj, "src", "deep"), home, cfg, none); got != proj {
 		t.Errorf("walk up: %q, want %q", got, proj)
 	}
-	// ~/.claude is the user's config, not a project.
+
 	if got := FindProjectDir(filepath.Join(home, "notes"), home, cfg, none); got != "" {
 		t.Errorf("home's .claude taken for a project: %q", got)
 	}
-	// Nor is a CLAUDE_CONFIG_DIR that happens to be named .claude.
+
 	other := filepath.Join(root, "work")
 	if err := os.MkdirAll(filepath.Join(other, ".claude"), 0o755); err != nil {
 		t.Fatal(err)
@@ -241,7 +236,7 @@ func TestSettingsFilesDedup(t *testing.T) {
 	if err := os.Symlink(filepath.Join(root, "home"), link); err != nil {
 		t.Fatal(err)
 	}
-	// The project resolves to the same directory through a symlink.
+
 	e := &Env{ConfigDir: cfg, ProjectDir: link, ManagedPath: filepath.Join(cfg, "settings.json")}
 	files := e.settingsFiles()
 	var paths []string
@@ -277,8 +272,7 @@ func TestExecWith(t *testing.T) {
 	if !errors.As(err, &ee) || !strings.Contains(err.Error(), "oops") {
 		t.Errorf("exit error: %v", err)
 	}
-	// A hung program is killed at the deadline, even when a grandchild
-	// keeps its stdout open.
+
 	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
 	defer cancel()
 	start := time.Now()
@@ -286,7 +280,7 @@ func TestExecWith(t *testing.T) {
 	if err == nil || time.Since(start) > 5*time.Second {
 		t.Errorf("timeout: err %v after %v", err, time.Since(start))
 	}
-	// Output is capped.
+
 	out, _ = run(context.Background(), "/bin/sh", []string{"-c", "head -c 3000000 /dev/zero"}, "")
 	if len(out) != maxCapture {
 		t.Errorf("captured %d bytes", len(out))
@@ -301,8 +295,7 @@ func TestStoreUsage(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	// notes.txt, x.log, 2024.notes and +3.log are not lx's: counted as
-	// foreign, not in the size (dot files are ignored).
+
 	if u := storeUsage(dir); u.runs != 2 || u.bytes != 26 || u.foreign != 4 {
 		t.Errorf("usage %+v", u)
 	}
@@ -311,14 +304,14 @@ func TestStoreUsage(t *testing.T) {
 func TestHistoryLastRun(t *testing.T) {
 	e := emptyEnv(t)
 	var b strings.Builder
-	for i := 0; i < 5000; i++ { // bigger than the tail window
+	for i := 0; i < 5000; i++ {
 		b.WriteString(`{"t":1000,"cmd":"git status","raw":1,"out":1}` + "\n")
 	}
 	b.WriteString(`{"t":2000,"cmd":"go test"}` + "\n")
-	b.WriteString(`{"t":2200,"kind":"some-future-run"}` + "\n") // only recalls are skipped
+	b.WriteString(`{"t":2200,"kind":"some-future-run"}` + "\n")
 	b.WriteString(`{"t":3000,"kind":"show","of":1}` + "\n")
 	b.WriteString("garbage\n")
-	b.WriteString(`{"t":2500`) // torn last line
+	b.WriteString(`{"t":2500`)
 	if err := os.WriteFile(e.HistoryPath, []byte(b.String()), 0o600); err != nil {
 		t.Fatal(err)
 	}
@@ -351,7 +344,7 @@ func TestRecentFile(t *testing.T) {
 	if recentFile(filepath.Join(dir, "missing"), time.Time{}) {
 		t.Error("a missing directory has recent files")
 	}
-	// Transcripts moved to another disk behind a symlink still count.
+
 	link := filepath.Join(t.TempDir(), "projects")
 	if err := os.Symlink(dir, link); err != nil {
 		t.Fatal(err)
@@ -391,10 +384,6 @@ func TestLazyPatternsCompile(t *testing.T) {
 	}
 }
 
-// TestUnverifiedHookNeverRuns: for each command a shell could turn into
-// something other than `lx hook claude`, doctor runs with a real Exec and
-// a real lx on disk, and the sentinel the command would create never
-// appears. Only the login-shell probe may run.
 func TestUnverifiedHookNeverRuns(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("POSIX shell")
@@ -485,7 +474,6 @@ func TestPrintable(t *testing.T) {
 	}
 }
 
-// A hook command with terminal escapes cannot redraw doctor's report.
 func TestReportIsOneLinePerCheck(t *testing.T) {
 	e := emptyEnv(t)
 	if err := os.MkdirAll(e.ConfigDir, 0o700); err != nil {
@@ -509,8 +497,6 @@ func TestReportIsOneLinePerCheck(t *testing.T) {
 	}
 }
 
-// zones: the project, the working directory and their git work trees,
-// never / or a directory holding home (a dotfiles repository in ~).
 func TestZones(t *testing.T) {
 	root, _ := filepath.EvalSymlinks(t.TempDir())
 	home := filepath.Join(root, "home")
@@ -541,7 +527,6 @@ func TestZones(t *testing.T) {
 	}
 }
 
-// allowManagedHooksOnly only counts in the managed settings file.
 func TestAllowManagedHooksOnly(t *testing.T) {
 	e := emptyEnv(t)
 	e.ManagedPath = filepath.Join(filepath.Dir(e.ConfigDir), "managed.json")
@@ -569,7 +554,7 @@ func TestAllowManagedHooksOnly(t *testing.T) {
 	if !managedOnly() {
 		t.Error("allowManagedHooksOnly in managed settings was ignored")
 	}
-	// A managed lx hook still runs.
+
 	managed := `{"allowManagedHooksOnly": true, "hooks":{"PreToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"` + e.Executable + ` hook claude --readonly"}]}]}}`
 	if err := os.WriteFile(e.ManagedPath, []byte(managed), 0o600); err != nil {
 		t.Fatal(err)
@@ -579,21 +564,18 @@ func TestAllowManagedHooksOnly(t *testing.T) {
 	}
 }
 
-// Deny and ask rules are reported as aimed at lx only when they match the
-// hook's rewrite and not the command itself.
 func TestLxGuards(t *testing.T) {
 	cases := []struct {
 		deny, ask []string
 		rewrite   string
-		want      string // statuses, in order
+		want      string
 	}{
 		{deny: []string{"Bash(lx:*)"}, want: "fail"},
 		{deny: []string{"Bash(lx *)"}, want: "fail"},
 		{ask: []string{"Bash(lx git:*)"}, want: "warn"},
 		{deny: []string{"Bash", "Bash(*)", "Bash(git:*)", "Bash(lx)", "Bash(lx git push:*)", "Read(**)"}},
 		{ask: []string{"Bash(git status:*)"}},
-		// A full-path rewrite is checked too, and so is the bare form the
-		// agent types for lx show.
+
 		{deny: []string{"Bash(/opt/lx/lx:*)"}, rewrite: "/opt/lx/lx", want: "fail"},
 		{deny: []string{"Bash(lx:*)"}, rewrite: "/opt/lx/lx", want: "fail"},
 	}
@@ -611,8 +593,6 @@ func TestLxGuards(t *testing.T) {
 	}
 }
 
-// A run store path that is a file: `rm` is offered only for lx's default
-// location, never for a path the user set in LX_TEE_DIR.
 func TestTeeNotADirectory(t *testing.T) {
 	e := emptyEnv(t)
 	if err := os.WriteFile(e.TeeDir, []byte("my notes"), 0o600); err != nil {

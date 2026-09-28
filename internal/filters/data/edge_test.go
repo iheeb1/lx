@@ -89,7 +89,7 @@ func TestEmptyAndSingleLine(t *testing.T) {
 }
 
 func TestBailsOnUnknown(t *testing.T) {
-	// wget log in German: not the format we parse.
+
 	de := "--2026-09-26 10:00:00--  https://x/\nAuflösen des Hostnamens x (x)… 1.2.3.4\nVerbindungsaufbau zu x (x)|1.2.3.4|:443 … verbunden.\nHTTP-Anforderung gesendet, auf Antwort wird gewartet … 200 OK\nLänge: 12 [text/plain]\nWird in »index.html« gespeichert.\n"
 	de = strings.Replace(de, "--2026-09-26 10:00:00--  https://x/\n", "", 1)
 	if _, ok := apply(t, ctx(0, "wget", "https://x/"), de); ok {
@@ -101,13 +101,13 @@ func TestBailsOnUnknown(t *testing.T) {
 }
 
 func TestCurlExitWithoutMessage(t *testing.T) {
-	// -s hides curl's error; the body looks fine; the run failed.
+
 	body := strings.Repeat(`{"ok": true, "status": "passed"}`+"\n", 3)
 	got, ok := apply(t, ctx(28, "curl", "-s", "https://x"), body)
 	if !ok || !strings.Contains(got, "[lx: curl exited 28 (operation timed out)") {
 		t.Fatalf("exit not explained:\n%s", got)
 	}
-	// With curl's own message, nothing is added.
+
 	got, _ = apply(t, ctx(7, "curl", "https://x"), "curl: (7) Failed to connect to x port 443: Connection refused")
 	if strings.Contains(got, "[lx:") {
 		t.Fatalf("note added although curl printed its error:\n%s", got)
@@ -125,7 +125,7 @@ func TestCurlHeaders(t *testing.T) {
 	if strings.Contains(got, "s3cr3t") {
 		t.Error("cookie value shown")
 	}
-	// 4xx/5xx, -I and a CORS request keep every header verbatim.
+
 	for _, tc := range []struct {
 		c    *engine.Context
 		code int
@@ -193,12 +193,12 @@ func TestCurlMeterGlued(t *testing.T) {
 	if got != "curl: (6) Could not resolve host: x" {
 		t.Fatalf("got %q", got)
 	}
-	// Glued digits: the frame is fixed-width, the body starts with a digit.
+
 	got, _ = apply(t, ctx(0, "curl", "https://x"), frame+"42\n")
 	if got != "42" {
 		t.Fatalf("glued digits: got %q", got)
 	}
-	// A frame inside the body marks the spot.
+
 	body := "{\n  \"a\": 1,\n" + "100  6805  100  6805    0     0   6595      0  0:00:01  0:00:01 --:--:--  6600\n" + "  \"b\": 2\n}"
 	got, _ = apply(t, ctx(0, "curl", "https://x"), body)
 	if !strings.Contains(got, meterNote) || !strings.Contains(got, `"b": 2`) {
@@ -207,7 +207,7 @@ func TestCurlMeterGlued(t *testing.T) {
 }
 
 func TestBodies(t *testing.T) {
-	// JSON with an error field over the threshold: error first, verbatim.
+
 	var items []string
 	for i := range 60 {
 		items = append(items, fmt.Sprintf(`{"id": %d, "name": "item-%d", "state": "open", "url": "https://api.x/items/%d"}`, i, i, i))
@@ -217,12 +217,12 @@ func TestBodies(t *testing.T) {
 	if !strings.HasPrefix(got, "[lx: JSON body condensed") || !strings.Contains(got, `error: {"code":"rate_limited","message":"API rate limit exceeded for 1.2.3.4"}`) {
 		t.Fatalf("error field not first/verbatim:\n%s", got)
 	}
-	// Binary.
+
 	got, _ = apply(t, ctx(0, "curl", "-s", "https://x/logo.png"), "\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\xff\xfe"+strings.Repeat("\x00\xde\xad", 400))
 	if !strings.HasPrefix(got, "[lx: binary body") {
 		t.Fatalf("binary: %q", got)
 	}
-	// HTML: title, headings, pre kept with indentation, scripts gone.
+
 	page := "<!DOCTYPE html><html><head><title>Docs &amp; Guides</title><style>body{}</style></head><body><nav><a>Home</a><a>About</a></nav>" +
 		"<main><h1>Install</h1><p>Run <code>go install</code> &mdash; then:</p><pre>func main() {\n\tfmt.Println(\"hi\")\n}</pre>" +
 		paragraphs(200) +
@@ -241,7 +241,7 @@ func TestBodies(t *testing.T) {
 	if n := tokens.Count(got); n > htmlTextCap+200 {
 		t.Errorf("html view has %d tokens", n)
 	}
-	// -w output is the user's format: the body is never condensed.
+
 	got, _ = apply(t, ctx(0, "curl", "-s", "-w", "%{http_code}", "https://x"), j)
 	if got != j {
 		t.Errorf("-w: body changed")
@@ -256,7 +256,6 @@ func paragraphs(n int) string {
 	return b.String()
 }
 
-// head returns the first n bytes of s, for failure messages.
 func head(s string, n int) string { return s[:min(len(s), n)] }
 
 func TestHugeOutputsAreFast(t *testing.T) {
@@ -333,12 +332,12 @@ func TestFileView(t *testing.T) {
 	if !strings.Contains(got, "sed -n '") || !strings.Contains(got, "big.go") || !strings.Contains(got, "  L") {
 		t.Fatalf("no marker/outline:\n%s", got[:500])
 	}
-	// cat -n: output lines are not file lines: point at lx show.
+
 	got, _ = apply(t, ctx(0, "cat", "-n", "big.go"), in)
 	if !strings.Contains(got, "lx show <id> --lines") {
 		t.Fatal("cat -n must not suggest sed")
 	}
-	// Through a shell: head keeps file line numbers, tail and sort do not.
+
 	got, _ = apply(t, ctx(0, "bash", "-c", "cat big.go | head -n 3000"), in)
 	if !strings.Contains(got, "sed -n '") {
 		t.Fatal("cat | head keeps line numbers: sed hint expected")
@@ -347,19 +346,19 @@ func TestFileView(t *testing.T) {
 	if strings.Contains(got, "sed -n '") || !strings.Contains(got, "lx show <id> --lines") {
 		t.Fatal("cat | tail renumbers lines: lx show hint expected")
 	}
-	// Diagnostics in the omitted range survive.
+
 	mid := strings.Split(in, "\n")
 	mid[1500] = "cat: other.go: Permission denied"
 	got, _ = apply(t, ctx(1, "cat", "a.go", "other.go", "b.go"), strings.Join(mid, "\n"))
 	if !strings.Contains(got, "L1501: cat: other.go: Permission denied") {
 		t.Fatal("diagnostic in the omitted range was dropped")
 	}
-	// Small files are never changed.
+
 	small := "package main\n\nfunc main() {}\n// TODO: handle error\n"
 	if got, ok := apply(t, ctx(0, "cat", "main.go"), small); !ok || got != small {
 		t.Fatal("small file changed")
 	}
-	// Binary files.
+
 	got, _ = apply(t, ctx(0, "cat", "a.out"), "\x7fELF\x02\x01\x01\x00"+strings.Repeat("\x00\x01\xfe", 300))
 	if !strings.HasPrefix(got, "[lx: binary data") {
 		t.Fatalf("binary: %q", got)
@@ -395,12 +394,12 @@ func TestLockfiles(t *testing.T) {
 			t.Errorf("%s: got\n%s", tc.name, head(got, 300))
 		}
 	}
-	// A file named like a lockfile that is not one: shown as text.
+
 	got, _ := apply(t, ctx(0, "cat", "Cargo.lock"), pad+"not toml at all\n")
 	if strings.HasPrefix(got, "[lx: lockfile") {
 		t.Error("summarized an unparseable lockfile")
 	}
-	// head of a lockfile is a slice the user asked for: unchanged.
+
 	if got, _ := apply(t, ctx(0, "head", "-n", "400", "yarn.lock"), pad); got != pad {
 		t.Error("head of a lockfile changed")
 	}

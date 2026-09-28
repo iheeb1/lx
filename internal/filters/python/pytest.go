@@ -2,36 +2,12 @@ package python
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// pytestFilter condenses pytest's terminal report.
-//
-// Kept verbatim: the "collected N items" line, FAILED/ERROR/XPASS lines of
-// -v runs, every section header, every failure block header, every "E"
-// line, every location line of project code, chained-exception separators,
-// every message line of collection errors ("ImportError while importing
-// test module …", hints, E lines), the "short test summary info" section,
-// "!!! … !!!" interruption lines, unknown sections (coverage, plugins) and
-// the final "N failed, M passed … in Xs" line (the counts are never
-// rebuilt, so "1 error" can never be dropped).
-//
-// Folded, with counted markers: the session header, progress lines and
-// PASSED lines, SKIPPED/XFAIL lines beyond ten per status, source lines
-// more than three lines above the failing ">" line (or above the test's
-// own def line), runs of library frames (site-packages, stdlib, <frozen>,
-// _pytest, pluggy), captured output beyond 20 lines per section after
-// similar lines are collapsed (error lines inside are always kept), the
-// echoed source line of each warning, and warnings repeated at several
-// locations.
-//
-// Source lines of tracebacks are code, not messages, but the line
-// classifier cannot tell `assert not result.exception` from an error
-// message, so the filter implements engine.Guarded and runs its own guard
-// (ensureErrors) that exempts exactly the traceback source lines it folds.
 type pytestFilter struct{}
 
 func (pytestFilter) Name() string { return "pytest" }
@@ -41,14 +17,13 @@ func (pytestFilter) Match(c *engine.Context) bool {
 	if inv.tool != "pytest" {
 		return false
 	}
-	// Listings, help and version output are not test reports.
+
 	return !hasArg(inv.args, "--co", "--collect-only", "--collectonly", "--version", "-V", "--help", "-h",
 		"--fixtures", "--funcargs", "--fixtures-per-test", "--markers", "--trace-config", "--setup-plan")
 }
 
 func (pytestFilter) GuardsErrors() bool { return true }
 
-// Stream: pytest-xdist's --looponfail re-runs forever.
 func (pytestFilter) Stream(c *engine.Context) bool {
 	return hasArg(parseInvocation(c).args, "-f", "--looponfail")
 }
@@ -59,7 +34,6 @@ func (pytestFilter) Apply(c *engine.Context, out string) (string, bool) {
 }
 
 var (
-	// The final result line, with or without the === wrapper (-q).
 	ptSummaryRe    = lazyre.New(`^(?:=+ )?(?:(?:\d+ (?:subtests? )?(?:failed|passed|skipped|deselected|xfailed|xpassed|warnings?|errors?|rerun)(?:, )?)+|no tests ran) in \d+(?:\.\d+)?s(?:econds)?(?: \([\d:.]+\))?(?: =+)?$`)
 	ptSectionRe    = lazyre.New(`^=+ (.+?) =+$`)
 	ptBangRe       = lazyre.New(`^!{3,} .* !{3,}$`)
@@ -69,18 +43,14 @@ var (
 	ptHeaderRe     = lazyre.New(`^(?:platform \S+ -- Python |cachedir: |rootdir: |configfile: |inifile: |testpaths: |plugins: |hypothesis profile |asyncio: |benchmark: |django: settings|Django settings: |metadata: |timeout: |timeout method: |timeout func_only: |sensitiveurl: |base_url: |html: |cov: |anyio: |xdist: |scheduling tests via \w+$)`)
 	ptCollectRe    = lazyre.New(`\bcollected \d+ items?\b|\bno tests collected\b|^\d+ workers? \[\d+ items?\]$`)
 	ptCollectingRe = lazyre.New(`^collecting \.\.\. ?$|^bringing up nodes\.\.\.$|^created: \d+/\d+ workers?$`)
-	// Progress: "tests/test_x.py ..F.s [ 42%]", "....F  [100%]", ".... [ 14%]",
-	// console_output_style=count "[ 5/23]", a lone "[100%]" (a plugin
-	// printed in the middle of the line). Group 1 is the file, group 2 the
-	// status characters (u and , are pytest 9 subtest results).
+
 	ptProgressRe = lazyre.New(`^(?:(\S+\.py)(?:::\S+)? ?)?([.sFExXRu,]+) *(?:\[ *\d+(?:%|/\d+)\])?$|^\S+\.py \[ *\d+(?:%|/\d+)\]$|^\[ *\d+(?:%|/\d+)\]$`)
-	// Verbose: "tests/test_x.py::test_y[p] PASSED   [ 42%]" (or "[ 5/23]"), xdist "[gw1] [ 42%] PASSED tests/…".
+
 	ptVerboseRe = lazyre.New(`^(\S.*::.+?) (PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS)(?: \(.*\))?(?: +\[ *\d+(?:%|/\d+)\])?$`)
 	ptXdistRe   = lazyre.New(`^\[gw\d+\] \[ *\d+(?:%|/\d+)\] (PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS) \S`)
-	// xdist -v announces each test before a worker reports it: a bare node id.
+
 	ptNodeIDRe = lazyre.New(`^\S+\.py::\S.*$`)
-	// Traceback frames: long-style location ("path:12: AssertionError",
-	// "path:12:"), short-style frame head ("path:12: in test_x").
+
 	ptLongLocRe  = lazyre.New(`^(\S(?:.*?\S)?):(\d+):(?: ([A-Za-z_][\w.]*))?$`)
 	ptShortLocRe = lazyre.New(`^(\S(?:.*?\S)?):(\d+): in \S.*$`)
 	ptFrameSepRe = lazyre.New(`^(?:_ ){3,}_?$`)
@@ -88,28 +58,23 @@ var (
 	ptObjArgRe   = lazyre.New(`^(?:[A-Za-z_]\w* = <[\w.]+ object at 0x[0-9a-f]+>(?:, |$))+$`)
 	ptFuncargRe  = lazyre.New(`^[A-Za-z_]\w* = `)
 	ptBracketsRe = lazyre.New(`^[\])},]+$`)
-	// pytest-xdist prints the worker's platform at the top of each failure.
+
 	ptWorkerRe = lazyre.New(`^\[gw\d+\] \S+ -- Python \S+ \S+$`)
-	// A non-zero failure count in the result line ("1 xfailed" is not one).
+
 	ptFailCountRe = lazyre.New(`(?:^|[ =])[1-9]\d* (?:subtests? )?(?:failed|errors?)\b`)
 )
 
 const (
-	ptMaxStatusLines = 10 // SKIPPED / XFAIL lines kept per status in -v runs
-	ptSourceBefore   = 3  // source lines kept above the failing ">" line
-	ptSourceAfter    = 4  // continuation lines kept below it
-	ptCaptureHead    = 8  // captured output kept per section: head …
-	ptCaptureTail    = 12 // … and tail
+	ptMaxStatusLines = 10
+	ptSourceBefore   = 3
+	ptSourceAfter    = 4
+	ptCaptureHead    = 8
+	ptCaptureTail    = 12
 	ptMaxWarnGroups  = 20
 	ptMaxDurations   = 25
-	ptCollapseMax    = 2000 // captured sections longer than this are only capped
+	ptCollapseMax    = 2000
 )
 
-// Per-line matchers with cheap necessary conditions in front of the
-// regular expressions: a 50k-line report is matched line by line several
-// times, and most lines fail on the first byte.
-
-// ptSection returns the title of a "=== title ===" line.
 func ptSection(ln string) (string, bool) {
 	if len(ln) < 5 || ln[0] != '=' {
 		return "", false
@@ -120,7 +85,6 @@ func ptSection(ln string) (string, bool) {
 	return "", false
 }
 
-// ptIsSummary matches the result line ("… in 0.12s", with or without "=").
 func ptIsSummary(ln string) bool {
 	if len(ln) < 10 || !strings.Contains(ln, " in ") {
 		return false
@@ -134,7 +98,6 @@ func ptIsSummary(ln string) bool {
 
 func ptIsBang(ln string) bool { return len(ln) > 8 && ln[0] == '!' && ptBangRe.MatchString(ln) }
 
-// ptStatus returns the outcome of a -v status line (plain or xdist), or "".
 func ptStatus(ln string) string {
 	if strings.HasPrefix(ln, "[gw") {
 		if m := ptXdistRe.FindStringSubmatch(ln); m != nil {
@@ -160,10 +123,7 @@ func ptHasStatusWord(ln string) bool {
 	return false
 }
 
-// ptProgress matches a progress line (trimmed): its file and status marks.
 func ptProgress(t string) (file, marks string, ok bool) {
-	// Necessary condition: without its "[ 42%]" tail the line is empty,
-	// ends with ".py" or ends with a status mark ("… PASSED [ 42%]" does not).
 	body := t
 	if strings.HasSuffix(body, "]") {
 		i := strings.LastIndexByte(body, '[')
@@ -195,25 +155,19 @@ func ptIsCollecting(t string) bool {
 	return (strings.HasPrefix(t, "collecting") || strings.HasPrefix(t, "bringing") || strings.HasPrefix(t, "created:")) && ptCollectingRe.MatchString(t)
 }
 
-// ptReducer carries the state of one reduction.
 type ptReducer struct {
 	c      *engine.Context
 	lines  []string
-	exempt []bool // input lines that are traceback source code
+	exempt []bool
 	out    []string
-	// failIDs: the report names its failing tests somewhere else than in
-	// the progress lines (short test summary, -v status lines, FAILURES /
-	// ERRORS blocks). Without it (--tb=no -rN, -qq -rs) the F/E progress
-	// lines are the only trace of which files failed, and are kept.
+
 	failIDs bool
-	// xdist: pytest-xdist output (-n), whose -v mode announces every test
-	// with a bare node id line before a worker reports its status.
+
 	xdist      bool
-	errMemo    []int8   // engine.IsError per input line: 0 unknown, 1 no, 2 yes
-	statusMemo []string // ptStatus per input line ("\x00" = not computed)
+	errMemo    []int8
+	statusMemo []string
 }
 
-// status is ptStatus for input line i, computed once.
 func (r *ptReducer) status(i int) string {
 	if r.statusMemo[i] == "\x00" {
 		r.statusMemo[i] = ptStatus(r.lines[i])
@@ -221,9 +175,6 @@ func (r *ptReducer) status(i int) string {
 	return r.statusMemo[i]
 }
 
-// isErr is engine.IsError for input line i, computed once: the classifier
-// costs tens of microseconds on lines holding an error-like word, and
-// captured output is checked by the cap and by the guard.
 func (r *ptReducer) isErr(i int) bool {
 	if r.errMemo[i] == 0 {
 		r.errMemo[i] = 1
@@ -236,18 +187,14 @@ func (r *ptReducer) isErr(i int) bool {
 
 func (r *ptReducer) emit(s ...string) { r.out = append(r.out, s...) }
 
-// ptRegion is a part of the report between two section headers.
 type ptRegion struct {
 	title      string
-	hdr        int // header line index, -1 for the preamble
-	start, end int // body [start, end)
+	hdr        int
+	start, end int
 }
 
 var ptReportSections = map[string]bool{"FAILURES": true, "ERRORS": true, "XFAILURES": true, "XPASSES": true, "PASSES": true}
 
-// reducePytest returns the condensed report, the number of lines its own
-// guard had to re-add (0 for a correct reduction), and ok=false when the
-// output is not a pytest report it recognizes.
 func reducePytest(c *engine.Context, text string) (string, int, bool) {
 	lines := strings.Split(text, "\n")
 	summary := -1
@@ -264,11 +211,7 @@ func reducePytest(c *engine.Context, text string) (string, int, bool) {
 			break
 		}
 	}
-	// A report ends with the result line; -qq omits it but still prints the
-	// short test summary; a run killed by a signal (segfault in a C
-	// extension, faulthandler_timeout) ends with faulthandler's dump after
-	// the session header. Anything else (a run killed without a dump, usage
-	// errors, a conftest ImportError) goes to the generic reducer untouched.
+
 	if summary < 0 && !hasShort && !pytestCrashed(lines) {
 		return "", 0, false
 	}
@@ -278,7 +221,6 @@ func reducePytest(c *engine.Context, text string) (string, int, bool) {
 	}
 	regions := splitPytestRegions(lines, summary)
 
-	// What identifies the failing tests besides the progress lines?
 	for _, rg := range regions {
 		for i := rg.start; i < rg.end && !r.failIDs; i++ {
 			ln := lines[i]
@@ -321,8 +263,6 @@ func reducePytest(c *engine.Context, text string) (string, int, bool) {
 			r.emit(lines[rg.hdr])
 			r.capped(body, ptMaxDurations)
 		default:
-			// Unknown sections (coverage, rerun summary, plugin reports)
-			// are what the user asked for: verbatim.
 			r.emit(lines[rg.hdr])
 			r.verbatim(body)
 		}
@@ -331,8 +271,6 @@ func reducePytest(c *engine.Context, text string) (string, int, bool) {
 	if summary >= 0 {
 		r.exitNote(lines[summary])
 	} else if c.Exit != 0 {
-		// -qq, a crash, an unknown result line: nothing else carries the
-		// verdict.
 		r.emit(fmt.Sprintf("[lx: pytest exited %d]", c.Exit))
 	}
 	out := r.out
@@ -341,8 +279,6 @@ func reducePytest(c *engine.Context, text string) (string, int, bool) {
 	return strings.TrimRight(strings.Join(out, "\n"), "\n"), added, true
 }
 
-// pytestCrashed recognizes a session that died in a faulthandler dump:
-// the session header, then "Fatal Python error: …" (or a timeout dump).
 func pytestCrashed(lines []string) bool {
 	session := false
 	for _, ln := range lines {
@@ -357,12 +293,6 @@ func pytestCrashed(lines []string) bool {
 	return false
 }
 
-// splitPytestRegions splits the report at section headers ("=== title
-// ==="), "!!! … !!!" lines and the result line. A second session header
-// inside a report section is the output of a nested pytest run printed by
-// a test (pytester, subprocess): up to that run's own result line it stays
-// part of the captured output it belongs to, provided such a result line
-// exists before the report's own.
 func splitPytestRegions(lines []string, summary int) []ptRegion {
 	var regions []ptRegion
 	cur := ptRegion{hdr: -1, start: 0}
@@ -371,8 +301,7 @@ func splitPytestRegions(lines []string, summary int) []ptRegion {
 	if limit < 0 {
 		limit = len(lines)
 	}
-	// nextResult[i]: the first result line at or after i and before the
-	// report's own, or -1 (one backward pass: no rescans per header).
+
 	nextResult := make([]int, len(lines)+1)
 	nextResult[len(lines)] = -1
 	for i := len(lines) - 1; i >= 0; i-- {
@@ -391,7 +320,7 @@ func splitPytestRegions(lines []string, summary int) []ptRegion {
 		if isSection && title == "test session starts" {
 			if seenSession || ptReportSections[cur.title] {
 				if nested := nextResult[i+1]; nested >= 0 {
-					i = nested // lines i..nested stay in the current region
+					i = nested
 					continue
 				}
 			}
@@ -420,8 +349,6 @@ func indexRange(a, b int) []int {
 	return s
 }
 
-// exitNote adds a marker when the exit status contradicts a pass-looking
-// result line, and explains exit 5.
 func (r *ptReducer) exitNote(summary string) {
 	switch {
 	case r.c.Exit == 5:
@@ -444,7 +371,6 @@ func (r *ptReducer) trimTrailingBlank() {
 	}
 }
 
-// capped keeps the first n non-blank lines of a section.
 func (r *ptReducer) capped(idx []int, n int) {
 	kept, hidden := 0, 0
 	for _, i := range idx {
@@ -464,14 +390,6 @@ func (r *ptReducer) capped(idx []int, n int) {
 	}
 }
 
-// progress handles the session header and the per-test progress region.
-// Header lines, progress lines, PASSED lines and SKIPPED/XFAIL lines
-// beyond ten per status are counted; everything else (collected N items,
-// FAILED/ERROR/XPASS lines, captured -s output, plugin and INTERNALERROR
-// lines) is kept, with library frames of any traceback among them folded.
-// When nothing else in the report names the failing tests, progress lines
-// with F/E marks are kept too, with the file line a continuation line
-// belongs to.
 func (r *ptReducer) progress(idx []int) {
 	const (
 		skip = iota
@@ -482,7 +400,7 @@ func (r *ptReducer) progress(idx []int) {
 		startedLine
 	)
 	class := make([]int, len(idx))
-	lastFile := -1 // position of the last progress line that names a file
+	lastFile := -1
 	for k, i := range idx {
 		ln := r.lines[i]
 		t := strings.TrimSpace(ln)
@@ -509,7 +427,7 @@ func (r *ptReducer) progress(idx []int) {
 			}
 			switch status := r.status(i); status {
 			case "":
-				class[k] = keep // unknown: captured -s output, plugin lines
+				class[k] = keep
 				if r.xdist && ptNodeIDRe.MatchString(ln) {
 					class[k] = startedLine
 				}
@@ -532,8 +450,6 @@ func (r *ptReducer) progress(idx []int) {
 		case keep:
 			keptIdx = append(keptIdx, i)
 		case progressLine:
-			// Status lines: directory names like tests/errors/ must not
-			// make them look like failures to the guard.
 			progress++
 			r.exempt[i] = true
 		case passedLine:
@@ -541,7 +457,7 @@ func (r *ptReducer) progress(idx []int) {
 			r.exempt[i] = true
 		case startedLine:
 			started++
-			r.exempt[i] = true // a test name, its result is reported below
+			r.exempt[i] = true
 		case statusLine:
 			status := r.status(i)
 			if shown[status] < ptMaxStatusLines {
@@ -549,12 +465,11 @@ func (r *ptReducer) progress(idx []int) {
 				keptIdx = append(keptIdx, i)
 			} else {
 				hidden[status]++
-				r.exempt[i] = true // skip reasons are not failures
+				r.exempt[i] = true
 			}
 		}
 	}
-	// Tracebacks printed outside the report sections (INTERNALERROR>,
-	// pytest-timeout's stack dumps): library frames folded.
+
 	text := make([]string, len(keptIdx))
 	for n, i := range keptIdx {
 		text[n] = r.lines[i]
@@ -581,10 +496,9 @@ func (r *ptReducer) progress(idx []int) {
 	}
 }
 
-// shortSummary keeps "short test summary info" except PASSED lines (-rA).
 func (r *ptReducer) shortSummary(idx []int) {
 	passed := 0
-	for _, i := range idx {
+	for _, i := range r.focusSummary(idx) {
 		ln := r.lines[i]
 		if strings.HasPrefix(ln, "PASSED ") {
 			passed++
@@ -601,11 +515,7 @@ func (r *ptReducer) shortSummary(idx []int) {
 	}
 }
 
-// failures handles FAILURES / ERRORS (and PASSES / XFAILURES) sections:
-// one block per "____ test_name ____" header.
 func (r *ptReducer) failures(idx []int) {
-	// Lines before the first block header: --tb=line output, one location
-	// line per failure. Kept.
 	k := 0
 	for k < len(idx) && !ptBlockRe.MatchString(r.lines[idx[k]]) {
 		if ln := r.lines[idx[k]]; strings.TrimSpace(ln) != "" {
@@ -613,19 +523,18 @@ func (r *ptReducer) failures(idx []int) {
 		}
 		k++
 	}
+	var blocks [][2]int
 	for k < len(idx) {
-		h := idx[k]
 		e := k + 1
 		for e < len(idx) && !ptBlockRe.MatchString(r.lines[idx[e]]) {
 			e++
 		}
-		body := idx[k+1 : e]
-		r.emit(r.lines[h])
-		// Collection errors ("ERROR collecting …") go through the same
-		// path: their messages, hints and E lines are all kept; only runs
-		// of _pytest/importlib frames are folded.
-		r.block(body)
+		blocks = append(blocks, [2]int{k, e})
 		k = e
+	}
+	for _, b := range r.focusBlocks(idx, blocks) {
+		r.emit(r.lines[idx[b[0]]])
+		r.block(idx[b[0]+1 : b[1]])
 	}
 }
 
@@ -639,10 +548,6 @@ func trimBlankIdx(lines []string, idx []int) []int {
 	return idx
 }
 
-// block condenses one failure: its traceback, then its captured output
-// sections. A dashed line that is not a "Captured …" header (pytest-cov's
-// "---- coverage: … ----", "- generated xml file … -") ends the block and
-// everything from there on is kept verbatim.
 func (r *ptReducer) block(body []int) {
 	tbEnd := len(body)
 	for k, i := range body {
@@ -657,7 +562,6 @@ func (r *ptReducer) block(body []int) {
 		ln := r.lines[rest[k]]
 		if !ptCaptureRe.MatchString(ln) {
 			if ptDashRe.MatchString(ln) {
-				// Not a capture: keep the remainder as is.
 				for _, i := range trimBlankIdx(r.lines, rest[k:]) {
 					r.emit(r.lines[i])
 				}
@@ -679,9 +583,7 @@ func (r *ptReducer) block(body []int) {
 		for n, i := range sec {
 			text[n] = r.lines[i]
 		}
-		// Runs of lines differing only in numbers/ids collapse first, then
-		// the section is capped; both keep every error line. Very long
-		// sections are only capped: collapsing classifies every line again.
+
 		var kept []string
 		if len(text) > ptCollapseMax {
 			kept, _ = capLines(text, ptCaptureHead, ptCaptureTail, func(n int) bool { return r.isErr(sec[n]) })
@@ -694,24 +596,22 @@ func (r *ptReducer) block(body []int) {
 	}
 }
 
-// ptFrame is one traceback entry of a long/short/auto style report.
 type ptFrame struct {
-	idx   []int // all lines of the entry, location line included
-	loc   int   // index (into r.lines) of the location line, -1 if none
-	short bool  // "path:N: in func" entry (location first)
-	chain bool  // a chained-exception separator line
+	idx   []int
+	loc   int
+	short bool
+	chain bool
 	lib   bool
 	root  string
 	hasE  bool
 }
 
-// traceback condenses the traceback part of a failure block.
 func (r *ptReducer) traceback(idx []int) {
 	idx = trimBlankIdx(r.lines, idx)
 	if len(idx) == 0 {
 		return
 	}
-	// --tb=native: Python tracebacks, folded like a script's.
+
 	for _, i := range idx {
 		if _, _, _, frame := parseFrame(r.lines[i]); frame || isTracebackStart(r.lines[i]) {
 			text := make([]string, len(idx))
@@ -796,7 +696,7 @@ func (r *ptReducer) traceback(idx []int) {
 			e++
 		}
 		if e-k == 1 {
-			r.emit(r.lines[f.loc]) // a lone library frame: its location only
+			r.emit(r.lines[f.loc])
 		} else {
 			r.emit(foldMarker("", e-k, roots))
 		}
@@ -804,20 +704,16 @@ func (r *ptReducer) traceback(idx []int) {
 	}
 }
 
-// isLocCandidate: location lines start at column 0 and are neither the
-// failing-line marker nor an E line.
 func isLocCandidate(ln string) bool {
 	return ln != "" && ln[0] != ' ' && ln[0] != '\t' && ln[0] != '>' && !ptELineRe.MatchString(ln)
 }
 
-// frame emits one kept traceback entry.
 func (r *ptReducer) frame(f ptFrame) {
 	if f.chain {
 		r.emit("", r.lines[f.idx[0]])
 		return
 	}
 	if f.short {
-		// "path:N: in func", its source line(s), E lines: all short.
 		for _, i := range f.idx {
 			if strings.TrimSpace(r.lines[i]) != "" {
 				r.emit(r.lines[i])
@@ -825,7 +721,7 @@ func (r *ptReducer) frame(f ptFrame) {
 		}
 		return
 	}
-	// Long entry: [funcargs] [source … > failing line …] [E lines] location.
+
 	lines := r.lines
 	arrow := -1
 	for n, i := range f.idx {
@@ -844,25 +740,20 @@ func (r *ptReducer) frame(f ptFrame) {
 		switch {
 		case strings.TrimSpace(ln) == "":
 		case isSource(n):
-			// Decided below.
 		case ptObjArgRe.MatchString(ln):
-			// "runner = <click.testing.CliRunner object at 0x…>": no information.
 		case f.lib && ptFuncargRe.MatchString(ln):
-			// Arguments of a library frame.
 		case f.lib && arrow >= 0 && !strings.HasPrefix(ln, ">") && !ptELineRe.MatchString(ln) && i != f.loc:
 		default:
 			keep[n] = true
 		}
 	}
 	if arrow < 0 {
-		// No failing-line marker: an unusual shape, keep its source.
 		for n := range f.idx {
 			if isSource(n) {
 				keep[n] = true
 			}
 		}
 	} else if !f.lib {
-		// Up to 3 non-blank source lines above ">", up to 4 below it.
 		got := 0
 		for n := arrow - 1; n >= 0 && got < ptSourceBefore; n-- {
 			t := strings.TrimSpace(lines[f.idx[n]])
@@ -873,12 +764,12 @@ func (r *ptReducer) frame(f ptFrame) {
 				break
 			}
 			if ptBracketsRe.MatchString(t) {
-				continue // "],", ")": the tail of a decorator argument list
+				continue
 			}
 			keep[n] = true
 			got++
 			if strings.HasPrefix(t, "def ") || strings.HasPrefix(t, "async def ") {
-				break // the function's own signature: context above it is another scope
+				break
 			}
 		}
 		got = 0
@@ -896,18 +787,7 @@ func (r *ptReducer) frame(f ptFrame) {
 	}
 }
 
-// warnings groups the "warnings summary" section: pytest already groups
-// one warning (message + location) with the tests that raised it; groups
-// with the same category and message at different locations are merged,
-// test ids beyond the first are counted, and the echoed source line is
-// dropped.
 func (r *ptReducer) warnings(idx []int) {
-	// The section ends with pytest's "-- Docs: …" line. Whatever follows is
-	// not a warning: plugins print their terminal summary right after it
-	// (pytest-cov < 5's "---- coverage: … ----" table and its "FAIL
-	// Required test coverage …" verdict, junitxml/html report paths). It is
-	// kept verbatim; so is everything from a dashed separator line on when
-	// the Docs line is missing.
 	var tail []int
 	for k, i := range idx {
 		ln := r.lines[i]
@@ -929,7 +809,7 @@ func (r *ptReducer) warnings(idx []int) {
 	}()
 	type group struct {
 		ids   []string
-		msg   []string // message lines (first carries "path:line: Category: text")
+		msg   []string
 		key   string
 		locs  []string
 		first int
@@ -938,8 +818,6 @@ func (r *ptReducer) warnings(idx []int) {
 	byKey := map[string]*group{}
 	var ids, msg []int
 	flush := func() {
-		// Blank lines inside a message (pytest indents every line of
-		// multi-line warnings, including empty ones) are decoration.
 		var m []int
 		for _, i := range msg {
 			if strings.TrimSpace(r.lines[i]) != "" {
@@ -950,7 +828,7 @@ func (r *ptReducer) warnings(idx []int) {
 		if len(ids) == 0 && len(msg) == 0 {
 			return
 		}
-		// The last line indented 4+ is the echoed source line.
+
 		if n := len(msg); n > 0 && strings.HasPrefix(r.lines[msg[n-1]], "    ") {
 			r.exempt[msg[n-1]] = true
 			msg = msg[:n-1]
@@ -969,7 +847,7 @@ func (r *ptReducer) warnings(idx []int) {
 			}
 		} else {
 			for _, i := range msg {
-				r.exempt[i] = true // merged into an identical message
+				r.exempt[i] = true
 			}
 		}
 		if loc != "" {
@@ -984,14 +862,11 @@ func (r *ptReducer) warnings(idx []int) {
 		ln := r.lines[i]
 		switch {
 		case strings.HasPrefix(ln, "-- Docs: "):
-			// Link to pytest's documentation: dropped.
 		case strings.TrimSpace(ln) == "":
 			if len(msg) > 0 {
 				msg = append(msg, i)
 			}
 		case ln[0] != ' ' && ln[0] != '\t':
-			// A test id (or location) line: after message lines it
-			// starts the next group.
 			if len(msg) > 0 {
 				flush()
 			}
@@ -1004,8 +879,6 @@ func (r *ptReducer) warnings(idx []int) {
 	shown, restGroups, restEntries := 0, 0, 0
 	for _, g := range groups {
 		if shown >= ptMaxWarnGroups && !anyError(g.msg) {
-			// Beyond the cap; a warning carrying an error line (an
-			// unraisable exception's traceback) is still shown.
 			restGroups++
 			restEntries += max(1, len(g.ids))
 			continue
@@ -1032,7 +905,7 @@ func (r *ptReducer) warnings(idx []int) {
 	if restGroups > 0 {
 		r.emit(fmt.Sprintf("[lx: +%d more warning groups (%d test/location entries)]", restGroups, restEntries))
 	}
-	// Test ids of grouped warnings are test names, not messages.
+
 	for _, i := range idx {
 		ln := r.lines[i]
 		if ln != "" && ln[0] != ' ' && !strings.HasPrefix(ln, "-- Docs: ") {
@@ -1043,8 +916,6 @@ func (r *ptReducer) warnings(idx []int) {
 
 var warnMsgRe = lazyre.New(`^\s*(\S(?:.*?\S)?):(\d+): ([A-Za-z_][\w.]*): (.*)$`)
 
-// warnKey returns the grouping key (category + message without location)
-// and the location of a warning's message lines.
 func warnKey(msg []string) (key, loc string) {
 	if len(msg) == 0 {
 		return "", ""

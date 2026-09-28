@@ -16,8 +16,6 @@ import (
 	"github.com/iheeb1/lx/internal/track"
 )
 
-// ---- storage --------------------------------------------------------------
-
 func (s *state) checkStorage() {
 	s.checkTee()
 	s.checkHistory()
@@ -48,14 +46,12 @@ func (s *state) checkTee() {
 	case !fi.IsDir():
 		fix := "rm " + shellQuote(dir) + "  # lx recreates it as a directory"
 		if s.e.Getenv("LX_TEE_DIR") != "" {
-			// The user chose this path: never suggest deleting their file.
 			fix = "export LX_TEE_DIR=<a directory>  # LX_TEE_DIR names a file"
 		}
 		s.add(id, Fail, "the run store "+d+" is not a directory", fix)
 		return
 	}
-	// Named *.tmp so that, should doctor be killed before removing it,
-	// lx's own pruning deletes it within the hour.
+
 	f, err := os.CreateTemp(dir, ".lx-doctor-*.tmp")
 	if err != nil {
 		s.add(id, Fail, "cannot write to the run store "+d+" ("+errText(err)+"): condensed views cannot be stored, so their receipts cannot offer lx show",
@@ -69,13 +65,11 @@ func (s *state) checkTee() {
 	u := storeUsage(dir)
 	msg := fmt.Sprintf("runs: %s, %s in %s", plural(u.runs, "stored run"), fmtBytes(u.bytes), d)
 	if u.foreign > 0 {
-		// lx prunes its own files only, but deletes any stale *.tmp there.
 		s.add(id, Warn, fmt.Sprintf("%s, which also holds %s lx did not write: the run store needs a directory of its own",
 			msg, plural(u.foreign, "file")), "export LX_TEE_DIR=<an empty directory>  # in your shell's startup file")
 		return
 	}
 	if u.bytes > bigStore {
-		// Never `rm -r` a directory: LX_TEE_DIR may point anywhere.
 		s.add(id, Warn, msg+" (over "+fmtBytes(bigStore)+"; lx normally prunes it to "+fmtBytes(tee.MaxBytes)+")",
 			"find "+shellQuote(dir)+" -maxdepth 1 -type f -name '[0-9]*.*' -delete  # deletes every stored run: lx show <id> then has nothing to show")
 		return
@@ -84,14 +78,11 @@ func (s *state) checkTee() {
 }
 
 type usage struct {
-	runs    int   // distinct run ids
-	bytes   int64 // in lx's own files
-	foreign int   // regular files lx did not write (dot files aside)
+	runs    int
+	bytes   int64
+	foreign int
 }
 
-// runID extracts the run id from the name of a file lx's run store writes
-// (<id>.log, <id>.json, <id>.log.part, <id>.log.tmp, <id>.json.tmp), or -1
-// for any other name (2024.notes is not lx's).
 func runID(name string) int {
 	head, ext, _ := strings.Cut(name, ".")
 	switch ext {
@@ -128,7 +119,7 @@ func storeUsage(dir string) (u usage) {
 			ids[id] = true
 		case name == ".seq":
 		case strings.HasPrefix(name, "."):
-			continue // .DS_Store, doctor's own probe…
+			continue
 		default:
 			u.foreign++
 			continue
@@ -186,7 +177,7 @@ func (s *state) history() *historyInfo {
 		return h
 	}
 	h.size = fi.Size()
-	// Count lines in one pass.
+
 	buf := make([]byte, 64<<10)
 	var last byte = '\n'
 	for {
@@ -210,7 +201,7 @@ func (s *state) history() *historyInfo {
 	if last != '\n' {
 		h.records++
 	}
-	// The newest run record is among the last lines.
+
 	const tail = 256 << 10
 	off := max(h.size-tail, 0)
 	chunk := make([]byte, h.size-off)
@@ -224,7 +215,7 @@ func (s *state) history() *historyInfo {
 			Kind string `json:"kind"`
 		}
 		if json.Unmarshal([]byte(lines[i]), &r) != nil || r.T <= 0 || r.Kind == track.KindShow {
-			continue // a recall (lx show) is not a run
+			continue
 		}
 		h.lastRun = time.Unix(r.T, 0)
 		break
@@ -261,8 +252,6 @@ func (s *state) checkHistory() {
 	}
 }
 
-// ---- activity -------------------------------------------------------------
-
 func (s *state) checkActivity() {
 	const id = "activity"
 	if len(s.hooks) == 0 {
@@ -298,11 +287,9 @@ func (s *state) checkActivity() {
 	s.add(id, Warn, msg, "restart Claude Code after lx init, and check that /hooks lists "+s.hooks[0].entry.Command)
 }
 
-// recentFile reports whether any regular file under dir was modified after
-// since. Only modification times are read, never contents.
 func recentFile(dir string, since time.Time) bool {
 	if r, err := filepath.EvalSymlinks(dir); err == nil {
-		dir = r // WalkDir does not descend into a symlinked root
+		dir = r
 	}
 	found := false
 	visited := 0

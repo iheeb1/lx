@@ -2,12 +2,6 @@ package engine
 
 import "strings"
 
-// MachineReadable reports whether the user asked for output meant for a
-// program (porcelain, JSON, NUL-separated, custom templates). Such output
-// must reach the caller byte-for-byte, so lx passes it through untouched.
-//
-// Format flags are judged by their value: `--format=json` is for programs,
-// `ls --format=long` and `ruff --output-format concise` are for people.
 func MachineReadable(c *Context) bool {
 	name := c.Name()
 	args := c.Args()
@@ -37,8 +31,7 @@ func MachineReadable(c *Context) bool {
 			strings.HasPrefix(a, "--message-format"):
 			return true
 		case a == "-json":
-			// go test -json is rendered by the go-test-json filter; every
-			// other go subcommand's JSON goes to programs untouched.
+
 			if !(name == "go" && sub == "test") {
 				return true
 			}
@@ -46,7 +39,7 @@ func MachineReadable(c *Context) bool {
 			return true
 		case flag == "--format", flag == "--output-format", flag == "--reporter", flag == "--formatter", flag == "-f" && isFormatTool(name):
 			v := next()
-			// Templates in tools whose --format is a template language.
+
 			if flag == "--format" && (name == "git" || name == "docker" || name == "podman" || name == "gh" || name == "kubectl") {
 				return true
 			}
@@ -78,8 +71,6 @@ func MachineReadable(c *Context) bool {
 			return true
 		}
 		if sub == "status" {
-			// Short format (-s, --short, and combined forms like -sb) is
-			// git's own compact format; scripts parse it.
 			for _, a := range args {
 				if a == "--short" || shortFlag(a, "s") {
 					return true
@@ -103,8 +94,6 @@ func MachineReadable(c *Context) bool {
 	return false
 }
 
-// shortFlag reports whether a is a (possibly combined) short-flag word such
-// as "-rl" containing any of letters.
 func shortFlag(a, letters string) bool {
 	return len(a) > 1 && a[0] == '-' && a[1] != '-' && strings.ContainsAny(a[1:], letters)
 }
@@ -113,7 +102,6 @@ func isGrep(name string) bool {
 	return name == "grep" || name == "rg" || name == "egrep" || name == "fgrep" || name == "ag"
 }
 
-// isFormatTool: tools whose -f selects an output format (eslint -f json).
 func isFormatTool(name string) bool {
 	return name == "eslint" || name == "stylelint" || name == "golangci-lint" || name == "rubocop"
 }
@@ -126,6 +114,6 @@ func isMachineFormat(f string) bool {
 			return true
 		}
 	}
-	// A format string with placeholders is a template.
+
 	return strings.Contains(f, "%") || strings.Contains(f, "{{")
 }

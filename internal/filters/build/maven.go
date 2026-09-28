@@ -9,40 +9,10 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// mavenFilter renders mvn / mvnw output:
-//
-//   - [INFO] chatter (separators, "--- plugin:ver:goal (id) @ module ---"
-//     banners, "Building …", resource/compiler progress, per-class
-//     "Running X" / passing "Tests run: …, Time elapsed … -- in X", Total
-//     time / Finished at, the reactor build order, SUCCESS rows of the
-//     Reactor Summary) and "Downloading/Downloaded from" lines are counted;
-//   - every other [INFO] line (BUILD SUCCESS/FAILURE, the final "Tests run:"
-//     totals, "N errors", plugin messages lx does not know) is kept;
-//   - every [WARNING] line is kept (identical repeats as one line + [×N]),
-//     except that a javac warning ("[WARNING] /x/A.java:[12,8] msg" and its
-//     indented detail lines) repeating the message and details of an
-//     earlier one adds its location to that one's "[lx: same warning at N
-//     more locations: …]" list; error-class warnings are never merged;
-//   - every [ERROR] line is kept, except Maven's constant help footer
-//     ("-> [Help 1]", "To see the full stack trace…", "Re-run Maven using
-//     the -X switch…", the [Help 1] link), which says nothing about the
-//     failure, library stack frames printed under the [ERROR] prefix
-//     (folded with engine.FoldStacks, application frames kept), and a run
-//     of 3+ [ERROR] lines repeating line for line a run shown above
-//     (surefire prints a fork crash twice), replaced by a count; "After
-//     correcting the problems, you can resume the build with … -rf :module"
-//     is kept;
-//   - lines without a level (exceptions, javac "symbol:"/"location:"
-//     lines, test output) are kept with stack traces folded, except the
-//     stdout of test classes that passed, which is counted.
 type mavenFilter struct{}
 
 func (mavenFilter) Name() string { return "maven" }
 
-// GuardsErrors: the help footer lines are error-class ("…the errors…")
-// and dropped on purpose; so are reactor rows of modules named like
-// "error-handling ... SUCCESS" and library frames under the [ERROR] prefix
-// (error-class by the level word only). The filter guards every other line.
 func (mavenFilter) GuardsErrors() bool { return true }
 
 func (mavenFilter) Match(c *engine.Context) bool {
@@ -50,7 +20,7 @@ func (mavenFilter) Match(c *engine.Context) bool {
 	if n != "mvn" && n != "mvnw" && n != "mvnd" {
 		return false
 	}
-	// Help, version and the dependency/help plugin goals print data.
+
 	if hasArg(c.Args(), "-v", "--version", "-h", "--help", "-X", "--debug") {
 		return false
 	}
@@ -63,9 +33,6 @@ func (mavenFilter) Match(c *engine.Context) bool {
 	return true
 }
 
-// Stream: goals that start the application or a dev server (spring-boot:run,
-// quarkus:dev, jetty:run …) do not finish on their own; buffering them would
-// hang the caller.
 func (mavenFilter) Stream(c *engine.Context) bool {
 	for _, a := range c.Args() {
 		switch {
@@ -114,14 +81,14 @@ func (mavenFilter) Apply(c *engine.Context, out string) (string, bool) {
 	exempt := make([]bool, len(lines))
 	var (
 		out2              []string
-		seg               []string // unlevelled lines pending
+		seg               []string
 		info, downloads   int
 		help, passOut     int
-		warnCount         = map[string]int{} // warning line → occurrences
-		inClass           bool               // between "Running X" and its "Tests run:" line
-		classStart        int                // index in out2 where the class's output starts
+		warnCount         = map[string]int{}
+		inClass           bool
+		classStart        int
 		classLines        []int
-		reactorHdr        string // the Reactor Summary header line, if any
+		reactorHdr        string
 		reactorBad        bool
 		reactorRowsHidden int
 	)
@@ -133,10 +100,10 @@ func (mavenFilter) Apply(c *engine.Context, out string) (string, bool) {
 		seg = nil
 	}
 	var (
-		groups   = map[string]*javacGroup{} // javac warning message → its first occurrence
+		groups   = map[string]*javacGroup{}
 		groupSeq []*javacGroup
-		shownErr = map[string]int{}  // [ERROR] line → index of its first occurrence
-		errCache = map[string]bool{} // engine.IsError of javac warning lines
+		shownErr = map[string]int{}
+		errCache = map[string]bool{}
 	)
 	for i := 0; i < len(lines); i++ {
 		ln := lines[i]
@@ -195,28 +162,24 @@ func (mavenFilter) Apply(c *engine.Context, out string) (string, bool) {
 				continue
 			}
 			if inClass && passingClass(msg) {
-				// Skipped tests but no failure: the line stays, the
-				// class's output goes.
+
 				out2, passOut = endPassingClass(lines, exempt, out2, classStart, classLines, passOut)
 				inClass = false
 			}
-			// The position cannot change how a javac line classifies (it
-			// sits between ".java:" and the message), so one call covers
-			// every occurrence of a message in a file.
+
 			if jm := mvnJavacRe.FindStringSubmatch(msg); jm != nil && !isErrCached(errCache, "[WARNING] "+jm[1]+":[1,1] "+jm[3]) {
-				// A javac warning and its indented detail lines.
+
 				end := javacDetailsEnd(lines, i)
 				details := lines[i+1 : end]
 				g := groups[jm[3]]
 				switch {
 				case g != nil && equalLines(details, g.details):
 					if warnCount[ln] > 0 {
-						warnCount[ln]++ // an exact repeat: counted on its first line
+						warnCount[ln]++
 					} else {
 						g.locs = append(g.locs, jm[1]+":"+jm[2])
 					}
-					// Not error-class (checked above), and its detail lines
-					// are the shown ones: nothing for the guard to look at.
+
 					for k := i; k < end; k++ {
 						exempt[k] = true
 					}
@@ -229,7 +192,7 @@ func (mavenFilter) Apply(c *engine.Context, out string) (string, bool) {
 					out2 = append(out2, details...)
 					out2 = append(out2, g.sentinel())
 				default:
-					// Same message, other details: shown in full.
+
 					warnCount[ln]++
 					if warnCount[ln] == 1 {
 						out2 = append(out2, ln)
@@ -241,22 +204,18 @@ func (mavenFilter) Apply(c *engine.Context, out string) (string, bool) {
 			}
 			warnCount[ln]++
 			if warnCount[ln] > 1 {
-				continue // counted on its first occurrence
+				continue
 			}
 			out2 = append(out2, ln)
 		case "ERROR":
 			if mvnHelpFooter.MatchString(msg) {
-				// Maven's constant help footer: identical in every failed
-				// build, nothing about this failure.
+
 				help++
 				exempt[i] = true
 				continue
 			}
 			if mvnFrameRe.MatchString(msg) {
-				// "[ERROR] \tat org.apache.maven…" — a stack trace Maven
-				// prints under its own level prefix (surefire fork crashes,
-				// plugin exceptions): library frames are folded as the
-				// generic reducer folds unprefixed ones.
+
 				end := i
 				for end < len(lines) {
 					fm := mvnLevelRe.FindStringSubmatch(lines[end])
@@ -270,9 +229,7 @@ func (mavenFilter) Apply(c *engine.Context, out string) (string, bool) {
 				continue
 			}
 			if f, seen := shownErr[ln]; seen {
-				// Surefire prints a fork crash twice (the message, then the
-				// exception wrapping it): a run of 3+ [ERROR] lines repeating,
-				// line for line, a run shown above is replaced by a count.
+
 				k := 0
 				for i+k < len(lines) && f+k < i && lines[i+k] == lines[f+k] && plainError(lines[i+k]) {
 					k++
@@ -286,17 +243,15 @@ func (mavenFilter) Apply(c *engine.Context, out string) (string, bool) {
 				shownErr[ln] = i
 			}
 			if mvnTestClassRe.MatchString(msg) {
-				inClass = false // a failing class keeps its output
+				inClass = false
 			}
 			out2 = append(out2, ln)
-		default: // DEBUG
+		default:
 			out2 = append(out2, ln)
 		}
 	}
 	flush()
-	// Indexes into out2 shift when a passing class's output is dropped, so
-	// the reactor header, warning counts and javac location lists are
-	// resolved by text.
+
 	kept := out2[:0]
 	for _, ln := range out2 {
 		if reactorHdr != "" && !reactorBad && ln == reactorHdr {
@@ -330,13 +285,11 @@ func (mavenFilter) Apply(c *engine.Context, out string) (string, bool) {
 	}
 	res := strings.Join(collapseBlank(out2), "\n")
 	if c.Failed() && !hasErrorLine(res) {
-		return "", false // killed mid-build: the generic reducer keeps the tail
+		return "", false
 	}
 	return selfGuard(lines, func(i int) bool { return exempt[i] }, res), true
 }
 
-// passingClass reports surefire's per-class line for a class without
-// failures or errors.
 func passingClass(msg string) bool {
 	if !strings.HasPrefix(msg, "Tests run: ") {
 		return false
@@ -345,8 +298,6 @@ func passingClass(msg string) bool {
 	return m != nil && m[1] == "0" && m[2] == "0"
 }
 
-// endPassingClass drops what a passing test class printed (error-like lines
-// stay) and marks those lines exempt from the guard.
 func endPassingClass(lines []string, exempt []bool, out []string, from int, classLines []int, counted int) ([]string, int) {
 	out, counted = dropPassingOutput(out, from, counted)
 	for _, k := range classLines {
@@ -357,8 +308,6 @@ func endPassingClass(lines []string, exempt []bool, out []string, from int, clas
 	return out, counted
 }
 
-// dropPassingOutput removes the unlevelled lines a passing test class
-// printed (out[from:]), keeping error-like ones.
 func dropPassingOutput(out []string, from, counted int) ([]string, int) {
 	if from > len(out) {
 		return out, counted
@@ -377,30 +326,21 @@ func dropPassingOutput(out []string, from, counted int) ([]string, int) {
 }
 
 var (
-	// mvnJavacRe: a javac diagnostic as the compiler plugin prints it after
-	// the level: "/x/A.java:[12,8] [unchecked] unchecked conversion".
 	mvnJavacRe = lazyre.New(`^(\S.*?):(\[\d+,\d+\]) (.+)$`)
-	// mvnFrameRe: a stack frame (or "... N more") printed after a level.
+
 	mvnFrameRe = lazyre.New(`^\s*(?:at \S|\.\.\. \d+ (?:more|common frames omitted)$)`)
 )
 
-// javacGroup is the first occurrence of a javac warning message; later
-// occurrences with the same detail lines only add their location.
 type javacGroup struct {
 	id      int
 	details []string
 	locs    []string
 }
 
-// javacSentinel starts the placeholder line that becomes a group's
-// "[lx: same warning at N more locations: …]" marker (or nothing).
 const javacSentinel = "\x00lx-javac:"
 
 func (g *javacGroup) sentinel() string { return javacSentinel + strconv.Itoa(g.id) }
 
-// javacDetailsEnd returns the end of the indented, unlevelled detail lines
-// ("  symbol:   method helper(int)", "  missing type arguments …") that
-// follow a javac diagnostic at lines[i].
 func javacDetailsEnd(lines []string, i int) int {
 	j := i + 1
 	for j < len(lines) && lines[j] != "" && (lines[j][0] == ' ' || lines[j][0] == '\t') && !mvnLevelRe.MatchString(lines[j]) {
@@ -421,8 +361,6 @@ func equalLines(a, b []string) bool {
 	return true
 }
 
-// relLocs renders "path:[l,c]" locations with paths under the working
-// directory made relative, and a path equal to the previous one left out.
 func relLocs(c *engine.Context, locs []string) []string {
 	out := make([]string, len(locs))
 	prev := ""
@@ -439,11 +377,6 @@ func relLocs(c *engine.Context, locs []string) []string {
 	return out
 }
 
-// foldPrefixedFrames folds the library frames of a stack trace printed
-// under Maven's "[ERROR] " prefix with engine.FoldStacks, keeping the prefix
-// on every line it keeps (the fold marker included), and marks the frames
-// it folded exempt from the self-guard: the level word makes every frame
-// error-class, but a library frame is not an error report.
 func foldPrefixedFrames(c *engine.Context, lines []string, exempt []bool) []string {
 	frames := make([]string, len(lines))
 	prefix := make([]string, len(lines))
@@ -471,14 +404,11 @@ func foldPrefixedFrames(c *engine.Context, lines []string, exempt []bool) []stri
 	return out
 }
 
-// plainError reports an [ERROR] line that is shown as it is: not empty, not
-// Maven's help footer, not a stack frame.
 func plainError(ln string) bool {
 	m := mvnLevelRe.FindStringSubmatch(ln)
 	return m != nil && m[1] == "ERROR" && !mvnHelpFooter.MatchString(m[2]) && !mvnFrameRe.MatchString(m[2])
 }
 
-// isErrCached is engine.IsError memoized in cache (by line text).
 func isErrCached(cache map[string]bool, ln string) bool {
 	v, ok := cache[ln]
 	if !ok {

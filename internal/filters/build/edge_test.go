@@ -28,7 +28,7 @@ func mine(name string) bool {
 func TestMatch(t *testing.T) {
 	cases := []struct {
 		argv string
-		want string // "" = none of this package's filters
+		want string
 	}{
 		{"make", "make"}, {"gmake all", "make"}, {"/usr/bin/make -j8", "make"}, {"make -C lib test", "make"},
 		{"make --jobs=4 install", "make"}, {"make VERBOSE=1", "make"}, {"make -Oline", "make"}, {"make -kj4", "make"},
@@ -51,7 +51,7 @@ func TestMatch(t *testing.T) {
 		{"gradle build", "gradle"}, {"./gradlew test", "gradle"}, {"gradlew.bat build", "gradle"},
 		{"./gradlew :app:test --tests CalcTest", "gradle"},
 		{"gradle tasks", ""}, {"./gradlew --version", ""}, {"./gradlew dependencies", ""}, {"./gradlew :app:dependencies", ""},
-		{"./gradlew build --continuous", "gradle"}, // matched; Stream claims it
+		{"./gradlew build --continuous", "gradle"},
 		{"mvn test", "maven"}, {"./mvnw -B package", "maven"}, {"mvn -B -ntp verify", "maven"}, {"mvn -pl api -am install", "maven"},
 		{"mvn -v", ""}, {"mvn dependency:tree", ""}, {"mvn help:effective-pom", ""},
 	}
@@ -68,7 +68,6 @@ func TestMatch(t *testing.T) {
 	}
 }
 
-// filters with an argv each matches, for table tests.
 var filterArgv = map[string][]string{
 	"make":        {"make"},
 	"cmake-build": {"cmake", "--build", "build"},
@@ -95,10 +94,10 @@ func TestEmptyAndUnknownBail(t *testing.T) {
 		"",
 		"\n\n",
 		"Bonjour le monde\nTout va bien",
-		"Kompiliere foo v1.0\nFertig", // not cargo's English status verbs
-		"Construction réussie en 3 s", // not Gradle's
-		"Scanning for projects...\nBUILD SUCCESS",     // Maven text without its [INFO] levels
-		"{\n  \"name\": \"demo\",\n  \"ok\": true\n}", // a program's JSON
+		"Kompiliere foo v1.0\nFertig",
+		"Construction réussie en 3 s",
+		"Scanning for projects...\nBUILD SUCCESS",
+		"{\n  \"name\": \"demo\",\n  \"ok\": true\n}",
 	}
 	for name, argv := range filterArgv {
 		for _, in := range unknown {
@@ -134,15 +133,13 @@ func TestSingleLine(t *testing.T) {
 	}
 }
 
-// A failed run must never read as a success: when nothing error-like would
-// be left in view, the filters bail and the generic reducer shows the tail.
 func TestFailedWithPassLookingText(t *testing.T) {
 	cases := []struct {
 		name string
 		exit int
 		in   string
 	}{
-		{"make", 2, "gcc -c -o a.o a.c\ngcc -c -o b.o b.c\ngcc -c -o c.o c.c"}, // killed mid-build
+		{"make", 2, "gcc -c -o a.o a.c\ngcc -c -o b.o b.c\ngcc -c -o c.o c.c"},
 		{"cmake-build", 2, "[ 50%] Building C object a.o\n[100%] Built target a"},
 		{"cargo", 101, "   Compiling a v0.1.0\n   Compiling b v0.1.0\n    Finished `dev` profile [unoptimized] target(s) in 1.00s"},
 		{"cargo-test", 101, "     Running unittests src/lib.rs (target/debug/deps/a-1)\n\nrunning 2 tests\ntest a ... ok\ntest b ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"},
@@ -168,8 +165,7 @@ func TestNativeShapes(t *testing.T) {
 	t.Run("directory announced for kept lines", func(t *testing.T) {
 		in := "make[1]: Entering directory '/home/user/src/demo/lib'\ncc -c x.c\nx.c:1:1: error: unknown type name 'foo'\nmake[1]: *** [x.o] Error 1\nmake[1]: Leaving directory '/home/user/src/demo/lib'\nmake: *** [lib] Error 2"
 		got, _ := apply(t, 2, []string{"make"}, in)
-		// The Entering line is shown to place the kept lines; only the
-		// Leaving line is hidden (and counted).
+
 		if !strings.HasPrefix(got, "[lx: hidden: 1 directory line]\nmake[1]: Entering directory '/home/user/src/demo/lib'\ncc -c x.c\n") {
 			t.Fatalf("directory not announced before the kept command:\n%s", got)
 		}
@@ -310,7 +306,6 @@ func TestSelfGuard(t *testing.T) {
 	}
 }
 
-// Huge outputs: every filter stays linear and shrinks the output.
 func TestHuge(t *testing.T) {
 	n := 50000
 	if v := os.Getenv("LX_HUGE_N"); v != "" {
@@ -356,8 +351,7 @@ func TestHuge(t *testing.T) {
 		}) + "[INFO] BUILD FAILURE\n[ERROR] Failed to execute goal x on project m1: boom"},
 	}
 	for _, tc := range cases {
-		// Linear time: a quarter of the input must take clearly more than
-		// a sixteenth of the time (quadratic work would take a sixteenth).
+
 		lines := strings.Split(tc.in, "\n")
 		quarter := strings.Join(lines[:len(lines)/4], "\n") + "\n" + lines[len(lines)-1]
 		startQ := time.Now()
@@ -418,7 +412,7 @@ func TestGradleShapes(t *testing.T) {
 			t.Fatalf("missing %q in\n%s", want, got)
 		}
 	}
-	body := got[strings.Index(got, "\n")+1:] // after the "[lx: hidden: …]" note
+	body := got[strings.Index(got, "\n")+1:]
 	for _, gone := range []string{"PASSED", "* Try:", "--scan", "compileJava"} {
 		if strings.Contains(body, gone) {
 			t.Fatalf("%q still shown in\n%s", gone, got)

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "npx",
+    "eslint",
+    "-f",
+    "json",
+    "lib",
+    "--rule",
+    "no-var: error"
+  ],
+  "shell": "npx eslint -f json lib --rule no-var: error",
+  "exit_code": 1,
+  "description": "REAL (negative): npx eslint -f json lib in expressjs/express with stricter rules: ESLint's JSON report (the caller asked for data)",
+  "cwd": "/home/user/src/express",
+  "repo": "expressjs/express",
+  "tool": ""
+}

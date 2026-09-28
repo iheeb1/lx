@@ -25,7 +25,7 @@ func TestGenericCorpus(t *testing.T) {
 	}
 	var rows []row
 	cat := map[string][2]int{}
-	for _, c := range fixture.All(t) {
+	for _, c := range raceSample(fixture.All(t)) {
 		in := c.Clean()
 		ctx := c.Context()
 		start := time.Now()
@@ -68,17 +68,6 @@ func TestGenericCorpus(t *testing.T) {
 	t.Log("\n" + b.String())
 }
 
-// unexplainedMissing returns the error-class input lines absent from out
-// that no justified exception covers:
-//
-//   - shape "json": the missing lines are JSON source lines whose string
-//     values merely contain error words (issue titles/bodies). They are
-//     data, re-rendered as table cells / minified JSON, not status lines.
-//   - shape "paths": the missing lines are file names containing words
-//     like "error" or "conflict"; the tree still lists every name (checked:
-//     the base name, or a pruned heavy directory, appears in the output).
-//   - lines longer than 1200 runes (minified bundles) are cut by
-//     ShortenLine, as they always were; their head must still appear.
 func unexplainedMissing(in, out, shape string) []string {
 	var bad []string
 	for _, ln := range engine.MissingErrorLines(in, out) {

@@ -8,22 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// curlFilter condenses curl output.
-//
-//   - The progress meter (its two header lines and every frame, including
-//     frames glued to the next stderr line) and the -# bar are dropped.
-//   - -v: "* " connection lines are dropped except failures and redirect
-//     notes; "{ [N bytes data]" markers are dropped; of the "> " request
-//     lines only the method line is kept (all of them when an Origin header
-//     was sent).
-//   - Response heads (-i, -v, -I, -D -): the status line and the headers an
-//     agent acts on are kept (content type/length, location, retry-after,
-//     auth challenges, rate limits, link, set-cookie names), the others are
-//     named on one line; every header is kept for 4xx/5xx responses, with
-//     -I, and when an Origin header was sent.
-//   - The body goes through renderBody (JSON, HTML, binary, big text).
-//   - "curl: (N) …" errors and warnings are kept verbatim. When curl exited
-//     non-zero without printing its error (-s), the exit code is explained.
 type curlFilter struct{}
 
 func (curlFilter) Name() string    { return "curl" }
@@ -35,7 +19,6 @@ type curlOpts struct {
 	verbose, include, head, dumpStdout, progressBar, writeOut, origin, trace, location bool
 }
 
-// curlValueShort are the short options that take a value.
 const curlValueShort = "AbcCdDeEFHKmoPQrtTuUwxXyYz"
 
 var curlValueLong = map[string]bool{
@@ -140,27 +123,23 @@ func parseCurl(args []string) curlOpts {
 var (
 	meterHeaderRe = lazyre.New(`^\s*% Total\s+% Received\s+% Xferd\s+Average Speed\s+Time\s+Time\s+Time\s+Current$` +
 		`|^\s+Dload\s+Upload\s+Total\s+Spent\s+Left\s+Speed$`)
-	// meterFrameRe is one progress-meter frame (curl's lib/progress.c:
-	// %3d %5s %3d %5s %3d %5s  %5s  %5s %8s %8s %8s %5s).
+
 	meterFrameRe = lazyre.New(`^ *\d{1,3} +` + meterSize + ` +\d{1,3} +` + meterSize + ` +\d{1,3} +` + meterSize +
 		` +` + meterSize + ` +` + meterSize + ` +` + meterTime + ` +` + meterTime + ` +` + meterTime + ` +` + meterSize)
-	// hashBarRe is the -# bar ("###### 42.0%") and its start-up spinner.
+
 	hashBarRe      = lazyre.New(`^#[#=O\- ]*(?: \d{1,3}\.\d%)?$`)
 	curlDiagRe     = lazyre.New(`^curl: `)
 	curlExitLineRe = lazyre.New(`^curl: \(\d+\) `)
 	curlWarningRe  = lazyre.New(`^Warning: `)
 	dataMarkerRe   = lazyre.New(`^[{}] \[\d+ bytes data\]$`)
-	// curlInfoRe: "* " lines curl prints after a body starts. Anything else
-	// starting with "* " after a response head is body text (a markdown
-	// list), not verbose output.
+
 	curlInfoRe = lazyre.New(`^\* (?:Connection #\d+ to host .* left intact|Closing connection(?: #?\d+)?|Connection #\d+ .*|` +
 		`Leftovers after chunking.*|Excess found .*|HTTP/\d stream \d+ .*|TLSv[\d.]+ \((?:IN|OUT)\), TLS .*|\(\d+\) \((?:IN|OUT)\), TLS .*|` +
 		`we are done reading and this is set to close, stop send|Found bundle for host.*|Re-using existing connection.*|` +
 		`Recv failure: .*|Send failure: .*|OpenSSL SSL_read: .*|transfer closed with .*|Operation timed out after .*|` +
 		`Failed .*|Issue another request to this URL: .*|Ignoring the response-body|Clear auth, redirects .*|` +
 		`abort upload.*|Maximum \(\d+\) redirects followed|stopped the pause stream!?)$`)
-	// curlFailRe marks "* " lines worth keeping: failures, TLS/certificate
-	// problems, and redirect-following notes.
+
 	curlFailRe = lazyre.New(`(?i)\b(?:fail(?:ed|ure|s)?|errors?|refused|timed out|timeout|unable to|could not|couldn't|` +
 		`denied|reset by peer|connection reset|problem|expired|(?:does|did)n?'?t match|not match|abort(?:ed|ing)?|rejected|` +
 		`invalid|unrecogni[sz]ed|no route to host|unreachable|bad (?:request|gateway|file|certificate)|closed with \d+ bytes|` +
@@ -171,13 +150,10 @@ var (
 const (
 	meterSize = `\d+(?:\.\d+)?[kMGTPE]?`
 	meterTime = `(?:--:--:--|\d+:\d\d:\d\d|\d+d \d\dh|\d+d)`
-	// meterWidth is the width of one frame (curl 7.x-8.x); text glued
-	// after it is output from the other stream.
+
 	meterWidth = 78
 )
 
-// cutMeterFrame reports whether ln starts with a progress-meter frame and
-// returns the text after it (another stream's output glued to the frame).
 func cutMeterFrame(ln string) (string, bool) {
 	if len(ln) < 60 || !hasMeterShape(ln) {
 		return "", false
@@ -187,8 +163,7 @@ func cutMeterFrame(ln string) (string, bool) {
 		return "", false
 	}
 	end := loc[1]
-	// Frames are fixed-width; the regexp's last field is greedy, so prefer
-	// the width when the frame ends exactly there (glued digits).
+
 	if len(ln) > meterWidth && end > meterWidth && ln[meterWidth-6] == ' ' {
 		if m := meterFrameRe.FindStringIndex(ln[:meterWidth]); m != nil && m[1] == meterWidth {
 			end = meterWidth
@@ -197,8 +172,6 @@ func cutMeterFrame(ln string) (string, bool) {
 	return ln[end:], true
 }
 
-// hasMeterShape is a cheap filter before the frame regexp: frames contain
-// three time fields.
 func hasMeterShape(ln string) bool {
 	return strings.Count(ln[:min(len(ln), 90)], ":") >= 6 || strings.Contains(ln, "--:--:--")
 }
@@ -207,13 +180,10 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 	e := effective(c)
 	o := parseCurl(e.Args())
 	if o.trace {
-		return "", false // --trace-ascii - output: not modeled
+		return "", false
 	}
 	heads := o.verbose || o.include || o.head || o.dumpStdout
-	// curl's exit message is numbered with its exit code; when it landed
-	// inside a line of the body (stdout flushed after stderr), move it to
-	// a line of its own. Only the number curl exited with is looked for,
-	// so body text quoting another curl error stays where it is.
+
 	var gluedExit string
 	if c.Exit > 0 {
 		gluedExit = fmt.Sprintf("curl: (%d) ", c.Exit)
@@ -225,30 +195,27 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 			}
 		}
 		if o.verbose {
-			// "* Connection #0 to host x left intact" printed while a
-			// body line was still in curl's stdout buffer.
+
 			return gluedInfo(ln)
 		}
 		return -1
 	})
-	// glued[k]: lines[k] is the part of a stdout line before a message
-	// that landed inside it; the line's rest follows the message, so the
-	// body line continues on the next body line.
+
 	glued := func(k int) bool { return k+1 < len(lines) && lineIdx[k] == lineIdx[k+1] }
 
 	var (
 		res       []string
-		body      []string // body lines, with meterNote where a frame landed
-		bodyNums  []int    // 1-based output line number of each body line (0 for meterNote)
-		bodyJoin  []bool   // the body line continues on the next body line (a message was glued into it)
-		pending   []string // kept lines that arrived while a body was open
+		body      []string
+		bodyNums  []int
+		bodyJoin  []bool
+		pending   []string
 		cur, last *headerBlock
-		inBody    bool // a response head ended: lines are body until the next request
+		inBody    bool
 		exitLine  bool
 		meterHit  bool
 		inRequest bool
-		hidInfo   int // "* " lines dropped
-		hidReq    int // "> " request header lines dropped
+		hidInfo   int
+		hidReq    int
 	)
 	emit := func(ln string) {
 		if len(body) > 0 {
@@ -277,10 +244,9 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 			case !meterHit:
 				res = append(res, r...)
 			case sameLines(r, plain):
-				res = append(res, body...) // verbatim: mark the spot inline
+				res = append(res, body...)
 			default:
-				// The body is condensed, so the spots cannot be marked
-				// inline: say how many there were.
+
 				res = append(append(res, r...), fmt.Sprintf(meterNoteCondensed, len(body)-len(plain)))
 			}
 		}
@@ -294,11 +260,11 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 		keepAll := o.head || o.origin || cur.status >= 400
 		res = append(res, cur.render(keepAll)...)
 		if cur.prefix == "" {
-			res = append(res, "") // the blank line ending a head
+			res = append(res, "")
 		}
 		last, cur, inBody = cur, nil, hasBody(cur, o)
 	}
-	var k int // index in lines of the line being read
+	var k int
 	addBody := func(i int, ln string) {
 		body, bodyNums, bodyJoin = append(body, ln), append(bodyNums, i+1), append(bodyJoin, glued(k))
 	}
@@ -310,12 +276,10 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 			continue
 		}
 		if rest, ok := cutMeterFrame(ln); ok {
-			// A frame after output started may have overwritten the text
-			// before it on this line: say so where it happened.
+
 			switch {
 			case len(body) > 0, inBody && last != nil:
-				// Inside a body, or where one was due after a response
-				// head (the frame may have erased the body's first line).
+
 				meterHit = true
 				body, bodyNums, bodyJoin = append(body, meterNote), append(bodyNums, 0), append(bodyJoin, false)
 			case cur != nil:
@@ -329,8 +293,7 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 		if o.progressBar && hashBarRe.MatchString(ln) {
 			continue
 		}
-		// curl's own messages. Inside a body only the "curl: (N) …" exit
-		// message is taken as curl's: other lines are body text.
+
 		if curlExitLineRe.MatchString(ln) || len(body) == 0 && (curlDiagRe.MatchString(ln) || curlWarningRe.MatchString(ln)) {
 			exitLine = exitLine || curlExitLineRe.MatchString(ln)
 			closeHead()
@@ -347,7 +310,7 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 				}
 				switch {
 				case inBody && !curlInfoRe.MatchString(ln):
-					addBody(i, ln) // body text such as a markdown list
+					addBody(i, ln)
 				case curlFailRe.MatchString(ln):
 					emit(ln)
 				default:
@@ -367,7 +330,7 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 					inBody, inRequest = false, true
 					res = append(res, ln)
 				case inBody:
-					addBody(i, ln) // a quoted line of the body
+					addBody(i, ln)
 				default:
 					emit(ln)
 				}
@@ -398,8 +361,7 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 					closeHead()
 					continue
 				}
-				// Every line up to the blank one belongs to the head
-				// (fields, folded continuations, a field split by a frame).
+
 				cur.fields = append(cur.fields, ln)
 				continue
 			}
@@ -440,9 +402,6 @@ func (curlFilter) Apply(c *engine.Context, out string) (string, bool) {
 	return strings.Join(res, "\n"), true
 }
 
-// gluedInfo returns where a curl -v info line ("* Connection #0 to host x
-// left intact") starts inside ln, or -1. Such a line always runs to the
-// end of ln, so ln[k:] must be one entirely.
 func gluedInfo(ln string) int {
 	for k := strings.LastIndex(ln, "* "); k > 0; k = strings.LastIndex(ln[:k], "* ") {
 		if curlInfoRe.MatchString(ln[k:]) {
@@ -452,9 +411,6 @@ func gluedInfo(ln string) int {
 	return -1
 }
 
-// hasBody reports whether curl prints a body after this response head: not
-// for HEAD requests, 1xx/204/304, an empty Content-Length, or a redirect
-// that -L follows.
 func hasBody(h *headerBlock, o curlOpts) bool {
 	switch {
 	case o.head, h.status >= 100 && h.status < 200, h.status == 204, h.status == 304,
@@ -470,10 +426,8 @@ func hasBody(h *headerBlock, o curlOpts) bool {
 	return true
 }
 
-// meterNote marks where curl's progress meter was written into the body.
 const meterNote = "[lx: curl's progress meter was printed into the output here, so text on this line may be lost — use -s (or -sS) for intact output]"
 
-// meterNoteCondensed follows a condensed body the meter was written into.
 const meterNoteCondensed = "[lx: curl's progress meter was printed into the body above (%d×), so some of its text may be lost — use -s (or -sS) for intact output]"
 
 func sameLines(a, b []string) bool {

@@ -10,7 +10,7 @@ func TestClassify(t *testing.T) {
 		line string
 		want Level
 	}{
-		// Real errors.
+
 		{"src/app.ts(12,5): error TS2322: Type 'string' is not assignable to type 'number'.", Err},
 		{"--- FAIL: TestCalledAs/find/conflict (0.00s)", Err},
 		{"FAIL\tgithub.com/spf13/cobra\t0.412s", Err},
@@ -28,7 +28,7 @@ func TestClassify(t *testing.T) {
 		{"npm error code ERESOLVE", Err},
 		{"2 failed, 0 errors", Err},
 		{"x src/a.test.ts > parses > rejects bad input", Normal},
-		// Names, not status.
+
 		{"=== RUN   TestCalledAs/find/conflict", Normal},
 		{"--- SKIP: TestErrors (0.00s)", Normal},
 		{"go: downloading github.com/pkg/errors v0.9.1", Normal},
@@ -43,7 +43,7 @@ func TestClassify(t *testing.T) {
 		{"no failures", Normal},
 		{"expect(fn).toThrowError()", Normal},
 		{"if err != nil {", Normal},
-		// Warnings.
+
 		{"npm warn deprecated inflight@1.0.6: This module is not supported", Warn},
 		{"warning: unused variable `x`", Warn},
 	}

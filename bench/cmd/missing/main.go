@@ -1,6 +1,3 @@
-// Command missing lists, for failing corpus captures, the error lines and
-// file:line locations that lx's view does not keep (a debugging aid for the
-// fidelity numbers in bench/out/results.json).
 package main
 
 import (
@@ -43,7 +40,7 @@ func main() {
 				fmt.Printf("  … +%d locations\n", len(locs)-8)
 				break
 			}
-			// Show the raw line the location came from.
+
 			for _, ln := range strings.Split(fc.Clean(), "\n") {
 				if strings.Contains(ln, l) {
 					fmt.Printf("  loc: %.150s\n", strings.TrimSpace(ln))

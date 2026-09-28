@@ -14,9 +14,7 @@ import (
 
 var corpusCases = []struct {
 	name, filter string
-	// process is the Result.Filter Process must report. grep-no-match
-	// prints nothing (exit 1): Process passes empty output through before
-	// any filter runs, and Apply bails on it.
+
 	process string
 }{
 	{"grep-no-match", "search", "passthrough"},
@@ -37,46 +35,37 @@ func TestCorpus(t *testing.T) {
 	}
 }
 
-// extraCases are real outputs captured for this package (testdata/corpus,
-// sanitized like the shared corpus) covering shapes the shared corpus lacks.
 var extraCases = []struct{ name, filter, process string }{
 	{"git-grep-n", "search", "search"},
 	{"grep-E-alternation", "search", "search"},
-	{"grep-binary", "search", "passthrough"}, // 11 "Binary file" lines: kept as is, nothing saved
+	{"grep-binary", "search", "passthrough"},
 	{"grep-explicit-node-modules", "search", "search"},
 	{"grep-missing-dir", "search", "search"},
-	{"grep-n-single-file", "search", "passthrough"}, // one file: no path to factor, lines already flush
+	{"grep-n-single-file", "search", "passthrough"},
 	{"grep-r-no-numbers", "search", "search"},
 	{"grep-rn-context", "search", "search"},
 	{"grep-rni-panic", "search", "search"},
 	{"rg-C-no-n", "search", "search"},
 	{"rg-missing-path", "search", "search"},
-	{"rg-n-single-file", "search", "passthrough"}, // same shape as grep-n-single-file
+	{"rg-n-single-file", "search", "passthrough"},
 	{"rg-no-n", "search", "search"},
 	{"rg-vimgrep", "search", "search"},
-	// Added in review (real captures, sanitized):
-	{"git-grep-rev", "search", "search"},      // paths prefixed "HEAD:"
-	{"grep-color-always", "search", "search"}, // ANSI around path, number, match
-	{"grep-o", "search", "search"},            // -o: line numbers repeat
-	{"grep-rn-sorted", "search", "search"},    // | sort kept file order here (3-digit numbers)
-	{"rg-column", "search", "search"},         // --column kept: "865:4:text"
-	// CRLF files, spaces and unicode in paths, 1 node_modules hit (shown,
-	// not summarized): 88 tokens, too small to save 10%.
+
+	{"git-grep-rev", "search", "search"},
+	{"grep-color-always", "search", "search"},
+	{"grep-o", "search", "search"},
+	{"grep-rn-sorted", "search", "search"},
+	{"rg-column", "search", "search"},
+
 	{"grep-rn-crlf", "search", "normalize"},
-	{"grep-v-conf", "search", "passthrough"}, // -v keeps indentation; tiny
-	// Missing operand (exit 2), program invoked by absolute path: tiny,
-	// passed through; Apply keeps the diagnostic first (checked below).
+	{"grep-v-conf", "search", "passthrough"},
+
 	{"grep-abs-argv0-missing", "search", "passthrough"},
 	{"rg-abs-argv0", "search", "passthrough"},
-	{"rg-color", "search", "normalize"}, // --color=always: ANSI in path, number, match; 5 lines, only normalized
+	{"rg-color", "search", "normalize"},
 }
 
-// bailCases are real outputs the filter must refuse (ok=false).
 var bailCases = []struct{ name, filter string }{
-	// "logs/12:30:00.log:1:ERROR": the path holds ":30:", so every line
-	// reads as file "logs/12", line 30. The repeated line number exposes
-	// the misparse; grouping would put the hits in a file that does not
-	// exist.
 	{"grep-rn-colon-path", "search"},
 }
 
@@ -150,12 +139,7 @@ func runCase(t *testing.T, fc fixture.Case, filter, process string) {
 	} else {
 		checkMatches(t, e, clean, got)
 	}
-	// fixture.LocationsMissing looks for "file.go:12" in the output. Search
-	// hits are grouped (the path once, then "12:text"), so the literal only
-	// survives for one-hit files; ungroup rebuilds "path:12:text" from the
-	// heading layout (as an agent reading it would) and the check runs on
-	// that. Hits past a cap are counted, not shown: checkMatches verifies
-	// those counts, and none of the failing fixtures is capped.
+
 	if c.Failed() {
 		if miss := fixture.LocationsMissing(clean, ungroup(got)); len(miss) > 0 {
 			t.Errorf("locations missing: %q", miss)
@@ -166,8 +150,6 @@ func runCase(t *testing.T, fc fixture.Case, filter, process string) {
 		100*(1-float64(out)/float64(max(raw, 1))), res.Filter, res.RawTokens, res.OutTokens)
 }
 
-// inMatch is one line of the input as the test reads it, independently of
-// the filter's parser.
 type inMatch struct {
 	path, num, text string
 	match           bool
@@ -180,9 +162,6 @@ var (
 	testNoteRe    = regexp.MustCompile(`^(?:grep|rg|fatal|error): |^Binary file .* matches$`)
 )
 
-// testShape is how the test reads a fixture: whether lines carry a path
-// and a line number. It is spelled out per fixture shape below rather than
-// taken from the filter.
 type testShape struct{ withFile, numbered, column, context bool }
 
 func shapeOf(e *engine.Context) testShape {
@@ -191,8 +170,6 @@ func shapeOf(e *engine.Context) testShape {
 	return testShape{withFile: o.withFile >= 0, numbered: o.numbered, column: o.column, context: o.context}
 }
 
-// parseInput reads the fixture. Context lines are attributed to a path seen
-// on a match line.
 func parseInput(clean string, sh testShape) (ms []inMatch, notes []string) {
 	lines := strings.Split(clean, "\n")
 	if !sh.withFile {
@@ -222,7 +199,7 @@ func parseInput(clean string, sh testShape) (ms []inMatch, notes []string) {
 			cands[m[1]] = true
 		}
 	}
-	// Drop "paths" that are a context line of another path ("a.ts-12-x:3:").
+
 	known := map[string]bool{}
 	for p := range cands {
 		bogus := false
@@ -294,15 +271,6 @@ func atoiT(s string) int {
 	return n
 }
 
-// checkMatches is the search equivalent of fixture.ErrorLinesMissing.
-//
-// ErrorLinesMissing flags every matched line holding an error word, but a
-// search hit is content, and grouping prints it as "  NN: text" under its
-// path, so the verbatim line never survives. The check here is stronger:
-// every shown entry is a real input line with the same path, number and
-// text (dedented; windows are substrings of the original), every match is
-// either shown or counted exactly (per-file "+N more", histogram, dependency
-// summary), and every diagnostic appears verbatim.
 func checkMatches(t *testing.T, e *engine.Context, clean, got string) {
 	t.Helper()
 	sh := shapeOf(e)
@@ -326,7 +294,7 @@ func checkMatches(t *testing.T, e *engine.Context, clean, got string) {
 		if strings.HasPrefix(n, "Binary file ") {
 			binary++
 			if binary > maxNotes {
-				continue // counted in "… +N more binary files matched"
+				continue
 			}
 		}
 		if !strings.Contains(got, n) {
@@ -335,13 +303,12 @@ func checkMatches(t *testing.T, e *engine.Context, clean, got string) {
 	}
 	shown := map[string]int{}
 	counted := map[string]int{}
-	heavyCounted := map[string]int{} // root → matches
+	heavyCounted := map[string]int{}
 	cur := ""
 	colPrefix := regexp.MustCompile(`^\d+:`)
-	// shownText finds the input line an output entry stands for.
+
 	check := func(num, marker, text string) {
 		if sh.column && marker == ":" {
-			// --column / --vimgrep hits keep their column: "60:12:text".
 			if !colPrefix.MatchString(text) {
 				t.Errorf("column dropped from %q (line %s)", text, num)
 			}
@@ -380,7 +347,6 @@ func checkMatches(t *testing.T, e *engine.Context, clean, got string) {
 		case sh.withFile && isPath:
 			cur = ln
 		case sh.withFile && nativeLine(ln, count) != "":
-			// A single-hit file in grep's own "path:NN:text" form.
 			p := nativeLine(ln, count)
 			rest := ln[len(p)+1:]
 			cur = p
@@ -432,30 +398,24 @@ func checkMatches(t *testing.T, e *engine.Context, clean, got string) {
 	}
 	for _, m := range fixture.ErrorLinesMissing(clean, got) {
 		if !testNoteRe.MatchString(m) {
-			continue // a search hit: verified structurally above
+			continue
 		}
 		t.Errorf("error line missing: %q", m)
 	}
 }
 
-// checkFiles: every path of an rg --files list is reconstructable from the
-// tree or counted (see fs tests for the tree round trip).
 func checkFiles(t *testing.T, clean, got string) {
 	t.Helper()
 	for _, m := range fixture.ErrorLinesMissing(clean, got) {
 		if strings.HasPrefix(m, "rg: ") {
 			t.Errorf("diagnostic dropped: %q", m)
 		}
-		// Other error-class lines are file names (fixtures/errors/…);
-		// the tree reconstruction is verified in the fs package tests
-		// with the same renderer.
 	}
 	if !strings.HasPrefix(got, "[") {
 		t.Errorf("missing count header")
 	}
 }
 
-// nativeLine returns the known path a "path:…" output line starts with.
 func nativeLine(ln string, count map[string]int) string {
 	best := ""
 	for p := range count {
@@ -466,9 +426,6 @@ func nativeLine(ln string, count map[string]int) string {
 	return best
 }
 
-// ungroup turns the heading layout back into grep's "path:NN:text" lines:
-// a line that is neither an entry nor a note sets the current path, and
-// "NN:text" / "NN-text" entries below it get that path back.
 func ungroup(got string) string {
 	var b strings.Builder
 	cur := ""
@@ -480,7 +437,7 @@ func ungroup(got string) string {
 			b.WriteString(cur + ":" + m[1] + m[2] + m[3] + "\n")
 			continue
 		case !strings.Contains(ln, ": ") && !strings.HasPrefix(ln, " "):
-			cur = ln // a heading: the path alone
+			cur = ln
 		}
 		b.WriteString(ln + "\n")
 	}

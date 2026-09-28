@@ -16,22 +16,15 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// Defaults for a buffered run that is taking long.
 const (
 	defaultHeartbeat  = 30 * time.Second
 	defaultPromptIdle = 2 * time.Second
-	// heartbeatTail is the recall the heartbeat suggests for the output so
-	// far (`lx show N --tail 40`).
+
 	heartbeatTail = 40
-	// errScanWindow bounds the heartbeat's error-line count.
+
 	errScanWindow = 1 << 20
 )
 
-// liveRun keeps a buffered run from going silent: a heartbeat on stderr
-// with a stored view of the output so far, a notice when the command seems
-// to wait for input, and a partial view when lx is signalled and the
-// command does not stop within the grace period. Its methods are the
-// runner's callbacks, which never run concurrently.
 type liveRun struct {
 	argv   []string
 	cwd    string
@@ -41,22 +34,21 @@ type liveRun struct {
 	stdout io.Writer
 	stderr io.Writer
 
-	spool     *tee.Spool // reserved by the heartbeat or the interrupt
+	spool     *tee.Spool
 	hbPrinted bool
 
-	partialShown  bool   // the interrupt printed a partial view
-	partialRaw    string // the capture that view was made from
+	partialShown  bool
+	partialRaw    string
 	partialSig    string
 	partialFilter string
-	partialOut    int // tokens printed by the partial view
-	partialChars  int // bytes printed by the partial view
+	partialOut    int
+	partialChars  int
 }
 
 func newLiveRun(argv []string, cwd, home string, o runOpts) *liveRun {
 	return &liveRun{argv: argv, cwd: cwd, home: home, opts: o, start: time.Now(), stdout: os.Stdout, stderr: os.Stderr}
 }
 
-// options wires the live callbacks into a runner.Options.
 func (l *liveRun) options(stdin io.Reader) runner.Options {
 	return runner.Options{
 		Stdin:       stdin,
@@ -68,8 +60,6 @@ func (l *liveRun) options(stdin io.Reader) runner.Options {
 	}
 }
 
-// reserve stores the run as running, seeded with the output so far. It
-// returns nil when storing is off or fails (the run is then not stored).
 func (l *liveRun) reserve(sofar []byte) *tee.Spool {
 	if l.spool != nil {
 		return nil
@@ -79,7 +69,7 @@ func (l *liveRun) reserve(sofar []byte) *tee.Spool {
 		return nil
 	}
 	if len(sofar) > 0 {
-		_, _ = sp.Write(sofar) // a failed write latches; Finish still stores the run
+		_, _ = sp.Write(sofar)
 	}
 	l.spool = sp
 	return sp
@@ -92,8 +82,6 @@ func (l *liveRun) id() string {
 	return strconv.Itoa(l.spool.ID())
 }
 
-// heartbeat prints one stderr line saying the command is still running,
-// how much it printed, and where to read the output so far.
 func (l *liveRun) heartbeat(elapsed time.Duration, sofar []byte) io.Writer {
 	sp := l.reserve(sofar)
 	var b strings.Builder
@@ -113,12 +101,11 @@ func (l *liveRun) heartbeat(elapsed time.Duration, sofar []byte) io.Writer {
 	io.WriteString(l.stderr, b.String())
 	l.hbPrinted = true
 	if sp == nil {
-		return nil // never a typed nil: the runner would write to it
+		return nil
 	}
 	return sp
 }
 
-// prompt says, once, that the command may be waiting for an answer.
 func (l *liveRun) prompt(line string) {
 	msg := "[lx: the command may be waiting for input: " + strconv.Quote(line)
 	if !stdinIsTerminal() {
@@ -127,8 +114,6 @@ func (l *liveRun) prompt(line string) {
 	io.WriteString(l.stderr, msg+"]\n")
 }
 
-// interrupt prints a view of the output so far when the command has not
-// stopped within the grace period after a signal. lx keeps waiting for it.
 func (l *liveRun) interrupt(sig os.Signal, elapsed time.Duration, sofar []byte) io.Writer {
 	sp := l.reserve(sofar)
 	name := runner.SignalName(sig)
@@ -153,9 +138,6 @@ func (l *liveRun) interrupt(sig os.Signal, elapsed time.Duration, sofar []byte) 
 	return sp
 }
 
-// interruptedLine ends the partial view: the signal, how long the command
-// has run, what the view covers and where the output so far is (id "" when
-// nothing is stored).
 func interruptedLine(sig string, elapsed time.Duration, lines int, id string) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "[lx: interrupted by %s after %s; the command is still stopping", sig, fmtElapsed(elapsed))
@@ -171,8 +153,6 @@ func interruptedLine(sig string, elapsed time.Duration, lines int, id string) st
 	return b.String()
 }
 
-// stdinIsTerminal reports whether a person could be typing into stdin: a
-// character device other than /dev/null.
 func stdinIsTerminal() bool {
 	fi, err := os.Stdin.Stat()
 	if err != nil || fi.Mode()&os.ModeCharDevice == 0 {
@@ -184,9 +164,6 @@ func stdinIsTerminal() bool {
 	return true
 }
 
-// envDuration reads a duration knob: a Go duration ("45s", "300ms") or a
-// number of seconds; "0" or "off" disables (returns 0); anything else is
-// the default.
 func envDuration(name string, def time.Duration) time.Duration {
 	v := strings.TrimSpace(os.Getenv(name))
 	switch strings.ToLower(v) {
@@ -204,8 +181,6 @@ func envDuration(name string, def time.Duration) time.Duration {
 	return def
 }
 
-// countLines counts lines the way the receipt does: a final line without a
-// newline still counts.
 func countLines(b []byte) int {
 	if len(b) == 0 {
 		return 0
@@ -222,13 +197,11 @@ func countLines(b []byte) int {
 	return n
 }
 
-// countErrorLines counts error-class lines (engine.Classify) in the last
-// errScanWindow bytes; windowed says older output was not scanned.
 func countErrorLines(b []byte) (n int, windowed bool) {
 	if len(b) > errScanWindow {
 		b = b[len(b)-errScanWindow:]
 		if i := bytes.IndexByte(b, '\n'); i >= 0 {
-			b = b[i+1:] // start on a whole line
+			b = b[i+1:]
 		}
 		windowed = true
 	}
@@ -240,8 +213,6 @@ func countErrorLines(b []byte) (n int, windowed bool) {
 	return n, windowed
 }
 
-// fmtElapsed renders a run time as the heartbeat and interrupt lines show
-// it: "0.3s", "30s", "2m03s", "1h04m".
 func fmtElapsed(d time.Duration) string {
 	if d < 10*time.Second {
 		return strconv.FormatFloat(max(d, 0).Seconds(), 'f', 1, 64) + "s"
@@ -257,7 +228,6 @@ func fmtElapsed(d time.Duration) string {
 	return fmt.Sprintf("%dh%02dm", int(d/time.Hour), int(d%time.Hour/time.Minute))
 }
 
-// plural renders "1 line", "1,204 lines".
 func plural(n int, one, many string) string {
 	if n == 1 {
 		return "1 " + one

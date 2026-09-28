@@ -1,23 +1,5 @@
 package discover
 
-// Acted-on fidelity: transcripts hold the counterfactual. They record each
-// command's full output, which is what lx would have condensed, and the
-// agent's next moves. When the agent opens or edits a file that a command's
-// output named at file:line within a few tool calls, that reference
-// mattered. The question is whether lx's view of the output showed it, and
-// whether a blind head+tail cut of the same size would have.
-//
-// Only outputs discover can replay exactly are scored: one rewritten
-// command whose whole output the transcript holds. A command piped into
-// head/tail is scored through the same cut, and only when the transcript
-// shows the cut kept everything; otherwise lx would have condensed an
-// output the transcript lacks. Outputs that can't be replayed are counted
-// apart, by cause (Unreplayable), never as kept or missed.
-//
-// This is correlational. A reference the view lacks is one the agent
-// reached anyway (from the receipt's `lx show`, another command, or its own
-// knowledge). It is not an error lx hid, and the report says so.
-
 import (
 	"encoding/json"
 	"fmt"
@@ -32,47 +14,35 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// budgetMarker ends the line lx's budget stage puts where it removed lines
-// ("… 120 lines omitted …").
 const budgetMarker = " lines omitted …"
 
 const (
-	actWindow   = 3  // tool calls after a command during which a touch counts
-	maxExamples = 20 // misses listed by --examples
-	topActed    = 15 // commands listed in by_command (Total counts them all)
+	actWindow   = 3
+	maxExamples = 20
+	topActed    = 15
 )
 
-// ActedOn is the acted-on fidelity section of a Report.
 type ActedOn struct {
-	Window    int         `json:"window"` // tool calls
+	Window    int         `json:"window"`
 	ByCommand []ActedStat `json:"by_command"`
 	Total     ActedStat   `json:"total"`
-	// Ambiguous: touches that matched references in different
-	// directories of one output; left out of the stats.
+
 	Ambiguous int `json:"ambiguous_refs"`
-	// Unmeasured: references the agent acted on in outputs discover
-	// cannot replay exactly, by cause. They are left out of the stats:
-	// scoring them would score a view lx never printed.
+
 	Unmeasured   int          `json:"unmeasured_refs"`
 	UnmeasuredBy Unreplayable `json:"unmeasured_by_cause"`
-	// LxViews: outputs that already were lx views (the hook rewrote the
-	// command, so the transcript lacks the raw output); not measured.
+
 	LxViews  int         `json:"lx_views_skipped"`
-	Examples []ActedMiss `json:"examples,omitempty"` // Options.Examples only: holds paths
+	Examples []ActedMiss `json:"examples,omitempty"`
 }
 
-// Unreplayable counts references in outputs discover cannot replay
-// exactly, by why.
 type Unreplayable struct {
-	// HeadTail: the agent's head/tail kept part of the output, and lx
-	// would have condensed the whole of it, which the transcript lacks.
 	HeadTail int `json:"cut_by_head_tail"`
-	// Several: the line ran several rewritten commands; lx condenses each
-	// one's output apart, the transcript holds them together.
+
 	Several int `json:"several_commands"`
-	// Spill: the host spilled the output and its saved copy is gone.
+
 	Spill int `json:"spill_without_saved_output"`
-	// LxView: the output already was an lx view.
+
 	LxView int `json:"already_lx_view"`
 }
 
@@ -89,7 +59,6 @@ func (u *Unreplayable) add(why string, n int) {
 	}
 }
 
-// Why discover cannot replay an output exactly ("" = it can).
 const (
 	whyHeadTail = "head/tail"
 	whySeveral  = "several"
@@ -97,37 +66,32 @@ const (
 	whyLxView   = "lx view"
 )
 
-// ActedStat counts the references the agent acted on for one command key.
 type ActedStat struct {
 	Command    string `json:"command,omitempty"`
 	Refs       int    `json:"refs"`
-	FileInView int    `json:"file_in_view"`      // lx's view names the file
-	LocInView  int    `json:"loc_in_view"`       // lx's view shows the file:line
-	FileInHT   int    `json:"file_in_head_tail"` // same, for head+tail cut to the view's size
+	FileInView int    `json:"file_in_view"`
+	LocInView  int    `json:"loc_in_view"`
+	FileInHT   int    `json:"file_in_head_tail"`
 	LocInHT    int    `json:"loc_in_head_tail"`
-	Misses     Misses `json:"misses"` // references whose file:line lx's view does not show
+	Misses     Misses `json:"misses"`
 }
 
-// Misses splits the references lx's view does not show by cause: the
-// agent's own head/tail after lx (the view had it, the cut dropped it),
-// the budget stage ("… N lines omitted …" in the view), else the filter.
 type Misses struct {
 	Budget int `json:"budget"`
 	Filter int `json:"filter"`
 	Cut    int `json:"cut"`
 }
 
-// ActedMiss is one reference lx's view did not show (--examples).
 type ActedMiss struct {
 	Command    string `json:"command"`
-	Location   string `json:"location"` // as the output printed it
-	Reason     string `json:"reason"`   // "budget", "filter" or "cut"
+	Location   string `json:"location"`
+	Reason     string `json:"reason"`
 	FileInView bool   `json:"file_in_view"`
 }
 
 type fidelity struct {
 	examples   bool
-	ring       []*actEntry // recent candidates with references, oldest first
+	ring       []*actEntry
 	stats      map[string]*ActedStat
 	ambiguous  int
 	unmeasured Unreplayable
@@ -135,52 +99,45 @@ type fidelity struct {
 	misses     []ActedMiss
 }
 
-// entryKind says what a touch matching an entry's references counts as.
-// Every kind takes part in matching: a touch belongs to the newest output
-// that names the file, whatever that output's kind.
 type entryKind uint8
 
 const (
-	measured   entryKind = iota // lx's view differs from what the agent read: scored
-	same                        // the agent would read the same text with lx: not scored
-	unmeasured                  // lx's view can't be replayed exactly: counted apart
+	measured entryKind = iota
+	same
+	unmeasured
 )
 
 type actEntry struct {
-	cmd       string // command key
+	cmd       string
 	cwd       string
 	kind      entryKind
-	why       string // unmeasured: why discover cannot replay the output
+	why       string
 	refs      []actRef
-	byBase    map[string][]int // refs by file base name: a touch can only match its own
+	byBase    map[string][]int
 	callsLeft int
 }
 
 type actRef struct {
-	loc                   string // the location as printed
-	path                  string // its path, cleaned
+	loc                   string
+	path                  string
 	line                  int
 	fileInView, locInView bool
 	fileInHT, locInHT     bool
-	miss                  string // why the view lacks the location: "cut", "budget" or "filter"
-	done                  bool   // credited, or ruled ambiguous
+	miss                  string
+	done                  bool
 }
 
-// touch is a file a tool call opened or edited.
 type touch struct {
-	path     string // cleaned; absolute when the call's cwd was known
-	from, to int    // the lines read, when the call says (0, 0 = whole file)
+	path     string
+	from, to int
 }
 
 func newFidelity(examples bool) *fidelity {
 	return &fidelity{examples: examples, stats: map[string]*ActedStat{}}
 }
 
-// newFile starts a transcript: windows never span files.
 func (f *fidelity) newFile() { f.ring = f.ring[:0] }
 
-// toolUse credits the references a new tool call touched, then advances
-// every window by one call.
 func (f *fidelity) toolUse(ts []touch) {
 	for _, t := range ts {
 		f.match(t)
@@ -195,10 +152,6 @@ func (f *fidelity) toolUse(ts []touch) {
 	f.ring = keep
 }
 
-// match credits t to the newest output that names it (whatever its kind:
-// an unscored output still claims the touch). Each reference is credited
-// once; a touch that matches references in different directories of one
-// output is ambiguous and not credited.
 func (f *fidelity) match(t touch) {
 	for i := len(f.ring) - 1; i >= 0; i-- {
 		e := f.ring[i]
@@ -216,7 +169,7 @@ func (f *fidelity) match(t touch) {
 			continue
 		}
 		if len(open) == 0 {
-			return // already credited to the newest output that names it
+			return
 		}
 		if e.kind != measured {
 			for _, j := range open {
@@ -244,10 +197,6 @@ func (f *fidelity) match(t touch) {
 	}
 }
 
-// refMatches: the touched path is the reference's file (absolute reference:
-// equal; relative: a path suffix, or the reference joined to the command's
-// cwd), and within the lines the call read, when it says. Each rule implies
-// the same base name, which match uses as an index.
 func refMatches(r *actRef, t touch, cwd string) bool {
 	if t.to > 0 && (r.line < t.from || r.line > t.to) {
 		return false
@@ -300,19 +249,6 @@ func b2i(b bool) int {
 	return 0
 }
 
-// candidate records the application file:line references of a rewritten
-// command's output, so the agent's next calls can be matched against them.
-//
-// why is "" when discover can replay exactly what lx would have printed:
-// one rewritten command, its whole output recorded, and any head/tail
-// after it replayable (sliceOf). Else it says why not (whyHeadTail, …).
-// Only an exact output is scored — whether lx's view, through the agent's
-// own head/tail, and a blind head+tail cut of the same size show each
-// reference — and only when lx changes what the agent reads. Other outputs
-// still take part in matching (a touch belongs to the newest output that
-// names the file) but are never scored: a reference in an output lx leaves
-// as is says nothing about lx, and one in an output discover cannot replay
-// would score a view lx never printed.
 func (f *fidelity) candidate(key, cwd string, v *view, why string, sl slicing) {
 	clean := v.cleanRaw()
 	lxView := isLxView(clean)
@@ -347,10 +283,6 @@ func (f *fidelity) candidate(key, cwd string, v *view, why string, sl slicing) {
 	}
 }
 
-// scoreView builds the references for locs (engine.AppLocations of the
-// replayed output) from what the agent would read with lx: the view and
-// receipt, cut by the agent's head/tail when the command line has one.
-// kind is same when that text is what the agent read without lx.
 func scoreView(locs []string, v *view, sl slicing) (entryKind, []actRef) {
 	clean := v.cleanRaw()
 	budget := strings.Contains(v.res.Output, budgetMarker)
@@ -373,22 +305,13 @@ func scoreView(locs []string, v *view, sl slicing) (entryKind, []actRef) {
 	if cut {
 		whole = strings.Join(lines, "\n")
 	}
-	// The blind cut gets as many tokens as the agent reads of lx's output.
+
 	size := min(tokens.Count(shown), v.res.RawTokens)
 	return measured, refsOf(locs, shown, whole, baseline.HeadTail(clean, size), budget)
 }
 
-// maxName is the longest file name (one path component) macOS and Linux
-// allow, in bytes. A longer "name" in an output is not a file the agent
-// could open, and bounding names keeps names() linear.
 const maxName = 255
 
-// refsOf builds the references for locs: whether shown (what the agent
-// reads of lx's output) and the head+tail cut ht name each file and show
-// each file:line. whole is lx's entire output when the agent's head/tail
-// cut it to shown ("" otherwise): a location it has and shown lacks is a
-// "cut" miss. Its cost is linear in the texts and the number of
-// references.
 func refsOf(locs []string, shown, whole, ht string, budget bool) []actRef {
 	viewKeys, viewNames := engine.ViewLocKeys(shown), names(shown)
 	htKeys, htNames := engine.ViewLocKeys(ht), names(ht)
@@ -415,8 +338,6 @@ func refsOf(locs []string, shown, whole, ht string, budget bool) []actRef {
 	return refs
 }
 
-// plainRefs builds the references for locs with their paths and lines
-// only: enough to match the agent's calls against.
 func plainRefs(locs []string) []actRef {
 	refs := make([]actRef, 0, len(locs))
 	for _, m := range locs {
@@ -430,21 +351,12 @@ func plainRefs(locs []string) []actRef {
 	return refs
 }
 
-// isLxView: the output ends with an lx receipt, so it already is an lx
-// view (a hook rewrote the command) and the raw output is not recorded.
 func isLxView(s string) bool {
 	s = strings.TrimRight(s, " \t\n")
 	last := s[strings.LastIndexByte(s, '\n')+1:]
 	return strings.HasPrefix(last, "[lx: ") && strings.Contains(last, " lines (−") && strings.HasSuffix(last, "]")
 }
 
-// names returns the file names text mentions as whole names: every
-// substring that starts after a character that cannot be part of a name
-// and ends before one that cannot continue a word. So "pkg/a.go:12"
-// names "a.go" (and "pkg", "a", "12") but "data.go" does not name "a.go",
-// and "a.go.orig" names "a.go". One pass; names(text)[n] is hasName(text, n)
-// for every n of at most maxName bytes (longer ones are never looked up),
-// which keeps a long run of dots from costing quadratic time.
 func names(text string) map[string]bool {
 	set := map[string]bool{}
 	for i := 0; i < len(text); {
@@ -456,7 +368,7 @@ func names(text string) map[string]bool {
 		for j < len(text) && nameByte(text[j]) {
 			j++
 		}
-		// text[i:j] is a maximal run; a name ends at j or before a '.' or '@'.
+
 		for k := i + 1; k <= j && k-i <= maxName; k++ {
 			if k == j || !wordByte(text[k]) {
 				set[text[i:k]] = true
@@ -471,12 +383,8 @@ func wordByte(c byte) bool {
 	return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c == '_' || c == '-'
 }
 
-// nameByte: a character of a file name as LocRe matches it ([\w.@-]).
 func nameByte(c byte) bool { return wordByte(c) || c == '.' || c == '@' }
 
-// ---- what a tool call touched ----
-
-// touchedPaths returns the file a non-Bash tool call opened or edited.
 func touchedPaths(name string, input json.RawMessage, cwd string) []touch {
 	var in struct {
 		FilePath     string          `json:"file_path"`
@@ -495,10 +403,10 @@ func touchedPaths(name string, input json.RawMessage, cwd string) []touch {
 		off, lim := min(jsonInt(in.Offset), 1<<30), min(jsonInt(in.Limit), 1<<30)
 		if off > 0 || lim > 0 {
 			if lim <= 0 {
-				lim = 2000 // Claude Code's default
+				lim = 2000
 			}
 			start := max(off, 1)
-			// offset may count from 0 or 1: allow one line of slack
+
 			t.from, t.to = max(start-1, 1), start+lim
 		}
 	case "Edit", "MultiEdit", "Write":
@@ -524,7 +432,6 @@ func jsonInt(raw json.RawMessage) int {
 	return n
 }
 
-// fileReader: a Bash command whose file operands count as opening the file.
 func fileReader(name string) bool {
 	switch name {
 	case "cat", "head", "tail", "sed", "bat", "nl", "wc":
@@ -533,12 +440,6 @@ func fileReader(name string) bool {
 	return false
 }
 
-// bashPaths returns the files a Bash command reads with cat, head, tail,
-// sed, bat, nl or wc: operands with an extension that are not flags or
-// globs. `cd DIR &&` before them is followed; after a cd whose target is
-// unknown (`cd "$D"`, `cd -`, `cd ~/x`, a bare `cd`) relative operands stay
-// relative, so they match only references printed the same way. `sed -n
-// 'A,Bp' FILE` reads lines A to B.
 func bashPaths(cmds [][]string, cwd string) []touch {
 	var out []touch
 	for _, argv := range cmds {
@@ -578,7 +479,6 @@ func bashPaths(cmds [][]string, cwd string) []touch {
 	return out
 }
 
-// sedRange parses `sed -n 'A,Bp'` / `sed -n 'Ap'`; (0, 0) otherwise.
 func sedRange(args []string) (int, int) {
 	quiet := false
 	script := ""
@@ -618,8 +518,6 @@ func cleanPath(p, cwd string) string {
 	return filepath.Clean(p)
 }
 
-// ---- report ----
-
 func (f *fidelity) report() *ActedOn {
 	u := f.unmeasured
 	a := &ActedOn{Window: actWindow, Ambiguous: f.ambiguous, Unmeasured: u.HeadTail + u.Several + u.Spill + u.LxView,
@@ -647,7 +545,6 @@ func (f *fidelity) report() *ActedOn {
 	return a
 }
 
-// text writes the acted-on section.
 func (a *ActedOn) text(w io.Writer) {
 	fmt.Fprintf(w, "\nActed-on fidelity (the agent opened or edited a file a rewritten command named, within %d tool calls)\n", a.Window)
 	if a.Total.Refs == 0 {
@@ -721,8 +618,6 @@ func (st ActedStat) row(name string, total bool) []string {
 	return []string{name, num(st.Refs), cell(st.FileInView), cell(st.LocInView), cell(st.FileInHT), cell(st.LocInHT), ""}
 }
 
-// pctFloor is a/b as a percentage with the given decimals (0 or 1),
-// rounded down: a share of references kept never shows as 100% unless it is.
 func pctFloor(a, b, decimals int) string {
 	if b == 0 {
 		return "0%"

@@ -7,40 +7,27 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// result is what a renderer produced.
 type result struct {
 	out string
-	// benignLines() lists the error-class input lines the view dropped on
-	// purpose because their structure shows they are not a status: test
-	// and suite titles, source lines around a failing line, library stack
-	// frames counted in a fold marker, a repeated section header, failures
-	// counted as not shown. Tests check that every error line missing from
-	// out is one of these.
+
 	d           *doc
-	have        map[string]bool // squashed lines of out
-	readdedText map[string]bool // trimmed lines the safety net re-added
-	// readded counts error lines the safety net had to append (a renderer
-	// bug when non-zero on real output).
+	have        map[string]bool
+	readdedText map[string]bool
+
 	readded int
-	// quiet are input lines of console output hidden because the test
-	// passed or the entry was capped (an "at file:line" there is where a
-	// test logged, not where it failed).
+
 	quiet []string
-	// failures is how many test failures the view rendered (levels uses it
-	// to skip levels that would change nothing).
+
 	failures int
 }
 
-// shared is state reused by the renders of one output at several levels.
 type shared struct {
-	errs   map[string]bool // engine.IsError results by line text
-	inErrs []int8          // by input line: 0 unknown, 1 not an error, 2 error
+	errs   map[string]bool
+	inErrs []int8
 }
 
 func newShared() *shared { return &shared{errs: map[string]bool{}} }
 
-// isErr is engine.IsError, memoized: classifying is the dominant cost on
-// huge outputs, and levels renders the same lines several times.
 func (sh *shared) isErr(ln string) bool {
 	v, ok := sh.errs[ln]
 	if !ok {
@@ -50,7 +37,6 @@ func (sh *shared) isErr(ln string) bool {
 	return v
 }
 
-// doc accumulates a view of the normalized input lines.
 type doc struct {
 	c      *engine.Context
 	sh     *shared
@@ -58,20 +44,15 @@ type doc struct {
 	benign []bool
 	quiet  []bool
 	out    []string
-	// level of detail (see levels.go): 0 renders every failure in full;
-	// higher levels shorten failures after the first fullFailures.
+
 	level    int
-	failures int // test failures rendered so far
-	omitted  int // failures left out (level 3) since the last flushOmitted
-	// errSeen: squashed error lines already shown inside failure blocks
-	// (names-only failures keep only an error message not shown before).
+	failures int
+	omitted  int
+
 	errSeen map[string]bool
-	// chatter marks indices of out holding console output of passing
-	// tests: an error there is not why the run failed (see noFailure).
+
 	chatter map[int]bool
-	// compactEnd is len(out) after the last failure reduced to its name
-	// (or left out), -1 otherwise: consecutive ones are not separated by
-	// blank lines.
+
 	compactEnd int
 }
 
@@ -87,10 +68,8 @@ func newDoc(c *engine.Context, clean string, sh *shared) *doc {
 		errSeen: map[string]bool{}, chatter: map[int]bool{}, compactEnd: -1}
 }
 
-// isErr reports an error-class line (engine.IsError, memoized).
 func (d *doc) isErr(ln string) bool { return d.sh.isErr(ln) }
 
-// inErr reports whether input line i is error-class (memoized by index).
 func (d *doc) inErr(i int) bool {
 	switch d.sh.inErrs[i] {
 	case 1:
@@ -106,45 +85,32 @@ func (d *doc) inErr(i int) bool {
 	return v
 }
 
-// markChatter marks d.out[from:] as console output of passing tests.
 func (d *doc) markChatter(from int) {
 	for k := from; k < len(d.out); k++ {
 		d.chatter[k] = true
 	}
 }
 
-// emit appends output lines.
 func (d *doc) emit(s ...string) { d.out = append(d.out, s...) }
 
-// keep appends input line i verbatim.
 func (d *doc) keep(i int) { d.out = append(d.out, d.in[i]) }
 
-// drop marks input line i as intentionally dropped benign text.
 func (d *doc) drop(i int) { d.benign[i] = true }
 
-// hush marks input lines [from, to) as console output that may be hidden.
 func (d *doc) hush(from, to int) {
 	for k := from; k < to; k++ {
 		d.quiet[k] = true
 	}
 }
 
-// sep ends the current group with one blank line (never two, never first).
 func (d *doc) sep() {
 	if n := len(d.out); n > 0 && d.out[n-1] != "" {
 		d.out = append(d.out, "")
 	}
 }
 
-// maxSafetyLines bounds how many missing error lines the safety net re-adds.
 const maxSafetyLines = 40
 
-// finish joins the view, relativizes paths in non-error lines, and runs the
-// safety net: every error-class input line that is neither in the view
-// (whitespace runs collapsed, as the engine guard compares) nor marked
-// benign is appended under the engine guard's heading. Lines already in the
-// view or marked benign are not classified at all (classifying is the
-// dominant cost on huge outputs).
 func (d *doc) finish() result {
 	lines := d.out
 	for len(lines) > 0 && lines[len(lines)-1] == "" {
@@ -165,7 +131,7 @@ func (d *doc) finish() result {
 	all := ""
 	res := result{d: d, have: have}
 	var missing []string
-	seen := map[string]bool{} // texts already judged
+	seen := map[string]bool{}
 	for i, ln := range d.in {
 		if d.benign[i] || !mayBeError(ln) {
 			continue
@@ -212,9 +178,6 @@ func (d *doc) finish() result {
 	return res
 }
 
-// benignLines returns the error-class input lines (trimmed, distinct) that
-// the view dropped on purpose (see result.benign). Tests use it; Apply does
-// not pay for it.
 func (r result) benignLines() []string {
 	d := r.d
 	if d == nil {
@@ -238,11 +201,6 @@ func (r result) benignLines() []string {
 	return out
 }
 
-// relativize is engine.RelativizeNonErrors, except for file:// URLs, which
-// engine.Relativize would break ("file:///cwd/a.mjs:3:9" → "file://a.mjs:3:9"):
-// in stack frames they become relative paths ("at load (a.mjs:3:9)"), and
-// other lines holding one are left as they are (an error's url property is
-// data). Error-class lines are never changed.
 func relativize(c *engine.Context, s string) string {
 	if c == nil || !strings.Contains(s, "file://") {
 		return engine.RelativizeNonErrors(c, s)
@@ -265,11 +223,8 @@ func relativize(c *engine.Context, s string) string {
 	return strings.Join(lines, "\n")
 }
 
-// mayBeError is a cheap prefilter: blank lines are never error-class.
 func mayBeError(ln string) bool { return strings.TrimSpace(ln) != "" }
 
-// squash collapses whitespace runs to one space and trims (the engine
-// guard's comparison), without allocating for lines that need nothing.
 func squash(s string) string {
 	for i := 0; i < len(s); i++ {
 		c := s[i]
@@ -281,8 +236,6 @@ func squash(s string) string {
 	return s
 }
 
-// indentOf returns the number of leading spaces/tabs.
 func indentOf(s string) int { return len(s) - len(strings.TrimLeft(s, " \t")) }
 
-// plural formats "1 suite" / "3 suites".
 func plural(n int, one, many string) string { return engine.Plural(n, one, many) }

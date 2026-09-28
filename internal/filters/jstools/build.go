@@ -2,37 +2,17 @@ package jstools
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// npmRun condenses the output of build/lint/type-check scripts run through
-// a package manager (`npm run build`, `pnpm lint`, `yarn typecheck`, …) and
-// of `vite build`, `next build` and `webpack` run directly.
-//
-// The output is a mix of the manager's own lines ("> app@1.0.0 build",
-// "npm error Lifecycle script …", all kept) and whatever the script ran:
-//   - tsc diagnostics and eslint reports are rendered like the tsc and eslint
-//     filters do;
-//   - vite: the per-asset "dist/… 12.3 kB │ gzip: …" lines become one counted
-//     line with the total and the largest asset (assets over the limit of a
-//     "(!) Some chunks are larger than …" warning stay), the transforming…/
-//     rendering chunks… progress lines are dropped;
-//   - webpack: "asset …" and module-tree lines are counted ("[big]" assets
-//     stay); WARNING/ERROR blocks and the "compiled …" line are kept;
-//   - next: the route table becomes a count per route kind;
-//   - anything else is kept, with long library stack traces folded.
-//
-// The filter bails when it recognizes none of these tools.
 type npmRun struct{}
 
 func (npmRun) Name() string { return "npm-run" }
 
-// buildScripts are script names (or "name:variant" prefixes) whose output
-// this filter understands.
 var buildScripts = map[string]bool{
 	"build": true, "lint": true, "typecheck": true, "type-check": true, "types": true, "tsc": true,
 	"check": true, "check-types": true, "compile": true, "eslint": true,
@@ -49,7 +29,6 @@ func isBuildScript(s string) bool {
 	return buildScripts[base]
 }
 
-// webpackNot are webpack-cli commands (and flags) that do not build once.
 var webpackNot = map[string]bool{
 	"serve": true, "server": true, "s": true, "watch": true, "w": true, "help": true, "version": true,
 	"info": true, "init": true, "configtest": true, "plugin": true, "loader": true, "migrate": true,
@@ -71,7 +50,7 @@ func (npmRun) Match(c *engine.Context) bool {
 		return true
 	}
 	pm, sub, rest, ok := manager(c)
-	// "bun build" is bun's bundler, not a script.
+
 	if !ok || (sub != "run" && sub != "script") || pm == "bun" && sub == "script" {
 		return false
 	}
@@ -81,7 +60,7 @@ func (npmRun) Match(c *engine.Context) bool {
 	}
 	for _, a := range rest[i+1:] {
 		if a == "--watch" || a == "-w" || strings.HasPrefix(a, "--watch=") {
-			return false // "npm run build -- --watch" never ends
+			return false
 		}
 	}
 	return isBuildScript(rest[i])
@@ -96,25 +75,21 @@ var (
 	wpAssetRe   = lazyre.New(`^asset (\S+) ([\d.]+) (bytes|KiB|MiB|GiB)\b(.*)$`)
 	wpModuleRe  = lazyre.New(`^\s*(?:(?:orphan|runtime|cacheable|javascript|asset|css|json) modules|modules by (?:path|layer|type)|\./\S+|\S+ \+ \d+ modules?) .*\b(?:\d+ modules?|\[built\]|\[code generated\]|bytes|KiB|MiB)(?: .*)?$`)
 	buildMarkRe = lazyre.New(`^(?:vite v\d|✓ built in|✓ \d+ modules transformed|webpack(?: \d[\d.]*)? compiled|\s*▲ Next\.js|\s*✓ Compiled successfully|Route \((?:app|pages)\)|error during build:|[✗x] Build failed)`)
-	// next build's route table: "┌ ○ /about  1.2 kB  89 kB" rows (the
-	// symbol is missing on a dynamic segment whose paths are listed under
-	// it), "  ├ ● /blog/a" / "  └ ● [+2 more paths]" prerendered paths,
-	// and the legend after it.
+
 	nextRouteRe    = lazyre.New(`^[┌├└]\s+(?:([○●ƒλ◐])\s+)?/\S*`)
 	nextSubRouteRe = lazyre.New(`^[│ ]\s*[├└]\s+(?:([○●ƒλ◐])\s+)?(?:/\S*|\[\+(\d+) more paths?\])`)
 	nextSharedRe   = lazyre.New(`^\+ First Load JS shared by all`)
 	nextChunkRe    = lazyre.New(`^\s+[├└] (?:chunks/\S+|other shared chunks \(total\)|css/\S+)\s+[\d.]+ (?:B|kB|MB)$`)
 	nextLegendRe   = lazyre.New(`^([○●ƒλ◐])\s+\(([^)]+)\)`)
 	nextProgressRe = lazyre.New(`^\s+Generating static pages .*\(\d+/\d+\)(?: \.\.\.)?$`)
-	// webpack: "Module not found: Error: Can't resolve 'x' in 'dir'" is
-	// followed by the resolver's trace of every path it tried.
+
 	wpNotFoundRe = lazyre.New(`^Module not found: Error: Can't resolve '.+' in '.+'$`)
 	wpResolveRe  = lazyre.New(`^resolve '.+' in '.+'$`)
 )
 
 func (npmRun) Apply(c *engine.Context, s string) (string, bool) {
 	lines := strings.Split(s, "\n")
-	limit := -1.0 // vite chunk size warning limit, in kB
+	limit := -1.0
 	for _, ln := range lines {
 		if m := viteLimitRe.FindStringSubmatch(ln); m != nil {
 			limit, _ = strconv.ParseFloat(m[1], 64)
@@ -127,7 +102,7 @@ func (npmRun) Apply(c *engine.Context, s string) (string, bool) {
 	recognized := false
 	for i := 0; i < len(lines); {
 		ln := lines[i]
-		if end, r := tscRegion(lines, i); end > i {
+		if end, r := tscRegion(c, lines, i); end > i {
 			o.add(r...)
 			recognized, i = true, end
 			continue
@@ -161,7 +136,7 @@ func (npmRun) Apply(c *engine.Context, s string) (string, bool) {
 			for j < len(lines) && strings.HasPrefix(lines[j], "  ") {
 				j++
 			}
-			// The count excludes error-class trace lines, which drop keeps.
+
 			at, hidden := len(o.lines), 0
 			o.add("")
 			for _, t := range lines[i+1 : j] {
@@ -190,7 +165,6 @@ func (npmRun) Apply(c *engine.Context, s string) (string, bool) {
 	return o.String(), true
 }
 
-// viteAssets folds the run of vite asset lines starting at lines[i].
 func viteAssets(lines []string, i int, limit float64, o *out) int {
 	var (
 		n              int
@@ -237,7 +211,6 @@ func fmtKB(kb float64) string {
 	return fmt.Sprintf("%.2f kB", kb)
 }
 
-// webpackStats folds webpack's asset and module lines starting at lines[i].
 func webpackStats(lines []string, i int, o *out) int {
 	assets, modules := 0, 0
 	j := i
@@ -274,10 +247,6 @@ func webpackStats(lines []string, i int, o *out) int {
 	return j
 }
 
-// nextRoutes summarizes a next build route table starting at lines[i]
-// ("Route (app)", with or without size columns) as one counted line, drops
-// the legend it used for the counts and keeps the shared First Load JS
-// line. ok is false when no route row follows.
 func nextRoutes(lines []string, i int, o *out) (int, bool) {
 	title := strings.Fields(lines[i])
 	if len(title) < 2 {
@@ -327,7 +296,7 @@ func nextRoutes(lines []string, i int, o *out) (int, bool) {
 	if routes == 0 {
 		return i, false
 	}
-	// Legend: "○  (Static)  prerendered as static content".
+
 	names := map[string]string{}
 	end := j
 	for k := j; k < len(lines) && k < j+12; k++ {
@@ -361,9 +330,6 @@ func nextRoutes(lines []string, i int, o *out) (int, bool) {
 	return j, true
 }
 
-// keepIfError keeps a line being folded into a count when it looks
-// error-class (a route named /error): the filter is Guarded, so nothing
-// else would show it.
 func keepIfError(ln string, o *out) {
 	if engine.IsError(ln) {
 		o.add(ln)

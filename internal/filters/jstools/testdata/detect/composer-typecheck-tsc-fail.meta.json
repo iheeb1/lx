@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "composer",
+    "typecheck"
+  ],
+  "shell": "composer typecheck",
+  "exit_code": 2,
+  "description": "REAL: composer typecheck whose script runs npx tsc --noEmit in jquense/yup: tsc's plain diagnostics, composer's error line",
+  "cwd": "/home/user/src/yup",
+  "repo": "jquense/yup",
+  "tool": "tsc"
+}

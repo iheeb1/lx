@@ -1,0 +1,319 @@
+{
+  "stats": {
+    "suites": 4,
+    "tests": 16,
+    "passes": 13,
+    "pending": 0,
+    "failures": 3,
+    "start": "2026-09-27T17:39:42.550Z",
+    "end": "2026-09-27T17:39:42.594Z",
+    "duration": 44
+  },
+  "tests": [
+    {
+      "title": "should set the status code when valid",
+      "fullTitle": "res .status(code) should set the status code when valid",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 16,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 101",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 101",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 201",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 201",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 302",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 302",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 403",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 403",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 501",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 501",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 700",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 700",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 4,
+      "currentRetry": 0,
+      "err": {
+        "stack": "Error: expected 700 \"undefined\", got 500 \"Internal Server Error\"\n    at Context.<anonymous> (test/res.status.js:91:12)\n    at process.processImmediate (node:internal/timers:504:21)\n----\n    at Test._assertStatus (node_modules/supertest/lib/test.js:252:14)\n    at /home/user/src/express/node_modules/supertest/lib/test.js:308:13\n    at Test._assertFunction (node_modules/supertest/lib/test.js:285:13)\n    at Test.assert (node_modules/supertest/lib/test.js:164:23)\n    at Server.localAssert (node_modules/supertest/lib/test.js:120:14)\n    at Object.onceWrapper (node:events:630:28)\n    at Server.emit (node:events:509:28)\n    at emitCloseNT (node:net:2488:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)",
+        "message": "expected 700 \"undefined\", got 500 \"Internal Server Error\""
+      }
+    },
+    {
+      "title": "should set the response status code to 800",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 800",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {
+        "stack": "Error: expected 800 \"undefined\", got 500 \"Internal Server Error\"\n    at Context.<anonymous> (test/res.status.js:103:12)\n    at process.processImmediate (node:internal/timers:504:21)\n----\n    at Test._assertStatus (node_modules/supertest/lib/test.js:252:14)\n    at /home/user/src/express/node_modules/supertest/lib/test.js:308:13\n    at Test._assertFunction (node_modules/supertest/lib/test.js:285:13)\n    at Test.assert (node_modules/supertest/lib/test.js:164:23)\n    at Server.localAssert (node_modules/supertest/lib/test.js:120:14)\n    at Object.onceWrapper (node:events:630:28)\n    at Server.emit (node:events:509:28)\n    at emitCloseNT (node:net:2488:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)",
+        "message": "expected 800 \"undefined\", got 500 \"Internal Server Error\""
+      }
+    },
+    {
+      "title": "should set the response status code to 900",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 900",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {
+        "stack": "Error: expected 900 \"undefined\", got 500 \"Internal Server Error\"\n    at Context.<anonymous> (test/res.status.js:115:12)\n    at process.processImmediate (node:internal/timers:504:21)\n----\n    at Test._assertStatus (node_modules/supertest/lib/test.js:252:14)\n    at /home/user/src/express/node_modules/supertest/lib/test.js:308:13\n    at Test._assertFunction (node_modules/supertest/lib/test.js:285:13)\n    at Test.assert (node_modules/supertest/lib/test.js:164:23)\n    at Server.localAssert (node_modules/supertest/lib/test.js:120:14)\n    at Object.onceWrapper (node:events:630:28)\n    at Server.emit (node:events:509:28)\n    at emitCloseNT (node:net:2488:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)",
+        "message": "expected 900 \"undefined\", got 500 \"Internal Server Error\""
+      }
+    },
+    {
+      "title": "should raise error for status code below 100",
+      "fullTitle": "res .status(code) invalid status codes should raise error for status code below 100",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for status code above 999",
+      "fullTitle": "res .status(code) invalid status codes should raise error for status code above 999",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for non-integer status codes",
+      "fullTitle": "res .status(code) invalid status codes should raise error for non-integer status codes",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for undefined status code",
+      "fullTitle": "res .status(code) invalid status codes should raise error for undefined status code",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for null status code",
+      "fullTitle": "res .status(code) invalid status codes should raise error for null status code",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for string status code",
+      "fullTitle": "res .status(code) invalid status codes should raise error for string status code",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for NaN status code",
+      "fullTitle": "res .status(code) invalid status codes should raise error for NaN status code",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    }
+  ],
+  "pending": [],
+  "failures": [
+    {
+      "title": "should set the response status code to 700",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 700",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 4,
+      "currentRetry": 0,
+      "err": {
+        "stack": "Error: expected 700 \"undefined\", got 500 \"Internal Server Error\"\n    at Context.<anonymous> (test/res.status.js:91:12)\n    at process.processImmediate (node:internal/timers:504:21)\n----\n    at Test._assertStatus (node_modules/supertest/lib/test.js:252:14)\n    at /home/user/src/express/node_modules/supertest/lib/test.js:308:13\n    at Test._assertFunction (node_modules/supertest/lib/test.js:285:13)\n    at Test.assert (node_modules/supertest/lib/test.js:164:23)\n    at Server.localAssert (node_modules/supertest/lib/test.js:120:14)\n    at Object.onceWrapper (node:events:630:28)\n    at Server.emit (node:events:509:28)\n    at emitCloseNT (node:net:2488:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)",
+        "message": "expected 700 \"undefined\", got 500 \"Internal Server Error\""
+      }
+    },
+    {
+      "title": "should set the response status code to 800",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 800",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {
+        "stack": "Error: expected 800 \"undefined\", got 500 \"Internal Server Error\"\n    at Context.<anonymous> (test/res.status.js:103:12)\n    at process.processImmediate (node:internal/timers:504:21)\n----\n    at Test._assertStatus (node_modules/supertest/lib/test.js:252:14)\n    at /home/user/src/express/node_modules/supertest/lib/test.js:308:13\n    at Test._assertFunction (node_modules/supertest/lib/test.js:285:13)\n    at Test.assert (node_modules/supertest/lib/test.js:164:23)\n    at Server.localAssert (node_modules/supertest/lib/test.js:120:14)\n    at Object.onceWrapper (node:events:630:28)\n    at Server.emit (node:events:509:28)\n    at emitCloseNT (node:net:2488:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)",
+        "message": "expected 800 \"undefined\", got 500 \"Internal Server Error\""
+      }
+    },
+    {
+      "title": "should set the response status code to 900",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 900",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {
+        "stack": "Error: expected 900 \"undefined\", got 500 \"Internal Server Error\"\n    at Context.<anonymous> (test/res.status.js:115:12)\n    at process.processImmediate (node:internal/timers:504:21)\n----\n    at Test._assertStatus (node_modules/supertest/lib/test.js:252:14)\n    at /home/user/src/express/node_modules/supertest/lib/test.js:308:13\n    at Test._assertFunction (node_modules/supertest/lib/test.js:285:13)\n    at Test.assert (node_modules/supertest/lib/test.js:164:23)\n    at Server.localAssert (node_modules/supertest/lib/test.js:120:14)\n    at Object.onceWrapper (node:events:630:28)\n    at Server.emit (node:events:509:28)\n    at emitCloseNT (node:net:2488:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)",
+        "message": "expected 900 \"undefined\", got 500 \"Internal Server Error\""
+      }
+    }
+  ],
+  "passes": [
+    {
+      "title": "should set the status code when valid",
+      "fullTitle": "res .status(code) should set the status code when valid",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 16,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 101",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 101",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 201",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 201",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 302",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 302",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 403",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 403",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should set the response status code to 501",
+      "fullTitle": "res .status(code) accept valid ranges should set the response status code to 501",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for status code below 100",
+      "fullTitle": "res .status(code) invalid status codes should raise error for status code below 100",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for status code above 999",
+      "fullTitle": "res .status(code) invalid status codes should raise error for status code above 999",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for non-integer status codes",
+      "fullTitle": "res .status(code) invalid status codes should raise error for non-integer status codes",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for undefined status code",
+      "fullTitle": "res .status(code) invalid status codes should raise error for undefined status code",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for null status code",
+      "fullTitle": "res .status(code) invalid status codes should raise error for null status code",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for string status code",
+      "fullTitle": "res .status(code) invalid status codes should raise error for string status code",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 1,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    },
+    {
+      "title": "should raise error for NaN status code",
+      "fullTitle": "res .status(code) invalid status codes should raise error for NaN status code",
+      "file": "/home/user/src/express/test/res.status.js",
+      "duration": 2,
+      "currentRetry": 0,
+      "speed": "fast",
+      "err": {}
+    }
+  ]
+}

@@ -1,8 +1,4 @@
-// Package search condenses code-search output: grep, egrep, fgrep, git grep
-// and rg matches, and rg --files path lists.
-//
-// Both filters are Content filters: matched lines are data, and a line
-// holding "error" is a search hit, not a failure.
+// Package search handles grep and ripgrep.
 package search
 
 import (
@@ -11,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/filters/focus"
 	"github.com/iheeb1/lx/internal/filters/fs"
 )
 
@@ -19,42 +16,21 @@ func init() {
 	engine.Register(matches{})
 }
 
-// Caps: all matches are shown when there are at most maxMatches in at most
-// maxFiles files. Beyond that, files are shown in output order with at most
-// perFile matches each until maxMatches or maxFiles is reached, and every
-// remaining file gets a "path: N matches" line.
 const (
-	perFile    = 15
-	maxMatches = 150
-	maxFiles   = 60
-	// maxHistogram bounds the per-file count lines; the rest are counted
-	// per directory.
+	perFile      = 15
+	maxMatches   = 150
+	maxFiles     = 60
 	maxHistogram = 100
-	// maxNotes bounds diagnostics of one kind ("Binary file x matches").
-	maxNotes = 20
-	// minHeavy: dependency-directory hits are summarized only when there
-	// are more than this many; a summary of one or two hits costs more
-	// than the hits.
-	minHeavy = 5
+	maxNotes     = 20
+	minHeavy     = 5
 )
 
-// heavyDirs hold dependencies, VCS data and build output. Matches there are
-// summarized unless the user searched inside them explicitly.
 var heavyDirs = map[string]bool{
 	"node_modules": true, "bower_components": true, "jspm_packages": true, "vendor": true,
 	"dist": true, ".git": true, ".venv": true, "venv": true, "site-packages": true,
 	"__pycache__": true, ".next": true, ".nuxt": true, ".svelte-kit": true, ".yarn": true,
 }
 
-// matches groups search hits by file:
-//
-//	src/duration.js
-//	  1: import { InvalidArgumentError, … } from "./errors.js";
-//	  18: const INVALID = "Invalid Duration";
-//	  … +131 more in this file
-//
-// with long lines cut to a window around the match, dependency directories
-// summarized, and caps with exact counts plus a per-file histogram.
 type matches struct{}
 
 func (matches) Name() string    { return "search" }
@@ -74,24 +50,20 @@ func (matches) Match(c *engine.Context) bool {
 }
 
 type entry struct {
-	num   string // line number ("" when not printed)
-	col   string // column (--column / --vimgrep), "" otherwise
+	num   string
+	col   string
 	text  string
-	match bool // false: context line
-	sep   bool // a "--" group separator
+	match bool
+	sep   bool
 }
 
 type fileGroup struct {
 	path    string
 	entries []entry
 	matches int
-	heavy   string // heavy root ("./node_modules/") when summarized
+	heavy   string
 }
 
-// isBinaryNote reports the "a binary file matched" diagnostics: grep's
-// "Binary file x matches" (GNU < 3.5, BSD, ugrep, git grep), GNU ≥ 3.5's
-// "grep: x: binary file matches" and rg's
-// "x: binary file matches (found "\0" byte around offset 12)".
 func isBinaryNote(ln string) bool {
 	if strings.HasPrefix(ln, "Binary file ") && strings.HasSuffix(ln, " matches") {
 		return true
@@ -104,10 +76,6 @@ func isBinaryNote(ln string) bool {
 	return rest == "" || strings.HasPrefix(rest, " (") && strings.HasSuffix(rest, ")")
 }
 
-// noteFunc returns the test for diagnostics the search tool prints into the
-// output stream. The program prefix is matched both as invoked and as a
-// base name: GNU grep prints its full argv[0] ("/usr/bin/grep: x: No such
-// file or directory"), and such a line must never be read as a hit.
 func noteFunc(e *engine.Context, tool string) func(string) bool {
 	return func(ln string) bool {
 		switch tool {
@@ -124,7 +92,6 @@ func noteFunc(e *engine.Context, tool string) func(string) bool {
 	}
 }
 
-// leadingNum splits "NN<sep>rest" for sep ':' or '-'.
 func leadingNum(s string) (num string, sep byte, rest string, ok bool) {
 	i := 0
 	for i < len(s) && s[i] >= '0' && s[i] <= '9' {
@@ -136,10 +103,6 @@ func leadingNum(s string) (num string, sep byte, rest string, ok bool) {
 	return s[:i], s[i], s[i+1:], true
 }
 
-// splitPathNum finds "path:NN:" at the start of s, the path being the
-// shortest non-empty prefix that works (as the regexp ^(.+?):(\d+): would,
-// without its cost on long lines). It is right unless a path itself holds
-// ":<digits>:".
 func splitPathNum(s string) (pathEnd, numEnd int, ok bool) {
 	for i := 1; i < len(s); i++ {
 		if s[i] != ':' {
@@ -156,7 +119,6 @@ func splitPathNum(s string) (pathEnd, numEnd int, ok bool) {
 	return 0, 0, false
 }
 
-// parseLimit: only this much of a line is examined for the path prefix.
 const parseLimit = 4096
 
 func (m matches) Apply(c *engine.Context, out string) (string, bool) {
@@ -188,8 +150,6 @@ func (m matches) Apply(c *engine.Context, out string) (string, bool) {
 		return g
 	}
 
-	// Known paths (from match lines) resolve context lines, whose
-	// "path-NN-text" form is ambiguous on its own.
 	known := map[string]bool{}
 	if withFile > 0 {
 		cands := map[string]bool{}
@@ -214,14 +174,8 @@ func (m matches) Apply(c *engine.Context, out string) (string, bool) {
 
 	var cur *fileGroup
 	fallbacks := 0
-	var byLength []string // known paths, longest first (context fallback)
-	// Each file's lines come out once each and in file order (grep, git
-	// grep, and rg per file, even with threads). A line number repeating
-	// or going backwards within one run of a path means the lines were
-	// split at the wrong colon ("logs/12:30:00.log:5:x" read as file
-	// "logs/12", line 30) or reordered by a pipe (| sort): the grouping
-	// would mislead, so bail. Only -o and --column/--vimgrep print one
-	// line per match, repeating a line number.
+	var byLength []string
+
 	repeats := o.only || o.column
 	lastPath, lastNum := "\x00", -1
 	inOrder := func(p, num string) bool {
@@ -278,8 +232,7 @@ func (m matches) Apply(c *engine.Context, out string) (string, bool) {
 		if !o.context {
 			return "", false
 		}
-		// A context line: try the current file, then the next match's
-		// file (before-context lines come first), then every known path.
+
 		var cands []string
 		if cur != nil {
 			cands = append(cands, cur.path)
@@ -316,10 +269,7 @@ func (m matches) Apply(c *engine.Context, out string) (string, bool) {
 	if total == 0 && len(notes) == 0 {
 		return "", false
 	}
-	// grep, rg and git grep exit 1 for "no match" and ≥ 2 for trouble,
-	// which they report. Trouble without a diagnostic here means the
-	// search was cut short (timeout, signal, grep -s): the counts would
-	// claim a complete result, so leave it to the generic reducer.
+
 	if e.Exit >= 2 {
 		diag := 0
 		for _, n := range notes {
@@ -331,13 +281,10 @@ func (m matches) Apply(c *engine.Context, out string) (string, bool) {
 			return "", false
 		}
 	}
-	r := render{o: o, mt: newMatcher(o), withFile: withFile > 0}
+	r := render{o: o, mt: newMatcher(o), withFile: withFile > 0, fx: focus.New(c.Focus)}
 	return r.run(notes, groups, total, nfiles), true
 }
 
-// detectWithFile decides between "path:NN:text" and "NN:text" / "text"
-// when the command line cannot tell (a single glob or ambiguous operand):
-// paths must parse on every line and look like paths.
 func detectWithFile(lines []string, o opts, isNote func(string) bool) int {
 	n := 0
 	for _, ln := range lines {
@@ -347,7 +294,7 @@ func detectWithFile(lines []string, o opts, isNote func(string) bool) int {
 		p, _, _, _, ok := parseMatch(ln, o, 1)
 		if !ok {
 			if o.context {
-				continue // context lines are checked against known paths later
+				continue
 			}
 			return -1
 		}
@@ -362,7 +309,6 @@ func detectWithFile(lines []string, o opts, isNote func(string) bool) int {
 	return 1
 }
 
-// parseMatch splits a match line "path:NN:[COL:]text" / "path:text".
 func parseMatch(ln string, o opts, withFile int) (p, num, col, text string, ok bool) {
 	head := ln
 	if len(head) > parseLimit {
@@ -389,10 +335,6 @@ func parseMatch(ln string, o opts, withFile int) (p, num, col, text string, ok b
 	return ln[:i], "", "", ln[i+1:], true
 }
 
-// isContextMisparse reports a candidate path that is really a context line
-// of a known file whose text holds ":NN:" ("a.go-12-at 10:30:00" parsed as
-// path "a.go-12-at 10", line 30). Only the prefixes of p ending before a
-// "-" are looked up, so this is linear in len(p).
 func isContextMisparse(p string, cands map[string]bool, o opts) bool {
 	for j := strings.IndexByte(p, '-'); j > 0; {
 		if k := p[:j]; cands[k] {
@@ -420,8 +362,6 @@ func startsWithKnown(ln string, known map[string]bool) bool {
 	return false
 }
 
-// pathsUnderOperands checks parsed paths against the search operands, which
-// guards against misreading "text:with:colons" as paths.
 func pathsUnderOperands(known map[string]bool, o opts) bool {
 	if o.tool == "git-grep" || len(o.operands) == 0 {
 		return true
@@ -436,8 +376,6 @@ func pathsUnderOperands(known map[string]bool, o opts) bool {
 	for p := range known {
 		ok := false
 		for _, r := range roots {
-			// A searched directory prefixes every path it yields with
-			// itself ("./a.go" for "."), a searched file is printed as is.
 			if r == "" || p == r || strings.HasPrefix(p, r+"/") || r == "." && strings.HasPrefix(p, "./") {
 				ok = true
 				break
@@ -462,7 +400,6 @@ func nextMatchPath(rest []string, o opts, withFile int, known map[string]bool) s
 	return ""
 }
 
-// parseContext splits "path-NN-text" / "path-text" for one of cands.
 func parseContext(ln string, cands []string, o opts) (p, num, text string, ok bool) {
 	for _, k := range cands {
 		if !strings.HasPrefix(ln, k+"-") {
@@ -486,7 +423,7 @@ func sortedKnown(known map[string]bool) []string {
 	for k := range known {
 		out = append(out, k)
 	}
-	// Longest first: "a-1-b.go" must win over "a".
+
 	sort.Slice(out, func(i, j int) bool {
 		if len(out[i]) != len(out[j]) {
 			return len(out[i]) > len(out[j])
@@ -496,8 +433,6 @@ func sortedKnown(known map[string]bool) []string {
 	return out
 }
 
-// parseBare parses a line without a path prefix: "NN:text", "NN-text" or
-// plain text.
 func parseBare(ln string, o opts) (entry, bool) {
 	if !o.numbered {
 		return entry{text: ln, match: true}, true
@@ -521,8 +456,6 @@ func parseBare(ln string, o opts) (entry, bool) {
 	return entry{num: num, text: rest}, true
 }
 
-// heavyRoot returns the path prefix up to and including the first heavy
-// directory ("./node_modules/"), or "".
 func heavyRoot(p string) string {
 	off := 0
 	for {
@@ -538,7 +471,6 @@ func heavyRoot(p string) string {
 	}
 }
 
-// explicitlySearched reports whether an operand lies at or inside root.
 func explicitlySearched(root string, o opts) bool {
 	r := strings.TrimSuffix(strings.TrimPrefix(root, "./"), "/")
 	for _, op := range o.operands {

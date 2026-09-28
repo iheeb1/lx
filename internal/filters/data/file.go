@@ -9,21 +9,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// fileFilter shows file contents printed by cat, bat, head and tail.
-//
-//   - Up to the budget (8000 tokens): unchanged — exact text is what an agent
-//     needs to edit a file.
-//   - Lockfiles over 2000 tokens: a one-line summary with the package count
-//     (plus the package list when it is short), and how to search the file.
-//   - JSON over the budget: engine.CompactJSON, marked as not valid JSON.
-//   - Log files over the budget (.log, or unknown extension and log-shaped):
-//     engine.TemplateLogs, which keeps every error record verbatim.
-//   - Anything else over the budget (source code, text): exact head and tail
-//     windows, an outline of the omitted lines' declarations with line
-//     numbers, and a marker naming the omitted range and how to read it.
-//
-// The tool's own diagnostics ("cat: x: No such file or directory",
-// "[bat error]: …", "tail: cannot open …") are always kept verbatim.
 type fileFilter struct{}
 
 func (fileFilter) Name() string    { return "cat" }
@@ -38,30 +23,21 @@ func (fileFilter) Match(c *engine.Context) bool {
 	return false
 }
 
-// Stream: tail -f/-F never finishes; the CLI must not buffer it.
 func (fileFilter) Stream(c *engine.Context) bool {
 	e := effective(c)
 	return e.Name() == "tail" && isFollow(e.Args())
 }
 
-// lockfileBudget: lockfiles at or under this many tokens are shown as is.
 const lockfileBudget = 2000
 
 var (
-	// fileDiagRe matches the diagnostics of the viewers themselves.
 	fileDiagRe = lazyre.New(`^(?:cat|head|tail|bat|batcat|gcat|ghead|gtail): |^\[bat (?:error|warning)\]: `)
-	// multiHeaderRe: head/tail print "==> file <==" between files.
+
 	multiHeaderRe = lazyre.New(`^==> .+ <==$`)
-	// fileDiagGluedRe: a viewer's diagnostic at the end of a line. When a
-	// file does not end with a newline, the diagnostic for the next operand
-	// ("cat a.txt missing.txt") is printed right after its last line.
+
 	fileDiagGluedRe = lazyre.New(`(?:cat|head|tail|gcat|ghead|gtail): .*(?:No such file or directory|Is a directory|Permission denied|Input/output error|Operation not permitted)$|\[bat error\]: .+$`)
 )
 
-// keepFileLine reports the lines a windowed file view must list even inside
-// its omitted range: the viewer's own diagnostics (also when glued to the
-// end of a line), head/tail's "==> file <==" separators and git's conflict
-// markers, which say the file is mid-merge.
 func keepFileLine(ln string) bool {
 	if ln == "" {
 		return false
@@ -79,22 +55,19 @@ func keepFileLine(ln string) bool {
 	return isConflictMarker(ln) || mayHaveFileDiag(ln) && fileDiagGluedRe.MatchString(ln)
 }
 
-// mayHaveFileDiag is a cheap necessary condition for fileDiagGluedRe.
 func mayHaveFileDiag(ln string) bool {
 	return strings.Contains(ln, "cat: ") || strings.Contains(ln, "head: ") || strings.Contains(ln, "tail: ") ||
 		strings.Contains(ln, "[bat error]: ")
 }
 
-// fileArgs describes a viewer's command line.
 type fileArgs struct {
 	operands []string
-	// sameLines: output line N is line N of the single operand.
+
 	sameLines bool
-	// slice: the user asked for a part of the file (head/tail/bat -r).
+
 	slice bool
 }
 
-// valueFlags per tool: flags whose value is the next argument.
 var fileValueFlags = map[string]map[string]bool{
 	"head": {"-n": true, "-c": true, "--lines": true, "--bytes": true},
 	"tail": {"-n": true, "-c": true, "--lines": true, "--bytes": true, "-s": true, "--sleep-interval": true, "--pid": true, "--max-unchanged-stats": true},
@@ -126,7 +99,7 @@ func parseFileArgs(e *engine.Context) fileArgs {
 			}
 			switch {
 			case name == "cat" && strings.ContainsAny(strings.TrimLeft(a, "-"), "nbsvetAET") && !strings.HasPrefix(a, "--"):
-				numbered = true // line numbers, squeezing or visible control chars: not the file's lines
+				numbered = true
 			case name == "cat" && strings.HasPrefix(a, "--"):
 				numbered = true
 			case flag == "-r" || flag == "--line-range":
@@ -159,11 +132,9 @@ func (fileFilter) Apply(c *engine.Context, out string) (string, bool) {
 		path = fa.operands[0]
 	}
 	lines := strings.Split(out, "\n")
-	// A file mid-merge is never summarized or templated: its conflict
-	// markers must be seen.
+
 	conflicted := hasConflict(lines)
 
-	// Binary content: nothing an agent can read or edit.
 	if looksBinary(out) {
 		var b []string
 		for _, ln := range lines {
@@ -195,7 +166,7 @@ func (fileFilter) Apply(c *engine.Context, out string) (string, bool) {
 	}
 	ext := commonExt(fa.operands)
 	switch ext {
-	case ".log", ".out", ".txt", "": // log files, or no telling extension
+	case ".log", ".out", ".txt", "":
 		if conflicted {
 			break
 		}
@@ -230,17 +201,11 @@ func (fileFilter) Apply(c *engine.Context, out string) (string, bool) {
 }
 
 const (
-	// maxHunk: a conflict hunk up to this many lines (markers included) is
-	// listed whole in an outline, so it can be resolved from the view …
 	maxHunk = 60
-	// maxHunkLines: … until this many hunk lines have been listed; past
-	// that only the markers are.
+
 	maxHunkLines = 400
 )
 
-// conflictHunks returns the line indexes of the merge-conflict hunks
-// (<<<<<<< through >>>>>>>, plus the two lines before, which name what is
-// in conflict) of at most maxHunk lines, up to maxHunkLines lines in all.
 func conflictHunks(lines []string) map[int]bool {
 	idx := map[int]bool{}
 	for i := 0; i < len(lines) && len(idx) < maxHunkLines; i++ {
@@ -262,7 +227,6 @@ func conflictHunks(lines []string) map[int]bool {
 	return idx
 }
 
-// hasOmission reports whether a window cut left out a range of lines.
 func hasOmission(cut []string) bool {
 	for _, ln := range cut {
 		if strings.HasPrefix(ln, "… lines ") && strings.Contains(ln, " omitted (") {
@@ -272,8 +236,6 @@ func hasOmission(cut []string) bool {
 	return false
 }
 
-// commonExt is the outline language of the operands: their extension when
-// they all share one.
 func commonExt(operands []string) string {
 	ext := ""
 	for i, op := range operands {
@@ -286,8 +248,6 @@ func commonExt(operands []string) string {
 	return ext
 }
 
-// isJSONPath reports whether a file is JSON by name, or by content when the
-// name says nothing.
 func isJSONPath(base, out string) bool {
 	switch strings.ToLower(filepath.Ext(base)) {
 	case ".json", ".geojson", ".har", ".ipynb", ".webmanifest", ".jsonl", ".ndjson":

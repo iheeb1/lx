@@ -14,58 +14,51 @@ import (
 	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// Timeouts for the programs doctor runs.
 const (
 	hookTimeout    = 5 * time.Second
 	shellTimeout   = 3 * time.Second
 	versionTimeout = 2 * time.Second
 )
 
-// Thresholds.
 const (
 	slowHook      = 100 * time.Millisecond
 	bigStore      = 512 << 20
-	quietFor      = 72 * time.Hour // no lx run for this long…
-	activeWithin  = 24 * time.Hour // …while Claude Code wrote a transcript this recently
-	maxHookRuns   = 3              // distinct hook commands (and binaries) checked
-	maxWalkedDirs = 20000          // bound on the transcript mtime walk
+	quietFor      = 72 * time.Hour
+	activeWithin  = 24 * time.Hour
+	maxHookRuns   = 3
+	maxWalkedDirs = 20000
 )
 
-// probeCmd is the harmless command the hook self-test asks about.
 const probeCmd = "git status"
 
-// The rtk pattern `lx init` uses, plus rtk's older script hook.
 var reRtk = lazyre.New(`(^|[/\s])rtk(\s|$)|rtk-rewrite\.sh`)
 
 var reSimpleMatcher = lazyre.New(`^[A-Za-z0-9_]+$`)
 
-// foundHook is an lx hook found in some settings file.
 type foundHook struct {
 	entry hookEntry
 	kind  hookKind
 	cmd   lxHookCmd
 
-	// Resolution of cmd.bin, for lxVerified hooks.
-	path     string // absolute path of the binary ("" when not found)
-	missing  string // why it cannot run: "does not exist", …
-	viaPATH  bool   // bare `lx`, looked up on PATH
-	relPATH  bool   // PATH has relative entries: sh might pick a different lx
-	relative bool   // a relative path: it depends on where Claude Code starts
+	path     string
+	missing  string
+	viaPATH  bool
+	relPATH  bool
+	relative bool
 }
 
 type state struct {
 	e        *Env
 	files    []*settingsFile
-	hooks    []*foundHook // lx hooks whose matcher selects Bash
-	offBash  []*foundHook // lx hooks whose matcher never selects Bash
+	hooks    []*foundHook
+	offBash  []*foundHook
 	rtk      []hookEntry
 	checks   []Check
 	probe    *shellProbe
 	versions map[string]string
 	hist     *historyInfo
-	zoneList *[]string // zones(), once computed
-	// rewriteBin is the program the first successful self-test's rewrite
-	// calls: "lx" (found on PATH) or an absolute path ("" = no self-test).
+	zoneList *[]string
+
 	rewriteBin string
 }
 
@@ -102,9 +95,6 @@ func (s *state) add(id, status, msg, fix string) {
 	s.checks = append(s.checks, Check{ID: id, Status: status, Message: printable(msg), Fix: printable(fix)})
 }
 
-// printable escapes control and bidirectional-override characters. Hook
-// commands and paths come from files a repository can ship; printed raw,
-// an escape sequence could redraw the terminal and fake a ✓.
 func printable(s string) string {
 	clean := true
 	for _, r := range s {
@@ -138,13 +128,10 @@ func printable(s string) string {
 	return b.String()
 }
 
-// unsafeRune: control characters, bidirectional overrides, and the line
-// and paragraph separators (U+2028, U+2029) some terminals break lines at.
 func unsafeRune(r rune) bool {
 	return unicode.IsControl(r) || unicode.Is(unicode.Bidi_Control, r) || r == '\u2028' || r == '\u2029'
 }
 
-// resolve finds the file a verified hook's argv[0] names.
 func (s *state) resolve(h *foundHook) {
 	bin := h.cmd.bin
 	if !strings.Contains(bin, "/") {
@@ -165,9 +152,6 @@ func (s *state) resolve(h *foundHook) {
 	}
 	h.path = filepath.Clean(bin)
 	if h.path != bin {
-		// `.` or `..` parts: the kernel resolves `..` after a symlink to
-		// the symlink target's parent, which Clean does not. Judge (and
-		// show) the file exec will actually reach.
 		if r, err := filepath.EvalSymlinks(bin); err == nil {
 			h.path = r
 		}
@@ -188,8 +172,6 @@ func executableProblem(p string) string {
 	return ""
 }
 
-// lookPath finds name in a PATH list. Relative entries are never used;
-// rel reports that one appeared before the match (a shell would search it).
 func lookPath(name, pathEnv string) (found string, rel bool) {
 	for _, dir := range filepath.SplitList(pathEnv) {
 		if dir == "" || !filepath.IsAbs(dir) {
@@ -203,8 +185,6 @@ func lookPath(name, pathEnv string) (found string, rel bool) {
 	}
 	return "", rel
 }
-
-// ---- binary ---------------------------------------------------------------
 
 func (s *state) checkBinary() {
 	v := s.version()

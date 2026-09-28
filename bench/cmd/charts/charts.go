@@ -5,21 +5,17 @@ import (
 	"math"
 )
 
-// Series is one colored identity in a chart.
 type Series struct {
 	Name  string
-	Class string // s1 | s2 | s3
+	Class string
 }
 
-// BarRow is one category row: a value per series.
 type BarRow struct {
 	Label  string
 	Values []float64
-	Notes  []string // optional per-value tip text
+	Notes  []string
 }
 
-// HBars renders grouped horizontal bars (one bar per series per row) on a
-// linear axis from 0. unit formats values ("%" or "ms" or "").
 func HBars(title, subtitle string, series []Series, rows []BarRow, maxV float64, unit string) string {
 	const (
 		w       = 760.0
@@ -81,15 +77,11 @@ func HBars(title, subtitle string, series []Series, rows []BarRow, maxV float64,
 	return c.String()
 }
 
-// DumbRow is one row of a dumbbell chart: values per series on a log axis.
 type DumbRow struct {
 	Label  string
-	Values []float64 // same order as series; <=0 means missing
+	Values []float64
 }
 
-// Dumbbell renders, per row, a connector from the largest to the smallest
-// value with a dot per series, on a log10 x axis — the right form when
-// values span orders of magnitude and the story is "from here to there".
 func Dumbbell(title, subtitle string, series []Series, rows []DumbRow, unit string) string {
 	const (
 		w     = 760.0
@@ -142,7 +134,7 @@ func Dumbbell(title, subtitle string, series []Series, rows []DumbRow, unit stri
 				c.dot(x(v), y, series[i].Class, fmt.Sprintf("%s — %s: %s%s", r.Label, series[i].Name, compact(v), unit))
 			}
 		}
-		// Label the ratio at the right end: the story of the row.
+
 		if len(r.Values) >= 2 && r.Values[0] > 0 && r.Values[len(r.Values)-1] > 0 {
 			ratio := r.Values[0] / r.Values[len(r.Values)-1]
 			c.text(x(mx)+10, y+4, "m", "start", fmt.Sprintf("%.0f×", ratio))

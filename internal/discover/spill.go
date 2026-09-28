@@ -10,36 +10,16 @@ import (
 )
 
 const (
-	// spillSafeChars: a view plus its receipt at most this long stays under
-	// Claude Code's Bash limit (30,000 characters) with a 10% margin, the
-	// same margin lx keeps when it caps views inside Claude Code.
 	spillSafeChars = 27000
-	// viewMaxChars is the engine.Options.MaxChars discover replays with:
-	// the cap lx applies inside Claude Code (30,000*9/10 − 200 = 26,800),
-	// so discover measures what lx does there.
+
 	viewMaxChars = 26800
 )
 
-// isSpill reports whether a tool_result is the host's stand-in for an
-// output too large to show. Claude Code replaces the whole result with
-//
-//	<persisted-output>
-//	Output too large (45.0KB). Full output saved to: PATH
-//
-//	Preview (first 2KB):
-//	…
-//	</persisted-output>
-//
-// (older versions: the "Output too large" line first). Only a result that
-// starts that way is a spill: an output that merely mentions the words —
-// grep over this very code, a cat of a transcript — is an ordinary result.
 func isSpill(text string) bool {
 	t := strings.TrimLeft(text, " \t\r\n")
 	return strings.HasPrefix(t, "<persisted-output>") || strings.HasPrefix(t, "Output too large")
 }
 
-// savedPath extracts PATH from the "Full output saved to: PATH" line of a
-// spill's header (the lines before the preview), never from the preview.
 func savedPath(text string) string {
 	const mark = "Full output saved to: "
 	head := strings.TrimLeft(text, " \t\r\n")
@@ -58,15 +38,12 @@ func savedPath(text string) string {
 	return strings.TrimSpace(rest)
 }
 
-// bashResult is the part of a Bash toolUseResult discover reads.
 type bashResult struct {
 	stdout, stderr string
 	persistedPath  string
-	persistedSize  int64 // bytes of the full output, when the host persisted it
+	persistedSize  int64
 }
 
-// parse reads a toolUseResult object. It fails unless stdout or stderr is
-// present. Fields of an unexpected type are ignored, never fatal.
 func (b *bashResult) parse(raw json.RawMessage) bool {
 	if len(raw) == 0 || raw[0] != '{' {
 		return false
@@ -94,7 +71,6 @@ func (b *bashResult) parse(raw json.RawMessage) bool {
 	return true
 }
 
-// joined is stdout then stderr, as fullOutput builds it.
 func (b *bashResult) joined() string {
 	switch {
 	case b.stdout == "":
@@ -105,8 +81,6 @@ func (b *bashResult) joined() string {
 	return strings.TrimRight(b.stdout, "\n") + "\n" + b.stderr
 }
 
-// complete: the streams hold the whole output. A persisted output larger
-// than the streams means they are the host's truncated copy.
 func (b *bashResult) complete() bool {
 	if b.persistedPath == "" && b.persistedSize == 0 {
 		return true
@@ -114,8 +88,6 @@ func (b *bashResult) complete() bool {
 	return b.persistedSize > 0 && int64(len(b.stdout)+len(b.stderr)) >= b.persistedSize
 }
 
-// resolvedRoots returns the scan roots with symlinks resolved (a root that
-// cannot be resolved is kept as its absolute path).
 func resolvedRoots(dirs []string) []string {
 	var out []string
 	for _, d := range dirs {
@@ -131,10 +103,6 @@ func resolvedRoots(dirs []string) []string {
 	return out
 }
 
-// readPersisted reads the full output the host saved for a spilled result.
-// Only a regular file in a tool-results directory under one of the scan
-// roots (symlinks resolved) is read, and at most maxLine bytes of it: a
-// transcript cannot make discover read anything else.
 func (s *scanner) readPersisted(p string) (string, bool) {
 	if p == "" || !filepath.IsAbs(p) {
 		return "", false

@@ -8,26 +8,12 @@ import (
 	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// Supported reports whether lx should wrap argv (argv[0] may be a path).
-//
-// The table is conservative on purpose. A command is excluded when its
-// output must reach the caller byte-for-byte (porcelain, JSON, NUL-separated,
-// custom formats, file contents), when it streams or waits for a human
-// (watch, follow, interactive, dev servers), or when it runs arbitrary
-// program output (go run, python script.py). Flags are judged per tool:
-// -f means "follow" to docker logs but "file" to docker compose and make.
-//
-// A command the table does not know may be a transparent wrapper (env,
-// timeout, nice, uv run, poetry run, uvx, pipx run…): engine.Peel finds the
-// command inside and that command's rule decides. The rewrite still goes in
-// front of the whole command line (lx uv run pytest): lx runs it as written.
 func Supported(argv []string) bool {
 	return supported(argv, 0)
 }
 
 func supported(argv []string, depth int) bool {
-	// Help and version text, and output meant for programs (which lx
-	// passes through byte for byte), gain nothing from a rewrite.
+
 	if len(argv) == 0 || has(argv[1:], "--help", "--version") || engine.MachineReadable(&engine.Context{Argv: argv}) {
 		return false
 	}
@@ -45,11 +31,7 @@ func supported(argv []string, depth int) bool {
 		return goOK(args)
 	}
 	if depth == 0 && argv[0] == "command" {
-		// lx goes in front of this word and must exec it, but `command` is
-		// a shell builtin: Debian, Ubuntu and Alpine have no command
-		// executable, so `lx command go test` would fail with 127. (An
-		// unquoted `command go test` never gets here: the rewriter peels
-		// it and splices lx after it. `\command` and "command" do.)
+
 		return false
 	}
 	if depth < engine.MaxPeel {
@@ -63,9 +45,6 @@ func supported(argv []string, depth int) bool {
 	return false
 }
 
-// lxOff reports an LX_RAW or LX_OFF assignment among a peeled wrapper's
-// words (`env -u X LX_RAW=1 go test`): the user asked for the raw command,
-// as the rewriter's own peeling honors for `LX_RAW=1 go test`.
 func lxOff(words []string) bool {
 	for _, w := range words {
 		name, val, ok := strings.Cut(w, "=")
@@ -76,11 +55,6 @@ func lxOff(words []string) bool {
 	return false
 }
 
-// wrappedTexts returns, as text, the commands engine.Peel finds inside argv,
-// one per wrapper layer, outermost first (at most engine.MaxPeel): for
-// `uv run env -u X git push` that is `env -u X git push` and `git push`.
-// Deny and ask rules are matched against them too: the host's own rules
-// see only `lx uv run …`, and Supported looks through these wrappers.
 func wrappedTexts(argv []string) []string {
 	var out []string
 	for range engine.MaxPeel {
@@ -97,8 +71,7 @@ func wrappedTexts(argv []string) []string {
 var (
 	rePython = lazyre.New(`^python(\d+(\.\d+)?)?$`)
 	rePip    = lazyre.New(`^pip(\d+(\.\d+)?)?$`)
-	// reGoVersion: golang.org/dl toolchains (go1.22.3, go1.23rc1), the
-	// names the go filters accept.
+
 	reGoVersion = lazyre.New(`^go1\.\d+(?:\.\d+)?(?:rc\d+|beta\d+)?$`)
 )
 
@@ -166,14 +139,20 @@ func init() {
 		"dotnet":     func(a []string) bool { return oneOf(firstPos(a, nil), "build", "test") && !hasWatch(a) },
 		"flutter":    dartOK,
 		"dart":       dartOK,
-		"composer":   func(a []string) bool { return oneOf(firstPos(a, nil), "install", "i") },
+		"composer":   composerOK,
 		"bundle":     bundleOK,
 		"rspec":      rspecOK,
 		"phpunit":    always,
+
+		"just":  justOK,
+		"task":  goTaskOK,
+		"mise":  miseOK,
+		"turbo": turboOK,
+		"nx":    nxOK,
+		"rake":  rakeOK,
+		"deno":  denoOK,
 	}
 }
-
-// ---- argument helpers ----
 
 func oneOf(s string, set ...string) bool {
 	for _, x := range set {
@@ -184,14 +163,11 @@ func oneOf(s string, set ...string) bool {
 	return false
 }
 
-// firstPos returns the first positional argument, skipping flags and the
-// values of flags listed in valueFlags. Everything after "--" is positional.
 func firstPos(args []string, valueFlags map[string]bool) string {
 	p, _ := posAt(args, valueFlags)
 	return p
 }
 
-// posAt is firstPos that also returns the arguments after the positional.
 func posAt(args []string, valueFlags map[string]bool) (string, []string) {
 	for i := 0; i < len(args); i++ {
 		a := args[i]
@@ -220,8 +196,6 @@ func set(xs ...string) map[string]bool {
 	return m
 }
 
-// has reports whether any argument equals a name, or is "--name=…" for a
-// long name. It scans past "--": `npm test -- --watch` still watches.
 func has(args []string, names ...string) bool {
 	for _, a := range args {
 		for _, n := range names {
@@ -244,9 +218,6 @@ func hasPrefix(args []string, prefixes ...string) bool {
 	return false
 }
 
-// shortFlag reports whether a single-dash cluster ("-rnl", "-sSLo") sets any
-// of letters. Parsing stops at the first letter in valueLetters because the
-// rest of the cluster is that flag's value ("-A3", "-XPOST", "-ffile").
 func shortFlag(args []string, letters, valueLetters string) bool {
 	for _, a := range args {
 		if len(a) < 2 || a[0] != '-' || a[1] == '-' {
@@ -265,8 +236,6 @@ func shortFlag(args []string, letters, valueLetters string) bool {
 	return false
 }
 
-// optValue returns the values given to an option in any of the forms
-// "--opt v", "--opt=v", "-o v", "-ov", "-o=v".
 func optValues(args []string, long, short string) []string {
 	var out []string
 	for i, a := range args {
@@ -299,8 +268,6 @@ func hasWatch(args []string) bool {
 	return has(args, "--watch", "--watchAll", "--watch-all", "--watchAll=true") || hasPrefix(args, "--watch=")
 }
 
-// ---- git ----
-
 var gitSubs = set("status", "log", "diff", "show", "push", "pull", "fetch", "clone",
 	"branch", "merge", "rebase", "commit", "stash", "blame", "reflog", "cherry-pick",
 	"tag", "remote", "grep", "shortlog", "worktree", "ls-remote", "submodule", "cherry",
@@ -325,7 +292,7 @@ func gitOK(args []string) bool {
 			i++
 			continue
 		case strings.HasPrefix(a, "-"):
-			return false // --version, --help, --exec-path, …
+			return false
 		}
 		break
 	}
@@ -340,7 +307,7 @@ func gitOK(args []string) bool {
 	case "remote":
 		return has(rest, "-v", "--verbose") || firstPos(rest, nil) == "show"
 	case "show":
-		// git show REV:path prints a file's exact bytes.
+
 		for _, a := range rest {
 			if !strings.HasPrefix(a, "-") && strings.Contains(a, ":") {
 				return false
@@ -351,9 +318,7 @@ func gitOK(args []string) bool {
 	case "commit":
 		return !has(rest, "--interactive", "-p", "--patch") && !shortFlag(rest, "p", "mFcCt")
 	case "stash":
-		// git stash -p (push --patch) is interactive; stash show -p is a
-		// diff. show must be the first word: in `git stash -p show` an
-		// option comes first, so git runs push -p with "show" as a path.
+
 		return len(rest) > 0 && rest[0] == "show" || !has(rest, "-p", "--patch")
 	case "blame":
 		return !has(rest, "-p", "--incremental")
@@ -367,10 +332,6 @@ func gitOK(args []string) bool {
 	return true
 }
 
-// gitGrepOK accepts the git grep forms the search filter renders: not
-// -z/--null (gitMachine), -q, -O/--open-files-in-pager, and none of the
-// other flags that reshape its output (counts, file lists, headings,
-// function lines, columns).
 func gitGrepOK(args []string) bool {
 	if has(args, "--quiet", "--open-files-in-pager", "--count", "--files-with-matches", "--name-only",
 		"--files-without-match", "--null", "--heading", "--break", "--show-function", "--column",
@@ -390,7 +351,7 @@ func gitMachine(args []string) bool {
 			strings.HasPrefix(a, "--pretty=format:"), strings.HasPrefix(a, "--pretty=tformat:"):
 			return true
 		case strings.HasPrefix(a, "--pretty="):
-			// --pretty=%h is a custom format too; named formats are for humans.
+
 			if strings.Contains(a, "%") {
 				return true
 			}
@@ -399,12 +360,8 @@ func gitMachine(args []string) bool {
 	return false
 }
 
-// ---- go / cargo ----
-
 var goModOK = set("tidy", "download", "verify", "vendor", "init")
 
-// goOK mirrors the go filters: benchmarks, fuzzing, test listings and -x/-n
-// command traces are output the agent asked for as it is.
 func goOK(args []string) bool {
 	sub, rest := posAt(args, set("-C"))
 	if hasPrefix(args, "-json", "--json") {
@@ -423,8 +380,6 @@ func goOK(args []string) bool {
 	return false
 }
 
-// goFlag reports whether a go flag is set (-name, --name, -name=v with v
-// not "false", also as -test.name), stopping at -args.
 func goFlag(args []string, names ...string) bool {
 	for _, a := range args {
 		if a == "-args" || a == "--args" || a == "--" {
@@ -442,21 +397,26 @@ func goFlag(args []string, names ...string) bool {
 	return false
 }
 
+var cargoValueFlags = set("--color", "--config", "-Z", "-C", "--manifest-path")
+
 func cargoOK(args []string) bool {
 	for len(args) > 0 && strings.HasPrefix(args[0], "+") {
-		args = args[1:] // +nightly
+		args = args[1:]
 	}
 	if hasPrefix(args, "--message-format", "--format") || hasWatch(args) {
 		return false
 	}
-	sub := firstPos(args, set("--color", "--config", "-Z", "-C", "--manifest-path"))
-	if oneOf(sub, "test", "t") && has(args, "--list", "--no-run") {
-		return false // test names or nothing: not a test run
+	sub, rest := posAt(args, cargoValueFlags)
+	if oneOf(sub, "test", "t", "nextest") && has(args, "--list", "--no-run") {
+		return false
+	}
+	if sub == "nextest" {
+
+		return oneOf(firstPos(rest, set("-P", "--profile", "-E", "--filterset", "--partition", "-j",
+			"--test-threads", "--manifest-path", "--config-file", "--tool-config-file")), "run", "r")
 	}
 	return oneOf(sub, "build", "b", "test", "t", "check", "c", "clippy", "install", "update", "fetch")
 }
-
-// ---- JavaScript package managers and runners ----
 
 var pkgValueFlags = set("--prefix", "-w", "--workspace", "-C", "--dir", "--filter", "-F",
 	"--cwd", "--registry", "--loglevel", "--userconfig", "--reporter")
@@ -471,7 +431,7 @@ func pkgOK(name string, args []string) bool {
 	sub, rest := posAt(args, pkgValueFlags)
 	switch {
 	case sub == "":
-		return name == "yarn" // bare `yarn [--flags]` = yarn install
+		return name == "yarn"
 	case pkgBuiltins[sub]:
 		return true
 	case sub == "run" || sub == "run-script":
@@ -479,10 +439,10 @@ func pkgOK(name string, args []string) bool {
 	case sub == "exec" || sub == "x" || sub == "dlx" && name != "npm":
 		return execToolOK(rest)
 	case sub == "workspace" && name == "yarn":
-		_, inner := posAt(rest, nil) // yarn workspace <name> <command…>
+		_, inner := posAt(rest, nil)
 		return pkgOK(name, inner)
 	case name != "npm":
-		// yarn/pnpm/bun run package scripts by bare name (yarn build).
+
 		return scriptOK(sub)
 	}
 	return false
@@ -490,9 +450,6 @@ func pkgOK(name string, args []string) bool {
 
 var scriptSplit = lazyre.New(`[^a-z0-9]+`)
 
-// scriptOK: package scripts named for one-shot checks (test, build, lint,
-// typecheck, check, compile — "test:unit", "type-check", "build:prod"), never
-// ones named for long-running processes (dev, start, serve, watch, preview).
 func scriptOK(script string) bool {
 	if script == "" {
 		return false
@@ -515,7 +472,6 @@ func scriptOK(script string) bool {
 	return false
 }
 
-// execToolOK handles npx/bunx/pnpm exec/pnpm dlx/yarn dlx/npm exec TOOL ….
 func execToolOK(args []string) bool {
 	if has(args, "-c", "--call") {
 		return false
@@ -525,11 +481,11 @@ func execToolOK(args []string) bool {
 		return false
 	}
 	if at := strings.LastIndexByte(tool, '@'); at > 0 {
-		tool = tool[:at] // tsc@5.4 → tsc
+		tool = tool[:at]
 	}
 	tool = filepath.Base(tool)
 	switch tool {
-	case "jest", "vitest", "mocha", "tsc", "eslint", "prettier", "playwright", "next", "vite":
+	case "jest", "vitest", "mocha", "tsc", "eslint", "prettier", "playwright", "next", "vite", "nx", "turbo":
 		return Supported(append([]string{tool}, rest...))
 	}
 	return false
@@ -575,12 +531,10 @@ func playwrightOK(a []string) bool {
 
 func isJSONish(v string) bool { return strings.Contains(v, "json") }
 
-// ---- Python ----
-
 func pytestOK(a []string) bool {
 	return !has(a, "--pdb", "--trace", "--pdbcls", "-f", "--looponfail") &&
 		!hasPrefix(a, "--pdbcls=") &&
-		// Listings and help are not test reports (the pytest filter declines them).
+
 		!has(a, "--co", "--collect-only", "--collectonly", "-V", "-h", "--fixtures", "--funcargs",
 			"--fixtures-per-test", "--markers", "--trace-config", "--setup-plan")
 }
@@ -600,11 +554,11 @@ func pythonOK(args []string) bool {
 		case a == "-X" || a == "-W":
 			i += 2
 		case a == "-c" || !strings.HasPrefix(a, "-") || a == "-":
-			return false // -c code, a script, or stdin: arbitrary output
+			return false
 		case strings.ContainsAny(a[1:], "cm"):
-			return false // clustered -uc / -um forms: bail
+			return false
 		case a[1] != '-' && strings.IndexByte(a[1:], 'i') >= 0:
-			return false // -i: an interactive prompt once the module is done
+			return false
 		default:
 			i++
 		}
@@ -679,13 +633,9 @@ func golangciOK(a []string) bool {
 	return true
 }
 
-// ---- build tools ----
-
 var makeValueFlags = set("-C", "-f", "--file", "--makefile", "--directory", "-I", "--include-dir",
 	"-o", "--old-file", "-W", "--what-if", "--new-file", "--assume-new", "-l", "--load-average")
 
-// longRunning are target/task name parts that usually start servers,
-// watchers or shells. Matching is by prefix on dash/colon-separated parts.
 var longRunningPrefix = []string{"dev", "start", "serve", "watch", "preview", "shell", "console",
 	"repl", "debug", "attach", "tail", "tunnel", "forward", "live"}
 var longRunningExact = set("up", "run", "log", "logs", "db", "ssh", "exec")
@@ -705,8 +655,7 @@ func longRunning(name string) bool {
 }
 
 func makeOK(args []string) bool {
-	// Dry runs print the commands (they are the content); -p/-q/-d/-v/-h
-	// print data, answers or help. The make filter declines them too.
+
 	if has(args, "--just-print", "--dry-run", "--recon", "--print-data-base", "--question", "--debug", "--trace") ||
 		shortFlag(args, "npqdvh", "CfIoWjlEO") {
 		return false
@@ -732,8 +681,6 @@ func makeOK(args []string) bool {
 
 var ninjaValueFlags = set("-C", "-f", "-j", "-k", "-l", "-d", "-w")
 
-// ninjaOK: not dry runs, help or tools (-t), and, as for make, no target
-// named like a server or watcher (a custom `run` or `serve` target).
 func ninjaOK(args []string) bool {
 	if has(args, "-n", "-h", "--version") || hasPrefix(args, "-t") {
 		return false
@@ -752,9 +699,6 @@ func ninjaOK(args []string) bool {
 	return true
 }
 
-// cmakeOK: only `cmake --build`, with no --target named like a server or
-// watcher (--target takes one or more names; after --, words go to the
-// native build tool, whose targets are judged too).
 func cmakeOK(args []string) bool {
 	if !has(args, "--build") {
 		return false
@@ -784,7 +728,7 @@ var gradleValueFlags = set("-p", "--project-dir", "-b", "--build-file", "-c", "-
 	"-x", "--exclude-task", "-I", "--init-script", "-g", "--gradle-user-home", "--console", "-D", "-P")
 
 func gradleOK(args []string) bool {
-	// Task and dependency reports are data; the gradle filter declines them.
+
 	if has(args, "--continuous", "-t", "--scan", "--debug-jvm", "tasks", "dependencies", "dependencyInsight",
 		"properties", "projects", "help", "-h", "-v", "--debug", "-d", "--console=rich", "--console=verbose") {
 		return false
@@ -818,7 +762,7 @@ func mvnOK(args []string) bool {
 		return false
 	}
 	for _, a := range args {
-		// Dependency trees and help goals print data (the maven filter declines them).
+
 		if strings.HasPrefix(a, "dependency:tree") || strings.HasPrefix(a, "dependency:list") ||
 			strings.HasPrefix(a, "help:") || strings.HasPrefix(a, "versions:display") {
 			return false
@@ -842,21 +786,16 @@ func mvnOK(args []string) bool {
 	return true
 }
 
-// ---- file listing and search ----
-
 func findOK(a []string) bool {
 	return !has(a, "-exec", "-execdir", "-ok", "-okdir", "-delete", "-print0", "-printf", "-ls",
 		"-fprint", "-fprint0", "-fprintf", "-fls")
 }
 
-// fdOK declines exec, long listings, NUL output and custom formats.
 func fdOK(a []string) bool {
 	return !has(a, "-x", "-X", "--exec-batch", "-l", "--list-details", "-0", "--print0", "--format", "-h", "-V",
 		"--gen-completions") && !hasPrefix(a, "--exec")
 }
 
-// grepOK and rgOK decline the flags that make the search filter bail:
-// counts, file lists, quiet, NUL output, byte offsets, headings, stats.
 func grepOK(a []string) bool {
 	if has(a, "--files-with-matches", "--files-without-match", "--count", "--quiet", "--silent",
 		"--null", "--null-data", "--json", "--byte-offset", "--initial-tab", "--unix-byte-offsets") {
@@ -875,8 +814,6 @@ func rgOK(a []string) bool {
 	return !shortFlag(a, "lcq0zbphV", "ABCefgjmMrtTEd")
 }
 
-// treeOK declines what the tree filter does: JSON/XML/HTML, metadata
-// columns (sizes, permissions, dates), no indentation, output to a file.
 func treeOK(a []string) bool {
 	for _, x := range a {
 		switch {
@@ -894,8 +831,6 @@ func treeOK(a []string) bool {
 func duOK(a []string) bool {
 	return !has(a, "--null", "--time", "--inodes") && !shortFlag(a, "0", "BdtX")
 }
-
-// ---- containers and clusters ----
 
 var dockerGlobalValue = set("--context", "-c", "-H", "--host", "--config", "-l", "--log-level",
 	"--tlscacert", "--tlscert", "--tlskey")
@@ -939,7 +874,6 @@ func dockerOK(args []string) bool {
 	return false
 }
 
-// dockerQuiet: -q / --quiet / -aq print bare IDs, which scripts consume.
 func dockerQuiet(a []string) bool {
 	return has(a, "-q", "--quiet") || shortFlag(a, "q", "fn")
 }
@@ -991,7 +925,7 @@ func kubectlOK(args []string) bool {
 }
 
 func journalctlOK(a []string) bool {
-	// -F/--field lists a field's values: lx streams it (cli.ShouldStream).
+
 	if has(a, "-f", "--follow", "-F", "--field") || shortFlag(a, "f", "unptoSUDMgFbic") {
 		return false
 	}
@@ -999,8 +933,6 @@ func journalctlOK(a []string) bool {
 		return strings.HasPrefix(v, "json") || v == "export"
 	})
 }
-
-// ---- network and package managers ----
 
 func curlOK(a []string) bool {
 	if has(a, "-o", "-O", "--output", "--output-dir", "--remote-name", "--remote-name-all",
@@ -1050,4 +982,398 @@ func rspecOK(a []string) bool {
 	return !anyValue(optValues(a, "--format", "-f"), func(v string) bool {
 		return strings.HasPrefix(v, "j") || strings.HasPrefix(v, "h")
 	})
+}
+
+func runnerTaskOK(name string) bool {
+	if name == "" || strings.ContainsAny(name, "$`") || riskyTask(name) {
+		return false
+	}
+	for _, p := range scriptSplit.Split(strings.ToLower(name), -1) {
+		if runnerCheckWords[p] {
+			return true
+		}
+	}
+	return false
+}
+
+var runnerCheckWords = set("test", "tests", "spec", "specs", "lint", "lints", "check", "checks",
+	"typecheck", "typechecks", "build", "builds", "compile")
+
+func riskyTask(name string) bool {
+	if longRunning(name) {
+		return true
+	}
+	for _, p := range scriptSplit.Split(strings.ToLower(name), -1) {
+		if strings.HasPrefix(p, "deploy") || strings.HasPrefix(p, "release") || strings.HasPrefix(p, "publish") {
+			return true
+		}
+	}
+	return false
+}
+
+func runnerArgsOK(args []string) bool {
+	for _, a := range args {
+		if strings.ContainsAny(a, "$`") {
+			return false
+		}
+	}
+	return !hasWatch(args) && !has(args, "-w", "--ui", "--inspect", "--inspect-brk", "--inspect-wait") &&
+		!hasPrefix(args, "--inspect=", "--inspect-brk=", "--inspect-wait=")
+}
+
+var taskNameRe = lazyre.New(`^[A-Za-z_][A-Za-z0-9_-]*(?:(?::|::)[A-Za-z0-9_-]+)*$`)
+
+func flagWord(a string) (string, bool) {
+	if strings.HasPrefix(a, "--") {
+		if k := strings.IndexByte(a, '='); k > 0 {
+			return a[:k], true
+		}
+	}
+	return a, false
+}
+
+var (
+	justValue = set("-f", "--justfile", "-d", "--working-directory", "--shell", "--shell-arg",
+		"--dotenv-filename", "--dotenv-path", "-E", "--color", "--command-color", "--tempdir",
+		"--timestamp-format")
+	justBool = set("-q", "--quiet", "-v", "--verbose", "-vv", "-vvv", "--yes", "--highlight",
+		"--no-highlight", "--no-dotenv", "--unstable", "--timestamp", "--explain", "--no-deps",
+		"--clear-shell-args", "-g", "--global-justfile", "-u", "--unsorted")
+)
+
+func justOK(args []string) bool {
+	for i := 0; i < len(args); i++ {
+		a := args[i]
+		f, attached := flagWord(a)
+		switch {
+		case a == "--set":
+			i += 2
+		case justValue[f]:
+			if !attached {
+				i++
+			}
+		case justBool[a]:
+		case strings.HasPrefix(a, "-"):
+
+			return false
+		case strings.Contains(a, "=") && peelAssign(a):
+
+		default:
+
+			if !runnerTaskOK(a) {
+				return false
+			}
+			rest := args[i+1:]
+			for _, r := range rest {
+				if taskNameRe.MatchString(r) && !strings.Contains(r, "=") && riskyTask(r) {
+					return false
+				}
+			}
+			return runnerArgsOK(rest)
+		}
+	}
+	return false
+}
+
+func peelAssign(a string) bool {
+	eq := strings.IndexByte(a, '=')
+	return eq > 0 && taskNameRe.MatchString(a[:eq]) && !strings.Contains(a[:eq], ":")
+}
+
+var (
+	goTaskValue = set("-d", "--dir", "-t", "--taskfile", "-o", "--output", "-C", "--concurrency",
+		"--interval", "--output-group-begin", "--output-group-end", "--sort", "--cacert", "--cert",
+		"--cert-key", "--remote-cache-dir", "--expiry", "--timeout", "--trusted-hosts")
+	goTaskBool = set("-f", "--force", "-s", "--silent", "-v", "--verbose", "-p", "--parallel", "-y", "--yes",
+		"-x", "--exit-code", "-c", "--color", "--insecure", "--download", "--offline", "-g", "--global",
+		"--output-group-error-only", "-F", "--failfast", "--disable-fuzzy")
+)
+
+func goTaskOK(args []string) bool {
+	tasks := 0
+	for i := 0; i < len(args); i++ {
+		a := args[i]
+		f, attached := flagWord(a)
+		switch {
+		case a == "--":
+			return tasks > 0 && runnerArgsOK(args[i+1:])
+		case goTaskValue[f]:
+			if !attached {
+				i++
+			}
+		case goTaskBool[a]:
+		case strings.HasPrefix(a, "-"):
+
+			return false
+		case peelAssign(a):
+		default:
+			if !runnerTaskOK(a) {
+				return false
+			}
+			tasks++
+		}
+	}
+	return tasks > 0
+}
+
+var (
+	miseGlobalValue = set("-C", "--cd", "-E", "--env", "-j", "--jobs")
+	miseRunValue    = set("-C", "--cd", "-E", "--env", "-j", "--jobs", "-o", "--output", "-s", "--shell",
+		"-t", "--tool")
+	miseRunBool = set("-c", "--continue-on-error", "-f", "--force", "-p", "--prefix", "-i", "--interleave",
+		"-q", "--quiet", "-S", "--silent", "--timings", "--no-timings", "--no-cache", "--fresh-env",
+		"--skip-deps", "--no-prepare", "-y", "--yes", "-v", "--verbose")
+)
+
+func miseOK(args []string) bool {
+	sub, rest := posAt(args, miseGlobalValue)
+	if sub != "run" && sub != "r" || hasPrefix(args[:len(args)-len(rest)], "--raw", "-r") {
+		return false
+	}
+	for i := 0; i < len(rest); i++ {
+		a := rest[i]
+		f, attached := flagWord(a)
+		switch {
+		case miseRunValue[f]:
+			if !attached {
+				i++
+			}
+		case miseRunBool[a]:
+		case strings.HasPrefix(a, "-"):
+
+			return false
+		default:
+
+			groups := [][]string{{}}
+			for _, w := range rest[i:] {
+				if w == ":::" {
+					groups = append(groups, []string{})
+					continue
+				}
+				groups[len(groups)-1] = append(groups[len(groups)-1], w)
+			}
+			for _, g := range groups {
+				if len(g) == 0 || !runnerTaskOK(g[0]) || !runnerArgsOK(g[1:]) {
+					return false
+				}
+			}
+			return true
+		}
+	}
+	return false
+}
+
+var (
+	turboValue = set("--filter", "-F", "--concurrency", "--cache-dir", "--cache", "--env-mode",
+		"--log-order", "--log-prefix", "--output-logs", "--profile", "--anon-profile", "--token", "--team",
+		"--api", "--login", "--cwd", "--heap", "--global-deps", "--scope", "--since", "--cache-workers",
+		"--remote-cache-timeout", "--framework-inference", "--ui", "--env-var", "--pass-through-env", "--verbosity")
+	turboBool = set("--continue", "--force", "--parallel", "--no-cache", "--no-daemon", "--daemon", "--only",
+		"--affected", "--color", "--no-color", "--remote-only", "--no-update-notifier", "--skip-infer",
+		"--single-package", "-v", "-vv", "-vvv", "--summarize", "--include-dependencies",
+		"--no-deps", "--experimental-write-cache")
+)
+
+func turboOK(args []string) bool {
+	if anyValue(optValues(args, "--ui", ""), func(v string) bool { return v != "stream" }) {
+		return false
+	}
+	tasks := 0
+	for i := 0; i < len(args); i++ {
+		a := args[i]
+		f, attached := flagWord(a)
+		switch {
+		case a == "--":
+			return tasks > 0 && runnerArgsOK(args[i+1:])
+		case turboValue[f]:
+			if !attached {
+				i++
+			}
+		case turboBool[f]:
+		case strings.HasPrefix(a, "-"):
+
+			return false
+		case a == "run" && tasks == 0 && i == firstPosIndex(args, turboValue):
+		default:
+			if !runnerTaskOK(a) {
+				return false
+			}
+			tasks++
+		}
+	}
+	return tasks > 0
+}
+
+func firstPosIndex(args []string, valueFlags map[string]bool) int {
+	for i := 0; i < len(args); i++ {
+		a := args[i]
+		if a == "--" {
+			return -1
+		}
+		if strings.HasPrefix(a, "-") && len(a) > 1 {
+			if f, attached := flagWord(a); valueFlags[f] && !attached {
+				i++
+			}
+			continue
+		}
+		return i
+	}
+	return -1
+}
+
+var (
+	nxValue = set("-c", "--configuration", "-p", "--projects", "--exclude", "--base", "--head", "--files",
+		"--runner", "--output-style", "--outputStyle", "-t", "--targets", "--target")
+	nxBuiltins = set("add", "connect", "daemon", "graph", "dep-graph", "exec", "format", "format:check",
+		"format:write", "generate", "g", "import", "init", "list", "migrate", "release", "repair", "report",
+		"reset", "show", "sync", "sync:check", "view-logs", "watch", "login", "logout", "mcp", "print-affected",
+		"workspace-generator", "configure-ai-agents")
+)
+
+func nxOK(args []string) bool {
+	if has(args, "--graph", "--tui", "--help", "--version", "--dry-run", "-d") || !runnerArgsOK(args) ||
+		anyValue(optValues(args, "--output-style", "--outputStyle"), func(v string) bool { return v == "tui" }) {
+		return false
+	}
+	sub, rest := posAt(args, nxValue)
+	switch {
+	case sub == "run":
+		spec := firstPos(rest, nxValue)
+		parts := strings.Split(spec, ":")
+		if len(parts) < 2 || parts[0] == "" || !runnerTaskOK(parts[1]) {
+			return false
+		}
+		return len(parts) < 3 || !riskyTask(parts[2])
+	case sub == "run-many" || sub == "affected":
+		targets := nxTargets(args)
+		if len(targets) == 0 {
+			return false
+		}
+		for _, t := range targets {
+			if !runnerTaskOK(t) {
+				return false
+			}
+		}
+		return true
+	case strings.HasPrefix(sub, "affected:"):
+		return runnerTaskOK(strings.TrimPrefix(sub, "affected:"))
+	case nxBuiltins[sub] || strings.Contains(sub, ":"):
+
+		if parts := strings.Split(sub, ":"); len(parts) >= 2 && !nxBuiltins[sub] && parts[0] != "" {
+			return runnerTaskOK(parts[1]) && (len(parts) < 3 || !riskyTask(parts[2]))
+		}
+		return false
+	}
+	return runnerTaskOK(sub)
+}
+
+func nxTargets(args []string) []string {
+	var out []string
+	for i := 0; i < len(args); i++ {
+		a := args[i]
+		var vals []string
+		switch {
+		case a == "-t" || a == "--target" || a == "--targets":
+		case strings.HasPrefix(a, "-t=") || strings.HasPrefix(a, "--target=") || strings.HasPrefix(a, "--targets="):
+			_, v, _ := strings.Cut(a, "=")
+			vals = append(vals, v)
+		default:
+			continue
+		}
+		for i+1 < len(args) && !strings.HasPrefix(args[i+1], "-") {
+			i++
+			vals = append(vals, args[i])
+		}
+		for _, v := range vals {
+			out = append(out, strings.Split(v, ",")...)
+		}
+	}
+	return out
+}
+
+var (
+	rakeValue = set("-f", "--rakefile", "-C", "--directory", "-I", "--libdir", "-r", "--require",
+		"-R", "--rakelibdir", "--suppress-backtrace", "-j", "--jobs")
+	rakeBool = set("-t", "--trace", "-q", "--quiet", "-s", "--silent", "-v", "--verbose", "-m", "--multitask",
+		"-N", "--no-search", "--nosearch", "-g", "--system", "-G", "--no-system", "--nosystem",
+		"--backtrace", "-X", "--no-deprecation-warnings", "--comments")
+)
+
+func rakeOK(args []string) bool {
+	tasks := 0
+	for i := 0; i < len(args); i++ {
+		a := args[i]
+		f, attached := flagWord(a)
+		switch {
+		case a == "-j" || a == "--jobs":
+			if i+1 < len(args) && isDigits(args[i+1]) {
+				i++
+			}
+		case rakeValue[f]:
+			if !attached {
+				i++
+			}
+		case rakeBool[a]:
+		case strings.HasPrefix(a, "-"):
+
+			return false
+		case peelAssign(a):
+		default:
+			name := a
+			if k := strings.IndexByte(name, '['); k > 0 {
+				name = name[:k]
+			}
+			if !runnerTaskOK(name) {
+				return false
+			}
+			tasks++
+		}
+	}
+	return tasks > 0
+}
+
+var denoValue = set("-c", "--config", "--cwd", "--import-map", "-L", "--log-level", "--lock", "--filter",
+	"-f", "--reporter", "--junit-path", "--coverage", "--seed", "--shuffle", "--parallel", "--ext")
+
+func denoOK(args []string) bool {
+	sub, rest := posAt(args, denoValue)
+	if hasWatch(args) || !runnerArgsOK(args) {
+		return false
+	}
+	switch sub {
+	case "test", "check":
+		return true
+	case "lint":
+		return !has(rest, "--rules")
+	case "task":
+		if has(rest, "--eval") {
+			return false
+		}
+		name, after := posAt(rest, denoValue)
+		return runnerTaskOK(name) && runnerArgsOK(after)
+	}
+	return false
+}
+
+var composerBuiltins = set("about", "archive", "audit", "browse", "home", "bump", "check-platform-reqs",
+	"clear-cache", "clearcache", "cc", "config", "create-project", "depends", "why", "diagnose",
+	"dump-autoload", "dumpautoload", "exec", "fund", "global", "help", "init", "licenses", "list",
+	"outdated", "prohibits", "why-not", "reinstall", "remove", "rm", "require", "r", "search",
+	"self-update", "selfupdate", "show", "info", "status", "suggests", "update", "u", "upgrade", "validate")
+
+func composerOK(args []string) bool {
+	sub, rest := posAt(args, set("-d", "--working-dir"))
+	switch {
+	case sub == "install" || sub == "i":
+		return true
+	case sub == "run-script" || sub == "run":
+		if has(rest, "--list", "-l") {
+			return false
+		}
+		name, after := posAt(rest, set("--timeout"))
+		return runnerTaskOK(name) && runnerArgsOK(after)
+	case composerBuiltins[sub]:
+		return false
+	}
+	return runnerTaskOK(sub) && runnerArgsOK(rest)
 }

@@ -2,29 +2,13 @@ package jstools
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/filters/focus"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// tsc condenses TypeScript compiler diagnostics (tsc, vue-tsc, tsgo).
-//
-// The plain format (`file(l,c): error TSxxxx: msg`, what tsc prints into a
-// pipe) is already dense and is kept verbatim with its elaboration lines.
-// The --pretty format is rewritten to one `file:l:c - error TSxxxx: msg`
-// line (tsc's own header, verbatim) plus its elaboration lines: the code
-// frame and ~~~ underline are dropped, and related information ("An argument
-// for 'x' was not provided." at the declaration) becomes one
-// `  related file:l:c - message` line. "Found N errors in M files." is kept
-// verbatim; the "Errors  Files" table after it is dropped only when every
-// file it lists is already named by a diagnostic.
-//
-// Above 80 diagnostics, a single-line message repeated more than 5 times is
-// printed once followed by every one of its locations.
-//
-// tsc is Guarded: code frames quote source code, which may contain words
-// like "error", and are dropped on purpose. Every other line is kept.
 type tsc struct{}
 
 func (tsc) Name() string { return "tsc" }
@@ -39,7 +23,6 @@ func (tsc) Match(c *engine.Context) bool {
 		"--generateTrace", "--extendedDiagnostics", "--diagnostics")
 }
 
-// Stream: watch mode never ends, so it runs in passthrough.
 func (tsc) Stream(c *engine.Context) bool {
 	_, args := tool(c)
 	return hasArg(args, "--watch", "-w")
@@ -52,7 +35,7 @@ func (tsc) Apply(c *engine.Context, s string) (string, bool) {
 	var o out
 	found := false
 	for i := 0; i < len(lines); {
-		if end, rendered := tscRegion(lines, i); end > i {
+		if end, rendered := tscRegion(c, lines, i); end > i {
 			o.add(rendered...)
 			found = true
 			i = end
@@ -74,35 +57,29 @@ var (
 	tscFoundRe = lazyre.New(`^Found \d+ errors?(?:\.| in .+)$`)
 	tscTableRe = lazyre.New(`^Errors\s+Files$`)
 	tscRowRe   = lazyre.New(`^\s+\d+\s+(\S.*?)(?::\d+)?$`)
-	// Related information in --pretty output: "  file:line:col".
+
 	tscRelLocRe = lazyre.New(`^  (\S.*):(\d+):(\d+)$`)
-	// Code frame: "151   source" gutter lines paired with "    ~~~~" lines,
-	// and a "..." gutter for spans of more than 5 lines.
+
 	tscGutterRe     = lazyre.New(`^\s*\d+(?: .*)?$`)
 	tscSquiggleRe   = lazyre.New(`^\s+~+$`)
 	tscEllipsisRe   = lazyre.New(`^\s*\.\.\.$`)
 	tscBareGutterRe = lazyre.New(`^\s*\d+$`)
 )
 
-// tscDiag is one diagnostic.
 type tscDiag struct {
-	header  string   // tsc's own first line, verbatim
-	file    string   // "" for global diagnostics
-	loc     string   // "file(l,c)" or "file:l:c", as tsc wrote it
-	key     string   // severity, code and message
-	chain   []string // elaboration lines, verbatim
-	related []string // rendered related-information lines
+	header  string
+	file    string
+	loc     string
+	key     string
+	chain   []string
+	related []string
 }
 
-// tscHeader parses a diagnostic's first line.
 func tscHeader(ln string) (d tscDiag, pretty, ok bool) {
 	if !strings.Contains(ln, "TS") {
 		return d, false, false
 	}
-	// The shapes (see scan.go):
-	//   pretty  file:line:col - error TS2322: message
-	//   plain   file(line,col): error TS2322: message
-	//   global  error TS5023: message
+
 	if m, ok := scanTSCPretty(ln); ok {
 		return tscDiag{header: ln, file: m[0], loc: m[0] + ":" + m[1] + ":" + m[2], key: m[3] + " " + m[4] + ": " + m[5]}, true, true
 	}
@@ -115,8 +92,6 @@ func tscHeader(ln string) (d tscDiag, pretty, ok bool) {
 	return d, false, false
 }
 
-// tscFrame returns the end of the code frame starting at lines[i] (i when
-// there is none).
 func tscFrame(lines []string, i int) int {
 	j := i
 	for j < len(lines) {
@@ -129,8 +104,7 @@ func tscFrame(lines []string, i int) int {
 			break
 		}
 		next := lines[j+1]
-		// An empty source line (a bare gutter number) has an empty
-		// underline, which trimming turned into "".
+
 		if tscSquiggleRe.MatchString(next) || next == "" && tscBareGutterRe.MatchString(ln) {
 			j += 2
 			continue
@@ -140,13 +114,11 @@ func tscFrame(lines []string, i int) int {
 	return j
 }
 
-// tscParse parses the diagnostic whose header is lines[i] and returns it
-// with the index after its last line.
 func tscParse(lines []string, i int) (tscDiag, int) {
 	d, pretty, _ := tscHeader(lines[i])
 	n := len(lines)
 	j := i + 1
-	// Elaboration: indented lines right under the header.
+
 	for j < n && strings.HasPrefix(lines[j], "  ") && strings.TrimSpace(lines[j]) != "" {
 		if pretty && tscFrame(lines, j) > j {
 			break
@@ -157,7 +129,7 @@ func tscParse(lines []string, i int) (tscDiag, int) {
 	if !pretty {
 		return d, j
 	}
-	// Blank line, code frame, then related information blocks.
+
 	skipBlank := func(k int) int {
 		for k < n && lines[k] == "" {
 			k++
@@ -182,7 +154,7 @@ func tscParse(lines []string, i int) (tscDiag, int) {
 		} else if !strings.HasPrefix(ln, "    ") {
 			return d, j
 		}
-		// The related message: lines indented by 4, after the frame.
+
 		var msg []string
 		for k < n && strings.HasPrefix(lines[k], "    ") && strings.TrimSpace(lines[k]) != "" {
 			msg = append(msg, lines[k])
@@ -209,23 +181,19 @@ func tscParse(lines []string, i int) (tscDiag, int) {
 	}
 }
 
-// tscFactorMin: above this many diagnostics, repeated messages are factored.
 const (
 	tscFactorMin    = 80
 	tscFactorRepeat = 5
 	locsPerLine     = 8
 )
 
-// tscRegion consumes the run of diagnostics starting at lines[i] (with the
-// blank lines between them, the "Found N errors" summary and its table) and
-// renders it. It returns i when lines[i] does not start a diagnostic.
-func tscRegion(lines []string, i int) (int, []string) {
+func tscRegion(c *engine.Context, lines []string, i int) (int, []string) {
 	if _, _, ok := tscHeader(lines[i]); !ok {
 		return i, nil
 	}
 	var (
 		diags []tscDiag
-		tail  []string // summary and table
+		tail  []string
 		files = map[string]bool{}
 		n     = len(lines)
 		j     = i
@@ -251,7 +219,7 @@ func tscRegion(lines []string, i int) (int, []string) {
 		if tscFoundRe.MatchString(lines[k]) {
 			tail = append(tail, lines[k])
 			j = k + 1
-			// "Errors  Files" table: dropped when it names no new file.
+
 			t := j
 			for t < n && lines[t] == "" {
 				t++
@@ -280,6 +248,7 @@ func tscRegion(lines []string, i int) (int, []string) {
 		break
 	}
 
+	diags = focusFirst(focus.New(c.Focus), diags, func(d tscDiag) string { return d.file })
 	var r []string
 	factored := tscFactor(diags)
 	for idx, d := range diags {
@@ -300,10 +269,6 @@ func tscRegion(lines []string, i int) (int, []string) {
 	return j, r
 }
 
-// tscFactor groups single-line diagnostics sharing a message when there are
-// more than tscFactorMin diagnostics. The result maps a diagnostic index to
-// its replacement: the group rendering at the first member, nil for the
-// other members.
 func tscFactor(diags []tscDiag) map[int][]string {
 	res := map[int][]string{}
 	if len(diags) <= tscFactorMin {

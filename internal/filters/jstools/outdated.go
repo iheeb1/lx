@@ -2,22 +2,12 @@ package jstools
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// npmOutdated keeps `npm outdated`'s table (it is already compact) but
-// removes the columns that carry no information: Location when every row is
-// node_modules/<Package>, and "Depended by" when every row has the same
-// value; one note line says what the hidden columns held. Anything that is
-// not the standard six-column table is left alone. pnpm's box-drawn table
-// is redrawn as plain columns; yarn's color legend (the colors are gone
-// once the output is normalized) is dropped.
-//
-// npm outdated exits 1 whenever something is outdated; that is not a
-// failure of the command and the table says nothing pass-like.
 type npmOutdated struct{}
 
 func (npmOutdated) Name() string { return "npm-outdated" }
@@ -28,12 +18,8 @@ func (npmOutdated) Match(c *engine.Context) bool {
 		!hasArg(rest, "--json", "--parseable", "-p", "--long", "-l", "--help", "-h", "--format")
 }
 
-// Faithful: hidden columns are restated in the note line.
 func (npmOutdated) Faithful(*engine.Context) bool { return true }
 
-// IsContent: rows name packages (http-errors, error-ex) and are
-// re-aligned; they are data, not errors of the run. npm error lines are
-// outside the table and kept as they are.
 func (npmOutdated) IsContent() bool { return true }
 
 var outdatedHeadRe = lazyre.New(`^Package\s+Current\s+Wanted\s+Latest\s+Location\s+Depended by$`)
@@ -46,8 +32,6 @@ func (npmOutdated) Apply(c *engine.Context, s string) (string, bool) {
 		return unboxAll(lines)
 	}
 	if strings.Contains(s, "info Color legend") {
-		// yarn: the legend explains colors that are gone once the output
-		// is normalized; the table itself is plain text.
 		var o out
 		for _, ln := range lines {
 			if yarnLegendRe.MatchString(ln) {
@@ -81,8 +65,6 @@ func (npmOutdated) Apply(c *engine.Context, s string) (string, bool) {
 		return "", false
 	}
 	if end < len(lines) && strings.TrimSpace(lines[end]) != "" && !strings.HasPrefix(lines[end], "npm ") {
-		// A row that is not six words: the note would say "every row" of
-		// a table it did not fully read.
 		return "", false
 	}
 	sameLoc, sameDep := true, true
@@ -128,7 +110,7 @@ func (npmOutdated) Apply(c *engine.Context, s string) (string, bool) {
 				b.WriteString(cell)
 			case k == 0:
 				b.WriteString(cell + strings.Repeat(" ", width[k]-len(cell)+2))
-			default: // versions: right-aligned like npm
+			default:
 				b.WriteString(strings.Repeat(" ", width[k]-len(cell)) + cell + "  ")
 			}
 		}
@@ -139,8 +121,6 @@ func (npmOutdated) Apply(c *engine.Context, s string) (string, bool) {
 	return o.String(), true
 }
 
-// unboxAll redraws every box-drawn table in lines as plain columns and
-// keeps the other lines.
 func unboxAll(lines []string) (string, bool) {
 	var o out
 	found := false

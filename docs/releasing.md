@@ -7,6 +7,7 @@ make dist           # dist/: 6 archives (.zip for windows), install.sh and SHA25
 make install-test   # host-only dist, install.sh over file:// (no network), corrupted-archive refusal
 make nonet          # fails if a networking package is linked into lx (linux, darwin, windows)
 git tag v0.2.0 && git push origin v0.2.0   # release.yml: full CI, make dist, provenance attestation, GitHub release
+scripts/brew-formula.sh v0.2.0 > ../homebrew-tap/Formula/lx.rb   # then commit and push the tap
 ```
 
 Archive names carry no version, so `releases/latest/download/<name>` always

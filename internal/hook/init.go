@@ -17,37 +17,25 @@ import (
 	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// InitOptions configure InitClaude.
 type InitOptions struct {
-	Global    bool   // user settings ($CLAUDE_CONFIG_DIR or ~/.claude) instead of ./.claude
-	ConfigDir string // the directory holding settings.json; overrides Global (tests)
-	LxPath    string // absolute path of the lx binary written into the hook command
+	Global    bool
+	ConfigDir string
+	LxPath    string
 	Uninstall bool
-	DryRun    bool      // print the resulting settings.json instead of writing it
-	Out       io.Writer // messages (nil = discard)
+	DryRun    bool
+	Out       io.Writer
 
-	// ReadOnly writes `--readonly`: read-only commands are approved as
-	// Claude Code approves them without lx. An existing --readonly is kept
-	// on reinstall unless NoReadOnly is set.
 	ReadOnly   bool
 	NoReadOnly bool
-	// Prefix, when set, is written as `--prefix <path>`: rewritten commands
-	// call that path instead of a bare lx.
+
 	Prefix string
-	// Probe looks lx up on the PATH of the shell the agent runs commands in
-	// (ProbeShellLx). When Prefix is empty and the probe fails or finds a
-	// different file than LxPath, --prefix LxPath is written. nil: no probe.
+
 	Probe func() (string, error)
 }
 
-// ReadOnlyTip is printed after an install without --readonly.
 const ReadOnlyTip = "tip: lx init --readonly lets read-only commands (git status/diff/log, ls, find, grep, rg, tree, du) " +
 	"run without a prompt, as they do without lx"
 
-// InitClaude installs (or removes) lx's PreToolUse hook in a Claude Code
-// settings.json. It edits only its own hook entry: every other key, hook and
-// ordering in the file is preserved. It refuses to write through symlinks,
-// writes atomically and keeps settings.json.bak with the previous content.
 func InitClaude(o InitOptions) error {
 	out := o.Out
 	if out == nil {
@@ -178,7 +166,6 @@ func InitClaude(o InitOptions) error {
 	return nil
 }
 
-// hookCommand is the settings.json command for lx's Claude Code hook.
 func hookCommand(lx string, readOnly bool, prefix string) string {
 	cmd := shellQuote(lx) + " hook claude"
 	if readOnly {
@@ -190,14 +177,10 @@ func hookCommand(lx string, readOnly bool, prefix string) string {
 	return cmd
 }
 
-// prefixFor decides --prefix from a probe of the agent's shell: none when
-// the shell's lx is this binary, else this binary's path, with a note
-// saying why.
 func prefixFor(lx, found string, probeErr error) (prefix, note string) {
 	switch {
 	case filepath.Base(lx) != "lx":
-		// The hook ignores a --prefix not named lx (deny checks recognize lx
-		// by name) and rewrites with a plain lx: say so, don't write one.
+
 		note := "lx: this binary is named " + filepath.Base(lx) + ", not lx; rewritten commands call plain lx, "
 		switch {
 		case probeErr != nil:
@@ -219,7 +202,6 @@ func prefixFor(lx, found string, probeErr error) (prefix, note string) {
 	return "", ""
 }
 
-// homeVar writes dir with a leading $HOME when it is under the home directory.
 func homeVar(dir string) string {
 	home, err := os.UserHomeDir()
 	if err == nil && home != "" && home != "/" {
@@ -234,13 +216,6 @@ func homeVar(dir string) string {
 	return shellQuote(dir)
 }
 
-// ProbeShellLx asks the user's login shell where lx is, the way the agent's
-// Bash tool will find it: `$SHELL -lic 'command -v lx'` (or `/bin/sh -lc`
-// when shell is ""), with stdin from /dev/null, in its own session so it
-// cannot touch the terminal, killed after timeout. It returns the last
-// output line that is an absolute path, or "" when lx is not found (an
-// alias or function named lx counts as not found: a rewrite must reach the
-// binary).
 func ProbeShellLx(shell string, timeout time.Duration) (string, error) {
 	args := []string{"-lic", "command -v lx"}
 	if shell == "" {
@@ -268,12 +243,11 @@ func ProbeShellLx(shell string, timeout time.Duration) (string, error) {
 	}
 	var exit *exec.ExitError
 	if err != nil && !errors.As(err, &exit) {
-		return "", err // the shell could not be started
+		return "", err
 	}
 	return "", nil
 }
 
-// capWriter keeps at most max bytes and discards the rest.
 type capWriter struct {
 	b   *bytes.Buffer
 	max int
@@ -308,9 +282,6 @@ func settingsDir(o InitOptions) (string, error) {
 	return filepath.Join(wd, ".claude"), nil
 }
 
-// writeAtomic writes via a temp file in the same directory and a rename, so
-// a crash never leaves a half-written file and a symlink at path is replaced
-// rather than followed.
 func writeAtomic(path string, data []byte, mode fs.FileMode) error {
 	tmp, err := os.CreateTemp(filepath.Dir(path), "."+filepath.Base(path)+".lx-*")
 	if err != nil {
@@ -342,15 +313,11 @@ func writeAtomic(path string, data []byte, mode fs.FileMode) error {
 	return nil
 }
 
-// isLxHookCommand recognizes `<…/lx> hook claude`, with any path or
-// quoting, followed only by --readonly, --prefix V or --prefix=V. Anything
-// else is the user's own hook and is left alone.
 func isLxHookCommand(cmd string) bool {
 	_, ok := parseLxHook(cmd)
 	return ok
 }
 
-// lxHookFlags are the options of an installed lx hook command.
 type lxHookFlags struct {
 	readOnly bool
 	prefix   string
@@ -387,7 +354,6 @@ func parseLxHook(cmd string) (lxHookFlags, bool) {
 	return f, true
 }
 
-// installedReadOnly reports whether an lx hook in root has --readonly.
 func installedReadOnly(root *object) bool {
 	found := false
 	_, _ = hookEdit(root, func(h *object) (bool, bool) {
@@ -400,9 +366,6 @@ func installedReadOnly(root *object) bool {
 	return found
 }
 
-// hookEdit walks hooks.PreToolUse[*].hooks[*] and lets fn inspect (and
-// replace or drop) each hook object. Only groups and arrays that fn changed
-// are re-encoded; everything else keeps its original bytes.
 func hookEdit(root *object, fn func(h *object) (keep, changed bool)) (bool, error) {
 	hooksRaw, ok := root.get("hooks")
 	if !ok {
@@ -464,7 +427,7 @@ func hookEdit(root *object, fn func(h *object) (keep, changed bool)) (bool, erro
 		}
 		anyChange = true
 		if len(kept) == 0 {
-			continue // the group only held lx's hook
+			continue
 		}
 		g.set("hooks", encodeArray(kept))
 		newGroups = append(newGroups, g.compact())
@@ -513,7 +476,7 @@ func installHook(root *object, want string) (changed bool, warn string, err erro
 	if found {
 		return changed, warn, nil
 	}
-	// Append a new matcher group; nothing else is touched.
+
 	hooks := &object{}
 	if raw, ok := root.get("hooks"); ok {
 		if hooks, err = parseObject(raw); err != nil {
@@ -559,9 +522,6 @@ func shellQuote(s string) string {
 	return "'" + strings.ReplaceAll(s, "'", `'\''`) + "'"
 }
 
-// LxPath returns the path to write into hooks: the lx found on $PATH when it
-// is this very binary (a stable location like /opt/homebrew/bin/lx that
-// survives upgrades), else the absolute path of the running executable.
 func LxPath() (string, error) {
 	exe, err := os.Executable()
 	if err != nil {
@@ -579,10 +539,6 @@ func LxPath() (string, error) {
 	return filepath.Abs(exe)
 }
 
-// Snippet returns copy-paste integration text for agents lx has no
-// installer for: "agents-md" and "codex" (instructions for AGENTS.md),
-// "copilot", "gemini" and "cursor" (hook configuration JSON, which needs
-// `lx hook <agent>`), and "claude" (the settings.json entry InitClaude writes).
 func Snippet(agent, lxPath string) (string, error) {
 	if lxPath == "" {
 		lxPath = "lx"
@@ -619,7 +575,6 @@ func Snippet(agent, lxPath string) (string, error) {
 	return "", fmt.Errorf("unknown agent %q (want one of: agents-md, codex, claude, copilot, gemini, cursor)", agent)
 }
 
-// obj builds an ordered JSON object from key, value pairs.
 func obj(pairs ...any) json.RawMessage {
 	o := &object{}
 	for i := 0; i+1 < len(pairs); i += 2 {

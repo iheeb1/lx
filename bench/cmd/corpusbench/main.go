@@ -1,11 +1,3 @@
-// Command corpusbench runs every capture in testdata/corpus through lx's
-// full pipeline (all filters registered) and records what an agent would
-// have read with and without lx, plus fidelity metrics.
-//
-//	go run ./bench/cmd/corpusbench -out bench/out/results.json
-//
-// Token counts here come from lx's offline estimator; bench/tiktoken.py adds
-// exact cl100k/o200k counts from the saved views for the published numbers.
 package main
 
 import (
@@ -48,11 +40,10 @@ type Row struct {
 	AppKept    int    `json:"app_locations_kept"`
 	GuardAdded int    `json:"guard_added"`
 	Micros     int64  `json:"process_us"`
-	View       string `json:"view"` // path of the condensed output, relative to -out's dir
+	View       string `json:"view"`
 
-	// What agents do without lx, scored the same way.
-	Tail40   Naive `json:"tail40"`   // `cmd | tail -40`
-	HeadTail Naive `json:"headtail"` // head+tail cut to lx's token count
+	Tail40   Naive `json:"tail40"`
+	HeadTail Naive `json:"headtail"`
 }
 
 type Naive struct {
@@ -65,14 +56,13 @@ type Naive struct {
 type Results struct {
 	Generated string         `json:"generated"`
 	Cases     []Row          `json:"cases"`
-	Totals    map[string]Tot `json:"totals"` // by category, plus "all"
+	Totals    map[string]Tot `json:"totals"`
 	Estimator []EstRow       `json:"estimator,omitempty"`
 }
 
-// EstRow scores a token-estimation method against exact tiktoken counts.
 type EstRow struct {
-	Method   string  `json:"method"`   // "bytes/4", "bytes/3", "lx"
-	Encoding string  `json:"encoding"` // cl100k_base, o200k_base
+	Method   string  `json:"method"`
+	Encoding string  `json:"encoding"`
 	MeanErr  float64 `json:"mean_abs_err_pct"`
 	P90Err   float64 `json:"p90_abs_err_pct"`
 	MaxErr   float64 `json:"max_abs_err_pct"`
@@ -102,7 +92,7 @@ func main() {
 	}
 	viewDir := filepath.Join(filepath.Dir(*out), "views")
 	res := Results{Generated: time.Now().UTC().Format(time.RFC3339), Totals: map[string]Tot{}}
-	overUncapped, overCapped := 0, 0 // views over Claude Code's default cap (30,000×9/10 − 200)
+	overUncapped, overCapped := 0, 0
 	for _, fc := range cases {
 		c := fc.Context()
 		start := time.Now()
@@ -176,7 +166,6 @@ func main() {
 	}
 }
 
-// tokensOf counts what the agent reads, receipt included.
 func tokensOf(pr engine.Result, view string) int {
 	if pr.Filter == "passthrough" {
 		return pr.RawTokens
@@ -184,8 +173,6 @@ func tokensOf(pr engine.Result, view string) int {
 	return engineCount(view)
 }
 
-// countErrorLines counts distinct error messages (see
-// fixture.ErrorMessagesMissing): the denominator of "errors kept".
 func countErrorLines(s string) int {
 	return len(fixture.ErrorMessagesMissing(s, ""))
 }
@@ -257,8 +244,6 @@ func tailLines(s string, n int) string {
 	return strings.Join(lines[len(lines)-n:], "\n")
 }
 
-// estimator scores lx's offline token estimator and the bytes/N rules of
-// thumb against exact counts written by bench/tiktoken_counts.py.
 func estimator(corpus, statsPath string) []EstRow {
 	b, err := os.ReadFile(statsPath)
 	if err != nil {

@@ -2,41 +2,13 @@ package golang
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// testText renders `go test` text output (plain, -v, -cover, -count,
-// multi-package, build failures, panics, timeouts, data races):
-//
-//   - every "--- FAIL:" line is kept with all of its output (file_test.go:NN
-//     messages, expected/got values, an Example's got:/want: blocks) and its
-//     failing subtests; with -v the output is re-indented under its FAIL
-//     line exactly as go test prints it without -v; with -count=N each run
-//     keeps its own outcome;
-//   - "=== RUN/PAUSE/CONT/NAME" and "--- PASS" lines are dropped and
-//     counted; output of passing tests is hidden (counted) unless it is
-//     short, except error-like lines, which are kept under a marked header;
-//     skipped tests are listed with their reason (one per distinct reason
-//     when there are many);
-//   - in a failing package only output between its last "--- FAIL" and the
-//     binary's final PASS/FAIL line can be hidden: what TestMain prints after
-//     that line (race reports, leak checks, coverage) and the last output of
-//     a binary that exited abnormally (log.Fatal, os.Exit, kill) is kept;
-//   - panics and timeouts keep the panic message, the "running tests:" list
-//     and the test's own frames; library frames and duplicate goroutines are
-//     folded (engine.FoldStacks / engine.GroupGoroutines); a "panic: " line
-//     that a test merely printed is recognized once its package goes on;
-//   - compiler errors ([build failed], [setup failed]) are kept verbatim;
-//   - "FAIL pkg" lines and the final FAIL are kept verbatim; more than three
-//     passing packages whose "ok" lines differ only in name and time (also
-//     with "[no tests to run]" or the same coverage figure) collapse into one
-//     counted line, as do "[no test files]" lines;
-//   - the footer counts what was hidden and never reads as a pass when a
-//     package failed.
 type testText struct{}
 
 func (testText) Name() string { return "go-test" }
@@ -49,16 +21,10 @@ func (testText) Match(c *engine.Context) bool {
 	return sub == "test" && !flagSet(args, "json") && testShapeFlagsOK(args)
 }
 
-// testShapeFlagsOK rejects go test modes whose output is not a test report:
-// benchmarks and fuzzing (the numbers are the point), -list (the names are
-// the point), -x/-n (command traces), -c (compile only: go-build handles it)
-// and help.
 func testShapeFlagsOK(args []string) bool {
 	return !flagSet(args, "bench", "fuzz", "list", "x", "n", "c", "h", "help")
 }
 
-// GuardsErrors: the go test filters run the error guard themselves (see
-// guardTest), over the output minus === RUN/PAUSE/CONT/NAME lines.
 func (testText) GuardsErrors() bool { return true }
 
 func (testText) Apply(c *engine.Context, out string) (string, bool) {
@@ -74,18 +40,6 @@ func (testText) Apply(c *engine.Context, out string) (string, bool) {
 	return guardTest(lines, res), true
 }
 
-// guardTest is engine.Guard over the original lines minus the === RUN /
-// PAUSE / CONT / NAME markers. A marker only says a test started or
-// resumed; it is error-class when the test's name holds a word like
-// "conflict" or "error" (TestResolve/conflict), and its outcome is always
-// in the view: the "--- FAIL" line is kept, a pass or skip is counted. Every
-// other error-class line the renderer did not keep is re-added, exactly as
-// the engine's runtime guard would.
-//
-// engine.Guard searches the whole output once per error line, which is
-// quadratic on large failing runs (50k distinct error lines against a 3 MB
-// view take ~20 s). Lines kept whole are found in a set first; only the
-// rest (reformatted or really missing) go to engine.Guard.
 func guardTest(lines []string, out string) string {
 	kept := make(map[string]bool, strings.Count(out, "\n")+1)
 	for _, ln := range strings.Split(out, "\n") {
@@ -106,17 +60,10 @@ func guardTest(lines []string, out string) string {
 	return res
 }
 
-// squashSpace collapses whitespace runs as the error guard compares lines.
 func squashSpace(s string) string {
 	return strings.Join(strings.Fields(s), " ")
 }
 
-// TestTextDetect renders go test text output found in the output of any
-// command (make test, a CI script, docker compose run app go test). It
-// returns ok=false unless the text carries go test's own verdict lines.
-// Lines before the first go test line (a make recipe echo) are kept
-// verbatim. Like the go-test filter it guards error lines itself, so a
-// caller may treat the result as engine.Guarded.
 func TestTextDetect(c *engine.Context, out string) (string, bool) {
 	lines := splitLines(out)
 	if len(lines) == 0 {
@@ -139,9 +86,8 @@ func TestTextDetect(c *engine.Context, out string) (string, bool) {
 	return guardTest(lines, res), true
 }
 
-// options are the command-line facts the renderer uses.
 type options struct {
-	run bool // -run given: the user wants to see the selected tests' output
+	run bool
 }
 
 func runOpts(c *engine.Context) options {
@@ -152,30 +98,24 @@ func runOpts(c *engine.Context) options {
 var (
 	markerRe = lazyre.New(`^=== (RUN|PAUSE|CONT|NAME)(?:\s+(.*))?$`)
 	resultRe = lazyre.New(`^(\s*)--- (FAIL|PASS|SKIP): (.+) \((\d+(?:\.\d+)?)s\)$`)
-	// A result line printed right after test output that did not end in a
-	// newline ("progress: 3/5--- FAIL: TestX (0.00s)"): go test prints it
-	// glued to that output. The groups are those of resultRe, after the
-	// glued text.
+
 	gluedResultRe = lazyre.New(`^\S.*?( *)--- (FAIL|PASS|SKIP): (.+) \((\d+(?:\.\d+)?)s\)$`)
-	// Lines cmd/go prints about a test binary it killed or that died from a
-	// signal (exec.ExitError text), before the package's FAIL line.
+
 	killedRe = lazyre.New(`^(?:\*\*\* Test (?:killed(?: with \w+)?: ran too long \(|I/O incomplete )` +
 		`|signal: [a-z][a-z /-]*(?: \(core dumped\))?$)`)
-	// Package verdict lines, exactly as cmd/go formats them.
+
 	okRe      = lazyre.New(`^ok  \t(\S+)\t(.+)$`)
 	failPkgRe = lazyre.New(`^FAIL\t(\S+)(?:[\t ].*)?$`)
 	noFilesRe = lazyre.New(`^\?   \t(\S+)\t\[no test files\]$`)
 	covOnlyRe = lazyre.New(`^\t(\S+)\t+coverage: `)
-	// A crash ends normal test output: everything up to the package's
-	// verdict is kept (folded).
+
 	crashRe = lazyre.New(`^(?:panic: |fatal error: |SIG[A-Z]+: |\[signal |runtime: |unexpected fault address )`)
-	// Compiler / vet diagnostics and their "# pkg" headers.
+
 	diagRe     = lazyre.New(`^(?:vet: )?\S*?\.(?:go|s|c|h|cc|cpp|m|mod|sum|work):\d+(?::\d+)?: \S`)
 	buildHdrRe = lazyre.New(`^# (?:\[[\w.~+\-/]+\]|[\w.~+\-/]+(?: \[[\w.~+\-/]+\])?)$`)
 	exitRe     = lazyre.New(`^exit status \d+$`)
 )
 
-// Cheap prefix checks in front of the per-line regular expressions.
 func isCrash(ln string) bool {
 	if ln == "" || !strings.ContainsRune("pfSr[u", rune(ln[0])) {
 		return false
@@ -197,9 +137,6 @@ func matchResult(ln string) []string {
 	return resultRe.FindStringSubmatch(ln)
 }
 
-// matchGlued matches a result line glued to preceding test output. The
-// returned groups are laid out like resultRe's; group 0 is the whole line,
-// which is kept as the result line so the glued text is shown as printed.
 func matchGlued(ln string) []string {
 	if ln == "" || ln[0] == ' ' || ln[0] == '\t' || !strings.Contains(ln, "--- ") {
 		return nil
@@ -207,7 +144,6 @@ func matchGlued(ln string) []string {
 	return gluedResultRe.FindStringSubmatch(ln)
 }
 
-// isBare reports the test binary's final PASS / FAIL line.
 func isBare(ln string) bool { return ln == "PASS" || ln == "FAIL" }
 
 func isVerdict(ln string) bool {
@@ -227,8 +163,6 @@ func isVerdict(ln string) bool {
 	return false
 }
 
-// buildLine reports lines that come from the go command or the compiler
-// rather than from a test: they are never hidden.
 func buildLine(ln string) bool {
 	return diagRe.MatchString(ln) || buildHdrRe.MatchString(ln) || exitRe.MatchString(ln) ||
 		strings.HasPrefix(ln, "go: ") || strings.HasPrefix(ln, "[go: downloading ") ||
@@ -236,10 +170,6 @@ func buildLine(ln string) bool {
 		strings.HasPrefix(ln, "note: module requires Go") || killedRe.MatchString(ln)
 }
 
-// failEvidence reports a go command / compiler line that shows the run
-// failed: a diagnostic, an exit status, a killed test binary, or any
-// error-class go command line. "go: downloading", "go: warning: …" and
-// "# pkg" headers alone are not evidence.
 func failEvidence(ln string) bool {
 	if !buildLine(ln) || strings.HasPrefix(ln, "[go") {
 		return false
@@ -249,21 +179,20 @@ func failEvidence(ln string) bool {
 
 type outLine struct {
 	text     string
-	reindent bool // printed by -v / -json at 4 spaces whatever the depth
+	reindent bool
 }
 
 type gtest struct {
 	name   string
-	status byte // 'F', 'P', 'S'; 0 = no result line seen (still running)
-	indent int  // indentation of the result line
+	status byte
+	indent int
 	result string
 	dur    float64
 	out    []outLine
 	ran    bool
-	parent *gtest // the run of the parent test this subtest ran in (-json)
+	parent *gtest
 }
 
-// depth is the subtest level: 0 for TestX, 1 for TestX/sub.
 func (t *gtest) depth() int {
 	if t.result != "" {
 		return t.indent / 4
@@ -276,14 +205,14 @@ type itemKind uint8
 const (
 	itResult itemKind = iota
 	itStray
-	itBare // the test binary's final PASS / FAIL line
+	itBare
 )
 
 type item struct {
 	kind     itemKind
 	t        *gtest
 	line     string
-	prologue bool // stray line printed before any test activity
+	prologue bool
 }
 
 type nestEntry struct {
@@ -291,39 +220,31 @@ type nestEntry struct {
 	indent int
 }
 
-// segment is the output of one package, up to and including its verdict.
 type segment struct {
 	pkg        string
-	verdict    string // "ok  \tpkg\t…", "FAIL\tpkg\t…", "?   \tpkg\t…" ("" if none)
-	hasBare    bool   // the binary printed its final PASS / FAIL line
+	verdict    string
+	hasBare    bool
 	items      []item
 	tests      map[string]*gtest
 	order      []*gtest
 	crash      []string
-	crashTests []string // -json: the Test each crash line was attributed to
+	crashTests []string
 	crashing   bool
-	noCrash    bool // replaying lines of a "crash" that was only test output
+	noCrash    bool
 	activity   bool
 	markers    int
 	current    *gtest
-	example    *gtest // failed Example whose got:/want: lines follow its result
+	example    *gtest
 	nest       []nestEntry
 	blanks     int
-	json       bool   // built from -json events: attribution is exact
-	view       []item // items in render order (see viewItems)
-	jsonFail   bool   // -json: package Action=fail without a FAIL line
+	json       bool
+	view       []item
+	jsonFail   bool
 	sawResult  bool
 }
 
 func newSegment() *segment { return &segment{tests: map[string]*gtest{}} }
 
-// bare records the test binary's final PASS / FAIL line. (When the last
-// test's output lacked a newline, go test prints it glued, "outputFAIL";
-// such a line is left as ordinary output: a line merely ending in FAIL may
-// be a test's own, and taking it for the final line would hide the output
-// before it.) A real crash never reaches that line, so
-// a "crash" still open here was a test printing "panic: …" or
-// "runtime: …": its lines are replayed as ordinary output.
 func (s *segment) bare(ln string) {
 	if s.crashing {
 		s.replayCrash()
@@ -333,10 +254,6 @@ func (s *segment) bare(ln string) {
 	s.crashing, s.current, s.nest, s.blanks, s.example = false, nil, nil, 0, nil
 }
 
-// setVerdict records the package's verdict line. A package that passed did
-// not crash, so an open "crash" without a goroutine dump is replayed as
-// ordinary output. (One with a dump stays a crash: that can only be another
-// package's traceback whose own verdict line is missing.)
 func (s *segment) setVerdict(ln string) {
 	if s.crashing && strings.HasPrefix(ln, "ok") && !hasGoroutineHdr(s.crash) {
 		s.replayCrash()
@@ -383,11 +300,6 @@ func (s *segment) get(name string) *gtest {
 	return s.add(name)
 }
 
-// fresh returns the test instance a new run of name reports into: the
-// current one unless it already has a result. With -count=N (or a test
-// name reused by t.Run) a name runs several times, and each run keeps its
-// own outcome and output: a flaky test failing once and passing later is
-// shown failed.
 func (s *segment) fresh(name string) *gtest {
 	if t := s.tests[name]; t != nil && t.status == 0 {
 		return t
@@ -414,7 +326,6 @@ func (s *segment) empty() bool {
 	return s.verdict == "" && len(s.items) == 0 && len(s.crash) == 0 && s.markers == 0
 }
 
-// addBlanks attaches blank lines seen before ln to ln's destination.
 func (s *segment) addBlanks(dst *[]outLine, stray bool) {
 	for ; s.blanks > 0; s.blanks-- {
 		if stray {
@@ -469,8 +380,6 @@ func (s *segment) result(ln string, m []string) *gtest {
 	s.current = nil
 	s.example = nil
 	if t.status == 'F' && strings.HasPrefix(t.name, "Example") {
-		// A failed example prints its "got:" / "want:" blocks unindented
-		// after its result line.
 		s.example = t
 	}
 	return t
@@ -481,9 +390,6 @@ func (s *segment) stray(ln string) {
 	s.items = append(s.items, item{kind: itStray, line: ln, prologue: !s.activity})
 }
 
-// feedText adds one line of text output, inferring which test printed it:
-// with -v, the test named by the last === RUN/CONT/NAME marker; without -v,
-// the test whose "--- FAIL" line the (deeper indented) line follows.
 func (s *segment) feedText(ln string) {
 	if s.crashing {
 		s.addCrash(ln, "")
@@ -506,9 +412,6 @@ func (s *segment) feedText(ln string) {
 		return
 	}
 	if m := matchGlued(ln); m != nil && (s.markers == 0 || s.tests[m[3]] != nil) {
-		// The glued output belongs to the test being reported (-v) or to
-		// a test that ran before it; the line is kept whole as printed.
-		// With -v, only a test that was started can report.
 		s.result(ln, m)
 		return
 	}
@@ -520,7 +423,6 @@ func (s *segment) feedText(ln string) {
 	w := indentWidth(ln)
 	for i := len(s.nest) - 1; i >= 0; i-- {
 		if w > s.nest[i].indent {
-			// Back at this test's level: deeper subtests are done.
 			s.nest = s.nest[:i+1]
 			t := s.nest[i].t
 			s.addBlanks(&t.out, false)
@@ -537,14 +439,12 @@ func (s *segment) feedText(ln string) {
 	s.stray(ln)
 }
 
-// run is a whole go test invocation.
 type run struct {
-	pre  []string // lines before the first package (-json: stderr, build output)
+	pre  []string
 	segs []*segment
 	json bool
 }
 
-// parseText splits text output into package segments at verdict lines.
 func parseText(lines []string) *run {
 	r := &run{}
 	s := newSegment()
@@ -576,14 +476,11 @@ func verdictPkg(ln string) string {
 	return ""
 }
 
-// failed reports whether the segment shows a failure.
 func (s *segment) failed() bool {
 	if strings.HasPrefix(s.verdict, "FAIL") || len(s.crash) > 0 || s.jsonFail {
 		return true
 	}
 	if s.verdict != "" {
-		// "ok" / "?" / coverage-only: go test's own verdict says it passed
-		// (a test may print a lone "FAIL" line of its own).
 		return false
 	}
 	for _, it := range s.items {
@@ -599,13 +496,12 @@ func (s *segment) failed() bool {
 	return false
 }
 
-// Caps for the passing-test output that is shown rather than hidden.
 const (
-	showPassingMax    = 40  // lines, any run
-	showPassingMaxRun = 200 // lines, when -run selected the tests
-	showSkipsMax      = 5   // skipped tests all listed with their reason
-	skipGroupsMax     = 5   // otherwise, one skipped test per distinct reason
-	leadingStrayMax   = 120 // unattributed lines kept in a failing package
+	showPassingMax    = 40
+	showPassingMaxRun = 200
+	showSkipsMax      = 5
+	skipGroupsMax     = 5
+	leadingStrayMax   = 120
 )
 
 type renderer struct {
@@ -617,16 +513,14 @@ type renderer struct {
 
 	passed, failedN, skipped int
 	failedPkgs               int
-	hiddenMarkers            int // === lines and unshown --- PASS lines
-	hiddenSkips              int // unshown --- SKIP lines
-	hiddenOut                int // output lines of passing tests
-	hiddenSkipOut            int // output lines of unshown skipped tests
+	hiddenMarkers            int
+	hiddenSkips              int
+	hiddenOut                int
+	hiddenSkipOut            int
 	evidence                 bool
 	subtests                 bool
 }
 
-// span locates, in a segment's items, the last FAIL result and the last
-// final PASS / FAIL line (-1 when there is none).
 type span struct{ lastFail, lastBare int }
 
 func spanOf(items []item) span {
@@ -642,18 +536,6 @@ func spanOf(items []item) span {
 	return sp
 }
 
-// hideable reports whether stray item i may be hidden as output of tests
-// that passed: it follows the first test activity, is not compiler / go
-// command output, and either the package passed, or it lies between the
-// package's last "--- FAIL" and the test binary's final PASS / FAIL line.
-// In a failing package nothing else is hidden:
-//
-//   - before the last "--- FAIL" is the output of the failing tests
-//     (without -v a test's output precedes its result line);
-//   - after the final PASS / FAIL line is TestMain's own output: race
-//     reports, leak checks, coverage;
-//   - without a final PASS / FAIL line the binary exited abnormally
-//     (log.Fatal, os.Exit, a crash, a timeout) and its last lines say why.
 func hideable(items []item, i int, failed bool, sp span) bool {
 	it := items[i]
 	if it.prologue || buildLine(it.line) {
@@ -665,8 +547,6 @@ func hideable(items []item, i int, failed bool, sp span) bool {
 	return sp.lastFail >= 0 && i > sp.lastFail && i < sp.lastBare
 }
 
-// viewItems returns the items in render order: as printed for text
-// output, parent-first for -json.
 func (s *segment) viewItems() []item {
 	if s.view == nil {
 		s.view = s.items
@@ -677,9 +557,6 @@ func (s *segment) viewItems() []item {
 	return s.view
 }
 
-// treeOrder returns the items with each failing subtest's result moved
-// right after its parent's (go test -json reports a subtest before its
-// parent), and records the subtest depth for indentation.
 func (s *segment) treeOrder() []item {
 	parent := func(t *gtest) *gtest {
 		if t.parent != nil {
@@ -731,10 +608,11 @@ func (s *segment) treeOrder() []item {
 
 func (r *run) render(c *engine.Context, opt options) (string, bool) {
 	rd := &renderer{c: c, opt: opt, verbose: r.json}
+	segs := focusSegments(c, r.segs)
 	recognized := false
 	skips := 0
 	hideTotal := 0
-	for _, s := range r.segs {
+	for _, s := range segs {
 		if s.verdict != "" || s.sawResult || s.markers > 0 || s.hasBare || s.jsonFail {
 			recognized = true
 		}
@@ -745,7 +623,7 @@ func (r *run) render(c *engine.Context, opt options) (string, bool) {
 		failed, sp := s.failed(), spanOf(items)
 		if failed {
 			rd.evidence = true
-			// Not the run's own final FAIL line after the last package.
+
 			if s.verdict != "" || len(s.crash) > 0 || s.jsonFail {
 				rd.failedPkgs++
 			}
@@ -779,13 +657,9 @@ func (r *run) render(c *engine.Context, opt options) (string, bool) {
 		return "", false
 	}
 	if c.Failed() && !rd.evidence {
-		// Exit status says failure but the report shows none (killed after
-		// the last package, a wrapper's own failure, …): show everything.
 		return "", false
 	}
-	// Short output of passing tests is shown when the run passed (the agent
-	// is likely reading its t.Log lines) or when -run picked the tests;
-	// next to failures it is noise.
+
 	switch {
 	case opt.run:
 		rd.showPassing = hideTotal <= showPassingMaxRun
@@ -799,8 +673,7 @@ func (r *run) render(c *engine.Context, opt options) (string, bool) {
 	if len(pre) > 0 {
 		chunks = append(chunks, pre)
 	}
-	// Passing packages whose verdict lines differ only in name and time
-	// collapse into one counted line per group (see okKey).
+
 	type collapsed struct {
 		chunk  int
 		line   string
@@ -809,10 +682,9 @@ func (r *run) render(c *engine.Context, opt options) (string, bool) {
 	}
 	groups := map[string][]collapsed{}
 	var keys []string
-	for _, s := range r.segs {
+	for _, s := range segs {
 		body, key, ok := rd.segment(s)
 		if ok && len(body) > 0 {
-			// Output shown for a package stays above its own verdict line.
 			body, ok = append(body, s.verdict), false
 		}
 		chunks = append(chunks, body)
@@ -865,11 +737,8 @@ func nonBlank(out []outLine) int {
 	return n
 }
 
-// skipLocRe is the file:line prefix of a t.Skip message.
 var skipLocRe = lazyre.New(`^\S+\.go:\d+: `)
 
-// skipReason is a skipped test's first output line without its location:
-// tests skipped for the same reason are shown once.
 func skipReason(t *gtest) string {
 	for _, o := range t.out {
 		if s := strings.TrimSpace(o.text); s != "" {
@@ -879,9 +748,6 @@ func skipReason(t *gtest) string {
 	return ""
 }
 
-// segment renders one package. When the package passed with a verdict
-// line that may be collapsed with others (see okKey), the verdict is not
-// part of body and key/collapse report its group.
 func (rd *renderer) segment(s *segment) (body []string, key string, collapse bool) {
 	failed := s.failed()
 	var hiddenErr []string
@@ -915,9 +781,7 @@ func (rd *renderer) segment(s *segment) (body []string, key string, collapse boo
 		hiddenErr, errFromSkip = nil, false
 	}
 	rd.hiddenMarkers += s.markers
-	// Unattributed lines that are kept come in runs; each run has repeated
-	// blocks (the same usage text printed by many tests) elided and is
-	// capped, error-class and build lines always kept.
+
 	var strayRun []string
 	flush := func() {
 		if len(strayRun) == 0 {
@@ -935,8 +799,7 @@ func (rd *renderer) segment(s *segment) (body []string, key string, collapse boo
 		body = append(body, t.result)
 		body = append(body, rd.testOutput(t)...)
 	}
-	// Skipped tests beyond showSkipsMax: the first test of each distinct
-	// reason is shown, the others are counted per reason.
+
 	type skipGroup struct {
 		first *gtest
 		more  int
@@ -1004,7 +867,6 @@ func (rd *renderer) segment(s *segment) (body []string, key string, collapse boo
 				}
 				body = append(body, it.line)
 			case it.line != "PASS":
-				// A lone "FAIL" printed by a test of a package that passed.
 				hide([]outLine{{text: it.line}}, false)
 			}
 		}
@@ -1018,7 +880,7 @@ func (rd *renderer) segment(s *segment) (body []string, key string, collapse boo
 	if otherSkips > 0 {
 		body = append(body, fmt.Sprintf("[+%s]", plural(otherSkips, "more skipped test", "more skipped tests")))
 	}
-	// Tests still running when the package ended (panic, timeout, kill).
+
 	for _, t := range s.order {
 		if t.status != 0 || (!t.ran && len(t.out) == 0) {
 			continue
@@ -1027,7 +889,7 @@ func (rd *renderer) segment(s *segment) (body []string, key string, collapse boo
 			if len(t.out) > 0 {
 				body = append(body, "=== RUN   "+t.name)
 				if rd.hiddenMarkers > 0 {
-					rd.hiddenMarkers-- // shown after all
+					rd.hiddenMarkers--
 				}
 				body = append(body, rd.testOutput(t)...)
 			}
@@ -1054,13 +916,8 @@ func (rd *renderer) segment(s *segment) (body []string, key string, collapse boo
 	return append(body, s.verdict), "", false
 }
 
-// okTimeRe splits the rest of an "ok" line into its time and the suffix.
 var okTimeRe = lazyre.New(`^(?:\d+(?:\.\d+)?s|\(cached\))(.*)$`)
 
-// okKey returns the collapse group of a passing verdict line: "" for a
-// plain "ok pkg time", the suffix for "[no tests to run]" and for a
-// coverage figure (only packages with the very same figure collapse), and
-// "?" for "[no test files]". Other lines are not collapsed.
 func okKey(verdict string) (string, bool) {
 	if noFilesRe.MatchString(verdict) {
 		return "?", true
@@ -1080,8 +937,6 @@ func okKey(verdict string) (string, bool) {
 	return "", false
 }
 
-// testOutput returns a test's output as go test prints it without -v:
-// indented one level deeper than the test's "--- FAIL" line.
 func (rd *renderer) testOutput(t *gtest) []string {
 	pad := strings.Repeat("    ", t.depth())
 	lines := make([]string, 0, len(t.out))
@@ -1101,9 +956,6 @@ func (rd *renderer) testOutput(t *gtest) []string {
 	return foldCrashInTest(rd.c, engine.CollapseRuns(tidyRace(lines)))
 }
 
-// footer summarizes what was hidden, with exact counts. It never reads as
-// a pass when a package failed: with no failing test to count, it says how
-// many packages failed.
 func (rd *renderer) footer() string {
 	var parts []string
 	if rd.verbose && rd.passed+rd.failedN+rd.skipped > 0 {
@@ -1145,8 +997,6 @@ func (rd *renderer) footer() string {
 	return "[" + strings.Join(parts, " · ") + "]"
 }
 
-// dedupeCount keeps the first occurrence of each line, suffixed with [×N]
-// when it occurred N>1 times.
 func dedupeCount(lines []string) []string {
 	count := map[string]int{}
 	var order []string
@@ -1166,11 +1016,6 @@ func dedupeCount(lines []string) []string {
 	return out
 }
 
-// elideRepeats replaces every run of three or more lines that repeats an
-// earlier run of the same lines verbatim with one counted marker. The first
-// occurrence is always kept, so no line's text disappears. Matches may
-// overlap their source (as in LZ77), so a block printed N times in a row
-// becomes the block plus a single marker.
 func elideRepeats(lines []string) []string {
 	last := make(map[string]int, len(lines))
 	out := make([]string, 0, len(lines))
@@ -1181,7 +1026,7 @@ func elideRepeats(lines []string) []string {
 			for i+k < len(lines) && lines[j+k] == lines[i+k] {
 				k++
 			}
-			// Do not end the elided run on blank lines: they separate blocks.
+
 			for k > 0 && strings.TrimSpace(lines[i+k-1]) == "" {
 				k--
 			}
@@ -1201,8 +1046,6 @@ func elideRepeats(lines []string) []string {
 	return out
 }
 
-// elideOutsideRace is elideRepeats applied to everything but data race
-// reports, whose two stacks often share frames: they are kept whole.
 func elideOutsideRace(lines []string) []string {
 	var out []string
 	start := 0
@@ -1229,12 +1072,8 @@ func elideOutsideRace(lines []string) []string {
 	return append(out, elideRepeats(lines[start:])...)
 }
 
-// raceFrameRe is a frame location line of a data race report.
 var raceFrameRe = lazyre.New(`^\s+\S.*\.go:\d+ \+0x[0-9a-f]+$`)
 
-// tidyRace drops the +0x offsets of the frame locations inside data race
-// reports ("WARNING: DATA RACE" up to the closing "=================="),
-// as tidyFrames does for tracebacks. Error-class lines are never changed.
 func tidyRace(lines []string) []string {
 	var out []string
 	in := false
@@ -1257,8 +1096,6 @@ func tidyRace(lines []string) []string {
 	return out
 }
 
-// capStrays keeps the first and last lines of a long unattributed run plus
-// every error-class or build line between them, with a counted marker.
 func capStrays(lines []string) []string {
 	const head, tail = 60, 30
 	if len(lines) <= head+tail {
@@ -1283,8 +1120,6 @@ func capStrays(lines []string) []string {
 	return append(out, lines[len(lines)-tail:]...)
 }
 
-// trimBlankRuns collapses runs of blank lines and trims leading/trailing
-// blank lines.
 func trimBlankRuns(lines []string) []string {
 	out := make([]string, 0, len(lines))
 	for _, ln := range lines {
@@ -1299,8 +1134,6 @@ func trimBlankRuns(lines []string) []string {
 	return out
 }
 
-// commonPkgPrefix returns the longest common import-path prefix (whole
-// segments, at least two) of pkgs, or "".
 func commonPkgPrefix(pkgs []string) string {
 	if len(pkgs) < 2 {
 		return ""
@@ -1320,7 +1153,6 @@ func commonPkgPrefix(pkgs []string) string {
 	return strings.Join(prefix, "/")
 }
 
-// maxPkgList: longer package lists are reduced to their count.
 const maxPkgList = 10
 
 func pkgList(pkgs []string) string {
@@ -1344,7 +1176,6 @@ func pkgList(pkgs []string) string {
 	return " under " + p + ": " + strings.Join(rel, ", ")
 }
 
-// groupSummary is the one line standing for a group of passing packages.
 func groupSummary(key string, pkgs []string, cached int) string {
 	if key == "?" {
 		return "?   \t" + num(len(pkgs)) + " packages [no test files]" + pkgList(pkgs)

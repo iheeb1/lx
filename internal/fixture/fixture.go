@@ -1,11 +1,4 @@
-// Package fixture loads the real-output corpus (testdata/corpus) and provides
-// golden-file and fidelity assertions for filter tests.
-//
-// Golden files live in testdata/golden/<dir>/<name>.out. Regenerate with
-//
-//	LX_UPDATE_GOLDEN=1 go test ./...
-//
-// and review the diff: a golden file is the exact text an agent will read.
+// Package fixture loads the test corpus.
 package fixture
 
 import (
@@ -22,7 +15,6 @@ import (
 	"github.com/iheeb1/lx/internal/textutil"
 )
 
-// Meta mirrors <name>.meta.json.
 type Meta struct {
 	Argv        []string `json:"argv"`
 	Shell       string   `json:"shell"`
@@ -32,24 +24,21 @@ type Meta struct {
 	Cwd         string   `json:"cwd"`
 }
 
-// Case is one captured command output.
 type Case struct {
-	Category string // corpus sub-directory: git, node, go, ...
-	Name     string // file name without extension
-	Raw      string // exactly what the command printed
+	Category string
+	Name     string
+	Raw      string
 	Meta     Meta
 }
 
-// Clean is the normalized output filters receive.
 func (c Case) Clean() string { return textutil.Clean(c.Raw) }
 
-// Context builds the engine context the command ran in.
 func (c Case) Context() *engine.Context {
 	cwd := c.Meta.Cwd
 	switch {
 	case strings.HasPrefix(cwd, "/"):
 	case cwd != "":
-		// Captured relative to the corpus root: repos/<name>[/sub] → /home/user/src/<name>[/sub].
+
 		cwd = "/home/user/src/" + strings.TrimPrefix(cwd, "repos/")
 	case c.Meta.Repo != "":
 		cwd = "/home/user/src/" + filepath.Base(c.Meta.Repo)
@@ -57,13 +46,11 @@ func (c Case) Context() *engine.Context {
 	return &engine.Context{Argv: c.Meta.Argv, Exit: c.Meta.ExitCode, Cwd: cwd, Home: "/home/user"}
 }
 
-// Root returns the repository root.
 func Root() string {
 	_, file, _, _ := runtime.Caller(0)
 	return filepath.Clean(filepath.Join(filepath.Dir(file), "..", ".."))
 }
 
-// Load reads testdata/corpus/<category>/<name>.txt and its meta.
 func Load(t testing.TB, category, name string) Case {
 	t.Helper()
 	c, err := Read(filepath.Join(Root(), "testdata", "corpus"), category, name)
@@ -73,8 +60,6 @@ func Load(t testing.TB, category, name string) Case {
 	return c
 }
 
-// Read loads one case from a corpus directory laid out as
-// <dir>/<category>/<name>.txt + <name>.meta.json.
 func Read(dir, category, name string) (Case, error) {
 	base := filepath.Join(dir, category, name)
 	raw, err := os.ReadFile(base + ".txt")
@@ -90,7 +75,6 @@ func Read(dir, category, name string) (Case, error) {
 	return c, nil
 }
 
-// All returns every corpus case, sorted by category then name.
 func All(t testing.TB) []Case {
 	t.Helper()
 	out, err := ReadAll(filepath.Join(Root(), "testdata", "corpus"))
@@ -100,7 +84,6 @@ func All(t testing.TB) []Case {
 	return out
 }
 
-// ReadAll loads every case under a corpus directory.
 func ReadAll(dir string) ([]Case, error) {
 	var out []Case
 	cats, err := os.ReadDir(dir)
@@ -124,8 +107,6 @@ func ReadAll(dir string) ([]Case, error) {
 	return out, nil
 }
 
-// Golden compares got with testdata/golden/<dir>/<name>.out, rewriting the
-// file instead when LX_UPDATE_GOLDEN=1.
 func Golden(t testing.TB, dir, name, got string) {
 	t.Helper()
 	p := filepath.Join(Root(), "testdata", "golden", dir, name+".out")
@@ -147,37 +128,16 @@ func Golden(t testing.TB, dir, name, got string) {
 	}
 }
 
-// ErrorLinesMissing returns the error-class lines of in whose text does not
-// appear anywhere in out. Whitespace runs are collapsed on both sides, so
-// re-aligned columns still count as kept; any other change counts as loss.
 func ErrorLinesMissing(in, out string) []string {
 	return engine.MissingErrorLines(in, out)
 }
 
-// The location and message metrics live in internal/engine (locs.go), so
-// `lx discover --fidelity` scores real sessions with the same functions as
-// the benchmark and the filter tests. These names delegate to them.
-
-// LocRe matches file:line[:col] locations in compiler, linter, test and
-// stack-trace output.
 var LocRe = engine.LocRe
 
-// LocationsMissing returns file:line locations present in in but absent
-// from out. Locations are compared by base name + line so relativized paths
-// still match.
 func LocationsMissing(in, out string) []string { return engine.LocationsMissing(in, out) }
 
-// ErrorMessagesMissing is ErrorLinesMissing for filters that regroup
-// diagnostics: an error line counts as kept when its message — the line's
-// words with every token that contains a digit removed (positions, counts,
-// durations) — still appears in out. Locations are checked separately by
-// LocationsMissing. The benchmark scores every strategy (lx, rtk, head/tail)
-// with this same function.
 func ErrorMessagesMissing(in, out string) []string { return engine.ErrorMessagesMissing(in, out) }
 
-// AppLocations returns the distinct file:line locations in s that point at
-// application code (not dependencies or runtimes).
 func AppLocations(s string) []string { return engine.AppLocations(s) }
 
-// AppLocationsMissing is LocationsMissing restricted to application code.
 func AppLocationsMissing(in, out string) []string { return engine.AppLocationsMissing(in, out) }

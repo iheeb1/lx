@@ -2,23 +2,19 @@ package jstest
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strconv"
 	"strings"
+
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 var (
-	// V8 stack frame: "    at fn (file:1:2)", "    at file:1:2", "at async fn (…)",
-	// "at fn (<anonymous>)", "at new X (native)".
 	atFrameRe = lazyre.New(`^\s+at \S`)
-	// vitest frame: " ❯ fn file:1:2" or " ❯ file:1:2".
-	// The file may contain spaces; only the line number is used.
+
 	vFrameRe = lazyre.New(`^\s*❯ (?:(\S+) )?(\S.*?):(\d+):(\d+)$`)
-	// mocha separates the synchronous part of a trace from its async part.
+
 	asyncSepRe = lazyre.New(`^\s+-{4,}$`)
-	// library locations: node_modules, node core (node:x, internal/x.js),
-	// frames without a location.
-	// Windows paths use backslashes.
+
 	nodeModRe  = lazyre.New(`node_modules[/\\]((?:@[^/\\\s]+[/\\])?[^/\\\s:)]+)`)
 	nodeCoreRe = lazyre.New(`\(?\b(node:[a-z_]+)|[\s(](internal)/[\w/.-]+\.js:\d`)
 	noLocRe    = lazyre.New(`\((?:<anonymous>|native|index \d+)\)$|^\s*at (?:<anonymous>|native)$`)
@@ -28,8 +24,6 @@ func isFrame(ln string) bool {
 	return atFrameRe.MatchString(ln) || strings.Contains(ln, "❯ ") && vFrameRe.MatchString(ln)
 }
 
-// libRoot reports whether a frame is library code, and names its root
-// (package, node core module) for the fold marker.
 func libRoot(ln string) (string, bool) {
 	if m := nodeModRe.FindStringSubmatch(ln); m != nil {
 		return m[1], true
@@ -46,14 +40,6 @@ func libRoot(ln string) (string, bool) {
 	return "", false
 }
 
-// foldFrames copies lines[from:to] (all frames or mocha "----" async
-// separators) to d, replacing each run of 2+ library frames by one
-//
-//	<indent>… N library frames (supertest, node:events, node:net)
-//
-// line. Application frames, lone library frames and frames that open an
-// error-properties block ("… {") are kept. Folded frames are marked benign:
-// the marker counts them and names where they came from.
 func foldFrames(d *doc, from, to int) {
 	for i := from; i < to; {
 		ln := d.in[i]
@@ -64,7 +50,7 @@ func foldFrames(d *doc, from, to int) {
 			i++
 			continue
 		}
-		// Collect the run of library frames (async separators inside).
+
 		j := i
 		frames := 0
 		var roots []string
@@ -86,7 +72,7 @@ func foldFrames(d *doc, from, to int) {
 			}
 			j++
 		}
-		// Trailing separators belong to what follows.
+
 		for j > i && asyncSepRe.MatchString(d.in[j-1]) {
 			j--
 		}
@@ -105,7 +91,6 @@ func foldFrames(d *doc, from, to int) {
 		}
 		ind := d.in[i]
 		if sep {
-			// Indent like the frames, not like the separator.
 			for k := i; k < j; k++ {
 				if !asyncSepRe.MatchString(d.in[k]) {
 					ind = d.in[k]
@@ -122,15 +107,13 @@ func foldFrames(d *doc, from, to int) {
 }
 
 var (
-	// jest / babel code frame: "    > 28 |   code", "      27 |", caret line "         |    ^".
 	jestCodeRe  = lazyre.New(`^\s*(>)?\s*\d+ \|`)
 	jestCaretRe = lazyre.New(`^\s+\|[\s^~]*\^[\s^~]*$`)
-	// vitest code frame: "     15|       code", "      3|", caret "       |     ^".
+
 	vCodeRe  = lazyre.New(`^\s*(\d+)\|`)
 	vCaretRe = lazyre.New(`^\s+\|\s*\^+\s*$`)
 )
 
-// codeFrameEnd returns the end of the jest code frame starting at i.
 func jestCodeFrameEnd(lines []string, i, to int) int {
 	for i < to && (jestCodeRe.MatchString(lines[i]) || jestCaretRe.MatchString(lines[i])) {
 		i++
@@ -138,9 +121,6 @@ func jestCodeFrameEnd(lines []string, i, to int) int {
 	return i
 }
 
-// keepJestCodeFrame keeps the ">" line of a jest code frame and the caret
-// line under it; the surrounding source lines are dropped as benign. A frame
-// without a ">" line is kept whole (nothing to anchor on).
 func keepJestCodeFrame(d *doc, from, to int) {
 	mark := -1
 	for i := from; i < to; i++ {
@@ -151,7 +131,7 @@ func keepJestCodeFrame(d *doc, from, to int) {
 	}
 	first := mark
 	if mark >= 0 && continuation(d.in[mark], "|") {
-		first = from // the statement starts above: keep what jest shows of it
+		first = from
 	}
 	for i := from; i < to; i++ {
 		switch {
@@ -163,9 +143,6 @@ func keepJestCodeFrame(d *doc, from, to int) {
 	}
 }
 
-// continuation reports whether the source text after the first sep of a
-// code frame line continues a statement begun on an earlier line
-// ("  ).toEqual({ hours: 2999 });").
 func continuation(ln, sep string) bool {
 	_, code, ok := strings.Cut(ln, sep)
 	code = strings.TrimSpace(code)
@@ -179,9 +156,6 @@ func vCodeFrameEnd(lines []string, i, to int) int {
 	return i
 }
 
-// keepVitestCodeFrame keeps the source line numbered line (the failing line
-// named by the preceding "❯ file:line:col") and its caret line. A frame
-// that does not contain that line is kept whole.
 func keepVitestCodeFrame(d *doc, from, to, line int) {
 	mark := -1
 	for i := from; i < to; i++ {
@@ -206,17 +180,11 @@ func keepVitestCodeFrame(d *doc, from, to, line int) {
 	}
 }
 
-// diffLimit: diffs longer than this many lines keep their changed lines and
-// diffContext lines around each run of changes; unchanged runs become a
-// counted marker.
 const (
 	diffLimit   = 40
 	diffContext = 3
 )
 
-// keepDiff copies the diff body lines[from:to] (after its "- Expected /
-// + Received" header), trimming unchanged context of long diffs. ind is the
-// column of the +/- markers.
 func keepDiff(d *doc, from, to, ind int) {
 	if to-from <= diffLimit {
 		for i := from; i < to; i++ {

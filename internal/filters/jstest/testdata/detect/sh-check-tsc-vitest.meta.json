@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "sh",
+    "scripts/check.sh"
+  ],
+  "shell": "sh scripts/check.sh",
+  "exit_code": 1,
+  "description": "REAL: a check script in jquense/yup running npx tsc --noEmit, then npx vitest run, each under an echo header; the script exits 1 when either fails",
+  "cwd": "/home/user/src/yup",
+  "repo": "jquense/yup",
+  "tool": "vitest,tsc"
+}

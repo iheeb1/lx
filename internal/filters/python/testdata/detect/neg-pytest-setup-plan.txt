@@ -1,0 +1,337 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.5.0
+rootdir: /home/user/src/click
+configfile: pyproject.toml
+collected 56 items
+
+tests/test_basic.py 
+        SETUP    F runner
+        tests/test_basic.py::test_basic_functionality (fixtures used: request, runner)
+        TEARDOWN F runner
+        tests/test_basic.py::test_repr
+        tests/test_basic.py::test_return_values
+        SETUP    F runner
+        tests/test_basic.py::test_basic_group (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_group_commands_dict (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_group_from_list (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[[]]
+        SETUP    F expect['S:[no value]']
+        tests/test_basic.py::test_string_option[args0-S:[no value]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['S:[no value]']
+        TEARDOWN F args[[]]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[['--s=42']]
+        SETUP    F expect['S:[42]']
+        tests/test_basic.py::test_string_option[args1-S:[42]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['S:[42]']
+        TEARDOWN F args[['--s=42']]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[['--s']]
+        SETUP    F expect["Error: Option '--s...quires an argument."]
+        tests/test_basic.py::test_string_option[args2-Error: Option '--s' requires an argument.] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect["Error: Option '--s...quires an argument."]
+        TEARDOWN F args[['--s']]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[['--s=']]
+        SETUP    F expect['S:[]']
+        tests/test_basic.py::test_string_option[args3-S:[]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['S:[]']
+        TEARDOWN F args[['--s=']]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[['--s=☃']]
+        SETUP    F expect['S:[☃]']
+        tests/test_basic.py::test_string_option[args4-S:[\u2603]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['S:[☃]']
+        TEARDOWN F args[['--s=☃']]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[[]]
+        SETUP    F expect['I:[84]']
+        tests/test_basic.py::test_int_option[args0-I:[84]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['I:[84]']
+        TEARDOWN F args[[]]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[['--i=23']]
+        SETUP    F expect['I:[46]']
+        tests/test_basic.py::test_int_option[args1-I:[46]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['I:[46]']
+        TEARDOWN F args[['--i=23']]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[['--i=x']]
+        SETUP    F expect['Error: Invalid val...ot a valid integer.']
+        tests/test_basic.py::test_int_option[args2-Error: Invalid value for '--i': 'x' is not a valid integer.] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['Error: Invalid val...ot a valid integer.']
+        TEARDOWN F args[['--i=x']]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[[]]
+        SETUP    F expect['U:[ba122011-349f-423b-873b-9d6a79c688ab]']
+        tests/test_basic.py::test_uuid_option[args0-U:[ba122011-349f-423b-873b-9d6a79c688ab]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['U:[ba122011-349f-423b-873b-9d6a79c688ab]']
+        TEARDOWN F args[[]]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[['--u=821592c1-c50e...-9cd6-e89dc6832f86']]
+        SETUP    F expect['U:[821592c1-c50e-4971-9cd6-e89dc6832f86]']
+        tests/test_basic.py::test_uuid_option[args1-U:[821592c1-c50e-4971-9cd6-e89dc6832f86]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['U:[821592c1-c50e-4971-9cd6-e89dc6832f86]']
+        TEARDOWN F args[['--u=821592c1-c50e...-9cd6-e89dc6832f86']]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[['--u=x']]
+        SETUP    F expect['Error: Invalid val...s not a valid UUID.']
+        tests/test_basic.py::test_uuid_option[args2-Error: Invalid value for '--u': 'x' is not a valid UUID.] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['Error: Invalid val...s not a valid UUID.']
+        TEARDOWN F args[['--u=x']]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args[[]]
+        SETUP    F expect['F:[42.0]']
+        tests/test_basic.py::test_float_option[args0-F:[42.0]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['F:[42.0]']
+        TEARDOWN F args[[]]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args['--f=23.5']
+        SETUP    F expect['F:[23.5]']
+        tests/test_basic.py::test_float_option[--f=23.5-F:[23.5]] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['F:[23.5]']
+        TEARDOWN F args['--f=23.5']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F args['--f=x']
+        SETUP    F expect['Error: Invalid val... not a valid float.']
+        tests/test_basic.py::test_float_option[--f=x-Error: Invalid value for '--f': 'x' is not a valid float.] (fixtures used: args, expect, request, runner)
+        TEARDOWN F expect['Error: Invalid val... not a valid float.']
+        TEARDOWN F args['--f=x']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[True]
+        SETUP    F args[['--on']]
+        SETUP    F expect[True]
+        tests/test_basic.py::test_boolean_switch[args0-True-True] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[True]
+        TEARDOWN F args[['--on']]
+        TEARDOWN F default[True]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[False]
+        SETUP    F args[['--on']]
+        SETUP    F expect[True]
+        tests/test_basic.py::test_boolean_switch[args0-True-False] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[True]
+        TEARDOWN F args[['--on']]
+        TEARDOWN F default[False]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[True]
+        SETUP    F args[['--off']]
+        SETUP    F expect[False]
+        tests/test_basic.py::test_boolean_switch[args1-False-True] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[False]
+        TEARDOWN F args[['--off']]
+        TEARDOWN F default[True]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[False]
+        SETUP    F args[['--off']]
+        SETUP    F expect[False]
+        tests/test_basic.py::test_boolean_switch[args1-False-False] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[False]
+        TEARDOWN F args[['--off']]
+        TEARDOWN F default[False]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[True]
+        SETUP    F args[[]]
+        SETUP    F expect[None]
+        tests/test_basic.py::test_boolean_switch[args2-None-True] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[None]
+        TEARDOWN F args[[]]
+        TEARDOWN F default[True]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[False]
+        SETUP    F args[[]]
+        SETUP    F expect[None]
+        tests/test_basic.py::test_boolean_switch[args2-None-False] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[None]
+        TEARDOWN F args[[]]
+        TEARDOWN F default[False]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[True]
+        SETUP    F args[['--f']]
+        SETUP    F expect[True]
+        tests/test_basic.py::test_boolean_flag[args0-True-True] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[True]
+        TEARDOWN F args[['--f']]
+        TEARDOWN F default[True]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[False]
+        SETUP    F args[['--f']]
+        SETUP    F expect[True]
+        tests/test_basic.py::test_boolean_flag[args0-True-False] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[True]
+        TEARDOWN F args[['--f']]
+        TEARDOWN F default[False]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[True]
+        SETUP    F args[[]]
+        SETUP    F expect[False]
+        tests/test_basic.py::test_boolean_flag[args1-False-True] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[False]
+        TEARDOWN F args[[]]
+        TEARDOWN F default[True]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F default[False]
+        SETUP    F args[[]]
+        SETUP    F expect[False]
+        tests/test_basic.py::test_boolean_flag[args1-False-False] (fixtures used: args, default, expect, request, runner)
+        TEARDOWN F expect[False]
+        TEARDOWN F args[[]]
+        TEARDOWN F default[False]
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['1']
+        SETUP    F expect['True']
+        tests/test_basic.py::test_boolean_conversion[1-True] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['True']
+        TEARDOWN F value['1']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['true']
+        SETUP    F expect['True']
+        tests/test_basic.py::test_boolean_conversion[true-True] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['True']
+        TEARDOWN F value['true']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['t']
+        SETUP    F expect['True']
+        tests/test_basic.py::test_boolean_conversion[t-True] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['True']
+        TEARDOWN F value['t']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['yes']
+        SETUP    F expect['True']
+        tests/test_basic.py::test_boolean_conversion[yes-True] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['True']
+        TEARDOWN F value['yes']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['y']
+        SETUP    F expect['True']
+        tests/test_basic.py::test_boolean_conversion[y-True] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['True']
+        TEARDOWN F value['y']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['on']
+        SETUP    F expect['True']
+        tests/test_basic.py::test_boolean_conversion[on-True] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['True']
+        TEARDOWN F value['on']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['0']
+        SETUP    F expect['False']
+        tests/test_basic.py::test_boolean_conversion[0-False] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['False']
+        TEARDOWN F value['0']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['false']
+        SETUP    F expect['False']
+        tests/test_basic.py::test_boolean_conversion[false-False] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['False']
+        TEARDOWN F value['false']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['f']
+        SETUP    F expect['False']
+        tests/test_basic.py::test_boolean_conversion[f-False] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['False']
+        TEARDOWN F value['f']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['no']
+        SETUP    F expect['False']
+        tests/test_basic.py::test_boolean_conversion[no-False] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['False']
+        TEARDOWN F value['no']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['n']
+        SETUP    F expect['False']
+        tests/test_basic.py::test_boolean_conversion[n-False] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['False']
+        TEARDOWN F value['n']
+        TEARDOWN F runner
+        SETUP    F runner
+        SETUP    F value['off']
+        SETUP    F expect['False']
+        tests/test_basic.py::test_boolean_conversion[off-False] (fixtures used: expect, request, runner, value)
+        TEARDOWN F expect['False']
+        TEARDOWN F value['off']
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_file_option (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_file_lazy_mode (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_path_option (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_choice_option (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_choice_argument (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_datetime_option_default (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_datetime_option_custom (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_required_option (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_evaluation_order (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_hidden_option (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_hidden_command (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_hidden_group (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_summary_line (fixtures used: request, runner)
+        TEARDOWN F runner
+        SETUP    F runner
+        tests/test_basic.py::test_help_invalid_default (fixtures used: request, runner)
+        TEARDOWN F runner
+
+============================ no tests ran in 0.04s =============================

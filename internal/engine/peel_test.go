@@ -10,7 +10,7 @@ import (
 func TestPeel(t *testing.T) {
 	const none = "\x00nil"
 	cases := []struct{ argv, inner, via string }{
-		// VAR=value words
+
 		{"FOO=1 go test ./...", "go test ./...", "VAR=value"},
 		{"FOO=1 BAR= _X9=a=b pytest -x", "pytest -x", "VAR=value"},
 		{"FOO=1", none, ""},
@@ -18,14 +18,13 @@ func TestPeel(t *testing.T) {
 		{"FOO-BAR=x go test", none, ""},
 		{"=x go test", none, ""},
 
-		// env
 		{"env FOO=1 go test", "go test", "env"},
 		{"/usr/bin/env FOO=1 BAR=2 go vet ./...", "go vet ./...", "env"},
 		{"env go test", "go test", "env"},
 		{"env -u CLAUDECODE -u AI_AGENT FORCE_COLOR=1 npx jest", "npx jest", "env"},
 		{"env -uHOME --unset=PATH --unset GOFLAGS go build", "go build", "env"},
 		{"env -- FOO=1 go test", "go test", "env"},
-		{"env a.b=1 go test", "go test", "env"}, // env takes any word with "=" as an assignment
+		{"env a.b=1 go test", "go test", "env"},
 		{"env -i go test", none, ""},
 		{"env - go test", none, ""},
 		{"env -S 'go test' x", none, ""},
@@ -37,7 +36,6 @@ func TestPeel(t *testing.T) {
 		{"env FOO=1", none, ""},
 		{"env FOO=1 -x", none, ""},
 
-		// timeout
 		{"timeout 60 go test ./...", "go test ./...", "timeout"},
 		{"timeout 1.5h cargo build", "cargo build", "timeout"},
 		{"timeout .5 make", "make", "timeout"},
@@ -58,7 +56,6 @@ func TestPeel(t *testing.T) {
 		{"timeout -s", none, ""},
 		{"timeout 5 -x", none, ""},
 
-		// nice
 		{"nice make", "make", "nice"},
 		{"nice -n 10 make", "make", "nice"},
 		{"nice -n10 make test", "make test", "nice"},
@@ -72,7 +69,6 @@ func TestPeel(t *testing.T) {
 		{"nice --help", none, ""},
 		{"nice", none, ""},
 
-		// nohup, time, command
 		{"nohup go test ./...", "go test ./...", "nohup"},
 		{"nohup -- go test", "go test", "nohup"},
 		{"nohup --version", none, ""},
@@ -89,7 +85,6 @@ func TestPeel(t *testing.T) {
 		{"command -p go test", none, ""},
 		{"command", none, ""},
 
-		// project runners
 		{"uv run pytest -x", "pytest -x", "uv run"},
 		{"uv run --with ruff pytest", "pytest", "uv run"},
 		{"uv run -w ruff --frozen pytest", "pytest", "uv run"},
@@ -135,7 +130,6 @@ func TestPeel(t *testing.T) {
 		{"pdm run --list", none, ""},
 		{"pipx install ruff", none, ""},
 
-		// not wrappers
 		{"go test ./...", none, ""},
 		{"sudo go test", none, ""},
 		{"xargs go test", none, ""},
@@ -160,7 +154,6 @@ func TestPeel(t *testing.T) {
 	}
 }
 
-// fields splits like strings.Fields but keeps 'single quoted' words whole.
 func fields(s string) []string {
 	var out []string
 	for len(s) > 0 {
@@ -184,8 +177,6 @@ func fields(s string) []string {
 	return out
 }
 
-// Peel only reads argv: the caller's slice is never modified, and the inner
-// command is a suffix of it (tool runners may drop an "@version").
 func TestPeelIsPure(t *testing.T) {
 	for _, s := range []string{"FOO=1 go test", "env -u X A=1 go test", "timeout -s KILL 5 make",
 		"nice -n 3 make", "uvx ruff@0.6 check .", "uv run --with x pytest -x", "time -p go build"} {
@@ -209,8 +200,6 @@ func TestPeelIsPure(t *testing.T) {
 	}
 }
 
-// fakeFilter matches one made-up tool name, so registering it cannot
-// affect any other test in this binary.
 type fakeFilter struct{ name, tool string }
 
 func (f fakeFilter) Name() string                                { return f.name }
@@ -243,14 +232,11 @@ func TestResolve(t *testing.T) {
 		t.Errorf("Resolve changed the caller's context: %q", c.Argv)
 	}
 
-	// A filter matching the full command line wins over one for the inner
-	// command: filters that understand a wrapper keep seeing it.
 	c = &Context{Argv: fields("lx-peel-test-wrapper run lx-peel-test-tool")}
 	if f, fc := Resolve(c); f == nil || f.Name() != "peel-test-outer" || fc != c {
 		t.Errorf("outer match: %v", f)
 	}
 
-	// At most MaxPeel layers.
 	deep := "lx-peel-test-tool"
 	for i := range MaxPeel + 1 {
 		c = &Context{Argv: fields(deep)}
@@ -264,7 +250,6 @@ func TestResolve(t *testing.T) {
 		t.Errorf("%d layers: matched %v", MaxPeel+1, f)
 	}
 
-	// Unknown wrappers and non-matching commands: nil and the same context.
 	for _, s := range []string{"env -i lx-peel-test-tool", "sudo lx-peel-test-tool", "uv run nothing-here", ""} {
 		c = &Context{Argv: fields(s)}
 		if f, fc := Resolve(c); f != nil || fc != c {
@@ -284,9 +269,9 @@ func TestMachineReadableAny(t *testing.T) {
 		"uv run pytest -x":                            false,
 		"env A=1 git status":                          false,
 		"poetry run mypy src":                         false,
-		"env -i git status -s":                        false, // not peeled: -i is not transparent
-		"nohup nohup nohup nohup git status -s":       true,  // MaxPeel layers are checked
-		"nohup nohup nohup nohup nohup git status -s": false, // the fifth is not
+		"env -i git status -s":                        false,
+		"nohup nohup nohup nohup git status -s":       true,
+		"nohup nohup nohup nohup nohup git status -s": false,
 	} {
 		if got := MachineReadableAny(&Context{Argv: fields(s)}); got != want {
 			t.Errorf("MachineReadableAny(%q) = %v, want %v", s, got, want)

@@ -8,12 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// ---- kubectl get -----------------------------------------------------------
-
-// kubectlGet keeps kubectl get tables as printed. A table of more than 60
-// rows keeps the first 40 rows, then every row that is not running/ready
-// (STATUS other than Running/Completed/…, or READY x/y with x < y), with
-// the exact number of rows left out and a count of all rows by STATUS.
 type kubectlGet struct{}
 
 func (kubectlGet) Name() string { return "kubectl-get" }
@@ -32,19 +26,14 @@ func (kubectlGet) Stream(c *engine.Context) bool {
 	return false
 }
 
-// healthy STATUS values across pods, nodes, PVCs, namespaces, jobs.
 var healthyStatus = set("Running", "Completed", "Succeeded", "Ready", "Bound", "Active", "Complete", "Available", "Healthy", "True", "Established")
 
 var (
 	readyRe = lazyre.New(`^(\d+)/(\d+)$`)
-	// recentRestartRe: a RESTARTS cell whose last restart was under an
-	// hour ago ("57 (2m ago)", "3 (45s ago)", "12 (2m14s ago)").
+
 	recentRestartRe = lazyre.New(`\((?:\d+s|\d+m(?:\d+s)?) ago\)$`)
 )
 
-// unhealthy reports whether a kubectl row needs attention: a STATUS that
-// is not a healthy one, READY x/y with x < y, or a container restart in the
-// last hour (a crash-looping pod reads Running between its restarts).
 func unhealthy(t *table, r int) bool {
 	st, rd := t.col("STATUS"), t.col("READY")
 	if rs := t.col("RESTARTS"); rs >= 0 && recentRestartRe.MatchString(t.cells[r][rs]) {
@@ -74,8 +63,7 @@ func (kubectlGet) Apply(c *engine.Context, out string) (string, bool) {
 		if bi > 0 {
 			res = append(res, "")
 		}
-		// Lines before the header ("Warning: … is deprecated", printed
-		// by kubectl to stderr before the table) are kept as printed.
+
 		h := 0
 		for h < len(blk) {
 			if _, ok := parseHeader(blk[h]); ok {
@@ -95,9 +83,7 @@ func (kubectlGet) Apply(c *engine.Context, out string) (string, bool) {
 			continue
 		}
 		tables++
-		// kubectl's messages after the table ("error: the server doesn't
-		// have a resource type …") parse as rows with one cell; they are
-		// printed after it, not counted.
+
 		var trailer []string
 		for n := len(t.cells); n > 0 && isMessageRow(t, n-1); n-- {
 			trailer = append([]string{t.lines[n-1]}, trailer...)
@@ -159,8 +145,6 @@ func (kubectlGet) Apply(c *engine.Context, out string) (string, bool) {
 	return strings.Join(res, "\n"), true
 }
 
-// isMessageRow reports a parsed "row" that is really one of kubectl's
-// messages: text in the first column only, error- or warning-class.
 func isMessageRow(t *table, r int) bool {
 	for _, c := range t.cells[r][1:] {
 		if c != "" {
@@ -170,15 +154,6 @@ func isMessageRow(t *table, r int) bool {
 	return engine.Classify(t.lines[r]) != engine.Normal
 }
 
-// ---- kubectl events / kubectl get events -------------------------------------
-
-// kubectlEvents merges identical events (same type, reason, object and
-// message) into their latest row with a "[×N rows]" count. When more than
-// 60 distinct rows remain, only the latest 20 Normal rows are kept (the
-// older ones are counted by reason); every Warning row is kept.
-//
-// It is Guarded: merged rows differ from the kept one only in their age,
-// which the fidelity tests check line by line.
 type kubectlEvents struct{}
 
 func (kubectlEvents) Name() string       { return "kubectl-events" }
@@ -197,11 +172,9 @@ func (kubectlEvents) Match(c *engine.Context) bool {
 
 func (kubectlEvents) Stream(c *engine.Context) bool { return kubectlGet{}.Stream(c) }
 
-// eventKey identifies an event row for merging.
 func eventKey(t *table, r int) string {
 	var parts []string
-	// NAME is the event's own name in -o wide output: rows that differ
-	// there are distinct events and are not merged.
+
 	for _, name := range []string{"NAMESPACE", "TYPE", "REASON", "OBJECT", "SUBOBJECT", "SOURCE", "MESSAGE", "NAME"} {
 		if k := t.col(name); k >= 0 {
 			parts = append(parts, t.cells[r][k])
@@ -233,8 +206,7 @@ func (kubectlEvents) Apply(c *engine.Context, out string) (string, bool) {
 	rows, others := mergeLatest(t, func(r int) string { return eventKey(t, r) })
 	count := func(r int) int { return len(others[r]) + 1 }
 	distinct := len(rows)
-	// Many distinct events: the latest 20 Normal rows stay; every Warning
-	// (and other non-Normal) row stays.
+
 	var hiddenNormal []int
 	if len(rows) > maxEventRows {
 		var normal []int
@@ -281,7 +253,6 @@ func (kubectlEvents) Apply(c *engine.Context, out string) (string, bool) {
 	return strings.Join(res, "\n"), true
 }
 
-// countByWeighted is countBy where each row stands for weight(row) rows.
 func countByWeighted(rows []int, weight func(int) int, key func(int) string) string {
 	var expanded []int
 	for _, r := range rows {
@@ -292,13 +263,8 @@ func countByWeighted(rows []int, weight func(int) int, key func(int) string) str
 	return countBy(expanded, key)
 }
 
-// maxListedAges: a merged row lists at most this many other ages in full.
 const maxListedAges = 4
 
-// mergedNote marks a row that stands for itself and the rows in others:
-// " [×3 rows; others: 47m, 45m (x5 over 47m)]". The other rows' ages (with
-// kubectl's own "(xN over M)" counts) are kept, so merging loses no count
-// or time; past 4 of them, the first two and the last are listed.
 func mergedNote(t *table, others []int) string {
 	if len(others) == 0 {
 		return ""
@@ -324,19 +290,6 @@ func mergedNote(t *table, others []int) string {
 	return fmt.Sprintf(" [×%d rows; others: %s]", len(others)+1, strings.Join(ages, ", "))
 }
 
-// ---- kubectl describe --------------------------------------------------------
-
-// kubectlDescribe drops what rarely matters when debugging — Volumes,
-// Tolerations, QoS Class, Node-Selectors, container and image IDs, Mounts,
-// host ports and the last-applied-configuration annotation — unless the
-// dropped block holds an error-class line, and merges repeated Events rows
-// (same type, reason, source and message) with a "[×N rows]" count. Name,
-// Namespace, Node, Status, Reason, Conditions, container State/Last State/
-// Exit Code/Ready/Restart Count, limits, probes and Events are kept
-// verbatim.
-//
-// It is Guarded: merged event rows differ from the kept one only in their
-// age, which the fidelity tests check.
 type kubectlDescribe struct{}
 
 func (kubectlDescribe) Name() string       { return "kubectl-describe" }
@@ -368,9 +321,7 @@ func (kubectlDescribe) Apply(c *engine.Context, out string) (string, bool) {
 	if !named {
 		return "", false
 	}
-	// Blocks that explain a failure the events report are kept: volumes
-	// and mounts for mount failures, tolerations and node selectors for
-	// scheduling failures, the QoS class for evictions and OOM kills.
+
 	drop := describeDrop
 	if needed := describeNeeded(out); len(needed) > 0 {
 		drop = map[string]bool{}
@@ -393,7 +344,7 @@ func (kubectlDescribe) Apply(c *engine.Context, out string) (string, bool) {
 	for i := 0; i < len(lines); {
 		ln := lines[i]
 		ind := indentOf(ln)
-		// The block of a line: the following lines indented deeper.
+
 		j := i + 1
 		for j < len(lines) && strings.TrimSpace(lines[j]) != "" && indentOf(lines[j]) > ind {
 			j++
@@ -404,7 +355,7 @@ func (kubectlDescribe) Apply(c *engine.Context, out string) (string, bool) {
 			continue
 		}
 		if loc := lastAppliedRe.FindStringIndex(ln); loc != nil && !hasErrorLine(lines[i:j]) {
-			// The annotation's JSON is on this line or the deeper ones.
+
 			res = append(res, ln[:loc[0]]+"kubectl.kubernetes.io/last-applied-configuration: [lx: not shown]")
 			note("last-applied-configuration")
 			i = j
@@ -437,8 +388,6 @@ func (kubectlDescribe) Apply(c *engine.Context, out string) (string, bool) {
 	return strings.TrimRight(strings.Join(res, "\n"), "\n"), true
 }
 
-// describeNeeded returns the droppable blocks that the output's events or
-// states make relevant.
 func describeNeeded(out string) map[string]bool {
 	needed := map[string]bool{}
 	for _, r := range []struct {
@@ -461,15 +410,13 @@ func describeNeeded(out string) map[string]bool {
 	return needed
 }
 
-// mergeEvents merges the rows of a describe Events table that share Type,
-// Reason, From and Message, and reports how many rows it merged away.
 func mergeEvents(block []string) ([]string, int) {
 	if len(block) < 3 {
 		return block, 0
 	}
 	ind := indentOf(block[0])
 	trimmed := make([]string, 0, len(block))
-	var sep []int // separator line positions ("  ----  ------")
+	var sep []int
 	for i, ln := range block {
 		if strings.Trim(ln, " -") == "" && strings.Contains(ln, "--") {
 			sep = append(sep, i)
@@ -483,7 +430,7 @@ func mergeEvents(block []string) ([]string, int) {
 	if len(trimmed) < 2 {
 		return block, 0
 	}
-	// describe prints Title Case headers; parseHeader wants upper case.
+
 	upper := append([]string{strings.ToUpper(trimmed[0])}, trimmed[1:]...)
 	t, ok := parseTable(upper)
 	if !ok || t.col("TYPE") < 0 || t.col("REASON") < 0 || t.col("MESSAGE") < 0 {
@@ -504,10 +451,6 @@ func mergeEvents(block []string) ([]string, int) {
 	return out, len(t.cells) - len(rows)
 }
 
-// mergeLatest groups rows by key and keeps, for each group, its last row
-// (kubectl events and describe list events oldest first, so the last row
-// carries the latest age), in the order of those last rows. others[row]
-// lists the group's other rows, in order.
 func mergeLatest(t *table, key func(int) string) ([]int, map[int][]int) {
 	keys := make([]string, len(t.cells))
 	last := map[string]int{}

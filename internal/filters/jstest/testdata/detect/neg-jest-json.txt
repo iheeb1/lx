@@ -1,0 +1,11 @@
+PASS test/info/features.test.js
+  ✓ Info.features shows this environment supports all the features (1 ms)
+  ✓ With no RelativeTimeFormat support, Info.features shows no support
+  ✓ With no Intl.Locale.weekInfo support, Info.features shows no support
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        0.457 s, estimated 1 s
+Ran all test suites matching /test\/info\/features.test.js/i.
+{"numFailedTestSuites":0,"numFailedTests":0,"numPassedTestSuites":1,"numPassedTests":3,"numPendingTestSuites":0,"numPendingTests":0,"numRuntimeErrorTestSuites":0,"numTodoTests":0,"numTotalTestSuites":1,"numTotalTests":3,"openHandles":[],"snapshot":{"added":0,"didUpdate":false,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0},"startTime":1790530776237,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":[],"duration":1,"failureDetails":[],"failureMessages":[],"fullName":"Info.features shows this environment supports all the features","invocations":1,"location":null,"numPassingAsserts":2,"retryReasons":[],"status":"passed","title":"Info.features shows this environment supports all the features"},{"ancestorTitles":[],"duration":0,"failureDetails":[],"failureMessages":[],"fullName":"With no RelativeTimeFormat support, Info.features shows no support","invocations":1,"location":null,"numPassingAsserts":1,"retryReasons":[],"status":"passed","title":"With no RelativeTimeFormat support, Info.features shows no support"},{"ancestorTitles":[],"duration":0,"failureDetails":[],"failureMessages":[],"fullName":"With no Intl.Locale.weekInfo support, Info.features shows no support","invocations":1,"location":null,"numPassingAsserts":1,"retryReasons":[],"status":"passed","title":"With no Intl.Locale.weekInfo support, Info.features shows no support"}],"endTime":1790530776680,"message":"","name":"/home/user/src/luxon/test/info/features.test.js","startTime":1790530776308,"status":"passed","summary":""}],"wasInterrupted":false}

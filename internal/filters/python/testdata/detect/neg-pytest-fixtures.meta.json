@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "pytest",
+    "--fixtures",
+    "tests/test_basic.py"
+  ],
+  "shell": "pytest --fixtures tests/test_basic.py",
+  "exit_code": 0,
+  "description": "REAL (negative): pytest --fixtures tests/test_basic.py in pallets/click: the session header, every fixture with its docstring, 'no tests ran in \u2026' (documentation; the pytest filter declines --fixtures)",
+  "cwd": "/home/user/src/click",
+  "repo": "pallets/click",
+  "tool": ""
+}

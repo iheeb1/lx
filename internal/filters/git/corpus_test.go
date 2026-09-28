@@ -2,7 +2,6 @@ package git
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"regexp"
 	"strconv"
 	"strings"
@@ -10,20 +9,18 @@ import (
 
 	"github.com/iheeb1/lx/internal/engine"
 	"github.com/iheeb1/lx/internal/fixture"
+	"github.com/iheeb1/lx/internal/lazyre"
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// corpusCase describes what must happen to one captured git output.
 type corpusCase struct {
 	name    string
-	local   bool   // captured for this package: internal/filters/git/testdata/git
-	filter  string // engine.Find result; "" when no filter may match
-	bail    bool   // Apply must return ok=false
-	process string // Result.Filter of the full pipeline; "" = filter
-	why     string // why process differs from filter, or why lines may be dropped
-	// drops, when set, vouches for every error-class input line absent from
-	// the output. Only Content filters (data output, no guard) and Guarded
-	// filters (they prove their own fidelity) set it.
+	local   bool
+	filter  string
+	bail    bool
+	process string
+	why     string
+
 	drops func(t *testing.T, clean, got string, missing []string)
 }
 
@@ -63,7 +60,6 @@ var corpusCases = []corpusCase{
 	{name: "git-status-during-merge", filter: "git-status", drops: statusDrops},
 	{name: "git-status-short-dirty", filter: "", process: "-", why: "-s is machine-readable: the CLI passes it through before any filter runs"},
 
-	// Captured for this package (internal/filters/git/testdata/git).
 	{local: true, name: "git-blame-range", filter: "git-blame", drops: blameDrops},
 	{local: true, name: "git-branch-plain", filter: "git-branch", process: "passthrough", why: small},
 	{local: true, name: "git-branch-r", filter: "git-branch", drops: branchDrops},
@@ -93,7 +89,7 @@ var corpusCases = []corpusCase{
 	{local: true, name: "git-stash-show", filter: "git-diff", process: "passthrough", why: small},
 	{local: true, name: "git-stash-show-p", filter: "git-diff", process: "passthrough", why: small},
 	{local: true, name: "git-tag-list", filter: "git-tag"},
-	// Captured in the review round (scratch clones; see each meta.json).
+
 	{local: true, name: "git-status-error-names", filter: "git-status", drops: statusDrops},
 	{local: true, name: "git-diff-cached-copies", filter: "git-diff"},
 	{local: true, name: "git-diff-lockfile-conflict-markers", filter: "git-diff", drops: lockfileDrops},
@@ -116,7 +112,6 @@ func loadCase(t testing.TB, cc corpusCase) fixture.Case {
 	return c
 }
 
-// TestCorpusCoversEveryCapture fails when a capture in scope has no case.
 func TestCorpusCoversEveryCapture(t *testing.T) {
 	have := map[string]bool{}
 	for _, cc := range corpusCases {
@@ -201,20 +196,12 @@ func TestCorpus(t *testing.T) {
 	t.Log("\n" + table.String())
 }
 
-// ---- fidelity checks for Content filters ----------------------------------
-
 var (
 	commitLineRe = regexp.MustCompile(`^commit (?:[<>-] )?([0-9a-f]{40})`)
 	moreCommitRe = regexp.MustCompile(`\[… \+(\d+) more commits? not shown \((\d+) total\)`)
 	listedRe     = regexp.MustCompile(`(?m)^\[… the next (\d+) commits? without their changes`)
 )
 
-// logDrops: git log output is data (commit messages), so the only
-// error-class lines it may omit are commit message lines of shown commits
-// (every subject, kept body line and stat summary is checked here), lines
-// of lockfile diffs (checked by lockfileDrops' rule), the changes of the
-// commits listed under "[… the next N commits without their changes", or
-// anything of commits past the exact "+N more commits" cut.
 func logDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	lines := strings.Split(clean, "\n")
@@ -224,8 +211,7 @@ func logDrops(t *testing.T, clean, got string, missing []string) {
 		total, _ := strconv.Atoi(m[2])
 		shown = total - more
 	}
-	// Commits rendered with their changes: all shown ones, minus those
-	// listed by their header line only.
+
 	full := shown
 	if m := listedRe.FindStringSubmatch(got); m != nil {
 		listed, _ := strconv.Atoi(m[1])
@@ -239,7 +225,7 @@ func logDrops(t *testing.T, clean, got string, missing []string) {
 		}
 		full -= listed
 	}
-	// Which input lines belong to shown commits, and to which part.
+
 	inShown := make([]bool, len(lines))
 	inFull := make([]bool, len(lines))
 	isMsg := make([]bool, len(lines))
@@ -295,7 +281,6 @@ func shownTotal(got string) int {
 	return n
 }
 
-// lockfileLines marks the lines of lockfile sections of a diff.
 func lockfileLines(lines []string) []bool {
 	in := make([]bool, len(lines))
 	lock := false
@@ -310,8 +295,6 @@ func lockfileLines(lines []string) []bool {
 	return in
 }
 
-// lockfileDrops: only lines inside lockfile diffs may be missing (they are
-// summarized by package version); every such file has a summary.
 func lockfileDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	lines := strings.Split(clean, "\n")
@@ -336,10 +319,6 @@ var blameOutRe = regexp.MustCompile(`^(?:\^?[0-9a-f]{7,40}(?: \(.*? \d{4}-\d{2}-
 
 var blameMarkerRe = regexp.MustCompile(`\(lines (\d+)-(\d+)\); add -L`)
 
-// blameDrops: blame lines are reformatted (hash/author/date once per run),
-// so the original line text is gone by design; every code line must still
-// be there, byte for byte after its line number, unless it lies in the
-// range the cut marker names.
 func blameDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	cutFrom, cutTo := 1<<30, 0
@@ -349,7 +328,6 @@ func blameDrops(t *testing.T, clean, got string, missing []string) {
 	}
 	have := map[string]bool{}
 	for _, ln := range strings.Split(got, "\n") {
-		// "  12) code", or a one-line run "sha (author date) 12) code".
 		if m := blameOutRe.FindStringSubmatch(ln); m != nil {
 			have[m[1]] = true
 		}
@@ -373,10 +351,6 @@ func blameDrops(t *testing.T, clean, got string, missing []string) {
 	}
 }
 
-// statusDrops: git-status is Guarded. The only error-class lines it may
-// leave out are the ones it converts: entry lines (their path must be listed
-// with a status code) and branch/tracking lines (their names must be in the
-// "## " line).
 func statusDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	for _, m := range missing {
@@ -386,8 +360,6 @@ func statusDrops(t *testing.T, clean, got string, missing []string) {
 	}
 }
 
-// statusConverted reports whether the (trimmed) status line ln is one the
-// filter converts, with its content present in got.
 func statusConverted(ln, got string) bool {
 	head, _, _ := strings.Cut(got, "\n")
 	if !strings.HasPrefix(head, "## ") {
@@ -405,7 +377,7 @@ func statusConverted(ln, got string) bool {
 	case strings.HasPrefix(ln, "HEAD detached "):
 		return strings.HasPrefix(head, "## HEAD ("+strings.TrimPrefix(ln, "HEAD ")+")")
 	}
-	// An entry line ("modified:   path", or a bare untracked path).
+
 	if m := entryRe.FindStringSubmatch("\t" + ln); m != nil {
 		for _, g := range strings.Split(got, "\n") {
 			if len(g) > 3 && g[2] == ' ' && g[3:] == m[2] {
@@ -416,8 +388,6 @@ func statusConverted(ln, got string) bool {
 	return false
 }
 
-// branchDrops: branch lines are regrouped per remote; every branch name
-// must still be listed.
 func branchDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	words := map[string]bool{}
@@ -429,8 +399,7 @@ func branchDrops(t *testing.T, clean, got string, missing []string) {
 		if name == "" || strings.Contains(name, " -> ") {
 			continue
 		}
-		// remotes/origin/feat/x (or origin/feat/x with -r) is listed as
-		// feat/x under its remote.
+
 		rel := strings.TrimPrefix(name, "remotes/")
 		_, rel, _ = strings.Cut(rel, "/")
 		if !words[name] && !words[rel] {
@@ -439,10 +408,6 @@ func branchDrops(t *testing.T, clean, got string, missing []string) {
 	}
 }
 
-// TestParsersConsumeRealDiffs: on every captured diff, show and log, the
-// hunk parser places every line (it uses the hunk header counts), so no
-// line of a real diff falls out as an unrecognized stray line. The only
-// strays are git's own notes outside any file.
 func TestParsersConsumeRealDiffs(t *testing.T) {
 	allowed := regexp.MustCompile(`^\* Unmerged path `)
 	for _, cc := range corpusCases {
@@ -468,7 +433,7 @@ func TestParsersConsumeRealDiffs(t *testing.T) {
 				continue
 			}
 			if cc.process == "passthrough" || cc.process == "normalize" {
-				continue // --oneline/--graph/--pretty: not parsed as medium format
+				continue
 			}
 			t.Errorf("%s: stray line %q", cc.name, p.raw)
 		}

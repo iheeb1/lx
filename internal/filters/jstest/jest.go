@@ -2,43 +2,23 @@ package jstest
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// jest's default and --verbose reporters (jest 25-30).
-//
-//	PASS test/a.test.js
-//	FAIL test/b.test.js (5.2 s)
-//	  ● Suite › test name                        failure block (indented ≥4)
-//	  ● Test suite failed to run                 file could not load
-//	  ● Console                                   console entries of the suite
-//	  console.log                                --verbose: console entries
-//	                                             printed before the suite line
-//	 › 2 snapshots failed.
-//	Summary of all failing tests                 all failure blocks, again
-//	Snapshot Summary
-//	Test Suites: 3 failed, 55 passed, 58 total   summary, kept verbatim
-//	Tests:       10 failed, 1212 passed, 1222 total
-//	Snapshots:   1 passed, 1 total
-//	Time:        2.137 s
-//	Ran all test suites.
-
 var (
-	jestSuiteRe    = lazyre.New(`^ ?(PASS|FAIL) +(\S.*)$`) // " PASS " badge with FORCE_COLOR
+	jestSuiteRe    = lazyre.New(`^ ?(PASS|FAIL) +(\S.*)$`)
 	jestBulletRe   = lazyre.New(`^  ● (.*)$`)
 	jestConsoleRe  = lazyre.New(`^( +)console\.(?:log|info|warn|error|debug|trace|dir|dirxml|table|group|groupCollapsed|time|timeEnd|timeLog|count|assert)$`)
 	jestSnapNoteRe = lazyre.New(`^ › \d+ snapshots? `)
 	jestTreeRe     = lazyre.New(`^\s+([✓✕○✎√×]) (.*)$`)
 	jestDiffHeadRe = lazyre.New(`^(\s*)- (?:Expected|Snapshot)\b`)
-	// file of a frame: "at Object.log (test/log.test.js:2:11)", "at test/a.js:1:2"
+
 	frameFileRe = lazyre.New(`(?:\(|at )([^\s():]+):\d+:\d+\)?$`)
 )
 
-// jestSuiteLine parses a "PASS file" / "FAIL file (5.2 s)" line (jestSuiteRe,
-// without a regexp: it runs on every line of every render).
 func jestSuiteLine(ln string) (fail bool, file string, ok bool) {
 	t := strings.TrimPrefix(ln, " ")
 	switch {
@@ -58,24 +38,21 @@ func jestSuiteLine(ln string) (fail bool, file string, ok bool) {
 func isSuiteLine(ln string) bool { _, _, ok := jestSuiteLine(ln); return ok }
 
 type jestSuite struct {
-	line   int // input line of "PASS/FAIL file"
+	line   int
 	fail   bool
 	file   string
-	passed int // ✓ lines (--verbose)
-	// attached segments, in input order
-	console []span // console entry groups
-	tree    span   // --verbose test list
-	blocks  []span // ● blocks except Console
-	notes   []int  // " › N snapshots failed." lines
-	// inSummary: the suite line is in the run's "Summary of all failing
-	// tests" section, which repeats failures shown above.
+	passed int
+
+	console []span
+	tree    span
+	blocks  []span
+	notes   []int
+
 	inSummary bool
 }
 
 type span struct{ from, to int }
 
-// renderJest condenses jest's text reporter output. It bails unless the
-// run's "Test Suites:" and "Tests:" summary lines are present.
 func renderJest(c *engine.Context, clean string) (result, bool) {
 	if !hasJestSummary(clean) {
 		return result{}, false
@@ -89,19 +66,17 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 	in := d.in
 	n := len(in)
 
-	// Pass 1: attach console entries, trees, blocks and notes to suites;
-	// everything else is a top-level unit rendered in place.
 	type unit struct {
-		suite int // index into suites, or -1 for a top-level line range
+		suite int
 		span
-		kind string // top-level kind
+		kind string
 	}
 	var (
 		suites []*jestSuite
 		units  []unit
-		loose  []span // console entries printed as they happened (--verbose, single file)
+		loose  []span
 		cur    = -1
-		inSum  bool // inside the current run's "Summary of all failing tests"
+		inSum  bool
 	)
 	blockEnd := func(i int) int {
 		j := i + 1
@@ -121,14 +96,14 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 		case isSuiteLine(ln):
 			fail, file, _ := jestSuiteLine(ln)
 			if k := strings.Index(file, " ("); k > 0 {
-				file = file[:k] // " (5.21 s)"
+				file = file[:k]
 			}
 			s := &jestSuite{line: i, fail: fail, file: file, inSummary: inSum}
 			suites = append(suites, s)
 			cur = len(suites) - 1
 			units = append(units, unit{suite: cur})
 			i++
-			// --verbose test list: indented lines up to a blank line.
+
 			j := i
 			for j < n && strings.TrimSpace(in[j]) != "" && indentOf(in[j]) >= 2 &&
 				!jestBulletRe.MatchString(in[j]) && !jestConsoleRe.MatchString(in[j]) {
@@ -143,8 +118,6 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 			j := blockEnd(i)
 			title := jestBulletRe.FindStringSubmatch(ln)[1]
 			if cur < 0 {
-				// A bullet before any suite line (open handles report,
-				// validation errors): keep it as it is.
 				units = append(units, unit{suite: -1, span: span{i, j}, kind: "block"})
 			} else if title == "Console" {
 				suites[cur].console = append(suites[cur].console, span{i, j})
@@ -185,9 +158,6 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 			cur = -1
 			i = j
 		default:
-			// Summary lines, thresholds, wrapper lines, anything unknown:
-			// top level, kept. "Test Suites:" ends a run (npm workspaces
-			// run jest once per package).
 			if strings.HasPrefix(ln, "Test Suites: ") {
 				inSum = false
 			}
@@ -196,17 +166,13 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 			i++
 		}
 	}
-	// Console entries printed as they happened are not next to their
-	// suite's line: attribute each to the suite named by its first frame.
-	// Unattributed entries stay where they are.
+
 	attributed := map[int]bool{}
 	byFile := map[string][]*jestSuite{}
 	for _, s := range suites {
 		byFile[s.file] = append(byFile[s.file], s)
 	}
 	for _, sp := range loose {
-		// The call site is the entry's last frame; frames above it may
-		// belong to a logged Error's own stack.
 		for k := sp.to - 1; k >= sp.from; k-- {
 			if m := frameFileRe.FindStringSubmatch(in[k]); m != nil && isFrame(in[k]) {
 				if s := suiteOf(byFile, m[1], sp.from); s != nil {
@@ -217,11 +183,25 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 			}
 		}
 	}
+	fx := focusFor(d)
+	if fx != nil {
+		perm := focusSlots(len(units), func(k int) int {
+			switch u := units[k]; {
+			case u.suite >= 0 && suites[u.suite].fail:
+				return slotMove
+			case u.kind == "summary-header", u.kind == "line" && strings.HasPrefix(in[u.from], "Test Suites: "):
+				return slotCut
+			}
+			return slotStay
+		}, func(k int) float64 { return suiteScore(fx, in, suites[units[k].suite]) })
+		if perm != nil {
+			units = reorder(units, perm)
+		}
+	}
 
-	// Pass 2: render.
 	var (
 		w          wrapper
-		emitted    = map[string]bool{} // block signatures shown (the failing-tests summary repeats them)
+		emitted    = map[string]bool{}
 		shownSuite = map[string]bool{}
 		passSuites int
 		passTests  int
@@ -269,22 +249,22 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 				d.markChatter(start)
 				continue
 			}
-			// Blocks not shown yet (all of them, except in the repeated
-			// summary section).
+
 			var fresh []span
 			for _, b := range s.blocks {
 				sig := s.file + "\x00" + squash(strings.Join(in[b.from:b.to], "\n"))
 				if emitted[sig] {
 					for k := b.from; k < b.to; k++ {
-						d.drop(k) // repeated verbatim from above
+						d.drop(k)
 					}
 					continue
 				}
 				emitted[sig] = true
 				fresh = append(fresh, b)
 			}
+			fresh = focusSpans(fx, in, fresh)
 			if s.inSummary && len(fresh) == 0 && shownSuite[s.file] && len(s.console) == 0 {
-				d.drop(s.line) // "FAIL file" repeated by the summary section
+				d.drop(s.line)
 				continue
 			}
 			shownSuite[s.file] = true
@@ -309,7 +289,7 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 				renderConsole(d, u.span, true, nil)
 			}
 		case "summary-header":
-			d.drop(u.from) // its blocks are shown once, above
+			d.drop(u.from)
 		case "coverage":
 			d.sep()
 			renderCoverage(d, u.from, u.to, th)
@@ -334,8 +314,7 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 			d.sep()
 			marker()
 			d.keep(u.from)
-			// The run is over: a later run (npm workspaces) gets its own
-			// marker, and its failures are not repeats of this run's.
+
 			markerDone, passSuites, passTests, hiddenLogs = false, 0, 0, 0
 			emitted, shownSuite = map[string]bool{}, map[string]bool{}
 		}
@@ -348,10 +327,6 @@ func renderJestView(c *engine.Context, clean string, level int, sh *shared) (res
 	return d.finish(), true
 }
 
-// suiteOf finds the suite of a frame's file, which may be absolute: the
-// longest trailing part of the path that names a suite. Console entries are
-// printed before their suite's line, so of several suites with that name
-// (one per npm workspace run) the first one after line at wins.
 func suiteOf(byFile map[string][]*jestSuite, file string, at int) *jestSuite {
 	for p := file; p != ""; {
 		if ss := byFile[p]; len(ss) > 0 {
@@ -371,17 +346,12 @@ func suiteOf(byFile map[string][]*jestSuite, file string, at int) *jestSuite {
 	return nil
 }
 
-// dropTree drops a --verbose test list: passing/skipped/todo test titles
-// and describe titles are names, not results.
 func dropTree(d *doc, t span) {
 	for k := t.from; k < t.to; k++ {
 		d.drop(k)
 	}
 }
 
-// renderJestTree shows the --verbose test list of a failing suite only
-// when it names failures that have no "●" block (normally every ✕ test has
-// one, and the list is dropped).
 func renderJestTree(d *doc, s *jestSuite, blocks int) {
 	fails := 0
 	for k := s.tree.from; k < s.tree.to; k++ {
@@ -402,16 +372,11 @@ func renderJestTree(d *doc, s *jestSuite, blocks int) {
 	}
 }
 
-// maxBlockLines caps one failure block; longer blocks keep their first
-// lines plus every later error line and application frame.
 const (
 	maxBlockLines  = 80
 	blockHeadLines = 60
 )
 
-// renderJestBlock renders one "● title" block: blank lines removed, source
-// context around the failing line dropped, library frames folded, long
-// diffs trimmed to their changes.
 func renderJestBlock(d *doc, b span) {
 	start := len(d.out)
 	d.keep(b.from)
@@ -425,7 +390,7 @@ func renderJestBlock(d *doc, b span) {
 			j := jestCodeFrameEnd(d.in, i, b.to)
 			if suiteFail {
 				for k := i; k < j; k++ {
-					d.keep(k) // syntax errors: the context is the diagnosis
+					d.keep(k)
 				}
 			} else {
 				keepJestCodeFrame(d, i, j)
@@ -464,18 +429,9 @@ func renderJestBlock(d *doc, b span) {
 	d.sep()
 }
 
-// maxConsoleLines caps one console entry of a failing suite.
 const maxConsoleLines = 20
 
-// renderConsole renders the console entries in sp. For failing suites each
-// entry keeps its "console.x" line and up to 20 lines of message and
-// frames (source context dropped, library frames folded). For passing
-// suites only entries with error-class message lines are shown (those
-// lines and the call site, preceded by anchor()); it returns how many
-// entries it hid.
 func renderConsole(d *doc, sp span, failing bool, anchor func()) int {
-	// jest never reports a failure through console output (failures are
-	// "●" blocks under a FAIL line), so none of it explains a non-zero exit.
 	defer d.markChatter(len(d.out))
 	hidden := 0
 	for i := sp.from; i < sp.to; {
@@ -489,16 +445,13 @@ func renderConsole(d *doc, sp span, failing bool, anchor func()) int {
 			i++
 			continue
 		}
-		// One entry: header, message, blank, code frame, frames.
+
 		j := i + 1
 		for j < sp.to && !jestConsoleRe.MatchString(d.in[j]) {
 			j++
 		}
 		head := indentOf(d.in[i])
 		if !failing {
-			// Passing suite: only error-class message lines survive, with
-			// the call site: the first frame of the entry's last frame
-			// group (frames above it belong to a logged Error's stack).
 			e := j - 1
 			for e > i && strings.TrimSpace(d.in[e]) == "" {
 				e--
@@ -513,7 +466,7 @@ func renderConsole(d *doc, sp span, failing bool, anchor func()) int {
 				switch ln := d.in[k]; {
 				case isFrame(ln) || jestCodeRe.MatchString(ln) || jestCaretRe.MatchString(ln):
 					if k != site {
-						d.drop(k) // where a passing test logged, and its source
+						d.drop(k)
 					}
 				case d.isErr(ln):
 					errs = append(errs, k)
@@ -542,9 +495,7 @@ func renderConsole(d *doc, sp span, failing bool, anchor func()) int {
 			i = j
 			continue
 		}
-		// Failing suite: the entry without blank lines and source context,
-		// library frames folded, at most maxConsoleLines lines (later
-		// error-class lines and the call site are kept).
+
 		start := len(d.out)
 		d.keep(i)
 		for k := i + 1; k < j; {
@@ -553,7 +504,7 @@ func renderConsole(d *doc, sp span, failing bool, anchor func()) int {
 			case strings.TrimSpace(ln) == "":
 				k++
 			case jestCodeRe.MatchString(ln) || jestCaretRe.MatchString(ln):
-				d.drop(k) // source context of the console call
+				d.drop(k)
 				k++
 			case isFrame(ln):
 				e := k

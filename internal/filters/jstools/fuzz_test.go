@@ -9,7 +9,6 @@ import (
 	"github.com/iheeb1/lx/internal/textutil"
 )
 
-// fuzzArgv gives each filter a command line it matches.
 var fuzzArgv = map[string][]string{
 	"tsc":          {"npx", "tsc", "--noEmit"},
 	"eslint":       {"npx", "eslint", "."},
@@ -20,22 +19,7 @@ var fuzzArgv = map[string][]string{
 	"npm-run":      {"npm", "run", "build"},
 }
 
-// FuzzFilters: no filter panics, every filter is deterministic, and no
-// error-class line disappears except through a documented reformatting,
-// each checked on the input's structure:
-//   - npm-install only folds npm's EUSAGE usage text and successful
-//     "npm http" requests (installFoldedOnPurpose);
-//   - tsc, eslint and npm-run only drop tsc code frames under a kept
-//     diagnostic and the "Errors  Files" table after a "Found N errors"
-//     line, and only factor eslint message lines (checked like the corpus:
-//     every one keeps its file, line:col, message and rule, or an exact
-//     count).
-//
-// Content filters (npm-ls, npm-audit, npm-outdated) show data; only
-// determinism is checked for them.
 func FuzzFilters(f *testing.F) {
-	// Seeds: every capture, cut to 8 KB (on a line boundary) so that each
-	// execution stays fast enough for the fuzzer to explore.
 	for _, tc := range corpus {
 		fc := tc.load(&testing.T{})
 		raw := fc.Raw
@@ -84,9 +68,6 @@ func FuzzFilters(f *testing.F) {
 	})
 }
 
-// tscTableLines returns the lines of tsc's "Errors  Files" table (the
-// header and its rows) that directly follows a "Found N errors" line,
-// trimmed like ErrorLinesMissing's results.
 func tscTableLines(in string) map[string]bool {
 	table := map[string]bool{}
 	lines := strings.Split(in, "\n")
@@ -109,8 +90,6 @@ func tscTableLines(in string) map[string]bool {
 	return table
 }
 
-// isRelativizedHeader: an eslint file header shown relative to the
-// working directory.
 func isRelativizedHeader(c *engine.Context, ln, out string) bool {
 	rel := engine.Relativize(c, ln)
 	return !strings.HasPrefix(ln, " ") && rel != ln && strings.Contains(out, rel)

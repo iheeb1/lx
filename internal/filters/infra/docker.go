@@ -8,17 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// dockerTable condenses docker ps / images / compose ps tables.
-//
-//   - Columns with one value in every row (3+ rows) are dropped and noted
-//     once ("[lx: same in all 12 rows: STATUS=Up 3 days (healthy)]").
-//   - COMMAND cells over 60 characters are cut to 40 (docker already cuts
-//     them to 20 unless --no-trunc; with --no-trunc nothing is cut).
-//   - Over 60 rows: the first 40, then every unhealthy row (exited with a
-//     non-zero code, restarting, unhealthy, dead) with exact counts of the
-//     rows not shown and a count of all rows by status.
-//
-// Everything else is left as docker printed it.
 type dockerTable struct{}
 
 func (dockerTable) Name() string { return "docker-table" }
@@ -28,7 +17,6 @@ func (dockerTable) Match(c *engine.Context) bool {
 		dockerSub(c, "ps", "images", "container ls", "container list", "container ps", "image ls", "image list", "compose ps")
 }
 
-// hasQuiet: -q prints bare IDs, one per line.
 func hasQuiet(c *engine.Context) bool {
 	for _, a := range c.Args() {
 		if a == "-q" || a == "--quiet" || len(a) > 2 && a[0] == '-' && a[1] != '-' && strings.ContainsRune(a[1:], 'q') {
@@ -39,20 +27,18 @@ func hasQuiet(c *engine.Context) bool {
 }
 
 const (
-	maxTableRows   = 60 // tables up to this many rows are kept whole
-	keepTableRows  = 40 // … bigger ones keep this many first rows
-	maxProblemRows = 40 // … and at most this many unhealthy rows past them
+	maxTableRows   = 60
+	keepTableRows  = 40
+	maxProblemRows = 40
 	maxCommand     = 60
 	cutCommand     = 40
 )
 
 var (
-	// problemStatusRe: container states worth seeing even in a long list.
 	problemStatusRe = lazyre.New(`^(?:Exited \((?:[1-9]\d*|-\d+)\)|Restarting|Dead|Removal In Progress|OOMKilled)|\(unhealthy\)|\(health: starting\)`)
 	statusAgeRe     = lazyre.New(`^(Up|Exited \(-?\d+\)|Restarting \(-?\d+\)|Created|Dead|Paused|Removal In Progress)(?:\s.*?)?(\((?:healthy|unhealthy|health: starting|Paused)\))?$`)
 )
 
-// statusKey buckets a docker STATUS cell: "Up (healthy)", "Exited (137)".
 func statusKey(s string) string {
 	m := statusAgeRe.FindStringSubmatch(s)
 	if m == nil {
@@ -66,7 +52,7 @@ func statusKey(s string) string {
 
 func (dockerTable) Apply(c *engine.Context, out string) (string, bool) {
 	lines := strings.Split(out, "\n")
-	// Leading lines that are not the table (warnings) are kept as is.
+
 	start := 0
 	for start < len(lines) {
 		if _, ok := parseHeader(lines[start]); ok {
@@ -105,14 +91,14 @@ func (dockerTable) Apply(c *engine.Context, out string) (string, bool) {
 	for i := range rows {
 		rows[i] = i
 	}
-	// Error-class rows, classified once.
+
 	rowErr := make([]bool, len(t.lines))
 	anyErr := engine.IsError(t.header)
 	for r, ln := range t.lines {
 		rowErr[r] = engine.IsError(ln)
 		anyErr = anyErr || rowErr[r]
 	}
-	// Big tables: the first rows, then the unhealthy ones among the rest.
+
 	var extra, tail []string
 	var extraRows []int
 	if len(rows) > maxTableRows {
@@ -129,9 +115,7 @@ func (dockerTable) Apply(c *engine.Context, out string) (string, bool) {
 		hidden := len(rows) - keepTableRows - len(extraRows)
 		switch {
 		case st >= 0:
-			// Rows are picked by STATUS, and also when an error word is
-			// anywhere in the row (a container named "…-oom"), so the
-			// note names both reasons.
+
 			const why = "a non-zero exit, restart loop, failing health check, dead status, or an error word in the row"
 			what := fmt.Sprintf("the %d rows with %s follow", problems, why)
 			switch {
@@ -171,9 +155,7 @@ func (dockerTable) Apply(c *engine.Context, out string) (string, bool) {
 	}
 	drop, notes := t.constantCols(map[string]bool{"NAMES": true, "NAME": true, "CONTAINER ID": true, "IMAGE ID": true, "ID": true, "IMAGE": true, "REPOSITORY": true})
 	if len(notes) > 0 && anyErr {
-		// Dropping a column rewrites every row; an error-class row (three
-		// replicas running "python -m error_reporter") must stay whole, or
-		// the engine guard re-appends it after the table.
+
 		drop, notes = map[int]bool{}, nil
 	}
 	if len(notes) > 0 {
@@ -195,9 +177,6 @@ func (dockerTable) Apply(c *engine.Context, out string) (string, bool) {
 	return strings.TrimRight(strings.Join(res, "\n"), "\n"), true
 }
 
-// dockerPull condenses docker pull / compose pull: per-layer progress
-// lines become one "[lx: layers: …]" line; everything else (tag, digest,
-// status, errors) is kept verbatim.
 type dockerPull struct{}
 
 func (dockerPull) Name() string { return "docker-pull" }
@@ -239,7 +218,7 @@ func (dockerPull) Apply(c *engine.Context, out string) (string, bool) {
 		res = append(res, ln)
 	}
 	if pos < 0 {
-		return out, true // no layer lines: nothing to condense
+		return out, true
 	}
 	note := fmt.Sprintf("[lx: %s", engine.Plural(len(order), "layer", "layers"))
 	if existed > 0 {

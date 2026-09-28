@@ -5,16 +5,12 @@ import (
 	"testing"
 )
 
-// hostcapUnset unsets k for the rest of the test (t.Setenv restores it).
 func hostcapUnset(t *testing.T, k string) {
 	t.Helper()
 	t.Setenv(k, "")
 	os.Unsetenv(k)
 }
 
-// hostcapEnv pins the host-limit environment for a test: no Claude Code,
-// no explicit limit, unless the test sets them. Tests run inside Claude
-// Code would otherwise inherit CLAUDECODE=1.
 func hostcapEnv(t *testing.T, maxChars string) {
 	t.Helper()
 	hostcapUnset(t, "CLAUDECODE")
@@ -28,25 +24,25 @@ func hostcapEnv(t *testing.T, maxChars string) {
 
 func TestHostCharCap(t *testing.T) {
 	cases := []struct {
-		maxChars, claude, bashMax string // "-" = unset
+		maxChars, claude, bashMax string
 		limit, cap                int
 	}{
 		{"-", "-", "-", 0, 0},
 		{"-", "1", "-", 30000, 26800},
 		{"-", "1", "50000", 50000, 44800},
-		{"-", "1", "0", 30000, 26800},       // not positive: the default
-		{"-", "1", "-5", 30000, 26800},      // not positive: the default
-		{"-", "1", "lots", 30000, 26800},    // not a number: the default
-		{"-", "1", "300", 1000, 700},        // tiny limits count as 1,000
-		{"-", "0", "-", 0, 0},               // only CLAUDECODE=1 counts
-		{"-", "true", "50000", 0, 0},        //
-		{"27000", "-", "-", 27000, 26800},   // explicit
-		{" 27000 ", "-", "-", 27000, 26800}, // whitespace tolerated
+		{"-", "1", "0", 30000, 26800},
+		{"-", "1", "-5", 30000, 26800},
+		{"-", "1", "lots", 30000, 26800},
+		{"-", "1", "300", 1000, 700},
+		{"-", "0", "-", 0, 0},
+		{"-", "true", "50000", 0, 0},
+		{"27000", "-", "-", 27000, 26800},
+		{" 27000 ", "-", "-", 27000, 26800},
 		{"27000", "1", "90000", 27000, 26800},
-		{"0", "1", "-", 0, 0},  // 0 disables, even in Claude Code
-		{"-1", "1", "-", 0, 0}, // so does a negative number
+		{"0", "1", "-", 0, 0},
+		{"-1", "1", "-", 0, 0},
 		{"500", "-", "-", 1000, 800},
-		{"abc", "1", "-", 30000, 26800}, // not a number: ignored
+		{"abc", "1", "-", 30000, 26800},
 		{"", "-", "-", 0, 0},
 	}
 	for _, c := range cases {

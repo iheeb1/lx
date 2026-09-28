@@ -1,0 +1,74 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "lib": [
+            "dom",
+            "es2019"
+        ],
+        "isolatedModules": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noUnusedParameters": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strict": true,
+        "strictFunctionTypes": true,
+        "target": "esnext",
+        "plugins": [
+            {
+                "name": "typescript-styled-plugin",
+                "lint": {
+                    "validProperties": [
+                        "composes"
+                    ]
+                }
+            }
+        ],
+        "rootDir": "./src"
+    },
+    "files": [
+        "./src/Condition.ts",
+        "./src/Lazy.ts",
+        "./src/Reference.ts",
+        "./src/ValidationError.ts",
+        "./src/array.ts",
+        "./src/boolean.ts",
+        "./src/date.ts",
+        "./src/globals.d.ts",
+        "./src/index.ts",
+        "./src/locale.ts",
+        "./src/mixed.ts",
+        "./src/number.ts",
+        "./src/object.ts",
+        "./src/schema.ts",
+        "./src/setLocale.ts",
+        "./src/standardSchema.ts",
+        "./src/string.ts",
+        "./src/tuple.ts",
+        "./src/types.ts",
+        "./src/util/ReferenceSet.ts",
+        "./src/util/cloneDeep.ts",
+        "./src/util/createValidation.ts",
+        "./src/util/isAbsent.ts",
+        "./src/util/isSchema.ts",
+        "./src/util/objectTypes.ts",
+        "./src/util/parseIsoDate.ts",
+        "./src/util/parseJson.ts",
+        "./src/util/printValue.ts",
+        "./src/util/reach.ts",
+        "./src/util/sortByKeyOrder.ts",
+        "./src/util/sortFields.ts",
+        "./src/util/toArray.ts",
+        "./src/util/types.ts"
+    ],
+    "include": [
+        "src/**/*.ts"
+    ]
+}

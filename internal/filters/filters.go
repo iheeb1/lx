@@ -1,8 +1,4 @@
-// Package filters links every built-in command filter into the binary.
-// Each sub-package registers its filters with the engine from init().
-//
-// Order matters only between packages that could claim the same command;
-// Go initializes these imports in import-path order.
+// Package filters links the built-in filters.
 package filters
 
 import (

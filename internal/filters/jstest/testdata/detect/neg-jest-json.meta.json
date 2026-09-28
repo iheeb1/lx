@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--json",
+    "test/info/features.test.js"
+  ],
+  "shell": "npx jest --json test/info/features.test.js",
+  "exit_code": 0,
+  "description": "REAL (negative): npx jest --json test/info/features.test.js in moment/luxon: jest's JSON result object on stdout next to its human summary on stderr (the caller asked for data)",
+  "cwd": "/home/user/src/luxon",
+  "repo": "moment/luxon",
+  "tool": ""
+}

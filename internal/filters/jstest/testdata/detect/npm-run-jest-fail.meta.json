@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "jest",
+    "--",
+    "test/datetime",
+    "test/info"
+  ],
+  "shell": "npm run jest -- test/datetime test/info",
+  "exit_code": 1,
+  "description": "REAL: npm run jest -- test/datetime test/info in moment/luxon (the package's own script named jest, which no npm filter claims) with the corpus's injected regressions: npm's script echo, jest's report",
+  "cwd": "/home/user/src/luxon",
+  "repo": "moment/luxon",
+  "tool": "jest"
+}

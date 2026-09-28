@@ -10,9 +10,6 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// heavyDirs are dependency, VCS and build-output directories whose contents
-// are almost never what the reader is looking for. The list matches
-// engine.FactorPaths so filtered and generic output agree.
 var heavyDirs = map[string]bool{
 	"node_modules": true, ".git": true, "dist": true, "build": true, "target": true,
 	".venv": true, "venv": true, "__pycache__": true, ".next": true, "coverage": true,
@@ -20,19 +17,15 @@ var heavyDirs = map[string]bool{
 }
 
 const (
-	// pathLineWidth wraps a directory's file names (same as FactorPaths).
 	pathLineWidth = 160
-	// DefaultTreeTarget is the token size RenderPaths aims for before it
-	// starts capping depth and files per directory.
+
 	DefaultTreeTarget = 4000
 )
 
-// Caps used when the lossless tree is over its token target.
 const (
-	capFiles = 20 // file names listed per expanded directory
-	capDirs  = 40 // subdirectory lines per expanded directory
-	// The listed directory itself (the top of the tree) gets more room:
-	// it is what the user asked about.
+	capFiles = 20
+	capDirs  = 40
+
 	capRootFiles = 200
 	capRootDirs  = 100
 )
@@ -40,36 +33,23 @@ const (
 type pathNode struct {
 	files map[string]bool
 	dirs  map[string]*pathNode
-	total int    // files at or below this node
-	ndirs int    // directories below this node
-	hist  string // memoized extHistogram of every file below (collapsed lines)
+	total int
+	ndirs int
+	hist  string
 }
 
 func newPathNode() *pathNode {
 	return &pathNode{files: map[string]bool{}, dirs: map[string]*pathNode{}}
 }
 
-// PathTree is a set of paths ready to render.
 type PathTree struct {
 	root  *pathNode
-	roots [][]string // explicit search roots, as segments
-	count int        // distinct non-empty paths added
-	// Entries: the listing does not mark every directory (find without
-	// -type f, find -maxdepth, tree -L), so a leaf may be a directory.
-	// Counts then say "entries" instead of "files", which would be false
-	// for `find . -maxdepth 2` where node_modules/ holds package
-	// directories.
+	roots [][]string
+	count int
+
 	Entries bool
 }
 
-// NewPathTree builds a tree from paths as a listing tool printed them.
-// roots are the directories the user explicitly asked to list (find/ls/rg
-// operands): a heavy directory at or above one of them is never pruned.
-//
-// Normalization matches engine.FactorPaths: blank entries, "." and a
-// leading "./" are dropped, a trailing "/" marks a directory, and a path
-// that is a prefix of another path is a directory. Absolute paths keep
-// their leading "/".
 func NewPathTree(paths, roots []string) *PathTree {
 	t := &PathTree{root: newPathNode()}
 	seen := make(map[string]bool, len(paths))
@@ -106,10 +86,8 @@ func NewPathTree(paths, roots []string) *PathTree {
 	return t
 }
 
-// Len is the number of distinct paths in the tree.
 func (t *PathTree) Len() int { return t.count }
 
-// Files is the number of files (leaf entries not marked as directories).
 func (t *PathTree) Files() int { return t.root.total }
 
 func splitPath(p string) ([]string, bool, bool) {
@@ -120,7 +98,7 @@ func splitPath(p string) ([]string, bool, bool) {
 	for strings.HasPrefix(p, "./") {
 		p = p[2:]
 		for strings.HasPrefix(p, "/") && !strings.HasPrefix(p, "//") {
-			p = p[1:] // ".//x" → "x"
+			p = p[1:]
 		}
 	}
 	abs := strings.HasPrefix(p, "/")
@@ -144,7 +122,6 @@ func splitPath(p string) ([]string, bool, bool) {
 	return segs, isDir, true
 }
 
-// normalize drops file entries that are also directories and computes totals.
 func (n *pathNode) normalize() int {
 	for name := range n.dirs {
 		delete(n.files, name)
@@ -158,26 +135,9 @@ func (n *pathNode) normalize() int {
 	return n.total
 }
 
-// Render draws the tree. The lossless form is used when it fits in target
-// tokens (target <= 0: always). Otherwise directories are expanded
-// breadth-first (shallow before deep, then path order) while the budget
-// lasts; a directory that does not fit stays one counted line, and each
-// expanded directory lists at most capFiles names and capDirs
-// subdirectories. It returns the lines and a short description of the caps
-// ("" when everything is shown apart from pruned heavy directories).
-//
-// Format (the same as engine.FactorPaths, minus its lossy name masking):
-//
-//	root.go  go.mod
-//	internal/engine/
-//	  engine.go  guard.go
-//	  testdata/ [37 files: .log×30 .json×7]      ← not expanded
-//	  … +12 more files: .go×10 .md×2           ← past the per-directory cap
-//	node_modules/ [2,310 files]                ← pruned heavy directory
 func (t *PathTree) Render(target int) ([]string, string) {
 	all := func(*pathNode) bool { return true }
-	// Every path costs at least one token, so past target paths the
-	// lossless form cannot fit: skip rendering and counting it.
+
 	if target <= 0 || t.count <= target {
 		full := t.render(all, 0, 0)
 		if target <= 0 || tokens.Count(strings.Join(full, "\n")) <= target {
@@ -189,9 +149,7 @@ func (t *PathTree) Render(target int) ([]string, string) {
 	expanded := map[*pathNode]bool{start: true}
 	isExpanded := func(n *pathNode) bool { return expanded[n] }
 	used := tokens.Count(strings.Join(t.render(isExpanded, capFiles, capDirs), "\n"))
-	// Biggest directory first, among those whose parent is shown: the
-	// budget goes where most of the paths are, and every directory left
-	// folded still gets its counted line. Ties: shallower, then path order.
+
 	var q expandQueue
 	seq := 0
 	push := func(n *pathNode, path []string, indent string) {
@@ -221,7 +179,6 @@ func (t *PathTree) Render(target int) ([]string, string) {
 	return out, fmt.Sprintf("large tree: some directories shown as counts, ≤%d %s and ≤%d subdirectories listed per directory", capFiles, t.leaves(2), capDirs)
 }
 
-// leaves returns the noun for n leaf paths: "file(s)" or "entry/entries".
 func (t *PathTree) leaves(n int) string {
 	if t.Entries {
 		return plural(n, "entry", "entries")
@@ -229,7 +186,6 @@ func (t *PathTree) leaves(n int) string {
 	return plural(n, "file", "files")
 }
 
-// countLeaves formats n leaf paths: "1 file", "2,310 entries".
 func (t *PathTree) countLeaves(n int) string {
 	return commaInt(n) + " " + t.leaves(n)
 }
@@ -264,8 +220,6 @@ func (q *expandQueue) Pop() any {
 	return it
 }
 
-// tryExpand adds the cost of showing n's contents instead of its counted
-// line to *used when that stays within target.
 func (t *PathTree) tryExpand(n *pathNode, path []string, label, indent string, target int, used *int) bool {
 	collapsed := t.collapsedLine(indent, label, n)
 	body := []string{indent + label + "/"}
@@ -278,8 +232,6 @@ func (t *PathTree) tryExpand(n *pathNode, path []string, label, indent string, t
 	return true
 }
 
-// chain returns the node rendering starts from and the directories every
-// path shares (printed as one "a/b/c/" line).
 func (t *PathTree) chain() (*pathNode, []string) {
 	n := t.root
 	var chain []string
@@ -299,7 +251,7 @@ func (t *PathTree) render(expand func(*pathNode) bool, maxFiles, maxDirs int) []
 	if len(chain) > 0 {
 		label := strings.Join(chain, "/")
 		if label == "" {
-			label = "/" // the tree is the filesystem root itself
+			label = "/"
 		} else {
 			label += "/"
 		}
@@ -317,9 +269,6 @@ type subdir struct {
 	pruned bool
 }
 
-// subdirs lists n's subdirectories in display order, with single-child
-// chains collapsed into one label ("a/b/c"). Past maxDirs (0: no cap) the
-// rest is left out; renderNode counts them.
 func (t *PathTree) subdirs(n *pathNode, path []string, maxDirs int) []subdir {
 	names := make([]string, 0, len(n.dirs))
 	for name := range n.dirs {
@@ -351,13 +300,12 @@ func (t *PathTree) collapsedLine(indent, label string, d *pathNode) string {
 		return fmt.Sprintf("%s%s/ [%s]", indent, label, countDirs(d.ndirs))
 	}
 	if d.hist == "" {
-		// Render and tryExpand ask for the same directories many times.
+
 		d.hist = extHistogram(d.allFiles(nil), 3)
 	}
 	return fmt.Sprintf("%s%s/ [%s: %s]", indent, label, t.countLeaves(d.total), d.hist)
 }
 
-// prunedLine folds a heavy directory to its counts.
 func (t *PathTree) prunedLine(indent, label string, d *pathNode) string {
 	if d.total == 0 {
 		return fmt.Sprintf("%s%s/ [%s]", indent, label, countDirs(d.ndirs))
@@ -372,7 +320,6 @@ func countDirs(n int) string {
 	return commaInt(n) + " directories"
 }
 
-// caps returns the file and subdirectory caps for n (0: none).
 func (t *PathTree) caps(n *pathNode, maxFiles, maxDirs int) (int, int) {
 	if maxFiles > 0 {
 		if start, _ := t.chain(); n == start {
@@ -398,7 +345,7 @@ func (t *PathTree) renderNode(n *pathNode, path []string, indent string, expand 
 	for _, sd := range subs {
 		switch {
 		case len(sd.n.files) == 0 && len(sd.n.dirs) == 0:
-			*out = append(*out, indent+sd.label+"/") // listed, nothing inside
+			*out = append(*out, indent+sd.label+"/")
 		case sd.pruned:
 			*out = append(*out, t.prunedLine(indent, sd.label, sd.n))
 		case expand(sd.n):
@@ -420,7 +367,7 @@ func (t *PathTree) renderNode(n *pathNode, path []string, indent string, expand 
 			files += n.dirs[name].total
 			all = n.dirs[name].allFiles(all)
 		}
-		// Their names are cheap and are what the reader navigates by.
+
 		if files == 0 {
 			*out = append(*out, fmt.Sprintf("%s… +%s more %s:", indent, commaInt(extra), plural(extra, "directory", "directories")))
 		} else {
@@ -434,8 +381,6 @@ func (t *PathTree) renderNode(n *pathNode, path []string, indent string, expand 
 	}
 }
 
-// pruned reports whether the heavy directory at path should be folded: it
-// is heavy and no explicit root lies at or below it.
 func (t *PathTree) pruned(name string, path []string) bool {
 	if !heavyDirs[name] {
 		return false
@@ -477,7 +422,6 @@ func plural(n int, one, many string) string {
 	return many
 }
 
-// extHistogram summarizes file names by extension: ".ts×200 .json×22 …".
 func extHistogram(names []string, top int) string {
 	count := map[string]int{}
 	for _, nm := range names {
@@ -504,8 +448,6 @@ func extHistogram(names []string, top int) string {
 	return strings.Join(parts, " ")
 }
 
-// extOf returns ".ext" for names with a short alphanumeric extension and
-// "other" otherwise (Makefile, LICENSE, .gitignore).
 func extOf(name string) string {
 	i := strings.LastIndexByte(name, '.')
 	if i <= 0 || len(name)-i > 9 || i == len(name)-1 {
@@ -535,17 +477,11 @@ func sortedKeys(m map[string]bool) []string {
 	return out
 }
 
-// wrapNames joins names with two spaces into lines of about pathLineWidth.
-// A name that would be ambiguous there (holding two spaces or a tab,
-// starting or ending with a space, or starting with a quote) is written as
-// a quoted Go string.
 func wrapNames(indent string, names []string) []string {
 	out, _ := wrapNamesCounted(indent, names)
 	return out
 }
 
-// wrapNamesCounted is wrapNames that also returns how many names each
-// line holds.
 func wrapNamesCounted(indent string, names []string) ([]string, []int) {
 	var out []string
 	var counts []int
@@ -576,7 +512,6 @@ func wrapNamesCounted(indent string, names []string) ([]string, []int) {
 	return out, counts
 }
 
-// commaInt formats 2310 as "2,310".
 func commaInt(n int) string {
 	s := fmt.Sprint(n)
 	if n < 1000 {

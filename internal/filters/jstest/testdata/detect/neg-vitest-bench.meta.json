@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "bench",
+    "--run"
+  ],
+  "shell": "npx vitest bench --run",
+  "exit_code": 0,
+  "description": "REAL (negative): npx vitest bench --run in unjs/ufo with a small benchmark file: the benchmark table and summary (a measurement; the vitest filter declines bench)",
+  "cwd": "/home/user/src/ufo",
+  "repo": "unjs/ufo",
+  "tool": ""
+}

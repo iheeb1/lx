@@ -1,24 +1,4 @@
-// Package tee stores the full output of commands whose view lx condensed,
-// so nothing is ever lost: `lx show <id>` prints it back byte-for-byte.
-//
-// Runs live in <cache>/lx/runs, mode 0600 in a 0700 directory:
-//
-//	<id>.json      metadata; created first (O_EXCL), which reserves the id
-//	<id>.log       the finished run's output, renamed into place complete
-//	<id>.log.part  output so far of a run that is still going (a spool),
-//	               flock'ed by the lx writing it for as long as it lives
-//	.seq           the highest id handed out, so ids never repeat even
-//	               after every run has been pruned
-//
-// A run whose metadata still says running is "running" only while the lx
-// storing it holds the spool's lock (or, where there are no locks, while
-// its pid is alive); otherwise it is "incomplete". The lock, unlike the
-// pid, cannot be mistaken for a live lx after its pid is reused.
-//
-// IDs are small integers so the receipt stays short. Retention: at most
-// Keep runs, none older than MaxAge, at most MaxBytes of output; runs
-// younger than MinAge are pruned only to get under MaxBytes, and a run
-// whose lx is still alive is never pruned.
+// Package tee stores full outputs for lx show.
 package tee
 
 import (
@@ -38,31 +18,23 @@ import (
 const (
 	Keep     = 1000
 	MaxAge   = 7 * 24 * time.Hour
-	MaxBytes = 256 << 20 // over all .log and .log.part files
-	// MinAge protects recent runs from the Keep limit (not from MaxBytes).
+	MaxBytes = 256 << 20
+
 	MinAge = 24 * time.Hour
-	// MaxPart bounds one spool; past it the spool stops (the finished run
-	// is still stored in full from the capture).
+
 	MaxPart = 64 << 20
 )
 
-// maxID bounds run ids: a larger id in a file name or in .seq is corrupt
-// (or planted), and ids near the int limit would overflow into negatives.
 const maxID = 1 << 30
 
-// staleReservation: a run's metadata says running from its reservation
-// until Finish. Without a spool (Save) that lasts milliseconds, so such a
-// reservation older than this was left by an lx that died.
 const staleReservation = time.Minute
 
-// Run states (Meta.State).
 const (
 	StateDone       = ""
-	StateRunning    = "running"    // lx is still running the command
-	StateIncomplete = "incomplete" // lx stopped before the command finished
+	StateRunning    = "running"
+	StateIncomplete = "incomplete"
 )
 
-// Knobs tests turn down.
 var (
 	keep     = Keep
 	maxBytes = int64(MaxBytes)
@@ -70,20 +42,18 @@ var (
 	maxPart  = int64(MaxPart)
 )
 
-// Meta describes a stored run.
 type Meta struct {
 	ID     int       `json:"id"`
 	Argv   []string  `json:"argv"`
 	Cwd    string    `json:"cwd"`
-	Exit   int       `json:"exit"` // -1 while the run is not finished
+	Exit   int       `json:"exit"`
 	Filter string    `json:"filter"`
 	Time   time.Time `json:"time"`
 	Bytes  int       `json:"bytes"`
-	State  string    `json:"state,omitempty"` // StateDone, StateRunning or StateIncomplete
-	PID    int       `json:"pid,omitempty"`   // the lx process storing a running run
+	State  string    `json:"state,omitempty"`
+	PID    int       `json:"pid,omitempty"`
 }
 
-// StatusNote is a short note for a run that is not finished ("" when it is).
 func (m Meta) StatusNote() string {
 	switch m.State {
 	case StateDone:
@@ -109,7 +79,6 @@ func ago(d time.Duration) string {
 	return strconv.Itoa(int(d/(24*time.Hour))) + "d"
 }
 
-// Dir returns the run store directory ($LX_TEE_DIR overrides).
 func Dir() string {
 	if d := os.Getenv("LX_TEE_DIR"); d != "" {
 		return d
@@ -121,12 +90,10 @@ func Dir() string {
 	return filepath.Join(base, "lx", "runs")
 }
 
-// Enabled reports whether runs are stored (LX_TEE=0 disables it).
 func Enabled() bool { return os.Getenv("LX_TEE") != "0" }
 
 var errDisabled = errors.New("tee disabled")
 
-// Save stores output and returns its id. Disabled with LX_TEE=0.
 func Save(m Meta, output string) (int, error) {
 	s, err := reserve(m, false)
 	if err != nil {
@@ -139,31 +106,24 @@ func Save(m Meta, output string) (int, error) {
 	return s.id, nil
 }
 
-// Spool is a run reserved while its command is still going. Output written
-// to it lands in <id>.log.part, so `lx show <id>` (and a later lx, if this
-// one is killed) can read what the command printed so far.
 type Spool struct {
 	dir      string
 	id       int
 	time     time.Time
 	reserved time.Time
-	ids      []int // the store's runs when this one was reserved
+	ids      []int
 
 	mu       sync.Mutex
 	f        *os.File
 	n        int64
-	err      error // latched: the first write error stops the spool
+	err      error
 	finished bool
 }
 
 var errNoSpool = errors.New("tee: no spool")
 
-// Reserve allocates an id for a run that is still going: <id>.json says it
-// is running (with this process's pid) and <id>.log.part is opened for
-// Write. Finish stores the final output.
 func Reserve(m Meta) (*Spool, error) { return reserve(m, true) }
 
-// ID is the reserved run id.
 func (s *Spool) ID() int {
 	if s == nil {
 		return 0
@@ -171,8 +131,6 @@ func (s *Spool) ID() int {
 	return s.id
 }
 
-// Write appends to the run's partial output. Errors latch: after one, every
-// Write fails. Past MaxPart the spool ends with a note and stops.
 func (s *Spool) Write(p []byte) (int, error) {
 	if s == nil {
 		return 0, errNoSpool
@@ -187,7 +145,7 @@ func (s *Spool) Write(p []byte) (int, error) {
 		return 0, s.err
 	}
 	if s.n+int64(len(p)) > maxPart {
-		// Keep what fits, then say where the saved output stops.
+
 		k, _ := s.f.Write(p[:max(maxPart-s.n, 0)])
 		s.n += int64(k)
 		_, _ = s.f.WriteString("\n[lx: the saved output stops here (over " + strconv.FormatInt(maxPart>>20, 10) + " MiB)]\n")
@@ -202,9 +160,6 @@ func (s *Spool) Write(p []byte) (int, error) {
 	return n, err
 }
 
-// Finish stores the run's final output (atomically: a reader sees either
-// the partial output or all of it) and final metadata, and drops the spool.
-// It fails only when the output could not be stored.
 func (s *Spool) Finish(m Meta, output string) error {
 	if s == nil {
 		return errNoSpool
@@ -219,8 +174,7 @@ func (s *Spool) Finish(m Meta, output string) error {
 	}
 	base := filepath.Join(s.dir, strconv.Itoa(s.id))
 	err := writeAtomic(base+".log", []byte(output))
-	// The spool (and its lock) stays open until the whole output is in
-	// place, so a reader never takes a finishing run for an abandoned one.
+
 	if s.f != nil {
 		_ = s.f.Close()
 		s.f = nil
@@ -234,20 +188,18 @@ func (s *Spool) Finish(m Meta, output string) error {
 		m.Time = s.time
 	}
 	if b, err := json.Marshal(m); err == nil {
-		// Best effort: with the .log in place the run reads as finished
-		// even if its metadata still says running.
+
 		_ = writeAtomic(base+".json", b)
 	}
 	_ = os.Remove(base + ".log.part")
 	ids := s.ids
 	if time.Since(s.reserved) > time.Second {
-		ids = nil // a long run: the listing is stale
+		ids = nil
 	}
 	prune(s.dir, s.id, len(output), ids)
 	return nil
 }
 
-// discard removes a reservation that never got its output.
 func (s *Spool) discard() {
 	base := filepath.Join(s.dir, strconv.Itoa(s.id))
 	_ = os.Remove(base + ".log.part")
@@ -293,17 +245,12 @@ func reserve(m Meta, spool bool) (*Spool, error) {
 	return s, nil
 }
 
-// claim reserves the first free id from next on: creating <id>.json
-// exclusively is what makes the id this run's, and m (with its ID set) is
-// written into it.
 func claim(dir string, next int, m Meta) (int, error) {
 	for attempt, id := 0, next; attempt < 50 && id < maxID; attempt, id = attempt+1, id+1 {
 		base := filepath.Join(dir, strconv.Itoa(id))
 		f, err := os.OpenFile(base+".json", os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o600)
 		if errors.Is(err, os.ErrExist) {
-			// A concurrent lx took this id. Skip past every id handed out
-			// since our listing: under load, a writer descheduled after
-			// listing can fall far behind (never 50 collisions in a row).
+
 			id = max(id, readSeq(dir))
 			continue
 		}
@@ -311,7 +258,7 @@ func claim(dir string, next int, m Meta) (int, error) {
 			return 0, err
 		}
 		if _, err := os.Lstat(base + ".log"); err == nil {
-			// Output without metadata, left by an older lx: not ours.
+
 			_ = f.Close()
 			_ = os.Remove(base + ".json")
 			continue
@@ -331,8 +278,6 @@ func claim(dir string, next int, m Meta) (int, error) {
 	return 0, errors.New("could not allocate a run id")
 }
 
-// Load returns a stored run's output and metadata. A run that is still
-// going (or whose lx died) returns its partial output with Meta.State set.
 func Load(id int) (string, Meta, error) {
 	dir := Dir()
 	base := filepath.Join(dir, strconv.Itoa(id))
@@ -345,8 +290,7 @@ func Load(id int) (string, Meta, error) {
 		b, err := os.ReadFile(base + ".log")
 		if err == nil {
 			if m.State != StateDone {
-				// The .log is renamed into place before the final
-				// metadata: re-read it once.
+
 				if mb, err := os.ReadFile(base + ".json"); err == nil {
 					var fm Meta
 					if json.Unmarshal(mb, &fm) == nil && fm.State == StateDone {
@@ -365,7 +309,7 @@ func Load(id int) (string, Meta, error) {
 		if err == nil {
 			st := liveState(base, m.PID)
 			if st == StateIncomplete && try < 2 && exists(base+".log") {
-				continue // it finished between the two reads: read the .log
+				continue
 			}
 			m.State, m.Bytes = st, len(b)
 			return string(b), m, nil
@@ -373,15 +317,12 @@ func Load(id int) (string, Meta, error) {
 		if !errors.Is(err, os.ErrNotExist) {
 			return "", Meta{}, err
 		}
-		// Neither: gone, or finished between the two reads. Look again.
+
 	}
 	return "", Meta{}, fmt.Errorf("no stored output with id %d (runs are kept up to %d days; the newest %d and at most %d MiB)",
 		id, int(MaxAge.Hours()/24), Keep, MaxBytes>>20)
 }
 
-// liveState is the state of run base, whose metadata says running and
-// which has no .log: StateRunning while the lx storing it is alive, else
-// StateIncomplete.
 func liveState(base string, pid int) string {
 	part := base + ".log.part"
 	if exists(part) {
@@ -389,16 +330,15 @@ func liveState(base string, pid int) string {
 		case alive:
 			return StateRunning
 		case dead:
-			return StateIncomplete // even if pid now names another process
+			return StateIncomplete
 		}
-		// No locks here: the pid decides.
+
 		if pid > 0 && pidAlive(pid) == alive {
 			return StateRunning
 		}
 		return StateIncomplete
 	}
-	// No spool: Save between its reservation and its output (milliseconds),
-	// or Reserve just before it opens the spool.
+
 	if pid > 0 && pidAlive(pid) == alive {
 		if st, err := os.Stat(base + ".json"); err == nil && time.Since(st.ModTime()) < staleReservation {
 			return StateRunning
@@ -412,7 +352,6 @@ func exists(path string) bool {
 	return err == nil
 }
 
-// Recent returns metadata of the newest n runs, newest first.
 func Recent(n int) []Meta {
 	dir := Dir()
 	ids := list(dir)
@@ -423,9 +362,7 @@ func Recent(n int) []Meta {
 		if mb, err := os.ReadFile(base + ".json"); err == nil {
 			if len(mb) == 0 || json.Unmarshal(mb, &m) != nil {
 				if !exists(base + ".log") {
-					// Being reserved right now (a reader can catch the
-					// metadata half-written), or garbage without output:
-					// never a finished "exit 0" run.
+
 					continue
 				}
 				m = Meta{}
@@ -444,8 +381,6 @@ func Recent(n int) []Meta {
 	return out
 }
 
-// list returns the ids in dir, oldest first. A run is known by any of its
-// files, so stores written by older versions (.log + .json) keep working.
 func list(dir string) []int {
 	ents, err := os.ReadDir(dir)
 	if err != nil {
@@ -463,8 +398,6 @@ func list(dir string) []int {
 	return ids
 }
 
-// runID parses "<id>.json", "<id>.log" and "<id>.log.part"; temporary files
-// (.tmp) and anything else in the directory are not runs.
 func runID(name string) (int, bool) {
 	var stem string
 	switch {
@@ -493,13 +426,11 @@ func readSeq(dir string) int {
 	}
 	n, err := strconv.Atoi(strings.TrimSpace(string(b)))
 	if err != nil || n < 0 || n >= maxID {
-		return 0 // corrupt: the listing alone decides
+		return 0
 	}
 	return n
 }
 
-// writeSeq records id as the highest id handed out (best effort: the O_EXCL
-// reservation alone keeps ids unique; .seq keeps them from restarting).
 func writeSeq(dir string, id int) {
 	if readSeq(dir) >= id {
 		return
@@ -517,17 +448,11 @@ func writeSeq(dir string, id int) {
 	_ = os.Remove(f.Name())
 }
 
-// createFresh creates path (mode 0600) for writing. Only the lx holding a
-// run's id writes that run's files, so a file already at path is a crashed
-// writer's leftover, or a link planted in a shared directory: it is
-// removed and path created exclusively, never written through.
 func createFresh(path string) (*os.File, error) {
 	_ = os.Remove(path)
 	return os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o600)
 }
 
-// writeAtomic writes path through path.tmp and a rename, so a reader never
-// sees a half-written file.
 func writeAtomic(path string, data []byte) error {
 	tmp := path + ".tmp"
 	f, err := createFresh(tmp)
@@ -547,11 +472,10 @@ func writeAtomic(path string, data []byte) error {
 	return werr
 }
 
-// runStat describes one stored run for pruning.
 type runStat struct {
 	mod  time.Time
 	size int64
-	live bool // a running run whose lx is alive: never pruned
+	live bool
 }
 
 func statRun(dir string, id int) runStat {
@@ -574,8 +498,7 @@ func statRun(dir string, id int) runStat {
 		return r
 	}
 	if len(mb) == 0 {
-		// Being reserved right now; an lx that died in between leaves it
-		// empty for good, and that must not be kept forever.
+
 		r.live = time.Since(js.ModTime()) < staleReservation
 		return r
 	}
@@ -593,12 +516,6 @@ func removeRun(dir string, id int) {
 	}
 }
 
-// prune applies retention after run just (of size bytes) was stored; ids
-// is the store's listing from just before (nil: read it again). Oldest runs
-// go first. The count and age limits stop at the first run younger than
-// minAge, so they cost a stat or two; the byte limit, which needs every
-// run's size, is checked on every 8th run and after any run of 1 MiB or
-// more.
 func prune(dir string, just, size int, ids []int) {
 	now := time.Now()
 	if ids == nil {
@@ -610,12 +527,12 @@ func prune(dir string, just, size int, ids []int) {
 	remaining := len(ids)
 	for _, id := range ids {
 		if id == just {
-			continue // never the run whose id was just handed out
+			continue
 		}
 		r := statRun(dir, id)
 		age := now.Sub(r.mod)
 		if age < minAge || remaining <= keep && age <= MaxAge {
-			break // every newer run is younger
+			break
 		}
 		if r.live {
 			continue
@@ -638,7 +555,7 @@ func pruneBytes(dir string, just int, now time.Time) {
 	for _, e := range ents {
 		name := e.Name()
 		if strings.HasSuffix(name, ".tmp") {
-			// Left by a crashed writer (a live one renames within ms).
+
 			if st, err := e.Info(); err == nil && now.Sub(st.ModTime()) > time.Hour {
 				_ = os.Remove(filepath.Join(dir, name))
 			}

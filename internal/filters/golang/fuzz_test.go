@@ -9,13 +9,7 @@ import (
 	"github.com/iheeb1/lx/internal/fixture"
 )
 
-// FuzzFilters feeds arbitrary output to every filter of this package under
-// several command lines and exit codes: no panic, the same input always gives
-// the same output, no execution is slow, and a failing exit status is never
-// rendered without the failure. Seeds are the real captures in scope.
 func FuzzFilters(f *testing.F) {
-	// Seeds are cut at 16 KiB (on a line boundary): the fuzz engine spends
-	// seconds minimizing each interesting mutation of a 400 KB seed.
 	seed := func(s string, sel uint8) {
 		if len(s) > 16<<10 {
 			s = s[:strings.LastIndexByte(s[:16<<10], '\n')+1]
@@ -72,7 +66,7 @@ func FuzzFilters(f *testing.F) {
 				!strings.Contains(a, "FAIL") && !strings.Contains(a, "panic") && !hasBuildLine(a) {
 				t.Fatalf("%s: exit %d rendered without any failure evidence:\n%s", fl.Name(), c.Exit, a)
 			}
-			// The footer never reads as a pass next to a failed package.
+
 			if okA && strings.HasPrefix(fl.Name(), "go-test") {
 				last := a[strings.LastIndexByte(a, '\n')+1:]
 				if strings.HasPrefix(last, "[") && strings.Contains(last, " passed") && !strings.Contains(strings.ToLower(last), "fail") &&
@@ -102,7 +96,6 @@ func hasBuildLine(s string) bool {
 	return false
 }
 
-// failedPkgLine reports a go test verdict line for a failed package.
 func failedPkgLine(s string) bool {
 	for _, ln := range strings.Split(s, "\n") {
 		if failPkgRe.MatchString(ln) {

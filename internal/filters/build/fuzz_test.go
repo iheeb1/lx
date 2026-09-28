@@ -15,16 +15,6 @@ var (
 	fuzzMvnErrorRe = regexp.MustCompile(`^\[ERROR\] `)
 )
 
-// FuzzFilters checks, for every filter of the package on arbitrary input
-// and exit status: no panic, deterministic output, and the lines each tool
-// uses to report failure survive verbatim when the filter applies:
-// make's "*** …" lines, cargo test's FAILED lines and failing result
-// lines, Maven's [ERROR] lines outside its constant help footer.
-//
-//	go test ./internal/filters/build -run '^$' -fuzz '^FuzzFilters$' -fuzztime 30s -fuzzminimizetime 2s
-//
-// (Without -fuzzminimizetime the fuzzer spends most of its time minimizing
-// inputs derived from the large seeds, reporting 0 execs/sec meanwhile.)
 func FuzzFilters(f *testing.F) {
 	for _, fx := range loadFixtures(f) {
 		f.Add(fx.Clean(), fx.Meta.ExitCode)
@@ -60,8 +50,7 @@ func FuzzFilters(f *testing.F) {
 				case "cargo-test":
 					must = fuzzFailedRe.MatchString(ln)
 				case "maven":
-					// Library stack frames printed under "[ERROR] " may be
-					// folded (with a marker); every other [ERROR] line stays.
+
 					msg := strings.TrimPrefix(ln, "[ERROR]")
 					must = fuzzMvnErrorRe.MatchString(ln) && !mvnHelpFooter.MatchString(strings.TrimSpace(msg)) &&
 						!(mvnFrameRe.MatchString(strings.TrimPrefix(msg, " ")) && strings.Contains(out1, "library frames"))

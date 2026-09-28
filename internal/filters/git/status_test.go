@@ -22,7 +22,7 @@ func TestStatusCorpus(t *testing.T) {
 				t.Fatal("filter bailed on real output")
 			}
 			fixture.Golden(t, "git", name, got)
-			// Fidelity: every path git listed is still named.
+
 			for _, ln := range strings.Split(fc.Clean(), "\n") {
 				if !strings.HasPrefix(ln, "\t") {
 					continue

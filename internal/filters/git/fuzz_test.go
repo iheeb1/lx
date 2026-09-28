@@ -8,10 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/fixture"
 )
 
-// FuzzGitFilters runs every git filter over mutated real output: no panic,
-// and the same input always gives the same output.
-//
-//	go test ./internal/filters/git -run '^$' -fuzz FuzzGitFilters -fuzztime 20s
 func FuzzGitFilters(f *testing.F) {
 	cases := fixture.All(f)
 	if local, err := fixture.ReadAll("testdata"); err == nil {
@@ -29,7 +25,7 @@ func FuzzGitFilters(f *testing.F) {
 		}
 		in := fc.Clean()
 		if len(in) > 16<<10 {
-			in = in[:16<<10] // keep seeds small enough to mutate quickly
+			in = in[:16<<10]
 		}
 		fl := engine.Find(fc.Context())
 		for i, n := range names {
@@ -37,7 +33,7 @@ func FuzzGitFilters(f *testing.F) {
 				f.Add(uint8(i), uint8(fc.Meta.ExitCode), in)
 			}
 		}
-		f.Add(uint8(len(fc.Name)), uint8(1), in) // some other filter on it
+		f.Add(uint8(len(fc.Name)), uint8(1), in)
 	}
 	f.Fuzz(func(t *testing.T, which, exit uint8, out string) {
 		c := ctx(int(exit%2), allFilters[int(which)%len(allFilters)]...)
@@ -53,8 +49,7 @@ func FuzzGitFilters(f *testing.F) {
 		if !okA {
 			return
 		}
-		// git-status is Guarded: every error-class line it leaves out must
-		// be one it converted, with its path or branch in the output.
+
 		if fl.Name() == "git-status" {
 			for _, m := range fixture.ErrorLinesMissing(out, a) {
 				if !statusConverted(m, a) {
@@ -62,8 +57,7 @@ func FuzzGitFilters(f *testing.F) {
 				}
 			}
 		}
-		// Diff renderers never hide an added conflict marker without
-		// listing it.
+
 		if fl.Name() == "git-diff" {
 			if d, ok := parseDiffDoc(strings.Split(out, "\n")); ok {
 				for _, p := range d.parts {

@@ -13,13 +13,9 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// A fixture is a real captured output: the shared corpus
-// (testdata/corpus/python) or this package's own captures
-// (internal/filters/python/testdata/captured, made in a scratch venv with
-// pytest 8.3.4, mypy 1.19.1, ruff 0.16.9 and pip 26.0.1, paths sanitized).
 type fx struct {
 	fixture.Case
-	source string // "corpus" or "captured"
+	source string
 }
 
 func loadFixtures(t *testing.T) []fx {
@@ -46,15 +42,14 @@ func loadFixtures(t *testing.T) []fx {
 	return out
 }
 
-// expectFind is the filter engine.Find must pick for each fixture.
 func expectFind(name string) string {
 	switch {
 	case name == "ruff-check-statistics":
-		return "" // --statistics prints a table, not diagnostics: not matched
+		return ""
 	case strings.HasPrefix(name, "pytest"):
-		return "pytest" // pytest-*, pytest313-* (pytest 9), pytest9-*
+		return "pytest"
 	case strings.HasPrefix(name, "python") || strings.HasPrefix(name, "unittest-"):
-		return "python" // scripts, python -m unittest
+		return "python"
 	case strings.HasPrefix(name, "pip-install") || strings.HasPrefix(name, "pip21-install") || name == "pip-upgrade-pip":
 		return "pip-install"
 	case strings.HasPrefix(name, "pip-uninstall"):
@@ -64,45 +59,33 @@ func expectFind(name string) string {
 	case strings.HasPrefix(name, "pip-show"):
 		return "pip-show"
 	case strings.HasPrefix(name, "mypy"):
-		return "mypy" // mypy-* (1.19), mypy2-* (2.3)
+		return "mypy"
 	case strings.HasPrefix(name, "ruff"):
-		return "ruff" // ruff-* (0.16), ruff011-* (0.11, pre-0.12 format)
+		return "ruff"
 	}
 	return "?"
 }
 
-// bails lists fixtures whose Apply must return ok=false, and why.
 var bails = map[string]string{
-	// No session header, no result line, no short summary: a conftest
-	// ImportError is not a test report; the generic reducer shows it whole.
 	"pytest-conftest-import-error": "not a test report",
 }
 
-// processAs lists fixtures where the full pipeline legitimately does not
-// report the filter's name, with the reason. Outputs at or under
-// engine.SmallOutput tokens are only normalized and need no entry.
 var processAs = map[string]string{
-	// The filter keeps these (nearly) as they are, saving less than
-	// engine.DefaultMinSavings, so the normalized output is shown.
-	"pip-install-no-version": "passthrough", // one 700-token ERROR line listing every version: kept verbatim
-	"pip-list":               "passthrough", // data table, already compact
-	"ruff-check-concise":     "passthrough", // one line per diagnostic already
+	"pip-install-no-version": "passthrough",
+	"pip-list":               "passthrough",
+	"ruff-check-concise":     "passthrough",
 	"ruff-check-all":         "passthrough",
 	"ruff-check-grouped":     "passthrough",
-	"ruff-check-statistics":  "passthrough", // not matched; generic finds nothing to fold
-	"mypy-errors":            "passthrough", // every line is an error or a distinct note
+	"ruff-check-statistics":  "passthrough",
+	"mypy-errors":            "passthrough",
 	"mypy-pretty":            "passthrough",
 	"mypy-strict":            "passthrough",
-	"mypy2-errors":           "passthrough", // mypy 2.3: no repeated note left to fold
-	"mypy2-ignore-notes":     "passthrough", // "Error code … not covered" notes are per location: all kept
-	// pip 21's legacy "Command errored out" block is kept whole.
+	"mypy2-errors":           "passthrough",
+	"mypy2-ignore-notes":     "passthrough",
+
 	"pip21-install-build-error": "passthrough",
 }
 
-// codeLineRe: lines a Guarded filter may drop although the classifier
-// calls them errors, because they are source code (pytest traceback
-// source, frame locals, echoed warning source; ruff snippets and fix diffs)
-// or per-test status lines whose failures are reported elsewhere.
 var codeLineRe = regexp.MustCompile(`^(?:INTERNALERROR>)?(?:\s|>)|^[A-Za-z_]\w* = |^\s*\d*\s*[|+-]\s`)
 
 var statusLineRe = regexp.MustCompile(`^\S+\.py[ :]| (?:PASSED|SKIPPED|XFAIL)\b`)
@@ -151,12 +134,12 @@ func TestCorpus(t *testing.T) {
 				wantProc = "generic"
 			}
 			if tokens.Count(clean) <= engine.SmallOutput {
-				wantProc = "passthrough" // small outputs are only normalized
+				wantProc = "passthrough"
 			}
 			if res.Filter != wantProc && !(wantProc == "passthrough" && res.Filter == "normalize") {
 				t.Errorf("Process filter = %q, want %q (raw %d → out %d tokens)", res.Filter, wantProc, res.RawTokens, res.OutTokens)
 			}
-			// Determinism of the whole pipeline.
+
 			if again := engine.Process(c, f.Raw, engine.Options{}); again.Output != res.Output {
 				t.Error("Process is not deterministic")
 			}
@@ -177,7 +160,7 @@ func TestCorpus(t *testing.T) {
 
 func checkFidelity(t *testing.T, f fx, flt engine.Filter, clean, got string) {
 	t.Helper()
-	orig := map[string]string{} // trimmed → untrimmed line
+	orig := map[string]string{}
 	for _, ln := range strings.Split(clean, "\n") {
 		orig[strings.TrimSpace(ln)] = ln
 	}
@@ -186,7 +169,7 @@ func checkFidelity(t *testing.T, f fx, flt engine.Filter, clean, got string) {
 	for _, m := range fixture.ErrorLinesMissing(clean, got) {
 		o := orig[m]
 		if (guarded || content) && (codeLineRe.MatchString(o) || statusLineRe.MatchString(o)) {
-			continue // justified: see codeLineRe / statusLineRe
+			continue
 		}
 		t.Errorf("error line missing: %q", o)
 	}
@@ -197,8 +180,6 @@ func checkFidelity(t *testing.T, f fx, flt engine.Filter, clean, got string) {
 		return
 	}
 	for _, loc := range fixture.LocationsMissing(clean, got) {
-		// Justified: library frames (site-packages, stdlib) are folded into
-		// "… N library frames (…)" markers by design.
 		if isLibPath(loc) {
 			continue
 		}

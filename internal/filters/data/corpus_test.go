@@ -13,16 +13,13 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// corpusCase describes what must happen to one captured output.
 type corpusCase struct {
 	name    string
-	local   bool   // captured for this package: testdata/data
-	filter  string // engine.Find result
-	process string // Result.Filter of the full pipeline; "" = filter
-	why     string // why process differs from filter
-	// drops vouches for every error-class input line absent from the
-	// output (these are Content filters: the guard is off, so the test is
-	// the proof). nil means no line may be missing.
+	local   bool
+	filter  string
+	process string
+	why     string
+
 	drops func(t *testing.T, clean, got string, missing []string)
 }
 
@@ -33,7 +30,7 @@ const (
 )
 
 var corpusCases = []corpusCase{
-	// testdata/corpus/data — the shared corpus.
+
 	{name: "cat-package-json-large", filter: "cat", process: "passthrough", why: same + ": a 1.8k-token package.json is shown exactly"},
 	{name: "cat-source-1500-lines", filter: "cat", drops: windowDrops},
 	{name: "cat-tsconfig", filter: "cat", process: "passthrough", why: small + "; unchanged anyway"},
@@ -41,8 +38,6 @@ var corpusCases = []corpusCase{
 	{name: "curl-jq-filter", filter: "jq", process: "passthrough", why: same + ": jq output the user shaped (1.5k tokens) is kept"},
 	{name: "curl-progress-meter", filter: "curl", process: "normalize", why: notWith + ": only the progress meter goes, the 1.1k-token JSON body is under the 1500-token threshold and kept; the gate shows the normalized text"},
 
-	// testdata/data — captured for this package (real runs unless the meta
-	// description says SYNTHETIC).
 	{local: true, name: "cat-c-source", filter: "cat", drops: windowDrops},
 	{local: true, name: "cat-go-source", filter: "cat", drops: windowDrops},
 	{local: true, name: "cat-go-sum", filter: "cat", drops: lockDrops},
@@ -78,7 +73,6 @@ var corpusCases = []corpusCase{
 	{local: true, name: "wget-download-dots", filter: "wget"},
 	{local: true, name: "wget-errors", filter: "wget"},
 
-	// Real variants captured during the adversarial review.
 	{local: true, name: "cat-glued-missing", filter: "cat", drops: windowDrops},
 	{local: true, name: "cat-lua-latin1", filter: "cat", process: "passthrough", why: same + ": a 6.9k-token Latin-1 source file is text, shown exactly"},
 	{local: true, name: "cat-go-conflict", filter: "cat", drops: windowDrops},
@@ -110,7 +104,6 @@ func loadCase(t testing.TB, cc corpusCase) fixture.Case {
 	return c
 }
 
-// TestCorpusCoversEveryCapture fails when a capture in scope has no case.
 func TestCorpusCoversEveryCapture(t *testing.T) {
 	have := map[string]bool{}
 	for _, cc := range corpusCases {
@@ -127,7 +120,6 @@ func TestCorpusCoversEveryCapture(t *testing.T) {
 	}
 }
 
-// diagRe: the tools' own messages, which must survive verbatim.
 var diagRe = regexp.MustCompile(`^(?:curl: \(\d+\) |cat: |head: |tail: |jq: |wget: |http: error|\d{4}-\d\d-\d\d \d\d:\d\d:\d\d ERROR )`)
 
 func TestCorpus(t *testing.T) {
@@ -163,15 +155,14 @@ func TestCorpus(t *testing.T) {
 					t.Errorf("failing run lost locations: %v", lm)
 				}
 			}
-			// The tool's own diagnostics survive verbatim (a progress-meter
-			// frame glued in front of one is not part of it).
+
 			for _, ln := range strings.Split(clean, "\n") {
 				ln = stripFrame(ln)
 				if diagRe.MatchString(ln) && !strings.Contains(got, ln) {
 					t.Errorf("diagnostic dropped: %q", ln)
 				}
 			}
-			// Nothing pass-like is invented for a failed run.
+
 			if fc.Meta.ExitCode != 0 && strings.Contains(got, "[lx:") && regexp.MustCompile(`(?i)\bsuccess|\bpassed|\bok\b`).MatchString(lxNotes(got)) {
 				t.Errorf("pass-like note on a failed run:\n%s", lxNotes(got))
 			}
@@ -199,7 +190,6 @@ func TestCorpus(t *testing.T) {
 	t.Log("\n" + table.String())
 }
 
-// lxNotes returns the lines lx added ("[lx: …]").
 func lxNotes(s string) string {
 	var b strings.Builder
 	for _, ln := range strings.Split(s, "\n") {
@@ -210,8 +200,6 @@ func lxNotes(s string) string {
 	return b.String()
 }
 
-// testFrameRe is an independent description of a curl progress-meter frame
-// (fields of digits, sizes and times) at the start of a line.
 var testFrameRe = regexp.MustCompile(`^(?: *[\d.]+[kMGTPE]?){8} +(?:(?:--:--:--|\d+:\d\d:\d\d) +){3}[\d.]+[kMGTPE]?`)
 
 func stripFrame(ln string) string {
@@ -221,12 +209,8 @@ func stripFrame(ln string) string {
 	return ln
 }
 
-// ---- fidelity checks for Content views ----------------------------------
-
 var omitRe = regexp.MustCompile(`^… lines (\d+)-(\d+) omitted \(`)
 
-// windowDrops: a windowed view may only miss lines of the omitted range(s)
-// its marker names; every line outside them is present verbatim, in order.
 func windowDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	lines := strings.Split(clean, "\n")
@@ -262,8 +246,7 @@ func windowDrops(t *testing.T, clean, got string, missing []string) {
 		}
 	}
 	checkMarkerBoundaries(t, lines, strings.Split(got, "\n"))
-	// Every line outside the omitted ranges is shown in order (long lines
-	// may be shortened with a counted marker).
+
 	out := strings.Split(got, "\n")
 	j := 0
 	for i, ln := range lines {
@@ -286,12 +269,6 @@ func windowDrops(t *testing.T, clean, got string, missing []string) {
 
 var outlineLineRe = regexp.MustCompile(`^  (?:outline of the omitted lines:|L\d+: |… \+\d+ more declaration)`)
 
-// checkMarkerBoundaries: the line shown right before an omission marker
-// "… lines A-B omitted" is output line A-1 and the first line shown after
-// it (and its outline) is line B+1, so "lx show <id> --lines A-B" and
-// "sed -n 'A,Bp'" return exactly the lines left out. Lines a filter
-// shows elsewhere (curl's own messages, progress-meter frames) may sit at
-// a boundary and are skipped.
 func checkMarkerBoundaries(t *testing.T, clean, out []string) {
 	t.Helper()
 	skippable := func(ln string) bool {
@@ -335,25 +312,19 @@ func checkMarkerBoundaries(t *testing.T, clean, out []string) {
 
 var jsonLineRe = regexp.MustCompile(`^\s*(?:"(?:[^"\\]|\\.)*"\s*:\s*)?(?:"(?:[^"\\]|\\.)*"|-?[\d.eE+-]+|true|false|null|[\[{\]}])?,?\s*$`)
 
-// jsonDrops: a condensed JSON view may only miss lines of the JSON document
-// (values are data: an issue titled "… failures" is not an error), and it
-// says it is condensed.
 func jsonDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	if !strings.Contains(got, "condensed from ~") {
 		t.Fatalf("JSON lines missing but no condensed-JSON note")
 	}
 	for _, m := range missing {
-		// A pretty-printed document's lines, or a minified document on one
-		// line.
+
 		if !jsonLineRe.MatchString(m) && !json.Valid([]byte(m)) {
 			t.Errorf("non-JSON line dropped: %q", cutRunes(m, 200))
 		}
 	}
 }
 
-// htmlDrops: an HTML view may only miss lines of the HTML body (markup and
-// scripts), and it says it is reduced.
 func htmlDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	if !strings.Contains(got, "[lx: HTML body") {
@@ -366,7 +337,6 @@ func htmlDrops(t *testing.T, clean, got string, missing []string) {
 	}
 }
 
-// lockDrops: a lockfile summary omits the file's content by design.
 func lockDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	if !strings.HasPrefix(got, "[lx: lockfile ") {
@@ -374,9 +344,6 @@ func lockDrops(t *testing.T, clean, got string, missing []string) {
 	}
 }
 
-// meterDrops: the only lines allowed to be missing are ones where curl's
-// progress meter frame was glued in front of another line; that line must
-// be shown without the frame.
 func meterDrops(t *testing.T, clean, got string, missing []string) {
 	t.Helper()
 	for _, m := range missing {

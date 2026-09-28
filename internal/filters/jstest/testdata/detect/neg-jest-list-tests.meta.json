@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "jest",
+    "--listTests"
+  ],
+  "shell": "npx jest --listTests",
+  "exit_code": 0,
+  "description": "REAL (negative): npx jest --listTests in moment/luxon: the test file paths (a listing)",
+  "cwd": "/home/user/src/luxon",
+  "repo": "moment/luxon",
+  "tool": ""
+}

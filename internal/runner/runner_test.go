@@ -17,13 +17,6 @@ import (
 	"time"
 )
 
-// TestHelperProcess is the child the other tests run: it prints
-// HELPER_LINES lines, then HELPER_PROMPT (no newline), sleeps HELPER_SLEEP,
-// prints HELPER_AFTER more lines and exits HELPER_EXIT. HELPER_TERM=ignore
-// records SIGTERM ("helper: got SIGTERM") and exits HELPER_TERM_EXIT
-// HELPER_TERM_DELAY later; otherwise SIGTERM kills it. HELPER_BUSY prints
-// "Compiling N:" pieces every 100ms instead of sleeping. HELPER_KILL9 kills
-// itself with SIGKILL.
 func TestHelperProcess(t *testing.T) {
 	if os.Getenv("LX_RUNNER_HELPER") != "1" {
 		return
@@ -66,7 +59,6 @@ func TestHelperProcess(t *testing.T) {
 	os.Exit(atoi("HELPER_EXIT"))
 }
 
-// helper sets the child's behavior and returns its argv.
 func helper(t *testing.T, kv ...string) []string {
 	t.Helper()
 	t.Setenv("LX_RUNNER_HELPER", "1")
@@ -80,7 +72,6 @@ func helper(t *testing.T, kv ...string) []string {
 	return []string{os.Args[0], "-test.run=^TestHelperProcess$"}
 }
 
-// fakeSignals replaces the OS signal source; send delivers one signal.
 func fakeSignals(t *testing.T) (send func(os.Signal)) {
 	t.Helper()
 	var mu sync.Mutex
@@ -103,7 +94,6 @@ func fakeSignals(t *testing.T) (send func(os.Signal)) {
 	}
 }
 
-// watchCapture exposes the live capture; waitFor polls it.
 func watchCapture(t *testing.T) (waitFor func(substr string)) {
 	t.Helper()
 	var mu sync.Mutex
@@ -134,7 +124,6 @@ func lines(prefix string, n int) string {
 	return b.String()
 }
 
-// syncBuf is a spool the runner writes while the test may read.
 type syncBuf struct {
 	mu sync.Mutex
 	b  bytes.Buffer
@@ -156,7 +145,7 @@ func TestHeartbeatSpoolsEveryLaterByte(t *testing.T) {
 			if elapsed < 200*time.Millisecond {
 				t.Errorf("heartbeat after %v", elapsed)
 			}
-			spool.Write(b) // what live.go does: seed the spool with sofar
+			spool.Write(b)
 			return spool
 		},
 	})
@@ -278,7 +267,7 @@ func TestLaterSignalsForwardedAtOnce(t *testing.T) {
 		waitFor("line 5\n")
 		send(syscall.SIGTERM)
 		waitFor("got SIGTERM")
-		send(os.Interrupt) // the helper does not handle SIGINT: it dies
+		send(os.Interrupt)
 	}()
 	res := RunWith(argv, Options{Grace: 10 * time.Second})
 	if res.ExitCode != 130 || res.Interrupted != "SIGTERM" {
@@ -370,8 +359,6 @@ func (w *failingWriter) Write(p []byte) (int, error) {
 	return len(p), nil
 }
 
-// A broken spool or a panicking callback never changes what lx captures or
-// the exit status.
 func TestCallbackFailuresAreContained(t *testing.T) {
 	argv := helper(t, "HELPER_LINES", "10", "HELPER_SLEEP", "500ms", "HELPER_AFTER", "400", "HELPER_EXIT", "4")
 	res := RunWith(argv, Options{
@@ -402,7 +389,7 @@ func TestPromptLine(t *testing.T) {
 		"Username: ":                          "Username: ",
 		"\x1b[32m?\x1b[0m Pick a template ›\x1b[0m\r\x1b[2K? Which one? ": "? Which one? ",
 		"line\nEnter your password":                                       "Enter your password",
-		// npx, npm init, cp -i, multi-choice and "press enter" prompts.
+
 		"Need to install the following packages:\n  cowsay@1.6.0\nOk to proceed? (y) ": "Ok to proceed? (y) ",
 		"package name: (lx) ":             "package name: (lx) ",
 		"overwrite x.txt? (y/n [n]) ":     "overwrite x.txt? (y/n [n]) ",
@@ -428,14 +415,14 @@ func TestPromptLine(t *testing.T) {
 		"progress (3/10)",
 		"done in 0.3s (cached)",
 		"Pressed keys: 3 so far",
-		"see the log: (" + strings.Repeat("z", 60) + ")", // too long for a default
+		"see the log: (" + strings.Repeat("z", 60) + ")",
 	}
 	for _, in := range no {
 		if got, ok := PromptLine(in); ok {
 			t.Errorf("PromptLine(%q) = %q, want no prompt", in, got)
 		}
 	}
-	// The detector's window: a line that began before it is too long.
+
 	if _, ok := promptLine(strings.Repeat("y", 300)+"?", false); ok {
 		t.Error("a line longer than the window counted as a prompt")
 	}

@@ -7,10 +7,6 @@ import (
 	"github.com/iheeb1/lx/internal/filters/fs"
 )
 
-// rgFiles renders `rg --files` (a list of every searchable file) as a
-// directory tree, like find: each directory once, its files joined on the
-// lines below, heavy directories folded, caps with exact counts when huge.
-// rg's own diagnostics ("rg: x: Permission denied") come first, verbatim.
 type rgFiles struct{}
 
 func (rgFiles) Name() string    { return "rg-files" }
@@ -41,13 +37,11 @@ func (f rgFiles) Apply(c *engine.Context, out string) (string, bool) {
 			paths = append(paths, ln)
 		}
 	}
-	// A failing run must be explained by a diagnostic the listing keeps
-	// (see fs.Unexplained); otherwise it was cut short (timeout, signal) and
-	// counts would claim a complete listing.
+
 	if len(paths) == 0 || fs.Unexplained(e, len(notes)) {
 		return "", false
 	}
-	// With --files every positional is a path to list.
+
 	t := fs.NewPathTree(paths, o.operands)
 	lines, capped := t.Render(fs.DefaultTreeTarget)
 	var b strings.Builder

@@ -1,0 +1,41 @@
+
+> yup@1.7.1 testonly
+> vitest run
+
+
+ RUN  v3.2.7 /home/user/src/yup
+
+ ✓ |sync| test/string.ts (44 tests | 1 skipped) 16ms
+ ✓ |sync| test/standardSchema.ts (48 tests) 34ms
+ ✓ |async| test/standardSchema.ts (48 tests) 42ms
+ ✓ |async| test/object.ts (60 tests) 47ms
+ ✓ |sync| test/mixed.ts (87 tests) 40ms
+ ✓ |sync| test/object.ts (60 tests) 48ms
+ ✓ |async| test/mixed.ts (84 tests) 27ms
+ ✓ |async| test/string.ts (44 tests | 1 skipped) 14ms
+ ✓ |async| test/util/parseIsoDate.ts (45 tests) 4ms
+ ✓ |async| test/array.ts (29 tests) 16ms
+ ✓ |sync| test/util/parseIsoDate.ts (45 tests) 4ms
+ ✓ |sync| test/array.ts (29 tests) 18ms
+ ✓ |async| test/number.ts (54 tests) 12ms
+ ✓ |sync| test/number.ts (54 tests) 12ms
+ ✓ |sync| test/yup.js (23 tests) 8ms
+ ✓ |async| test/yup.js (23 tests) 11ms
+ ✓ |async| test/date.ts (6 tests) 13ms
+ ✓ |sync| test/tuple.ts (15 tests) 11ms
+ ✓ |sync| test/date.ts (6 tests) 11ms
+ ✓ |sync| test/lazy.ts (6 tests) 10ms
+ ✓ |async| test/tuple.ts (15 tests) 9ms
+ ✓ |sync| test/bool.ts (6 tests) 6ms
+ ✓ |async| test/lazy.ts (6 tests) 9ms
+ ✓ |async| test/bool.ts (6 tests) 7ms
+ ✓ |sync| test/ValidationError.ts (8 tests) 3ms
+ ✓ |async| test/ValidationError.ts (8 tests) 5ms
+ ✓ |sync| test/setLocale.ts (5 tests) 11ms
+ ✓ |async| test/setLocale.ts (5 tests) 3ms
+
+ Test Files  28 passed (28)
+      Tests  867 passed | 2 skipped (869)
+   Start at  18:30:52
+   Duration  2.16s (transform 863ms, setup 3.93s, collect 1.18s, tests 451ms, environment 5ms, prepare 1.87s)
+

@@ -18,7 +18,7 @@ func ctx(exit int, argv ...string) *engine.Context {
 func TestMatch(t *testing.T) {
 	cases := []struct {
 		argv   string
-		want   string // filter name, "" = none of ours
+		want   string
 		stream bool
 	}{
 		{"jest", "jest", false},
@@ -120,7 +120,6 @@ func TestMatch(t *testing.T) {
 	}
 }
 
-// filters with a context each one matches.
 func allFilters(exit int) []struct {
 	f engine.Filter
 	c *engine.Context
@@ -142,8 +141,7 @@ func TestBailsOnUnknown(t *testing.T) {
 		"empty":       "",
 		"single line": "Tests: 1 passed, 1 total",
 		"blank lines": "\n\n\n",
-		// Localized / other runners / truncated runs: no summary this
-		// package knows.
+
 		"localized":      "Testdateien  3 bestanden (3)\n     Tests  12 bestanden (12)",
 		"jasmine":        "Started\n...F\n\nFailures:\n1) x\n  Message:\n    Expected 1 to be 2.\n\n4 specs, 1 failure",
 		"bun":            "bun test v1.1.0\n\ntest/a.test.ts:\n✓ adds [0.12ms]\n(fail) subtracts [0.10ms]\n\n 1 pass\n 1 fail\nRan 2 tests across 1 files. [12.00ms]",
@@ -178,7 +176,7 @@ func TestNonZeroExitNeverLooksPassing(t *testing.T) {
 		if !strings.Contains(out, "[lx: "+strings.Split(tc.f.Name(), "-")[0]) || !strings.Contains(out, fmt.Sprintf("exited %d", tc.c.Exit)) {
 			t.Errorf("%s: exit %d not made visible:\n%s", tc.f.Name(), tc.c.Exit, out)
 		}
-		// The same text with exit 0 reads as a plain pass.
+
 		tc.c.Exit = 0
 		if out, _ := tc.f.Apply(tc.c, tc.in); strings.Contains(out, "[lx: ") {
 			t.Errorf("%s: exit 0 got a failure note:\n%s", tc.f.Name(), out)
@@ -428,7 +426,6 @@ func TestMochaErrorLookingTitlesAreNotErrors(t *testing.T) {
   uploads
     ✔ rejects files that are too large
 
-
   2 passing (10ms)
   1 pending
 
@@ -512,9 +509,7 @@ func TestCoverageTableLarge(t *testing.T) {
 	if !ok {
 		t.Fatal("bailed")
 	}
-	// Even files are at 40+i/2 %: 40 of them are below 80% (f000-f078);
-	// the 30 lowest are shown. 10 more even files are at 80-89%, and the
-	// 50 odd ones at 100%.
+
 	if !strings.Contains(r.out, "f000.js") || !strings.Contains(r.out, "f058.js") || strings.Contains(r.out, "f060.js") || strings.Contains(r.out, "f001.js") {
 		t.Errorf("wrong rows:\n%s", r.out)
 	}
@@ -566,7 +561,7 @@ func FuzzFilters(f *testing.F) {
 	}
 	f.Add("", 0)
 	f.Add("FAIL x\n  ● a\n    > 1 |\n      at x (node_modules/a/b.js:1:1)\nTest Suites: 1 failed, 1 total\nTests: 1 failed, 1 total", 1)
-	// Level changes, multi-run output, file URLs (review regressions).
+
 	f.Add(synthJest(12), 1)
 	f.Add(synthVitest(12), 1)
 	f.Add(synthMocha(12), 12)
@@ -579,13 +574,11 @@ func FuzzFilters(f *testing.F) {
 			if a != b || okA != okB {
 				t.Fatalf("%s not deterministic", fc.f.Name())
 			}
-			// A failed run never reads as a pass: the view shows an
-			// error-class line (a failure, or lx's non-zero-exit note).
+
 			if okA && fc.c.Exit != 0 && fc.f.Name() != "node-crash" && !failLooking(a) {
 				t.Fatalf("%s: exit %d but no failure in the view:\n%s", fc.f.Name(), fc.c.Exit, a)
 			}
-			// Every error line is in the view, or was dropped as benign
-			// text (the safety net re-adds the rest, up to its cap).
+
 			r, ok := render(fc.f, fc.c, in)
 			if !ok || r.readded >= maxSafetyLines {
 				continue
@@ -683,9 +676,6 @@ Node.js v24.18.0
 	}
 }
 
-// Small captures: at or under engine.SmallOutput the pipeline only
-// normalizes, and the filters bail on what they do not know ("No tests
-// found", vitest's "No test files found").
 func TestSmallCaptures(t *testing.T) {
 	for _, tc := range smallCaptures {
 		fc, err := fixture.Read("testdata", "captures", tc.name)
@@ -702,8 +692,6 @@ func TestSmallCaptures(t *testing.T) {
 		}
 		res := engine.Process(c, fc.Raw, engine.Options{})
 		if tc.generic {
-			// Bailed on a large output: the generic reducer and the
-			// engine guard take over.
 			if res.Filter != "generic" || len(fixture.ErrorLinesMissing(fc.Clean(), res.Output)) != 0 {
 				t.Errorf("%s: pipeline %s dropped error lines:\n%s", tc.name, res.Filter, res.Output)
 			}
@@ -716,8 +704,6 @@ func TestSmallCaptures(t *testing.T) {
 }
 
 func TestSafetyNetSameTextBenignAndNot(t *testing.T) {
-	// Line 0 is a title dropped as benign; line 2 has the same text but is
-	// not benign and was not kept: it must be re-added.
 	d := newDoc(ctx(1, "mocha"), "  Error: timeout\nfine\nError: timeout", nil)
 	d.drop(0)
 	d.keep(1)

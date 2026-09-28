@@ -7,27 +7,10 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// gradleFilter renders gradle / gradlew output:
-//
-//   - "> Task :x UP-TO-DATE|NO-SOURCE|FROM-CACHE|SKIPPED" lines and task
-//     headers that printed nothing are counted; "> Task :x FAILED" and a
-//     header followed by the task's output (compiler errors, warnings) are
-//     kept;
-//   - download lines, daemon/configuration-cache chatter, the "* Try:"
-//     section, "* Get more help at" and the deprecation help sentences are
-//     counted;
-//   - "FAILURE: …", the whole "* What went wrong:" section (and "*
-//     Exception is:" with its folded stack trace), test failure lines
-//     ("CalcTest > adds() FAILED" and their indented detail), "N tests
-//     completed, M failed", "BUILD SUCCESSFUL/FAILED in …" and "N actionable
-//     tasks: …" are kept, as is every unknown line (generic reducer).
 type gradleFilter struct{}
 
 func (gradleFilter) Name() string { return "gradle" }
 
-// GuardsErrors: counted lines are status/progress lines that can hold error
-// words in task or file names ("> Task :errorprone UP-TO-DATE", test classes
-// named ErrorHandlerTest > …() PASSED). The filter guards every other line.
 func (gradleFilter) GuardsErrors() bool { return true }
 
 func (gradleFilter) Match(c *engine.Context) bool {
@@ -35,9 +18,7 @@ func (gradleFilter) Match(c *engine.Context) bool {
 	if n != "gradle" && n != "gradlew" {
 		return false
 	}
-	// Task listings, dependency reports, help and version print data;
-	// --console=rich/verbose changes the shape. Continuous builds and
-	// application runs are matched so that Stream can claim them.
+
 	for _, a := range c.Args() {
 		switch a {
 		case "tasks", "dependencies", "dependencyInsight", "properties", "projects", "help", "--help", "-h",
@@ -51,9 +32,6 @@ func (gradleFilter) Match(c *engine.Context) bool {
 	return true
 }
 
-// Stream: a continuous build (--continuous, -t) and the tasks that run the
-// application or a dev server (run, bootRun, quarkusDev, appRun, jettyRun …)
-// do not finish on their own; buffering them would hang the caller.
 func (gradleFilter) Stream(c *engine.Context) bool {
 	for _, a := range c.Args() {
 		if a == "--" {
@@ -108,8 +86,7 @@ func (gradleFilter) Apply(c *engine.Context, out string) (string, bool) {
 		res = append(res, genericLines(c, seg)...)
 		seg = nil
 	}
-	// nextOutput reports whether a task header is followed by output of its
-	// own before the next header / verdict.
+
 	nextOutput := func(i int) bool {
 		for j := i + 1; j < len(lines); j++ {
 			ln := lines[j]
@@ -141,8 +118,7 @@ func (gradleFilter) Apply(c *engine.Context, out string) (string, bool) {
 			continue
 		}
 		if gradleNoiseRe.MatchString(ln) && !engine.IsError(ln) {
-			// An error-class line in one of these shapes ("Download
-			// https://… failed: 403") is a report, not chatter: it stays.
+
 			noise++
 			exempt[i] = true
 			continue
@@ -158,10 +134,10 @@ func (gradleFilter) Apply(c *engine.Context, out string) (string, bool) {
 			continue
 		}
 		if ln == "* Try:" {
-			// Generic advice (--stacktrace, --info, --scan, help link).
+
 			j := i + 1
 			for j < len(lines) && strings.HasPrefix(lines[j], "> ") && !engine.IsError(lines[j]) {
-				j++ // an error-class line is a report, not advice: it ends the block
+				j++
 			}
 			for k := i; k < j; k++ {
 				exempt[k] = true
@@ -193,7 +169,7 @@ func (gradleFilter) Apply(c *engine.Context, out string) (string, bool) {
 	}
 	view := strings.Join(res, "\n")
 	if c.Failed() && !hasErrorLine(view) {
-		return "", false // killed mid-build: the generic reducer keeps the tail
+		return "", false
 	}
 	return selfGuard(lines, func(i int) bool { return exempt[i] }, view), true
 }

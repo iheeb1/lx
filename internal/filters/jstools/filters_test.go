@@ -26,7 +26,7 @@ func byName(name string) engine.Filter {
 func TestMatch(t *testing.T) {
 	cases := []struct {
 		argv string
-		want string // "" = none of ours
+		want string
 	}{
 		{"tsc --noEmit", "tsc"},
 		{"/usr/local/bin/tsc -p .", "tsc"},
@@ -153,8 +153,6 @@ func TestStream(t *testing.T) {
 	}
 }
 
-// TestBails: output a filter does not positively recognize goes to the
-// generic reducer.
 func TestBails(t *testing.T) {
 	localizedTSC := "src/a.ts(1,7): erreur TS2304: Impossible de trouver le nom 'foo'.\nsrc/b.ts(2,1): erreur TS2304: Impossible de trouver le nom 'bar'."
 	cases := []struct {
@@ -184,8 +182,6 @@ func TestBails(t *testing.T) {
 	}
 }
 
-// TestNoInventedVerdicts: with a failing exit the filters print nothing
-// pass-like that the tool did not print, and keep the error lines.
 func TestNoInventedVerdicts(t *testing.T) {
 	cases := []struct {
 		filter, argv, in string
@@ -214,9 +210,6 @@ func TestNoInventedVerdicts(t *testing.T) {
 }
 
 func TestTSCPrettyShapes(t *testing.T) {
-	// A span of more than 5 lines (tsc shows the first 2 and last 2 with a
-	// "..." gutter), a source line quoting "Error", an empty source line,
-	// related information with and without a file.
 	in := strings.Join([]string{
 		"src/a.ts:10:10 - error TS2322: Type '{ a: number; b: number; }' is not assignable to type 'string'.",
 		"",
@@ -263,7 +256,7 @@ func TestTSCPrettyShapes(t *testing.T) {
 	if got != want {
 		t.Errorf("got\n%s\nwant\n%s", got, want)
 	}
-	// The table stays when it names a file no diagnostic named.
+
 	in2 := "src/a.ts:1:1 - error TS1128: Declaration or statement expected.\n\n1 x\n  ~\n\nFound 2 errors in 2 files.\n\nErrors  Files\n     1  src/a.ts:1\n     1  src/other.ts:4"
 	got, _ = tsc{}.Apply(ctx(2, "tsc"), in2)
 	if !strings.Contains(got, "src/other.ts:4") || !strings.Contains(got, "Errors  Files") {
@@ -345,8 +338,6 @@ func TestESLintShapes(t *testing.T) {
 	}
 }
 
-// TestESLintHugeIsGrouped: thousands of problems in hundreds of files are
-// grouped by message; every file and message stays with exact counts.
 func TestESLintHugeIsGrouped(t *testing.T) {
 	var b strings.Builder
 	for f := 0; f < 400; f++ {
@@ -385,9 +376,6 @@ func TestESLintHugeIsGrouped(t *testing.T) {
 	}
 }
 
-// TestESLintHugeUnique: thousands of distinct messages cannot fit; the
-// filter still accounts for every one of them and the budget stage trims
-// the rest with counted markers.
 func TestESLintHugeUnique(t *testing.T) {
 	var b strings.Builder
 	for f := 0; f < 300; f++ {
@@ -458,7 +446,7 @@ func TestInstallShapes(t *testing.T) {
 		block("old-a@1.0.0"),
 		`[+2 more "npm warn ERESOLVE overriding peer dependency" blocks, while resolving: old-b@2.0.0, old-c@3.0.0]`,
 		"npm warn deprecated har-validator@5.1.5: this library is no longer supported",
-		// One hidden message would save nothing: it is shown.
+
 		"npm warn deprecated left-pad@1.3.0: use String.prototype.padStart()",
 		"npm warn deprecated crashy@1.0.0: fails with TypeError on node 20",
 		"npm warn EBADENGINE Unsupported engine {",
@@ -565,7 +553,6 @@ func TestEmptyAndTinyInputs(t *testing.T) {
 	}
 }
 
-// TestHuge: 50k-line outputs finish quickly (linear time) for every filter.
 func TestHuge(t *testing.T) {
 	gen := func(n int, line func(i int) string) string {
 		var b strings.Builder

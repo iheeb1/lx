@@ -11,11 +11,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// du keeps du's own lines and order. Up to duKeepAll entries are shown as
-// printed; beyond that the duTop largest entries are kept (in their
-// original order, plus the -c "total" line) and one line counts the rest
-// and bounds their size. Diagnostics ("du: x: Permission denied") come
-// first, verbatim.
 type du struct{}
 
 const (
@@ -43,8 +38,6 @@ func (du) Match(c *engine.Context) bool {
 	return true
 }
 
-// duLineRe: size (blocks, or -h/--si human form, possibly right-aligned),
-// a tab, the path.
 var duLineRe = lazyre.New(`^ *(\d+(?:[.,]\d+)?)([BbkKMGTPEZY]?)(?:i?B)?\t(.+)$`)
 
 type duEntry struct {
@@ -79,9 +72,7 @@ func (d du) Apply(c *engine.Context, out string) (string, bool) {
 		}
 		entries = append(entries, duEntry{line: ln, size: v * unitScale(m[2]), human: m[2] != "", path: m[3]})
 	}
-	// A failing run must be explained by a diagnostic the listing keeps
-	// (see Unexplained); otherwise it was cut short (timeout, signal) and
-	// counts would claim a complete listing.
+
 	if len(entries) == 0 || Unexplained(e, len(notes)) {
 		return "", false
 	}
@@ -96,8 +87,6 @@ func (d du) Apply(c *engine.Context, out string) (string, bool) {
 		return strings.TrimRight(b.String(), "\n"), true
 	}
 
-	// Rank by size (stable: earlier lines win ties); the grand total from
-	// -c is always kept and never ranked.
 	idx := make([]int, 0, len(entries))
 	keep := make([]bool, len(entries))
 	for i, en := range entries {
@@ -131,7 +120,7 @@ func (d du) Apply(c *engine.Context, out string) (string, bool) {
 	human := entries[0].human
 	marker := fmt.Sprintf("… %d smaller %s omitted (each ≤ %s", omitted, plural(omitted, "entry", "entries"), sizeField(maxLine))
 	if summarized(e.Args()) {
-		// Siblings don't nest, so their sizes add up (≈: du rounds each one).
+
 		if human {
 			marker += ", ≈" + humanSize(sumOmitted) + " together"
 		} else {
@@ -142,7 +131,6 @@ func (d du) Apply(c *engine.Context, out string) (string, bool) {
 	return b.String(), true
 }
 
-// summarized reports -s / --summarize / -d 0: entries are siblings.
 func summarized(args []string) bool {
 	for i, a := range args {
 		switch {
@@ -158,7 +146,7 @@ func summarized(args []string) bool {
 					return true
 				}
 				if ch == 'd' || ch == 'B' || ch == 't' || ch == 'X' {
-					break // the rest of the cluster is a value
+					break
 				}
 			}
 		}
@@ -193,7 +181,6 @@ func unitScale(u string) float64 {
 	return 1
 }
 
-// humanSize formats bytes the way du -h does: one decimal below 10.
 func humanSize(v float64) string {
 	units := []string{"B", "K", "M", "G", "T", "P", "E"}
 	i := 0

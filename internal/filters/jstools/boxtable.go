@@ -1,23 +1,11 @@
 package jstools
 
 import (
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 	"unicode/utf8"
-)
 
-// Box-drawn tables, as printed by pnpm and yarn (audit, outdated):
-//
-//	┌──────────┬─────────┐
-//	│ Package  │ Current │
-//	├──────────┼─────────┤
-//	│ lodash   │ 4.17.20 │
-//	└──────────┴─────────┘
-//
-// The borders cost more tokens than the cells. parseBoxTable reads one
-// table into logical rows; a cell whose text wrapped over several lines is
-// joined back, and blank lines inside a cell separate values (pnpm lists
-// one path per paragraph).
+	"github.com/iheeb1/lx/internal/lazyre"
+)
 
 var (
 	boxTopRe = lazyre.New(`^\s*┌[─┬]+┐$`)
@@ -25,14 +13,10 @@ var (
 	boxEndRe = lazyre.New(`^\s*└[─┴]+┘$`)
 )
 
-// boxCell is one cell: its values (paragraphs), each wrapped line joined.
 type boxCell []string
 
 func (c boxCell) text() string { return strings.Join(c, " ") }
 
-// parseBoxTable parses the table whose top border is lines[i]. It returns
-// the rows and the index after the bottom border, or ok=false when the
-// lines are not a well-formed table.
 func parseBoxTable(lines []string, i int) (rows [][]boxCell, end int, ok bool) {
 	if i >= len(lines) || !boxTopRe.MatchString(lines[i]) {
 		return nil, i, false
@@ -43,7 +27,7 @@ func parseBoxTable(lines []string, i int) (rows [][]boxCell, end int, ok bool) {
 	for _, seg := range strings.Split(strings.Trim(top, "┌┐"), "┬") {
 		widths = append(widths, utf8.RuneCountInString(seg))
 	}
-	var cur [][]string // physical lines of the current logical row: cells
+	var cur [][]string
 	flush := func() {
 		if len(cur) == 0 {
 			return
@@ -66,9 +50,7 @@ func parseBoxTable(lines []string, i int) (rows [][]boxCell, end int, ok bool) {
 					b.WriteByte(' ')
 				}
 				b.WriteString(seg)
-				// Text wraps at spaces; only a token longer than the cell
-				// (a long path, a URL) is cut mid-token, and then the
-				// segment fills the cell and has no space.
+
 				prevFull = utf8.RuneCountInString(seg) >= widths[c]-2 && !strings.Contains(seg, " ")
 			}
 			if b.Len() > 0 {
@@ -108,7 +90,6 @@ func parseBoxTable(lines []string, i int) (rows [][]boxCell, end int, ok bool) {
 	return nil, i, false
 }
 
-// alignTable renders rows of cells as columns separated by two spaces.
 func alignTable(rows [][]string) []string {
 	var width []int
 	for _, r := range rows {

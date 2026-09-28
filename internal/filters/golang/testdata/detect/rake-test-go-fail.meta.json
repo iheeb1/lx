@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "rake",
+    "test"
+  ],
+  "shell": "rake test",
+  "exit_code": 1,
+  "description": "REAL: rake test whose task runs go test ./... in spf13/cobra with an injected regression (MinimumNArgs error message in args.go): go test's report, then rake's own failure lines",
+  "cwd": "/home/user/src/cobra",
+  "repo": "spf13/cobra",
+  "tool": "go-test"
+}

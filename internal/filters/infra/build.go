@@ -9,22 +9,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// dockerBuild condenses docker build output, BuildKit's plain progress
-// ("#8 [4/6] RUN npm ci") and the legacy builder's ("Step 4/6 : RUN …").
-//
-//   - Each build step keeps its header once, with its outcome on the same
-//     line ("#6 [2/6] WORKDIR /app  CACHED", "… DONE 12.8s").
-//   - Transfer/extract/export progress ("#N sha256:…", "transferring …",
-//     "exporting layers") and successful [internal]/[auth] steps are
-//     dropped and counted.
-//   - Output of successful steps is hidden with a count, except its
-//     error-class and warning-class lines.
-//   - A failed step keeps its whole output, runs of lines differing only in
-//     numbers folded (over 150 lines after that: the first 20, every
-//     error/warning line and the last 80, with counts) and its
-//     "#N ERROR: …" line; the error summary BuildKit prints after the steps
-//     (the Dockerfile excerpt and "ERROR: failed to solve: …") is kept, minus
-//     the log lines it repeats from the step, which are counted.
 type dockerBuild struct{}
 
 func (dockerBuild) Name() string { return "docker-build" }
@@ -39,14 +23,14 @@ var (
 	bkStatusRe  = lazyre.New(`^(?:DONE [\d.]+s|CACHED|CANCELED|ERROR(?:: .*)?)$`)
 	bkOutputRe  = lazyre.New(`^\d+\.\d+(?: |$)`)
 	bkStepNumRe = lazyre.New(`(?:^|\s)\d+/\d+$`)
-	// bkNoiseRe: progress lines of pulls, context transfers and exports.
+
 	bkNoiseRe = lazyre.New(`^(?:sha256:[0-9a-f]+ .*|extracting sha256:.*|resolve \S+ .*|transferring \S+: .*|` +
 		`exporting (?:layers|manifest|config|attestation manifest|manifest list|cache|to \S+ .*)\b.*|preparing layers for inline cache.*|` +
 		`pushing .*|unpacking to .*|writing layer .*|loading layer .*|copying .*|computing cache key.*|done$|` +
 		`writing cache image manifest .*|preparing build cache for export.*|sending tarball.*|importing to docker.*|` +
 		`resolving provenance for metadata file.*|\[\d+/\d+\] .*)`)
 	bkKeepRe = lazyre.New(`^(?:naming to |writing image )`)
-	// Legacy builder.
+
 	legacyStepRe    = lazyre.New(`^Step \d+/\d+ : `)
 	legacyStepNumRe = lazyre.New(`^Step (\d+)/(\d+) : `)
 	legacyNoiseRe   = lazyre.New(`^ ---> (?:[0-9a-f]{12}$|Running in [0-9a-f]{12}$|Removed intermediate container [0-9a-f]{12}$)|^Removing intermediate container [0-9a-f]{12}$|^Sending build context to Docker daemon`)
@@ -54,19 +38,19 @@ var (
 )
 
 const (
-	failShowAll  = 150 // failed steps up to this many output lines are kept whole
+	failShowAll  = 150
 	failShowHead = 20
 	failShowTail = 80
 )
 
 type bkStep struct {
 	id      string
-	header  string // first header line, verbatim
-	kind    byte   // 'b' build step, 'i' internal/auth, 'x' export, 'o' other
-	status  string // "DONE 12.8s", "CACHED", "CANCELED", "ERROR: …"
-	statusL string // the status line, verbatim ("#10 ERROR: …")
+	header  string
+	kind    byte
+	status  string
+	statusL string
 	out     []string
-	keep    []string // "naming to", "writing image" lines
+	keep    []string
 	noise   int
 }
 
@@ -88,7 +72,7 @@ func (dockerBuild) Apply(c *engine.Context, out string) (string, bool) {
 func buildkit(c *engine.Context, lines []string) (string, bool) {
 	steps := map[string]*bkStep{}
 	var order []*bkStep
-	var after []string // lines outside any step (summary, warnings)
+	var after []string
 	for _, ln := range lines {
 		m := bkLineRe.FindStringSubmatch(ln)
 		if m == nil {
@@ -131,7 +115,7 @@ func buildkit(c *engine.Context, lines []string) (string, bool) {
 	}
 
 	var res []string
-	shown := map[string]bool{} // output lines shown, for the summary block
+	shown := map[string]bool{}
 	built, cached, internal, noise, unfinished := 0, 0, 0, 0, 0
 	anyFailed := false
 	for _, st := range order {
@@ -140,9 +124,7 @@ func buildkit(c *engine.Context, lines []string) (string, bool) {
 	for _, st := range order {
 		noise += st.noise
 		failed := strings.HasPrefix(st.status, "ERROR")
-		// A run that failed without a failing step was interrupted or
-		// killed (OOM, Ctrl-C, timeout): the steps still running when it
-		// died hold the evidence, so they are shown like failed ones.
+
 		if c.Failed() && !anyFailed && st.status == "" && st.kind != 'i' && len(st.out) > 0 {
 			unfinished++
 			if st.kind == 'b' {
@@ -188,9 +170,9 @@ func buildkit(c *engine.Context, lines []string) (string, bool) {
 		counts := map[string]int{}
 		for _, ln := range st.out {
 			switch {
-			case engine.IsError(ln): // every error line, even repeated
+			case engine.IsError(ln):
 				notable = append(notable, ln)
-			case engine.IsWarning(ln): // repeated warnings once, counted
+			case engine.IsWarning(ln):
 				body := bkOutputRe.ReplaceAllString(strings.TrimPrefix(ln, "#"+st.id+" "), "")
 				if counts[body] == 0 {
 					notable = append(notable, ln)
@@ -233,7 +215,6 @@ func buildkit(c *engine.Context, lines []string) (string, bool) {
 	return strings.TrimRight(strings.Join(res, "\n"), "\n"), true
 }
 
-// signalNote explains exit codes of processes killed by a signal.
 func signalNote(exit int) string {
 	switch exit {
 	case 137:
@@ -255,20 +236,13 @@ func hasErrorLine(lines []string) bool {
 	return false
 }
 
-// failedOutput keeps a failed step's output, with runs of similar lines
-// folded (engine.CollapseSimilar): all of it up to 150 lines, else the
-// first 20, every error/warning line, and the last 80. Every gap marker
-// counts the output lines it stands for exactly (a folded "… N similar
-// lines …" or "[×N]" line in a gap counts N).
 func failedOutput(out []string) []string {
 	out = engine.CollapseRuns(out)
 	if len(out) > failPreWindow {
-		// Folding costs time per line (engine.Mask); of a huge output only
-		// the ends and the error/warning lines can be shown anyway.
+
 		out = preWindow(out)
 	}
-	// Runs of lines differing only in numbers (download/fetch logs) fold
-	// into first … last; error-class lines never fold.
+
 	out = engine.CollapseSimilar(out)
 	if len(out) <= failShowAll {
 		return out
@@ -294,9 +268,6 @@ func failedOutput(out []string) []string {
 }
 
 const (
-	// failPreWindow: failed-step outputs longer than this many lines are
-	// cut to their first and last failPreKeep lines (plus every
-	// error/warning line) before folding.
 	failPreWindow = 4000
 	failPreKeep   = 1000
 )
@@ -311,9 +282,6 @@ func gapNote(n int) string {
 	return fmt.Sprintf("[lx: %s of this step's output not shown]", engine.Plural(n, "line", "lines"))
 }
 
-// foldedWeight is the number of output lines ln stands for: N for
-// "… N similar lines …" (engine.CollapseSimilar), "x [×N]"
-// (engine.CollapseRuns) and a gap note, else 1.
 func foldedWeight(ln string) int {
 	for _, re := range []*lazyre.Regexp{similarLineRe, gapNoteRe, runLineRe} {
 		if m := re.FindStringSubmatch(ln); m != nil {
@@ -325,9 +293,6 @@ func foldedWeight(ln string) int {
 	return 1
 }
 
-// preWindow keeps the first and last failPreKeep lines and every
-// error/warning line between them; each gap becomes a gap note with the
-// exact number of output lines it stands for.
 func preWindow(out []string) []string {
 	res := append([]string(nil), out[:failPreKeep]...)
 	gap := 0
@@ -348,9 +313,6 @@ func preWindow(out []string) []string {
 	return append(res, out[len(out)-failPreKeep:]...)
 }
 
-// buildSummaryBlock keeps BuildKit's closing lines (error summary, warnings)
-// but replaces the "------ > [k/n] RUN …:" log excerpt lines that repeat
-// shown step output with a count.
 func buildSummaryBlock(after []string, shown map[string]bool) []string {
 	suffixes := map[string]bool{}
 	for ln := range shown {
@@ -383,7 +345,6 @@ func buildSummaryBlock(after []string, shown map[string]bool) []string {
 	return res
 }
 
-// legacyBuild condenses the legacy builder's "Step k/n : …" output.
 func legacyBuild(c *engine.Context, lines []string) (string, bool) {
 	type step struct {
 		header string
@@ -446,7 +407,7 @@ func legacyBuild(c *engine.Context, lines []string) (string, bool) {
 	res = append(res, post...)
 	note := fmt.Sprintf("[lx: %s", engine.Plural(len(steps), "step", "steps"))
 	if len(steps) > 0 {
-		// "Step 4/5 : …": say when the build stopped before the last step.
+
 		if m := legacyStepNumRe.FindStringSubmatch(steps[len(steps)-1].header); m != nil && m[1] != m[2] {
 			note = fmt.Sprintf("[lx: %s of %s steps ran", m[1], m[2])
 		}

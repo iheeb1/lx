@@ -22,7 +22,7 @@ func TestShellWords(t *testing.T) {
 		{"${HOME}/go/bin/lx hook claude", []string{"/Users/me/go/bin/lx", "hook", "claude"}},
 		{`"$HOME/go/bin/lx" hook claude`, []string{"/Users/me/go/bin/lx", "hook", "claude"}},
 		{"lx hook claude --prefix=/x/lx --readonly", []string{"lx", "hook", "claude", "--prefix=/x/lx", "--readonly"}},
-		{"'~'/lx hook", []string{"~/lx", "hook"}}, // quoted tilde is literal
+		{"'~'/lx hook", []string{"~/lx", "hook"}},
 		{"a~b", []string{"a~b"}},
 		{"/ünï/lx hook claude", []string{"/ünï/lx", "hook", "claude"}},
 		{`'/it'\''s/lx' hook claude`, []string{"/it's/lx", "hook", "claude"}},
@@ -47,8 +47,7 @@ func TestShellWords(t *testing.T) {
 		"lx hook cl*de", "lx hook cl?ude", "lx hook [c]laude", "lx {hook,x} claude", `lx hook claude\`,
 		"lx hook 'claude", `lx hook "claude`, "~root/lx hook claude", "(lx hook claude)", "lx hook claude!",
 		`lx hook "claude\"`, `"$(id)" hook claude`,
-		// Legacy multibyte locales: a backslash next to a non-ASCII byte
-		// may be part of a character, not an escape.
+
 		"lx hook claude --prefix=ぁ\\;./evil", "lx hook claude --prefix ぁ\\;x", "lx hook claude --prefix \\ぁ",
 		"/opt/é\\ x/lx hook claude",
 	}
@@ -57,7 +56,7 @@ func TestShellWords(t *testing.T) {
 			t.Errorf("shellWords(%q) accepted: %q", in, got)
 		}
 	}
-	// Unquoted $HOME that the shell would split is refused; quoted is fine.
+
 	if _, good := shellWords("$HOME/lx hook claude", "/Users/John Doe"); good {
 		t.Error("unquoted $HOME with a space was accepted")
 	}
@@ -69,10 +68,6 @@ func TestShellWords(t *testing.T) {
 	}
 }
 
-// TestClassifyNeverVerifiesInjection is the safety contract: a hook
-// command doctor would execute is a single simple command of plain words
-// whose argv[0] is named lx. Anything a shell could turn into another
-// command must not classify as lxVerified.
 func TestClassifyNeverVerifiesInjection(t *testing.T) {
 	const home = "/Users/me"
 	verified := []string{
@@ -123,15 +118,14 @@ func TestClassifyNeverVerifiesInjection(t *testing.T) {
 		"eval " + base,
 		"source /tmp/x; " + base,
 		". /tmp/x && " + base,
-		base + " --prefix=ぁ\\;./evil", // `;` is live in a Shift_JIS shell
+		base + " --prefix=ぁ\\;./evil",
 	}
 	for _, c := range injections {
 		if _, kind := classify(c, home); kind == lxVerified {
 			t.Errorf("classify(%q) = verified: doctor would execute it", c)
 		}
 	}
-	// Commands that mention `lx hook` are still recognized (so doctor does
-	// not claim "no hook"), but never verified.
+
 	for _, c := range injections[:15] {
 		if _, kind := classify(c, home); kind != lxOther {
 			t.Errorf("classify(%q) = %v, want lxOther", c, kind)
@@ -161,7 +155,7 @@ func TestBroadLxRule(t *testing.T) {
 		"Bash(/usr/local/bin/lx:*)", "Bash(~/go/bin/lx *)", "Bash('/a b/lx':*)",
 		"Bash(lx -r:*)", "Bash(lx --raw *)", "Bash(lx -b 3000:*)", "Bash(lx --budget=10 *)",
 		"Bash(lx -- *)", "Bash(lx * status)", "Bash(lx -v *:*)",
-		"Bash(lx --live:*)", "Bash(lx -b3000:*)", // any lx flag, known or new
+		"Bash(lx --live:*)", "Bash(lx -b3000:*)",
 		"Bash(lx bash:*)", "Bash(lx env *)", "Bash(lx sudo:*)", "Bash(lx /bin/sh -c:*)", "Bash(lx lx:*)",
 		"Bash(lx timeout 5 *)", "Bash(lx nice -n 10:*)", "Bash(lx env A=1 *)", "Bash(lx xargs:*)",
 	}
@@ -209,7 +203,7 @@ func TestShellQuote(t *testing.T) {
 		if got := shellQuote(in); got != want {
 			t.Errorf("shellQuote(%q) = %q, want %q", in, got, want)
 		}
-		// Round trip through doctor's own parser.
+
 		if w, ok := shellWords(shellQuote(in), "/h"); !ok || strings.Join(w, " ") != in {
 			t.Errorf("shellWords(shellQuote(%q)) = %q, %v", in, w, ok)
 		}

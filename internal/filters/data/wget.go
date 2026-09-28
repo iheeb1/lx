@@ -8,11 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// wgetFilter condenses GNU wget's log: the dot/bar progress and successful
-// resolve/connect lines are dropped; the request line, the response status,
-// Length, Saving to, redirects, the result line and every failure are kept.
-// With -S the server's headers are trimmed like curl's; a body written to
-// stdout (-O -) goes through renderBody.
 type wgetFilter struct{}
 
 func (wgetFilter) Name() string    { return "wget" }
@@ -34,10 +29,6 @@ var (
 	wgetHeaderLead = "  "
 )
 
-// wgetArgs reads the flags that shape wget's output: -q/--quiet, -S/
-// --server-response, and whether the document goes to stdout (-O -,
-// -qO-, --output-document=-), the only case where output lines can be a
-// response body rather than wget's log.
 func wgetArgs(args []string) (quiet, server, stdout bool) {
 	isStdout := func(v string) bool { return v == "-" || v == "/dev/stdout" }
 	for i := 0; i < len(args); i++ {
@@ -74,7 +65,7 @@ func wgetArgs(args []string) (quiet, server, stdout bool) {
 					if ch == 'O' {
 						stdout = isStdout(v)
 					}
-					break // the rest was the value
+					break
 				}
 			}
 		}
@@ -82,7 +73,6 @@ func wgetArgs(args []string) (quiet, server, stdout bool) {
 	return quiet, server, stdout
 }
 
-// wgetExit explains wget's exit codes, for runs that failed silently (-q).
 var wgetExit = map[int]string{
 	1: "generic error", 2: "parse error in options or .wgetrc", 3: "file I/O error", 4: "network failure",
 	5: "SSL verification failure", 6: "username/password authentication failure", 7: "protocol error",
@@ -95,11 +85,11 @@ func (wgetFilter) Apply(c *engine.Context, out string) (string, bool) {
 	var (
 		res       []string
 		body      []string
-		bodyNums  []int // 1-based output line number of each body line
+		bodyNums  []int
 		cur, last *headerBlock
 		ctype     string
 		logLines  int
-		unknown   int // lines that are neither wget's known log lines nor a body
+		unknown   int
 	)
 	closeHead := func() {
 		if cur != nil {
@@ -108,7 +98,7 @@ func (wgetFilter) Apply(c *engine.Context, out string) (string, bool) {
 		}
 	}
 	for i, ln := range lines {
-		// -S: the server's response head, indented by two spaces.
+
 		if cur != nil {
 			if strings.HasPrefix(ln, wgetHeaderLead) && fieldRe.MatchString(strings.TrimPrefix(ln, wgetHeaderLead)) {
 				cur.fields = append(cur.fields, ln)
@@ -141,10 +131,9 @@ func (wgetFilter) Apply(c *engine.Context, out string) (string, bool) {
 			}
 			res = append(res, ln)
 		case ln == "" && len(body) == 0:
-			// blank separators of the log
+
 		case !stdout:
-			// No document on stdout: every line is wget's log. Lines not
-			// known above are kept as they are.
+
 			unknown++
 			res = append(res, ln)
 		default:
@@ -153,10 +142,9 @@ func (wgetFilter) Apply(c *engine.Context, out string) (string, bool) {
 	}
 	closeHead()
 	if !quiet && (logLines == 0 || unknown > logLines) {
-		return "", false // not wget's log format (localized, or unknown version)
+		return "", false
 	}
-	// Whether wget itself reported the failure, judged before the body
-	// (whose text may hold "error" as data) is added.
+
 	toolErr := hasErrorLine(res)
 	res = condenseRequests(res)
 	if len(body) > 0 {
@@ -180,10 +168,8 @@ func (wgetFilter) Apply(c *engine.Context, out string) (string, bool) {
 }
 
 const (
-	// maxRequests: logs of up to this many requests are shown whole …
 	maxRequests = 20
-	// … longer ones (wget -r, -i list) keep the first and last requests
-	// and every request that did not succeed.
+
 	keepFirstRequests = 10
 	keepLastRequests  = 5
 )
@@ -193,11 +179,6 @@ var (
 	wgetSummaryRe = lazyre.New(`^(?:FINISHED --|Total wall clock time: |Downloaded: \d+ files?|Converting links|Converted links)`)
 )
 
-// condenseRequests shortens the log of a many-request run (wget -r, -i):
-// each request (from its "--date--  URL" line to the next) that succeeded
-// — no error-class line and every status below 400 — is counted instead
-// of shown, except the first 10 and the last 5. Failed requests and the
-// closing summary are always shown whole.
 func condenseRequests(res []string) []string {
 	var groups [][]string
 	var pre, post []string
@@ -247,7 +228,6 @@ func condenseRequests(res []string) []string {
 	return append(out, post...)
 }
 
-// hasErrorLine reports whether any line is error-class.
 func hasErrorLine(lines []string) bool {
 	for _, ln := range lines {
 		if engine.IsError(ln) {
@@ -257,7 +237,6 @@ func hasErrorLine(lines []string) bool {
 	return false
 }
 
-// resolvedOK: "Resolving host (host)... 1.2.3.4, ::1" succeeded.
 func resolvedOK(ln string) bool {
 	_, after, ok := strings.Cut(ln, "... ")
 	return ok && !strings.HasPrefix(after, "failed")

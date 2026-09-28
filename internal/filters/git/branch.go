@@ -2,26 +2,14 @@ package git
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 func init() { engine.Register(branchFilter{}) }
 
-// branchFilter condenses branch listings (`git branch`, `-a`, `-r`):
-//
-//   - main
-//     dev
-//     remotes/origin/HEAD -> origin/main
-//     remotes/origin/ (77): 02-05-refactor… arnaud/bump-eslint-react-refresh …
-//
-// The current branch keeps its "* " marker and its own line, local branches
-// stay one per line (a long local list is wrapped like the remotes), and
-// remote-tracking branches are listed per remote on a few wrapped lines
-// (branch names cannot contain spaces, so a space separates them). Verbose
-// listings (-v, -vv) and anything unrecognized are left as they are.
 type branchFilter struct{}
 
 func (branchFilter) Name() string    { return "git-branch" }
@@ -31,8 +19,7 @@ func (branchFilter) Match(c *engine.Context) bool {
 	if !isGit(c) || c.Sub() != "branch" || engine.MachineReadable(c) {
 		return false
 	}
-	// Only listing forms; creating, deleting or renaming branches prints a
-	// line or two (or an error) and is left alone.
+
 	for _, a := range subArgs(c) {
 		switch a {
 		case "-a", "--all", "-r", "--remotes", "--list", "-l", "--no-color", "--color", "--color=always",
@@ -49,15 +36,11 @@ func (branchFilter) Match(c *engine.Context) bool {
 	return true
 }
 
-// branchLineRe: marker ("* " current, "+ " checked out in another worktree,
-// "  "), name, optional symbolic target.
 var branchLineRe = lazyre.New(`^([*+ ]) (\S+)(?: -> (\S+))?$`)
 
-// minWrapLocals: at most this many local branches stay one per line.
 const minWrapLocals = 20
 
 func (branchFilter) Apply(c *engine.Context, out string) (string, bool) {
-	// With -r names carry no "remotes/" prefix ("origin/main").
 	remotePrefix := "remotes/"
 	if hasArg(c, "-r", "--remotes") && !hasArg(c, "-a", "--all") {
 		remotePrefix = ""
@@ -75,7 +58,7 @@ func (branchFilter) Apply(c *engine.Context, out string) (string, bool) {
 			continue
 		}
 		if strings.HasPrefix(ln, "* (") || strings.HasPrefix(ln, "  (") {
-			current = append(current, ln) // "* (HEAD detached at 1a2b3c4)"
+			current = append(current, ln)
 			continue
 		}
 		m := branchLineRe.FindStringSubmatch(ln)

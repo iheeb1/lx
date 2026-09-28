@@ -8,41 +8,21 @@ import (
 )
 
 var (
-	// "goroutine 12 [chan receive, 3 minutes]:" (also the GOTRACEBACK=system
-	// form "goroutine 1 gp=0x… m=0 mp=0x… [running]:").
 	goroutineHdrRe = lazyre.New(`^goroutine (\d+)(?: [^\[]*)? \[([^\]]*)\]:$`)
 	goOffsetRe     = lazyre.New(` \+0x[0-9a-f]+$`)
 	goCreatedInRe  = lazyre.New(` in goroutine \d+$`)
 )
 
-// goroutineBlock is one "goroutine N [state]:" section of a dump.
 type goroutineBlock struct {
 	header string
 	state  string
-	frames []string // frame lines (func + file pairs, elision markers)
+	frames []string
 	sig    string
-	lib    bool // every frame is library/runtime code
+	lib    bool
 	top    string
 	create string
 }
 
-// GroupGoroutines condenses Go goroutine dumps (panics with GOTRACEBACK=all,
-// `go test` timeouts, SIGQUIT dumps). It returns ok=false unless lines hold
-// at least two "goroutine N [state]:" blocks.
-//
-// Everything outside the dump ("panic: test timed out after 10m0s", the
-// "running tests:" list, trailing FAIL lines) is kept verbatim, as is the
-// first goroutine (the panicking / running one). The other goroutines are
-// grouped by stack signature — function names and file:line with argument
-// values and +0x offsets stripped — in order of first appearance:
-//
-//	3 goroutines [IO wait, select]:
-//	<stack of the first member, folded by FoldStacks>
-//
-// Groups made only of library/runtime frames (GOROOT, module cache,
-// _testmain.go) become one count line each, listed after the others:
-//
-//	26 goroutines [IO wait] in library code: internal/poll.runtime_pollWait … created by net/http.(*Server).Serve
 func GroupGoroutines(lines []string) ([]string, bool) {
 	var hdrs []int
 	for i, ln := range lines {
@@ -55,8 +35,8 @@ func GroupGoroutines(lines []string) ([]string, bool) {
 	}
 	var (
 		blocks []*goroutineBlock
-		stray  []string // non-frame lines between blocks
-		end    int      // index after the last block
+		stray  []string
+		end    int
 	)
 	for k, h := range hdrs {
 		m := goroutineHdrRe.FindStringSubmatch(lines[h])
@@ -78,7 +58,7 @@ func GroupGoroutines(lines []string) ([]string, bool) {
 		}
 		blocks = append(blocks, b)
 		end = j
-		// Lines between this block and the next header.
+
 		if k+1 < len(hdrs) {
 			for _, ln := range lines[j:hdrs[k+1]] {
 				if strings.TrimSpace(ln) != "" {
@@ -134,7 +114,7 @@ func GroupGoroutines(lines []string) ([]string, bool) {
 		}
 		out = append(out, FoldStacks(nil, rep.frames)...)
 	}
-	// Library-only groups: one count line per (top function, creator).
+
 	var libOrder []*group
 	byTop := map[string]*group{}
 	for _, g := range order {
@@ -175,7 +155,6 @@ func GroupGoroutines(lines []string) ([]string, bool) {
 	return out, true
 }
 
-// summarize computes the grouping signature and library-only flag.
 func (b *goroutineBlock) summarize() {
 	var sig strings.Builder
 	b.lib = true
@@ -207,8 +186,6 @@ func (b *goroutineBlock) summarize() {
 	b.sig = sig.String()
 }
 
-// goFuncName strips the argument list from a Go traceback function line:
-// "net/http.(*conn).serve(0xc000, {0x1, 0x2})" → "net/http.(*conn).serve".
 func goFuncName(s string) string {
 	if strings.HasPrefix(s, "created by ") {
 		return s

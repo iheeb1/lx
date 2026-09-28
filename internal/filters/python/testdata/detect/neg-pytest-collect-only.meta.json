@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "pytest",
+    "--co",
+    "tests/test_basic.py"
+  ],
+  "shell": "pytest --co tests/test_basic.py",
+  "exit_code": 0,
+  "description": "REAL (negative): pytest --co tests/test_basic.py in pallets/click: the session header, the collected tree, '56 tests collected in \u2026' (a listing; the pytest filter declines --co)",
+  "cwd": "/home/user/src/click",
+  "repo": "pallets/click",
+  "tool": ""
+}

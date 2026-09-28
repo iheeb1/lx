@@ -2,26 +2,13 @@ package jstools
 
 import (
 	"fmt"
-	"github.com/iheeb1/lx/internal/lazyre"
 	"strings"
 	"unicode/utf8"
 
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
-// npmLs condenses `npm ls` trees (and pnpm ls, yarn list, bun pm ls). The
-// box-drawing prefixes ("│ │ ├─┬ ") cost more tokens than the package
-// names, so the tree is re-drawn with two spaces per level. With
-// --all/--depth, npm's "deduped" leaves (a package already shown elsewhere
-// in the tree) are folded into a "[+N deduped]" count on their parent, so
-// every installed package@version is still listed once. Without them
-// nothing is folded (workspace roots show deduped entries at depth 1 even
-// then, and the view must stay Faithful).
-// UNMET/invalid/extraneous/missing/overridden entries and every npm error
-// line are always kept. When packages are named (`npm ls debug`) the
-// deduped lines are the answer and are kept.
-//
-// npm ls is Content: package names such as http-errors are not errors.
 type npmLs struct{}
 
 func (npmLs) Name() string { return "npm-ls" }
@@ -34,17 +21,8 @@ func (npmLs) Match(c *engine.Context) bool {
 
 func (npmLs) IsContent() bool { return true }
 
-// Faithful: deduped leaves are folded only with --all/--depth (see
-// lsFolds); otherwise re-drawing the tree loses nothing. The two must agree:
-// a folded view that claimed to be faithful would print no receipt, and the
-// folded entries could not be recovered.
 func (npmLs) Faithful(c *engine.Context) bool { return !lsFolds(c) }
 
-// lsFolds reports whether deduped leaves are folded: only for a full tree
-// (--all/--depth) and never when packages are named (`npm ls debug`: the
-// deduped lines are the answer). Without --all, npm ls still shows the
-// dependencies of workspaces at depth 1, deduped ones included; those are
-// few and stay.
 func lsFolds(c *engine.Context) bool {
 	_, _, rest, _ := manager(c)
 	if !hasArg(rest, "--all", "-a", "--depth") {
@@ -64,13 +42,10 @@ func lsFolds(c *engine.Context) bool {
 }
 
 var (
-	// npm, pnpm: "│ │ ├─┬ name@1.0.0 deduped": indent units "│ " or "  ",
-	// then the branch.
 	lsTreeRe = lazyre.New(`^((?:│ |  )*)[├└]─[─┬] (.+)$`)
-	// yarn: "│  └─ name@1.0.0": indent units of 3.
+
 	lsYarnTreeRe = lazyre.New(`^((?:│  |   )*)[├└]─ (.+)$`)
-	// pnpm: "│" spacer and "│   dependencies:" section lines, and the
-	// legend of colors that normalizing removed.
+
 	lsPnpmBarRe     = lazyre.New(`^│\s*$`)
 	lsPnpmSectionRe = lazyre.New(`^│\s+(\S.*:)$`)
 	lsPnpmLegendRe  = lazyre.New(`^Legend: production dependency, optional only, dev only$`)
@@ -85,11 +60,11 @@ func (npmLs) Apply(c *engine.Context, s string) (string, bool) {
 	lines := strings.Split(s, "\n")
 	var (
 		r         []string
-		counts    = map[int]int{} // output index → deduped children folded
-		parents   []int           // output index of the last entry at each depth
+		counts    = map[int]int{}
+		parents   []int
 		folded    int
 		entries   int
-		lastEntry int // index after the last tree line
+		lastEntry int
 	)
 	var o out
 	for _, ln := range lines {
@@ -102,7 +77,6 @@ func (npmLs) Apply(c *engine.Context, s string) (string, bool) {
 			parents = parents[:0]
 			switch {
 			case lsPnpmBarRe.MatchString(ln), lsPnpmLegendRe.MatchString(ln):
-				// spacer, and a legend for colors normalizing removed
 			case lsPnpmSectionRe.MatchString(ln):
 				r = append(r, lsPnpmSectionRe.FindStringSubmatch(ln)[1])
 			default:

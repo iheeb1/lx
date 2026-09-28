@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "npx",
+    "vitest",
+    "list"
+  ],
+  "shell": "npx vitest list",
+  "exit_code": 0,
+  "description": "REAL (negative): npx vitest list in unjs/ufo: every test's name (a listing)",
+  "cwd": "/home/user/src/ufo",
+  "repo": "unjs/ufo",
+  "tool": ""
+}

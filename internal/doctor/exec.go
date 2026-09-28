@@ -13,15 +13,8 @@ import (
 	"time"
 )
 
-// maxCapture bounds what doctor keeps of a program's stdout and stderr.
 const maxCapture = 1 << 20
 
-// ExecWith returns an Env.Exec that runs programs for real with the given
-// environment (nil: inherit this process's). stdin is fed from the string,
-// stdout is returned, and a non-zero exit is an *exec.ExitError whose
-// message carries the first line of stderr. Programs run in their own
-// session, without the terminal. When ctx expires the program's process
-// group is killed and its pipes are abandoned after one second.
 func ExecWith(env []string) func(ctx context.Context, name string, args []string, stdin string) (string, error) {
 	return func(ctx context.Context, name string, args []string, stdin string) (string, error) {
 		cmd := exec.CommandContext(ctx, name, args...)
@@ -49,8 +42,6 @@ type runError struct {
 func (e *runError) Error() string { return fmt.Sprintf("%v: %s", e.err, e.stderr) }
 func (e *runError) Unwrap() error { return e.err }
 
-// capped keeps the first maxCapture bytes written to it and drops the
-// rest. (It must not expose ReadFrom, or io.Copy would bypass Write.)
 type capped struct{ buf bytes.Buffer }
 
 func (c *capped) Write(p []byte) (int, error) {
@@ -62,10 +53,6 @@ func (c *capped) Write(p []byte) (int, error) {
 
 func (c *capped) String() string { return c.buf.String() }
 
-// FindProjectDir is the project whose .claude settings apply at cwd:
-// $CLAUDE_PROJECT_DIR when set, else the nearest ancestor of cwd holding a
-// .claude directory. The user's own config directory (~/.claude, or
-// configDir) does not make a project.
 func FindProjectDir(cwd, home, configDir string, getenv func(string) string) string {
 	if d := getenv("CLAUDE_PROJECT_DIR"); d != "" {
 		return d
@@ -94,8 +81,6 @@ func FindProjectDir(cwd, home, configDir string, getenv func(string) string) str
 	}
 }
 
-// ManagedSettingsPath is where enterprise-managed Claude Code settings live
-// (the path lx's hook reads).
 func ManagedSettingsPath() string {
 	switch runtime.GOOS {
 	case "darwin":

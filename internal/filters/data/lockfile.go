@@ -8,7 +8,6 @@ import (
 	"strings"
 )
 
-// lockfileKind names the lockfile format of a base name, or "".
 func lockfileKind(base string) string {
 	switch base {
 	case "package-lock.json", "npm-shrinkwrap.json":
@@ -37,22 +36,16 @@ func lockfileKind(base string) string {
 
 type lockPkg struct{ name, version string }
 
-// lockSummary is what a lockfile parser extracts.
 type lockSummary struct {
-	format  string // "npm, lockfileVersion 3"
+	format  string
 	pkgs    []lockPkg
-	direct  []lockPkg // direct dependencies, when the format records them
-	grepFor string    // grep command template, with <name> for the package
-	noun    string    // what is counted ("package" when empty)
+	direct  []lockPkg
+	grepFor string
+	noun    string
 }
 
-// maxLockList: the package list is shown only when it costs at most this.
 const maxLockList = 1200
 
-// summarizeLockfile renders a one-line summary of a lockfile with its
-// package count, the direct dependencies when the format records them, and
-// the full package list when it is short. It returns ok=false when the
-// content does not parse as the format its name says.
 func summarizeLockfile(kind, path, out string) (string, bool) {
 	var (
 		s  lockSummary
@@ -79,8 +72,7 @@ func summarizeLockfile(kind, path, out string) (string, bool) {
 	if !ok || len(s.pkgs) == 0 {
 		return "", false
 	}
-	// The viewer's own messages ("cat: yarn.lock: Input/output error")
-	// come first, verbatim.
+
 	var b strings.Builder
 	for _, ln := range strings.Split(out, "\n") {
 		if fileDiagRe.MatchString(ln) {
@@ -149,7 +141,7 @@ func parseNpmLock(out string) (lockSummary, bool) {
 		for _, k := range keys {
 			name := k[strings.LastIndex(k, "node_modules/")+len("node_modules/"):]
 			if !strings.Contains(k, "node_modules/") {
-				name = k // workspace package
+				name = k
 			}
 			s.pkgs = append(s.pkgs, lockPkg{name, doc.Packages[k].Version})
 		}
@@ -167,7 +159,7 @@ func parseNpmLock(out string) (lockSummary, bool) {
 		}
 		return s, true
 	}
-	// lockfileVersion 1: nested "dependencies" objects.
+
 	var walk func(deps map[string]json.RawMessage, depth int)
 	walk = func(deps map[string]json.RawMessage, depth int) {
 		if depth > 64 {
@@ -198,8 +190,7 @@ var yarnVersionRe = lazyre.New(`^  version:? "?([^"\s]+)"?$`)
 
 func parseYarnLock(out string) (lockSummary, bool) {
 	s := lockSummary{format: "yarn v1", grepFor: `grep -n -A2 '^"\?<name>@' FILE`}
-	// yarn v1 files start with "# yarn lockfile v1", berry files have a
-	// __metadata entry; anything else is not taken for a lockfile.
+
 	if !strings.Contains(out, "# yarn lockfile v1") && !strings.Contains(out, "\n__metadata:") && !strings.HasPrefix(out, "__metadata:") {
 		return s, false
 	}
@@ -252,8 +243,7 @@ func parsePnpmLock(out string) (lockSummary, bool) {
 				s.pkgs = append(s.pkgs, lockPkg{m[1], m[2]})
 			}
 		case "importers":
-			// The root importer's direct dependencies:
-			//   .:  /  dependencies:  /  'name':  /  version: 1.2.3
+
 			switch ind := len(ln) - len(strings.TrimLeft(ln, " ")); {
 			case ind == 2:
 				importer, dep = strings.TrimSuffix(strings.TrimSpace(ln), ":"), nil
@@ -263,7 +253,7 @@ func parsePnpmLock(out string) (lockSummary, bool) {
 			case ind == 8 && dep != nil && strings.HasPrefix(strings.TrimSpace(ln), "version: "):
 				v := strings.TrimPrefix(strings.TrimSpace(ln), "version: ")
 				if i := strings.IndexByte(v, '('); i > 0 {
-					v = v[:i] // peer-dependency suffix
+					v = v[:i]
 				}
 				dep.version = strings.Trim(v, `'"`)
 			}
@@ -274,8 +264,6 @@ func parsePnpmLock(out string) (lockSummary, bool) {
 
 var tomlKVRe = lazyre.New(`^(name|version) = "([^"]*)"$`)
 
-// parseTomlPackages reads Cargo.lock, poetry.lock and uv.lock: one
-// [[package]] table per locked package.
 func parseTomlPackages(kind, out string) (lockSummary, bool) {
 	s := lockSummary{format: map[string]string{"cargo": "Cargo", "poetry": "Poetry", "uv": "uv"}[kind],
 		grepFor: `grep -n -A1 'name = "<name>"' FILE`}
@@ -363,8 +351,7 @@ var (
 
 func parseGemfileLock(out string) (lockSummary, bool) {
 	s := lockSummary{format: "Bundler", grepFor: `grep -n '<name> (' FILE`}
-	// Bundler lockfiles list gems under a GEM (or PATH/GIT) source's
-	// "  specs:" line.
+
 	if !strings.Contains(out, "\n  specs:\n") || !gemSourceRe.MatchString(out) {
 		return s, false
 	}

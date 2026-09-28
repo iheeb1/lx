@@ -7,12 +7,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// find renders `find` and `fd` path lists as a directory tree: each
-// directory once, its files joined on the lines below, heavy directories
-// (node_modules, .git, dist, …) folded to a counted line unless a search
-// root lies inside them. Diagnostics ("find: ‘x’: Permission denied") are
-// kept verbatim, first. Very large lists are capped by depth and files per
-// directory with exact counts and extension histograms.
 type find struct{}
 
 func (find) Name() string    { return "find" }
@@ -66,9 +60,7 @@ func (f find) Apply(c *engine.Context, out string) (string, bool) {
 			paths = append(paths, ln)
 		}
 	}
-	// A failing run must be explained by a diagnostic the listing keeps
-	// (see Unexplained); otherwise it was cut short (timeout, signal) and
-	// counts would claim a complete listing.
+
 	if len(paths) == 0 || Unexplained(e, len(notes)) {
 		return "", false
 	}
@@ -91,9 +83,7 @@ func (f find) Apply(c *engine.Context, out string) (string, bool) {
 	if t.Len() == 0 {
 		return "", false
 	}
-	// Without -type f a leaf may be a directory find did not descend
-	// into (-maxdepth, -prune, -name matching a directory): counts must
-	// not call those "files".
+
 	t.Entries = !filesOnly && !dirsOnly
 	lines, capped := t.Render(DefaultTreeTarget)
 	var b strings.Builder
@@ -102,9 +92,7 @@ func (f find) Apply(c *engine.Context, out string) (string, bool) {
 	}
 	head := commaInt(t.Len()) + " " + plural(t.Len(), "path", "paths")
 	if t.Entries {
-		// find prints directories like files; only those with listed
-		// contents get their "/" here (-maxdepth leaves, -name '*test*'
-		// matching __tests__, empty directories do not).
+
 		head += " · names without / may be directories"
 	}
 	if capped != "" {
@@ -115,8 +103,6 @@ func (f find) Apply(c *engine.Context, out string) (string, bool) {
 	return strings.TrimRight(b.String(), "\n"), true
 }
 
-// findArgs returns find's starting points (the operands before the
-// expression) and whether the expression selects directories only.
 func findArgs(args []string) (roots []string, dirsOnly bool) {
 	i := 0
 	for i < len(args) {
@@ -127,7 +113,7 @@ func findArgs(args []string) (roots []string, dirsOnly bool) {
 			continue
 		case a == "-D" || a == "-f":
 			if a == "-f" && i+1 < len(args) {
-				roots = append(roots, args[i+1]) // BSD: -f path is a starting point
+				roots = append(roots, args[i+1])
 			}
 			i += 2
 			continue
@@ -147,8 +133,6 @@ func findArgs(args []string) (roots []string, dirsOnly bool) {
 	return roots, findSelects(args[i:], "d")
 }
 
-// findSelects reports whether a find expression keeps only entries of one
-// -type letter: a non-negated "-type typ" test and no -o / , alternative.
 func findSelects(args []string, typ string) bool {
 	sel := false
 	for j := 0; j+1 < len(args); j++ {
@@ -162,7 +146,6 @@ func findSelects(args []string, typ string) bool {
 	return sel
 }
 
-// fdValueFlags take a value in the next argument.
 var fdValueFlags = map[string]bool{
 	"-e": true, "--extension": true, "-t": true, "--type": true, "-d": true, "--max-depth": true,
 	"--min-depth": true, "--exact-depth": true, "-E": true, "--exclude": true, "-S": true,
@@ -172,9 +155,6 @@ var fdValueFlags = map[string]bool{
 	"--ignore-file": true, "--batch-size": true, "--max-buffer-time": true,
 }
 
-// fdArgs returns fd's search paths (positionals after the pattern and
-// --search-path values) and whether only directories or only files are
-// listed.
 func fdArgs(args []string) (roots []string, dirsOnly, filesOnly bool) {
 	var pos []string
 	types := 0

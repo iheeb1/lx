@@ -94,7 +94,9 @@ cat, make):
 
 rtk ran in a sandboxed home directory with telemetry disabled. Its SQLite
 tracking stayed on, as in a default install, so its timings include that write.
-lx's tracking was disabled (`LX_TRACK=0`), which saves it a small append.
+lx's tracking was disabled (`LX_TRACK=0`), which saves it a small append and
+the small write of `lx tune`'s state after each condensed run (about 0.5 ms),
+and keeps every view untuned.
 Neither tool had a warm cache advantage: every variant ran 7 times in turn.
 
 ## What the numbers are not

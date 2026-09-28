@@ -78,7 +78,7 @@ func TestCompactJSONRejects(t *testing.T) {
 			t.Errorf("CompactJSON(%q) = %q, ok", in, out)
 		}
 	}
-	// Within budget: untouched.
+
 	if _, ok := CompactJSON(issuesJSON(3), 1_000_000); ok {
 		t.Error("compacted within budget")
 	}

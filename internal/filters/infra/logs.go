@@ -8,17 +8,6 @@ import (
 	"github.com/iheeb1/lx/internal/engine"
 )
 
-// logsFilter condenses docker logs, docker compose logs, kubectl logs and
-// journalctl with engine.TemplateLogs: repeated lines become one template
-// with a count and a summary of their variable parts, while every record
-// holding an error-class line is kept verbatim (stack traces folded by
-// engine.FoldStacks), each distinct record once with its count.
-//
-// Output that is not log-shaped (fewer than 40 lines, or too few lines with
-// a timestamp or level) is only folded: identical consecutive lines are
-// collapsed with a count, stack traces are folded and runs of lines that
-// differ only in numbers are collapsed. lx never adds --tail or --since,
-// and followers (-f) are streamed, never buffered.
 type logsFilter struct{}
 
 func (logsFilter) Name() string { return "logs" }
@@ -36,8 +25,6 @@ func (logsFilter) Match(c *engine.Context) bool {
 	return c.Name() == "journalctl" && !journalMachine(c)
 }
 
-// journalMachine: -o json/json-pretty/json-sse/export/cat-less formats that
-// are data, not text logs.
 func journalMachine(c *engine.Context) bool {
 	args := c.Args()
 	for i, a := range args {
@@ -70,11 +57,6 @@ func (logsFilter) Stream(c *engine.Context) bool {
 	return false
 }
 
-// klogRe matches the header of klog lines ("I0926 10:00:00.000000 1
-// file.go:141] msg"), the format of Kubernetes components and many Go
-// services. engine.TemplateLogs does not recognize it as a log line (no
-// ISO timestamp, no level word), so such lines get a temporary "[I] "
-// level tag for templating, removed again from every output line.
 var klogRe = lazyre.New(`^([IWEF])\d{4} \d{2}:\d{2}:\d{2}\.\d{6}\s+\d+ \S+:\d+\] `)
 
 func (logsFilter) Apply(c *engine.Context, out string) (string, bool) {
@@ -100,7 +82,7 @@ func (logsFilter) Apply(c *engine.Context, out string) (string, bool) {
 			if klog > 0 && len(ln) > 4 && ln[0] == '[' && ln[2] == ']' && ln[3] == ' ' && klogRe.MatchString(ln[4:]) {
 				ln = ln[4:]
 			}
-			if engine.Classify(ln) == engine.Normal { // error and warning lines stay whole
+			if engine.Classify(ln) == engine.Normal {
 				ln = engine.ShortenLine(ln, 400)
 			}
 			t[i] = ln

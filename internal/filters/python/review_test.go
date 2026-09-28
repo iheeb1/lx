@@ -1,9 +1,5 @@
 package python
 
-// Regression tests for the defects found in the adversarial review of this
-// package. Each test names the failure it pins down; the real captures that
-// exposed them are fixtures too (testdata/captured, see corpus_test.go).
-
 import (
 	"fmt"
 	"strings"
@@ -18,11 +14,6 @@ import (
 const ptHeader = "============================= test session starts ==============================\n" +
 	"platform linux -- Python 3.12.1, pytest-8.3.4, pluggy-1.5.0\nrootdir: /home/user/src/demo\n"
 
-// Old pytest-cov (< 5) prints its table right after the warnings summary's
-// Docs line, with no section header. The filter read the table and the
-// "FAIL Required test coverage" verdict as warning test ids, folded them into
-// "(+9 more)" and exempted them from its guard: exit 1 with "7 passed" and
-// the reason gone.
 func TestReviewWarningsSummaryTailKept(t *testing.T) {
 	in := ptHeader + "collected 7 items\n\ntests/test_models.py .......                                             [100%]\n\n" +
 		"=============================== warnings summary ===============================\n" +
@@ -55,17 +46,13 @@ func TestReviewWarningsSummaryTailKept(t *testing.T) {
 	if strings.Contains(out, "coverage: platform linux, python 3.12.1-final-0 ----------- (+") {
 		t.Errorf("coverage header folded as a warning id:\n%s", out)
 	}
-	// The same through the whole pipeline: the verdict line is shown, not
-	// re-added by a guard.
+
 	res := engine.Process(ctx(1, "pytest", "--cov"), in, engine.Options{})
 	if res.GuardAdded != 0 || !strings.Contains(res.Output, "FAIL Required test coverage") {
 		t.Errorf("pipeline: guard=%d\n%s", res.GuardAdded, res.Output)
 	}
 }
 
-// --tb=no -rN (or -qq -rs) prints no FAILURES blocks and no FAILED lines:
-// the F/E marks of the progress lines are the only record of which files
-// failed, and the filter hid them all.
 func TestReviewFailMarksKeptWhenNothingElseNamesFailures(t *testing.T) {
 	in := ptHeader + "collected 30 items\n\n" +
 		"tests/test_models.py ....F......FEsx                                     [ 50%]\n" +
@@ -85,7 +72,7 @@ func TestReviewFailMarksKeptWhenNothingElseNamesFailures(t *testing.T) {
 	if strings.Contains(out, "tests/test_ok.py") {
 		t.Errorf("passing file kept:\n%s", out)
 	}
-	// With a short test summary naming the failures, progress stays hidden.
+
 	with := strings.Replace(in, "=== 3 failed", "=========================== short test summary info ============================\n"+
 		"FAILED tests/test_models.py::test_a\nFAILED tests/test_models.py::test_b\nFAILED tests/test_long.py::test_c\nERROR tests/test_models.py::test_d\n=== 3 failed", 1)
 	out, _, _ = reducePytest(ctx(1, "pytest"), with)
@@ -93,7 +80,6 @@ func TestReviewFailMarksKeptWhenNothingElseNamesFailures(t *testing.T) {
 		t.Errorf("progress kept although the summary names the failures:\n%s", out)
 	}
 
-	// -qq --tb=no -rs: no result line, a short summary with only a skip.
 	qq := "....F......FEsx.FF..FFF                                                  [100%]\n" +
 		"=========================== short test summary info ============================\n" +
 		"SKIPPED [1] tests/test_models.py:54: needs network"
@@ -106,9 +92,6 @@ func TestReviewFailMarksKeptWhenNothingElseNamesFailures(t *testing.T) {
 	}
 }
 
-// A test printing a pytest report (pytester, a subprocess) put a second
-// "test session starts" header, a FAILURES header and a result line in its
-// captured stdout; they were parsed as the outer report's sections.
 func TestReviewNestedSessionStaysCaptured(t *testing.T) {
 	in := ptHeader + "collected 2 items\n\ntests/test_plugin.py .F                                                  [100%]\n\n" +
 		"=================================== FAILURES ===================================\n" +
@@ -129,8 +112,7 @@ func TestReviewNestedSessionStaysCaptured(t *testing.T) {
 	if !ok || added != 0 {
 		t.Fatalf("ok=%v added=%d\n%s", ok, added, out)
 	}
-	// The nested report is captured output: kept as printed, inside the
-	// captured block, before the outer short summary.
+
 	nested := "----------------------------- Captured stdout call -----------------------------\n" +
 		"============================= test session starts ==============================\n" +
 		"platform linux -- Python 3.12.1, pytest-8.3.4, pluggy-1.5.0\ncollected 3 items\n\n" +
@@ -145,7 +127,7 @@ func TestReviewNestedSessionStaysCaptured(t *testing.T) {
 	if !strings.HasSuffix(out, "FAILED tests/test_plugin.py::test_plugin - assert 1 == 0\n========================= 1 failed, 1 passed in 0.20s ==========================") {
 		t.Errorf("outer summary changed:\n%s", out)
 	}
-	// Without a nested result line before the outer one, nothing is merged.
+
 	broken := strings.Replace(in, "========================= 1 failed, 2 passed in 0.01s ==========================\n", "", 1)
 	out, _, _ = reducePytest(ctx(1, "pytest"), broken)
 	if !strings.Contains(out, "FAILED tests/test_plugin.py::test_plugin - assert 1 == 0") {
@@ -153,8 +135,6 @@ func TestReviewNestedSessionStaysCaptured(t *testing.T) {
 	}
 }
 
-// console_output_style=count prints "[ 5/23]": the -v PASSED lines were
-// not recognized and all kept.
 func TestReviewCountStyleVerbose(t *testing.T) {
 	var b strings.Builder
 	b.WriteString(ptHeader + "collecting ... collected 40 items\n\n")
@@ -173,8 +153,6 @@ func TestReviewCountStyleVerbose(t *testing.T) {
 	}
 }
 
-// pytest-xdist -v announces each test with a bare node id before a worker
-// reports it; those lines were all kept.
 func TestReviewXdistStartLines(t *testing.T) {
 	in := ptHeader + "created: 2/2 workers\n2 workers [3 items]\n\nscheduling tests via LoadScheduling\n\n" +
 		"tests/test_a.py::test_a \ntests/test_a.py::test_fail_b \n[gw0] [ 33%] PASSED tests/test_a.py::test_a \n" +
@@ -189,15 +167,13 @@ func TestReviewXdistStartLines(t *testing.T) {
 	if out != want {
 		t.Errorf("got\n%s\nwant\n%s", out, want)
 	}
-	// Without xdist, a bare node id line (-v -s output) is kept.
+
 	plain := ptHeader + "collected 1 item\n\ntests/test_a.py::test_a starting\nPASSED\n\n==== 1 passed in 0.01s ===="
 	if out, _, _ := reducePytest(ctx(0, "pytest", "-v", "-s"), plain); !strings.Contains(out, "tests/test_a.py::test_a starting") {
 		t.Errorf("-s output dropped:\n%s", out)
 	}
 }
 
-// A segfault in a test leaves faulthandler's dump and no result line: the
-// filter bailed and the generic reducer could not shorten the 40 frames.
 func TestReviewCrashDump(t *testing.T) {
 	var b strings.Builder
 	b.WriteString(ptHeader + "collected 2 items\n\ncrash/test_crash.py .Fatal Python error: Segmentation fault\n\n")
@@ -220,14 +196,12 @@ func TestReviewCrashDump(t *testing.T) {
 			t.Errorf("missing %q in:\n%s", want, out)
 		}
 	}
-	// Killed without a dump (SIGKILL, CI timeout): still the generic reducer's.
+
 	if _, _, ok := reducePytest(ctx(137, "pytest"), ptHeader+"collected 2 items\n\ncrash/test_crash.py ."); ok {
 		t.Error("a run killed without a dump must bail")
 	}
 }
 
-// INTERNALERROR> tracebacks (a plugin bug) were kept whole: 35 pluggy
-// frames per line prefix.
 func TestReviewInternalErrorFolded(t *testing.T) {
 	var b strings.Builder
 	b.WriteString(ptHeader + "collected 2 items\n\nie/test_ie.py ..\nINTERNALERROR> Traceback (most recent call last):\n")
@@ -249,9 +223,6 @@ func TestReviewInternalErrorFolded(t *testing.T) {
 	}
 }
 
-// Warning groups beyond the cap of 20 were dropped even when their message
-// held an error line; the filter's own guard then re-added the line under
-// "[lx: error lines from the full output]".
 func TestReviewWarningCapKeepsErrors(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("collected 40 items\n\ntests/test_w.py ........................................ [100%]\n\n")
@@ -278,8 +249,6 @@ func TestReviewWarningCapKeepsErrors(t *testing.T) {
 	}
 }
 
-// A CRITICAL record in the middle of a long captured log was cut: the
-// classifier does not know the word.
 func TestReviewCapturedCriticalKept(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("collected 1 item\n\ntests/test_l.py F                                                        [100%]\n\n" +
@@ -302,7 +271,6 @@ func TestReviewCapturedCriticalKept(t *testing.T) {
 	}
 }
 
-// Windows: CRLF line ends, backslash paths, "\Lib\" standard library.
 func TestReviewWindowsOutput(t *testing.T) {
 	in := strings.Join([]string{
 		"============================= test session starts =============================",
@@ -336,7 +304,7 @@ func TestReviewWindowsOutput(t *testing.T) {
 		"========================= 1 failed, 2 passed in 0.12s =========================",
 	}, "\r\n") + "\r\n"
 	c := &engine.Context{Argv: []string{"C:\\venv\\Scripts\\pytest.exe"}, Exit: 1, Cwd: "C:\\Users\\dev\\proj"}
-	c.Argv[0] = "pytest" // filepath.Base does not split on "\" on Unix hosts
+	c.Argv[0] = "pytest"
 	res := engine.Process(c, in, engine.Options{})
 	if res.Filter != "pytest" || res.GuardAdded != 0 {
 		t.Fatalf("filter=%s guard=%d\n%s", res.Filter, res.GuardAdded, res.Output)
@@ -352,9 +320,6 @@ func TestReviewWindowsOutput(t *testing.T) {
 	}
 }
 
-// "/lib/python" anywhere in a path made project code under src/lib/python/
-// (a common monorepo layout) count as the standard library, and its frames
-// were folded away.
 func TestReviewIsLibPath(t *testing.T) {
 	for p, want := range map[string]bool{
 		"/usr/lib/python3.12/json/decoder.py":                          true,
@@ -386,9 +351,6 @@ func TestReviewIsLibPath(t *testing.T) {
 	}
 }
 
-// Exception groups (asyncio.TaskGroup, Python 3.11+) draw "|" rails in
-// front of every frame; their library frames were never folded, and the
-// script filter did not even recognize "Exception Group Traceback".
 func TestReviewExceptionGroupFolded(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("  + Exception Group Traceback (most recent call last):\n  |   File \"/home/user/src/demo/tg.py\", line 17, in <module>\n  |     asyncio.run(main())\n")
@@ -416,8 +378,6 @@ func TestReviewExceptionGroupFolded(t *testing.T) {
 	}
 }
 
-// faulthandler lists the most recent call first: the crashing frame is the
-// first one of each thread, not the last.
 func TestReviewFaulthandlerKeepsFirstFrame(t *testing.T) {
 	in := "Fatal Python error: Segmentation fault\n\nCurrent thread 0x00007f (most recent call first):\n" +
 		"  File \"/usr/lib/python3.12/ctypes/__init__.py\", line 509 in string_at\n" +
@@ -433,9 +393,6 @@ func TestReviewFaulthandlerKeepsFirstFrame(t *testing.T) {
 	}
 }
 
-// mypy's "Error code "x" not covered by "type: ignore[y]" comment" note
-// says something about its own line; deduplicating it by text dropped it
-// at every other location and made the engine's guard re-add it.
 func TestReviewMypyLocationNotesKept(t *testing.T) {
 	var b strings.Builder
 	for i := 1; i <= 30; i++ {
@@ -455,9 +412,6 @@ func TestReviewMypyLocationNotesKept(t *testing.T) {
 	}
 }
 
-// A package name with an error word ("pytest-error-for-skips") made pip's
-// hidden "Collecting …" line an error line, which the engine's guard then
-// printed under "[lx: error lines from the full output]".
 func TestReviewPipErrorWordPackageNotHidden(t *testing.T) {
 	var b strings.Builder
 	for i := 0; i < 20; i++ {
@@ -477,8 +431,6 @@ func TestReviewPipErrorWordPackageNotHidden(t *testing.T) {
 	}
 }
 
-// engine.Relativize turns file:///home/user/src/x into file://~/src/x (a
-// URL whose host is "~"); the filters leave such lines alone.
 func TestReviewFileURLNotRelativized(t *testing.T) {
 	in := "Processing /home/user/src/badpkg\nWARNING: Discarding file:///home/user/src/badpkg. Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.\n" +
 		"ERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output."
@@ -488,8 +440,6 @@ func TestReviewFileURLNotRelativized(t *testing.T) {
 	}
 }
 
-// ruff exiting non-zero after "All checks passed!" (--exit-non-zero-on-fix,
-// a crash after the report) printed nothing but the pass line.
 func TestReviewRuffExitNote(t *testing.T) {
 	out, ok := apply(t, "ruff", ctx(1, "ruff", "check", "--fix", "--exit-non-zero-on-fix"), "All checks passed!")
 	if !ok || out != "All checks passed!\n[lx: ruff exited 1]" {
@@ -500,8 +450,6 @@ func TestReviewRuffExitNote(t *testing.T) {
 	}
 }
 
-// The filters must stay fast on 50k-line inputs of the shapes this review
-// added (xdist -v start lines, INTERNALERROR prefixes, exception groups).
 func TestReviewHugeShapes(t *testing.T) {
 	var b strings.Builder
 	b.WriteString(ptHeader + "created: 8/8 workers\n8 workers [25000 items]\n\n")
@@ -514,9 +462,7 @@ func TestReviewHugeShapes(t *testing.T) {
 	if el := time.Since(start); el > 2*time.Second*raceSlowdown || !ok || !strings.Contains(out, "[lx: 25000 xdist test-start lines hidden]") {
 		t.Fatalf("ok=%v in %v:\n%.500s", ok, el, out)
 	}
-	// Many nested session headers without their own result line: the
-	// look-ahead for a nested result line must not rescan the report per
-	// header (it did: 40 s for 25k headers).
+
 	b.Reset()
 	b.WriteString("collected 1 item\n=== FAILURES ===\n____ t ____\n---- Captured stdout call ----\n")
 	for i := 0; i < 25000; i++ {
@@ -541,9 +487,6 @@ func TestReviewHugeShapes(t *testing.T) {
 	}
 }
 
-// Wrappers lx is expected to see through (brief: timeout, nice, nohup, env,
-// VAR=value) were not peeled, and `coverage run -m pytest` (the usual way
-// to measure coverage without pytest-cov) was treated as a script.
 func TestReviewWrappers(t *testing.T) {
 	cases := []struct {
 		want string
@@ -576,8 +519,6 @@ func TestReviewWrappers(t *testing.T) {
 	}
 }
 
-// Commands that never end on their own must run in passthrough; the python
-// filters matched them without saying so.
 func TestReviewStream(t *testing.T) {
 	cases := []struct {
 		stream bool
@@ -611,9 +552,6 @@ func TestReviewStream(t *testing.T) {
 	}
 }
 
-// A duplicated note hides the lines after it as "--pretty continuation"
-// even without --pretty: a mypy crash traceback printed after a repeated
-// Hint note vanished (only its error-class lines came back via the guard).
 func TestReviewMypyCrashAfterHiddenNote(t *testing.T) {
 	in := `src/a.py:3: error: Library stubs not installed for "requests"  [import-untyped]
 src/a.py:3: note: Hint: "python3 -m pip install types-requests"
@@ -634,7 +572,7 @@ https://mypy.readthedocs.io/en/stable/common_issues.html#using-a-development-myp
 			}
 		}
 	}
-	// --pretty: the wrapped rest of a hidden note still goes with it.
+
 	pretty := "a.py:1: error: Library stubs not installed for \"requests\"\n[import-untyped]\n    import requests\n    ^\n" +
 		"a.py:1: note: (or run \"mypy --install-types\" to install all missing\nstub packages)\n" +
 		"b.py:1: error: Library stubs not installed for \"requests\"\n[import-untyped]\n    import requests\n    ^\n" +
@@ -646,14 +584,11 @@ https://mypy.readthedocs.io/en/stable/common_issues.html#using-a-development-myp
 	}
 }
 
-// Multi-span ruff diagnostics (F811 and friends) carry a secondary location
-// ("  ::: other.py:6:5") and labels on other lines ("-- previous
-// definition of `os` here"); the snippet trimming dropped both silently.
 func TestReviewRuffSecondarySpans(t *testing.T) {
 	in := "F811 Redefinition of unused `f` from line 6\n  --> multi.py:19:5\n   |\n19 | def f():\n   |     ^ `f` redefined here\n20 |     return 2\n   |\n" +
 		"  ::: lib/other.py:6:5\n   |\n 6 | def f(x: List[int] = []):\n   |     - previous definition of `f` here\n 7 |     try:\n   |\nhelp: Remove definition: `f`\n\n"
 	var b strings.Builder
-	for i := 0; i < 11; i++ { // the 12th diagnostic has its snippet hidden
+	for i := 0; i < 11; i++ {
 		b.WriteString(in)
 	}
 	b.WriteString("Found 11 errors.")
@@ -667,7 +602,6 @@ func TestReviewRuffSecondarySpans(t *testing.T) {
 	}
 }
 
-// pytest 9 counts subtests separately: "1 subtests failed" is a failure.
 func TestReviewSubtestFailCount(t *testing.T) {
 	in := "collected 1 item\n\nt.py ,u,                                                      [100%]\n\n" +
 		"========================= 1 passed, 1 subtests failed, 2 subtests passed in 0.10s ========================="

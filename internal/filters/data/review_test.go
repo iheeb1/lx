@@ -1,9 +1,5 @@
 package data
 
-// Regression tests for the defects found in the adversarial review. Each
-// test names the failure it guards against; the real captures behind most
-// of them are in testdata/data (see their meta descriptions).
-
 import (
 	"fmt"
 	"github.com/iheeb1/lx/internal/testenv"
@@ -17,8 +13,6 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-// bigSource returns n lines of indented Go-like code (no declarations, so
-// the outline stays empty and only kept lines are listed).
 func bigSource(n int) []string {
 	src := make([]string, n)
 	for i := range src {
@@ -35,9 +29,6 @@ func jsonRecords(n int) []string {
 	return append(ls, `  {"id": -1}`, "]")
 }
 
-// jq 1.5/1.6 print parse errors without a "jq: " prefix; the old
-// diagnostic pattern missed them and a windowed view dropped them (jq is a
-// Content filter: the engine guard is off).
 func TestReviewJQBareParseErrorKept(t *testing.T) {
 	js := jsonRecords(600)
 	in := strings.Join(js[:300], "\n") + "\nparse error: Invalid numeric literal at line 1, column 6\n" + strings.Join(js[300:], "\n")
@@ -47,10 +38,6 @@ func TestReviewJQBareParseErrorKept(t *testing.T) {
 	}
 }
 
-// jq's stdout is block-buffered and its stderr is not, so its error lands
-// inside an output line (real capture jq-ndjson-corrupt: after the
-// indentation of line 2659 of 2776). The old filter matched diagnostics at
-// line start only and windowed the line away.
 func TestReviewJQGluedErrorKept(t *testing.T) {
 	js := jsonRecords(600)
 	js[400] = js[400][:25] + "jq: error (at <stdin>:401): Cannot index number with \"x\""
@@ -62,9 +49,6 @@ func TestReviewJQGluedErrorKept(t *testing.T) {
 	}
 }
 
-// Merge-conflict markers in the omitted range of a windowed file were
-// dropped, and a lockfile with conflicts was summarized as a healthy
-// lockfile. Now every marker, and each small hunk in full, is listed.
 func TestReviewConflictMarkersSurvive(t *testing.T) {
 	src := bigSource(1500)
 	hunk := []string{"<<<<<<< HEAD", "\ty := 1", "=======", "\ty := 2", ">>>>>>> feature"}
@@ -98,15 +82,12 @@ func TestReviewConflictMarkersSurvive(t *testing.T) {
 	if strings.HasPrefix(got, "[lx: lockfile") || !strings.Contains(got, "<<<<<<< HEAD") || !strings.Contains(got, `version "3.0.0"`) {
 		t.Fatalf("conflicted lockfile summarized or its hunk hidden:\n%s", head(got, 600))
 	}
-	// "=======" alone (a setext heading underline) is not a conflict.
+
 	if hasConflict([]string{"Title", "=======", "text"}) {
 		t.Error("lone ======= taken for a conflict")
 	}
 }
 
-// cat prints the diagnostic for a missing operand right after the last
-// line of a file without a trailing newline (real capture
-// cat-glued-missing); the old keep pattern was anchored at line start.
 func TestReviewCatGluedDiagnosticListed(t *testing.T) {
 	src := bigSource(1200)
 	src[800] += "cat: missing.go: No such file or directory"
@@ -114,7 +95,7 @@ func TestReviewCatGluedDiagnosticListed(t *testing.T) {
 	if !strings.Contains(got, "  L801: "+src[800]) {
 		t.Fatalf("glued cat diagnostic not listed:\n%s", got)
 	}
-	// On a minified line it is still listed (shortened from the start).
+
 	src[800] = strings.Repeat("a", 50000) + "cat: missing.go: No such file or directory"
 	got, _ = apply(t, ctx(1, "cat", "a.js", "missing.go", "b.js"), strings.Join(src, "\n"))
 	if !strings.Contains(got, "cat: missing.go: No such file or directory") || strings.Contains(got, strings.Repeat("a", 5000)) {
@@ -122,10 +103,6 @@ func TestReviewCatGluedDiagnosticListed(t *testing.T) {
 	}
 }
 
-// curl's exit message can land inside a body line when stdout is flushed
-// after stderr (real capture curl-sS-partial: line 1868 of 2085). The old
-// filter left it in the body, windowed it away, and said "curl printed no
-// error message".
 func TestReviewCurlGluedExitMessage(t *testing.T) {
 	js := jsonRecords(900)
 	js[600] = js[600][:30] + "curl: (18) transfer closed with 48213 bytes remaining to read"
@@ -139,9 +116,7 @@ func TestReviewCurlGluedExitMessage(t *testing.T) {
 	if strings.Contains(got, "printed no error message") {
 		t.Errorf("claims curl printed no message:\n%s", got)
 	}
-	// Body text quoting another curl error is data: with exit 0 nothing
-	// is split, and a different number is never taken for the exit
-	// message.
+
 	in := "line one\nthe log says: curl: (6) Could not resolve host: x\nline three"
 	for _, exit := range []int{0, 7} {
 		got, _ := apply(t, ctx(exit, "curl", "-s", "https://x/log.txt"), in)
@@ -151,17 +126,13 @@ func TestReviewCurlGluedExitMessage(t *testing.T) {
 	}
 }
 
-// Lines removed from a body (a progress-meter frame alone on its line,
-// curl's own message) shifted the line numbers of everything after them,
-// so "lx show <id> --lines A-B" named the wrong lines and two lines were
-// in neither the view nor the range (real capture curl-partial-meter).
 func TestReviewBodyLineNumbersExact(t *testing.T) {
 	js := jsonRecords(900)
 	var raw []string
 	raw = append(raw, js[:500]...)
 	raw = append(raw, " 60 60989   60 36593    0     0  33.7M      0 --:--:-- --:--:-- --:--:-- 34.8M")
 	raw = append(raw, "curl: (18) transfer closed with 24396 bytes remaining to read")
-	raw = append(raw, js[500:880]...) // truncated: not valid JSON, so windowed
+	raw = append(raw, js[500:880]...)
 	got, _ := apply(t, ctx(18, "curl", "https://x/api"), strings.Join(raw, "\n"))
 	m := regexp.MustCompile(`(?m)^… lines (\d+)-(\d+) omitted`).FindStringSubmatch(got)
 	if m == nil {
@@ -181,8 +152,6 @@ func TestReviewBodyLineNumbersExact(t *testing.T) {
 	}
 }
 
-// When the body is condensed the frame spots cannot be marked inline; the
-// note used to say "printed into the output here" at the end of the view.
 func TestReviewMeterNoteCondensed(t *testing.T) {
 	js := jsonRecords(400)
 	js[100] = " 60 60989   60 36593    0     0  33.7M      0 --:--:-- --:--:-- --:--:-- 34.8M" + js[100]
@@ -192,9 +161,6 @@ func TestReviewMeterNoteCondensed(t *testing.T) {
 	}
 }
 
-// httpie's argparse usage error ("usage:" … "error:" … message) is an
-// error message; the silent-exit note must not claim otherwise (real
-// capture httpie-usage-error). A real silent failure is explained.
 func TestReviewHTTPieExitNotes(t *testing.T) {
 	usage := "usage:\n    http [METHOD] URL [REQUEST_ITEM ...]\n\nerror:\n    Request body (from stdin, --raw or a file) and request data (key=value)\ncannot be mixed.\n\nfor more information:\n    run 'http --help' or visit https://httpie.io/docs/cli"
 	got, _ := apply(t, ctx(1, "http", "POST", "https://x", "a=b"), usage)
@@ -209,17 +175,13 @@ func TestReviewHTTPieExitNotes(t *testing.T) {
 	if strings.Contains(got, "printed no error message") {
 		t.Errorf("warning present but called silent:\n%s", got)
 	}
-	// -v: the request headers left out are counted.
+
 	v := "GET /x HTTP/1.1\nAccept: */*\nHost: x\n\nHTTP/1.1 200 OK\nContent-Type: text/plain\n\nhello"
 	if got, _ := apply(t, ctx(0, "http", "-v", "https://x"), v); !strings.Contains(got, "[lx: 2 request header lines not shown]") {
 		t.Errorf("request headers dropped without a count:\n%s", got)
 	}
 }
 
-// A JSON body preceded by another stream's lines (the urllib3
-// NotOpenSSLWarning httpie prints on macOS system Python) was not
-// recognized as JSON and got a raw text window (real capture
-// httpie-issues).
 func TestReviewJSONBodyAfterPrelude(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("/home/user/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+\n  warnings.warn(\n[")
@@ -234,21 +196,18 @@ func TestReviewJSONBodyAfterPrelude(t *testing.T) {
 	if !strings.Contains(got, "[lx: JSON body condensed") || !strings.HasPrefix(got, "/home/user/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning") {
 		t.Fatalf("prelude + JSON body:\n%s", head(got, 600))
 	}
-	// Not JSON after the prelude: the text is left to the text rules.
+
 	if k := jsonStart([]string{"warning", "[not json", "x"}); k != -1 {
 		t.Errorf("jsonStart = %d for invalid JSON", k)
 	}
 }
 
-// wget: lines the filter does not know were treated as a response body
-// even when nothing goes to stdout; localized logs must bail, and -q
-// failures are explained.
 func TestReviewWget(t *testing.T) {
 	de := "--2026-09-26 02:14:02--  https://go.dev/dl/nope.tar.gz\nAuflösen des Hostnamens go.dev (go.dev)… 216.239.32.21\nVerbindungsaufbau zu go.dev (go.dev)|216.239.32.21|:443 … verbunden.\nHTTP-Anforderung gesendet, auf Antwort wird gewartet … 404 Not Found\n2026-09-26 02:14:02 FEHLER 404: Not Found."
 	if got, ok := apply(t, ctx(8, "wget", "https://go.dev/dl/nope.tar.gz"), de); ok {
 		t.Errorf("localized wget log not bailed:\n%s", got)
 	}
-	// A line the filter does not know, among known ones, stays in place.
+
 	in := "--2026-09-26 02:14:02--  https://x/a\nHTTP request sent, awaiting response... 200 OK\nLength: 10 [text/plain]\nSaving to: ‘a’\nSome new wget notice nobody listed.\n2026-09-26 02:14:02 (1 MB/s) - ‘a’ saved [10/10]"
 	if got, ok := apply(t, ctx(0, "wget", "https://x/a"), in); !ok || !strings.Contains(got, "Saving to: ‘a’\nSome new wget notice nobody listed.\n2026") {
 		t.Errorf("unknown log line moved or dropped (ok=%v):\n%s", ok, got)
@@ -257,7 +216,7 @@ func TestReviewWget(t *testing.T) {
 	if !strings.Contains(got, "[lx: wget exited 8 (the server issued an error response (4xx/5xx)); wget printed no error message]") {
 		t.Errorf("silent wget failure not explained: %q", got)
 	}
-	// Its own ERROR line is enough; a JSON body with "error" is not.
+
 	got, _ = apply(t, ctx(8, "wget", "-qO-", "--content-on-error", "https://x/a"), `{"error": "not found"}`)
 	if !strings.Contains(got, "wget printed no error message") {
 		t.Errorf("body text taken for wget's message:\n%s", got)
@@ -276,7 +235,6 @@ func TestReviewWget(t *testing.T) {
 	}
 }
 
-// splitGlued keeps line indexes for every part it creates.
 func TestReviewSplitGlued(t *testing.T) {
 	out, idx := splitGlued([]string{"a", "bXc", "d"}, func(s string) int { return strings.Index(s, "X") })
 	if strings.Join(out, "|") != "a|b|Xc|d" || fmt.Sprint(idx) != "[0 1 1 2]" {
@@ -288,7 +246,6 @@ func TestReviewSplitGlued(t *testing.T) {
 	}
 }
 
-// The HTML text cap is an lx note like the others.
 func TestReviewHTMLCapMarked(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("<!doctype html><html><head><title>T</title></head><body>")
@@ -300,14 +257,10 @@ func TestReviewHTMLCapMarked(t *testing.T) {
 		t.Fatalf("cap marker:\n%s", lxNotes(got))
 	}
 	if engine.IsError(got) {
-		t.Log("view has error-class text") // informational only
+		t.Log("view has error-class text")
 	}
 }
 
-// One invalid UTF-8 byte made a whole file "binary": `cat` of Lua's
-// testes/strings.lua (43 Latin-1 bytes in 19 KB, real capture
-// cat-lua-latin1) printed only "[lx: binary data … not shown]", and a
-// curl body cut inside a UTF-8 sequence was hidden the same way.
 func TestReviewLatin1IsText(t *testing.T) {
 	src := bigSource(300)
 	src[100] = "assert(string.byte(\"\\xe4l\\0\xf3u\", 1, -1)) -- Latin-1 \xa9 1994"
@@ -326,7 +279,7 @@ func TestReviewLatin1IsText(t *testing.T) {
 		{"caf\xe9 cr\xe8me\n", false},
 		{"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x01\x00\x00\x00\x01\x00\x08\x06\x00\x00\x00\x5c\x72\xa8\x66", true},
 		{strings.Repeat("\xff\xfe\x01\x02", 100), true},
-		{"a\x00b\n", false}, // a stray NUL or two is not enough
+		{"a\x00b\n", false},
 	} {
 		if got := looksBinary(tc.in); got != tc.bin {
 			t.Errorf("looksBinary(%q) = %v", head(tc.in, 30), got)
@@ -334,7 +287,6 @@ func TestReviewLatin1IsText(t *testing.T) {
 	}
 }
 
-// The review's new paths stay linear on 50k-line inputs.
 func TestReviewHugeNewPathsFast(t *testing.T) {
 	src := bigSource(50000)
 	for i := 1000; i < 50000; i += 5000 {
@@ -377,9 +329,6 @@ func TestReviewHugeNewPathsFast(t *testing.T) {
 	}
 }
 
-// A many-request wget run (-r, -i list) kept every request's log lines:
-// 50k URLs gave 2.27M tokens. Successful requests are now counted, failed
-// ones kept whole with their error lines.
 func TestReviewWgetManyRequests(t *testing.T) {
 	var b strings.Builder
 	for i := range 300 {
@@ -410,10 +359,6 @@ func TestReviewWgetManyRequests(t *testing.T) {
 	}
 }
 
-// curl -v of a JSON body without a trailing newline: "* Connection #0 to
-// host x left intact" lands inside the (minified) JSON line at curl's
-// stdout flush and splits it in two (real capture curl-sv-nonewline). The
-// JSON view failed and the view showed a raw text window.
 func TestReviewCurlVerboseGluedInfoRejoined(t *testing.T) {
 	var b strings.Builder
 	b.WriteString("[")
@@ -432,15 +377,12 @@ func TestReviewCurlVerboseGluedInfoRejoined(t *testing.T) {
 	if !strings.Contains(got, "[lx: JSON body condensed") || strings.Contains(got, "left intact") {
 		t.Fatalf("glued info line not split out / JSON not rejoined:\n%s", head(got, 800))
 	}
-	// A body text line merely containing "* " is not split.
+
 	if k := gluedInfo(`{"note": "a * b * c"}`); k != -1 {
 		t.Errorf("gluedInfo split body text at %d", k)
 	}
 }
 
-// A progress-meter frame that erased the first line of a body (text
-// before a \r is dropped by normalization) left no note: the body just
-// started mid-JSON (real capture curl-v-nonewline).
 func TestReviewMeterAtBodyStartMarked(t *testing.T) {
 	in := "< HTTP/1.1 200 OK\n< Content-Type: application/json\n<\n" +
 		"100 34900  100 34900    0     0  32.6M      0 --:--:-- --:--:-- --:--:-- 33.2M\n" +
@@ -451,11 +393,6 @@ func TestReviewMeterAtBodyStartMarked(t *testing.T) {
 	}
 }
 
-// The yarn.lock parser took any text with unindented "name:" lines for a
-// lockfile (C labels such as "fail:"), so `cat yarn.lock` holding other
-// content — and cat's own diagnostic — was replaced by a package count
-// (found by FuzzDataFilters). Yarn and Bundler lockfiles now need their
-// format markers, and a summary keeps the viewer's diagnostics.
 func TestReviewLockfileNeedsItsFormat(t *testing.T) {
 	src := append([]string{"cat: missing.c: No such file or directory"}, bigSource(600)...)
 	src[300], src[301] = "fail:", "done:"

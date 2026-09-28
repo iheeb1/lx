@@ -6,31 +6,21 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/iheeb1/lx/internal/engine"
 )
 
-// Rules are the Bash(...) permission rules from Claude Code settings, kept
-// verbatim ("Bash(git push:*)"). Other tools' rules are dropped on load.
-// Dirs holds permissions.additionalDirectories as absolute paths: read-only
-// parity treats them like the project directory.
 type Rules struct {
 	Allow, Ask, Deny []string
 	Dirs             []string
 }
 
-// Permission verdicts returned by Decide.
 const (
 	VerdictDeny  = "deny"
 	VerdictAsk   = "ask"
 	VerdictAllow = "allow"
 )
 
-// LoadClaudeRules merges permissions.allow|ask|deny (and
-// additionalDirectories) from, in order:
-// <project>/.claude/settings.json, <project>/.claude/settings.local.json,
-// <user>/settings.json, <user>/settings.local.json and the managed
-// (enterprise) settings file. <project> is $CLAUDE_PROJECT_DIR (set by Claude
-// Code for hooks) or else cwd's nearest ancestor containing .claude/; <user>
-// is $CLAUDE_CONFIG_DIR or ~/.claude. Missing or malformed files are skipped.
 func LoadClaudeRules(cwd string) Rules {
 	var r Rules
 	seen := map[string]bool{}
@@ -45,16 +35,13 @@ func LoadClaudeRules(cwd string) Rules {
 	return r
 }
 
-// settingsPaths lists the settings files in order; the first nProject are
-// the project's.
 func settingsPaths(cwd string) (paths []string, nProject int) {
 	u := userClaudeDir()
 	if proj := projectDir(cwd); proj != "" {
 		paths = append(paths,
 			filepath.Join(proj, ".claude", "settings.json"),
 			filepath.Join(proj, ".claude", "settings.local.json"))
-		// With no .claude of its own, a project under $HOME finds ~/.claude:
-		// those are the user's settings, not the project's.
+
 		if u == "" || filepath.Join(proj, ".claude") != filepath.Clean(u) {
 			nProject = len(paths)
 		}
@@ -65,8 +52,6 @@ func settingsPaths(cwd string) (paths []string, nProject int) {
 	return append(paths, managedPath), nProject
 }
 
-// managedPath is a variable so tests can keep the machine's real managed
-// settings out of the picture.
 var managedPath = managedSettingsPath()
 
 func projectDir(cwd string) string {
@@ -92,7 +77,6 @@ func projectDir(cwd string) string {
 	}
 }
 
-// userClaudeDir is $CLAUDE_CONFIG_DIR or ~/.claude.
 func userClaudeDir() string {
 	if d := os.Getenv("CLAUDE_CONFIG_DIR"); d != "" {
 		return d
@@ -104,8 +88,6 @@ func userClaudeDir() string {
 	return filepath.Join(home, ".claude")
 }
 
-// managedSettingsPath is where enterprise-managed Claude Code settings live;
-// their deny rules must win over everything, so lx reads them too.
 func managedSettingsPath() string {
 	switch runtime.GOOS {
 	case "darwin":
@@ -138,12 +120,6 @@ func (r *Rules) mergeFile(path string, project bool) {
 	r.Dirs = appendDirs(r.Dirs, doc.Permissions.Dirs, path, project)
 }
 
-// appendDirs adds additionalDirectories entries from the settings file at
-// path. "~/x" is under the home directory; a relative entry in a project
-// settings file is relative to the project (the directory holding its
-// .claude folder). Relative entries in user or managed settings are skipped:
-// what they are relative to is not settled, and guessing could widen what
-// --readonly approves. Non-string entries are ignored.
 func appendDirs(dst []string, raws []json.RawMessage, path string, project bool) []string {
 	for _, raw := range raws {
 		var d string
@@ -186,8 +162,6 @@ func appendBash(dst []string, raws []json.RawMessage) []string {
 	return dst
 }
 
-// bashPattern extracts the pattern of a Bash rule: "Bash" and "Bash(*)" match
-// everything, "Bash(x)" matches x.
 func bashPattern(rule string) (string, bool) {
 	rule = strings.TrimSpace(rule)
 	if rule == "Bash" {
@@ -202,18 +176,11 @@ func bashPattern(rule string) (string, bool) {
 
 func (r Rules) empty() bool { return len(r.Allow)+len(r.Ask)+len(r.Deny) == 0 }
 
-// Decide returns "deny", "ask", "allow" or "" for a command, with
-// precedence deny > ask > allow. Compound commands are split into segments:
-// any segment matching deny (or ask) decides for the whole command, while
-// "allow" needs every segment allowed and a command lx can fully parse.
-// Each segment is matched with env assignments and wrappers peeled and as
-// raw text; for an lx segment the wrapped command is checked too.
 func (r Rules) Decide(cmd string) string {
 	v, _, _ := r.decide(cmd)
 	return v
 }
 
-// decide also returns the matching rule and the text it matched.
 func (r Rules) decide(cmd string) (verdict, rule, subject string) {
 	if r.empty() || strings.TrimSpace(cmd) == "" {
 		return "", "", ""
@@ -255,25 +222,22 @@ func (r Rules) decideAnalysis(a *analysis) (verdict, rule, subject string) {
 			return "", "", ""
 		}
 	}
-	if !matchedAny { // only cd / stdin filters: nothing was actually approved
+	if !matchedAny {
 		return "", "", ""
 	}
 	return VerdictAllow, "", ""
 }
 
-// permSeg holds the texts a segment is matched as. lenient texts are used
-// for deny/ask (more ways to match is safer); strict ones for allow (only
-// forms that cannot hide a side effect the rule's author did not approve).
 type permSeg struct {
 	lenient []string
 	strict  []string
-	neutral bool // `cd subdir` or a stdin-only head/tail/cat: needs no allow rule
+	neutral bool
 }
 
 func (a *analysis) permSegments() []permSeg {
 	var out []permSeg
 	if len(a.segs) == 0 || len(a.unsafe) > 0 || a.lx.broken {
-		// Whatever we can't split is also matched whole.
+
 		if t := strings.TrimSpace(a.src); t != "" {
 			out = append(out, permSeg{lenient: []string{t}})
 		}
@@ -304,10 +268,9 @@ func (a *analysis) permSegment(s *segment) permSeg {
 	add(&p.lenient, raw)
 	add(&p.lenient, words)
 	if onlyDup {
-		// A segment redirecting to or from a file is never allowed by lx:
-		// Bash(git:*) must not approve `git status > ~/.bashrc`.
+
 		add(&p.strict, raw)
-		add(&p.strict, words) // "git status 2>&1" counts as "git status"
+		add(&p.strict, words)
 	}
 	if s.cmdIdx >= 0 {
 		cw := s.words[s.cmdIdx]
@@ -316,23 +279,19 @@ func (a *analysis) permSegment(s *segment) permSeg {
 		add(&p.lenient, peeledRaw)
 		add(&p.lenient, peeledWords)
 		add(&p.lenient, strings.Join(s.argv, " "))
-		// The command inside a wrapper only lx looks through (uv run git
-		// push): the hook rewrites it, so deny and ask rules must see it.
+
 		for _, t := range wrappedTexts(s.argv) {
 			add(&p.lenient, t)
 		}
-		// Wrappers (timeout, nice, …) are transparent for allow; env
-		// assignments are not: LD_PRELOAD=x git status is not git status.
+
 		if len(s.envNames) == 0 && onlyDup {
 			add(&p.strict, peeledWords)
 		}
 		if s.isLx {
+			for _, t := range lxTexts(s) {
+				add(&p.lenient, t)
+			}
 			for _, inner := range lxInner(s.words[s.cmdIdx:]) {
-				add(&p.lenient, inner.text)
-				add(&p.lenient, inner.value)
-				for _, t := range wrappedTexts(strings.Fields(inner.value)) {
-					add(&p.lenient, t)
-				}
 				if inner.exact && len(s.envNames) == 0 && onlyDup {
 					add(&p.strict, inner.text)
 				}
@@ -354,8 +313,6 @@ func joinText(ts []token) string {
 	return strings.Join(parts, " ")
 }
 
-// cdNeutral: "cd sub/dir" changes directory within the current tree and
-// does nothing else; it does not need its own allow rule.
 func cdNeutral(argv []string) bool {
 	if len(argv) != 2 || argv[0] != "cd" {
 		return false
@@ -372,9 +329,6 @@ func cdNeutral(argv []string) bool {
 	return true
 }
 
-// plainWords: no word is expanded by the shell ($, wildcards, ~, braces,
-// zsh's extended glob), so the words lx sees are the words the command
-// gets. `cat -$IFS/etc/passwd` is `cat - /etc/passwd` in bash.
 func plainWords(ws []token) bool {
 	for _, w := range ws {
 		if w.expand {
@@ -387,17 +341,11 @@ func plainWords(ws []token) bool {
 	return true
 }
 
-// stdinFilter: head, tail or cat reading only stdin (flags, and the count of
-// -n/-c, or tail's -b) just shows part of a pipe; it needs no rule of its
-// own. Any operand is a file to some platform: `head 5` and GNU `tail +5`
-// read a file named 5 or +5, and BSD cat reads -x in `cat - -x` (its flags
-// end at the first operand), so `-`, `--` and a count that is not the value
-// of -n/-c/-b make the command an ordinary one.
 func stdinFilter(argv []string) bool {
 	if len(argv) == 0 || !oneOf(argv[0], "head", "tail", "cat") {
 		return false
 	}
-	count := false // the next word is the value of -n/-c/-b
+	count := false
 	for _, a := range argv[1:] {
 		if count {
 			if !isCount(a) {
@@ -414,7 +362,6 @@ func stdinFilter(argv []string) bool {
 	return !count
 }
 
-// isCount: a head/tail count such as 5, +5, -5 or 5K.
 func isCount(s string) bool {
 	if s != "" && (s[0] == '+' || s[0] == '-') {
 		s = s[1:]
@@ -434,16 +381,23 @@ func isCount(s string) bool {
 	return true
 }
 
-// lxCmd is a command lx would run for a model-written lx invocation.
 type lxCmd struct {
-	text  string // raw source text of the wrapped command
-	value string // same, from unquoted word values
-	exact bool   // lx's own flags parsed unambiguously
+	text  string
+	value string
+	exact bool
 }
 
-// lxInner extracts what `lx [lx-flags] cmd…` runs. If lx's flags are not
-// all known, every suffix starting at a non-flag word is returned so an
-// unknown flag with a value cannot smuggle a command past a deny rule.
+func lxTexts(s *segment) []string {
+	var out []string
+	lxWord := s.words[s.cmdIdx].text
+	for _, inner := range lxInner(s.words[s.cmdIdx:]) {
+		out = append(out, inner.text, inner.value)
+		out = append(out, wrappedTexts(strings.Fields(inner.value))...)
+		out = append(out, lxWord+" "+inner.text)
+	}
+	return out
+}
+
 func lxInner(ts []token) []lxCmd {
 	args := ts[1:]
 	i := 0
@@ -458,8 +412,22 @@ loop:
 		case a == "-r" || a == "--raw" || a == "-v" || a == "--verbose":
 			i++
 		case a == "-b" || a == "--budget":
+			if i+1 < len(args) && args[i+1].expand {
+				exact = false
+			}
 			i += 2
 		case strings.HasPrefix(a, "--budget="):
+			if args[i].expand {
+				exact = false
+			}
+			i++
+		case a == "--fit" && i+1 < len(args) && validFit(args[i+1]):
+			i += 2
+		case strings.HasPrefix(a, "--fit=") && validFit(token{val: a[len("--fit="):], expand: args[i].expand}):
+			i++
+		case (a == "-m" || a == "--mode") && i+1 < len(args) && validMode(args[i+1]):
+			i += 2
+		case strings.HasPrefix(a, "--mode=") && validMode(token{val: a[len("--mode="):], expand: args[i].expand}):
 			i++
 		case strings.HasPrefix(a, "-") && len(a) > 1:
 			exact = false
@@ -485,6 +453,16 @@ loop:
 	return out
 }
 
+func validFit(w token) bool {
+	_, _, ok := engine.ParseFit(w.val)
+	return ok && !w.expand
+}
+
+func validMode(w token) bool {
+	_, ok := engine.ParseMode(w.val)
+	return ok && !w.expand
+}
+
 func firstMatch(rules []string, cmd string, lenient bool) string {
 	for _, rl := range rules {
 		if p, ok := bashPattern(rl); ok && matchPattern(p, cmd, lenient) {
@@ -494,13 +472,6 @@ func firstMatch(rules []string, cmd string, lenient bool) string {
 	return ""
 }
 
-// matchPattern implements Claude Code's Bash rule patterns: "*" matches
-// everything; "prefix:*" is a prefix match on a word boundary ("git push" or
-// "git push …"); any other pattern containing "*" is a glob where * matches
-// any run of characters; anything else must match exactly.
-//
-// Whitespace runs are collapsed on both sides. lenient (used for deny and
-// ask) also lets "git push *" match a bare "git push".
 func matchPattern(pattern, cmd string, lenient bool) bool {
 	p, c := squashSpace(pattern), squashSpace(cmd)
 	switch {
@@ -530,7 +501,6 @@ func squashSpace(s string) string {
 	return strings.Join(strings.Fields(s), " ")
 }
 
-// glob matches s against p where '*' matches any (possibly empty) run.
 func glob(p, s string) bool {
 	pi, si := 0, 0
 	star, mark := -1, 0

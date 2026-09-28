@@ -1,0 +1,7 @@
+TestSum
+TestJoin
+BenchmarkSum
+BenchmarkJoin
+FuzzJoin
+ExampleSum
+ok  	example.com/godemo	0.263s
