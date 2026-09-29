@@ -1,0 +1,51 @@
+[lx: 1 job, 1 failed step · per-line timestamps removed (2026-09-22 11:24:19 → 11:25:40 UTC) · 15 ##[group] blocks unwrapped]
+== Test (windows-latest, 1.23, viper_finder) ==
+[lx: 3 steps folded (183 lines): Set up job · actions/checkout · actions/setup-go]
+  [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command "$ErrorActionPreference = 'Stop' ; try { Add-Type -AssemblyName System.IO.Compression.ZipFile } catch { } ; try { [System.IO.Compression.ZipFile]::ExtractToDirectory('D:\a\_temp\go-1.23.12-win32-x64.zip', 'D:\a\_temp\4b14d688-8523-447e-af78-867574b0f2cd', $true) } catch { if (($_.Exception.GetType().FullName -eq 'System.Management.Automation.MethodException') -or ($_.Exception.GetType().FullName -eq 'System.Management.Automation.RuntimeException') ){ Expand-Archive -LiteralPath 'D:\a\_temp\go-1.23.12-win32-x64.zip' -DestinationPath 'D:\a\_temp\4b14d688-8523-447e-af78-867574b0f2cd' -Force } else { throw $_ } } ;"
+  ##[warning]Failed to restore: Cache service responded with 400
+  Cache is not found
+✗ Run go test -v -tags 'viper_finder' -shuffle=on ./... · 23.1s
+[go: downloading 15 modules: github.com/stretchr/testify, github.com/pelletier/go-toml/v2, go.yaml.in/yaml/v3, github.com/spf13/cast, github.com/subosito/gotenv, github.com/fsnotify/fsnotify, github.com/go-viper/mapstructure/v2, github.com/sagikazarmark/locafero, github.com/spf13/afero, github.com/spf13/pflag, github.com/davecgh/go-spew, github.com/pmezard/go-difflib, golang.org/x/text, golang.org/x/sys, gopkg.in/yaml.v3]
+-test.shuffle 1790076335972338800
+--- FAIL: TestWatchFile (0.00s)
+    --- FAIL: TestWatchFile/file_content_changed (0.00s)
+        viper_test.go:2449: test config file: C:\Users\RUNNER~1\AppData\Local\Temp\TestWatchFilefile_content_changed2142938107\001/config.yaml
+        viper_test.go:2454: config file changed
+        viper_test.go:2465:
+            	Error Trace:	D:/a/viper/viper/viper_test.go:2465
+            	Error:      	Not equal:
+            	            	expected: string("baz")
+            	            	actual  : <nil>(<nil>)
+            	Test:       	TestWatchFile/file_content_changed
+        viper_test.go:2454: config file changed
+    --- SKIP: TestWatchFile/link_to_real_file_changed_(à_la_Kubernetes) (0.00s)
+        viper_test.go:2471: Skipping test as symlink replacements don't work on non-linux environment...
+--- SKIP: TestAbsPathify (0.00s)
+    viper_test.go:2718: Skip test on Windows
+FAIL
+FAIL	github.com/spf13/viper	0.059s
+-test.shuffle 1790076336298615800
+[error-like lines printed by passing tests (the rest of their output is hidden):]
+codec_test.go:53: decoding failed as expected: line `invalid data` doesn't match format
+ok  	github.com/spf13/viper/internal/encoding/dotenv	0.020s
+-test.shuffle 1790076336301908700
+[error-like lines printed by passing tests (the rest of their output is hidden):]
+codec_test.go:85: decoding failed as expected: invalid character 'i' looking for beginning of value
+ok  	github.com/spf13/viper/internal/encoding/json	0.024s
+-test.shuffle 1790076336312339000
+[error-like lines printed by passing tests (the rest of their output is hidden):]
+codec_test.go:95: decoding failed as expected: toml: expected character =
+ok  	github.com/spf13/viper/internal/encoding/toml	0.020s
+?   	github.com/spf13/viper/internal/features	[no test files]
+?   	github.com/spf13/viper/internal/testutil	[no test files]
+-test.shuffle 1790076336742286300
+[error-like lines printed by passing tests (the rest of their output is hidden):]
+codec_test.go:126: decoding failed as expected: yaml: unmarshal errors:
+line 1: cannot unmarshal !!str `invalid...` into map[string]interface {}
+ok  	github.com/spf13/viper/internal/encoding/yaml	0.015s
+FAIL
+[137 passed, 2 failed, 2 skipped (incl. subtests) · hidden: 278 === RUN/--- PASS lines, 6 lines of passing-test output]
+##[error]Process completed with exit code 1.
+Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+[lx: 2 steps folded (14 lines): Post job cleanup · Complete job]
+  ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

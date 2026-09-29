@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36379096074",
+    "--repo",
+    "vercel/turborepo",
+    "--log-failed"
+  ],
+  "shell": "gh run view 36379096074 --repo vercel/turborepo --log-failed",
+  "repo": "vercel/turborepo",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): UNKNOWN STEP format: 2,700-line checkout (fetch of every branch and tag), pnpm install, then a composite action step (install standalone turbo) failing on curl 403; a summary job that exits 1",
+  "cwd": "/home/user/src/turborepo"
+}

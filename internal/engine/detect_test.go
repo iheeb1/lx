@@ -18,7 +18,7 @@ import (
 	"github.com/iheeb1/lx/internal/tokens"
 )
 
-var wantDetectors = []string{"cargo-test", "go-test", "jest", "vitest", "mocha", "tsc", "eslint", "pytest"}
+var wantDetectors = []string{"cargo-test", "monorepo", "go-test", "jest", "vitest", "mocha", "tsc", "eslint", "pytest"}
 
 func TestDetectorRegistry(t *testing.T) {
 	var got []string
@@ -66,7 +66,7 @@ var owners = map[string][]string{
 	"mocha": {"mocha"}, "pytest": {"pytest"}, "tsc": {"tsc"}, "eslint": {"eslint"},
 	"npm-test": {"jest", "vitest", "mocha"},
 	"make":     {"go-test"},
-	"npm-run":  {"tsc", "eslint"},
+	"npm-run":  {"tsc", "eslint", "monorepo"},
 }
 
 func TestDetectorsZeroFalsePositives(t *testing.T) {
@@ -337,6 +337,9 @@ func TestProcessHonorsDetectedFilter(t *testing.T) {
 		}
 		if !res.Lossy {
 			t.Errorf("%s: a detected view must be stored (lossy)", id)
+		}
+		if tool == "monorepo" {
+			continue // prefixes removed: internal/filters/ci checks the regrouped lines
 		}
 		clean := c.Clean()
 		if miss := engine.ErrorMessagesMissing(clean, res.Output); len(miss) > 0 && !benignMissing(miss) {

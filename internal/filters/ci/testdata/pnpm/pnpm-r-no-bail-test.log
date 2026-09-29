@@ -1,0 +1,60 @@
+ WARN  This project is configured to use npm
+Scope: 3 of 4 workspace projects
+packages/utils test$ jest
+packages/api test$ go test ./...
+packages/web test$ jest
+packages/api test: --- FAIL: TestTotal (0.00s)
+packages/api test:     price_test.go:7: Total = 0, want 135
+packages/api test: --- FAIL: TestSlug (0.00s)
+packages/api test:     --- FAIL: TestSlug/Red_Shoes (0.00s)
+packages/api test:         price_test.go:18: Slug("Red Shoes") = "Red_Shoes", want "red-shoes"
+packages/api test: FAIL
+packages/api test: FAIL	example.com/acme/api	0.279s
+packages/api test: FAIL
+packages/api test: Failed
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?
+packages/utils test: PASS ./clamp.test.js
+packages/utils test:   ✓ clamps low (1 ms)
+packages/utils test:   ✓ clamps high
+packages/utils test:   ✓ keeps middle (1 ms)
+packages/utils test: Test Suites: 1 passed, 1 total
+packages/utils test: Tests:       3 passed, 3 total
+packages/utils test: Snapshots:   0 total
+packages/utils test: Time:        0.261 s
+packages/utils test: Ran all test suites.
+packages/web test: FAIL ./cart.test.js
+packages/web test:   ✓ total sums prices (1 ms)
+packages/web test:   ✕ currency has two decimals (2 ms)
+packages/web test:   ✓ empty cart
+packages/web test:   ● currency has two decimals
+packages/web test:     expect(received).toBe(expected) // Object.is equality
+packages/web test:     Expected: "$5.00"
+packages/web test:     Received: "$5.0"
+packages/web test:        6 |
+packages/web test:        7 | test('currency has two decimals', () => {
+packages/web test:     >  8 |   expect(currency(5)).toBe('$5.00')
+packages/web test:          |                       ^
+packages/web test:        9 | })
+packages/web test:       10 |
+packages/web test:       11 | test('empty cart', () => {
+packages/web test:       at Object.toBe (cart.test.js:8:23)
+packages/web test: Test Suites: 1 failed, 1 total
+packages/web test: Tests:       1 failed, 2 passed, 3 total
+packages/web test: Snapshots:   0 total
+packages/web test: Time:        0.282 s
+packages/web test: Ran all test suites.
+packages/utils test: Done
+packages/web test: Failed
+ ERR_PNPM_RECURSIVE_FAIL  
+
+
+Summary: 2 fails, 1 passes
+
+/home/user/src/acme/packages/api:
+ ERROR  api@0.1.0 test: `go test ./...`
+Exit status 1
+
+/home/user/src/acme/packages/web:
+ ERROR  web@0.1.0 test: `jest`
+Exit status 1
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?

@@ -1,0 +1,14 @@
+[lx: 1 job, 1 failed step · per-line timestamps removed (2026-09-28 12:09:33 → 12:13:15 UTC) · 32 ##[group] blocks unwrapped]
+[lx: 11 steps folded (294 lines): Set up job · actions/checkout · actions/setup-node · Run yarn --immutable · Run yarn build:ts · Run yarn build:js · Run yarn typecheck:examples · Run yarn typecheck:tests · … +3 more]
+  ➤ YN0007: │ unrs-resolver@npm:1.12.2 must be built because it never has been before or the last one failed
+  ➤ YN0007: │ @parcel/watcher@npm:2.6.0 must be built because it never has been before or the last one failed
+  ➤ YN0007: │ esbuild@npm:0.28.2 must be built because it never has been before or the last one failed
+✗ Run yarn check-copyright-headers · 880ms
+Meta copyright header check failed for the following files:
+
+  e2e/config-single-project-no-ancestor-config/__tests__/a.test.js
+  e2e/config-single-project-no-ancestor-config/myconfig.js
+
+Please include the header or exclude the files in `scripts/checkCopyrightHeaders.mjs`
+##[error]Process completed with exit code 1.
+[lx: 2 steps folded (16 lines): Post job cleanup · Complete job]

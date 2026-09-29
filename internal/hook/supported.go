@@ -1,11 +1,13 @@
 package hook
 
 import (
+	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/iheeb1/lx/internal/engine"
 	"github.com/iheeb1/lx/internal/lazyre"
+	"github.com/iheeb1/lx/internal/runner"
 )
 
 func Supported(argv []string) bool {
@@ -43,6 +45,37 @@ func supported(argv []string, depth int) bool {
 		}
 	}
 	return false
+}
+
+func (a *analysis) hookTargets() []*segment {
+	targets, _ := a.plan()
+	var out []*segment
+	for _, t := range targets {
+		if lxRunsSame(t) {
+			out = append(out, t)
+		}
+	}
+	return out
+}
+
+var lxRunsSame = runsSame
+
+func runsSame(s *segment) bool {
+	name := s.argv[0]
+	if strings.ContainsRune(name, '/') || strings.ContainsRune(name, filepath.Separator) {
+		return true
+	}
+	if runner.ClaudeShimmed(name) && os.Getenv("CLAUDECODE") == "1" {
+		// these exec the system tool, not the agent shell's function
+		for _, w := range s.words[:s.cmdIdx] {
+			switch w.text {
+			case "command", "env", "nice", "nohup", "timeout":
+				return false
+			}
+		}
+	}
+	_, err := runner.Resolve(s.argv, os.Getenv)
+	return err == nil
 }
 
 func lxOff(words []string) bool {
@@ -149,6 +182,7 @@ func init() {
 		"mise":  miseOK,
 		"turbo": turboOK,
 		"nx":    nxOK,
+		"gh":    ghOK,
 		"rake":  rakeOK,
 		"deno":  denoOK,
 	}
@@ -1229,6 +1263,28 @@ var (
 		"reset", "show", "sync", "sync:check", "view-logs", "watch", "login", "logout", "mcp", "print-affected",
 		"workspace-generator", "configure-ai-agents")
 )
+
+var (
+	ghValue   = set("-R", "--repo", "-a", "--attempt", "-j", "--job", "-i", "--interval", "--hostname", "-b", "--branch")
+	ghJobLogs = lazyre.New(`^/?repos/[^/\s]+/[^/\s]+/actions/jobs/\d+/logs$`)
+)
+
+func ghOK(args []string) bool {
+	if has(args, "--web", "-w", "--jq", "-q", "--template", "-t", "--json") {
+		return false
+	}
+	if len(args) == 2 && args[0] == "api" {
+		return ghJobLogs.MatchString(args[1])
+	}
+	cmd, rest := posAt(args, ghValue)
+	switch sub := firstPos(rest, ghValue); cmd + " " + sub {
+	case "run view", "run watch":
+		return true
+	case "pr checks":
+		return !has(args, "--watch")
+	}
+	return false
+}
 
 func nxOK(args []string) bool {
 	if has(args, "--graph", "--tui", "--help", "--version", "--dry-run", "-d") || !runnerArgsOK(args) ||

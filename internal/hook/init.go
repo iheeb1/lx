@@ -30,22 +30,51 @@ type InitOptions struct {
 
 	Prefix string
 
+	Portable bool
+
 	Probe func() (string, error)
 }
 
 const ReadOnlyTip = "tip: lx init --readonly lets read-only commands (git status/diff/log, ls, find, grep, rg, tree, du) " +
 	"run without a prompt, as they do without lx"
 
-func InitClaude(o InitOptions) error {
+type initTarget struct {
+	agent   string
+	file    string
+	project string
+	envVar  string
+	name    string
+	userDir func() string
+	after   []string
+}
+
+var (
+	claudeTarget = initTarget{agent: "claude", file: "settings.json", project: ".claude", envVar: "CLAUDE_CONFIG_DIR",
+		name: "Claude", userDir: userClaudeDir,
+		after: []string{"restart Claude Code (or review it under /hooks) for it to take effect"}}
+	codexTarget = initTarget{agent: "codex", file: "hooks.json", project: ".codex", envVar: "CODEX_HOME",
+		name: "Codex", userDir: codexHome,
+		after: []string{"Codex runs it once you trust it: review it under /hooks in Codex",
+			"a Codex without hooks ignores this file; `lx init --agent agents-md` prints an AGENTS.md block for it"}}
+)
+
+func InitClaude(o InitOptions) error { return initHook(o, claudeTarget) }
+
+func InitCodex(o InitOptions) error {
+	o.ReadOnly, o.NoReadOnly = false, true
+	return initHook(o, codexTarget)
+}
+
+func initHook(o InitOptions, t initTarget) error {
 	out := o.Out
 	if out == nil {
 		out = io.Discard
 	}
-	dir, err := settingsDir(o)
+	dir, err := settingsDir(o, t)
 	if err != nil {
 		return err
 	}
-	path := filepath.Join(dir, "settings.json")
+	path := filepath.Join(dir, t.file)
 
 	for _, p := range []string{dir, path} {
 		fi, err := os.Lstat(p)
@@ -55,7 +84,7 @@ func InitClaude(o InitOptions) error {
 		if fi.Mode()&fs.ModeSymlink != 0 {
 			target, _ := filepath.EvalSymlinks(p)
 			return fmt.Errorf("refusing to write through symlink %s (→ %s): edit the real file yourself, "+
-				"or point CLAUDE_CONFIG_DIR at the real directory", p, target)
+				"or point %s at the real directory", p, target, t.envVar)
 		}
 		if p == path && !fi.Mode().IsRegular() {
 			return fmt.Errorf("%s is not a regular file", path)
@@ -78,33 +107,16 @@ func InitClaude(o InitOptions) error {
 	var msg string
 	readOnly := false
 	if o.Uninstall {
-		changed, err = uninstallHook(root)
+		changed, err = uninstallHook(root, t.agent)
 		msg = "lx: no lx hook found in " + path
 	} else {
-		lx := o.LxPath
-		if lx == "" {
-			return errors.New("lx path is required")
-		}
-		if lx, err = filepath.Abs(lx); err != nil {
+		readOnly = o.ReadOnly || (!o.NoReadOnly && installedReadOnly(root, t.agent))
+		var cmd string
+		if cmd, err = o.hookCommandFor(t.agent, readOnly, out); err != nil {
 			return err
 		}
-		readOnly = o.ReadOnly || (!o.NoReadOnly && installedReadOnly(root))
-		prefix := o.Prefix
-		if prefix == "" && o.Probe != nil {
-			found, perr := o.Probe()
-			var note string
-			prefix, note = prefixFor(lx, found, perr)
-			if note != "" {
-				fmt.Fprintln(out, note)
-			}
-		}
-		if prefix != "" {
-			if prefix, err = filepath.Abs(prefix); err != nil {
-				return err
-			}
-		}
 		var warn string
-		changed, warn, err = installHook(root, hookCommand(lx, readOnly, prefix))
+		changed, warn, err = installHook(root, t.agent, cmd)
 		if warn != "" {
 			fmt.Fprintln(out, warn)
 		}
@@ -114,7 +126,7 @@ func InitClaude(o InitOptions) error {
 		return fmt.Errorf("%s: %v", path, err)
 	}
 	tip := func() {
-		if !o.Uninstall && !readOnly {
+		if !o.Uninstall && !readOnly && t.agent == "claude" {
 			fmt.Fprintln(out, ReadOnlyTip)
 		}
 	}
@@ -157,7 +169,12 @@ func InitClaude(o InitOptions) error {
 		fmt.Fprintf(out, "lx: removed the lx hook from %s\n", path)
 	} else {
 		fmt.Fprintf(out, "lx: installed the PreToolUse hook in %s\n", path)
-		fmt.Fprintln(out, "    restart Claude Code (or review it under /hooks) for it to take effect")
+		for _, line := range t.after {
+			fmt.Fprintln(out, "    "+line)
+		}
+		if o.Portable {
+			fmt.Fprintln(out, "    it runs lx from each teammate's PATH, and does nothing where lx is not installed")
+		}
 	}
 	if existed {
 		fmt.Fprintf(out, "    previous version saved as %s.bak\n", path)
@@ -166,8 +183,42 @@ func InitClaude(o InitOptions) error {
 	return nil
 }
 
-func hookCommand(lx string, readOnly bool, prefix string) string {
-	cmd := shellQuote(lx) + " hook claude"
+func (o InitOptions) hookCommandFor(agent string, readOnly bool, out io.Writer) (string, error) {
+	if o.Portable {
+		if o.Probe != nil {
+			if found, err := o.Probe(); err == nil && found == "" {
+				fmt.Fprintln(out, "lx: lx is not on your shell's PATH, so the portable hook does nothing on this machine until it is")
+			}
+		}
+		return portableCommand(hookCommand("lx", agent, readOnly, "")), nil
+	}
+	lx := o.LxPath
+	if lx == "" {
+		return "", errors.New("lx path is required")
+	}
+	lx, err := filepath.Abs(lx)
+	if err != nil {
+		return "", err
+	}
+	prefix := o.Prefix
+	if prefix == "" && o.Probe != nil {
+		found, perr := o.Probe()
+		var note string
+		prefix, note = prefixFor(lx, found, perr)
+		if note != "" {
+			fmt.Fprintln(out, note)
+		}
+	}
+	if prefix != "" {
+		if prefix, err = filepath.Abs(prefix); err != nil {
+			return "", err
+		}
+	}
+	return hookCommand(lx, agent, readOnly, prefix), nil
+}
+
+func hookCommand(lx, agent string, readOnly bool, prefix string) string {
+	cmd := shellQuote(lx) + " hook " + agent
 	if readOnly {
 		cmd += " --readonly"
 	}
@@ -175,6 +226,28 @@ func hookCommand(lx string, readOnly bool, prefix string) string {
 		cmd += " --prefix " + shellQuote(prefix)
 	}
 	return cmd
+}
+
+const portableGuard = "command -v lx >/dev/null 2>&1 || exit 0; exec "
+
+func portableCommand(inner string) string { return "sh -c " + shellQuote(portableGuard+inner) }
+
+func UnwrapPortable(cmd string) (string, bool) {
+	l := lex(cmd)
+	if l.broken || len(l.unsafe) > 0 || len(l.toks) != 3 {
+		return "", false
+	}
+	for _, t := range l.toks {
+		if t.kind != tWord {
+			return "", false
+		}
+	}
+	w := vals(l.toks)
+	inner, ok := strings.CutPrefix(w[2], portableGuard)
+	if w[0] != "sh" && w[0] != "/bin/sh" || w[1] != "-c" || !ok || !strings.HasPrefix(inner, "lx ") {
+		return "", false
+	}
+	return inner, true
 }
 
 func prefixFor(lx, found string, probeErr error) (prefix, note string) {
@@ -264,14 +337,14 @@ func (w *capWriter) Write(p []byte) (int, error) {
 	return len(p), nil
 }
 
-func settingsDir(o InitOptions) (string, error) {
+func settingsDir(o InitOptions, t initTarget) (string, error) {
 	switch {
 	case o.ConfigDir != "":
 		return o.ConfigDir, nil
 	case o.Global:
-		d := userClaudeDir()
+		d := t.userDir()
 		if d == "" {
-			return "", errors.New("cannot locate the Claude config directory; set CLAUDE_CONFIG_DIR")
+			return "", fmt.Errorf("cannot locate the %s config directory; set %s", t.name, t.envVar)
 		}
 		return d, nil
 	}
@@ -279,7 +352,7 @@ func settingsDir(o InitOptions) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(wd, ".claude"), nil
+	return filepath.Join(wd, t.project), nil
 }
 
 func writeAtomic(path string, data []byte, mode fs.FileMode) error {
@@ -313,17 +386,25 @@ func writeAtomic(path string, data []byte, mode fs.FileMode) error {
 	return nil
 }
 
-func isLxHookCommand(cmd string) bool {
-	_, ok := parseLxHook(cmd)
+func isLxHookCommand(cmd string) bool { return isLxHook(cmd, "claude") }
+
+func isLxHook(cmd, agent string) bool {
+	_, ok := parseLxHook(cmd, agent)
 	return ok
 }
 
 type lxHookFlags struct {
 	readOnly bool
 	prefix   string
+	portable bool
 }
 
-func parseLxHook(cmd string) (lxHookFlags, bool) {
+func parseLxHook(cmd, agent string) (lxHookFlags, bool) {
+	if inner, ok := UnwrapPortable(cmd); ok {
+		f, ok := parseLxHook(inner, agent)
+		f.portable = true
+		return f, ok && f.prefix == ""
+	}
 	var f lxHookFlags
 	l := lex(cmd)
 	if l.broken || len(l.unsafe) > 0 || len(l.toks) < 3 {
@@ -335,7 +416,7 @@ func parseLxHook(cmd string) (lxHookFlags, bool) {
 		}
 	}
 	w := vals(l.toks)
-	if filepath.Base(w[0]) != "lx" || w[1] != "hook" || w[2] != "claude" {
+	if filepath.Base(w[0]) != "lx" || w[1] != "hook" || w[2] != agent {
 		return f, false
 	}
 	for i := 3; i < len(w); i++ {
@@ -354,11 +435,11 @@ func parseLxHook(cmd string) (lxHookFlags, bool) {
 	return f, true
 }
 
-func installedReadOnly(root *object) bool {
+func installedReadOnly(root *object, agent string) bool {
 	found := false
 	_, _ = hookEdit(root, func(h *object) (bool, bool) {
 		cmd, _ := h.getString("command")
-		if f, ok := parseLxHook(cmd); ok && f.readOnly {
+		if f, ok := parseLxHook(cmd, agent); ok && f.readOnly {
 			found = true
 		}
 		return true, false
@@ -448,12 +529,12 @@ func hookEdit(root *object, fn func(h *object) (keep, changed bool)) (bool, erro
 	return true, nil
 }
 
-func installHook(root *object, want string) (changed bool, warn string, err error) {
+func installHook(root *object, agent, want string) (changed bool, warn string, err error) {
 	found := false
 	var others []string
 	changed, err = hookEdit(root, func(h *object) (bool, bool) {
 		cmd, _ := h.getString("command")
-		if !isLxHookCommand(cmd) {
+		if !isLxHook(cmd, agent) {
 			if reRtk.MatchString(cmd) {
 				others = append(others, cmd)
 			}
@@ -503,10 +584,10 @@ func installHook(root *object, want string) (changed bool, warn string, err erro
 
 var reRtk = lazyre.New(`(^|[/\s])rtk(\s|$)`)
 
-func uninstallHook(root *object) (bool, error) {
+func uninstallHook(root *object, agent string) (bool, error) {
 	return hookEdit(root, func(h *object) (bool, bool) {
 		cmd, _ := h.getString("command")
-		if isLxHookCommand(cmd) {
+		if isLxHook(cmd, agent) {
 			return false, true
 		}
 		return true, false

@@ -1,0 +1,1479 @@
+test-msrv	UNKNOWN STEP	﻿2026-09-26T18:07:58.1882297Z Current runner version: '2.337.0'
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1897404Z ##[group]Runner Image Provisioner
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1897936Z Hosted Compute Agent
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1898270Z Version: 20260828.587
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1898683Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1899268Z Build Date: 2026-08-28T16:44:25Z
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1899746Z Worker ID: {14578cb0-b1d0-47f0-87f5-bdc83fc6fbc1}
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1900152Z Azure Region: centralus
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1900477Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1901254Z ##[group]Operating System
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1901606Z Ubuntu
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1901939Z 24.04.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1902280Z LTS
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1902584Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1902935Z ##[group]Runner Image
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1903314Z Image: ubuntu-24.04
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1903661Z Version: 20260920.314.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1904379Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1905246Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1905807Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1907380Z ##[group]GITHUB_TOKEN Permissions
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1908622Z Actions: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1909150Z ArtifactMetadata: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1909538Z Attestations: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1909867Z Checks: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1910276Z CodeQuality: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1910605Z Contents: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1910947Z Deployments: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1911282Z Discussions: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1911603Z Drives: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1911973Z Issues: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1912282Z Metadata: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1912587Z Models: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1912984Z Packages: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1913356Z Pages: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1913696Z PullRequests: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1914030Z RepositoryProjects: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1914375Z SecurityEvents: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1914757Z Statuses: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1915087Z VulnerabilityAlerts: read
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1915485Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1916701Z Secret source: None
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1917259Z Cache mode: write
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.1917667Z Prepare workflow directory
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.2141161Z Prepare all required actions
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.2171355Z Getting action download info
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.4726184Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.7599874Z Download action repository 'dtolnay/rust-toolchain@nightly' (SHA:be39649afda95dbf70f87cce95f68b8d5797b296)
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:58.9477437Z Download action repository 'dtolnay/rust-toolchain@master' (SHA:02cb101ec7c40f2c49e1d9714d64511d8e1b74de)
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:59.2668178Z Download action repository 'Swatinem/rust-cache@v2' (SHA:6323deb102c322ba6fcbdcafc7e3dddab59af2b6)
+test-msrv	UNKNOWN STEP	2026-09-26T18:07:59.9781181Z Complete job name: test-msrv
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0224045Z ##[group]Run actions/checkout@v6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0224463Z with:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0224712Z   repository: tokio-rs/axum
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0226313Z   token: ***
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0226553Z   ssh-strict: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0226795Z   ssh-user: git
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0227041Z   persist-credentials: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0227302Z   clean: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0227555Z   sparse-checkout-cone-mode: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0227826Z   fetch-depth: 1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0228073Z   fetch-tags: false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0284219Z   show-progress: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0284495Z   lfs: false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0284757Z   submodules: false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0285025Z   set-safe-directory: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0285350Z   allow-unsafe-pr-checkout: false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0286188Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0286425Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0286679Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0286908Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0927391Z Syncing repository: tokio-rs/axum
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0928395Z ##[group]Getting Git version info
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0929153Z Working directory is '/home/runner/work/axum/axum'
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0929672Z [command]/usr/bin/git version
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.0975926Z git version 2.55.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.1025185Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.1032262Z Temporarily overriding HOME='/home/runner/work/_temp/314f2e0a-6739-4aff-ba46-e44d88047d02' before making global git config changes
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.1033136Z Adding repository directory to the temporary git global config as a safe directory
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.1035873Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/axum/axum
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.1626598Z Deleting the contents of '/home/runner/work/axum/axum'
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.1629319Z ##[group]Determining repository object format
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.1630381Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.1630915Z ##[group]Initializing the repository
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.1632625Z [command]/usr/bin/git init /home/runner/work/axum/axum
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2725404Z hint: Using 'master' as the name for the initial branch. This default branch name
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2725958Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2726358Z hint: to use in all of your new repositories, which will suppress this warning,
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2726688Z hint: call:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2726900Z hint:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2727317Z hint: 	git config --global init.defaultBranch <name>
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2727726Z hint:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2728003Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2728394Z hint: 'development'. The just-created branch can be renamed via this command:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2728711Z hint:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2729125Z hint: 	git branch -m <name>
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2729468Z hint:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2729904Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2730553Z Initialized empty Git repository in /home/runner/work/axum/axum/.git/
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2736749Z [command]/usr/bin/git remote add origin https://github.com/tokio-rs/axum
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2833800Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2834211Z ##[group]Disabling automatic garbage collection
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.2836346Z [command]/usr/bin/git config --local gc.auto 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.3513437Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.3513836Z ##[group]Setting up auth
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.3514646Z Removing SSH command configuration
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.3519837Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.3545772Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.3829977Z Removing HTTP extra header
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.3835780Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.3852936Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4013058Z Removing includeIf entries pointing to credentials config files
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4016813Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4038073Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4200172Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4307890Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/axum/axum/.git.path /home/runner/work/_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4332277Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/axum/axum/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4512399Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4537503Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4618684Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4619348Z ##[group]Fetching the repository
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:00.4620171Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b5a8e1e030cf4faf8a8ecb4e5425e1771168e81d:refs/remotes/pull/3818/merge
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.4613159Z From https://github.com/tokio-rs/axum
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.4613788Z  * [new ref]         b5a8e1e030cf4faf8a8ecb4e5425e1771168e81d -> pull/3818/merge
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.4617424Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.4617889Z ##[group]Determining the checkout info
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.4618459Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.4622507Z [command]/usr/bin/git sparse-checkout disable
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.5541493Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.5670031Z ##[group]Checking out the ref
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.5672519Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/3818/merge
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6512509Z Note: switching to 'refs/remotes/pull/3818/merge'.
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6512815Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6531798Z You are in 'detached HEAD' state. You can look around, make experimental
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6532339Z changes and commit them, and you can discard any commits you make in this
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6532777Z state without impacting any branches by switching back to a branch.
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6533184Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6533405Z If you want to create a new branch to retain commits you create, you may
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6533876Z do so (now or later) by using -c with the switch command. Example:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6534108Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6534224Z   git switch -c <new-branch-name>
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6534394Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6534547Z Or undo this operation with:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6534721Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6534818Z   git switch -
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6534971Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6535267Z Turn off this advice by setting config variable advice.detachedHead to false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6535613Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6535908Z HEAD is now at b5a8e1e Merge 726c813821f0c2054350ba8d5c4994b53dd84829 into bc8d4912435204a4a073cea70355ae0328d263fe
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6537036Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6557068Z [command]/usr/bin/git log -1 --format=%H
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6596157Z b5a8e1e030cf4faf8a8ecb4e5425e1771168e81d
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6830502Z ##[group]Run dtolnay/rust-toolchain@nightly
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6830694Z with:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6830821Z   toolchain: nightly
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6830945Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6831055Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6831181Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6831288Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6872292Z ##[start-action display=Parse toolchain version;id=__dtolnay_rust-toolchain.parse]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6911936Z ##[group]Run if [[ -z $toolchain ]]; then
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6912163Z ^[[36;1mif [[ -z $toolchain ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6912457Z ^[[36;1m  # GitHub does not enforce `required: true` inputs itself. https://github.com/actions/runner/issues/1070^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6912758Z ^[[36;1m  echo "'toolchain' is a required input" >&2^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6912921Z ^[[36;1m  exit 1^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6913105Z ^[[36;1melif [[ $toolchain =~ ^stable' '[0-9]+' '(year|month|week|day)s?' 'ago$ ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6913360Z ^[[36;1m  if [[ Linux == macOS ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6913651Z ^[[36;1m    echo "toolchain=1.$((($(date -v-$(sed 's/stable \([0-9]*\) \(.\).*/\1\2/' <<< $toolchain) +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6914071Z ^[[36;1m  else^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6914287Z ^[[36;1m    echo "toolchain=1.$((($(date --date "${toolchain#stable }" +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6914522Z ^[[36;1m  fi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6914688Z ^[[36;1melif [[ $toolchain =~ ^stable' 'minus' '[0-9]+' 'releases?$ ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6914973Z ^[[36;1m  echo "toolchain=1.$((($(date +%s)/60/60/24-16569)/7/6-${toolchain//[^0-9]/}))" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6915216Z ^[[36;1melif [[ $toolchain =~ ^1\.[0-9]+$ ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6915493Z ^[[36;1m  echo "toolchain=1.$((i=${toolchain#1.}, c=($(date +%s)/60/60/24-16569)/7/6, i+9*i*(10*i<=c)+90*i*(100*i<=c)))" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6915751Z ^[[36;1melse^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6915892Z ^[[36;1m  echo "toolchain=$toolchain" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.6916051Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7360171Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7360370Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7360489Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7360618Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7360726Z   toolchain: nightly
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7360847Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7548372Z ##[end-action id=__dtolnay_rust-toolchain.parse;outcome=success;conclusion=success;duration_ms=67]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7556683Z ##[start-action display=Construct rustup command line;id=__dtolnay_rust-toolchain.flags]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7578658Z ##[group]Run echo "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7579185Z ^[[36;1mecho "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7579524Z ^[[36;1mecho "components=$(for c in ${components//,/ }; do echo -n ' --component' $c; done)" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7579776Z ^[[36;1mecho "downgrade=" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7623717Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7623893Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7624003Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7624127Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7624230Z   targets: 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7624334Z   components: 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7624443Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7835205Z ##[end-action id=__dtolnay_rust-toolchain.flags;outcome=success;conclusion=success;duration_ms=27]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.7836493Z ##[start-action display=Set $CARGO_HOME;id=__dtolnay_rust-toolchain.__run]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8023384Z ##[group]Run echo CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8023783Z ^[[36;1mecho CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8068270Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8068594Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8068706Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8068829Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8069068Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8223452Z ##[end-action id=__dtolnay_rust-toolchain.__run;outcome=success;conclusion=success;duration_ms=38]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8224756Z ##[start-action display=Install rustup if needed;id=__dtolnay_rust-toolchain.__run_2]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8279358Z ##[group]Run if ! command -v rustup &>/dev/null; then
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8279566Z ^[[36;1mif ! command -v rustup &>/dev/null; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8279979Z ^[[36;1m  curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused --location --silent --show-error --fail https://sh.rustup.rs | sh -s -- --default-toolchain none -y^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8280361Z ^[[36;1m  echo "$CARGO_HOME/bin" >> $GITHUB_PATH^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8280518Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8324290Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8324473Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8324594Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8324714Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8324843Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8325138Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8489284Z ##[end-action id=__dtolnay_rust-toolchain.__run_2;outcome=success;conclusion=success;duration_ms=26]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8490661Z ##[start-action display=Install rustup if needed on windows;id=__dtolnay_rust-toolchain.__run_3]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8494668Z ##[end-action id=__dtolnay_rust-toolchain.__run_3;outcome=skipped;conclusion=skipped;duration_ms=0]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8501294Z ##[start-action display=rustup toolchain install nightly;id=__dtolnay_rust-toolchain.__run_4]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8520214Z ##[group]Run rustup toolchain install nightly --profile minimal --no-self-update
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8520519Z ^[[36;1mrustup toolchain install nightly --profile minimal --no-self-update^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8563420Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8563608Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8563718Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8563843Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8563962Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8564107Z   RUSTUP_PERMIT_COPY_RENAME: 1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.8564240Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:01.9118282Z info: syncing channel updates for nightly-x86_64-unknown-linux-gnu
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:02.1277861Z info: latest update on 2026-09-26 for version 1.100.0-nightly (5ceaf6608 2026-09-25)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:02.1278282Z info: downloading 3 components
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1289104Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1345080Z   nightly-x86_64-unknown-linux-gnu installed - rustc 1.100.0-nightly (5ceaf6608 2026-09-25)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1345468Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1414313Z ##[end-action id=__dtolnay_rust-toolchain.__run_4;outcome=success;conclusion=success;duration_ms=6291]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1418714Z ##[start-action display=rustup default nightly;id=__dtolnay_rust-toolchain.__run_5]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1432978Z ##[group]Run rustup default nightly
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1433178Z ^[[36;1mrustup default nightly^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1484334Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1484535Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1484653Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1484782Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1484903Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1485045Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1583120Z info: using existing install for nightly-x86_64-unknown-linux-gnu
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1590044Z info: default toolchain set to nightly-x86_64-unknown-linux-gnu
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1590207Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1642134Z   nightly-x86_64-unknown-linux-gnu unchanged - rustc 1.100.0-nightly (5ceaf6608 2026-09-25)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1642369Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1656099Z ##[end-action id=__dtolnay_rust-toolchain.__run_5;outcome=success;conclusion=success;duration_ms=23]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1657699Z ##[start-action display=Create cachekey;id=__dtolnay_rust-toolchain.rustc-version]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1672631Z ##[group]Run DATE=$(rustc +nightly --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1673123Z ^[[36;1mDATE=$(rustc +nightly --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1673489Z ^[[36;1mHASH=$(rustc +nightly --version --verbose | sed -ne 's/^commit-hash: //p')^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1673771Z ^[[36;1mecho "cachekey=$(echo $DATE$HASH | head -c12)" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1721380Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1721566Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1721683Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1721815Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1721935Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1722080Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1979339Z ##[end-action id=__dtolnay_rust-toolchain.rustc-version;outcome=success;conclusion=success;duration_ms=32]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1981189Z ##[start-action display=Disable incremental compilation;id=__dtolnay_rust-toolchain.__run_6]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1995606Z ##[group]Run if [ -z "${CARGO_INCREMENTAL+set}" ]; then
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1995854Z ^[[36;1mif [ -z "${CARGO_INCREMENTAL+set}" ]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1996038Z ^[[36;1m  echo CARGO_INCREMENTAL=0 >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.1996197Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2045920Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2046109Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2046226Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2046356Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2046473Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2046619Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2111849Z ##[end-action id=__dtolnay_rust-toolchain.__run_6;outcome=success;conclusion=success;duration_ms=13]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2113242Z ##[start-action display=Enable colors in Cargo output;id=__dtolnay_rust-toolchain.__run_7]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2126381Z ##[group]Run if [ -z "${CARGO_TERM_COLOR+set}" ]; then
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2126594Z ^[[36;1mif [ -z "${CARGO_TERM_COLOR+set}" ]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2126789Z ^[[36;1m  echo CARGO_TERM_COLOR=always >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2126951Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2173192Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2173373Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2173487Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2173613Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2173730Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2173875Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2174000Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2236533Z ##[end-action id=__dtolnay_rust-toolchain.__run_7;outcome=success;conclusion=success;duration_ms=12]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2237819Z ##[start-action display=Enable Cargo sparse registry;id=__dtolnay_rust-toolchain.__run_8]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2251135Z ##[group]Run # implemented in 1.66, stabilized in 1.68, made default in 1.70
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2251421Z ^[[36;1m# implemented in 1.66, stabilized in 1.68, made default in 1.70^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2251803Z ^[[36;1mif [ -z "${CARGO_REGISTRIES_CRATES_IO_PROTOCOL+set}" -o -f "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol ]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2252209Z ^[[36;1m  if rustc +nightly --version --verbose | grep -q '^release: 1\.6[89]\.'; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2252525Z ^[[36;1m    touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2252816Z ^[[36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2253092Z ^[[36;1m  elif rustc +nightly --version --verbose | grep -q '^release: 1\.6[67]\.'; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2253404Z ^[[36;1m    touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2253685Z ^[[36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=git >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2253874Z ^[[36;1m  fi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2254113Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2297804Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2297986Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2298105Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2298233Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2298353Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2298493Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2298616Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2528698Z ##[end-action id=__dtolnay_rust-toolchain.__run_8;outcome=success;conclusion=success;duration_ms=29]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2530647Z ##[start-action display=Work around spurious network errors in curl 8.0;id=__dtolnay_rust-toolchain.__run_9]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2728576Z ##[group]Run # https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2729203Z ^[[36;1m# https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2729556Z ^[[36;1mif rustc +nightly --version --verbose | grep -q '^release: 1\.7[01]\.'; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2729812Z ^[[36;1m  echo CARGO_HTTP_MULTIPLEXING=false >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2730126Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2777518Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2777697Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2777812Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2777937Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2778053Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2778198Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.2778320Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3542919Z ##[end-action id=__dtolnay_rust-toolchain.__run_9;outcome=success;conclusion=success;duration_ms=101]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3546705Z ##[start-action display=rustc +nightly --version --verbose;id=__dtolnay_rust-toolchain.__run_10]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3840362Z ##[group]Run rustc +nightly --version --verbose
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3840763Z ^[[36;1mrustc +nightly --version --verbose^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3903217Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3903632Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3903932Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3904230Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3904513Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3904865Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.3905177Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4634928Z rustc 1.100.0-nightly (5ceaf6608 2026-09-25)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4635396Z binary: rustc
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4635810Z commit-hash: 5ceaf6608eb354c2f5bbb3b8d974caa367dac81c
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4636211Z commit-date: 2026-09-25
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4636523Z host: x86_64-unknown-linux-gnu
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4636862Z release: 1.100.0-nightly
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4637196Z LLVM version: 23.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4649370Z ##[end-action id=__dtolnay_rust-toolchain.__run_10;outcome=success;conclusion=success;duration_ms=110]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4730094Z ##[group]Run cargo +nightly update -Z minimal-versions
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4730321Z ^[[36;1mcargo +nightly update -Z minimal-versions^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4774809Z shell: /usr/bin/bash -e {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4774938Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4775046Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4775175Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4775289Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4775422Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.4775541Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:08.5892530Z ^[[1m^[[92m    Updating^[[0m crates.io index
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0214442Z ^[[1m^[[92m     Locking^[[0m 219 packages to lowest compatible versions
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0215200Z ^[[1m^[[92m      Adding^[[0m addr2line v0.14.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0215901Z ^[[1m^[[92m      Adding^[[0m adler v0.2.1 ^[[1m^[[33m(available: v0.2.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0301837Z ^[[1m^[[91m    Removing^[[0m adler2 v2.0.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0302258Z ^[[1m^[[92m      Adding^[[0m adler32 v1.0.3 ^[[1m^[[33m(available: v1.2.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0302689Z ^[[1m^[[33m Downgrading^[[0m aead v0.5.2 -> v0.5.1 ^[[1m^[[33m(available: v0.5.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0303924Z ^[[1m^[[33m Downgrading^[[0m aes v0.8.4 -> v0.8.0 ^[[1m^[[33m(available: v0.8.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0305029Z ^[[1m^[[33m Downgrading^[[0m aes-gcm v0.10.3 -> v0.10.0 ^[[1m^[[33m(available: v0.10.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0306104Z ^[[1m^[[33m Downgrading^[[0m aho-corasick v1.1.4 -> v0.7.6 ^[[1m^[[33m(available: v0.7.20)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0306447Z ^[[1m^[[33m Downgrading^[[0m alloc-no-stdlib v2.0.4 -> v2.0.0 ^[[1m^[[33m(available: v2.0.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0306819Z ^[[1m^[[33m Downgrading^[[0m alloc-stdlib v0.2.2 -> v0.2.0 ^[[1m^[[33m(available: v0.2.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0308359Z ^[[1m^[[33m Downgrading^[[0m anyhow v1.0.103 -> v1.0.1 ^[[1m^[[33m(available: v1.0.104)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0309708Z ^[[1m^[[92m      Adding^[[0m arc-swap v0.4.0 ^[[1m^[[33m(available: v0.4.8)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0313861Z ^[[1m^[[33m Downgrading^[[0m async-compression v0.4.37 -> v0.4.0 ^[[1m^[[33m(available: v0.4.48)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0399196Z ^[[1m^[[91m    Removing^[[0m atomic-waker v1.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0399566Z ^[[1m^[[33m Downgrading^[[0m autocfg v1.5.0 -> v1.0.0 ^[[1m^[[33m(available: v1.5.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0402791Z ^[[1m^[[92m      Adding^[[0m backtrace v0.3.58 ^[[1m^[[33m(available: v0.3.76)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0404529Z ^[[1m^[[92m      Adding^[[0m base64 v0.21.4 ^[[1m^[[33m(available: v0.21.7)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0405951Z ^[[1m^[[91m    Removing^[[0m bitflags v2.10.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0406624Z ^[[1m^[[92m      Adding^[[0m bitflags v1.1.0 ^[[1m^[[33m(available: v1.3.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0407349Z ^[[1m^[[92m      Adding^[[0m bitflags v2.4.2 ^[[1m^[[33m(available: v2.13.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0408096Z ^[[1m^[[33m Downgrading^[[0m block-buffer v0.10.4 -> v0.10.1 ^[[1m^[[33m(available: v0.10.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0408873Z ^[[1m^[[33m Downgrading^[[0m brotli v8.0.2 -> v3.3.0 ^[[1m^[[33m(available: v3.5.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0409598Z ^[[1m^[[33m Downgrading^[[0m brotli-decompressor v5.0.0 -> v2.3.0 ^[[1m^[[33m(available: v2.5.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0410504Z ^[[1m^[[33m Downgrading^[[0m bumpalo v3.19.1 -> v3.2.1 ^[[1m^[[33m(available: v3.20.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0411196Z ^[[1m^[[33m Downgrading^[[0m byteorder v1.5.0 -> v1.0.0 ^[[1m^[[33m(available: v1.5.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0412028Z ^[[1m^[[33m Downgrading^[[0m bytes v1.11.1 -> v1.9.0 ^[[1m^[[33m(available: v1.12.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0414830Z ^[[1m^[[92m      Adding^[[0m cc v1.0.67 ^[[1m^[[33m(available: v1.5.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0415530Z ^[[1m^[[91m    Removing^[[0m cfg-if v1.0.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0415849Z ^[[1m^[[92m      Adding^[[0m cfg-if v0.1.2 ^[[1m^[[33m(available: v0.1.10)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0416222Z ^[[1m^[[92m      Adding^[[0m cfg-if v1.0.0 ^[[1m^[[33m(available: v1.0.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0416635Z ^[[1m^[[33m Downgrading^[[0m cipher v0.4.4 -> v0.4.0 ^[[1m^[[33m(available: v0.4.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0504822Z ^[[1m^[[91m    Removing^[[0m compression-codecs v0.4.36
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0589605Z ^[[1m^[[91m    Removing^[[0m compression-core v0.4.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0591128Z ^[[1m^[[33m Downgrading^[[0m cookie v0.18.1 -> v0.18.0 ^[[1m^[[33m(available: v0.18.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0591722Z ^[[1m^[[33m Downgrading^[[0m cpufeatures v0.2.17 -> v0.2.5 ^[[1m^[[33m(available: v0.2.17)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0592185Z ^[[1m^[[33m Downgrading^[[0m crc32fast v1.5.0 -> v1.1.0 ^[[1m^[[33m(available: v1.5.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0592660Z ^[[1m^[[33m Downgrading^[[0m crypto-common v0.1.7 -> v0.1.6 ^[[1m^[[33m(available: v0.1.7)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0593200Z ^[[1m^[[33m Downgrading^[[0m ctr v0.9.2 -> v0.9.0 ^[[1m^[[33m(available: v0.9.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0593651Z ^[[1m^[[33m Downgrading^[[0m data-encoding v2.10.0 -> v2.0.0 ^[[1m^[[33m(available: v2.11.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0683873Z ^[[1m^[[91m    Removing^[[0m deranged v0.5.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0684976Z ^[[1m^[[33m Downgrading^[[0m digest v0.10.7 -> v0.10.2 ^[[1m^[[33m(available: v0.10.7)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0771536Z ^[[1m^[[91m    Removing^[[0m displaydoc v0.2.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0771944Z ^[[1m^[[33m Downgrading^[[0m either v1.15.0 -> v1.0.0 ^[[1m^[[33m(available: v1.18.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0772943Z ^[[1m^[[33m Downgrading^[[0m encoding_rs v0.8.35 -> v0.8.20 ^[[1m^[[33m(available: v0.8.42)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0774060Z ^[[1m^[[33m Downgrading^[[0m env_logger v0.8.4 -> v0.8.2 ^[[1m^[[33m(available: v0.8.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0774516Z ^[[1m^[[33m Downgrading^[[0m equivalent v1.0.2 -> v1.0.0 ^[[1m^[[33m(available: v1.0.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0774973Z ^[[1m^[[33m Downgrading^[[0m errno v0.3.14 -> v0.3.10 ^[[1m^[[33m(available: v0.3.14)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0775526Z ^[[1m^[[33m Downgrading^[[0m fastrand v2.3.0 -> v2.1.1 ^[[1m^[[33m(available: v2.5.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0777449Z ^[[1m^[[33m Downgrading^[[0m flate2 v1.1.9 -> v1.0.11 ^[[1m^[[33m(available: v1.1.10)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0777880Z ^[[1m^[[33m Downgrading^[[0m fnv v1.0.7 -> v1.0.5 ^[[1m^[[33m(available: v1.0.7)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0778340Z ^[[1m^[[33m Downgrading^[[0m form_urlencoded v1.2.2 -> v1.2.0 ^[[1m^[[33m(available: v1.2.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0778847Z ^[[1m^[[33m Downgrading^[[0m futures-channel v0.3.31 -> v0.3.0 ^[[1m^[[33m(available: v0.3.34)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0782647Z ^[[1m^[[33m Downgrading^[[0m generic-array v0.14.7 -> v0.14.4 ^[[1m^[[33m(available: v0.14.9)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0784589Z ^[[1m^[[91m    Removing^[[0m getrandom v0.2.17
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0786216Z ^[[1m^[[91m    Removing^[[0m getrandom v0.3.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0787843Z ^[[1m^[[92m      Adding^[[0m getrandom v0.2.0 ^[[1m^[[33m(available: v0.2.17)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0789447Z ^[[1m^[[92m      Adding^[[0m getrandom v0.3.0 ^[[1m^[[33m(available: v0.3.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0790601Z ^[[1m^[[33m Downgrading^[[0m ghash v0.5.1 -> v0.5.0 ^[[1m^[[33m(available: v0.5.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0791494Z ^[[1m^[[92m      Adding^[[0m gimli v0.23.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0792056Z ^[[1m^[[33m Downgrading^[[0m glob v0.3.3 -> v0.3.0 ^[[1m^[[33m(available: v0.3.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0795925Z ^[[1m^[[33m Downgrading^[[0m h2 v0.4.17 -> v0.4.2 ^[[1m^[[33m(available: v0.4.19)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0798217Z ^[[1m^[[91m    Removing^[[0m hashbrown v0.16.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0799260Z ^[[1m^[[92m      Adding^[[0m hashbrown v0.11.0 ^[[1m^[[33m(available: v0.11.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0800205Z ^[[1m^[[92m      Adding^[[0m hashbrown v0.14.1 ^[[1m^[[33m(available: v0.14.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0801188Z ^[[1m^[[33m Downgrading^[[0m hdrhistogram v7.5.4 -> v7.0.0 ^[[1m^[[33m(available: v7.6.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0801651Z ^[[1m^[[33m Downgrading^[[0m headers v0.4.1 -> v0.4.0 ^[[1m^[[33m(available: v0.4.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0802204Z ^[[1m^[[92m      Adding^[[0m hermit-abi v0.3.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0802850Z ^[[1m^[[33m Downgrading^[[0m hkdf v0.12.4 -> v0.12.0 ^[[1m^[[33m(available: v0.12.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0803566Z ^[[1m^[[33m Downgrading^[[0m hmac v0.12.1 -> v0.12.0 ^[[1m^[[33m(available: v0.12.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0804967Z ^[[1m^[[33m Downgrading^[[0m http-body v1.0.1 -> v1.0.0 ^[[1m^[[33m(available: v1.1.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0805435Z ^[[1m^[[33m Downgrading^[[0m http-body-util v0.1.3 -> v0.1.0 ^[[1m^[[33m(available: v0.1.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0806061Z ^[[1m^[[33m Downgrading^[[0m http-range-header v0.4.2 -> v0.4.0 ^[[1m^[[33m(available: v0.4.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0806508Z ^[[1m^[[33m Downgrading^[[0m httparse v1.10.1 -> v1.8.0 ^[[1m^[[33m(available: v1.10.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0806806Z ^[[1m^[[33m Downgrading^[[0m httpdate v1.0.3 -> v1.0.0 ^[[1m^[[33m(available: v1.0.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0815664Z ^[[1m^[[33m Downgrading^[[0m hyper v1.8.1 -> v1.4.0 ^[[1m^[[33m(available: v1.11.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0819537Z ^[[1m^[[33m Downgrading^[[0m hyper-util v0.1.20 -> v0.1.4 ^[[1m^[[33m(available: v0.1.21)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0907467Z ^[[1m^[[91m    Removing^[[0m icu_collections v2.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.0994553Z ^[[1m^[[91m    Removing^[[0m icu_locale_core v2.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1084459Z ^[[1m^[[91m    Removing^[[0m icu_normalizer v2.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1169489Z ^[[1m^[[91m    Removing^[[0m icu_normalizer_data v2.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1264679Z ^[[1m^[[91m    Removing^[[0m icu_properties v2.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1349761Z ^[[1m^[[91m    Removing^[[0m icu_properties_data v2.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1451765Z ^[[1m^[[91m    Removing^[[0m icu_provider v2.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1452239Z ^[[1m^[[33m Downgrading^[[0m idna v1.1.0 -> v0.2.0 ^[[1m^[[33m(available: v0.2.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1538489Z ^[[1m^[[91m    Removing^[[0m idna_adapter v1.2.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1539860Z ^[[1m^[[91m    Removing^[[0m indexmap v2.13.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1540987Z ^[[1m^[[92m      Adding^[[0m indexmap v1.8.1 ^[[1m^[[33m(available: v1.9.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1542036Z ^[[1m^[[92m      Adding^[[0m indexmap v2.0.2 ^[[1m^[[33m(available: v2.14.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1542693Z ^[[1m^[[33m Downgrading^[[0m inout v0.1.4 -> v0.1.0 ^[[1m^[[33m(available: v0.1.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1543308Z ^[[1m^[[33m Downgrading^[[0m ipnet v2.11.0 -> v2.3.0 ^[[1m^[[33m(available: v2.12.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1544030Z ^[[1m^[[33m Downgrading^[[0m iri-string v0.7.10 -> v0.7.0 ^[[1m^[[33m(available: v0.7.14)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1545436Z ^[[1m^[[33m Downgrading^[[0m itertools v0.14.0 -> v0.10.1 ^[[1m^[[33m(available: v0.10.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1545848Z ^[[1m^[[91m    Removing^[[0m itoa v1.0.17
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1546270Z ^[[1m^[[92m      Adding^[[0m itoa v0.4.7 ^[[1m^[[33m(available: v0.4.8)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1546671Z ^[[1m^[[92m      Adding^[[0m itoa v1.0.5 ^[[1m^[[33m(available: v1.0.18)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1548030Z ^[[1m^[[33m Downgrading^[[0m js-sys v0.3.85 -> v0.3.64 ^[[1m^[[33m(available: v0.3.106)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1548805Z ^[[1m^[[33m Downgrading^[[0m lazy_static v1.5.0 -> v1.0.0 ^[[1m^[[33m(available: v1.5.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1550060Z ^[[1m^[[33m Downgrading^[[0m libc v0.2.180 -> v0.2.168 ^[[1m^[[33m(available: v0.2.189)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1551486Z ^[[1m^[[33m Downgrading^[[0m linux-raw-sys v0.11.0 -> v0.9.2 ^[[1m^[[33m(available: v0.9.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1640440Z ^[[1m^[[91m    Removing^[[0m litemap v0.8.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1640909Z ^[[1m^[[33m Downgrading^[[0m lock_api v0.4.14 -> v0.4.6 ^[[1m^[[33m(available: v0.4.14)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1642043Z ^[[1m^[[33m Downgrading^[[0m log v0.4.29 -> v0.4.17 ^[[1m^[[33m(available: v0.4.34)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1642548Z ^[[1m^[[92m      Adding^[[0m matches v0.1.2 ^[[1m^[[33m(available: v0.1.10)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1643718Z ^[[1m^[[33m Downgrading^[[0m memchr v2.7.6 -> v2.4.1 ^[[1m^[[33m(available: v2.8.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1644806Z ^[[1m^[[33m Downgrading^[[0m mime_guess v2.0.5 -> v2.0.0 ^[[1m^[[33m(available: v2.0.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1645333Z ^[[1m^[[92m      Adding^[[0m miniz-sys v0.1.11 ^[[1m^[[33m(available: v0.1.12)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1645753Z ^[[1m^[[91m    Removing^[[0m miniz_oxide v0.8.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1646281Z ^[[1m^[[92m      Adding^[[0m miniz_oxide v0.3.2 ^[[1m^[[33m(available: v0.3.7)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1646729Z ^[[1m^[[92m      Adding^[[0m miniz_oxide v0.4.0 ^[[1m^[[33m(available: v0.4.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1648856Z ^[[1m^[[33m Downgrading^[[0m mio v1.1.1 -> v1.0.1 ^[[1m^[[33m(available: v1.2.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1650045Z ^[[1m^[[33m Downgrading^[[0m multer v3.1.0 -> v3.0.0 ^[[1m^[[33m(available: v3.1.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1650983Z ^[[1m^[[33m Downgrading^[[0m nu-ansi-term v0.50.3 -> v0.50.0 ^[[1m^[[33m(available: v0.50.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1735656Z ^[[1m^[[91m    Removing^[[0m num-conv v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1736139Z ^[[1m^[[33m Downgrading^[[0m num-traits v0.2.19 -> v0.2.0 ^[[1m^[[33m(available: v0.2.19)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1737412Z ^[[1m^[[92m      Adding^[[0m object v0.23.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1738687Z ^[[1m^[[33m Downgrading^[[0m once_cell v1.21.3 -> v1.19.0 ^[[1m^[[33m(available: v1.21.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1739423Z ^[[1m^[[33m Downgrading^[[0m opaque-debug v0.3.1 -> v0.3.0 ^[[1m^[[33m(available: v0.3.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1740495Z ^[[1m^[[33m Downgrading^[[0m parking_lot v0.12.5 -> v0.12.0 ^[[1m^[[33m(available: v0.12.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1741836Z ^[[1m^[[33m Downgrading^[[0m parking_lot_core v0.9.12 -> v0.9.0 ^[[1m^[[33m(available: v0.9.12)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1742462Z ^[[1m^[[33m Downgrading^[[0m percent-encoding v2.3.2 -> v2.3.0 ^[[1m^[[33m(available: v2.3.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1743452Z ^[[1m^[[92m      Adding^[[0m pin-project v1.0.2 ^[[1m^[[33m(available: v1.1.13)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1744653Z ^[[1m^[[92m      Adding^[[0m pin-project-internal v1.0.2 ^[[1m^[[33m(available: v1.1.13)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1745295Z ^[[1m^[[33m Downgrading^[[0m pin-project-lite v0.2.16 -> v0.2.11 ^[[1m^[[33m(available: v0.2.17)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1746162Z ^[[1m^[[33m Downgrading^[[0m polyval v0.6.2 -> v0.6.0 ^[[1m^[[33m(available: v0.6.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1834699Z ^[[1m^[[91m    Removing^[[0m potential_utf v0.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1920423Z ^[[1m^[[91m    Removing^[[0m powerfmt v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1920920Z ^[[1m^[[33m Downgrading^[[0m ppv-lite86 v0.2.21 -> v0.2.14 ^[[1m^[[33m(available: v0.2.21)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1927236Z ^[[1m^[[33m Downgrading^[[0m proc-macro2 v1.0.106 -> v1.0.83 ^[[1m^[[33m(available: v1.0.107)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1927745Z ^[[1m^[[33m Downgrading^[[0m prost v0.14.3 -> v0.14.1 ^[[1m^[[33m(available: v0.14.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1928078Z ^[[1m^[[33m Downgrading^[[0m prost-derive v0.14.3 -> v0.14.1 ^[[1m^[[33m(available: v0.14.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1928419Z ^[[1m^[[33m Downgrading^[[0m quickcheck v1.0.3 -> v1.0.0 ^[[1m^[[33m(available: v1.1.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1928751Z ^[[1m^[[33m Downgrading^[[0m quickcheck_macros v1.1.0 -> v1.0.0 ^[[1m^[[33m(available: v1.2.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.1929150Z ^[[1m^[[33m Downgrading^[[0m quote v1.0.44 -> v1.0.35 ^[[1m^[[33m(available: v1.0.47)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2014489Z ^[[1m^[[91m    Removing^[[0m r-efi v5.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2016525Z ^[[1m^[[91m    Removing^[[0m rand v0.8.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2017941Z ^[[1m^[[91m    Removing^[[0m rand v0.9.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2019485Z ^[[1m^[[92m      Adding^[[0m rand v0.8.0 ^[[1m^[[33m(available: v0.8.8)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2020800Z ^[[1m^[[92m      Adding^[[0m rand v0.9.0 ^[[1m^[[33m(available: v0.9.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2021533Z ^[[1m^[[33m Downgrading^[[0m rand_chacha v0.3.1 -> v0.3.0 ^[[1m^[[33m(available: v0.3.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2022098Z ^[[1m^[[91m    Removing^[[0m rand_core v0.6.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2022371Z ^[[1m^[[91m    Removing^[[0m rand_core v0.9.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2022715Z ^[[1m^[[92m      Adding^[[0m rand_core v0.6.2 ^[[1m^[[33m(available: v0.6.4)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2023120Z ^[[1m^[[92m      Adding^[[0m rand_core v0.9.0 ^[[1m^[[33m(available: v0.9.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2023515Z ^[[1m^[[92m      Adding^[[0m rand_hc v0.3.0 ^[[1m^[[33m(available: v0.3.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2024235Z ^[[1m^[[33m Downgrading^[[0m redox_syscall v0.5.18 -> v0.2.8 ^[[1m^[[33m(available: v0.2.16)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2027267Z ^[[1m^[[33m Downgrading^[[0m regex v1.12.3 -> v1.3.0 ^[[1m^[[33m(available: v1.13.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2122179Z ^[[1m^[[91m    Removing^[[0m regex-automata v0.4.14
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2123150Z ^[[1m^[[33m Downgrading^[[0m regex-syntax v0.8.9 -> v0.6.12 ^[[1m^[[33m(available: v0.6.29)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2137208Z ^[[1m^[[33m Downgrading^[[0m reqwest v0.12.24 -> v0.12.0 ^[[1m^[[33m(available: v0.12.28)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2143621Z ^[[1m^[[92m      Adding^[[0m rustc-demangle v0.1.4 ^[[1m^[[33m(available: v0.1.28)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2144050Z ^[[1m^[[92m      Adding^[[0m rustc_version v0.2.0 ^[[1m^[[33m(available: v0.2.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2164994Z ^[[1m^[[33m Downgrading^[[0m rustix v1.1.3 -> v1.0.0 ^[[1m^[[33m(available: v1.1.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2175866Z ^[[1m^[[33m Downgrading^[[0m rustversion v1.0.22 -> v1.0.9 ^[[1m^[[33m(available: v1.0.23)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2176326Z ^[[1m^[[33m Downgrading^[[0m ryu v1.0.22 -> v1.0.9 ^[[1m^[[33m(available: v1.0.23)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2176799Z ^[[1m^[[33m Downgrading^[[0m scopeguard v1.2.0 -> v1.1.0 ^[[1m^[[33m(available: v1.2.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2177197Z ^[[1m^[[92m      Adding^[[0m semver v0.6.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2177509Z ^[[1m^[[92m      Adding^[[0m semver-parser v0.7.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2180266Z ^[[1m^[[33m Downgrading^[[0m serde v1.0.228 -> v1.0.221 ^[[1m^[[33m(available: v1.0.229)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2181000Z ^[[1m^[[33m Downgrading^[[0m serde_core v1.0.228 -> v1.0.221 ^[[1m^[[33m(available: v1.0.229)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2184681Z ^[[1m^[[33m Downgrading^[[0m serde_derive v1.0.228 -> v1.0.221 ^[[1m^[[33m(available: v1.0.229)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2185814Z ^[[1m^[[33m Downgrading^[[0m serde_html_form v0.2.8 -> v0.2.0 ^[[1m^[[33m(available: v0.2.8)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2189760Z ^[[1m^[[33m Downgrading^[[0m serde_json v1.0.149 -> v1.0.96 ^[[1m^[[33m(available: v1.0.151)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2191211Z ^[[1m^[[33m Downgrading^[[0m serde_path_to_error v0.1.20 -> v0.1.8 ^[[1m^[[33m(available: v0.1.20)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2277147Z ^[[1m^[[91m    Removing^[[0m serde_spanned v1.0.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2278253Z ^[[1m^[[33m Downgrading^[[0m sha1 v0.10.6 -> v0.10.0 ^[[1m^[[33m(available: v0.10.7)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2279619Z ^[[1m^[[33m Downgrading^[[0m sha2 v0.10.9 -> v0.10.1 ^[[1m^[[33m(available: v0.10.9)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2280159Z ^[[1m^[[33m Downgrading^[[0m sharded-slab v0.1.7 -> v0.1.4 ^[[1m^[[33m(available: v0.1.7)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2280708Z ^[[1m^[[33m Downgrading^[[0m signal-hook-registry v1.4.8 -> v1.1.1 ^[[1m^[[33m(available: v1.4.8)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2367051Z ^[[1m^[[91m    Removing^[[0m simd-adler32 v0.3.8
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2367441Z ^[[1m^[[33m Downgrading^[[0m slab v0.4.12 -> v0.4.2 ^[[1m^[[33m(available: v0.4.12)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2368396Z ^[[1m^[[33m Downgrading^[[0m smallvec v1.15.1 -> v1.12.0 ^[[1m^[[33m(available: v1.16.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2369646Z ^[[1m^[[33m Downgrading^[[0m socket2 v0.6.2 -> v0.5.5 ^[[1m^[[33m(available: v0.5.10)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2455722Z ^[[1m^[[91m    Removing^[[0m stable_deref_trait v1.2.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2456266Z ^[[1m^[[33m Downgrading^[[0m subtle v2.6.1 -> v2.4.0 ^[[1m^[[33m(available: v2.6.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2463714Z ^[[1m^[[91m    Removing^[[0m syn v2.0.114
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2470184Z ^[[1m^[[92m      Adding^[[0m syn v1.0.98 ^[[1m^[[33m(available: v1.0.109)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2476449Z ^[[1m^[[92m      Adding^[[0m syn v2.0.87 ^[[1m^[[33m(available: v2.0.119)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2479124Z ^[[1m^[[91m    Removing^[[0m sync_wrapper v1.0.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2479416Z ^[[1m^[[92m      Adding^[[0m sync_wrapper v0.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2479884Z ^[[1m^[[92m      Adding^[[0m sync_wrapper v1.0.0 ^[[1m^[[33m(available: v1.0.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2566976Z ^[[1m^[[91m    Removing^[[0m synstructure v0.13.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2682620Z ^[[1m^[[91m    Removing^[[0m target-triple v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2683932Z ^[[1m^[[33m Downgrading^[[0m tempfile v3.24.0 -> v3.23.0 ^[[1m^[[33m(available: v3.27.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2684471Z ^[[1m^[[33m Downgrading^[[0m termcolor v1.4.1 -> v1.0.4 ^[[1m^[[33m(available: v1.4.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2686116Z ^[[1m^[[33m Downgrading^[[0m thiserror v2.0.18 -> v2.0.7 ^[[1m^[[33m(available: v2.0.21)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2687555Z ^[[1m^[[33m Downgrading^[[0m thiserror-impl v2.0.18 -> v2.0.7 ^[[1m^[[33m(available: v2.0.21)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2688082Z ^[[1m^[[91m    Removing^[[0m thread_local v1.1.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2688429Z ^[[1m^[[92m      Adding^[[0m thread_local v0.3.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2688786Z ^[[1m^[[92m      Adding^[[0m thread_local v1.1.4 ^[[1m^[[33m(available: v1.1.10)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2692285Z ^[[1m^[[33m Downgrading^[[0m time v0.3.47 -> v0.3.0 ^[[1m^[[33m(available: v0.3.55)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2777726Z ^[[1m^[[91m    Removing^[[0m time-core v0.1.8
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2778534Z ^[[1m^[[33m Downgrading^[[0m time-macros v0.2.27 -> v0.2.0 ^[[1m^[[33m(available: v0.2.32)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2867490Z ^[[1m^[[91m    Removing^[[0m tinystr v0.8.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2878262Z ^[[1m^[[33m Downgrading^[[0m tokio v1.49.0 -> v1.44.2 ^[[1m^[[33m(available: v1.53.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2883196Z ^[[1m^[[33m Downgrading^[[0m tokio-macros v2.6.0 -> v2.5.0 ^[[1m^[[33m(available: v2.7.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2883771Z ^[[1m^[[33m Downgrading^[[0m tokio-stream v0.1.18 -> v0.1.9 ^[[1m^[[33m(available: v0.1.19)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2886422Z ^[[1m^[[33m Downgrading^[[0m tokio-util v0.7.18 -> v0.7.1 ^[[1m^[[33m(available: v0.7.19)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2889013Z ^[[1m^[[33m Downgrading^[[0m toml v0.9.11+spec-1.1.0 -> v0.5.2 ^[[1m^[[33m(available: v0.5.11)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.2975184Z ^[[1m^[[91m    Removing^[[0m toml_datetime v0.7.5+spec-1.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3062291Z ^[[1m^[[91m    Removing^[[0m toml_parser v1.0.6+spec-1.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3146722Z ^[[1m^[[91m    Removing^[[0m toml_writer v1.0.6+spec-1.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3147460Z ^[[1m^[[91m    Removing^[[0m tower v0.5.3
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3148260Z ^[[1m^[[92m      Adding^[[0m tower v0.4.1 ^[[1m^[[33m(available: v0.4.13)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3149053Z ^[[1m^[[92m      Adding^[[0m tower v0.5.2 ^[[1m^[[33m(available: v0.5.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3153203Z ^[[1m^[[33m Downgrading^[[0m tracing v0.1.44 -> v0.1.37 ^[[1m^[[33m(available: v0.1.44)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3154038Z ^[[1m^[[33m Downgrading^[[0m tracing-attributes v0.1.31 -> v0.1.23 ^[[1m^[[33m(available: v0.1.31)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3154584Z ^[[1m^[[33m Downgrading^[[0m tracing-core v0.1.36 -> v0.1.33 ^[[1m^[[33m(available: v0.1.36)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3157404Z ^[[1m^[[33m Downgrading^[[0m tracing-subscriber v0.3.22 -> v0.3.20 ^[[1m^[[33m(available: v0.3.23)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3158112Z ^[[1m^[[33m Downgrading^[[0m try-lock v0.2.5 -> v0.2.0 ^[[1m^[[33m(available: v0.2.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3160187Z ^[[1m^[[33m Downgrading^[[0m trybuild v1.0.115 -> v1.0.63 ^[[1m^[[33m(available: v1.0.121)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3162877Z ^[[1m^[[33m Downgrading^[[0m typenum v1.19.0 -> v1.14.0 ^[[1m^[[33m(available: v1.20.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3163341Z ^[[1m^[[33m Downgrading^[[0m unicase v2.9.0 -> v2.4.0 ^[[1m^[[33m(available: v2.9.0)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3163781Z ^[[1m^[[92m      Adding^[[0m unicode-bidi v0.3.0 ^[[1m^[[33m(available: v0.3.18)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3164278Z ^[[1m^[[33m Downgrading^[[0m unicode-ident v1.0.22 -> v1.0.0 ^[[1m^[[33m(available: v1.0.26)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3164950Z ^[[1m^[[92m      Adding^[[0m unicode-normalization v0.1.5 ^[[1m^[[33m(available: v0.1.25)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3165439Z ^[[1m^[[33m Downgrading^[[0m universal-hash v0.5.1 -> v0.5.0 ^[[1m^[[33m(available: v0.5.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3166459Z ^[[1m^[[33m Downgrading^[[0m url v2.5.8 -> v2.2.0 ^[[1m^[[33m(available: v2.5.8)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3252051Z ^[[1m^[[91m    Removing^[[0m utf8_iter v1.0.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3255193Z ^[[1m^[[33m Downgrading^[[0m uuid v1.20.0 -> v1.0.0 ^[[1m^[[33m(available: v1.26.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3256437Z ^[[1m^[[33m Downgrading^[[0m valuable v0.1.1 -> v0.1.0 ^[[1m^[[33m(available: v0.1.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3256818Z ^[[1m^[[91m    Removing^[[0m version_check v0.9.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3257180Z ^[[1m^[[92m      Adding^[[0m version_check v0.1.0 ^[[1m^[[33m(available: v0.1.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3257597Z ^[[1m^[[92m      Adding^[[0m version_check v0.9.4 ^[[1m^[[33m(available: v0.9.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3258177Z ^[[1m^[[33m Downgrading^[[0m want v0.3.1 -> v0.3.0 ^[[1m^[[33m(available: v0.3.1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3258603Z ^[[1m^[[91m    Removing^[[0m wasi v0.11.1+wasi-snapshot-preview1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3259084Z ^[[1m^[[92m      Adding^[[0m wasi v0.9.0+wasi-snapshot-preview1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3259618Z ^[[1m^[[92m      Adding^[[0m wasi v0.11.0+wasi-snapshot-preview1 ^[[1m^[[33m(available: v0.11.1+wasi-snapshot-preview1)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3260190Z ^[[1m^[[92m      Adding^[[0m wasi v0.13.0+wasi-0.2.0 ^[[1m^[[33m(available: v0.13.3+wasi-0.2.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3355045Z ^[[1m^[[91m    Removing^[[0m wasip2 v1.0.2+wasi-0.2.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3358109Z ^[[1m^[[33m Downgrading^[[0m wasm-bindgen v0.2.108 -> v0.2.87 ^[[1m^[[33m(available: v0.2.129)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3360747Z ^[[1m^[[92m      Adding^[[0m wasm-bindgen-backend v0.2.87 ^[[1m^[[33m(available: v0.2.104)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3363096Z ^[[1m^[[33m Downgrading^[[0m wasm-bindgen-futures v0.4.58 -> v0.4.37 ^[[1m^[[33m(available: v0.4.79)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3365183Z ^[[1m^[[33m Downgrading^[[0m wasm-bindgen-macro v0.2.108 -> v0.2.87 ^[[1m^[[33m(available: v0.2.129)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3367258Z ^[[1m^[[33m Downgrading^[[0m wasm-bindgen-macro-support v0.2.108 -> v0.2.87 ^[[1m^[[33m(available: v0.2.129)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3368428Z ^[[1m^[[33m Downgrading^[[0m wasm-bindgen-shared v0.2.108 -> v0.2.87 ^[[1m^[[33m(available: v0.2.129)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3369135Z ^[[1m^[[33m Downgrading^[[0m wasm-streams v0.4.2 -> v0.4.0 ^[[1m^[[33m(available: v0.4.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3371140Z ^[[1m^[[33m Downgrading^[[0m web-sys v0.3.85 -> v0.3.64 ^[[1m^[[33m(available: v0.3.106)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3372343Z ^[[1m^[[92m      Adding^[[0m winapi v0.3.0 ^[[1m^[[33m(available: v0.3.9)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3372652Z ^[[1m^[[92m      Adding^[[0m winapi-i686-pc-windows-gnu v0.3.0 ^[[1m^[[33m(available: v0.3.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3460739Z ^[[1m^[[91m    Removing^[[0m winapi-util v0.1.11
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3461145Z ^[[1m^[[92m      Adding^[[0m winapi-x86_64-pc-windows-gnu v0.3.0 ^[[1m^[[33m(available: v0.3.2)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3461589Z ^[[1m^[[92m      Adding^[[0m wincolor v1.0.0 ^[[1m^[[33m(available: v1.0.3)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3547896Z ^[[1m^[[91m    Removing^[[0m windows-link v0.2.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3548355Z ^[[1m^[[91m    Removing^[[0m windows-sys v0.60.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3548634Z ^[[1m^[[91m    Removing^[[0m windows-sys v0.61.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3549024Z ^[[1m^[[92m      Adding^[[0m windows-sys v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3549333Z ^[[1m^[[92m      Adding^[[0m windows-sys v0.48.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3549606Z ^[[1m^[[92m      Adding^[[0m windows-sys v0.52.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3550702Z ^[[1m^[[91m    Removing^[[0m windows-targets v0.53.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3551385Z ^[[1m^[[92m      Adding^[[0m windows-targets v0.48.0 ^[[1m^[[33m(available: v0.48.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3552111Z ^[[1m^[[92m      Adding^[[0m windows-targets v0.52.0 ^[[1m^[[33m(available: v0.52.6)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3552494Z ^[[1m^[[91m    Removing^[[0m windows_aarch64_gnullvm v0.53.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3552903Z ^[[1m^[[92m      Adding^[[0m windows_aarch64_gnullvm v0.48.0 ^[[1m^[[33m(available: v0.48.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3553812Z ^[[1m^[[92m      Adding^[[0m windows_aarch64_gnullvm v0.52.0 ^[[1m^[[33m(available: v0.52.6)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3554299Z ^[[1m^[[91m    Removing^[[0m windows_aarch64_msvc v0.53.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3554599Z ^[[1m^[[92m      Adding^[[0m windows_aarch64_msvc v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3554980Z ^[[1m^[[92m      Adding^[[0m windows_aarch64_msvc v0.48.0 ^[[1m^[[33m(available: v0.48.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3555372Z ^[[1m^[[92m      Adding^[[0m windows_aarch64_msvc v0.52.0 ^[[1m^[[33m(available: v0.52.6)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3555617Z ^[[1m^[[91m    Removing^[[0m windows_i686_gnu v0.53.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3555807Z ^[[1m^[[92m      Adding^[[0m windows_i686_gnu v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3556045Z ^[[1m^[[92m      Adding^[[0m windows_i686_gnu v0.48.0 ^[[1m^[[33m(available: v0.48.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3556323Z ^[[1m^[[92m      Adding^[[0m windows_i686_gnu v0.52.0 ^[[1m^[[33m(available: v0.52.6)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3641076Z ^[[1m^[[91m    Removing^[[0m windows_i686_gnullvm v0.53.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3641380Z ^[[1m^[[91m    Removing^[[0m windows_i686_msvc v0.53.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3641675Z ^[[1m^[[92m      Adding^[[0m windows_i686_msvc v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3642041Z ^[[1m^[[92m      Adding^[[0m windows_i686_msvc v0.48.0 ^[[1m^[[33m(available: v0.48.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3642476Z ^[[1m^[[92m      Adding^[[0m windows_i686_msvc v0.52.0 ^[[1m^[[33m(available: v0.52.6)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3643450Z ^[[1m^[[91m    Removing^[[0m windows_x86_64_gnu v0.53.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3643745Z ^[[1m^[[92m      Adding^[[0m windows_x86_64_gnu v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3644305Z ^[[1m^[[92m      Adding^[[0m windows_x86_64_gnu v0.48.0 ^[[1m^[[33m(available: v0.48.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3644742Z ^[[1m^[[92m      Adding^[[0m windows_x86_64_gnu v0.52.0 ^[[1m^[[33m(available: v0.52.6)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3645112Z ^[[1m^[[91m    Removing^[[0m windows_x86_64_gnullvm v0.53.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3645510Z ^[[1m^[[92m      Adding^[[0m windows_x86_64_gnullvm v0.48.0 ^[[1m^[[33m(available: v0.48.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3645835Z ^[[1m^[[92m      Adding^[[0m windows_x86_64_gnullvm v0.52.0 ^[[1m^[[33m(available: v0.52.6)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3646077Z ^[[1m^[[91m    Removing^[[0m windows_x86_64_msvc v0.53.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3646267Z ^[[1m^[[92m      Adding^[[0m windows_x86_64_msvc v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3646506Z ^[[1m^[[92m      Adding^[[0m windows_x86_64_msvc v0.48.0 ^[[1m^[[33m(available: v0.48.5)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3646797Z ^[[1m^[[92m      Adding^[[0m windows_x86_64_msvc v0.52.0 ^[[1m^[[33m(available: v0.52.6)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3745936Z ^[[1m^[[91m    Removing^[[0m winnow v0.7.14
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3747502Z ^[[1m^[[92m      Adding^[[0m winreg v0.50.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3838262Z ^[[1m^[[91m    Removing^[[0m wit-bindgen v0.51.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3838612Z ^[[1m^[[92m      Adding^[[0m wit-bindgen-rt v0.21.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.3926481Z ^[[1m^[[91m    Removing^[[0m writeable v0.6.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4015868Z ^[[1m^[[91m    Removing^[[0m yoke v0.8.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4101175Z ^[[1m^[[91m    Removing^[[0m yoke-derive v0.8.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4104287Z ^[[1m^[[33m Downgrading^[[0m zerocopy v0.8.38 -> v0.8.0 ^[[1m^[[33m(available: v0.8.59)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4107561Z ^[[1m^[[33m Downgrading^[[0m zerocopy-derive v0.8.38 -> v0.8.0 ^[[1m^[[33m(available: v0.8.59)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4192683Z ^[[1m^[[91m    Removing^[[0m zerofrom v0.1.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4280973Z ^[[1m^[[91m    Removing^[[0m zerofrom-derive v0.1.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4370828Z ^[[1m^[[91m    Removing^[[0m zerotrie v0.2.3
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4470411Z ^[[1m^[[91m    Removing^[[0m zerovec v0.11.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4556804Z ^[[1m^[[91m    Removing^[[0m zerovec-derive v0.11.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4644321Z ^[[1m^[[91m    Removing^[[0m zmij v1.0.19
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.4644997Z ^[[1m^[[92mnote^[[0m: pass `--verbose` to see 10 unchanged dependencies behind latest
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5012578Z ##[group]Run cargo +nightly update -p crc32fast --precise 1.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5013154Z ^[[36;1mcargo +nightly update -p crc32fast --precise 1.1.1^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5061425Z shell: /usr/bin/bash -e {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5061696Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5061805Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5061925Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5062034Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5062166Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5062281Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.5246813Z ^[[1m^[[92m    Updating^[[0m crates.io index
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.6781313Z ^[[1m^[[92m    Updating^[[0m crc32fast v1.1.0 -> v1.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.7252994Z ^[[1m^[[91m    Removing^[[0m rustc_version v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.7454451Z ^[[1m^[[91m    Removing^[[0m semver v0.6.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.7541761Z ^[[1m^[[91m    Removing^[[0m semver-parser v0.7.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8474481Z ^[[1m^[[92mnote^[[0m: pass `--verbose` to see 208 unchanged dependencies behind latest
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8845307Z ##[group]Run cargo +nightly update -p version_check@0.1.0 --precise 0.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8845630Z ^[[36;1mcargo +nightly update -p version_check@0.1.0 --precise 0.1.4^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8896173Z shell: /usr/bin/bash -e {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8896314Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8896427Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8896553Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8896671Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8896814Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.8896938Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:09.9088574Z ^[[1m^[[92m    Updating^[[0m crates.io index
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.1519930Z ^[[1m^[[92m    Updating^[[0m version_check v0.1.0 -> v0.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2112604Z ^[[1m^[[92mnote^[[0m: pass `--verbose` to see 207 unchanged dependencies behind latest
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2487939Z ##[group]Run cargo +nightly update -p lazy_static --precise 1.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2488253Z ^[[36;1mcargo +nightly update -p lazy_static --precise 1.1.0^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2537226Z shell: /usr/bin/bash -e {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2537358Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2537467Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2537592Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2537704Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2537847Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2537965Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.2724821Z ^[[1m^[[92m    Updating^[[0m crates.io index
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.4755329Z ^[[1m^[[92m    Updating^[[0m lazy_static v1.0.0 -> v1.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.5937760Z ^[[1m^[[92mnote^[[0m: pass `--verbose` to see 208 unchanged dependencies behind latest
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6402770Z ##[group]Run dtolnay/rust-toolchain@master
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6402929Z with:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6403058Z   toolchain: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6403165Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6403272Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6403392Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6403503Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6403639Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6403757Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6408890Z ##[start-action display=Parse toolchain version;id=__dtolnay_rust-toolchain_2.parse]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6420666Z ##[group]Run if [[ -z $toolchain ]]; then
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6420873Z ^[[36;1mif [[ -z $toolchain ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6421139Z ^[[36;1m  # GitHub does not enforce `required: true` inputs itself. https://github.com/actions/runner/issues/1070^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6421420Z ^[[36;1m  echo "'toolchain' is a required input" >&2^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6421580Z ^[[36;1m  exit 1^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6421776Z ^[[36;1melif [[ $toolchain =~ ^stable' '[0-9]+' '(year|month|week|day)s?' 'ago$ ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6421997Z ^[[36;1m  if [[ Linux == macOS ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6422273Z ^[[36;1m    echo "toolchain=1.$((($(date -v-$(sed 's/stable \([0-9]*\) \(.\).*/\1\2/' <<< $toolchain) +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6422536Z ^[[36;1m  else^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6422743Z ^[[36;1m    echo "toolchain=1.$((($(date --date "${toolchain#stable }" +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6422977Z ^[[36;1m  fi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6423140Z ^[[36;1melif [[ $toolchain =~ ^stable' 'minus' '[0-9]+' 'releases?$ ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6423526Z ^[[36;1m  echo "toolchain=1.$((($(date +%s)/60/60/24-16569)/7/6-${toolchain//[^0-9]/}))" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6423763Z ^[[36;1melif [[ $toolchain =~ ^1\.[0-9]+$ ]]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6424036Z ^[[36;1m  echo "toolchain=1.$((i=${toolchain#1.}, c=($(date +%s)/60/60/24-16569)/7/6, i+9*i*(10*i<=c)+90*i*(100*i<=c)))" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6424287Z ^[[36;1melse^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6424419Z ^[[36;1m  echo "toolchain=$toolchain" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6424576Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6472412Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6472588Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6472698Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6472822Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6472935Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6473071Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6473187Z   toolchain: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6473295Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6548470Z ##[end-action id=__dtolnay_rust-toolchain_2.parse;outcome=success;conclusion=success;duration_ms=13]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6550481Z ##[start-action display=Construct rustup command line;id=__dtolnay_rust-toolchain_2.flags]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6561430Z ##[group]Run echo "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6561768Z ^[[36;1mecho "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6562088Z ^[[36;1mecho "components=$(for c in ${components//,/ }; do echo -n ' --component' $c; done)" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6562340Z ^[[36;1mecho "downgrade=" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6605597Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6605771Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6605878Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6605999Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6606110Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6606249Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6606363Z   targets: 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6606465Z   components: 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6606570Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6669899Z ##[end-action id=__dtolnay_rust-toolchain_2.flags;outcome=success;conclusion=success;duration_ms=11]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6671141Z ##[start-action display=Set $CARGO_HOME;id=__dtolnay_rust-toolchain_2.__run]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6682065Z ##[group]Run echo CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6682312Z ^[[36;1mecho CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6723063Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6723235Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6723341Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6723463Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6723574Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6723708Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6723823Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6780343Z ##[end-action id=__dtolnay_rust-toolchain_2.__run;outcome=success;conclusion=success;duration_ms=10]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6781412Z ##[start-action display=Install rustup if needed;id=__dtolnay_rust-toolchain_2.__run_2]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6792402Z ##[group]Run if ! command -v rustup &>/dev/null; then
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6792619Z ^[[36;1mif ! command -v rustup &>/dev/null; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6793006Z ^[[36;1m  curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused --location --silent --show-error --fail https://sh.rustup.rs | sh -s -- --default-toolchain none -y^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6793378Z ^[[36;1m  echo "$CARGO_HOME/bin" >> $GITHUB_PATH^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6793528Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6834996Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6835170Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6835276Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6835397Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6835512Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6835646Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6835879Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6893730Z ##[end-action id=__dtolnay_rust-toolchain_2.__run_2;outcome=success;conclusion=success;duration_ms=11]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6894832Z ##[start-action display=Install rustup if needed on windows;id=__dtolnay_rust-toolchain_2.__run_3]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6896763Z ##[end-action id=__dtolnay_rust-toolchain_2.__run_3;outcome=skipped;conclusion=skipped;duration_ms=0]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6898139Z ##[start-action display=rustup toolchain install 1.80;id=__dtolnay_rust-toolchain_2.__run_4]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6908644Z ##[group]Run rustup toolchain install 1.80 --profile minimal --no-self-update --force-non-host
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6909148Z ^[[36;1mrustup toolchain install 1.80 --profile minimal --no-self-update --force-non-host^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6950684Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6950862Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6950969Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6951090Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6951208Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6951345Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6951473Z   RUSTUP_PERMIT_COPY_RENAME: 1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.6951600Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.7041106Z info: syncing channel updates for 1.80-x86_64-unknown-linux-gnu
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.9120303Z info: latest update on 2024-08-08 for version 1.80.1 (3f5fd8dd4 2024-08-06)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:10.9120682Z info: downloading 3 components
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8105303Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8178741Z   1.80-x86_64-unknown-linux-gnu installed - rustc 1.80.1 (3f5fd8dd4 2024-08-06)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8179280Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8232204Z ##[end-action id=__dtolnay_rust-toolchain_2.__run_4;outcome=success;conclusion=success;duration_ms=5133]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8236367Z ##[start-action display=rustup default 1.80;id=__dtolnay_rust-toolchain_2.__run_5]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8269515Z ##[group]Run rustup default 1.80 --force-non-host
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8269852Z ^[[36;1mrustup default 1.80 --force-non-host^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8331887Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8332088Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8332216Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8332343Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8332460Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8332600Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8332911Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8433418Z info: using existing install for 1.80-x86_64-unknown-linux-gnu
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8439440Z info: default toolchain set to 1.80-x86_64-unknown-linux-gnu
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8439655Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8509468Z   1.80-x86_64-unknown-linux-gnu unchanged - rustc 1.80.1 (3f5fd8dd4 2024-08-06)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8509760Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8523384Z ##[end-action id=__dtolnay_rust-toolchain_2.__run_5;outcome=success;conclusion=success;duration_ms=28]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8524847Z ##[start-action display=Create cachekey;id=__dtolnay_rust-toolchain_2.rustc-version]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8537996Z ##[group]Run DATE=$(rustc +1.80 --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8538458Z ^[[36;1mDATE=$(rustc +1.80 --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8538821Z ^[[36;1mHASH=$(rustc +1.80 --version --verbose | sed -ne 's/^commit-hash: //p')^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8539338Z ^[[36;1mecho "cachekey=$(echo $DATE$HASH | head -c12)" >> $GITHUB_OUTPUT^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8588107Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8588296Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8588414Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8588545Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8588664Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8588806Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8589065Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8889304Z ##[end-action id=__dtolnay_rust-toolchain_2.rustc-version;outcome=success;conclusion=success;duration_ms=36]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8891988Z ##[start-action display=Disable incremental compilation;id=__dtolnay_rust-toolchain_2.__run_6]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8909866Z ##[group]Run if [ -z "${CARGO_INCREMENTAL+set}" ]; then
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8910226Z ^[[36;1mif [ -z "${CARGO_INCREMENTAL+set}" ]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8910562Z ^[[36;1m  echo CARGO_INCREMENTAL=0 >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8910822Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8971411Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8971622Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8971744Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8971878Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8972000Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8972151Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.8972277Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9042180Z ##[end-action id=__dtolnay_rust-toolchain_2.__run_6;outcome=success;conclusion=success;duration_ms=14]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9043527Z ##[start-action display=Enable colors in Cargo output;id=__dtolnay_rust-toolchain_2.__run_7]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9055474Z ##[group]Run if [ -z "${CARGO_TERM_COLOR+set}" ]; then
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9055684Z ^[[36;1mif [ -z "${CARGO_TERM_COLOR+set}" ]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9055872Z ^[[36;1m  echo CARGO_TERM_COLOR=always >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9056038Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9099733Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9099918Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9100031Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9100157Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9100273Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9100418Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9100538Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9162504Z ##[end-action id=__dtolnay_rust-toolchain_2.__run_7;outcome=success;conclusion=success;duration_ms=11]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9164378Z ##[start-action display=Enable Cargo sparse registry;id=__dtolnay_rust-toolchain_2.__run_8]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9181892Z ##[group]Run # implemented in 1.66, stabilized in 1.68, made default in 1.70
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9182367Z ^[[36;1m# implemented in 1.66, stabilized in 1.68, made default in 1.70^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9183005Z ^[[36;1mif [ -z "${CARGO_REGISTRIES_CRATES_IO_PROTOCOL+set}" -o -f "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol ]; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9183887Z ^[[36;1m  if rustc +1.80 --version --verbose | grep -q '^release: 1\.6[89]\.'; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9184384Z ^[[36;1m    touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9184870Z ^[[36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9185297Z ^[[36;1m  elif rustc +1.80 --version --verbose | grep -q '^release: 1\.6[67]\.'; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9185786Z ^[[36;1m    touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9186247Z ^[[36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=git >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9186548Z ^[[36;1m  fi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9186712Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9231268Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9231453Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9231566Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9231693Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9231815Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9231960Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9232081Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9503733Z ##[end-action id=__dtolnay_rust-toolchain_2.__run_8;outcome=success;conclusion=success;duration_ms=33]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9505240Z ##[start-action display=Work around spurious network errors in curl 8.0;id=__dtolnay_rust-toolchain_2.__run_9]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9519238Z ##[group]Run # https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9519651Z ^[[36;1m# https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9520131Z ^[[36;1mif rustc +1.80 --version --verbose | grep -q '^release: 1\.7[01]\.'; then^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9520384Z ^[[36;1m  echo CARGO_HTTP_MULTIPLEXING=false >> $GITHUB_ENV^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9520577Z ^[[36;1mfi^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9568799Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9569133Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9569263Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9569398Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9569520Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9569667Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9569794Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9739578Z ##[end-action id=__dtolnay_rust-toolchain_2.__run_9;outcome=success;conclusion=success;duration_ms=23]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9742010Z ##[start-action display=rustc +1.80 --version --verbose;id=__dtolnay_rust-toolchain_2.__run_10]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9754386Z ##[group]Run rustc +1.80 --version --verbose
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9754574Z ^[[36;1mrustc +1.80 --version --verbose^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9801492Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9801676Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9801793Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9801924Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9802042Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9802188Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9802319Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9953850Z rustc 1.80.1 (3f5fd8dd4 2024-08-06)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9954269Z binary: rustc
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9954669Z commit-hash: 3f5fd8dd41153bc5fdca9427e9e05be2c767ba23
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9955085Z commit-date: 2024-08-06
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9955421Z host: x86_64-unknown-linux-gnu
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9955764Z release: 1.80.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9956101Z LLVM version: 18.1.7
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:15.9967506Z ##[end-action id=__dtolnay_rust-toolchain_2.__run_10;outcome=success;conclusion=success;duration_ms=22]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0007748Z ##[group]Run Swatinem/rust-cache@v2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0007899Z with:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0008021Z   save-if: false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0008138Z   prefix-key: v0-rust
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0008262Z   add-job-id-key: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0008400Z   add-rust-environment-hash-key: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0008553Z   cache-targets: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0008746Z   cache-all-crates: false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0009204Z   cache-workspace-crates: false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0009431Z   cache-provider: github
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0009614Z   cache-bin: true
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0024164Z   lookup-only: false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0024295Z   cmd-format: {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0024413Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0024526Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0024654Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0024771Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0024918Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.0025040Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3003121Z ##[group]Cache Configuration
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3005062Z Cache Provider:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3006980Z     github
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3016477Z Workspaces:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3016978Z     /home/runner/work/axum/axum
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3017457Z Cache Paths:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3017853Z     /home/runner/.cargo/bin
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3018261Z     /home/runner/.cargo/.crates.toml
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3018686Z     /home/runner/.cargo/.crates2.json
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3019180Z     /home/runner/.cargo/registry
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3019543Z     /home/runner/.cargo/git
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3019823Z     /home/runner/work/axum/axum/target
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3020116Z Restore Key:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3020375Z     v0-rust-test-msrv-Linux-x64-4239289d
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3020685Z Cache Key:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3020975Z     v0-rust-test-msrv-Linux-x64-4239289d-41e56c89
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3021312Z .. Prefix:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3021654Z   - v0-rust-test-msrv-Linux-x64
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3022048Z .. Environment considered:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3022415Z   - Rust Versions:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3022892Z     - 1.100.0-nightly x86_64-unknown-linux-gnu 5ceaf6608eb354c2f5bbb3b8d974caa367dac81c
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3023845Z     - 1.80.1 x86_64-unknown-linux-gnu 3f5fd8dd41153bc5fdca9427e9e05be2c767ba23
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3024565Z     - 1.98.1 x86_64-unknown-linux-gnu 48a229ceaefd4985c50990b14116b6d856af0985
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3025182Z   - CARGO_HOME
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3025592Z   - CARGO_INCREMENTAL
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3026042Z   - CARGO_TERM_COLOR
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3026478Z .. Lockfiles considered:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3026970Z   - /home/runner/work/axum/axum/axum-core/Cargo.toml
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3027569Z   - /home/runner/work/axum/axum/axum-extra/Cargo.toml
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3028163Z   - /home/runner/work/axum/axum/axum-macros/Cargo.toml
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3028786Z   - /home/runner/work/axum/axum/axum-macros/rust-toolchain
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3029466Z   - /home/runner/work/axum/axum/axum/Cargo.toml
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3029995Z   - /home/runner/work/axum/axum/Cargo.lock
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3030585Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3030805Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.3031011Z ... Restoring cache ...
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4129077Z No cache found.
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4215964Z ##[group]Run cargo +1.80 test --locked --all-features
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4216178Z ^[[36;1mcargo +1.80 test --locked --all-features^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4266021Z shell: /usr/bin/bash -e {0}
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4266157Z env:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4266271Z   CARGO_TERM_COLOR: always
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4266396Z   MSRV: 1.80
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4266512Z   CARGO_HOME: /home/runner/.cargo
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4266653Z   CARGO_INCREMENTAL: 0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4266776Z   CACHE_ON_FAILURE: false
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4266901Z ##[endgroup]
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:16.4687505Z ^[[1m^[[32m    Updating^[[0m crates.io index
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.1013674Z ^[[1m^[[32m Downloading^[[0m crates ...
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2099793Z ^[[1m^[[32m  Downloaded^[[0m arc-swap v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2130948Z ^[[1m^[[32m  Downloaded^[[0m alloc-no-stdlib v2.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2150836Z ^[[1m^[[32m  Downloaded^[[0m aead v0.5.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2180997Z ^[[1m^[[32m  Downloaded^[[0m alloc-stdlib v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2221779Z ^[[1m^[[32m  Downloaded^[[0m errno v0.3.10
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2234195Z ^[[1m^[[32m  Downloaded^[[0m anyhow v1.0.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2247814Z ^[[1m^[[32m  Downloaded^[[0m ppv-lite86 v0.2.14
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2308403Z ^[[1m^[[32m  Downloaded^[[0m cfg-if v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2319352Z ^[[1m^[[32m  Downloaded^[[0m quote v1.0.35
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2343486Z ^[[1m^[[32m  Downloaded^[[0m prost-derive v0.14.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2355053Z ^[[1m^[[32m  Downloaded^[[0m futures-core v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2384668Z ^[[1m^[[32m  Downloaded^[[0m cpufeatures v0.2.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2397658Z ^[[1m^[[32m  Downloaded^[[0m form_urlencoded v1.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2404786Z ^[[1m^[[32m  Downloaded^[[0m crypto-common v0.1.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2412522Z ^[[1m^[[32m  Downloaded^[[0m quickcheck_macros v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2420598Z ^[[1m^[[32m  Downloaded^[[0m cfg-if v0.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2429680Z ^[[1m^[[32m  Downloaded^[[0m num-traits v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2447122Z ^[[1m^[[32m  Downloaded^[[0m cipher v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2464576Z ^[[1m^[[32m  Downloaded^[[0m futures-sink v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2471582Z ^[[1m^[[32m  Downloaded^[[0m either v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2482521Z ^[[1m^[[32m  Downloaded^[[0m quickcheck v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2499146Z ^[[1m^[[32m  Downloaded^[[0m prost v0.14.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2516724Z ^[[1m^[[32m  Downloaded^[[0m proc-macro2 v1.0.83
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2541109Z ^[[1m^[[32m  Downloaded^[[0m pin-utils v0.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2551005Z ^[[1m^[[32m  Downloaded^[[0m data-encoding v2.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2559798Z ^[[1m^[[32m  Downloaded^[[0m equivalent v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2580480Z ^[[1m^[[32m  Downloaded^[[0m tracing-attributes v0.1.23
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2630676Z ^[[1m^[[32m  Downloaded^[[0m inout v0.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2640872Z ^[[1m^[[32m  Downloaded^[[0m http-body-util v0.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2653427Z ^[[1m^[[32m  Downloaded^[[0m mime v0.3.17
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2666102Z ^[[1m^[[32m  Downloaded^[[0m ghash v0.5.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2675734Z ^[[1m^[[32m  Downloaded^[[0m tower-layer v0.3.3
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2684669Z ^[[1m^[[32m  Downloaded^[[0m rand v0.8.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2716302Z ^[[1m^[[32m  Downloaded^[[0m percent-encoding v2.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2725648Z ^[[1m^[[32m  Downloaded^[[0m http-body v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2735264Z ^[[1m^[[32m  Downloaded^[[0m lazy_static v1.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2751705Z ^[[1m^[[32m  Downloaded^[[0m futures-io v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2759513Z ^[[1m^[[32m  Downloaded^[[0m cc v1.0.67
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2782571Z ^[[1m^[[32m  Downloaded^[[0m tower-service v0.3.3
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2789347Z ^[[1m^[[32m  Downloaded^[[0m tracing-serde v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2800925Z ^[[1m^[[32m  Downloaded^[[0m byteorder v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2812664Z ^[[1m^[[32m  Downloaded^[[0m thread_local v0.3.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2821786Z ^[[1m^[[32m  Downloaded^[[0m sync_wrapper v0.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2829628Z ^[[1m^[[32m  Downloaded^[[0m serde_urlencoded v0.7.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2843962Z ^[[1m^[[32m  Downloaded^[[0m slab v0.4.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2852112Z ^[[1m^[[32m  Downloaded^[[0m ipnet v2.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2865249Z ^[[1m^[[32m  Downloaded^[[0m getrandom v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2893058Z ^[[1m^[[32m  Downloaded^[[0m generic-array v0.14.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2912016Z ^[[1m^[[32m  Downloaded^[[0m pin-project-lite v0.2.11
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2961516Z ^[[1m^[[32m  Downloaded^[[0m thread_local v1.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2978213Z ^[[1m^[[32m  Downloaded^[[0m want v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2986369Z ^[[1m^[[32m  Downloaded^[[0m try-lock v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.2994066Z ^[[1m^[[32m  Downloaded^[[0m tokio-macros v2.5.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3001696Z ^[[1m^[[32m  Downloaded^[[0m pin-project v1.0.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3089607Z ^[[1m^[[32m  Downloaded^[[0m sha1 v0.10.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3103238Z ^[[1m^[[32m  Downloaded^[[0m version_check v0.9.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3113004Z ^[[1m^[[32m  Downloaded^[[0m hashbrown v0.11.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3144648Z ^[[1m^[[32m  Downloaded^[[0m tokio-stream v0.1.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3195255Z ^[[1m^[[32m  Downloaded^[[0m unicase v2.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3205833Z ^[[1m^[[32m  Downloaded^[[0m uuid v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3233671Z ^[[1m^[[32m  Downloaded^[[0m url v2.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3252801Z ^[[1m^[[32m  Downloaded^[[0m unicode-ident v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3290202Z ^[[1m^[[32m  Downloaded^[[0m tungstenite v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3319339Z ^[[1m^[[32m  Downloaded^[[0m tracing-core v0.1.33
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3344799Z ^[[1m^[[32m  Downloaded^[[0m tower-http v0.6.8
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3428441Z ^[[1m^[[32m  Downloaded^[[0m serde_json v1.0.96
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3491968Z ^[[1m^[[32m  Downloaded^[[0m zerocopy v0.8.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3727527Z ^[[1m^[[32m  Downloaded^[[0m unicode-normalization v0.1.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.3778855Z ^[[1m^[[32m  Downloaded^[[0m rustix v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.4001548Z ^[[1m^[[32m  Downloaded^[[0m regex-syntax v0.6.12
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.4058157Z ^[[1m^[[32m  Downloaded^[[0m tokio v1.44.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.4409644Z ^[[1m^[[32m  Downloaded^[[0m libc v0.2.168
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.4637528Z ^[[1m^[[32m  Downloaded^[[0m brotli v3.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.4826114Z ^[[1m^[[32m  Downloaded^[[0m encoding_rs v0.8.20
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.4984133Z ^[[1m^[[32m  Downloaded^[[0m tracing-subscriber v0.3.20
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.5056263Z ^[[1m^[[32m  Downloaded^[[0m syn v2.0.87
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.5142551Z ^[[1m^[[32m  Downloaded^[[0m syn v1.0.98
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.5220201Z ^[[1m^[[32m  Downloaded^[[0m reqwest v0.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.5278661Z ^[[1m^[[32m  Downloaded^[[0m linux-raw-sys v0.9.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.5735085Z ^[[1m^[[32m  Downloaded^[[0m regex v1.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.5797935Z ^[[1m^[[32m  Downloaded^[[0m hdrhistogram v7.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.5850256Z ^[[1m^[[32m  Downloaded^[[0m tower v0.5.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.5927855Z ^[[1m^[[32m  Downloaded^[[0m tower v0.4.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6002238Z ^[[1m^[[32m  Downloaded^[[0m tokio-util v0.7.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6045132Z ^[[1m^[[32m  Downloaded^[[0m serde_derive v1.0.221
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6065247Z ^[[1m^[[32m  Downloaded^[[0m idna v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6112442Z ^[[1m^[[32m  Downloaded^[[0m hkdf v0.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6128545Z ^[[1m^[[32m  Downloaded^[[0m brotli-decompressor v2.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6178712Z ^[[1m^[[32m  Downloaded^[[0m tracing v0.1.37
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6209119Z ^[[1m^[[32m  Downloaded^[[0m time v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6239424Z ^[[1m^[[32m  Downloaded^[[0m serde_core v1.0.221
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6261746Z ^[[1m^[[32m  Downloaded^[[0m h2 v0.4.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6314825Z ^[[1m^[[32m  Downloaded^[[0m futures-util v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6430019Z ^[[1m^[[32m  Downloaded^[[0m unicode-bidi v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6450394Z ^[[1m^[[32m  Downloaded^[[0m typenum v1.14.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6475191Z ^[[1m^[[32m  Downloaded^[[0m toml v0.5.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6499039Z ^[[1m^[[32m  Downloaded^[[0m tempfile v3.23.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6525505Z ^[[1m^[[32m  Downloaded^[[0m socket2 v0.5.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6541254Z ^[[1m^[[32m  Downloaded^[[0m sharded-slab v0.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6563746Z ^[[1m^[[32m  Downloaded^[[0m ryu v1.0.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6588303Z ^[[1m^[[32m  Downloaded^[[0m rand_chacha v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6597749Z ^[[1m^[[32m  Downloaded^[[0m mio v1.0.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6645755Z ^[[1m^[[32m  Downloaded^[[0m itertools v0.10.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6697020Z ^[[1m^[[32m  Downloaded^[[0m iri-string v0.7.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6753502Z ^[[1m^[[32m  Downloaded^[[0m hyper v1.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6815618Z ^[[1m^[[32m  Downloaded^[[0m http v1.5.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6847788Z ^[[1m^[[32m  Downloaded^[[0m hashbrown v0.14.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6887048Z ^[[1m^[[32m  Downloaded^[[0m typed-json v0.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6900795Z ^[[1m^[[32m  Downloaded^[[0m trybuild v1.0.63
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6928661Z ^[[1m^[[32m  Downloaded^[[0m tracing-log v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6939521Z ^[[1m^[[32m  Downloaded^[[0m tokio-tungstenite v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6956661Z ^[[1m^[[32m  Downloaded^[[0m thiserror-impl v2.0.7
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6968676Z ^[[1m^[[32m  Downloaded^[[0m spin v0.9.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.6987885Z ^[[1m^[[32m  Downloaded^[[0m smallvec v1.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7004469Z ^[[1m^[[32m  Downloaded^[[0m rustversion v1.0.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7025698Z ^[[1m^[[32m  Downloaded^[[0m rand_core v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7036420Z ^[[1m^[[32m  Downloaded^[[0m time-macros v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7049308Z ^[[1m^[[32m  Downloaded^[[0m thiserror v2.0.7
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7098367Z ^[[1m^[[32m  Downloaded^[[0m subtle v2.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7106515Z ^[[1m^[[32m  Downloaded^[[0m sha2 v0.10.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7123222Z ^[[1m^[[32m  Downloaded^[[0m serde_path_to_error v0.1.8
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7135131Z ^[[1m^[[32m  Downloaded^[[0m serde_html_form v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7150450Z ^[[1m^[[32m  Downloaded^[[0m serde v1.0.221
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7162601Z ^[[1m^[[32m  Downloaded^[[0m rand_core v0.6.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7173382Z ^[[1m^[[32m  Downloaded^[[0m rand_chacha v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7181516Z ^[[1m^[[32m  Downloaded^[[0m rand v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7213277Z ^[[1m^[[32m  Downloaded^[[0m parking_lot v0.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7231212Z ^[[1m^[[32m  Downloaded^[[0m miniz-sys v0.1.11
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7246976Z ^[[1m^[[32m  Downloaded^[[0m memchr v2.4.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7279145Z ^[[1m^[[32m  Downloaded^[[0m indexmap v2.0.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7307335Z ^[[1m^[[32m  Downloaded^[[0m indexmap v1.8.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7331672Z ^[[1m^[[32m  Downloaded^[[0m hyper-util v0.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7364288Z ^[[1m^[[32m  Downloaded^[[0m headers v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7409875Z ^[[1m^[[32m  Downloaded^[[0m bitflags v2.4.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7439881Z ^[[1m^[[32m  Downloaded^[[0m base64 v0.22.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7470169Z ^[[1m^[[32m  Downloaded^[[0m base64 v0.21.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7499763Z ^[[1m^[[32m  Downloaded^[[0m async-compression v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7561321Z ^[[1m^[[32m  Downloaded^[[0m aes-gcm v0.10.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7585325Z ^[[1m^[[32m  Downloaded^[[0m scopeguard v1.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7593339Z ^[[1m^[[32m  Downloaded^[[0m once_cell v1.19.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7612765Z ^[[1m^[[32m  Downloaded^[[0m log v0.4.17
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7629528Z ^[[1m^[[32m  Downloaded^[[0m lock_api v0.4.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7638802Z ^[[1m^[[32m  Downloaded^[[0m getrandom v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7663704Z ^[[1m^[[32m  Downloaded^[[0m flate2 v1.0.11
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7699562Z ^[[1m^[[32m  Downloaded^[[0m version_check v0.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7705325Z ^[[1m^[[32m  Downloaded^[[0m universal-hash v0.5.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7711780Z ^[[1m^[[32m  Downloaded^[[0m termcolor v1.0.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7719344Z ^[[1m^[[32m  Downloaded^[[0m sync_wrapper v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7725149Z ^[[1m^[[32m  Downloaded^[[0m matchit v0.9.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7744502Z ^[[1m^[[32m  Downloaded^[[0m hmac v0.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7758900Z ^[[1m^[[32m  Downloaded^[[0m signal-hook-registry v1.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7766283Z ^[[1m^[[32m  Downloaded^[[0m serde_html_form v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7778473Z ^[[1m^[[32m  Downloaded^[[0m polyval v0.6.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7790697Z ^[[1m^[[32m  Downloaded^[[0m glob v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7799424Z ^[[1m^[[32m  Downloaded^[[0m cookie v0.18.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7818269Z ^[[1m^[[32m  Downloaded^[[0m pin-project-internal v1.0.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7828679Z ^[[1m^[[32m  Downloaded^[[0m parking_lot_core v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7844290Z ^[[1m^[[32m  Downloaded^[[0m nu-ansi-term v0.50.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7862487Z ^[[1m^[[32m  Downloaded^[[0m mime_guess v2.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7873785Z ^[[1m^[[32m  Downloaded^[[0m httparse v1.8.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7889277Z ^[[1m^[[32m  Downloaded^[[0m futures-channel v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7901934Z ^[[1m^[[32m  Downloaded^[[0m env_logger v0.8.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7925914Z ^[[1m^[[32m  Downloaded^[[0m bytes v1.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7956280Z ^[[1m^[[32m  Downloaded^[[0m block-buffer v0.10.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7964022Z ^[[1m^[[32m  Downloaded^[[0m aho-corasick v0.7.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.7992359Z ^[[1m^[[32m  Downloaded^[[0m fastrand v2.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8002033Z ^[[1m^[[32m  Downloaded^[[0m multer v3.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8020151Z ^[[1m^[[32m  Downloaded^[[0m matches v0.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8022944Z ^[[1m^[[32m  Downloaded^[[0m futures-macro v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8030433Z ^[[1m^[[32m  Downloaded^[[0m aes v0.8.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8056188Z ^[[1m^[[32m  Downloaded^[[0m crc32fast v1.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8069135Z ^[[1m^[[32m  Downloaded^[[0m itoa v1.0.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8079262Z ^[[1m^[[32m  Downloaded^[[0m autocfg v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8090130Z ^[[1m^[[32m  Downloaded^[[0m headers-core v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8094665Z ^[[1m^[[32m  Downloaded^[[0m fnv v1.0.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8099029Z ^[[1m^[[32m  Downloaded^[[0m digest v0.10.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8112256Z ^[[1m^[[32m  Downloaded^[[0m ctr v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8127552Z ^[[1m^[[32m  Downloaded^[[0m opaque-debug v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8133504Z ^[[1m^[[32m  Downloaded^[[0m http-range-header v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8140598Z ^[[1m^[[32m  Downloaded^[[0m itoa v0.4.7
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8150331Z ^[[1m^[[32m  Downloaded^[[0m httpdate v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:17.8157769Z ^[[1m^[[32m  Downloaded^[[0m futures-task v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.0195191Z ^[[1m^[[32m   Compiling^[[0m libc v0.2.168
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.0195579Z ^[[1m^[[32m   Compiling^[[0m proc-macro2 v1.0.83
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.0212386Z ^[[1m^[[32m   Compiling^[[0m unicode-ident v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.0225903Z ^[[1m^[[32m   Compiling^[[0m cfg-if v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.0501019Z ^[[1m^[[32m   Compiling^[[0m version_check v0.9.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.0670414Z ^[[1m^[[32m   Compiling^[[0m cfg-if v0.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.0966447Z ^[[1m^[[32m   Compiling^[[0m getrandom v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.2072905Z ^[[1m^[[32m   Compiling^[[0m bytes v1.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.2343079Z ^[[1m^[[32m   Compiling^[[0m itoa v1.0.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.2910457Z ^[[1m^[[32m   Compiling^[[0m typenum v1.14.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.5670765Z ^[[1m^[[32m   Compiling^[[0m quote v1.0.35
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.5870466Z ^[[1m^[[32m   Compiling^[[0m log v0.4.17
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.6560847Z ^[[1m^[[32m   Compiling^[[0m syn v2.0.87
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.7044295Z ^[[1m^[[32m   Compiling^[[0m generic-array v0.14.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.8301114Z ^[[1m^[[32m   Compiling^[[0m rand_core v0.6.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.8350028Z ^[[1m^[[32m   Compiling^[[0m pin-project-lite v0.2.11
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.8610804Z ^[[1m^[[32m   Compiling^[[0m once_cell v1.19.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.9380455Z ^[[1m^[[32m   Compiling^[[0m serde_core v1.0.221
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:18.9640962Z ^[[1m^[[32m   Compiling^[[0m futures-core v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.0200279Z ^[[1m^[[32m   Compiling^[[0m smallvec v1.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.1140483Z ^[[1m^[[32m   Compiling^[[0m parking_lot_core v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.1665151Z ^[[1m^[[32m   Compiling^[[0m syn v1.0.98
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.3330539Z ^[[1m^[[32m   Compiling^[[0m crypto-common v0.1.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.3620881Z ^[[1m^[[32m   Compiling^[[0m scopeguard v1.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.3924074Z ^[[1m^[[32m   Compiling^[[0m lock_api v0.4.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.6580820Z ^[[1m^[[32m   Compiling^[[0m version_check v0.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.7900293Z ^[[1m^[[32m   Compiling^[[0m arc-swap v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.9240542Z ^[[1m^[[32m   Compiling^[[0m futures-sink v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:19.9603890Z ^[[1m^[[32m   Compiling^[[0m serde v1.0.221
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:20.1240355Z ^[[1m^[[32m   Compiling^[[0m signal-hook-registry v1.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:20.4100708Z ^[[1m^[[32m   Compiling^[[0m parking_lot v0.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:20.6770924Z ^[[1m^[[32m   Compiling^[[0m tracing-core v0.1.33
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:20.6870248Z ^[[1m^[[32m   Compiling^[[0m socket2 v0.5.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:21.0275228Z ^[[1m^[[32m   Compiling^[[0m mio v1.0.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:21.0711249Z ^[[1m^[[32m   Compiling^[[0m http v1.5.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:21.3620897Z ^[[1m^[[32m   Compiling^[[0m futures-task v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:21.4310562Z ^[[1m^[[32m   Compiling^[[0m slab v0.4.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:21.4820666Z ^[[1m^[[32m   Compiling^[[0m pin-utils v0.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:21.5080460Z ^[[1m^[[32m   Compiling^[[0m futures-util v0.3.31
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:21.8450334Z ^[[1m^[[32m   Compiling^[[0m subtle v2.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:21.9070577Z ^[[1m^[[32m   Compiling^[[0m cpufeatures v0.2.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:21.9343719Z ^[[1m^[[32m   Compiling^[[0m percent-encoding v2.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:22.0260306Z ^[[1m^[[32m   Compiling^[[0m tokio-macros v2.5.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:22.0350742Z ^[[1m^[[32m   Compiling^[[0m serde_derive v1.0.221
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:22.5570421Z ^[[1m^[[32m   Compiling^[[0m tokio v1.44.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:22.8450295Z ^[[1m^[[32m   Compiling^[[0m tracing-attributes v0.1.23
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:22.9210359Z ^[[1m^[[32m   Compiling^[[0m block-buffer v0.10.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:22.9700402Z ^[[1m^[[32m   Compiling^[[0m hashbrown v0.14.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:23.2860608Z ^[[1m^[[32m   Compiling^[[0m equivalent v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:23.3150809Z ^[[1m^[[32m   Compiling^[[0m httparse v1.8.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:23.4530978Z ^[[1m^[[32m   Compiling^[[0m http-body v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:23.5030397Z ^[[1m^[[32m   Compiling^[[0m httpdate v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:23.6390296Z ^[[1m^[[32m   Compiling^[[0m memchr v2.4.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:23.7770506Z ^[[1m^[[32m   Compiling^[[0m tower-layer v0.3.3
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:23.8470830Z ^[[1m^[[32m   Compiling^[[0m tower-service v0.3.3
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:23.8740314Z ^[[1m^[[32m   Compiling^[[0m ryu v1.0.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:23.9140453Z ^[[1m^[[32m   Compiling^[[0m tracing v0.1.37
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.0420245Z ^[[1m^[[32m   Compiling^[[0m unicase v2.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.1600297Z ^[[1m^[[32m   Compiling^[[0m mime v0.3.17
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.3154337Z ^[[1m^[[32m   Compiling^[[0m ppv-lite86 v0.2.14
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.5780579Z ^[[1m^[[32m   Compiling^[[0m form_urlencoded v1.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.6280382Z ^[[1m^[[32m   Compiling^[[0m serde_json v1.0.96
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.6485163Z ^[[1m^[[32m   Compiling^[[0m try-lock v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.6488225Z ^[[1m^[[32m   Compiling^[[0m mime_guess v2.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.6875089Z ^[[1m^[[32m   Compiling^[[0m want v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.7601851Z ^[[1m^[[32m   Compiling^[[0m pin-project-internal v1.0.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.7980774Z ^[[1m^[[32m   Compiling^[[0m futures-channel v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:24.8691283Z ^[[1m^[[32m   Compiling^[[0m base64 v0.21.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.0940586Z ^[[1m^[[32m   Compiling^[[0m http-body-util v0.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.2120431Z ^[[1m^[[32m   Compiling^[[0m sync_wrapper v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.2401302Z ^[[1m^[[32m   Compiling^[[0m matches v0.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.2833313Z ^[[1m^[[32m   Compiling^[[0m unicode-bidi v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.6681007Z ^[[1m^[[32m   Compiling^[[0m pin-project v1.0.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.6940334Z ^[[1m^[[32m   Compiling^[[0m tower v0.4.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.8591046Z ^[[1m^[[32m   Compiling^[[0m indexmap v2.0.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.8900216Z ^[[1m^[[32m   Compiling^[[0m digest v0.10.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.8929996Z ^[[1m^[[32m   Compiling^[[0m inout v0.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.9420834Z ^[[1m^[[32m   Compiling^[[0m unicode-normalization v0.1.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:25.9830430Z ^[[1m^[[32m   Compiling^[[0m getrandom v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.1340985Z ^[[1m^[[32m   Compiling^[[0m idna v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.1361090Z ^[[1m^[[32m   Compiling^[[0m cipher v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.1450083Z ^[[1m^[[32m   Compiling^[[0m tokio-util v0.7.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.2432259Z ^[[1m^[[32m   Compiling^[[0m universal-hash v0.5.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.2920662Z ^[[1m^[[32m   Compiling^[[0m cc v1.0.67
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.4862435Z ^[[1m^[[32m   Compiling^[[0m opaque-debug v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.5073600Z ^[[1m^[[32m   Compiling^[[0m zerocopy v0.8.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.5360257Z ^[[1m^[[32m   Compiling^[[0m polyval v0.6.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.6500551Z ^[[1m^[[32m   Compiling^[[0m url v2.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.8390934Z ^[[1m^[[32m   Compiling^[[0m miniz-sys v0.1.11
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.8710355Z ^[[1m^[[32m   Compiling^[[0m serde_urlencoded v0.7.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:26.9905224Z ^[[1m^[[32m   Compiling^[[0m rand_chacha v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.0050532Z ^[[1m^[[32m   Compiling^[[0m crc32fast v1.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.1580703Z ^[[1m^[[32m   Compiling^[[0m alloc-no-stdlib v2.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.2029778Z ^[[1m^[[32m   Compiling^[[0m sync_wrapper v0.1.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.2031451Z ^[[1m^[[32m   Compiling^[[0m autocfg v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.2271987Z ^[[1m^[[32m   Compiling^[[0m ipnet v2.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.3170661Z ^[[1m^[[32m   Compiling^[[0m alloc-stdlib v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.3710628Z ^[[1m^[[32m   Compiling^[[0m rand v0.8.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.3769967Z ^[[1m^[[32m   Compiling^[[0m indexmap v1.8.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.7847494Z ^[[1m^[[32m   Compiling^[[0m ghash v0.5.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.8243188Z ^[[1m^[[32m   Compiling^[[0m aes v0.8.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.8428006Z ^[[1m^[[32m   Compiling^[[0m ctr v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.8983773Z ^[[1m^[[32m   Compiling^[[0m aead v0.5.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.9504316Z ^[[1m^[[32m   Compiling^[[0m itoa v0.4.7
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:27.9936115Z ^[[1m^[[32m   Compiling^[[0m time-macros v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:28.1883897Z ^[[1m^[[32m   Compiling^[[0m aes-gcm v0.10.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:28.3720589Z ^[[1m^[[32m   Compiling^[[0m rand_core v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:28.3854209Z ^[[1m^[[32m   Compiling^[[0m brotli-decompressor v2.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:28.4590341Z ^[[1m^[[32m   Compiling^[[0m serde_path_to_error v0.1.8
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:28.4980966Z ^[[1m^[[32m   Compiling^[[0m axum-macros v0.5.1 (/home/runner/work/axum/axum/axum-macros)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:28.6340604Z ^[[1m^[[32m   Compiling^[[0m time v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:28.6610599Z ^[[1m^[[32m   Compiling^[[0m headers-core v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:28.7000773Z ^[[1m^[[32m   Compiling^[[0m lazy_static v1.1.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:28.8214966Z ^[[1m^[[32m   Compiling^[[0m thiserror v2.0.7
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.0010136Z ^[[1m^[[32m   Compiling^[[0m num-traits v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.2371012Z ^[[1m^[[32m   Compiling^[[0m fnv v1.0.5
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.2667328Z ^[[1m^[[32m   Compiling^[[0m matchit v0.9.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.3130499Z ^[[1m^[[32m   Compiling^[[0m hashbrown v0.11.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.3770463Z ^[[1m^[[32m   Compiling^[[0m byteorder v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.4355047Z ^[[1m^[[32m   Compiling^[[0m bitflags v2.4.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.5358689Z ^[[1m^[[32m   Compiling^[[0m rustversion v1.0.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.5470200Z ^[[1m^[[32m   Compiling^[[0m hdrhistogram v7.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.6530842Z ^[[1m^[[32m   Compiling^[[0m h2 v0.4.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.7460492Z ^[[1m^[[32m   Compiling^[[0m brotli v3.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.7912779Z ^[[1m^[[32m   Compiling^[[0m flate2 v1.0.11
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:29.9370503Z ^[[1m^[[32m   Compiling^[[0m rand_chacha v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:30.0700327Z ^[[1m^[[32m   Compiling^[[0m sha1 v0.10.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:30.1711153Z ^[[1m^[[32m   Compiling^[[0m thiserror-impl v2.0.7
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:30.2770312Z ^[[1m^[[32m   Compiling^[[0m anyhow v1.0.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:30.4390298Z ^[[1m^[[32m   Compiling^[[0m encoding_rs v0.8.20
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:30.5710451Z ^[[1m^[[32m   Compiling^[[0m rand v0.9.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:31.2380475Z ^[[1m^[[32m   Compiling^[[0m serde_html_form v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:31.3220271Z ^[[1m^[[32m   Compiling^[[0m tower v0.5.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:31.4760649Z ^[[1m^[[32m   Compiling^[[0m uuid v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:31.6413239Z ^[[1m^[[32m   Compiling^[[0m async-compression v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:31.8739046Z ^[[1m^[[32m   Compiling^[[0m multer v3.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:31.9960406Z ^[[1m^[[32m   Compiling^[[0m hyper v1.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:32.2700485Z ^[[1m^[[32m   Compiling^[[0m base64 v0.22.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:32.4860407Z ^[[1m^[[32m   Compiling^[[0m http-range-header v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:32.6270728Z ^[[1m^[[32m   Compiling^[[0m either v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:32.6660426Z ^[[1m^[[32m   Compiling^[[0m iri-string v0.7.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:33.2790573Z ^[[1m^[[32m   Compiling^[[0m data-encoding v2.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:33.3840935Z ^[[1m^[[32m   Compiling^[[0m hyper-util v0.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:33.4893024Z ^[[1m^[[32m   Compiling^[[0m tower-http v0.6.8
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:33.9051073Z ^[[1m^[[32m   Compiling^[[0m tungstenite v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:33.9850480Z ^[[1m^[[32m   Compiling^[[0m itertools v0.10.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.6870252Z ^[[1m^[[32m   Compiling^[[0m hmac v0.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.7350137Z ^[[1m^[[32m   Compiling^[[0m cookie v0.18.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.7433185Z ^[[1m^[[32m   Compiling^[[0m spin v0.9.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.7830919Z ^[[1m^[[32m   Compiling^[[0m hkdf v0.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.8350585Z ^[[1m^[[32m   Compiling^[[0m prost-derive v0.14.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.8730934Z ^[[1m^[[32m   Compiling^[[0m axum-core v0.5.6 (/home/runner/work/axum/axum/axum-core)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9300348Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9330219Z ^[[0m  ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum-core/src/extract/option.rs:40:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9359736Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9385768Z ^[[0m^[[1m^[[38;5;12m40^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9413932Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9439502Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9440125Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m= ^[[0m^[[0m^[[1mnote^[[0m^[[0m: `#[warn(unknown_or_malformed_diagnostic_attributes)]` on by default^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9440485Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9440684Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9441121Z ^[[0m  ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum-core/src/extract/option.rs:57:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9441467Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9442039Z ^[[0m^[[1m^[[38;5;12m57^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9442521Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9442749Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9442934Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9443378Z ^[[0m  ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum-core/src/extract/request_parts.rs:68:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9443744Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9444269Z ^[[0m^[[1m^[[38;5;12m68^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend] // pretty niche impl^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9444789Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9445019Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9445200Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9445651Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum-core/src/extract/request_parts.rs:141:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9446011Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9446521Z ^[[0m^[[1m^[[38;5;12m141^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend] // pretty niche impl^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9447048Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9447275Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9447451Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9448346Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum-core/src/extract/request_parts.rs:153:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9448701Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9449332Z ^[[0m^[[1m^[[38;5;12m153^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend] // pretty niche impl^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9449853Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9450081Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9450256Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9450668Z ^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum-core/src/extract/tuple.rs:6:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9451017Z ^[[0m  ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9451437Z ^[[0m^[[1m^[[38;5;12m6^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9451895Z ^[[0m  ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9452115Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9452465Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9452952Z ^[[0m  ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum-core/src/extract/tuple.rs:22:23^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9479395Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9509632Z ^[[0m^[[1m^[[38;5;12m22^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m        #[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9539459Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m                       ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9569395Z ^[[0m^[[1m^[[38;5;12m...^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9599602Z ^[[0m^[[1m^[[38;5;12m77^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0mall_the_tuples!(impl_from_request);^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9629697Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m----------------------------------^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12min this macro invocation^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9649432Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9690091Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m= ^[[0m^[[0m^[[1mnote^[[0m^[[0m: this warning originates in the macro `impl_from_request` which comes from the expansion of the macro `all_the_tuples` (in Nightly builds, run with -Z macro-backtrace for more info)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9709710Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9749510Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9779490Z ^[[0m  ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum-core/src/extract/tuple.rs:48:23^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9799402Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9829782Z ^[[0m^[[1m^[[38;5;12m48^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m        #[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9830295Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m                       ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9830637Z ^[[0m^[[1m^[[38;5;12m...^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9831021Z ^[[0m^[[1m^[[38;5;12m77^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0mall_the_tuples!(impl_from_request);^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9831734Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m----------------------------------^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12min this macro invocation^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9861358Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9890027Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m= ^[[0m^[[0m^[[1mnote^[[0m^[[0m: this warning originates in the macro `impl_from_request` which comes from the expansion of the macro `all_the_tuples` (in Nightly builds, run with -Z macro-backtrace for more info)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:34.9890751Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:35.4260420Z ^[[1m^[[32m   Compiling^[[0m tokio-tungstenite v0.29.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:35.5720650Z ^[[1m^[[32m   Compiling^[[0m reqwest v0.12.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:35.8510889Z ^[[1m^[[33mwarning^[[0m^[[1m:^[[0m `axum-core` (lib) generated 38 warnings (30 duplicates)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:35.8560031Z ^[[1m^[[32m   Compiling^[[0m serde_html_form v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:35.9630884Z ^[[1m^[[32m   Compiling^[[0m sha2 v0.10.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.0910716Z ^[[1m^[[32m   Compiling^[[0m fastrand v2.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.1995952Z ^[[1m^[[32m   Compiling^[[0m axum v0.8.9 (/home/runner/work/axum/axum/axum)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.2321046Z ^[[1m^[[32m   Compiling^[[0m prost v0.14.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.3940300Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.3960150Z ^[[0m  ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum/src/extract/nested_path.rs:50:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.3989767Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4010245Z ^[[0m^[[1m^[[38;5;12m50^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend] // pretty niche type^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4019627Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4049452Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4069821Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m= ^[[0m^[[0m^[[1mnote^[[0m^[[0m: `#[warn(unknown_or_malformed_diagnostic_attributes)]` on by default^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4091387Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4139609Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4159868Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum/src/handler/mod.rs:207:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4169497Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4199783Z ^[[0m^[[1m^[[38;5;12m207^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4219606Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4249156Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4259507Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4286463Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum/src/handler/mod.rs:225:23^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4290977Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4291723Z ^[[0m^[[1m^[[38;5;12m225^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m        #[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4292314Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m                       ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4295142Z ^[[0m^[[1m^[[38;5;12m...^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4319711Z ^[[0m^[[1m^[[38;5;12m262^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0mall_the_tuples!(impl_handler);^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4349780Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m-----------------------------^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12min this macro invocation^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4350278Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4351199Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m= ^[[0m^[[0m^[[1mnote^[[0m^[[0m: this warning originates in the macro `impl_handler` which comes from the expansion of the macro `all_the_tuples` (in Nightly builds, run with -Z macro-backtrace for more info)^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4352016Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4352262Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4352679Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum/src/handler/mod.rs:271:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4379444Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4380149Z ^[[0m^[[1m^[[38;5;12m271^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4380690Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4380977Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4381225Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4395264Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum/src/handler/mod.rs:317:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4395734Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4398738Z ^[[0m^[[1m^[[38;5;12m317^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4399864Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4400249Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4400565Z ^[[0m^[[1m^[[33mwarning^[[0m^[[0m^[[1m: unknown diagnostic attribute^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4401152Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum/src/routing/method_routing.rs:1390:15^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4401989Z ^[[0m     ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4402615Z ^[[0m^[[1m^[[38;5;12m1390^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m#[diagnostic::do_not_recommend]^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4403218Z ^[[0m     ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m               ^[[0m^[[0m^[[1m^[[33m^^^^^^^^^^^^^^^^^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4403571Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.4768027Z ^[[1m^[[32m   Compiling^[[0m headers v0.4.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.5640220Z ^[[1m^[[32m   Compiling^[[0m typed-json v0.1.1
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.6590433Z ^[[1m^[[32m   Compiling^[[0m tokio-stream v0.1.9
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:36.8827523Z ^[[1m^[[32m   Compiling^[[0m thread_local v0.3.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:37.0210864Z ^[[1m^[[32m   Compiling^[[0m sharded-slab v0.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:37.4127344Z ^[[1m^[[32m   Compiling^[[0m tracing-serde v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:37.4697364Z ^[[1m^[[32m   Compiling^[[0m aho-corasick v0.7.6
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:38.3100463Z ^[[1m^[[32m   Compiling^[[0m tracing-log v0.2.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:38.3400568Z ^[[1m^[[32m   Compiling^[[0m thread_local v1.1.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:38.4330777Z ^[[1m^[[32m   Compiling^[[0m regex-syntax v0.6.12
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:38.4740850Z ^[[1m^[[32m   Compiling^[[0m nu-ansi-term v0.50.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:38.6800609Z ^[[1m^[[32m   Compiling^[[0m axum-extra v0.12.6 (/home/runner/work/axum/axum/axum-extra)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:38.8560383Z ^[[1m^[[32m   Compiling^[[0m tracing-subscriber v0.3.20
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:39.4430487Z ^[[1m^[[33mwarning^[[0m^[[1m:^[[0m `axum` (lib) generated 21 warnings (15 duplicates)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:39.4450153Z ^[[1m^[[32m   Compiling^[[0m regex v1.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:40.3700196Z ^[[1m^[[32m   Compiling^[[0m rustix v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:40.6930457Z ^[[1m^[[32m   Compiling^[[0m env_logger v0.8.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:41.2040740Z ^[[1m^[[32m   Compiling^[[0m linux-raw-sys v0.9.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:41.4240393Z ^[[1m^[[32m   Compiling^[[0m trybuild v1.0.63
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:41.6200308Z ^[[1m^[[32m   Compiling^[[0m quickcheck v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:41.9661017Z ^[[1m^[[33mwarning^[[0m^[[1m:^[[0m `axum-core` (lib) generated 38 warnings (38 duplicates)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:42.8754997Z ^[[1m^[[32m   Compiling^[[0m toml v0.5.2
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:43.0780886Z ^[[1m^[[32m   Compiling^[[0m quickcheck_macros v1.0.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:43.0840473Z ^[[1m^[[32m   Compiling^[[0m glob v0.3.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:43.2840599Z ^[[1m^[[32m   Compiling^[[0m termcolor v1.0.4
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:43.4390876Z ^[[1m^[[32m   Compiling^[[0m tempfile v3.23.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4070912Z ^[[0m^[[1m^[[38;5;9merror[E0599]^[[0m^[[0m^[[1m: no method named `with_trailers` found for struct `http_body_util::Full` in the current scope^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4120112Z ^[[0m   ^[[0m^[[0m^[[1m^[[38;5;12m--> ^[[0m^[[0maxum-extra/src/response/multipart.rs:176:30^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4120813Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4121662Z ^[[0m^[[1m^[[38;5;12m175^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m   ^[[0m^[[0m                        let body = Full::new(Bytes::copy_from_slice(contents))^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4122398Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m  ^[[0m^[[0m^[[1m^[[38;5;12m____________________________________-^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4123373Z ^[[0m^[[1m^[[38;5;12m176^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m                            .with_trailers(async { Some(Ok(http::HeaderMap::new())) });^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4124419Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m                             ^[[0m^[[0m^[[1m^[[38;5;12m-^[[0m^[[0m^[[1m^[[38;5;9m^^^^^^^^^^^^^^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;9mmethod not found in `Full<Bytes>`^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4125210Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m^[[0m ^[[0m^[[0m^[[1m^[[38;5;12m|_____________________________|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4125702Z ^[[0m    ^[[0m^[[0m^[[1m^[[38;5;12m|^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.4125997Z 
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:44.5130589Z ^[[1m^[[33mwarning^[[0m^[[1m:^[[0m `axum` (lib) generated 21 warnings (21 duplicates)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:45.0140542Z ^[[0m^[[1mFor more information about this error, try `rustc --explain E0599`.^[[0m
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:45.0175445Z ^[[1m^[[31merror^[[0m^[[1m:^[[0m could not compile `axum-extra` (lib test) due to 1 previous error
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:45.0229967Z ^[[1m^[[33mwarning^[[0m^[[1m:^[[0m build failed, waiting for other jobs to finish...
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.3489934Z ^[[1m^[[33mwarning^[[0m^[[1m:^[[0m `axum` (lib test) generated 21 warnings (21 duplicates)
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4064671Z ##[error]Process completed with exit code 101.
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4139190Z Post job cleanup.
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4682110Z [command]/usr/bin/git version
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4710934Z git version 2.55.0
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4733622Z Temporarily overriding HOME='/home/runner/work/_temp/0e09ba7d-a65a-43ca-b2e2-138b8e53cbb1' before making global git config changes
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4734242Z Adding repository directory to the temporary git global config as a safe directory
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4737383Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/axum/axum
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4762368Z Removing SSH command configuration
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4766202Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4791435Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4962391Z Removing HTTP extra header
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4965096Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.4988323Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5152282Z Removing includeIf entries pointing to credentials config files
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5156427Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5176585Z includeif.gitdir:/home/runner/work/axum/axum/.git.path
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5176958Z includeif.gitdir:/home/runner/work/axum/axum/.git/worktrees/*.path
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5177415Z includeif.gitdir:/github/workspace/.git.path
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5177728Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5183614Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/axum/axum/.git.path
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5200313Z /home/runner/work/_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5207102Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/axum/axum/.git.path /home/runner/work/_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5266943Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/axum/axum/.git/worktrees/*.path
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5282975Z /home/runner/work/_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5288624Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/axum/axum/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5313758Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5329419Z /github/runner_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5334057Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5357478Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5373273Z /github/runner_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5379077Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5404762Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5574240Z Removing credentials config '/home/runner/work/_temp/git-credentials-71676614-a09b-4a64-ac67-c16c3dbb0e09.config'
+test-msrv	UNKNOWN STEP	2026-09-26T18:08:57.5699961Z Cleaning up orphan processes

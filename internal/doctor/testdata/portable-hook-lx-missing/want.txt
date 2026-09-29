@@ -1,0 +1,16 @@
+✓ binary      lx 0.2.0-test at $ROOT/bin/lx
+✓ hook        installed in $ROOT/project/.claude/settings.json: sh -c 'command -v lx >/dev/null 2>&1 || exit 0; exec lx hook claude'
+✗ hook-binary the portable hook in $ROOT/project/.claude/settings.json runs lx only when it is on PATH, and lx is not on this shell's PATH: the hook does nothing here
+              fix: export PATH=$ROOT/bin:"$PATH"  # in your shell's startup file
+- hook-run    not run: the hook's binary is missing (see hook-binary)
+✗ path        lx is not on your shell's PATH (zsh): the portable hook leaves every command alone
+              fix: export PATH=$ROOT/bin:"$PATH"  # in your shell's startup file
+✓ rtk         no rtk hook
+✓ perms       no allow rule approves every lx command
+✓ env         LX_HOOK, LX_RAW, LX_OFF and LX_TEE leave lx on
+✓ settings    1 settings file valid: project
+✓ storage     runs: none stored yet ($ROOT/cache/lx/runs is created on the first condensed run)
+✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
+✓ activity    no lx run recorded yet; no Claude Code session in the last day
+- laya        not set up (optional: lx laya setup)
+lx doctor: 2 failures, 0 warnings

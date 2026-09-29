@@ -89,44 +89,63 @@ func runRewrite(args []string, stdout, stderr io.Writer) int {
 }
 
 func cmdInit(args []string) int {
+	return runInit(args, os.Stdout, os.Stderr, func() (string, error) {
+		return hook.ProbeShellLx(os.Getenv("SHELL"), 3*time.Second)
+	})
+}
+
+func runInit(args []string, stdout, stderr io.Writer, probe func() (string, error)) int {
 	fs := flag.NewFlagSet("init", flag.ContinueOnError)
-	project := fs.Bool("project", false, "install into ./.claude/settings.json instead of your user settings")
+	fs.SetOutput(stderr)
+	project := fs.Bool("project", false, "install into this project (./.claude/settings.json, or ./.codex/hooks.json) instead of your user settings")
 	uninstall := fs.Bool("uninstall", false, "remove lx's hook (leaves everything else untouched)")
-	dry := fs.Bool("dry-run", false, "print the resulting settings.json without writing it")
-	agent := fs.String("agent", "claude", "claude, or one of: "+strings.Join(snippetAgents, ", ")+" (prints a snippet)")
+	dry := fs.Bool("dry-run", false, "print the resulting file without writing it")
+	agent := fs.String("agent", "claude", "claude or codex (installs a hook), or one of: "+strings.Join(snippetAgents, ", ")+" (prints a snippet)")
 	readOnly := fs.Bool("readonly", false, "approve read-only commands (git status/diff/log, ls, find, grep, rg, tree, du) as Claude Code does without lx")
 	noReadOnly := fs.Bool("no-readonly", false, "remove --readonly from an installed hook (it is kept otherwise)")
+	portable := fs.Bool("portable", false, "call lx from each machine's PATH, and do nothing where it is missing (for hooks committed to a repository)")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
-	if *readOnly && *noReadOnly {
-		fmt.Fprintln(os.Stderr, "lx init: --readonly and --no-readonly contradict each other")
+	usage := func(msg string) int {
+		fmt.Fprintln(stderr, "lx init:", msg)
 		return 2
+	}
+	hooked := *agent == "claude" || *agent == "codex"
+	switch {
+	case *readOnly && *noReadOnly:
+		return usage("--readonly and --no-readonly contradict each other")
+	case *agent == "codex" && (*readOnly || *noReadOnly):
+		return usage("--readonly is for Claude Code; Codex decides approvals by its own policy")
+	case *portable && !hooked:
+		return usage("--portable works with --agent claude or --agent codex")
 	}
 	lx, err := hook.LxPath()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "lx init:", err)
+		fmt.Fprintln(stderr, "lx init:", err)
 		return 1
 	}
-	if *agent != "claude" {
+	if !hooked {
 		s, err := hook.Snippet(*agent, lx)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "lx init:", err)
-			return 2
+			return usage(err.Error())
 		}
-		fmt.Println(s)
+		fmt.Fprintln(stdout, s)
 		return 0
 	}
-	err = hook.InitClaude(hook.InitOptions{
-		Global: !*project, LxPath: lx, Uninstall: *uninstall, DryRun: *dry, Out: os.Stdout,
-		ReadOnly: *readOnly, NoReadOnly: *noReadOnly,
-		Probe: func() (string, error) { return hook.ProbeShellLx(os.Getenv("SHELL"), 3*time.Second) },
+	install := hook.InitClaude
+	if *agent == "codex" {
+		install = hook.InitCodex
+	}
+	err = install(hook.InitOptions{
+		Global: !*project, LxPath: lx, Uninstall: *uninstall, DryRun: *dry, Out: stdout,
+		ReadOnly: *readOnly, NoReadOnly: *noReadOnly, Portable: *portable, Probe: probe,
 	})
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "lx init:", err)
+		fmt.Fprintln(stderr, "lx init:", err)
 		return 1
 	}
 	return 0
 }
 
-var snippetAgents = []string{"codex", "agents-md", "gemini", "copilot", "cursor"}
+var snippetAgents = []string{"agents-md", "gemini", "copilot", "cursor"}

@@ -22,11 +22,17 @@ type lxHookCmd struct {
 	readOnly  bool
 	prefix    string
 	hasPrefix bool
+	portable  bool
 }
 
 func classify(cmd, home string) (lxHookCmd, hookKind) {
+	inner, portable := hook.UnwrapPortable(cmd)
+	if portable {
+		cmd = inner
+	}
 	if words, ok := shellWords(cmd, home); ok {
 		if h, ok := parseLxHookArgv(words); ok {
+			h.portable = portable
 			return h, lxVerified
 		}
 	}

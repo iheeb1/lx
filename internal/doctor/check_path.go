@@ -86,6 +86,19 @@ func (s *state) hookHasPrefix() bool {
 	return false
 }
 
+func (s *state) onlyPortable() bool {
+	n := 0
+	for _, h := range s.hooks {
+		if h.kind == lxVerified {
+			if !h.cmd.portable {
+				return false
+			}
+			n++
+		}
+	}
+	return n > 0
+}
+
 func (s *state) rewritesByPath() (yes bool, how string) {
 	if s.rewriteBin != "" {
 		return s.rewriteBin != "lx", "rewrites call " + s.show(s.rewriteBin) + " by its full path"
@@ -114,6 +127,8 @@ func (s *state) checkPath() {
 	case p.path == "" && prefix:
 		s.add(id, Warn, "lx is not on your shell's PATH: "+how+
 			", but the `lx show <id>` a receipt suggests will fail with command not found", exportFix())
+	case p.path == "" && s.onlyPortable():
+		s.add(id, Fail, "lx is not on your shell's PATH ("+filepath.Base(p.shell)+"): the portable hook leaves every command alone", exportFix())
 	case p.path == "":
 		fix := exportFix()
 		if fix != "" {

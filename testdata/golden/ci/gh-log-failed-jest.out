@@ -1,0 +1,11 @@
+[lx: 1 job, 1 failed step · per-line timestamps removed (2026-09-28 12:13:14 → 12:13:15 UTC) · 1 ##[group] block unwrapped]
+== Static Checks (Lint, Typecheck, Yarn Validate) ==
+✗ check copyright headers · 880ms
+$ yarn check-copyright-headers
+Meta copyright header check failed for the following files:
+
+  e2e/config-single-project-no-ancestor-config/__tests__/a.test.js
+  e2e/config-single-project-no-ancestor-config/myconfig.js
+
+Please include the header or exclude the files in `scripts/checkCopyrightHeaders.mjs`
+##[error]Process completed with exit code 1.

@@ -1,0 +1,72 @@
+[lx: 230 step lines not shown (passed or skipped)]
+
+X jb/tmpdir-origin-sidecar test pytest-dev/pytest#14936 · 32909439763
+Triggered via pull_request about 1 month ago
+
+JOBS
+✓ package in 24s (ID 98000582273)
+X build (windows-py311) in 7m58s (ID 98000688200)
+  X Test without coverage
+✓ build (windows-py310-unittest-twisted25) in 1m33s (ID 98000688205)
+X build (windows-py315) in 8m7s (ID 98000688212)
+  X Test without coverage
+X build (windows-py312) in 8m22s (ID 98000688224)
+  X Test without coverage
+✓ build (windows-py310-pluggy) in 3m36s (ID 98000688227)
+✓ build (windows-py310-unittest-asynctest) in 1m18s (ID 98000688229)
+X build (windows-py314) in 12m46s (ID 98000688234)
+  X Test with coverage
+✓ build (ubuntu-py310-unittest-asynctest) in 44s (ID 98000688246)
+✓ build (ubuntu-py310-unittest-twisted24) in 43s (ID 98000688270)
+✓ build (windows-py310-unittest-twisted24) in 1m18s (ID 98000688277)
+X build (ubuntu-py310-lsof-numpy-pexpect) in 14m21s (ID 98000688293)
+  X Test with coverage
+X build (windows-py313) in 6m56s (ID 98000688298)
+  X Test without coverage
+✓ build (ubuntu-py310-unittest-twisted25) in 50s (ID 98000688303)
+X build (ubuntu-py315) in 9m9s (ID 98000688309)
+  X Test with coverage
+X build (macos-py310) in 2m31s (ID 98000688327)
+  X Test without coverage
+X build (macos-py313) in 1m56s (ID 98000688328)
+  X Test without coverage
+X build (macos-py312) in 2m26s (ID 98000688338)
+  X Test without coverage
+X build (ubuntu-py311) in 8m27s (ID 98000688341)
+  X Test with coverage
+X build (windows-py310-xdist) in 3m13s (ID 98000688342)
+  X Test without coverage
+✓ build (ubuntu-py310-freeze) in 40s (ID 98000688346)
+X build (ubuntu-pypy3-xdist) in 5m30s (ID 98000688347)
+  X Test without coverage
+✓ build (plugins) in 44s (ID 98000688350)
+X build (ubuntu-py312) in 9m53s (ID 98000688362)
+  X Test with coverage
+X build (ubuntu-py314) in 8m53s (ID 98000688369)
+  X Test with coverage
+✓ build (ubuntu-py310-pluggy) in 2m16s (ID 98000688372)
+✓ build (doctesting) in 48s (ID 98000688385)
+X build (ubuntu-py310-xdist) in 2m15s (ID 98000688394)
+  X Test without coverage
+X build (macos-py315) in 2m6s (ID 98000688398)
+  X Test without coverage
+X build (macos-py314) in 3m12s (ID 98000688409)
+  X Test without coverage
+X build (ubuntu-py313-pexpect) in 8m50s (ID 98000688432)
+  X Test with coverage
+X check in 2s (ID 98005419699)
+  X Decide whether the needed jobs succeeded or failed
+
+ANNOTATIONS
+X Process completed with exit code 1. [×20]
+  build (windows-py311): .github#308 · build (windows-py315): .github#310 · build (windows-py312): .github#308 · build (windows-py314): .github#310 · build (ubuntu-py310-lsof-numpy-pexpect): .github#359 · build (windows-py313): .github#310 · build (ubuntu-py315): .github#294 · build (macos-py310): .github#172 · build (macos-py313): .github#174 · build (macos-py312): .github#180 · build (ubuntu-py311): .github#295 · build (windows-py310-xdist): .github#187 · build (ubuntu-pypy3-xdist): .github#168 · build (ubuntu-py312): .github#295 · build (ubuntu-py314): .github#294 · build (ubuntu-py310-xdist): .github#173 · build (macos-py315): .github#173 · build (macos-py314): .github#173 · build (ubuntu-py313-pexpect): .github#295 · check: .github#37
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404 [×30]
+  build (windows-py311): .github#56 · build (windows-py310-unittest-twisted25): .github#56 · build (windows-py315): .github#56 · … +27 more
+
+ARTIFACTS
+PyPI README
+Package Metadata
+Packages
+
+To see what failed, try: gh run view 32909439763 --log-failed
+View this run on GitHub: https://github.com/pytest-dev/pytest/actions/runs/32909439763

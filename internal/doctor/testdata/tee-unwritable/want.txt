@@ -11,4 +11,5 @@
               fix: chmod u+rwx $ROOT/cache/lx/runs  # or: export LX_TEE_DIR=<a writable directory>
 ✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
 ✓ activity    no lx run recorded yet; no Claude Code session in the last day
+- laya        not set up (optional: lx laya setup)
 lx doctor: 1 failure, 0 warnings

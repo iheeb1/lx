@@ -2,6 +2,7 @@ package hook_test
 
 import (
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -111,8 +112,8 @@ func runnerOutputs(t *testing.T) []runnerOutput {
 			[]string{"task: Failed to run task \"lint\": exit status 2", "task: [lint] npx tsc --noEmit"}},
 		{"mise run test", 1, "[test] $ npx vitest run\n" + vitest + "\n[test] ERROR task failed", "vitest",
 			[]string{"[test] ERROR task failed", " Test Files  3 failed | 10 passed (13)"}},
-		{"turbo run test", 1, turbo("test", vitest), "", []string{" ERROR  run failed: command  exited (1)", "Failed:    web#test"}},
-		{"turbo run build test lint", 1, turbo("lint", eslint), "", []string{" ERROR  run failed: command  exited (1)"}},
+		{"turbo run test", 1, turbo("test", vitest), "monorepo", []string{" ERROR  run failed: command  exited (1)", "Failed:    web#test"}},
+		{"turbo run build test lint", 1, turbo("lint", eslint), "monorepo", []string{" ERROR  run failed: command  exited (1)"}},
 		{"nx test app", 1, "\n> nx run app:test\n\n" + jest + nxFooter("test", true), "jest",
 			[]string{" >  NX   Ran target test for project app (4s)", "Tests:       10 failed, 1212 passed, 1222 total"}},
 		{"nx run app:test", 9, "\n> nx run app:test\n\n" + mocha + nxFooter("test", true), "mocha",
@@ -138,6 +139,8 @@ func runnerOutputs(t *testing.T) []runnerOutput {
 		{"npm run testonly", testonly.Meta.ExitCode, testonly.Raw, "vitest", []string{" Test Files  28 passed (28)", "      Tests  867 passed | 2 skipped (869)"}},
 	}
 }
+
+var taskPrefixRe = regexp.MustCompile(`(?m)^[@\w][\w@./-]*:[A-Za-z][\w.:-]*?: ?`)
 
 func TestRunnerOutputIsHandled(t *testing.T) {
 	outs := runnerOutputs(t)
@@ -169,13 +172,17 @@ func TestRunnerOutputIsHandled(t *testing.T) {
 			if res.OutTokens > res.RawTokens {
 				t.Errorf("view has more tokens than the output (%d > %d)", res.OutTokens, res.RawTokens)
 			}
-			for _, m := range engine.ErrorMessagesMissing(clean, res.Output) {
+			ref := clean
+			if ro.detected == "monorepo" {
+				ref = taskPrefixRe.ReplaceAllString(clean, "")
+			}
+			for _, m := range engine.ErrorMessagesMissing(ref, res.Output) {
 				if !knownBlindSpot(m) {
 					t.Errorf("error message missing: %q", m)
 				}
 			}
 			if ro.exit != 0 {
-				if miss := engine.AppLocationsMissing(clean, res.Output); len(miss) > 0 {
+				if miss := engine.AppLocationsMissing(ref, res.Output); len(miss) > 0 {
 					t.Errorf("locations missing: %q", miss)
 				}
 			}

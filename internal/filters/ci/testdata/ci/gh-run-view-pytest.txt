@@ -1,0 +1,447 @@
+
+X jb/tmpdir-origin-sidecar test pytest-dev/pytest#14936 · 32909439763
+Triggered via pull_request about 1 month ago
+
+JOBS
+✓ package in 24s (ID 98000582273)
+X build (windows-py311) in 7m58s (ID 98000688200)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.11
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.11
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+✓ build (windows-py310-unittest-twisted25) in 1m33s (ID 98000688205)
+X build (windows-py315) in 8m7s (ID 98000688212)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.15
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.15
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (windows-py312) in 8m22s (ID 98000688224)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.12
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.12
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+✓ build (windows-py310-pluggy) in 3m36s (ID 98000688227)
+✓ build (windows-py310-unittest-asynctest) in 1m18s (ID 98000688229)
+X build (windows-py314) in 12m46s (ID 98000688234)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.14
+  ✓ Set up tox
+  - Test without coverage
+  X Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.14
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+✓ build (ubuntu-py310-unittest-asynctest) in 44s (ID 98000688246)
+✓ build (ubuntu-py310-unittest-twisted24) in 43s (ID 98000688270)
+✓ build (windows-py310-unittest-twisted24) in 1m18s (ID 98000688277)
+X build (ubuntu-py310-lsof-numpy-pexpect) in 14m21s (ID 98000688293)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.10
+  ✓ Set up tox
+  - Test without coverage
+  X Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.10
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (windows-py313) in 6m56s (ID 98000688298)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.13
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.13
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+✓ build (ubuntu-py310-unittest-twisted25) in 50s (ID 98000688303)
+X build (ubuntu-py315) in 9m9s (ID 98000688309)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.15
+  ✓ Set up tox
+  - Test without coverage
+  X Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.15
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (macos-py310) in 2m31s (ID 98000688327)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.10
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.10
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (macos-py313) in 1m56s (ID 98000688328)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.13
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.13
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (macos-py312) in 2m26s (ID 98000688338)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.12
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.12
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (ubuntu-py311) in 8m27s (ID 98000688341)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.11
+  ✓ Set up tox
+  - Test without coverage
+  X Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.11
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (windows-py310-xdist) in 3m13s (ID 98000688342)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.10
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.10
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+✓ build (ubuntu-py310-freeze) in 40s (ID 98000688346)
+X build (ubuntu-pypy3-xdist) in 5m30s (ID 98000688347)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python pypy-3.11
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python pypy-3.11
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+✓ build (plugins) in 44s (ID 98000688350)
+X build (ubuntu-py312) in 9m53s (ID 98000688362)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.12
+  ✓ Set up tox
+  - Test without coverage
+  X Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.12
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (ubuntu-py314) in 8m53s (ID 98000688369)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.14
+  ✓ Set up tox
+  - Test without coverage
+  X Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.14
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+✓ build (ubuntu-py310-pluggy) in 2m16s (ID 98000688372)
+✓ build (doctesting) in 48s (ID 98000688385)
+X build (ubuntu-py310-xdist) in 2m15s (ID 98000688394)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.10
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.10
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (macos-py315) in 2m6s (ID 98000688398)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.15
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.15
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (macos-py314) in 3m12s (ID 98000688409)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.14
+  ✓ Set up tox
+  X Test without coverage
+  - Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.14
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X build (ubuntu-py313-pexpect) in 8m50s (ID 98000688432)
+  ✓ Set up job
+  ✓ Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Download Package
+  ✓ Set up Python 3.13
+  ✓ Set up tox
+  - Test without coverage
+  X Test with coverage
+  - Upload coverage to Codecov
+  - Upload JUnit report to Codecov
+  ✓ Post Set up tox
+  - Post Set up Python 3.13
+  ✓ Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+  ✓ Complete job
+X check in 2s (ID 98005419699)
+  ✓ Set up job
+  X Decide whether the needed jobs succeeded or failed
+  ✓ Complete job
+
+ANNOTATIONS
+X Process completed with exit code 1.
+build (windows-py311): .github#308
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py311): .github#56
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py310-unittest-twisted25): .github#56
+
+X Process completed with exit code 1.
+build (windows-py315): .github#310
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py315): .github#56
+
+X Process completed with exit code 1.
+build (windows-py312): .github#308
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py312): .github#56
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py310-pluggy): .github#56
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py310-unittest-asynctest): .github#56
+
+X Process completed with exit code 1.
+build (windows-py314): .github#310
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py314): .github#56
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py310-unittest-asynctest): .github#58
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py310-unittest-twisted24): .github#58
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py310-unittest-twisted24): .github#56
+
+X Process completed with exit code 1.
+build (ubuntu-py310-lsof-numpy-pexpect): .github#359
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py310-lsof-numpy-pexpect): .github#58
+
+X Process completed with exit code 1.
+build (windows-py313): .github#310
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py313): .github#56
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py310-unittest-twisted25): .github#58
+
+X Process completed with exit code 1.
+build (ubuntu-py315): .github#294
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py315): .github#58
+
+X Process completed with exit code 1.
+build (macos-py310): .github#172
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (macos-py310): .github#56
+
+X Process completed with exit code 1.
+build (macos-py313): .github#174
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (macos-py313): .github#56
+
+X Process completed with exit code 1.
+build (macos-py312): .github#180
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (macos-py312): .github#56
+
+X Process completed with exit code 1.
+build (ubuntu-py311): .github#295
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py311): .github#58
+
+X Process completed with exit code 1.
+build (windows-py310-xdist): .github#187
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (windows-py310-xdist): .github#56
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py310-freeze): .github#58
+
+X Process completed with exit code 1.
+build (ubuntu-pypy3-xdist): .github#168
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-pypy3-xdist): .github#56
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (plugins): .github#58
+
+X Process completed with exit code 1.
+build (ubuntu-py312): .github#295
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py312): .github#58
+
+X Process completed with exit code 1.
+build (ubuntu-py314): .github#294
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py314): .github#58
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py310-pluggy): .github#58
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (doctesting): .github#58
+
+X Process completed with exit code 1.
+build (ubuntu-py310-xdist): .github#173
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py310-xdist): .github#58
+
+X Process completed with exit code 1.
+build (macos-py315): .github#173
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (macos-py315): .github#56
+
+X Process completed with exit code 1.
+build (macos-py314): .github#173
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (macos-py314): .github#56
+
+X Process completed with exit code 1.
+build (ubuntu-py313-pexpect): .github#295
+
+! Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+build (ubuntu-py313-pexpect): .github#58
+
+X Process completed with exit code 1.
+check: .github#37
+
+
+ARTIFACTS
+PyPI README
+Package Metadata
+Packages
+
+To see what failed, try: gh run view 32909439763 --log-failed
+View this run on GitHub: https://github.com/pytest-dev/pytest/actions/runs/32909439763

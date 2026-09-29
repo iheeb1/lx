@@ -83,11 +83,73 @@ func Dir() string {
 	if d := os.Getenv("LX_TEE_DIR"); d != "" {
 		return d
 	}
-	base, err := os.UserCacheDir()
-	if err != nil {
-		base = os.TempDir()
+	if base, err := os.UserCacheDir(); err == nil {
+		return filepath.Join(base, "lx", "runs")
 	}
-	return filepath.Join(base, "lx", "runs")
+	if fb := fallbackDir(); fb != "" {
+		return fb
+	}
+	return filepath.Join(os.TempDir(), "lx", "runs")
+}
+
+func privateDir(dir string, create bool) bool {
+	for _, p := range []string{filepath.Dir(dir), dir} {
+		if create {
+			_ = os.Mkdir(p, 0o700)
+		}
+		if !ownedPrivate(p) {
+			return false
+		}
+	}
+	return true
+}
+
+func stores() []string {
+	fb := fallbackDir()
+	var out []string
+	for _, d := range []string{Dir(), fb} {
+		if d == "" || slices.Contains(out, d) || d == fb && !privateDir(d, false) {
+			continue
+		}
+		out = append(out, d)
+	}
+	return out
+}
+
+func locate(id int) string {
+	dirs := stores()
+	name := strconv.Itoa(id)
+	for _, d := range dirs {
+		for _, ext := range []string{".log", ".log.part", ".json"} {
+			if exists(filepath.Join(d, name+ext)) {
+				return d
+			}
+		}
+	}
+	if len(dirs) == 0 {
+		return ""
+	}
+	return dirs[0]
+}
+
+type storedRun struct {
+	id  int
+	dir string
+}
+
+func runsIn(dirs []string) []storedRun {
+	var out []storedRun
+	seen := map[int]bool{}
+	for _, d := range dirs {
+		for _, id := range list(d) {
+			if !seen[id] {
+				seen[id] = true
+				out = append(out, storedRun{id, d})
+			}
+		}
+	}
+	slices.SortFunc(out, func(a, b storedRun) int { return a.id - b.id })
+	return out
 }
 
 func Enabled() bool { return os.Getenv("LX_TEE") != "0" }
@@ -210,14 +272,38 @@ func reserve(m Meta, spool bool) (*Spool, error) {
 	if !Enabled() {
 		return nil, errDisabled
 	}
-	dir := Dir()
-	if err := os.MkdirAll(dir, 0o700); err != nil {
+	dir, fb := Dir(), fallbackDir()
+	if fb == "" || fb == dir {
+		return reserveIn(dir, nil, m, spool)
+	}
+	s, err := reserveIn(dir, []string{fb}, m, spool)
+	if err == nil {
+		return s, nil
+	}
+	if s, ferr := reserveIn(fb, []string{dir}, m, spool); ferr == nil {
+		return s, nil
+	}
+	return nil, err
+}
+
+func reserveIn(dir string, others []string, m Meta, spool bool) (*Spool, error) {
+	if dir == fallbackDir() {
+		if !privateDir(dir, true) {
+			return nil, errors.New("tee: " + dir + " is not a private directory of this user")
+		}
+	} else if err := os.MkdirAll(dir, 0o700); err != nil {
 		return nil, err
 	}
 	next := readSeq(dir)
 	ids := list(dir)
 	if len(ids) > 0 {
 		next = max(next, ids[len(ids)-1])
+	}
+	for _, o := range trusted(others) {
+		next = max(next, readSeq(o))
+		if oids := list(o); len(oids) > 0 {
+			next = max(next, oids[len(oids)-1])
+		}
 	}
 	next++
 	if next+50 >= maxID {
@@ -228,6 +314,13 @@ func reserve(m Meta, spool bool) (*Spool, error) {
 	}
 	m.Exit, m.Bytes, m.State, m.PID = -1, 0, StateRunning, os.Getpid()
 	id, err := claim(dir, next, m)
+	for tries := 0; err == nil && takenIn(trusted(others), id); tries++ {
+		_ = os.Remove(filepath.Join(dir, strconv.Itoa(id)+".json"))
+		if tries == 50 {
+			return nil, errors.New("could not allocate a run id")
+		}
+		id, err = claim(dir, id+1, m)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -243,6 +336,28 @@ func reserve(m Meta, spool bool) (*Spool, error) {
 	}
 	writeSeq(dir, id)
 	return s, nil
+}
+
+func trusted(dirs []string) []string {
+	var out []string
+	for _, d := range dirs {
+		if d != fallbackDir() || privateDir(d, false) {
+			out = append(out, d)
+		}
+	}
+	return out
+}
+
+func takenIn(dirs []string, id int) bool {
+	name := strconv.Itoa(id)
+	for _, d := range dirs {
+		for _, ext := range []string{".json", ".log", ".log.part"} {
+			if _, err := os.Lstat(filepath.Join(d, name+ext)); err == nil {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func claim(dir string, next int, m Meta) (int, error) {
@@ -279,7 +394,10 @@ func claim(dir string, next int, m Meta) (int, error) {
 }
 
 func Load(id int) (string, Meta, error) {
-	dir := Dir()
+	dir := locate(id)
+	if dir == "" {
+		return "", Meta{}, notStored(id)
+	}
 	base := filepath.Join(dir, strconv.Itoa(id))
 	var m Meta
 	if mb, err := os.ReadFile(base + ".json"); err == nil {
@@ -319,8 +437,25 @@ func Load(id int) (string, Meta, error) {
 		}
 
 	}
-	return "", Meta{}, fmt.Errorf("no stored output with id %d (runs are kept up to %d days; the newest %d and at most %d MiB)",
+	return "", Meta{}, notStored(id)
+}
+
+func notStored(id int) error {
+	return fmt.Errorf("no stored output with id %d (runs are kept up to %d days; the newest %d and at most %d MiB)",
 		id, int(MaxAge.Hours()/24), Keep, MaxBytes>>20)
+}
+
+func ReadMeta(id int) (Meta, error) {
+	var m Meta
+	dir := locate(id)
+	if dir == "" {
+		return m, notStored(id)
+	}
+	b, err := os.ReadFile(filepath.Join(dir, strconv.Itoa(id)+".json"))
+	if err != nil {
+		return m, err
+	}
+	return m, json.Unmarshal(b, &m)
 }
 
 func liveState(base string, pid int) string {
@@ -353,11 +488,10 @@ func exists(path string) bool {
 }
 
 func Recent(n int) []Meta {
-	dir := Dir()
-	ids := list(dir)
+	runs := runsIn(stores())
 	var out []Meta
-	for i := len(ids) - 1; i >= 0 && len(out) < n; i-- {
-		base := filepath.Join(dir, strconv.Itoa(ids[i]))
+	for i := len(runs) - 1; i >= 0 && len(out) < n; i-- {
+		base := filepath.Join(runs[i].dir, strconv.Itoa(runs[i].id))
 		var m Meta
 		if mb, err := os.ReadFile(base + ".json"); err == nil {
 			if len(mb) == 0 || json.Unmarshal(mb, &m) != nil {
@@ -368,7 +502,7 @@ func Recent(n int) []Meta {
 				m = Meta{}
 			}
 		}
-		m.ID = ids[i]
+		m.ID = runs[i].id
 		if m.State != StateDone {
 			if exists(base + ".log") {
 				m.State, m.PID = StateDone, 0

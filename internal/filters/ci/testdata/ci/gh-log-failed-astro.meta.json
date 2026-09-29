@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36401919428",
+    "--repo",
+    "withastro/astro",
+    "--log-failed"
+  ],
+  "shell": "gh run view 36401919428 --repo withastro/astro --log-failed",
+  "repo": "withastro/astro",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): UNKNOWN STEP format: two jobs (windows build and lint) failing the same way, pnpm install ERR_PNPM_OUTDATED_LOCKFILE",
+  "cwd": "/home/user/src/astro"
+}

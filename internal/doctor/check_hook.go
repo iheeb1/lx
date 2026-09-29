@@ -268,7 +268,11 @@ func (s *state) dupFix(hooks []*foundHook) string {
 }
 
 func (s *state) hookFixFor(h *foundHook) string {
-	if c := s.initCmd(h.entry.File, ""); c != "" && s.e.Executable != "" {
+	flags := ""
+	if h.cmd.portable {
+		flags = " --portable"
+	}
+	if c := s.initCmd(h.entry.File, flags); c != "" && s.e.Executable != "" {
 		return c
 	}
 	return s.replaceFix(h.entry.File)
@@ -287,6 +291,13 @@ func (s *state) checkHookBinary() {
 		}
 		file := s.show(h.entry.File.Path)
 		switch {
+		case h.viaPATH && h.path == "" && h.cmd.portable:
+			fix := ""
+			if s.e.Executable != "" {
+				fix = "export PATH=" + shellQuote(filepath.Dir(s.e.Executable)) + `:"$PATH"  # in your shell's startup file`
+			}
+			s.add("hook-binary", Fail, "the portable hook in "+file+" runs lx only when it is on PATH, and lx is not on this shell's PATH: "+
+				"the hook does nothing here", fix)
 		case h.viaPATH && h.path == "":
 			s.add("hook-binary", Fail, "the hook in "+file+" runs `lx` from PATH, and lx is not on this shell's PATH", s.hookFixFor(h))
 		case h.missing != "":

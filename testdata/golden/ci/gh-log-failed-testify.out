@@ -1,0 +1,20 @@
+[lx: 1 job, 1 failed step · per-line timestamps removed (2026-08-26 12:42:21 → 12:42:38 UTC) · 16 ##[group] blocks unwrapped]
+== test-old-go (1.20) ==
+[lx: 3 steps folded (202 lines): Set up job · actions/checkout · actions/setup-go]
+✗ Run go test -v -race ./... · 5.4s
+?   	github.com/stretchr/testify/assert/yaml	[no test files]
+?   	github.com/stretchr/testify/http	[no test files]
+# github.com/stretchr/testify/require
+##[error]require/must.go:16:11: type parameter requires go1.18 or later (-lang was set to go1.17; check go.mod)
+##[error]require/must.go:16:13: predeclared any requires go1.18 or later (-lang was set to go1.17; check go.mod)
+##[error]require/must.go:28:12: type parameter requires go1.18 or later (-lang was set to go1.17; check go.mod)
+##[error]require/must.go:28:14: predeclared any requires go1.18 or later (-lang was set to go1.17; check go.mod)
+ok  	github.com/stretchr/testify/assert	5.024s
+ok  	4 packages (all cached) under github.com/stretchr/testify: ., assert/internal/unsafetests, internal/difflib, internal/spew
+FAIL	github.com/stretchr/testify/mock [build failed]
+FAIL	github.com/stretchr/testify/require [build failed]
+FAIL	github.com/stretchr/testify/suite [build failed]
+FAIL
+[612 passed (incl. subtests), but 3 packages FAILED · hidden: 1646 === RUN/--- PASS lines, 3 lines of passing-test output]
+##[error]Process completed with exit code 1.
+[lx: 2 steps folded (33 lines): Post job cleanup · Complete job]

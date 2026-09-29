@@ -77,7 +77,7 @@ func (logsFilter) Apply(c *engine.Context, out string) (string, bool) {
 			}
 		}
 	}
-	if t, ok := engine.TemplateLogs(tagged); ok {
+	if t, ok := engine.TemplateLogsFor(c, tagged); ok {
 		for i, ln := range t {
 			if klog > 0 && len(ln) > 4 && ln[0] == '[' && ln[2] == ']' && ln[3] == ' ' && klogRe.MatchString(ln[4:]) {
 				ln = ln[4:]
@@ -92,6 +92,7 @@ func (logsFilter) Apply(c *engine.Context, out string) (string, bool) {
 	folded := engine.CollapseRuns(lines)
 	folded = engine.FoldStacks(c, folded)
 	folded = engine.CollapseSimilar(folded)
+	folded = engine.JudgeChunks(c, folded)
 	if len(folded) == len(lines) {
 		return out, true
 	}

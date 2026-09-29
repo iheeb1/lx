@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "32970000641",
+    "--repo",
+    "stretchr/testify",
+    "--log-failed"
+  ],
+  "shell": "gh run view 32970000641 --repo stretchr/testify --log-failed",
+  "repo": "stretchr/testify",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): UNKNOWN STEP format: go test -v -race on Go 1.20 where setup-go problem matchers turn the compile errors into ##[error] annotations mid-output",
+  "cwd": "/home/user/src/testify"
+}

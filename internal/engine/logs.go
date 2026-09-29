@@ -125,7 +125,9 @@ type logItem struct {
 	count int
 }
 
-func TemplateLogs(lines []string) ([]string, bool) {
+func TemplateLogs(lines []string) ([]string, bool) { return TemplateLogsFor(nil, lines) }
+
+func TemplateLogsFor(c *Context, lines []string) ([]string, bool) {
 	nonEmpty, logLike := 0, 0
 	for _, ln := range lines {
 		if strings.TrimSpace(ln) == "" {
@@ -166,6 +168,10 @@ func TemplateLogs(lines []string) ([]string, bool) {
 	groups := map[string][]*logTemplate{}
 	exact := map[string]*logTemplate{}
 	nTemplates := 0
+	var owner []*logTemplate
+	if c.judging() != nil {
+		owner = make([]*logTemplate, len(lines))
+	}
 
 	addLine := func(i int) bool {
 		ln := lines[i]
@@ -231,6 +237,9 @@ func TemplateLogs(lines []string) ([]string, bool) {
 			exact[ek] = t
 		}
 		t.count++
+		if owner != nil {
+			owner[i] = t
+		}
 		for k, v := range raw {
 			t.slots[k].add(slotValue(v))
 		}
@@ -271,30 +280,12 @@ func TemplateLogs(lines []string) ([]string, bool) {
 	}
 
 	sort.SliceStable(items, func(a, b int) bool { return items[a].first < items[b].first })
-	var body []string
-	for _, it := range items {
-		if it.tmpl == nil {
-			ls := append([]string(nil), it.lines...)
-			if it.count > 1 {
-				ls[0] += fmt.Sprintf(" [×%d]", it.count)
-			}
-			body = append(body, ls...)
-			continue
-		}
-		t := it.tmpl
-		ln := t.example
-		if t.count > 1 {
-			ln += fmt.Sprintf(" [×%d]", t.count)
-		}
-		body = append(body, ln)
-		if t.count >= 3 {
-			if v := t.varSummary(); v != "" {
-				body = append(body, "    vars: "+v)
-			}
-		}
-	}
+	body := renderLogItems(items, nil)
 	if len(body)*4 > nonEmpty*3 {
 		return nil, false
+	}
+	if fold := c.judgeTemplates(items, owner, lines, body); fold != nil {
+		body = renderLogItems(items, fold)
 	}
 
 	hdr := fmt.Sprintf("[log: %s lines, %s", commaInt(nonEmpty), Plural(nTemplates, "template", "templates"))
@@ -318,6 +309,36 @@ func TemplateLogs(lines []string) ([]string, bool) {
 		hdr += ", " + strings.TrimPrefix(firstTS, "[") + " … " + strings.TrimPrefix(lastTS, "[")
 	}
 	return append([]string{hdr + "]"}, body...), true
+}
+
+func renderLogItems(items []*logItem, fold map[*logTemplate]string) []string {
+	var body []string
+	for _, it := range items {
+		if it.tmpl == nil {
+			ls := append([]string(nil), it.lines...)
+			if it.count > 1 {
+				ls[0] += fmt.Sprintf(" [×%d]", it.count)
+			}
+			body = append(body, ls...)
+			continue
+		}
+		t := it.tmpl
+		if ln, ok := fold[t]; ok {
+			body = append(body, ln)
+			continue
+		}
+		ln := t.example
+		if t.count > 1 {
+			ln += fmt.Sprintf(" [×%d]", t.count)
+		}
+		body = append(body, ln)
+		if t.count >= 3 {
+			if v := t.varSummary(); v != "" {
+				body = append(body, "    vars: "+v)
+			}
+		}
+	}
+	return body
 }
 
 func isJSONTokens(raw []string) bool {

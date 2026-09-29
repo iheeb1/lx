@@ -13,6 +13,7 @@ import (
 
 	"github.com/iheeb1/lx/internal/agentctx"
 	"github.com/iheeb1/lx/internal/engine"
+	"github.com/iheeb1/lx/internal/laya"
 	"github.com/iheeb1/lx/internal/runner"
 	"github.com/iheeb1/lx/internal/tee"
 	"github.com/iheeb1/lx/internal/textutil"
@@ -129,7 +130,7 @@ func modeStat(pr engine.Result) string {
 }
 
 func (o runOpts) engineOptions() engine.Options {
-	return engine.Options{Budget: o.budget, MaxChars: hostCharCap(), MaxLines: o.fit, Cut: o.fitCut, Mode: o.mode}
+	return engine.Options{Budget: o.budget, MaxChars: hostCharCapFor(exitUnknown), MaxLines: o.fit, Cut: o.fitCut, Mode: o.mode}
 }
 
 func fitRoom(fit, used int) int {
@@ -198,6 +199,7 @@ func cmdRun(args []string) int {
 		return res.ExitCode
 	}
 	eo := o.engineOptions()
+	eo.MaxChars = hostCharCapFor(res.ExitCode)
 	verboseLine := 0
 	if o.verbose {
 		verboseLine = 1
@@ -205,6 +207,11 @@ func cmdRun(args []string) int {
 	eo.MaxLines = fitRoom(eo.MaxLines, l.notices()+verboseLine)
 	sess := openSession(argv, cwd, res.Output, o.fit)
 	eo = sess.options(c, eo, o.modeSet, tn.level() != track.LevelNormal)
+	if tn.level() == track.LevelNormal {
+		if eo.Judge, eo.JudgeTimeout = judgeFor(res.Output); eo.Judge != nil {
+			eo.Task = sess.task()
+		}
+	}
 	pr := tn.process(c, res.Output, eo)
 	if tn.level() == track.LevelNormal && !o.wantsMore() {
 		pr = sess.delta(c, res.Output, pr, eo)
@@ -221,6 +228,13 @@ func cmdRun(args []string) int {
 		writeOut(pr.Output)
 	default:
 		ids := l.store(res, pr.Filter, true)
+		if ids == "" && tee.Enabled() {
+			if !res.Replay(os.Stdout, os.Stderr) {
+				writeOut(res.Output)
+			}
+			pr.Lossy, pr.OutTokens = false, pr.RawTokens
+			break
+		}
 		receipt := engine.Receipt(pr, ids)
 		if self := selfCommand(); self != "lx" {
 			receipt = strings.Replace(receipt, "lx show ", self+" show ", 1)
@@ -317,6 +331,91 @@ func (s session) delta(c *engine.Context, raw string, pr engine.Result, eo engin
 	pr.Output, pr.Filter, pr.Lossy, pr.Notes = v, "delta", true, nil
 	pr.OutTokens, pr.OutLines = tokens.Count(v), lines
 	return pr
+}
+
+func (s session) task() string {
+	if s.snap == nil {
+		return ""
+	}
+	var parts []string
+	if t := strings.TrimRight(strings.TrimSpace(s.snap.Title), "."); t != "" {
+		parts = append(parts, t)
+	}
+	if len(s.snap.Assistant) > 0 {
+		if f := firstSentence(s.snap.Assistant[0]); f != "" {
+			parts = append(parts, f)
+		}
+	}
+	return strings.Join(parts, ": ")
+}
+
+const maxTaskRunes = 200
+
+func firstSentence(s string) string {
+	s = strings.TrimSpace(s)
+	if i := strings.IndexByte(s, '\n'); i >= 0 {
+		s = s[:i]
+	}
+	for _, end := range []string{". ", "? ", "! "} {
+		if i := strings.Index(s, end); i >= 0 {
+			s = s[:i+1]
+		}
+	}
+	if r := []rune(s); len(r) > maxTaskRunes {
+		s = string(r[:maxTaskRunes])
+	}
+	return strings.TrimSpace(s)
+}
+
+const layaMinRaw = 2048
+
+var (
+	layaAvailable = laya.Available
+	layaJudge     = laya.Judge
+)
+
+func judgeFor(raw string) (engine.Judge, time.Duration) {
+	if layaOff() || len(raw) < layaMinRaw && strings.Count(raw, "\n") < 80 || !layaAvailable() {
+		return nil, 0
+	}
+	return layaClient{}, layaTimeout(os.Getenv("LX_LAYA_TIMEOUT"))
+}
+
+func layaOff() bool {
+	switch strings.ToLower(strings.TrimSpace(os.Getenv("LX_LAYA"))) {
+	case "0", "off", "false", "no":
+		return true
+	}
+	return false
+}
+
+func layaTimeout(v string) time.Duration {
+	if ms, err := strconv.ParseInt(v, 10, 64); err == nil && ms > 0 && ms <= int64((1<<63-1)/time.Millisecond) {
+		return time.Duration(ms) * time.Millisecond
+	}
+	if d, err := time.ParseDuration(v); err == nil && d > 0 {
+		return d
+	}
+	return engine.DefaultJudgeTimeout
+}
+
+type layaClient struct{}
+
+// min_conf at the daemon's floor: the engine applies its per-mode threshold
+func (layaClient) Judge(family, task string, items []string, timeout time.Duration) ([]engine.JudgeVerdict, error) {
+	req := laya.Request{Family: family, Task: task, Items: make([]laya.Item, len(items)), MinConf: 0.30}
+	for i, it := range items {
+		req.Items[i].Text = it
+	}
+	vs, err := layaJudge(req, timeout)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]engine.JudgeVerdict, len(vs))
+	for i, v := range vs {
+		out[i] = engine.JudgeVerdict{Keep: v.Keep, Confidence: v.Confidence}
+	}
+	return out, nil
 }
 
 func (s session) receipt(r string, pr engine.Result) string {

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36420043123",
+    "--repo",
+    "gohugoio/hugo",
+    "--log-failed"
+  ],
+  "shell": "gh run view 36420043123 --repo gohugoio/hugo --log-failed",
+  "repo": "gohugoio/hugo",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): windows job, step \"Test\" runs mage -v test: ~700 lines of go downloads and per-package go test runs, one failing golden-image test",
+  "cwd": "/home/user/src/hugo"
+}

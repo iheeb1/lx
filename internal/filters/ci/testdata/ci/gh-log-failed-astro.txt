@@ -1,0 +1,602 @@
+Build: windows-2025	UNKNOWN STEP	﻿2026-09-28T09:12:10.9272633Z Current runner version: '2.337.0'
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9297708Z ##[group]Runner Image Provisioner
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9298550Z Hosted Compute Agent
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9299243Z Version: 20260828.587
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9299840Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9300555Z Build Date: 2026-08-28T16:44:25Z
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9301260Z Worker ID: {a9f7c0c6-209f-4fe0-9af4-c77ae5d4d10c}
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9301961Z Azure Region: westus
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9302974Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9304485Z ##[group]Operating System
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9305102Z Microsoft Windows Server 2025
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9305718Z 10.0.26100
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9306225Z Datacenter
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9306723Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9307236Z ##[group]Runner Image
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9307815Z Image: windows-2025-vs2026
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9308476Z Version: 20260922.246.2
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9309981Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260922.246/images/windows/Windows2025-VS2026-Readme.md
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9311696Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260922.246
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9312706Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9313936Z ##[group]GITHUB_TOKEN Permissions
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9315740Z Contents: read
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9316363Z Metadata: read
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9316861Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9318922Z Secret source: Actions
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9319819Z Cache mode: write
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9320516Z Prepare workflow directory
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9885338Z Prepare all required actions
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:10.9936276Z Getting action download info
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:11.4233994Z Download action repository 'actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd' (SHA:de0fac2e4500dabe0009e67214ff5f5447ce83dd)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:11.5579624Z Download action repository 'pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093' (SHA:0e279bb959325dab635dd2c09392533439d90093)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:11.8809922Z Download action repository 'actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e' (SHA:48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.1754547Z Complete job name: Build: windows-2025
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3038700Z ##[group]Run git config --global core.autocrlf false
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3040201Z ^[[36;1mgit config --global core.autocrlf false^[[0m
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3161923Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3163642Z env:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3165437Z   TURBO_TOKEN: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3166282Z   TURBO_TEAM: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3167261Z   FORCE_COLOR: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3168082Z   ASTRO_TELEMETRY_DISABLED: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3169099Z   NODE_OPTIONS: --max-old-space-size=6144
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:12.3170107Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2819304Z ##[group]Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2820836Z with:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2821725Z   repository: withastro/astro
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2829010Z   token: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2829836Z   ssh-strict: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2830677Z   ssh-user: git
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2831536Z   persist-credentials: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2832471Z   clean: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2833328Z   sparse-checkout-cone-mode: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2834350Z   fetch-depth: 1
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2835620Z   fetch-tags: false
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2836495Z   show-progress: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2837352Z   lfs: false
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2838144Z   submodules: false
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2839012Z   set-safe-directory: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2839914Z env:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2841171Z   TURBO_TOKEN: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2842039Z   TURBO_TEAM: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2842862Z   FORCE_COLOR: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2843795Z   ASTRO_TELEMETRY_DISABLED: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2844844Z   NODE_OPTIONS: --max-old-space-size=6144
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.2845877Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.4280117Z Syncing repository: withastro/astro
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.4282574Z ##[group]Getting Git version info
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.4283863Z Working directory is 'D:\a\astro\astro'
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.5324268Z [command]"C:\Program Files\Git\bin\git.exe" version
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.5681293Z git version 2.55.0.windows.5
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.5727875Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.5741688Z Copying 'C:\Users\runneradmin\.gitconfig' to 'D:\a\_temp\96c710b6-53ff-42bc-89ea-c2756bafd243\.gitconfig'
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.5761501Z Temporarily overriding HOME='D:\a\_temp\96c710b6-53ff-42bc-89ea-c2756bafd243' before making global git config changes
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.5844124Z Adding repository directory to the temporary git global config as a safe directory
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.5848118Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\astro\astro
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.6111867Z Deleting the contents of 'D:\a\astro\astro'
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.6118945Z ##[group]Initializing the repository
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.6129156Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\astro\astro
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.6949552Z Initialized empty Git repository in D:/a/astro/astro/.git/
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.6995382Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/withastro/astro
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.7629626Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.7631085Z ##[group]Disabling automatic garbage collection
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.7640939Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.7943188Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.7944836Z ##[group]Setting up auth
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.7945892Z Removing SSH command configuration
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.7955609Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:13.8260884Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:15.0369845Z Removing HTTP extra header
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:15.0378877Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:15.0678645Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:15.6138014Z Removing includeIf entries pointing to credentials config files
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:15.6154711Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:15.6466190Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:16.2044941Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:\a\_temp\git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:16.2371571Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/astro/astro/.git.path D:\a\_temp\git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:16.2704220Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/astro/astro/.git/worktrees/*.path D:\a\_temp\git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:16.3067314Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:16.3405245Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:16.3779373Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:16.3779851Z ##[group]Fetching the repository
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:16.3800564Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9e26914dcd9b399d8b2f706a27370cb3f230a38b:refs/remotes/pull/18154/merge
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:18.3675224Z From https://github.com/withastro/astro
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:18.3677108Z  * [new ref]         9e26914dcd9b399d8b2f706a27370cb3f230a38b -> pull/18154/merge
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:18.3735667Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:18.3736082Z ##[group]Determining the checkout info
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:18.3737876Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:18.3752282Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:18.4206420Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:18.4505773Z ##[group]Checking out the ref
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:18.4513758Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/18154/merge
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.5255300Z Updating files:  47% (3266/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.5451269Z Updating files:  48% (3314/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.5993091Z Updating files:  49% (3383/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.6208999Z Updating files:  50% (3452/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.6397613Z Updating files:  51% (3521/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.6608632Z Updating files:  52% (3590/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.6810862Z Updating files:  53% (3659/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.6981921Z Updating files:  54% (3728/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.7179618Z Updating files:  55% (3797/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.7362076Z Updating files:  56% (3866/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.7549294Z Updating files:  57% (3935/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.7733055Z Updating files:  58% (4004/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.7937005Z Updating files:  59% (4073/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.8126050Z Updating files:  60% (4142/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.8299352Z Updating files:  61% (4211/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.8457038Z Updating files:  62% (4280/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.8630583Z Updating files:  63% (4349/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.8820862Z Updating files:  64% (4418/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.9002569Z Updating files:  65% (4487/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.9184372Z Updating files:  66% (4556/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.9364377Z Updating files:  67% (4626/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.9558114Z Updating files:  68% (4695/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.9728765Z Updating files:  69% (4764/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:19.9919472Z Updating files:  70% (4833/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.0119532Z Updating files:  71% (4902/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.0311414Z Updating files:  72% (4971/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.0511518Z Updating files:  73% (5040/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.0692582Z Updating files:  74% (5109/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.0871289Z Updating files:  75% (5178/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.1055648Z Updating files:  76% (5247/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.1257623Z Updating files:  77% (5316/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.1443634Z Updating files:  78% (5385/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.1650622Z Updating files:  79% (5454/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.1838397Z Updating files:  80% (5523/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.2053027Z Updating files:  81% (5592/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.2251725Z Updating files:  82% (5661/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.2588511Z Updating files:  83% (5730/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.2777093Z Updating files:  84% (5799/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.2967927Z Updating files:  85% (5868/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.3156970Z Updating files:  86% (5937/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.3329287Z Updating files:  87% (6006/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.3507540Z Updating files:  88% (6075/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.3678594Z Updating files:  89% (6144/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.3876428Z Updating files:  90% (6213/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.4100648Z Updating files:  91% (6282/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.4439717Z Updating files:  92% (6351/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.4851846Z Updating files:  93% (6420/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.5032257Z Updating files:  94% (6489/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.5103502Z Updating files:  95% (6558/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.5201145Z Updating files:  95% (6586/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.5376070Z Updating files:  96% (6627/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.5543223Z Updating files:  97% (6696/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.5725099Z Updating files:  98% (6765/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.5933262Z Updating files:  99% (6834/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.5933897Z Updating files: 100% (6903/6903)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.5934707Z Updating files: 100% (6903/6903), done.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6176055Z Note: switching to 'refs/remotes/pull/18154/merge'.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6176591Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6176921Z You are in 'detached HEAD' state. You can look around, make experimental
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6178268Z changes and commit them, and you can discard any commits you make in this
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6179103Z state without impacting any branches by switching back to a branch.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6179590Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6179884Z If you want to create a new branch to retain commits you create, you may
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6180513Z do so (now or later) by using -c with the switch command. Example:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6180779Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6180887Z   git switch -c <new-branch-name>
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6181064Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6181157Z Or undo this operation with:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6181324Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6181405Z   git switch -
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6181527Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6181747Z Turn off this advice by setting config variable advice.detachedHead to false
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6182054Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6182417Z HEAD is now at 9e26914 Merge 6429cc1a40bdb4fd8f768d039ea043bc08e0b5a0 into ff20ca1948af14ee120e376ecfdd82f0aa819c6e
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6368745Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.6807367Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7098478Z 9e26914dcd9b399d8b2f706a27370cb3f230a38b
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7541729Z ##[group]Run pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7542192Z with:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7542391Z   dest: ~/setup-pnpm
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7542601Z   run_install: null
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7542801Z   cache: false
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7543023Z   cache_dependency_path: pnpm-lock.yaml
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7543305Z   package_json_file: package.json
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7543546Z   standalone: false
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7543738Z env:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7544328Z   TURBO_TOKEN: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7544591Z   TURBO_TEAM: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7544784Z   FORCE_COLOR: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7544998Z   ASTRO_TELEMETRY_DISABLED: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7545262Z   NODE_OPTIONS: --max-old-space-size=6144
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.7545526Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.9905557Z ##[group]Running self-installer...
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.9969124Z (node:4648) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:20.9970152Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5568135Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5568577Z added 1 package, and audited 2 packages in 8s
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5568887Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5569706Z 1 package is looking for funding
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5570010Z   run `npm fund` for details
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5953378Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5953844Z 1 high severity vulnerability
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5954143Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5954267Z To address all issues, run:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5954557Z   npm audit fix --force
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5954722Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:32.5954839Z Run `npm audit` for details.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:34.9744801Z Checking for updates...
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:35.1594571Z Switching pnpm from v11.1.1 to v11.27.0...
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:35.5637123Z .../.bin/global/v11/1750-1a0e74999e1     | Progress: resolved ^[[96m1^[[39m, reused ^[[96m0^[[39m, downloaded ^[[96m0^[[39m, added ^[[96m0^[[39m
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:35.5660936Z .../.bin/global/v11/1750-1a0e74999e1     |   ^[[32m+1^[[39m ^[[32m+^[[39m
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:36.5657907Z .../.bin/global/v11/1750-1a0e74999e1     | Progress: resolved ^[[96m1^[[39m, reused ^[[96m0^[[39m, downloaded ^[[96m1^[[39m, added ^[[96m0^[[39m
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:36.9913346Z .../.bin/global/v11/1750-1a0e74999e1     | Progress: resolved ^[[96m1^[[39m, reused ^[[96m0^[[39m, downloaded ^[[96m1^[[39m, added ^[[96m1^[[39m, done
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.0573383Z ^[[43m^[[33m[^[[39m^[[49m^[[43m^[[30mWARN^[[39m^[[49m^[[43m^[[33m]^[[39m^[[49m Detected a pnpm v10 installation layout at PNPM_HOME. The pnpm shims at PNPM_HOME have been refreshed so the new version is active, but pnpm v11 expects bins in PNPM_HOME/bin. Run "pnpm setup" to migrate your PATH to the v11 layout.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.0607736Z Successfully updated pnpm to v11.27.0
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1259725Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1260108Z Installation Completed!
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1585445Z ##[group]Run actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1585917Z with:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1586104Z   node-version: 22
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1586303Z   cache: pnpm
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1586507Z   check-latest: false
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1588910Z   token: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1589130Z   package-manager-cache: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1589361Z env:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1589694Z   TURBO_TOKEN: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1589933Z   TURBO_TEAM: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1590124Z   FORCE_COLOR: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1590330Z   ASTRO_TELEMETRY_DISABLED: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1590594Z   NODE_OPTIONS: --max-old-space-size=6144
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1590935Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.1591253Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.3598854Z Found in cache @ C:\hostedtoolcache\windows\node\22.23.2\x64
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:37.3605925Z ##[group]Environment details
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:42.2888001Z node: v22.23.2
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:42.2888360Z npm: 10.9.8
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:42.2888612Z yarn: 1.22.22
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:42.2889922Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:42.3804146Z [command]C:\Windows\system32\cmd.exe /D /S /C "C:\Users\runneradmin\setup-pnpm\node_modules\.bin\bin\pnpm.CMD store path --silent"
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:43.9385497Z D:\.pnpm-store\v11
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:44.3648328Z Cache hit for: node-cache-Windows-x64-pnpm-50d0e3ae4208a6613c27d3eebdd18e424b06267e2d027c12d0efbc11d09e3973
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:45.6847000Z Received 37748736 of 338649973 (11.1%), 35.9 MBs/sec
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:46.6929147Z Received 130023424 of 338649973 (38.4%), 61.8 MBs/sec
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:47.6886154Z Received 209715200 of 338649973 (61.9%), 66.5 MBs/sec
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:48.6879630Z Received 264241152 of 338649973 (78.0%), 62.9 MBs/sec
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:49.3729401Z Received 338649973 of 338649973 (100.0%), 68.8 MBs/sec
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:49.3732999Z Cache Size: ~323 MB (338649973 B)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:12:49.3769600Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/27e72a0c-8962-4c09-b635-4d59c7148035/cache.tzst -P -C D:/a/astro/astro --force-local --use-compress-program "zstd -d"
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4038968Z Cache restored successfully
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4233235Z Cache restored from key: node-cache-Windows-x64-pnpm-50d0e3ae4208a6613c27d3eebdd18e424b06267e2d027c12d0efbc11d09e3973
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4556996Z ##[group]Run pnpm install
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4557407Z ^[[36;1mpnpm install^[[0m
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4575532Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4575951Z env:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4576359Z   TURBO_TOKEN: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4576611Z   TURBO_TEAM: ***
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4576809Z   FORCE_COLOR: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4577032Z   ASTRO_TELEMETRY_DISABLED: true
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4577309Z   NODE_OPTIONS: --max-old-space-size=6144
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4577670Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:08.4578009Z ##[endgroup]
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:09.9586724Z Scope: all 563 workspace projects
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:10.5247645Z ^[[36m?^[[39m Verifying lockfile against supply-chain policies (2253 entries)...
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4066382Z ^[[32m✓^[[39m Lockfile passes supply-chain policies (2253 entries in 23.8s)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4244831Z ^[[41m^[[31m[^[[39m^[[49m^[[41m^[[30mERR_PNPM_OUTDATED_LOCKFILE^[[39m^[[49m^[[41m^[[31m]^[[39m^[[49m ^[[31mCannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date with <ROOT>\packages\integrations\vercel\package.json^[[39m
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4246228Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4247323Z Note that in CI environments this setting is true by default. If you still need to run install in such cases, use "pnpm install --no-frozen-lockfile"
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4248153Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4248543Z   Failure reason:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4249100Z   specifiers in the lockfile don't match specifiers in package.json:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4249874Z * 2 dependencies are mismatched:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4250463Z   - @vercel/functions (lockfile: ^3.9.8, manifest: ^3.9.9)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4251263Z   - vite (lockfile: ^8.3.0, manifest: ^8.3.1)
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.4251704Z 
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.5054875Z ##[error]Process completed with exit code 1.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.6572865Z Post job cleanup.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.8400105Z Pruning is unnecessary.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:34.8763385Z Post job cleanup.
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.0830720Z [command]"C:\Program Files\Git\bin\git.exe" version
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.1135806Z git version 2.55.0.windows.5
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.1205935Z Copying 'C:\Users\runneradmin\.gitconfig' to 'D:\a\_temp\875aa761-85a4-46ce-906b-a235f30e8a55\.gitconfig'
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.1226067Z Temporarily overriding HOME='D:\a\_temp\875aa761-85a4-46ce-906b-a235f30e8a55' before making global git config changes
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.1227857Z Adding repository directory to the temporary git global config as a safe directory
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.1237742Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\astro\astro
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.1552636Z Removing SSH command configuration
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.1563573Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.1886556Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.7584543Z Removing HTTP extra header
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.7596015Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:35.7918089Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.3493659Z Removing includeIf entries pointing to credentials config files
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.3505834Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.3781830Z includeif.gitdir:D:/a/astro/astro/.git.path
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.3782522Z includeif.gitdir:D:/a/astro/astro/.git/worktrees/*.path
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.3783028Z includeif.gitdir:/github/workspace/.git.path
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.3783505Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.3827305Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/astro/astro/.git.path
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.4103883Z D:\a\_temp\git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.4152878Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/astro/astro/.git.path D:\a\_temp\git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.4487719Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/astro/astro/.git/worktrees/*.path
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.4772210Z D:\a\_temp\git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.4819659Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/astro/astro/.git/worktrees/*.path D:\a\_temp\git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.5133547Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.5408219Z /github/runner_temp/git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.5452030Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.5765337Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.6033653Z /github/runner_temp/git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.6082393Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:36.6392939Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:37.2064392Z Removing credentials config 'D:\a\_temp\git-credentials-a0f59747-1994-4779-b273-1b6681bddd43.config'
+Build: windows-2025	UNKNOWN STEP	2026-09-28T09:13:37.2272836Z Cleaning up orphan processes
+Lint	UNKNOWN STEP	﻿2026-09-28T09:27:15.4703865Z Current runner version: '2.337.0'
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4727665Z ##[group]Runner Image Provisioner
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4728571Z Hosted Compute Agent
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4729260Z Version: 20260828.587
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4729941Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4730696Z Build Date: 2026-08-28T16:44:25Z
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4731521Z Worker ID: {b17ad5ef-e111-4e57-8d01-6660b8345032}
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4732254Z Azure Region: westus
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4732988Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4734418Z ##[group]Operating System
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4735083Z Ubuntu
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4736144Z 24.04.5
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4736709Z LTS
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4737294Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4737890Z ##[group]Runner Image
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4738587Z Image: ubuntu-24.04
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4739252Z Version: 20260920.314.1
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4740538Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4742202Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4743223Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4744429Z ##[group]GITHUB_TOKEN Permissions
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4746617Z Contents: read
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4747268Z Metadata: read
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4747873Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4750356Z Secret source: Actions
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4751449Z Cache mode: write
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.4752243Z Prepare workflow directory
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.5300600Z Prepare all required actions
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.5351589Z Getting action download info
+Lint	UNKNOWN STEP	2026-09-28T09:27:15.9287532Z Download action repository 'actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd' (SHA:de0fac2e4500dabe0009e67214ff5f5447ce83dd)
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.0492697Z Download action repository 'pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093' (SHA:0e279bb959325dab635dd2c09392533439d90093)
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.3569434Z Download action repository 'actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e' (SHA:48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e)
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.5843587Z Complete job name: Lint
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6629614Z ##[group]Run git config --global core.autocrlf false
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6630511Z ^[[36;1mgit config --global core.autocrlf false^[[0m
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6939158Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6940328Z env:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6941338Z   TURBO_TOKEN: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6941941Z   TURBO_TEAM: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6942510Z   FORCE_COLOR: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6943093Z   ASTRO_TELEMETRY_DISABLED: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6943725Z   NODE_OPTIONS: --max-old-space-size=6144
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.6944350Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7428421Z ##[group]Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7429315Z with:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7429815Z   repository: withastro/astro
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7434081Z   token: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7434583Z   ssh-strict: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7435109Z   ssh-user: git
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7435896Z   persist-credentials: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7436470Z   clean: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7436987Z   sparse-checkout-cone-mode: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7437590Z   fetch-depth: 1
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7438095Z   fetch-tags: false
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7438600Z   show-progress: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7439106Z   lfs: false
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7439589Z   submodules: false
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7440099Z   set-safe-directory: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7440635Z env:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7441392Z   TURBO_TOKEN: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7441927Z   TURBO_TEAM: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7442414Z   FORCE_COLOR: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7442959Z   ASTRO_TELEMETRY_DISABLED: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7443571Z   NODE_OPTIONS: --max-old-space-size=6144
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.7444186Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8472977Z Syncing repository: withastro/astro
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8476365Z ##[group]Getting Git version info
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8477642Z Working directory is '/home/runner/work/astro/astro'
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8479399Z [command]/usr/bin/git version
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8480063Z git version 2.55.0
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8482567Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8488851Z Copying '/home/runner/.gitconfig' to '/home/runner/work/_temp/ce09b32a-3d4a-4f1f-b76a-2a27882f5cb2/.gitconfig'
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8491375Z Temporarily overriding HOME='/home/runner/work/_temp/ce09b32a-3d4a-4f1f-b76a-2a27882f5cb2' before making global git config changes
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8492910Z Adding repository directory to the temporary git global config as a safe directory
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8494732Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/astro/astro
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8527088Z Deleting the contents of '/home/runner/work/astro/astro'
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8530357Z ##[group]Initializing the repository
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8533806Z [command]/usr/bin/git init /home/runner/work/astro/astro
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8650035Z hint: Using 'master' as the name for the initial branch. This default branch name
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8651661Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8653438Z hint: to use in all of your new repositories, which will suppress this warning,
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8654868Z hint: call:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8656122Z hint:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8657420Z hint: 	git config --global init.defaultBranch <name>
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8658856Z hint:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8660257Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8662391Z hint: 'development'. The just-created branch can be renamed via this command:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8664024Z hint:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8665068Z hint: 	git branch -m <name>
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8666761Z hint:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8668194Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8670236Z Initialized empty Git repository in /home/runner/work/astro/astro/.git/
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8673585Z [command]/usr/bin/git remote add origin https://github.com/withastro/astro
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8713782Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8715460Z ##[group]Disabling automatic garbage collection
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8718120Z [command]/usr/bin/git config --local gc.auto 0
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8748195Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8749962Z ##[group]Setting up auth
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8751185Z Removing SSH command configuration
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8756782Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.8789341Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9197221Z Removing HTTP extra header
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9203443Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9236145Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9446334Z Removing includeIf entries pointing to credentials config files
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9452197Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9484734Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9704232Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9742385Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/astro/astro/.git.path /home/runner/work/_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9774136Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/astro/astro/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9814919Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9843352Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9871211Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9872205Z ##[group]Fetching the repository
+Lint	UNKNOWN STEP	2026-09-28T09:27:16.9879041Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9e26914dcd9b399d8b2f706a27370cb3f230a38b:refs/remotes/pull/18154/merge
+Lint	UNKNOWN STEP	2026-09-28T09:27:18.6327188Z From https://github.com/withastro/astro
+Lint	UNKNOWN STEP	2026-09-28T09:27:18.6327821Z  * [new ref]         9e26914dcd9b399d8b2f706a27370cb3f230a38b -> pull/18154/merge
+Lint	UNKNOWN STEP	2026-09-28T09:27:18.6342584Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:18.6343500Z ##[group]Determining the checkout info
+Lint	UNKNOWN STEP	2026-09-28T09:27:18.6344408Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:18.6345016Z [command]/usr/bin/git sparse-checkout disable
+Lint	UNKNOWN STEP	2026-09-28T09:27:18.6399263Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Lint	UNKNOWN STEP	2026-09-28T09:27:18.6427350Z ##[group]Checking out the ref
+Lint	UNKNOWN STEP	2026-09-28T09:27:18.6431777Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/18154/merge
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1260419Z Note: switching to 'refs/remotes/pull/18154/merge'.
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1261635Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1262439Z You are in 'detached HEAD' state. You can look around, make experimental
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1263605Z changes and commit them, and you can discard any commits you make in this
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1264622Z state without impacting any branches by switching back to a branch.
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1265226Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1265906Z If you want to create a new branch to retain commits you create, you may
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1266895Z do so (now or later) by using -c with the switch command. Example:
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1267384Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1267612Z   git switch -c <new-branch-name>
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1267950Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1268179Z Or undo this operation with:
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1268511Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1268704Z   git switch -
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1269014Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1269471Z Turn off this advice by setting config variable advice.detachedHead to false
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1270094Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1270817Z HEAD is now at 9e26914 Merge 6429cc1a40bdb4fd8f768d039ea043bc08e0b5a0 into ff20ca1948af14ee120e376ecfdd82f0aa819c6e
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1281213Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1331340Z [command]/usr/bin/git log -1 --format=%H
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1358287Z 9e26914dcd9b399d8b2f706a27370cb3f230a38b
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1541606Z ##[group]Run pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1542101Z with:
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1542398Z   dest: ~/setup-pnpm
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1542678Z   run_install: null
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1542939Z   cache: false
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1543221Z   cache_dependency_path: pnpm-lock.yaml
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1543577Z   package_json_file: package.json
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1543942Z   standalone: false
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1544211Z env:
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1544958Z   TURBO_TOKEN: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1545298Z   TURBO_TEAM: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1545775Z   FORCE_COLOR: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1546080Z   ASTRO_TELEMETRY_DISABLED: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1546431Z   NODE_OPTIONS: --max-old-space-size=6144
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.1546771Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:19.3030242Z ##[group]Running self-installer...
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1589627Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1590360Z added 1 package, and audited 2 packages in 2s
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1591070Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1591825Z 1 package is looking for funding
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1592343Z   run `npm fund` for details
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1965516Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1966832Z 1 high severity vulnerability
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1967246Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1967441Z To address all issues, run:
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1968073Z   npm audit fix --force
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1968460Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.1968645Z Run `npm audit` for details.
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.7717636Z Checking for updates...
+Lint	UNKNOWN STEP	2026-09-28T09:27:21.8987631Z Switching pnpm from v11.1.1 to v11.27.0...
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.1870157Z .../.bin/global/v11/8f7-1a0e7572144      | Progress: resolved ^[[96m1^[[39m, reused ^[[96m0^[[39m, downloaded ^[[96m0^[[39m, added ^[[96m0^[[39m
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.1887634Z .../.bin/global/v11/8f7-1a0e7572144      |   ^[[32m+1^[[39m ^[[32m+^[[39m
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.3875302Z .../.bin/global/v11/8f7-1a0e7572144      | Progress: resolved ^[[96m1^[[39m, reused ^[[96m0^[[39m, downloaded ^[[96m1^[[39m, added ^[[96m1^[[39m, done
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4146236Z ^[[43m^[[33m[^[[39m^[[49m^[[43m^[[30mWARN^[[39m^[[49m^[[43m^[[33m]^[[39m^[[49m Detected a pnpm v10 installation layout at PNPM_HOME. The pnpm shims at PNPM_HOME have been refreshed so the new version is active, but pnpm v11 expects bins in PNPM_HOME/bin. Run "pnpm setup" to migrate your PATH to the v11 layout.
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4168482Z Successfully updated pnpm to v11.27.0
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4378937Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4379374Z Installation Completed!
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4560621Z ##[group]Run actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4561048Z with:
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4561265Z   node-version: 24.15.0
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4561497Z   cache: pnpm
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4561712Z   check-latest: false
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4564681Z   token: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4564909Z   package-manager-cache: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4565164Z env:
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4565518Z   TURBO_TOKEN: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4565978Z   TURBO_TEAM: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4566192Z   FORCE_COLOR: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4566423Z   ASTRO_TELEMETRY_DISABLED: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4566711Z   NODE_OPTIONS: --max-old-space-size=6144
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4567081Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.4567403Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:22.6142067Z Attempting to download 24.15.0...
+Lint	UNKNOWN STEP	2026-09-28T09:27:23.2566237Z Acquiring 24.15.0 - x64 from https://github.com/actions/node-versions/releases/download/24.15.0-24511264946/node-24.15.0-linux-x64.tar.gz
+Lint	UNKNOWN STEP	2026-09-28T09:27:23.7474195Z Extracting ...
+Lint	UNKNOWN STEP	2026-09-28T09:27:23.7599401Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/5a4ac5bd-41a7-4d44-aa0a-2b13792c0c03 -f /home/runner/work/_temp/1239848e-af50-4c2e-aff1-3702c2bbac23
+Lint	UNKNOWN STEP	2026-09-28T09:27:24.9566745Z Adding to the cache ...
+Lint	UNKNOWN STEP	2026-09-28T09:27:27.2921245Z ##[group]Environment details
+Lint	UNKNOWN STEP	2026-09-28T09:27:27.5180002Z node: v24.15.0
+Lint	UNKNOWN STEP	2026-09-28T09:27:27.5180451Z npm: 11.12.1
+Lint	UNKNOWN STEP	2026-09-28T09:27:27.5182432Z yarn: 1.22.22
+Lint	UNKNOWN STEP	2026-09-28T09:27:27.5184509Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:27.5205290Z [command]/home/runner/setup-pnpm/node_modules/.bin/bin/pnpm store path --silent
+Lint	UNKNOWN STEP	2026-09-28T09:27:28.1311545Z /home/runner/setup-pnpm/node_modules/.bin/store/v11
+Lint	UNKNOWN STEP	2026-09-28T09:27:28.3956834Z Cache hit for: node-cache-Linux-x64-pnpm-50d0e3ae4208a6613c27d3eebdd18e424b06267e2d027c12d0efbc11d09e3973
+Lint	UNKNOWN STEP	2026-09-28T09:27:29.6733634Z Received 0 of 355744649 (0.0%), 0.0 MBs/sec
+Lint	UNKNOWN STEP	2026-09-28T09:27:30.6759984Z Received 121634816 of 355744649 (34.2%), 57.9 MBs/sec
+Lint	UNKNOWN STEP	2026-09-28T09:27:31.6765339Z Received 176160768 of 355744649 (49.5%), 55.9 MBs/sec
+Lint	UNKNOWN STEP	2026-09-28T09:27:32.6769762Z Received 306184192 of 355744649 (86.1%), 72.9 MBs/sec
+Lint	UNKNOWN STEP	2026-09-28T09:27:33.2495262Z Received 355744649 of 355744649 (100.0%), 74.1 MBs/sec
+Lint	UNKNOWN STEP	2026-09-28T09:27:33.2496190Z Cache Size: ~339 MB (355744649 B)
+Lint	UNKNOWN STEP	2026-09-28T09:27:33.2606432Z [command]/usr/bin/tar -xf /home/runner/work/_temp/edb9ace7-4763-44ab-91bd-6b1e3b940286/cache.tzst -P -C /home/runner/work/astro/astro --use-compress-program unzstd
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4500403Z Cache restored successfully
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4661788Z Cache restored from key: node-cache-Linux-x64-pnpm-50d0e3ae4208a6613c27d3eebdd18e424b06267e2d027c12d0efbc11d09e3973
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4844833Z ##[group]Run pnpm install
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4845145Z ^[[36;1mpnpm install^[[0m
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4909734Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4910114Z env:
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4910555Z   TURBO_TOKEN: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4910816Z   TURBO_TEAM: ***
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4911047Z   FORCE_COLOR: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4911301Z   ASTRO_TELEMETRY_DISABLED: true
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4911613Z   NODE_OPTIONS: --max-old-space-size=6144
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4911992Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Lint	UNKNOWN STEP	2026-09-28T09:27:37.4912335Z ##[endgroup]
+Lint	UNKNOWN STEP	2026-09-28T09:27:38.1764962Z Scope: all 563 workspace projects
+Lint	UNKNOWN STEP	2026-09-28T09:27:38.4276817Z ^[[36m?^[[39m Verifying lockfile against supply-chain policies (2253 entries)...
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5364765Z ^[[32m✓^[[39m Lockfile passes supply-chain policies (2253 entries in 15.1s)
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5544504Z ^[[41m^[[31m[^[[39m^[[49m^[[41m^[[30mERR_PNPM_OUTDATED_LOCKFILE^[[39m^[[49m^[[41m^[[31m]^[[39m^[[49m ^[[31mCannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date with <ROOT>/packages/integrations/vercel/package.json^[[39m
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5546643Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5548082Z Note that in CI environments this setting is true by default. If you still need to run install in such cases, use "pnpm install --no-frozen-lockfile"
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5549312Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5549594Z   Failure reason:
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5550361Z   specifiers in the lockfile don't match specifiers in package.json:
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5551268Z * 2 dependencies are mismatched:
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5551996Z   - @vercel/functions (lockfile: ^3.9.8, manifest: ^3.9.9)
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5552767Z   - vite (lockfile: ^8.3.0, manifest: ^8.3.1)
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.5553169Z 
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.6322498Z ##[error]Process completed with exit code 1.
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.6438301Z Post job cleanup.
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.7899881Z Pruning is unnecessary.
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.8036360Z Post job cleanup.
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.8924739Z [command]/usr/bin/git version
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.8966555Z git version 2.55.0
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9000592Z Copying '/home/runner/.gitconfig' to '/home/runner/work/_temp/44305647-beb8-46b5-bd17-c54aff9772ff/.gitconfig'
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9011449Z Temporarily overriding HOME='/home/runner/work/_temp/44305647-beb8-46b5-bd17-c54aff9772ff' before making global git config changes
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9013429Z Adding repository directory to the temporary git global config as a safe directory
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9017274Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/astro/astro
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9051206Z Removing SSH command configuration
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9057964Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9094743Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9349023Z Removing HTTP extra header
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9355937Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9395143Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9643241Z Removing includeIf entries pointing to credentials config files
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9650121Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9677193Z includeif.gitdir:/home/runner/work/astro/astro/.git.path
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9678468Z includeif.gitdir:/home/runner/work/astro/astro/.git/worktrees/*.path
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9679614Z includeif.gitdir:/github/workspace/.git.path
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9680708Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9686706Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/astro/astro/.git.path
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9708968Z /home/runner/work/_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9720979Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/astro/astro/.git.path /home/runner/work/_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9762147Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/astro/astro/.git/worktrees/*.path
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9784787Z /home/runner/work/_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9797678Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/astro/astro/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9828932Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9849023Z /github/runner_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9857978Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9887531Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9907456Z /github/runner_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9916314Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config
+Lint	UNKNOWN STEP	2026-09-28T09:27:53.9954789Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Lint	UNKNOWN STEP	2026-09-28T09:27:54.0180611Z Removing credentials config '/home/runner/work/_temp/git-credentials-127b2080-9e54-4335-9def-2eb0ef0d6115.config'
+Lint	UNKNOWN STEP	2026-09-28T09:27:54.0326380Z Cleaning up orphan processes

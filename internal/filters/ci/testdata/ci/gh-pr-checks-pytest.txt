@@ -1,0 +1,36 @@
+build (macos-py310)	fail	2m31s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688327	
+build (macos-py312)	fail	2m26s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688338	
+build (macos-py313)	fail	1m56s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688328	
+build (macos-py314)	fail	3m12s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688409	
+build (macos-py315)	fail	2m6s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688398	
+build (ubuntu-py310-lsof-numpy-pexpect)	fail	14m21s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688293	
+build (ubuntu-py310-xdist)	fail	2m15s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688394	
+build (ubuntu-py311)	fail	8m27s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688341	
+build (ubuntu-py312)	fail	9m53s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688362	
+build (ubuntu-py313-pexpect)	fail	8m50s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688432	
+build (ubuntu-py314)	fail	8m53s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688369	
+build (ubuntu-py315)	fail	9m9s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688309	
+build (ubuntu-pypy3-xdist)	fail	5m30s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688347	
+build (windows-py310-xdist)	fail	3m13s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688342	
+build (windows-py311)	fail	7m58s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688200	
+build (windows-py312)	fail	8m22s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688224	
+build (windows-py313)	fail	6m56s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688298	
+build (windows-py314)	fail	12m46s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688234	
+build (windows-py315)	fail	8m7s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688212	
+check	fail	2s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98005419699	
+codecov/patch	fail	0	https://app.codecov.io/gh/pytest-dev/pytest/pull/14936	
+Changelog entry	pass	2s	https://github.com/apps/psf-chronographer	
+build (doctesting)	pass	48s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688385	
+build (plugins)	pass	44s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688350	
+build (ubuntu-py310-freeze)	pass	40s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688346	
+build (ubuntu-py310-pluggy)	pass	2m16s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688372	
+build (ubuntu-py310-unittest-asynctest)	pass	44s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688246	
+build (ubuntu-py310-unittest-twisted24)	pass	43s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688270	
+build (ubuntu-py310-unittest-twisted25)	pass	50s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688303	
+build (windows-py310-pluggy)	pass	3m36s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688227	
+build (windows-py310-unittest-asynctest)	pass	1m18s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688229	
+build (windows-py310-unittest-twisted24)	pass	1m18s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688277	
+build (windows-py310-unittest-twisted25)	pass	1m33s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688205	
+docs/readthedocs.org:pytest	pass	0	https://pytest--14936.org.readthedocs.build/en/14936/	Read the Docs build succeeded!
+package	pass	24s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000582273	
+pre-commit.ci - pr	pass	0	https://results.pre-commit.ci/run/github/37489525/1787699325.5bftfR-dTpON3UU1kl-Vvg	checks completed successfully

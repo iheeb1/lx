@@ -1,0 +1,27 @@
+[lx: 2 jobs, 2 failed steps · per-line timestamps removed (2026-09-28 09:12:10 → 09:27:54 UTC) · 36 ##[group] blocks unwrapped]
+== Build: windows-2025 ==
+[lx: 5 steps folded (261 lines): Set up job · Run git config --global core.autocrlf false · actions/checkout · pnpm/action-setup · actions/setup-node]
+✗ Run pnpm install · 26s
+Scope: all 563 workspace projects
+? Verifying lockfile against supply-chain policies (2253 entries)...
+✓ Lockfile passes supply-chain policies (2253 entries in 23.8s)
+[ERR_PNPM_OUTDATED_LOCKFILE] Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date with <ROOT>\packages\integrations\vercel\package.json
+
+Note that in CI environments this setting is true by default. If you still need to run install in such cases, use "pnpm install --no-frozen-lockfile"
+
+  Failure reason:
+  specifiers in the lockfile don't match specifiers in package.json:
+* 2 dependencies are mismatched:
+  - @vercel/functions (lockfile: ^3.9.8, manifest: ^3.9.9)
+  - vite (lockfile: ^8.3.0, manifest: ^8.3.1)
+
+##[error]Process completed with exit code 1.
+[lx: 3 steps folded (36 lines): Post job cleanup · Complete job]
+== Lint ==
+[lx: 5 steps folded (219 lines): Set up job · Run git config --global core.autocrlf false · actions/checkout · pnpm/action-setup · actions/setup-node]
+✗ Run pnpm install · 16.1s
+[lx: same failure as Build: windows-2025 above; 11 lines not repeated]
+✓ Lockfile passes supply-chain policies (2253 entries in 15.1s)
+[ERR_PNPM_OUTDATED_LOCKFILE] Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date with <ROOT>/packages/integrations/vercel/package.json
+##[error]Process completed with exit code 1.
+[lx: 3 steps folded (36 lines): Post job cleanup · Complete job]

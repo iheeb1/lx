@@ -1,0 +1,45 @@
+[lx: 2 jobs, 2 failed steps · per-line timestamps removed (2026-09-28 12:20:55 → 12:23:08 UTC) · 2 ##[group] blocks unwrapped]
+== Lint: node-24, ubuntu-latest ==
+✗ Check formatting · 3.7s
+$ pnpm format && git diff --exit-code
+$ oxfmt
+Finished in 3244ms on 2493 files using 4 threads.
+diff --git a/packages/vite/src/node/__tests__/utils.spec.ts b/packages/vite/src/node/__tests__/utils.spec.ts
+index 322f7cd..3cb1638 100644
+--- a/packages/vite/src/node/__tests__/utils.spec.ts
++++ b/packages/vite/src/node/__tests__/utils.spec.ts
+@@ -256,9 +256,9 @@ describe('removeTimestampQuery', () => {
+     expect(removeTimestampQuery('/foo.js?bar=1&t=1712345678901#frag')).toBe(
+       '/foo.js?bar=1#frag',
+     )
+-    expect(
+-      removeTimestampQuery('/foo.js?t=1712345678901&bar=1#frag'),
+-    ).toBe('/foo.js?bar=1#frag')
++    expect(removeTimestampQuery('/foo.js?t=1712345678901&bar=1#frag')).toBe(
++      '/foo.js?bar=1#frag',
++    )
+   })
+ })
+
+##[error]Process completed with exit code 1.
+== Build&Test: node-22, ubuntu-latest ==
+✗ Test serve (bundled dev) · 54.5s
+$ pnpm run test-serve-bundled
+$ VITE_TEST_BUNDLED_DEV=1 vitest run -c vitest.config.e2e.ts
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  playground/css-no-codesplit/__tests__/css-no-codesplit.spec.ts > should load all stylesheets
+AssertionError: expected 'black' to be 'blue' // Object.is equality
+Expected: "blue"
+Received: "black"
+ ❯ playground/css-no-codesplit/__tests__/css-no-codesplit.spec.ts:5:44
+      5|   expect(await getColor('.shared-linked')).toBe('blue')
+       |                                            ^
+
+[1 console block of passing tests hidden]
+ Test Files  1 failed | 78 passed | 22 skipped (101)
+      Tests  1 failed | 697 passed | 338 skipped (1036)
+   Duration  54.01s (transform 938ms, setup 43.28s, import 1.76s, tests 87.30s, environment 7ms)
+[ELIFECYCLE] Command failed with exit code 1.
+##[error]Process completed with exit code 1.

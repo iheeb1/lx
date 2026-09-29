@@ -1,0 +1,18 @@
+[lx: 2 jobs, 2 failed steps · per-line timestamps removed (2026-09-27 15:50:30 → 15:51:06 UTC) · 30 ##[group] blocks unwrapped]
+== Go tests with previous Go version (1.26) ==
+[lx: 9 steps folded (328 lines): Set up job · actions/checkout · prometheus/promci-setup · Aggressive cleanup · Resolve Go cache paths · actions/cache · Set GOMEMLIMIT · Run echo "GOMEMLIMIT=${GOMEMLIMIT}"]
+  Cache not found for input keys: Linux-go-oldest-bf446750e8b3da1fc724cce77a26b90c19ebd2f0c8c1e1466d1e8f5cc6263526, Linux-go-oldest-
+✗ Run make promu · 470ms
+curl -s -L https://github.com/prometheus/promu/releases/download/v0.20.0/promu-0.20.0.linux-amd64.tar.gz | tar -xvzf - -C /tmp/tmp.p9n8r0OV8J
+
+gzip: stdin: not in gzip format
+tar: Child returned status 1
+tar: Error is not recoverable: exiting now
+make: *** [Makefile.common:406: /go/bin/promu] Error 2
+##[error]Process completed with exit code 2.
+[lx: 6 steps folded (30 lines): Set up QEMU · Set up buildx · Post job cleanup · actions/cache · Post job cleanup · Complete job]
+== Go tests with previous Go version ==
+[lx: 1 step folded (29 lines): Set up job]
+✗ Run exit 1 · 140ms
+##[error]Process completed with exit code 1.
+[lx: 1 step folded (1 line): Complete job]

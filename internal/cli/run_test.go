@@ -48,7 +48,7 @@ func startLx(t *testing.T, env []string, args ...string) *lxProc {
 		}
 		cmd.Env = append(cmd.Env, kv)
 	}
-	cmd.Env = append(cmd.Env, "LX_TEST_MAIN=1", "LX_TEE_DIR="+tee.Dir(), "LX_TRACK=0", "LX_DATA_DIR="+t.TempDir())
+	cmd.Env = append(cmd.Env, "LX_TEST_MAIN=1", "LX_TEE_DIR="+tee.Dir(), "LX_TRACK=0", "LX_DATA_DIR="+t.TempDir(), "LX_LAYA=0")
 	cmd.Env = append(cmd.Env, env...)
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	p := &lxProc{t: t, cmd: cmd, stdout: &syncBuf{}, stderr: &syncBuf{}, done: make(chan struct{})}

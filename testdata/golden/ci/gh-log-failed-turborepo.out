@@ -1,0 +1,38 @@
+[lx: 2 jobs, 2 failed steps · per-line timestamps removed (2026-09-28 04:46:49 → 04:52:05 UTC) · 30 ##[group] blocks unwrapped]
+== (macos, Node 24) ==
+[lx: 12 steps folded (2991 lines): Set up job · actions/checkout · vercel/setup-turborepo-remote-cache-action · ./.github/actions/setup-node · Setup pnpm · Setup Node.js · Get pnpm store path · Cache pnpm store · … +4 more]
+   * [new branch]            fix-deadlock               -> origin/fix-deadlock
+   * [new branch]            isolated-oom-test          -> origin/isolated-oom-test
+  (node:4788) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+  ##[warning]Both node-version and node-version-file inputs are specified, only node-version will be used
+  Cache not found for input keys: macOS-ARM64-pnpm-shew/ci-use-standalone-turbo-20380f0cfba80de2619bb626266d10209dbe3d87c3228a6a49ad5093f00e576b, macOS-ARM64-pnpm-shew/ci-use-standalone-turbo-
+✗ Install standalone turbo · 660ms
+$ set -euo pipefail
+$ VERSION=""
+$ if [[ -n "$TURBO_VERSION_INPUT" ]]; then
+$   if [[ ! "$TURBO_VERSION_INPUT" =~ ^[0-9A-Za-z][0-9A-Za-z._-]{0,127}$ ]]; then
+$     echo "::error::Invalid turbo version '${TURBO_VERSION_INPUT}'. Use a semver version or safe npm dist-tag."
+$     exit 1
+$   fi
+$   # The standalone installer accepts release versions, not npm dist-tags.
+[lx: +3 more script lines]
+curl: (56) The requested URL returned error: 403
+could not resolve the latest stable release from GitHub
+##[error]Process completed with exit code 1.
+[lx: 8 steps folded (26 lines): Post job cleanup · Cache pnpm store · Setup Node.js · Setup pnpm · Post job cleanup · Complete job]
+  ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830, actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+== JS Test Summary ==
+[lx: 1 step folded (29 lines): Set up job]
+✗ Run cancelled=false · 150ms
+$ cancelled=false
+$ failure=false
+$ 
+$ subjob () {
+$   local result=$1
+$   if [ "$result" = "cancelled" ]; then
+$     cancelled=true
+$   elif [ "$result" != "success" ] && [ "$result" != "skipped" ]; then
+[lx: +16 more script lines]
+Job failed.
+##[error]Process completed with exit code 1.
+[lx: 1 step folded (1 line): Complete job]

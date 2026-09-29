@@ -1,4 +1,4 @@
-[lx: cat output — 3,512 lines, ~26.4k tokens: first and last lines shown exactly; the omitted range, its outline and how to read it are marked below]
+[lx: cat output — 3,512 lines, ~26.4k tokens: first and last lines shown exactly; the omitted range, its outline and how to read it are marked below; in the omitted lines: L3206: }cat: missing.h: No such file or directory]
 /*
   Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
 

@@ -1,0 +1,3 @@
+Build & Test Failed	skipping	0	https://github.com/vitejs/vite/actions/runs/36422576661/job/108931555897
+[lx: 16 passing checks: AgentScan; Build & Test Passed or Skipped; Build&Test: node-20, ubuntu-latest; Build&Test: node-22, ubuntu-latest; Build&Test: node-24, macos-latest; Build&Test: node-24, ubuntu-latest; Build&Test: node-24, windows-latest; Build&Test: node-26, ubuntu-latest; Get changed files; Header rules - vite-docs-main; Lint: node-24, ubuntu-latest; Run zizmor; Semantic Pull Request; zizmor; Redirect rules - vite-docs-main; netlify/vite-docs-main/deploy-preview]
+[lx: 4 skipped checks: Comment and close PR; Comment and close issue; Pages changed - vite-docs-main; preview]

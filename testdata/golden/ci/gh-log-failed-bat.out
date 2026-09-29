@@ -1,0 +1,39 @@
+[lx: 2 jobs, 2 failed steps · per-line timestamps removed (2026-09-26 20:37:45 → 20:50:50 UTC) · 33 ##[group] blocks unwrapped]
+== Ensure code quality ==
+[lx: 17 steps folded (359 lines): Set up job · dtolnay/rust-toolchain@stable · Parse toolchain version · Construct rustup command line · Set $CARGO_HOME · Install rustup if needed · Install rustup if needed on windows · rustup toolchain install stable · … +9 more]
+✗ Run cargo clippy --locked --all-targets --all-features -- -D warnings · 26.4s
+[lx: hidden: 510 cargo status lines (Downloaded ×259, Checking ×176, Compiling ×73, Updating, Downloading)]
+error: this if-then-else expression returns a bool literal
+   --> src/bin/bat/app.rs:445:21
+    |
+445 | /                     if color_last_index > plain_last_index || !extra_extra_plain {
+446 | |                         true
+447 | |                     } else {
+448 | |                         false
+449 | |                     }
+    | |_____________________^ help: you can reduce it to: `color_last_index > plain_last_index || !extra_extra_plain`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#needless_bool
+    = note: `-D clippy::needless-bool` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_bool)]`
+
+error: could not compile `bat` (bin "bat" test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `bat` (bin "bat") due to 1 previous error
+##[error]Process completed with exit code 101.
+[lx: 2 steps folded (33 lines): Post job cleanup · Complete job]
+== all-jobs ==
+[lx: 1 step folded (46 lines): Set up job]
+✗ Run jq --exit-status 'all(.result == "success")' <<< '{ · 130ms
+$ jq --exit-status 'all(.result == "success")' <<< '{
+$   "crate_metadata": {
+$     "result": "success",
+$     "outputs": {
+$       "homepage": "https://github.com/sharkdp/bat",
+$       "msrv": "1.88",
+$       "name": "bat",
+$       "version": "0.26.1",
+[lx: +36 more script lines]
+false
+##[error]Process completed with exit code 1.
+[lx: 1 step folded (1 line): Complete job]

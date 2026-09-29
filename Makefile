@@ -34,7 +34,7 @@ bench:
 	go run ./bench/cmd/corpusbench -out bench/out/results.json
 
 charts: bench
-	go run ./bench/cmd/charts -in bench/out/results.json -out docs/img
+	go run ./bench/cmd/charts -in bench/out -out docs/img
 
 dist:
 	rm -rf dist

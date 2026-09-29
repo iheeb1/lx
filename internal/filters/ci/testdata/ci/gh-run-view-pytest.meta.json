@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "32909439763",
+    "--repo",
+    "pytest-dev/pytest"
+  ],
+  "shell": "gh run view 32909439763 --repo pytest-dev/pytest",
+  "repo": "pytest-dev/pytest",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): run summary: 20 failed matrix jobs with 13 steps each, 60 annotations (the same exit-code error and mirror warning per job)",
+  "cwd": "/home/user/src/pytest"
+}

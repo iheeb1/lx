@@ -1,0 +1,11 @@
+[lx: 5 status refreshes; the latest is shown]
+[lx: 12 step lines not shown (passed or skipped)]
+✓ fix/dev-server-island-renderers Examples astro check withastro/astro#18000 · 36432869798
+Triggered via pull_request about 6 minutes ago
+
+JOBS
+✓ astro check in 2m32s (ID 108963243518)
+
+ANNOTATIONS
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+astro check: .github#1

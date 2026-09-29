@@ -110,6 +110,7 @@ func genericShape(c *Context, s string) (string, string) {
 		lines = FoldStacks(c, lines)
 	}
 	lines = collapseSimilar(lines, modeOf(c).knobs().similarRun, c.focus())
+	lines = JudgeChunks(c, lines)
 	return strings.TrimRight(strings.Join(shortenAll(lines), "\n"), "\n"), "lines"
 }
 

@@ -1,0 +1,22 @@
+build (macos-py310)	fail	2m31s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688327
+build (macos-py312)	fail	2m26s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688338
+build (macos-py313)	fail	1m56s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688328
+build (macos-py314)	fail	3m12s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688409
+build (macos-py315)	fail	2m6s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688398
+build (ubuntu-py310-lsof-numpy-pexpect)	fail	14m21s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688293
+build (ubuntu-py310-xdist)	fail	2m15s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688394
+build (ubuntu-py311)	fail	8m27s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688341
+build (ubuntu-py312)	fail	9m53s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688362
+build (ubuntu-py313-pexpect)	fail	8m50s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688432
+build (ubuntu-py314)	fail	8m53s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688369
+build (ubuntu-py315)	fail	9m9s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688309
+build (ubuntu-pypy3-xdist)	fail	5m30s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688347
+build (windows-py310-xdist)	fail	3m13s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688342
+build (windows-py311)	fail	7m58s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688200
+build (windows-py312)	fail	8m22s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688224
+build (windows-py313)	fail	6m56s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688298
+build (windows-py314)	fail	12m46s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688234
+build (windows-py315)	fail	8m7s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98000688212
+check	fail	2s	https://github.com/pytest-dev/pytest/actions/runs/32909439763/job/98005419699
+codecov/patch	fail	0	https://app.codecov.io/gh/pytest-dev/pytest/pull/14936
+[lx: 15 passing checks: Changelog entry; build (doctesting); build (plugins); build (ubuntu-py310-freeze); build (ubuntu-py310-pluggy); build (ubuntu-py310-unittest-asynctest); build (ubuntu-py310-unittest-twisted24); build (ubuntu-py310-unittest-twisted25); build (windows-py310-pluggy); build (windows-py310-unittest-asynctest); build (windows-py310-unittest-twisted24); build (windows-py310-unittest-twisted25); docs/readthedocs.org:pytest; package; pre-commit.ci - pr]

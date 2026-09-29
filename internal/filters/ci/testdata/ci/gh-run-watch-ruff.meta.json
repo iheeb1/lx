@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "watch",
+    "36425221543",
+    "--repo",
+    "astral-sh/ruff",
+    "--interval",
+    "10"
+  ],
+  "shell": "gh run watch 36425221543 --repo astral-sh/ruff --interval 10",
+  "repo": "astral-sh/ruff",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): TRIMMED to the first two and last two of 30 refreshes (each ~450 lines: every job with every step); watched from 4 minutes in until the run completed",
+  "cwd": "/home/user/src/ruff"
+}

@@ -11,4 +11,5 @@
               fix: export LX_TEE_DIR=<an empty directory>  # in your shell's startup file
 ✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
 ✓ activity    no lx run recorded yet; no Claude Code session in the last day
+- laya        not set up (optional: lx laya setup)
 lx doctor: 0 failures, 1 warning

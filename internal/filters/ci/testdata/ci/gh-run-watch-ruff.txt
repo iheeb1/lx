@@ -1,0 +1,2381 @@
+Refreshing run status every 10 seconds. Press Ctrl+C to quit.
+
+* main CI · 36425221543
+Triggered via push about 4 minutes ago
+
+JOBS
+✓ Determine changes in 14s (ID 108937399019)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Fetch full history without tags
+  ✓ Determine merge base
+  ✓ Check if release build inputs changed
+  ✓ Check if the parser code changed
+  ✓ Check if the linter code changed
+  ✓ Check if the formatter code changed
+  ✓ Check if the fuzzer code changed
+  ✓ Check if the py-fuzzer code changed
+  ✓ Check if there was any code related change
+  ✓ Check if there was any playground related change
+  ✓ Check if the ty code changed
+  ✓ Check if the benchmark code changed
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ shellcheck in 33s (ID 108937509129)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Run ShellCheck
+  ✓ Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+* cargo test (namespace-profile-windows-2022-x86-64-16x32) (ID 108937509242)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv (Windows)
+  - Install uv (macOS)
+  * Run tests
+  * Post Install uv (Windows)
+  * Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  * Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+✓ cargo test (namespace-profile-macos-15) in 2m31s (ID 108937509267)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  - Install uv (Windows)
+  ✓ Install uv (macOS)
+  ✓ Run tests
+  ✓ Post Install uv (macOS)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo fmt in 24s (ID 108937509282)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Install Rust toolchain
+  ✓ Run cargo fmt --all --check
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo clippy in 2m23s (ID 108937509310)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Clippy
+  ✓ Clippy (wasm)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+* cargo test (linux) (ID 108937509381)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  - ty mdtests (GitHub annotations)
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Dogfood ty on py-fuzzer
+  ✓ Dogfood ty on ty_benchmark
+  ✓ Dogfood ty on scripts
+  * Run cargo doc --all --no-deps
+  * Run cargo doc --no-deps -p ty_python_semantic -p ty_python_core -p ty_module_resolver -p ty_site_packages -p ty_combine -p ty_project -p ty_ide -p ty_wasm -p ty_vendored -p ty_static -p ty -p ty_test -p ruff_db -p ruff_python_formatter --document-private-items
+  * Post Install uv
+  * Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  * Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+* cargo hawk (ID 108937509489)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install Hawk
+  * Hawk
+  * Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  * Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+✓ cargo publish dry-run in 3m34s (ID 108937509530)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ cargo publish dry-run
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test scripts in 1m22s (ID 108937509656)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Run python crates/ruff_python_ast/generate.py
+  ✓ Run python crates/ruff_python_formatter/generate.py
+  ✓ Run test -z "$(git status --porcelain)"
+  ✓ Run ./scripts/add_rule.py --name DoTheThing --prefix F --code 999 --linter pyflakes --category correctness
+  ✓ Run cargo check
+  ✓ Run ./scripts/add_plugin.py test --url https://pypi.org/project/-test/0.1.0/ --prefix TST
+  ✓ Run cargo check
+  ✓ Run uv run --directory=./python/py-fuzzer mypy
+  ✓ Run uv run --directory=./python/py-fuzzer ruff format --check
+  ✓ Run uv run --directory=./python/py-fuzzer ruff check
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo shear in 20s (ID 108937509669)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run uv run --only-dev cargo shear --deny-warnings
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ prek in 1m8s (ID 108937509689)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Cache prek
+  ✓ Run prek
+  ✓ Post Cache prek
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ mkdocs in 2m54s (ID 108937509746)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv
+  ✓ Update README File
+  ✓ Generate docs
+  ✓ Check docs formatting
+  ✓ Build docs
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ ty completion evaluation in 1m36s (ID 108937509754)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run ty completion evaluation
+  ✓ Ensure there are no changes
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo build (msrv) in 1m57s (ID 108937509806)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build tests
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo deny in 29s (ID 108937509820)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Check licenses
+  ✓ Check sources
+  ✓ Check workspace dependency features and build-script allowlist
+  ✓ Check bans
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks instrumented ty (build) in 2m58s (ID 108937509828)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Upload benchmark binary
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo test (wasm) in 2m44s (ID 108937509872)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Run jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa
+  ✓ Test ruff_wasm
+  ✓ Test ty_wasm
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+* benchmarks instrumented (ruff) (ID 108937509894)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  * Post Checkout Branch
+* cargo fuzz build (ID 108937509901)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Run uv run --only-dev cargo fuzz build -s none
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  * Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+* benchmarks walltime (build) (ID 108937509923)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  * Upload benchmark binary
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  * Post Checkout Branch
+✓ cargo test (linux, release) in 3m35s (ID 108937509957)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test ruff-lsp in 2m27s (ID 108937509984)
+  ✓ Set up job
+  ✓ Checkout ruff source
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build Ruff binary
+  ✓ Checkout ruff-lsp source
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install ruff-lsp dependencies
+  ✓ Run ruff-lsp tests
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout ruff-lsp source
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout ruff source
+  ✓ Complete job
+✓ formatter instabilities and black similarity in 2m58s (ID 108937510027)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run checks
+  ✓ Github step summary
+  ✓ Remove checkouts from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ python package in 1m14s (ID 108937510109)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Prep README.md
+  ✓ Build wheels
+  ✓ Test wheel
+  ✓ Remove wheels from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+- check playground (ID 108937510921)
+- ecosystem (ID 108937511027)
+- Fuzz for new ty panics (ID 108937511275)
+- fuzz parser (ID 108937511293)
+- PGO in 0s (ID 108937511307)
+* benchmarks instrumented ty (simulation: projects) (ID 108938666048)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (memory: constraint_set) (ID 108938666097)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (simulation: module_resolution) (ID 108938666117)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (simulation: constraint_set) (ID 108938666161)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (simulation: micro-m-z) (ID 108938666189)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (memory: micro-m-z) (ID 108938666196)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (simulation: micro-a-l) (ID 108938666211)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (memory: micro-a-l) (ID 108938666240)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (memory: projects) (ID 108938666362)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+
+ANNOTATIONS
+! Restore cache failed: Dependencies file is not found in /home/runner/work/ruff/ruff. Supported file pattern: go.mod
+shellcheck: .github#36
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo build (msrv): .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo test (wasm): .github#2
+
+Refreshing run status every 10 seconds. Press Ctrl+C to quit.
+
+* main CI · 36425221543
+Triggered via push about 4 minutes ago
+
+JOBS
+✓ Determine changes in 14s (ID 108937399019)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Fetch full history without tags
+  ✓ Determine merge base
+  ✓ Check if release build inputs changed
+  ✓ Check if the parser code changed
+  ✓ Check if the linter code changed
+  ✓ Check if the formatter code changed
+  ✓ Check if the fuzzer code changed
+  ✓ Check if the py-fuzzer code changed
+  ✓ Check if there was any code related change
+  ✓ Check if there was any playground related change
+  ✓ Check if the ty code changed
+  ✓ Check if the benchmark code changed
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ shellcheck in 33s (ID 108937509129)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Run ShellCheck
+  ✓ Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+* cargo test (namespace-profile-windows-2022-x86-64-16x32) (ID 108937509242)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv (Windows)
+  - Install uv (macOS)
+  ✓ Run tests
+  * Post Install uv (Windows)
+  * Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  * Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+✓ cargo test (namespace-profile-macos-15) in 2m31s (ID 108937509267)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  - Install uv (Windows)
+  ✓ Install uv (macOS)
+  ✓ Run tests
+  ✓ Post Install uv (macOS)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo fmt in 24s (ID 108937509282)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Install Rust toolchain
+  ✓ Run cargo fmt --all --check
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo clippy in 2m23s (ID 108937509310)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Clippy
+  ✓ Clippy (wasm)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (linux) in 4m18s (ID 108937509381)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  - ty mdtests (GitHub annotations)
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Dogfood ty on py-fuzzer
+  ✓ Dogfood ty on ty_benchmark
+  ✓ Dogfood ty on scripts
+  ✓ Run cargo doc --all --no-deps
+  ✓ Run cargo doc --no-deps -p ty_python_semantic -p ty_python_core -p ty_module_resolver -p ty_site_packages -p ty_combine -p ty_project -p ty_ide -p ty_wasm -p ty_vendored -p ty_static -p ty -p ty_test -p ruff_db -p ruff_python_formatter --document-private-items
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+* cargo hawk (ID 108937509489)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install Hawk
+  * Hawk
+  * Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  * Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+✓ cargo publish dry-run in 3m34s (ID 108937509530)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ cargo publish dry-run
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test scripts in 1m22s (ID 108937509656)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Run python crates/ruff_python_ast/generate.py
+  ✓ Run python crates/ruff_python_formatter/generate.py
+  ✓ Run test -z "$(git status --porcelain)"
+  ✓ Run ./scripts/add_rule.py --name DoTheThing --prefix F --code 999 --linter pyflakes --category correctness
+  ✓ Run cargo check
+  ✓ Run ./scripts/add_plugin.py test --url https://pypi.org/project/-test/0.1.0/ --prefix TST
+  ✓ Run cargo check
+  ✓ Run uv run --directory=./python/py-fuzzer mypy
+  ✓ Run uv run --directory=./python/py-fuzzer ruff format --check
+  ✓ Run uv run --directory=./python/py-fuzzer ruff check
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo shear in 20s (ID 108937509669)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run uv run --only-dev cargo shear --deny-warnings
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ prek in 1m8s (ID 108937509689)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Cache prek
+  ✓ Run prek
+  ✓ Post Cache prek
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ mkdocs in 2m54s (ID 108937509746)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv
+  ✓ Update README File
+  ✓ Generate docs
+  ✓ Check docs formatting
+  ✓ Build docs
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ ty completion evaluation in 1m36s (ID 108937509754)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run ty completion evaluation
+  ✓ Ensure there are no changes
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo build (msrv) in 1m57s (ID 108937509806)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build tests
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo deny in 29s (ID 108937509820)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Check licenses
+  ✓ Check sources
+  ✓ Check workspace dependency features and build-script allowlist
+  ✓ Check bans
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks instrumented ty (build) in 2m58s (ID 108937509828)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Upload benchmark binary
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo test (wasm) in 2m44s (ID 108937509872)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Run jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa
+  ✓ Test ruff_wasm
+  ✓ Test ty_wasm
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks instrumented (ruff) in 4m3s (ID 108937509894)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+* cargo fuzz build (ID 108937509901)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Run uv run --only-dev cargo fuzz build -s none
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  * Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+✓ benchmarks walltime (build) in 3m56s (ID 108937509923)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Upload benchmark binary
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo test (linux, release) in 3m35s (ID 108937509957)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test ruff-lsp in 2m27s (ID 108937509984)
+  ✓ Set up job
+  ✓ Checkout ruff source
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build Ruff binary
+  ✓ Checkout ruff-lsp source
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install ruff-lsp dependencies
+  ✓ Run ruff-lsp tests
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout ruff-lsp source
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout ruff source
+  ✓ Complete job
+✓ formatter instabilities and black similarity in 2m58s (ID 108937510027)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run checks
+  ✓ Github step summary
+  ✓ Remove checkouts from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ python package in 1m14s (ID 108937510109)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Prep README.md
+  ✓ Build wheels
+  ✓ Test wheel
+  ✓ Remove wheels from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+- check playground (ID 108937510921)
+- ecosystem (ID 108937511027)
+- Fuzz for new ty panics (ID 108937511275)
+- fuzz parser (ID 108937511293)
+- PGO in 0s (ID 108937511307)
+* benchmarks instrumented ty (simulation: projects) (ID 108938666048)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (memory: constraint_set) (ID 108938666097)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (simulation: module_resolution) (ID 108938666117)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (simulation: constraint_set) (ID 108938666161)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (simulation: micro-m-z) (ID 108938666189)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (memory: micro-m-z) (ID 108938666196)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (simulation: micro-a-l) (ID 108938666211)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (memory: micro-a-l) (ID 108938666240)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks instrumented ty (memory: projects) (ID 108938666362)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks walltime (sympy) (ID 108939040638)
+* benchmarks walltime (colour_science|static_frame) (ID 108939040673)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Download benchmark binary
+  * Restore binary permissions
+  * Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks walltime (pydantic|freqtrade|multithreaded|altair) (ID 108939040687)
+* benchmarks walltime (pandas|tanjun) (ID 108939040693)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Download benchmark binary
+  * Restore binary permissions
+  * Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+* benchmarks walltime (ide) (ID 108939040703)
+* benchmarks walltime (script) (ID 108939040789)
+
+ANNOTATIONS
+! Restore cache failed: Dependencies file is not found in /home/runner/work/ruff/ruff. Supported file pattern: go.mod
+shellcheck: .github#36
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo build (msrv): .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo test (wasm): .github#2
+
+Refreshing run status every 10 seconds. Press Ctrl+C to quit.
+
+* main CI · 36425221543
+Triggered via push about 11 minutes ago
+
+JOBS
+✓ Determine changes in 14s (ID 108937399019)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Fetch full history without tags
+  ✓ Determine merge base
+  ✓ Check if release build inputs changed
+  ✓ Check if the parser code changed
+  ✓ Check if the linter code changed
+  ✓ Check if the formatter code changed
+  ✓ Check if the fuzzer code changed
+  ✓ Check if the py-fuzzer code changed
+  ✓ Check if there was any code related change
+  ✓ Check if there was any playground related change
+  ✓ Check if the ty code changed
+  ✓ Check if the benchmark code changed
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ shellcheck in 33s (ID 108937509129)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Run ShellCheck
+  ✓ Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (namespace-profile-windows-2022-x86-64-16x32) in 3m43s (ID 108937509242)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv (Windows)
+  - Install uv (macOS)
+  ✓ Run tests
+  ✓ Post Install uv (Windows)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (namespace-profile-macos-15) in 2m31s (ID 108937509267)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  - Install uv (Windows)
+  ✓ Install uv (macOS)
+  ✓ Run tests
+  ✓ Post Install uv (macOS)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo fmt in 24s (ID 108937509282)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Install Rust toolchain
+  ✓ Run cargo fmt --all --check
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo clippy in 2m23s (ID 108937509310)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Clippy
+  ✓ Clippy (wasm)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (linux) in 4m18s (ID 108937509381)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  - ty mdtests (GitHub annotations)
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Dogfood ty on py-fuzzer
+  ✓ Dogfood ty on ty_benchmark
+  ✓ Dogfood ty on scripts
+  ✓ Run cargo doc --all --no-deps
+  ✓ Run cargo doc --no-deps -p ty_python_semantic -p ty_python_core -p ty_module_resolver -p ty_site_packages -p ty_combine -p ty_project -p ty_ide -p ty_wasm -p ty_vendored -p ty_static -p ty -p ty_test -p ruff_db -p ruff_python_formatter --document-private-items
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo hawk in 6m29s (ID 108937509489)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install Hawk
+  ✓ Hawk
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo publish dry-run in 3m34s (ID 108937509530)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ cargo publish dry-run
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test scripts in 1m22s (ID 108937509656)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Run python crates/ruff_python_ast/generate.py
+  ✓ Run python crates/ruff_python_formatter/generate.py
+  ✓ Run test -z "$(git status --porcelain)"
+  ✓ Run ./scripts/add_rule.py --name DoTheThing --prefix F --code 999 --linter pyflakes --category correctness
+  ✓ Run cargo check
+  ✓ Run ./scripts/add_plugin.py test --url https://pypi.org/project/-test/0.1.0/ --prefix TST
+  ✓ Run cargo check
+  ✓ Run uv run --directory=./python/py-fuzzer mypy
+  ✓ Run uv run --directory=./python/py-fuzzer ruff format --check
+  ✓ Run uv run --directory=./python/py-fuzzer ruff check
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo shear in 20s (ID 108937509669)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run uv run --only-dev cargo shear --deny-warnings
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ prek in 1m8s (ID 108937509689)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Cache prek
+  ✓ Run prek
+  ✓ Post Cache prek
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ mkdocs in 2m54s (ID 108937509746)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv
+  ✓ Update README File
+  ✓ Generate docs
+  ✓ Check docs formatting
+  ✓ Build docs
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ ty completion evaluation in 1m36s (ID 108937509754)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run ty completion evaluation
+  ✓ Ensure there are no changes
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo build (msrv) in 1m57s (ID 108937509806)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build tests
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo deny in 29s (ID 108937509820)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Check licenses
+  ✓ Check sources
+  ✓ Check workspace dependency features and build-script allowlist
+  ✓ Check bans
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks instrumented ty (build) in 2m58s (ID 108937509828)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Upload benchmark binary
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo test (wasm) in 2m44s (ID 108937509872)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Run jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa
+  ✓ Test ruff_wasm
+  ✓ Test ty_wasm
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks instrumented (ruff) in 4m3s (ID 108937509894)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo fuzz build in 7m28s (ID 108937509901)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run uv run --only-dev cargo fuzz build -s none
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks walltime (build) in 3m56s (ID 108937509923)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Upload benchmark binary
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo test (linux, release) in 3m35s (ID 108937509957)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test ruff-lsp in 2m27s (ID 108937509984)
+  ✓ Set up job
+  ✓ Checkout ruff source
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build Ruff binary
+  ✓ Checkout ruff-lsp source
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install ruff-lsp dependencies
+  ✓ Run ruff-lsp tests
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout ruff-lsp source
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout ruff source
+  ✓ Complete job
+✓ formatter instabilities and black similarity in 2m58s (ID 108937510027)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run checks
+  ✓ Github step summary
+  ✓ Remove checkouts from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ python package in 1m14s (ID 108937510109)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Prep README.md
+  ✓ Build wheels
+  ✓ Test wheel
+  ✓ Remove wheels from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+- check playground (ID 108937510921)
+- ecosystem (ID 108937511027)
+- Fuzz for new ty panics (ID 108937511275)
+- fuzz parser (ID 108937511293)
+- PGO in 0s (ID 108937511307)
+✓ benchmarks instrumented ty (simulation: projects) in 7m13s (ID 108938666048)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: constraint_set) in 2m39s (ID 108938666097)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: module_resolution) in 1m51s (ID 108938666117)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: constraint_set) in 3m47s (ID 108938666161)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+* benchmarks instrumented ty (simulation: micro-m-z) (ID 108938666189)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+✓ benchmarks instrumented ty (memory: micro-m-z) in 4m54s (ID 108938666196)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: micro-a-l) in 4m50s (ID 108938666211)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: micro-a-l) in 3m19s (ID 108938666240)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: projects) in 5m33s (ID 108938666362)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (sympy) in 5m30s (ID 108939040638)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (colour_science|static_frame) in 5m19s (ID 108939040673)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (pydantic|freqtrade|multithreaded|altair) in 5m5s (ID 108939040687)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (pandas|tanjun) in 5m59s (ID 108939040693)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (ide) in 2m32s (ID 108939040703)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (script) in 1m29s (ID 108939040789)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+- all required checks passed in 0s (ID 108940014759)
+
+ANNOTATIONS
+! Restore cache failed: Dependencies file is not found in /home/runner/work/ruff/ruff. Supported file pattern: go.mod
+shellcheck: .github#36
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo build (msrv): .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo test (wasm): .github#2
+
+Refreshing run status every 10 seconds. Press Ctrl+C to quit.
+
+* main CI · 36425221543
+Triggered via push about 12 minutes ago
+
+JOBS
+✓ Determine changes in 14s (ID 108937399019)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Fetch full history without tags
+  ✓ Determine merge base
+  ✓ Check if release build inputs changed
+  ✓ Check if the parser code changed
+  ✓ Check if the linter code changed
+  ✓ Check if the formatter code changed
+  ✓ Check if the fuzzer code changed
+  ✓ Check if the py-fuzzer code changed
+  ✓ Check if there was any code related change
+  ✓ Check if there was any playground related change
+  ✓ Check if the ty code changed
+  ✓ Check if the benchmark code changed
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ shellcheck in 33s (ID 108937509129)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Run ShellCheck
+  ✓ Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (namespace-profile-windows-2022-x86-64-16x32) in 3m43s (ID 108937509242)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv (Windows)
+  - Install uv (macOS)
+  ✓ Run tests
+  ✓ Post Install uv (Windows)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (namespace-profile-macos-15) in 2m31s (ID 108937509267)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  - Install uv (Windows)
+  ✓ Install uv (macOS)
+  ✓ Run tests
+  ✓ Post Install uv (macOS)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo fmt in 24s (ID 108937509282)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Install Rust toolchain
+  ✓ Run cargo fmt --all --check
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo clippy in 2m23s (ID 108937509310)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Clippy
+  ✓ Clippy (wasm)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (linux) in 4m18s (ID 108937509381)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  - ty mdtests (GitHub annotations)
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Dogfood ty on py-fuzzer
+  ✓ Dogfood ty on ty_benchmark
+  ✓ Dogfood ty on scripts
+  ✓ Run cargo doc --all --no-deps
+  ✓ Run cargo doc --no-deps -p ty_python_semantic -p ty_python_core -p ty_module_resolver -p ty_site_packages -p ty_combine -p ty_project -p ty_ide -p ty_wasm -p ty_vendored -p ty_static -p ty -p ty_test -p ruff_db -p ruff_python_formatter --document-private-items
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo hawk in 6m29s (ID 108937509489)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install Hawk
+  ✓ Hawk
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo publish dry-run in 3m34s (ID 108937509530)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ cargo publish dry-run
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test scripts in 1m22s (ID 108937509656)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Run python crates/ruff_python_ast/generate.py
+  ✓ Run python crates/ruff_python_formatter/generate.py
+  ✓ Run test -z "$(git status --porcelain)"
+  ✓ Run ./scripts/add_rule.py --name DoTheThing --prefix F --code 999 --linter pyflakes --category correctness
+  ✓ Run cargo check
+  ✓ Run ./scripts/add_plugin.py test --url https://pypi.org/project/-test/0.1.0/ --prefix TST
+  ✓ Run cargo check
+  ✓ Run uv run --directory=./python/py-fuzzer mypy
+  ✓ Run uv run --directory=./python/py-fuzzer ruff format --check
+  ✓ Run uv run --directory=./python/py-fuzzer ruff check
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo shear in 20s (ID 108937509669)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run uv run --only-dev cargo shear --deny-warnings
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ prek in 1m8s (ID 108937509689)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Cache prek
+  ✓ Run prek
+  ✓ Post Cache prek
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ mkdocs in 2m54s (ID 108937509746)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv
+  ✓ Update README File
+  ✓ Generate docs
+  ✓ Check docs formatting
+  ✓ Build docs
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ ty completion evaluation in 1m36s (ID 108937509754)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run ty completion evaluation
+  ✓ Ensure there are no changes
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo build (msrv) in 1m57s (ID 108937509806)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build tests
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo deny in 29s (ID 108937509820)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Check licenses
+  ✓ Check sources
+  ✓ Check workspace dependency features and build-script allowlist
+  ✓ Check bans
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks instrumented ty (build) in 2m58s (ID 108937509828)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Upload benchmark binary
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo test (wasm) in 2m44s (ID 108937509872)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Run jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa
+  ✓ Test ruff_wasm
+  ✓ Test ty_wasm
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks instrumented (ruff) in 4m3s (ID 108937509894)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo fuzz build in 7m28s (ID 108937509901)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run uv run --only-dev cargo fuzz build -s none
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks walltime (build) in 3m56s (ID 108937509923)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Upload benchmark binary
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo test (linux, release) in 3m35s (ID 108937509957)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test ruff-lsp in 2m27s (ID 108937509984)
+  ✓ Set up job
+  ✓ Checkout ruff source
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build Ruff binary
+  ✓ Checkout ruff-lsp source
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install ruff-lsp dependencies
+  ✓ Run ruff-lsp tests
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout ruff-lsp source
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout ruff source
+  ✓ Complete job
+✓ formatter instabilities and black similarity in 2m58s (ID 108937510027)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run checks
+  ✓ Github step summary
+  ✓ Remove checkouts from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ python package in 1m14s (ID 108937510109)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Prep README.md
+  ✓ Build wheels
+  ✓ Test wheel
+  ✓ Remove wheels from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+- check playground (ID 108937510921)
+- ecosystem (ID 108937511027)
+- Fuzz for new ty panics (ID 108937511275)
+- fuzz parser (ID 108937511293)
+- PGO in 0s (ID 108937511307)
+✓ benchmarks instrumented ty (simulation: projects) in 7m13s (ID 108938666048)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: constraint_set) in 2m39s (ID 108938666097)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: module_resolution) in 1m51s (ID 108938666117)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: constraint_set) in 3m47s (ID 108938666161)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+* benchmarks instrumented ty (simulation: micro-m-z) (ID 108938666189)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  * Run benchmarks
+  * Post Run benchmarks
+  * Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  * Post Checkout Branch
+✓ benchmarks instrumented ty (memory: micro-m-z) in 4m54s (ID 108938666196)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: micro-a-l) in 4m50s (ID 108938666211)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: micro-a-l) in 3m19s (ID 108938666240)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: projects) in 5m33s (ID 108938666362)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (sympy) in 5m30s (ID 108939040638)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (colour_science|static_frame) in 5m19s (ID 108939040673)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (pydantic|freqtrade|multithreaded|altair) in 5m5s (ID 108939040687)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (pandas|tanjun) in 5m59s (ID 108939040693)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (ide) in 2m32s (ID 108939040703)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (script) in 1m29s (ID 108939040789)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+- all required checks passed in 0s (ID 108940014759)
+
+ANNOTATIONS
+! Restore cache failed: Dependencies file is not found in /home/runner/work/ruff/ruff. Supported file pattern: go.mod
+shellcheck: .github#36
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo build (msrv): .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo test (wasm): .github#2
+
+✓ main CI · 36425221543
+Triggered via push about 12 minutes ago
+
+JOBS
+✓ Determine changes in 14s (ID 108937399019)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Fetch full history without tags
+  ✓ Determine merge base
+  ✓ Check if release build inputs changed
+  ✓ Check if the parser code changed
+  ✓ Check if the linter code changed
+  ✓ Check if the formatter code changed
+  ✓ Check if the fuzzer code changed
+  ✓ Check if the py-fuzzer code changed
+  ✓ Check if there was any code related change
+  ✓ Check if there was any playground related change
+  ✓ Check if the ty code changed
+  ✓ Check if the benchmark code changed
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ shellcheck in 33s (ID 108937509129)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Run ShellCheck
+  ✓ Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (namespace-profile-windows-2022-x86-64-16x32) in 3m43s (ID 108937509242)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv (Windows)
+  - Install uv (macOS)
+  ✓ Run tests
+  ✓ Post Install uv (Windows)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (namespace-profile-macos-15) in 2m31s (ID 108937509267)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  - Install uv (Windows)
+  ✓ Install uv (macOS)
+  ✓ Run tests
+  ✓ Post Install uv (macOS)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo fmt in 24s (ID 108937509282)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Install Rust toolchain
+  ✓ Run cargo fmt --all --check
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo clippy in 2m23s (ID 108937509310)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Clippy
+  ✓ Clippy (wasm)
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo test (linux) in 4m18s (ID 108937509381)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  - ty mdtests (GitHub annotations)
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Dogfood ty on py-fuzzer
+  ✓ Dogfood ty on ty_benchmark
+  ✓ Dogfood ty on scripts
+  ✓ Run cargo doc --all --no-deps
+  ✓ Run cargo doc --no-deps -p ty_python_semantic -p ty_python_core -p ty_module_resolver -p ty_site_packages -p ty_combine -p ty_project -p ty_ide -p ty_wasm -p ty_vendored -p ty_static -p ty -p ty_test -p ruff_db -p ruff_python_formatter --document-private-items
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo hawk in 6m29s (ID 108937509489)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install Hawk
+  ✓ Hawk
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo publish dry-run in 3m34s (ID 108937509530)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ cargo publish dry-run
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test scripts in 1m22s (ID 108937509656)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Run python crates/ruff_python_ast/generate.py
+  ✓ Run python crates/ruff_python_formatter/generate.py
+  ✓ Run test -z "$(git status --porcelain)"
+  ✓ Run ./scripts/add_rule.py --name DoTheThing --prefix F --code 999 --linter pyflakes --category correctness
+  ✓ Run cargo check
+  ✓ Run ./scripts/add_plugin.py test --url https://pypi.org/project/-test/0.1.0/ --prefix TST
+  ✓ Run cargo check
+  ✓ Run uv run --directory=./python/py-fuzzer mypy
+  ✓ Run uv run --directory=./python/py-fuzzer ruff format --check
+  ✓ Run uv run --directory=./python/py-fuzzer ruff check
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo shear in 20s (ID 108937509669)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run uv run --only-dev cargo shear --deny-warnings
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ prek in 1m8s (ID 108937509689)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Cache prek
+  ✓ Run prek
+  ✓ Post Cache prek
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ mkdocs in 2m54s (ID 108937509746)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install uv
+  ✓ Update README File
+  ✓ Generate docs
+  ✓ Check docs formatting
+  ✓ Build docs
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ ty completion evaluation in 1m36s (ID 108937509754)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run ty completion evaluation
+  ✓ Ensure there are no changes
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo build (msrv) in 1m57s (ID 108937509806)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build tests
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ cargo deny in 29s (ID 108937509820)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Check licenses
+  ✓ Check sources
+  ✓ Check workspace dependency features and build-script allowlist
+  ✓ Check bans
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks instrumented ty (build) in 2m58s (ID 108937509828)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Upload benchmark binary
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo test (wasm) in 2m44s (ID 108937509872)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Run jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa
+  ✓ Test ruff_wasm
+  ✓ Test ty_wasm
+  ✓ Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks instrumented (ruff) in 4m3s (ID 108937509894)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo fuzz build in 7m28s (ID 108937509901)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Run uv run --only-dev cargo fuzz build -s none
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ benchmarks walltime (build) in 3m56s (ID 108937509923)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install Rust toolchain
+  ✓ Build benchmarks
+  ✓ Upload benchmark binary
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ cargo test (linux, release) in 3m35s (ID 108937509957)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Install uv
+  ✓ Run tests
+  ✓ Run doctests
+  ✓ Post Install uv
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ test ruff-lsp in 2m27s (ID 108937509984)
+  ✓ Set up job
+  ✓ Checkout ruff source
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Install mold
+  ✓ Build Ruff binary
+  ✓ Checkout ruff-lsp source
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Install ruff-lsp dependencies
+  ✓ Run ruff-lsp tests
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout ruff-lsp source
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Checkout ruff source
+  ✓ Complete job
+✓ formatter instabilities and black similarity in 2m58s (ID 108937510027)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Install Rust toolchain
+  ✓ Run checks
+  ✓ Github step summary
+  ✓ Remove checkouts from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+✓ python package in 1m14s (ID 108937510109)
+  ✓ Set up job
+  ✓ Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Prep README.md
+  ✓ Build wheels
+  ✓ Test wheel
+  ✓ Remove wheels from cache
+  ✓ Post Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+  ✓ Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+  ✓ Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+  ✓ Complete job
+- check playground (ID 108937510921)
+- ecosystem (ID 108937511027)
+- Fuzz for new ty panics (ID 108937511275)
+- fuzz parser (ID 108937511293)
+- PGO in 0s (ID 108937511307)
+✓ benchmarks instrumented ty (simulation: projects) in 7m13s (ID 108938666048)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: constraint_set) in 2m39s (ID 108938666097)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: module_resolution) in 1m51s (ID 108938666117)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: constraint_set) in 3m47s (ID 108938666161)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: micro-m-z) in 8m52s (ID 108938666189)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: micro-m-z) in 4m54s (ID 108938666196)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (simulation: micro-a-l) in 4m50s (ID 108938666211)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: micro-a-l) in 3m19s (ID 108938666240)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks instrumented ty (memory: projects) in 5m33s (ID 108938666362)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  - Configure apt mirror fallback
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (sympy) in 5m30s (ID 108939040638)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (colour_science|static_frame) in 5m19s (ID 108939040673)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (pydantic|freqtrade|multithreaded|altair) in 5m5s (ID 108939040687)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (pandas|tanjun) in 5m59s (ID 108939040693)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (ide) in 2m32s (ID 108939040703)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+✓ benchmarks walltime (script) in 1m29s (ID 108939040789)
+  ✓ Set up job
+  ✓ Checkout Branch
+  ✓ Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Download benchmark binary
+  ✓ Restore binary permissions
+  ✓ Run benchmarks
+  ✓ Post Run benchmarks
+  ✓ Post Run astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+  ✓ Post Checkout Branch
+  ✓ Complete job
+- all required checks passed in 0s (ID 108940014759)
+
+ANNOTATIONS
+! Restore cache failed: Dependencies file is not found in /home/runner/work/ruff/ruff. Supported file pattern: go.mod
+shellcheck: .github#36
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo build (msrv): .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo test (wasm): .github#2

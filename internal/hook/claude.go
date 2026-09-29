@@ -34,27 +34,36 @@ func HookWith(agent string, stdin io.Reader, stdout io.Writer, cwd string, o Hoo
 	return runHook(h, stdin, stdout, cwd, o)
 }
 
-func Agents() []string { return []string{"claude", "copilot", "cursor", "gemini"} }
+func Agents() []string { return []string{"claude", "codex", "copilot", "cursor", "gemini"} }
 
 type host struct {
 	tools []string
 
 	render func(p *payload, o outcome) []byte
 
+	eval func(cmd string, env evalEnv, cwd string) outcome
+
 	alwaysJSON bool
 
 	parity bool
+
+	worktrees bool
 }
 
 var (
-	claudeHost = host{tools: []string{"Bash"}, render: renderClaude(true), parity: true}
+	claudeHost = host{tools: []string{"Bash"}, render: renderClaude(true), parity: true, worktrees: true}
 	hosts      = map[string]host{
 		"claude":  claudeHost,
+		"codex":   {tools: []string{"Bash"}, render: renderCodex, eval: evalCodex},
 		"copilot": {tools: []string{"Bash", "bash", "run_in_terminal", "runTerminalCommand"}, render: renderClaude(false)},
 		"gemini":  {tools: []string{"run_shell_command"}, render: renderGemini},
 		"cursor":  {tools: []string{"Shell", "Bash", "run_terminal_cmd"}, render: renderCursor, alwaysJSON: true},
 	}
 )
+
+func evalClaudeRules(cmd string, env evalEnv, cwd string) outcome {
+	return evaluate(cmd, env, func() Rules { return LoadClaudeRules(cwd) })
+}
 
 type payload struct {
 	input      *object
@@ -79,6 +88,7 @@ type evalEnv struct {
 	Background     bool
 	BadMode        bool
 	Prefix         string
+	Worktrees      bool
 }
 
 func hookDisabled() bool {
@@ -128,6 +138,7 @@ func hookResponse(h host, stdin io.Reader, cwd string, opts HookOptions) (out []
 		Background:     p.background,
 		BadMode:        !modeOK(os.Getenv("LX_MODE")),
 		Prefix:         opts.Prefix,
+		Worktrees:      h.worktrees,
 	}
 	if env.ReadOnly {
 		env.Root = os.Getenv("CLAUDE_PROJECT_DIR")
@@ -135,8 +146,11 @@ func hookResponse(h host, stdin io.Reader, cwd string, opts HookOptions) (out []
 			env.Root = p.cwd
 		}
 	}
-	o := evaluate(p.command, env, func() Rules { return LoadClaudeRules(cwd) })
-	return h.render(p, o)
+	eval := h.eval
+	if eval == nil {
+		eval = evalClaudeRules
+	}
+	return h.render(p, eval(p.command, env, cwd))
 }
 
 func parsePayload(data []byte, tools []string) (*payload, bool) {
@@ -189,9 +203,12 @@ func evaluate(cmd string, env evalEnv, loadRules func() Rules) outcome {
 
 func evaluateWith(cmd string, env evalEnv, loadRules func() Rules, prefix func(string) string) outcome {
 	a := analyze(cmd)
-	targets, _ := a.plan()
+	targets := a.hookTargets()
 	if env.Background || env.BadMode {
 
+		targets = nil
+	}
+	if len(targets) > 0 && env.Worktrees && a.inClaudeWorktree(env.Cwd) {
 		targets = nil
 	}
 	hasLx := false

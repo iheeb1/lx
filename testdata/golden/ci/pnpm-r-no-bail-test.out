@@ -1,0 +1,49 @@
+[lx: 3 tasks (pnpm), 2 failed: packages/api test, packages/web test · output regrouped by task, prefixes removed]
+ WARN  This project is configured to use npm
+Scope: 3 of 4 workspace projects
+▸ packages/utils test · jest
+[1 passing suite, 3 passing tests hidden]
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        0.261 s
+Ran all test suites.
+✗ packages/api test · go test ./...
+--- FAIL: TestTotal (0.00s)
+    price_test.go:7: Total = 0, want 135
+--- FAIL: TestSlug (0.00s)
+    --- FAIL: TestSlug/Red_Shoes (0.00s)
+        price_test.go:18: Slug("Red Shoes") = "Red_Shoes", want "red-shoes"
+FAIL
+FAIL	example.com/acme/api	0.279s
+FAIL
+packages/api test: Failed
+✗ packages/web test · jest
+FAIL ./cart.test.js
+  ● currency has two decimals
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "$5.00"
+    Received: "$5.0"
+    >  8 |   expect(currency(5)).toBe('$5.00')
+         |                       ^
+      at Object.toBe (cart.test.js:8:23)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 2 passed, 3 total
+Snapshots:   0 total
+Time:        0.282 s
+Ran all test suites.
+packages/web test: Failed
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?
+ ERR_PNPM_RECURSIVE_FAIL 
+
+Summary: 2 fails, 1 passes
+
+/home/user/src/acme/packages/api:
+ ERROR  api@0.1.0 test: `go test ./...`
+Exit status 1
+
+/home/user/src/acme/packages/web:
+ ERROR  web@0.1.0 test: `jest`
+Exit status 1
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?

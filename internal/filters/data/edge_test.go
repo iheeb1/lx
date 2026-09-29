@@ -353,6 +353,16 @@ func TestFileView(t *testing.T) {
 	if !strings.Contains(got, "L1501: cat: other.go: Permission denied") {
 		t.Fatal("diagnostic in the omitted range was dropped")
 	}
+	if hdr, _, _ := strings.Cut(got, "\n"); !strings.HasSuffix(hdr, "; in the omitted lines: L1501: cat: other.go: Permission denied]") {
+		t.Fatalf("header doesn't name the omitted diagnostic: %s", hdr)
+	}
+	for i := 1200; i < 1700; i += 100 {
+		mid[i] = fmt.Sprintf("cat: f%d.go: No such file or directory", i)
+	}
+	got, _ = apply(t, ctx(1, "cat", "a.go", "f.go", "b.go"), strings.Join(mid, "\n"))
+	if hdr, _, _ := strings.Cut(got, "\n"); !strings.Contains(hdr, "L1201: cat: f1200.go: No such file or directory · ") || !strings.HasSuffix(hdr, " · +2 more]") {
+		t.Fatalf("header: %s", hdr)
+	}
 
 	small := "package main\n\nfunc main() {}\n// TODO: handle error\n"
 	if got, ok := apply(t, ctx(0, "cat", "main.go"), small); !ok || got != small {

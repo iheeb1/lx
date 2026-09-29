@@ -1,0 +1,140 @@
+[lx: 3 jobs, 3 failed steps · per-line timestamps removed (2026-08-25 23:10:10 → 23:31:28 UTC) · 48 ##[group] blocks unwrapped]
+== build (windows-py311) ==
+[lx: 7 steps folded (570 lines): Set up job · actions/checkout · actions/download-artifact · actions/setup-python · ./.github/actions/setup-tox · Install uv · Install tox]
+  Could not find file: D:\a\pytest\pytest\uv.toml
+  Could not determine uv version from uv.toml or pyproject.toml. Falling back to latest.
+  ##[warning]Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+✗ Run tox run -e py311 --installpkg `find dist/*.tar.gz` · 7m36s
+[lx: 16 lines of runner setup before the command not shown]
+py311: commands[0]> pytest --junitxml=junit.xml
+collected 4559 items
+testing\freeze\tests\test_doctest.txt .                                  [  9%]
+[lx: 184 progress lines hidden]
+================================== FAILURES ===================================
+___________ TestOriginSidecar.test_origin_written_next_to_basetemp ____________
+self = <test_tmpdir.TestOriginSidecar object at 0x000002B41EEDC250>
+pytester = <Pytester WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/pytest-of-unknown/pytest-0/test_origin_written_next_to_basetemp0')>
+            """
+        result = pytester.runpytest_subprocess()
+        result.assert_outcomes(passed=1)
+>       base = Path((pytester.path / "_basetemp.txt").read_text().strip())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\a\pytest\pytest\testing\test_tmpdir.py:933:
+>       encoding = io.text_encoding(encoding)
+E       EncodingWarning: 'encoding' argument not specified
+C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\pathlib.py:1057: EncodingWarning
+---------------------------- Captured stdout call -----------------------------
+running: D:\a\pytest\pytest\.tox\py311\Scripts\python.exe -mpytest --basetemp=C:\Users\runneradmin\AppData\Local\Temp\pytest-of-unknown\pytest-0\test_origin_written_next_to_basetemp0\runpytest-0
+     in: C:\Users\runneradmin\AppData\Local\Temp\pytest-of-unknown\pytest-0\test_origin_written_next_to_basetemp0
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.2.0.dev245+gbf057558f, pluggy-1.6.0
+rootdir: C:\Users\runneradmin\AppData\Local\Temp\pytest-of-unknown\pytest-0\test_origin_written_next_to_basetemp0
+collected 1 item
+
+test_origin_written_next_to_basetemp.py .                                [100%]
+
+============================== warnings summary ===============================
+test_origin_written_next_to_basetemp.py::test_stash_basetemp
+  C:\Users\runneradmin\AppData\Local\Temp\pytest-of-unknown\pytest-0\test_origin_written_next_to_basetemp0\test_origin_written_next_to_basetemp.py:4: EncodingWarning: 'encoding' argument not specified
+    (pytestconfig.rootpath / '_basetemp.txt').write_text(str(base))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 1 passed, 1 warning in 0.02s =========================
+=================================== XPASSES ===================================
+___________ TestLocalPath.test_make_numbered_dir_multiprocess_safe ____________
+---------------------------- Captured stderr call -----------------------------
+D:\a\pytest\pytest\.tox\py311\Lib\site-packages\_pytest\_py\path.py:1308: EncodingWarning: 'encoding' argument not specified
+
+  with os.fdopen(fd, "w") as f:
+
+D:\a\pytest\pytest\.tox\py311\Lib\site-packages\_pytest\_py\path.py:1308: EncodingWarning: 'encoding' argument not specified
+
+  with os.fdopen(fd, "w") as f:
+
+D:\a\pytest\pytest\.tox\py311\Lib\site-packages\_pytest\_py\path.py:1308: EncodingWarning: 'encoding' argument not specified
+
+  with os.fdopen(fd, "w") as f:
+
+D:\a\pytest\pytest\.tox\py311\Lib\site-packages\_pytest\_py\path.py:1308: EncodingWarning: 'encoding' argument not specified
+
+  with os.fdopen(fd, "w") as f:
+-------------- generated xml file: D:\a\pytest\pytest\junit.xml ---------------
+=========================== short test summary info ===========================
+FAILED testing/test_tmpdir.py::TestOriginSidecar::test_origin_written_next_to_basetemp - EncodingWarning: 'encoding' argument not specified
+XPASS testing/_py/test_local.py::TestLocalPath::test_make_numbered_dir_multiprocess_safe - #11603
+= 1 failed, 4398 passed, 146 skipped, 13 xfailed, 1 xpassed in 439.60s (0:07:19) =
+py311: exit 1 (441.48 seconds) D:\a\pytest\pytest> pytest --junitxml=junit.xml pid=7872
+  py311: FAIL code 1 (453.73=setup[12.25]+cmd[441.48] seconds)
+  evaluation failed :( (453.86 seconds)
+##[error]Process completed with exit code 1.
+[lx: 4 steps folded (28 lines): Post job cleanup · Install uv · Post job cleanup · Complete job]
+== build (ubuntu-py312) ==
+[lx: 7 steps folded (583 lines): Set up job · actions/checkout · actions/download-artifact · actions/setup-python · ./.github/actions/setup-tox · Install uv · Install tox]
+  Could not find file: /home/runner/work/pytest/pytest/uv.toml
+  Could not determine uv version from uv.toml or pyproject.toml. Falling back to latest.
+  ##[warning]Failed to download from mirror, falling back to GitHub Releases: Unexpected HTTP response: 404
+✗ Run tox run -e py312-coverage --installpkg `find dist/*.tar.gz` · 9m35s
+[lx: 16 lines of runner setup before the command not shown]
+py312-coverage: commands[0]> coverage run -m pytest --junitxml=junit.xml
+collected 4559 items
+testing/freeze/tests/test_doctest.txt .                                  [  9%]
+[lx: 184 progress lines hidden]
+=================================== FAILURES ===================================
+____________ TestOriginSidecar.test_origin_written_next_to_basetemp ____________
+pytester = <Pytester PosixPath('/tmp/pytest-of-runner/pytest-0/test_origin_written_next_to_basetemp0')>
+            """
+        result = pytester.runpytest_subprocess()
+        result.assert_outcomes(passed=1)
+>       base = Path((pytester.path / "_basetemp.txt").read_text().strip())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/runner/work/pytest/pytest/testing/test_tmpdir.py:933:
+>       encoding = io.text_encoding(encoding)
+E       EncodingWarning: 'encoding' argument not specified
+/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/pathlib.py:1026: EncodingWarning
+----------------------------- Captured stdout call -----------------------------
+running: /home/runner/work/pytest/pytest/.tox/py312-coverage/bin/python3 -mpytest --basetemp=/tmp/pytest-of-runner/pytest-0/test_origin_written_next_to_basetemp0/runpytest-0
+     in: /tmp/pytest-of-runner/pytest-0/test_origin_written_next_to_basetemp0
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.2.0.dev245+gbf057558f, pluggy-1.6.0
+rootdir: /tmp/pytest-of-runner/pytest-0/test_origin_written_next_to_basetemp0
+collected 1 item
+
+test_origin_written_next_to_basetemp.py .                                [100%]
+
+=============================== warnings summary ===============================
+test_origin_written_next_to_basetemp.py::test_stash_basetemp
+  /tmp/pytest-of-runner/pytest-0/test_origin_written_next_to_basetemp0/test_origin_written_next_to_basetemp.py:4: EncodingWarning: 'encoding' argument not specified
+    (pytestconfig.rootpath / '_basetemp.txt').write_text(str(base))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+========================= 1 passed, 1 warning in 0.02s =========================
+=================================== XPASSES ====================================
+-------- generated xml file: /home/runner/work/pytest/pytest/junit.xml ---------
+=========================== short test summary info ============================
+FAILED testing/test_tmpdir.py::TestOriginSidecar::test_origin_written_next_to_basetemp - EncodingWarning: 'encoding' argument not specified
+XPASS testing/_py/test_local.py::TestLocalPath::test_make_numbered_dir_multiprocess_safe - #11603
+XPASS testing/test_debugging.py::TestPDB::test_pdb_interaction_capturing_simple - #10042
+XPASS testing/test_debugging.py::TestPDB::test_pdb_interaction_capturing_twice - #10042
+XPASS testing/test_debugging.py::TestPDB::test_pdb_with_injected_do_debug - #10042
+XPASS testing/test_debugging.py::TestDebuggingBreakpoints::test_pdb_not_altered - #10042
+XPASS testing/test_debugging.py::test_pdb_suspends_fixture_capturing[capfd] - #10042
+XPASS testing/test_debugging.py::test_pdb_suspends_fixture_capturing[capsys] - #10042
+= 1 failed, 4489 passed, 49 skipped, 13 xfailed, 7 xpassed in 562.10s (0:09:22) =
+py312-coverage: exit 1 (564.58 seconds) /home/runner/work/pytest/pytest> coverage run -m pytest --junitxml=junit.xml pid=2531
+  py312-coverage: FAIL code 1 (574.02=setup[9.44]+cmd[564.58] seconds)
+  evaluation failed :( (574.12 seconds)
+##[error]Process completed with exit code 1.
+[lx: 4 steps folded (19 lines): Post job cleanup · Install uv · Post job cleanup · Complete job]
+== check ==
+[lx: 2 steps folded (42 lines): Set up job · re-actors/alls-green]
+✗ Decide whether the input jobs succeeded or failed · 70ms
+$ python -m normalize_needed_jobs_status \
+$   "$INPUT_ALLOWED_FAILURES" \
+$   "$INPUT_ALLOWED_SKIPS" \
+$   "$INPUT_JOBS"
+# ❌ Some of the required to succeed jobs failed 😢😢😢
+
+📝 Job statuses:
+📝 build → ❌ failure [required to succeed]
+##[error]Process completed with exit code 1.
+[lx: 1 step folded (1 line): Complete job]

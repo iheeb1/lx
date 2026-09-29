@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "nx",
+    "run-many",
+    "-t",
+    "test",
+    "--output-style=stream"
+  ],
+  "shell": "nx run-many -t test --output-style=stream",
+  "repo": "",
+  "exit_code": 1,
+  "description": "REAL capture from a local 3-package workspace (api: Go module with 2 failing tests, web: jest with 1 failing test and a tsc type error, @acme/utils: passing); scratch path replaced by /home/user/src/acme; nx 20 stream output: lines prefixed with the project name",
+  "cwd": "/home/user/src/acme",
+  "tool": "monorepo"
+}

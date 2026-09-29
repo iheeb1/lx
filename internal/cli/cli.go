@@ -35,11 +35,14 @@ Usage:
   lx doctor [--json]                   check that the hook, PATH, permissions and storage are working
   lx ctx [--json]                      what lx reads from the calling agent's session: model, context
                                        use, the mode it infers, focus terms, files and recent runs
-  lx init [--project] [--readonly|--no-readonly] [--uninstall] [--dry-run] [--agent NAME]
-                                       install the Claude Code hook (or print a snippet for NAME)
+  lx laya setup|start|stop|status      the optional local Laya model (setup asks before it downloads;
+                                       see lx laya --help)
+  lx init [--project] [--portable] [--readonly|--no-readonly] [--uninstall] [--dry-run] [--agent NAME]
+                                       install the Claude Code hook (--agent codex: the Codex hook;
+                                       other NAMEs print a snippet; --portable: for a committed file)
   lx rewrite [-v] <command-string>     print the lx form of a shell command (exit 1: unchanged)
-  lx hook claude [--readonly] [--prefix PATH]
-                                       Claude Code PreToolUse hook (reads JSON on stdin)
+  lx hook claude|codex [--readonly] [--prefix PATH]
+                                       Claude Code or Codex PreToolUse hook (reads JSON on stdin)
   lx pipe [--as "cmd args"] [--exit N] [--mode MODE]
                                        condense stdin as if it were cmd's output
   lx filters                           list built-in filters
@@ -66,13 +69,17 @@ Environment:
   LX_TUNE=0          don't loosen views after full recalls (lx tune)
   LX_HOOK=0          make the hook a no-op     LX_TEE_DIR / LX_DATA_DIR  storage locations
   LX_MAX_CHARS=N     the agent's output limit in characters; views and lx show fit under it
-                     (0: no limit; in Claude Code: $BASH_MAX_OUTPUT_LENGTH, else 30000)
+                     (0: no limit; in Claude Code: the bashOutputMaxChars setting, else
+                     $BASH_MAX_OUTPUT_LENGTH up to 30000; at most 10000 if the command fails)
   LX_HEARTBEAT=30s   say "still running" and store the output so far after this long (0: off)
   LX_PROMPT_IDLE=2s  flag a prompt nobody answers after this much silence (0: off)
   LX_CONTEXT=0       don't read the agent's session transcript (no focus, context pressure,
                      inferred mode or delta; lx ctx shows what it reads)
   LX_CONTEXT_WINDOW=N  the model's context window in tokens (200k, 1m); default from the model
   LX_DELTA=0         don't replace a repeated run with what changed since the one in context
+  LX_LAYA=0          never ask the Laya daemon, even when it is running
+  LX_LAYA_TIMEOUT=N  the most lx waits for Laya per command: ms or a duration (default 1200)
+  LX_LAYA_PYTHON=PATH  run the Laya daemon with this python (laya installed) instead of lx's venv
 
 Everything lx removes is kept: condensed output ends with
   [lx: 1,204→38 lines (−94%) · full output: lx show 7]
@@ -100,6 +107,8 @@ func Main(args []string) int {
 		return cmdPipe(args[1:])
 	case "ctx":
 		return cmdCtx(args[1:])
+	case "laya":
+		return cmdLaya(args[1:])
 	case "filters":
 		for _, f := range engine.Filters() {
 			fmt.Println(f.Name())

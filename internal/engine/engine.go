@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/iheeb1/lx/internal/textutil"
 	"github.com/iheeb1/lx/internal/tokens"
@@ -23,6 +24,7 @@ type Context struct {
 	Focus  *Focus
 
 	fm *focusMatcher
+	jr *judgeRun
 }
 
 func (c *Context) focus() *focusMatcher {
@@ -136,6 +138,12 @@ type Options struct {
 	Mode       Mode
 	Focus      *Focus
 	Pressure   Pressure
+
+	Judge        Judge
+	Task         string
+	JudgeTimeout time.Duration
+
+	jr *judgeRun
 }
 
 type Cut uint8
@@ -203,6 +211,9 @@ func (r Result) Saved() float64 {
 }
 
 func Process(c *Context, raw string, opt Options) Result {
+	if opt.jr == nil {
+		opt.jr = newJudgeRun(c, opt)
+	}
 	res := process(c, raw, opt)
 	if opt.Focus.Empty() || !res.Lossy {
 		return res
@@ -264,6 +275,7 @@ func process(c *Context, raw string, opt Options) (res Result) {
 	}
 	c.Budget, c.Mode, c.Focus = opt.Budget, res.ViewMode, opt.Focus
 	c.fm = newFocusMatcher(opt.Focus)
+	c.jr = opt.jr
 	res.RawTokens = tokens.Count(raw)
 	res.RawLines = countLines(raw)
 	clean := textutil.Clean(raw)
@@ -410,6 +422,9 @@ func process(c *Context, raw string, opt Options) (res Result) {
 		}
 		if pressed {
 			res.Notes = append(res.Notes, opt.Pressure.note())
+		}
+		if n := c.jr.note(out); n != "" {
+			res.Notes = append(res.Notes, n)
 		}
 	}
 

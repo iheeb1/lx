@@ -126,7 +126,7 @@ func templateLogs(c *Context, lines []string) ([]string, bool) {
 	if modeOf(c).knobs().noTemplates {
 		return nil, false
 	}
-	return TemplateLogs(lines)
+	return TemplateLogsFor(c, lines)
 }
 
 func modeNote(asked, view Mode) string {

@@ -193,6 +193,9 @@ func (fileFilter) Apply(c *engine.Context, out string) (string, bool) {
 	if !hasOmission(cut) {
 		how = "lines over 2000 characters shortened in place (…[+N chars]…)"
 	}
+	if d := omittedDiags(cut); d != "" {
+		how += "; in the omitted lines: " + d
+	}
 	if conflicted {
 		how += "; it has git merge-conflict markers: each is listed with its line number, and small conflict hunks in full"
 	}
@@ -225,6 +228,37 @@ func conflictHunks(lines []string) map[int]bool {
 		}
 	}
 	return idx
+}
+
+var outlineEntryRe = lazyre.New(`^  (?:outline of the omitted lines:|L\d+: (.*)|… \+\d+ more declaration)`)
+
+const maxHeaderDiags = 3
+
+func omittedDiags(cut []string) string {
+	var ds []string
+	more, in := 0, false
+	for _, ln := range cut {
+		if !in {
+			in = strings.HasPrefix(ln, "… lines ") && strings.Contains(ln, " omitted (")
+			continue
+		}
+		m := outlineEntryRe.FindStringSubmatch(ln)
+		if m == nil {
+			break
+		}
+		if !fileDiagRe.MatchString(m[1]) && !(mayHaveFileDiag(m[1]) && fileDiagGluedRe.MatchString(m[1])) {
+			continue
+		}
+		if len(ds) == maxHeaderDiags {
+			more++
+			continue
+		}
+		ds = append(ds, strings.TrimSpace(ln))
+	}
+	if more > 0 {
+		ds = append(ds, fmt.Sprintf("+%d more", more))
+	}
+	return strings.Join(ds, " · ")
 }
 
 func hasOmission(cut []string) bool {

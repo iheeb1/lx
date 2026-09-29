@@ -156,7 +156,7 @@ func lxEnv(t *testing.T) []string {
 		}
 		env = append(env, kv)
 	}
-	return append(env, "LX_TEST_MAIN=1", "LX_TEE_DIR="+tee.Dir(), "LX_TRACK=0", "LX_DATA_DIR="+t.TempDir())
+	return append(env, "LX_TEST_MAIN=1", "LX_TEE_DIR="+tee.Dir(), "LX_TRACK=0", "LX_DATA_DIR="+t.TempDir(), "LX_LAYA=0")
 }
 
 func TestFitLeavesRoomForNotices(t *testing.T) {

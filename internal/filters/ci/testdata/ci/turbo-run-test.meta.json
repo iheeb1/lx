@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "turbo",
+    "run",
+    "test",
+    "--continue"
+  ],
+  "shell": "turbo run test --continue",
+  "repo": "",
+  "exit_code": 1,
+  "description": "REAL capture from a local 3-package workspace (api: Go module with 2 failing tests, web: jest with 1 failing test and a tsc type error, @acme/utils: passing); scratch path replaced by /home/user/src/acme; turbo 2.11 with --continue: lines prefixed web:test: / api:test: / @acme/utils:test:",
+  "cwd": "/home/user/src/acme",
+  "tool": "monorepo"
+}

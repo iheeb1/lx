@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"encoding/json"
 	"os"
 	"path/filepath"
 	"slices"
@@ -32,7 +31,7 @@ func sessionDelta(snap *agentctx.Snapshot, c *engine.Context, raw, normalView st
 	if !ok {
 		return "", false
 	}
-	prev.MaxChars = hostCharCap()
+	prev.MaxChars = hostCharCapFor(c.Exit)
 	return engine.Rerun(c, prev, raw, normalView)
 }
 
@@ -77,12 +76,8 @@ func deltaBase(snap *agentctx.Snapshot, c *engine.Context) (engine.Prev, bool) {
 }
 
 func storedRun(id int) (tee.Meta, bool) {
-	var m tee.Meta
-	b, err := os.ReadFile(filepath.Join(tee.Dir(), strconv.Itoa(id)+".json"))
-	if err != nil || json.Unmarshal(b, &m) != nil {
-		return m, false
-	}
-	return m, m.State == tee.StateDone
+	m, err := tee.ReadMeta(id)
+	return m, err == nil && m.State == tee.StateDone
 }
 
 func shownWhole(cmd string, argv []string) bool {

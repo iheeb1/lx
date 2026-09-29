@@ -1,0 +1,768 @@
+test (1.27.x, windows-latest)	Test	﻿2026-09-28T12:12:28.6654499Z ##[group]Run mage -v test
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6654711Z ^[[36;1mmage -v test^[[0m
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6703966Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6704170Z env:
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6704307Z   GOPROXY: https://proxy.golang.org
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6704457Z   GO111MODULE: on
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6704574Z   SASS_VERSION: 1.80.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6704780Z   DART_SASS_SHA_LINUX: 7c933edbad0a7d389192c5b79393485c088bd2c4398e32f5754c32af006a9ffd
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6705099Z   DART_SASS_SHA_MACOS: 79e060b0e131c3bb3c16926bafc371dc33feab122bfa8c01aa337a072097967b
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6705670Z   DART_SASS_SHA_WINDOWS: 0bc4708b37cd1bac4740e83ac5e3176e66b774f77fd5dd364da5b5cfc9bfb469
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6705911Z   GOTOOLCHAIN: local
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6706032Z   TMPDIR: D:\a\_temp
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6706157Z   HOME: C:\Users\runneradmin
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6706293Z   MSYS2_PATH_TYPE: inherit
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6706449Z   ACLOCAL_PATH: /ucrt64/share/aclocal:/usr/share/aclocal
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6706810Z   LANG: en_US.UTF-8
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6706921Z   MAKE: make
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6707037Z   MANPATH: /ucrt64/share/man
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6707176Z   MINGW_CHOST: x86_64-w64-mingw32
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6707332Z   MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6707495Z   MINGW_PREFIX: /ucrt64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6707621Z   MSYSTEM: UCRT64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6707738Z   MSYSTEM_CARCH: x86_64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6707872Z   MSYSTEM_CHOST: x86_64-w64-mingw32
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6708012Z   MSYSTEM_PREFIX: /ucrt64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6708201Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.14.7\x64/lib/pkgconfig
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6708408Z   PROMPT: $P$G
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6708551Z   RI_DEVKIT: D:\a\_temp\rubyinstaller-3.4.5-1-x64\msys64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6713025Z   Path: C:\hostedtoolcache\windows\node\22.23.2\x64;C:\Users\runneradmin\go\bin;C:\hostedtoolcache\windows\go\1.27.1\x64\bin;C:\Program Files\MongoDB\Server\7.0\bin;C:\vcpkg;C:\tools\zstd;C:\hostedtoolcache\windows\stack\3.11.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\R\R-4.6.1\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.13\x64\bin;C:\hostedtoolcache\windows\Python\3.12.10\x64\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\17.0.20-101\x64\bin;C:\Program Files\ImageMagick-7.1.2-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files (x86)\sbt\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\mongosh\;C:\Program Files\LLVM\bin;C:\Program Files (x86)\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6718921Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.14.7\x64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6719192Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.14.7\x64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6719435Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.14.7\x64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6719681Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.14.7\x64
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6719918Z   HUGO_BUILD_TAGS: extended,withdeploy
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.6720067Z ##[endgroup]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:28.9463668Z go: downloading github.com/magefile/mage v1.17.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.5864370Z go: downloading github.com/mitchellh/mapstructure v1.5.1-0.20231216201459-8508981c8b6c
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.5879976Z go: downloading github.com/spf13/cast v1.10.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.6327180Z go: downloading github.com/cespare/xxhash/v2 v2.3.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.6379811Z go: downloading github.com/gohugoio/hashstructure v1.0.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.6653272Z go: downloading github.com/bits-and-blooms/bitset v1.25.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.6676587Z go: downloading github.com/gobwas/glob v1.0.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.7366782Z go: downloading github.com/bep/godartsass/v2 v2.5.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.7470990Z go: downloading github.com/bep/helpers v0.12.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.7981149Z go: downloading github.com/bep/logg v0.4.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.8042112Z go: downloading github.com/spf13/afero v1.15.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.8664608Z go: downloading golang.org/x/sync v0.23.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.9123778Z go: downloading github.com/fatih/color v1.18.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.9179835Z go: downloading github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.9466855Z go: downloading github.com/bep/overlayfs v0.11.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.9477173Z go: downloading github.com/gohugoio/go-radix v1.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.9822250Z go: downloading golang.org/x/text v0.42.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:29.9883615Z go: downloading github.com/alecthomas/chroma/v2 v2.27.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:30.0302279Z go: downloading github.com/jdkato/prose v1.2.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:30.3769978Z go: downloading github.com/kyokomi/emoji/v2 v2.2.14
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:30.5065325Z go: downloading github.com/olekukonko/tablewriter v1.1.5
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:30.6501128Z go: downloading github.com/bep/golocales v0.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:30.9094006Z go: downloading github.com/pelletier/go-toml/v2 v2.4.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:30.9097349Z go: downloading github.com/bep/gitmap v1.9.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:30.9802938Z go: downloading github.com/bep/clocks v0.5.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:31.0169426Z go: downloading google.golang.org/protobuf v1.36.11
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:31.0318581Z go: downloading github.com/bep/textandbinarywriter v0.1.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:31.0330342Z go: downloading github.com/tetratelabs/wazero v1.12.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.1180474Z go: downloading github.com/pkg/errors v0.9.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.1189809Z go: downloading github.com/mattn/go-isatty v0.0.24
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.1190237Z go: downloading github.com/bep/golibsass v1.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.1191626Z go: downloading github.com/tdewolff/parse/v2 v2.8.16
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.1520825Z go: downloading github.com/clbanning/mxj/v2 v2.7.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.1681312Z go: downloading github.com/goccy/go-yaml v1.19.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.3071120Z go: downloading github.com/niklasfasching/go-org v1.9.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.4491077Z go: downloading github.com/mattn/go-colorable v0.1.14
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.4895021Z go: downloading golang.org/x/sys v0.48.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.5680478Z go: downloading github.com/frankban/quicktest v1.14.6
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.6666889Z go: downloading github.com/mattn/go-runewidth v0.0.19
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.6754910Z go: downloading github.com/olekukonko/errors v1.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.7200663Z go: downloading github.com/olekukonko/ll v0.1.6
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.8478549Z go: downloading github.com/dlclark/regexp2/v2 v2.2.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:38.8621506Z go: downloading golang.org/x/net v0.59.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:41.7503492Z go: downloading github.com/dlclark/regexp2 v1.12.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:41.8952200Z go: downloading github.com/google/go-cmp v0.7.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:41.9828341Z go: downloading github.com/kr/pretty v0.3.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:41.9868025Z go: downloading github.com/bep/debounce v1.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.0245624Z go: downloading golang.org/x/mod v0.41.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.0269658Z go: downloading github.com/gohugoio/hugo-goldmark-extensions/extras v0.7.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.0644469Z go: downloading github.com/gohugoio/hugo-goldmark-extensions/passthrough v0.5.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.1650843Z go: downloading github.com/microcosm-cc/bluemonday v1.0.27
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.1741830Z go: downloading github.com/yuin/goldmark v1.8.6
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.1949389Z go: downloading github.com/yuin/goldmark-emoji v1.0.6
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.3448271Z go: downloading github.com/clipperhouse/uax29/v2 v2.6.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.3842764Z go: downloading github.com/clipperhouse/displaywidth v0.10.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.3843349Z go: downloading github.com/olekukonko/cat v0.0.0-20250911104152-50322a0618f6
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.4458892Z go: downloading github.com/kr/text v0.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.5152310Z go: downloading github.com/aymerick/douceur v0.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:12:42.5512472Z go: downloading github.com/gorilla/css v1.0.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:08.7935642Z Running target: Test
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:08.7947681Z exec: go "list" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.6527175Z go: downloading github.com/BurntSushi/locker v0.0.0-20171006230638-a6e239ea1c69
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.6527999Z go: downloading github.com/bep/lazycache v0.9.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.6534315Z go: downloading github.com/gohugoio/httpcache v0.9.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.6591679Z go: downloading github.com/bep/mclib v1.20401.20400
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.8257761Z go: downloading github.com/bep/simplecobra v0.7.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.8276929Z go: downloading github.com/fsnotify/fsnotify v1.10.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.8309218Z go: downloading github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.8312327Z go: downloading github.com/spf13/cobra v1.10.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.8792575Z go: downloading github.com/spf13/fsync v0.10.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.9530509Z go: downloading github.com/spf13/pflag v1.0.10
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.9535332Z go: downloading go.uber.org/automaxprocs v1.5.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.9845747Z go: downloading github.com/evanw/esbuild v0.28.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:09.9849367Z go: downloading github.com/gobuffalo/flect v1.0.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:10.0363319Z go: downloading github.com/gohugoio/go-i18n/v2 v2.1.3-0.20251018145728-cfcc22d823c6
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:10.0502286Z go: downloading github.com/gorilla/websocket v1.5.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:10.0505374Z go: downloading github.com/hairyhenderson/go-codeowners v0.7.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:10.3363566Z go: downloading golang.org/x/tools v0.50.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:10.3419220Z go: downloading github.com/tdewolff/minify/v2 v2.24.17
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:13.4384402Z go: downloading github.com/gohugoio/gift v0.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:13.4385256Z go: downloading github.com/marekm4/color-extractor v1.2.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:13.4388702Z go: downloading github.com/bep/imagemeta v1.0.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:13.4967873Z go: downloading github.com/makeworld-the-better-one/dither/v2 v2.4.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:13.6850186Z go: downloading github.com/muesli/smartcrop v0.3.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:14.0050785Z go: downloading golang.org/x/image v0.46.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.0506487Z go: downloading github.com/bep/tmc v0.7.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.0569992Z go: downloading github.com/hashicorp/golang-lru/v2 v2.0.7
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.0770861Z go: downloading github.com/inconshreveable/mousetrap v1.1.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.1030839Z go: downloading github.com/cpuguy83/go-md2man/v2 v2.0.6
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.1055430Z go: downloading go.yaml.in/yaml/v3 v3.0.4
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.1452546Z go: downloading github.com/bep/goat v0.5.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.1481109Z go: downloading rsc.io/qr v0.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.1727616Z go: downloading github.com/getkin/kin-openapi v0.149.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.1839535Z go: downloading github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.6945856Z go: downloading github.com/bep/goportabletext v0.2.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.7078674Z go: downloading software.sslmate.com/src/go-pkcs12 v0.7.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.7500876Z go: downloading github.com/russross/blackfriday/v2 v2.1.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.7681146Z go: downloading github.com/JohannesKaufmann/dom v0.3.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:16.8266416Z go: downloading golang.org/x/crypto v0.57.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:17.4678612Z go: downloading github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:17.4679367Z go: downloading github.com/go-openapi/jsonpointer v0.22.5
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:17.4679722Z go: downloading github.com/oasdiff/yaml v0.1.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:17.6618650Z go: downloading github.com/oasdiff/yaml3 v0.0.14
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:17.7017859Z go: downloading github.com/go-openapi/swag/jsonname v0.25.5
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:18.5434131Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:18.5631101Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:18.9778060Z exec: go "test" "-p" "2" "." "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:19.0316580Z go: downloading github.com/aws/aws-sdk-go-v2 v1.41.6
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:19.0317144Z go: downloading github.com/aws/aws-sdk-go-v2/service/cloudfront v1.61.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:19.0317557Z go: downloading github.com/dustin/go-humanize v1.1.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:19.1530831Z go: downloading gocloud.dev v0.45.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:22.4189722Z go: downloading google.golang.org/api v0.276.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:22.4297698Z go: downloading github.com/aws/smithy-go v1.25.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:23.1314496Z go: downloading github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.22
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:23.1315058Z go: downloading github.com/aws/aws-sdk-go-v2/config v1.32.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:23.1315449Z go: downloading go.opentelemetry.io/otel/metric v1.45.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:23.1618448Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/azcore v1.20.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:23.1658272Z go: downloading go.opentelemetry.io/otel v1.45.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:23.9349270Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:23.9349885Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.6.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:24.5695326Z go: downloading github.com/Azure/go-autorest/autorest/to v0.4.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:24.5695797Z go: downloading github.com/google/wire v0.7.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:24.7802935Z go: downloading github.com/Azure/go-autorest v14.2.0+incompatible
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:24.8758074Z go: downloading cloud.google.com/go/compute/metadata v0.9.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:25.0630084Z go: downloading cloud.google.com/go v0.123.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:26.6994031Z go: downloading cloud.google.com/go/iam v1.5.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:27.4666829Z go: downloading cloud.google.com/go/storage v1.57.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:27.4674590Z go: downloading github.com/googleapis/gax-go/v2 v2.21.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:28.0434264Z go: downloading golang.org/x/oauth2 v0.36.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:30.4800991Z go: downloading github.com/aws/aws-sdk-go-v2/service/s3 v1.97.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:30.4802218Z go: downloading github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.20.12
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:30.4909859Z go: downloading github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.22
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:30.6238769Z go: downloading github.com/aws/aws-sdk-go-v2/credentials v1.19.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:31.1541872Z go: downloading github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.18.14
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:31.1542277Z go: downloading github.com/aws/aws-sdk-go-v2/internal/ini v1.8.4
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:31.3832727Z go: downloading github.com/aws/aws-sdk-go-v2/service/signin v1.0.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:31.5544492Z go: downloading github.com/aws/aws-sdk-go-v2/service/sso v1.30.5
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:31.6912276Z go: downloading github.com/aws/aws-sdk-go-v2/service/ssooidc v1.35.10
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:31.7011849Z go: downloading github.com/aws/aws-sdk-go-v2/service/sts v1.41.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:31.7390571Z go: downloading golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:31.7391494Z go: downloading google.golang.org/grpc v1.83.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:31.9634044Z go: downloading github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:32.0430492Z go: downloading github.com/AzureAD/microsoft-authentication-library-for-go v1.6.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:32.2142037Z go: downloading go.opentelemetry.io/otel/sdk/metric v1.45.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:32.2143358Z go: downloading go.opentelemetry.io/otel/trace v1.45.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:32.3802073Z go: downloading go.opentelemetry.io/otel/sdk v1.45.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:32.5202489Z go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20260526163538-3dc84a4a5aaa
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:32.5833425Z go: downloading google.golang.org/genproto v0.0.0-20260319201613-d00831a3d3e7
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:33.0815909Z go: downloading cloud.google.com/go/auth v0.20.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:33.0887875Z go: downloading github.com/google/uuid v1.6.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:33.0888543Z go: downloading github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:33.3346712Z go: downloading go.opentelemetry.io/contrib/detectors/gcp v1.44.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:33.5123976Z go: downloading github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.8
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:35.8462250Z go: downloading github.com/aws/aws-sdk-go-v2/internal/v4a v1.4.22
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:35.8959197Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.7
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:35.9219460Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.9.13
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:35.9536993Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.21
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.2534477Z go: downloading github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.19.21
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.2942623Z go: downloading github.com/kylelemons/godebug v1.1.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.3414565Z go: downloading github.com/go-logr/logr v1.4.4
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.4025445Z go: downloading cloud.google.com/go/auth/oauth2adapt v0.2.8
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.4351794Z go: downloading go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.67.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.4728218Z go: downloading golang.org/x/time v0.15.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.5098603Z go: downloading go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.67.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.6567816Z go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20260526163538-3dc84a4a5aaa
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.6571326Z go: downloading cloud.google.com/go/monitoring v1.24.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.9228907Z go: downloading github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.9290496Z go: downloading github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.33.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.9733685Z go: downloading github.com/google/s2a-go v0.1.9
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:36.9810545Z go: downloading github.com/golang-jwt/jwt/v5 v5.3.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:37.1305440Z go: downloading github.com/go-logr/stdr v1.2.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:37.1525075Z go: downloading go.opentelemetry.io/auto/sdk v1.2.1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:37.1525480Z go: downloading github.com/googleapis/enterprise-certificate-proxy v0.3.14
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:37.1583701Z go: downloading github.com/felixge/httpsnoop v1.0.4
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:37.2154121Z go: downloading github.com/envoyproxy/go-control-plane/envoy v1.37.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:37.2489193Z go: downloading github.com/spiffe/go-spiffe/v2 v2.7.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:44.0660163Z go: downloading github.com/cncf/xds/go v0.0.0-20260202195803-dba9d589def2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:44.0664152Z go: downloading github.com/go-jose/go-jose/v4 v4.1.4
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:44.2254089Z go: downloading github.com/envoyproxy/protoc-gen-validate v1.3.3
+test (1.27.x, windows-latest)	Test	2026-09-28T12:13:44.2256385Z go: downloading cel.dev/expr v0.25.2
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8835886Z # github.com/bep/golibsass/internal/libsass
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8838310Z In file included from file.cpp:2:
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8838738Z ../../libsass_src/src/file.cpp:12:10: warning: 'S_ISDIR' redefined
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8839175Z    12 | # define S_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8839729Z       |          ^~~~~~~
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8840083Z In file included from D:/a/_temp/msys64/ucrt64/include/wchar.h:19,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8840681Z                  from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/cwchar:49,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8841342Z                  from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/bits/postypes.h:42,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8841940Z                  from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/iosfwd:44,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8843340Z                  from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/ios:42,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8843950Z                  from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/bits/ostream.h:43,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8844557Z                  from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/ostream:42,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8845127Z                  from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/iostream:43,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8845667Z                  from ../../libsass_src/src/memory/allocator.hpp:10,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8846141Z                  from ../../libsass_src/src/memory.hpp:8,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8846579Z                  from ../../libsass_src/src/sass.hpp:55,
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8847009Z                  from ../../libsass_src/src/file.cpp:3:
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8847546Z D:/a/_temp/msys64/ucrt64/include/sys/stat.h:77:9: note: this is the location of the previous definition
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8848066Z    77 | #define S_ISDIR(m)      (((m) & S_IFMT) == S_IFDIR)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:14:36.8848376Z       |         ^~~~~~~
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:06.7764829Z ok  	github.com/gohugoio/hugo	47.274s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:08.6124210Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:08.6334202Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:09.0318790Z exec: go "test" "-p" "2" "./bufferpool" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:09.3760124Z ok  	github.com/gohugoio/hugo/bufferpool	0.014s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:09.3813442Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:09.4025115Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:09.7916694Z exec: go "test" "-p" "2" "./cache" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:09.8511949Z ?   	github.com/gohugoio/hugo/cache	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:09.8546754Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:09.8727110Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:10.2497549Z exec: go "test" "-p" "2" "./cache/dynacache" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:11.3407170Z ok  	github.com/gohugoio/hugo/cache/dynacache	0.070s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:11.3477855Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:11.3678592Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:11.7756258Z exec: go "test" "-p" "2" "./cache/filecache" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:18.0688198Z ok  	github.com/gohugoio/hugo/cache/filecache	1.126s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:18.0772416Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:18.0997824Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:18.4802643Z exec: go "test" "-p" "2" "./cache/httpcache" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:49.8100600Z ok  	github.com/gohugoio/hugo/cache/httpcache	0.680s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:49.8637168Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:49.8844969Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:50.2749686Z exec: go "test" "-p" "2" "./codegen" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:51.8047629Z ok  	github.com/gohugoio/hugo/codegen	0.033s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:51.8105084Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:51.8289028Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:52.2112966Z exec: go "test" "-p" "2" "./commands" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:52.6785069Z ?   	github.com/gohugoio/hugo/commands	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:52.6888912Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:52.7090221Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:53.0968795Z exec: go "test" "-p" "2" "./common" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:53.1601784Z ?   	github.com/gohugoio/hugo/common	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:53.1637886Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:53.1832567Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:53.5695727Z exec: go "test" "-p" "2" "./common/collections" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:54.2374754Z ok  	github.com/gohugoio/hugo/common/collections	0.017s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:54.2434325Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:54.2645223Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:54.6448678Z exec: go "test" "-p" "2" "./common/constants" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:54.6925684Z ?   	github.com/gohugoio/hugo/common/constants	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:54.6962093Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:54.7182365Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:55.1013715Z exec: go "test" "-p" "2" "./common/hashing" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:55.7959257Z ok  	github.com/gohugoio/hugo/common/hashing	0.032s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:55.8020803Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:55.8215216Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:56.2020579Z exec: go "test" "-p" "2" "./common/hdebug" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:56.3532363Z ?   	github.com/gohugoio/hugo/common/hdebug	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:56.3587513Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:56.3779832Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:56.7826702Z exec: go "test" "-p" "2" "./common/herrors" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:57.3795147Z ok  	github.com/gohugoio/hugo/common/herrors	0.029s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:57.3853940Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:57.4055951Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:17:57.7916221Z exec: go "test" "-p" "2" "./common/hexec" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:42.5203761Z ok  	github.com/gohugoio/hugo/common/hexec	77.418s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:42.5945868Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:42.6196080Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:43.0400308Z exec: go "test" "-p" "2" "./common/himage" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:43.1180648Z ?   	github.com/gohugoio/hugo/common/himage	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:43.1225991Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:43.1443665Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:43.5471770Z exec: go "test" "-p" "2" "./common/hiter" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:43.6180098Z ?   	github.com/gohugoio/hugo/common/hiter	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:43.6220678Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:43.6427772Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:44.0451505Z exec: go "test" "-p" "2" "./common/hmaps" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:44.7300200Z ok  	github.com/gohugoio/hugo/common/hmaps	0.021s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:44.7359968Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:44.7561989Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:45.1577321Z exec: go "test" "-p" "2" "./common/hreflect" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:45.8511439Z ok  	github.com/gohugoio/hugo/common/hreflect	0.018s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:45.8573248Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:45.8773785Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:46.2842615Z exec: go "test" "-p" "2" "./common/hstore" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:46.8344801Z ok  	github.com/gohugoio/hugo/common/hstore	0.028s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:46.8406584Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:46.8612979Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:47.3062259Z exec: go "test" "-p" "2" "./common/hstrings" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:47.7814729Z ok  	github.com/gohugoio/hugo/common/hstrings	0.033s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:47.7878728Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:47.8093110Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:48.2558791Z exec: go "test" "-p" "2" "./common/hsync" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:48.8084748Z ok  	github.com/gohugoio/hugo/common/hsync	0.015s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:48.8137969Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:48.8339753Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:19:49.2210093Z exec: go "test" "-p" "2" "./common/htime" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:20:20.8679204Z ok  	github.com/gohugoio/hugo/common/htime	0.367s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:20:20.9921879Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:20:21.0246704Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:20:21.4383281Z exec: go "test" "-p" "2" "./common/hugio" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:20:53.2864404Z ok  	github.com/gohugoio/hugo/common/hugio	0.370s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:20:53.3911932Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:20:53.4148030Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:20:53.8625789Z exec: go "test" "-p" "2" "./common/hugo" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:23.0833447Z ok  	github.com/gohugoio/hugo/common/hugo	0.179s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:23.1481386Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:23.1705594Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:23.5811246Z exec: go "test" "-p" "2" "./common/loggers" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:24.4444722Z ok  	github.com/gohugoio/hugo/common/loggers	0.016s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:24.4508765Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:24.4751045Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:24.8997037Z exec: go "test" "-p" "2" "./common/math" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:25.3474744Z ok  	github.com/gohugoio/hugo/common/math	0.027s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:25.3526065Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:25.3738281Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:25.8042838Z exec: go "test" "-p" "2" "./common/para" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:26.5150496Z ok  	github.com/gohugoio/hugo/common/para	0.034s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:26.5212555Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:26.5428684Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:26.9485336Z exec: go "test" "-p" "2" "./common/paths" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:57.7491111Z ok  	github.com/gohugoio/hugo/common/paths	0.154s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:57.9198704Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:57.9419147Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:58.3588234Z exec: go "test" "-p" "2" "./common/predicate" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:59.1055857Z ok  	github.com/gohugoio/hugo/common/predicate	0.018s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:59.1117632Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:59.1354631Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:21:59.7074579Z exec: go "test" "-p" "2" "./common/rungroup" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:00.2707729Z ok  	github.com/gohugoio/hugo/common/rungroup	0.017s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:00.2761636Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:00.2983602Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:00.7079983Z exec: go "test" "-p" "2" "./common/tasks" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:00.7943022Z ?   	github.com/gohugoio/hugo/common/tasks	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:00.7990327Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:00.8228689Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:01.2319077Z exec: go "test" "-p" "2" "./common/terminal" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:01.3220873Z ?   	github.com/gohugoio/hugo/common/terminal	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:01.3268118Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:01.3491292Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:01.7605704Z exec: go "test" "-p" "2" "./common/text" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:02.1965177Z ok  	github.com/gohugoio/hugo/common/text	0.015s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:02.2014235Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:02.2231716Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:02.6446269Z exec: go "test" "-p" "2" "./common/types" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:03.3252462Z ok  	github.com/gohugoio/hugo/common/types	0.016s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:03.3319860Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:03.3536314Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:03.7546775Z exec: go "test" "-p" "2" "./common/types/css" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:03.8047800Z ?   	github.com/gohugoio/hugo/common/types/css	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:03.8083253Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:03.8301730Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:04.2428197Z exec: go "test" "-p" "2" "./common/types/hstring" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:04.9649710Z ok  	github.com/gohugoio/hugo/common/types/hstring	0.015s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:04.9700853Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:04.9916310Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:05.4093201Z exec: go "test" "-p" "2" "./common/urls" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:06.0724763Z ok  	github.com/gohugoio/hugo/common/urls	0.054s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:06.0780328Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:06.1013024Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:06.5295106Z exec: go "test" "-p" "2" "./common/version" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:07.2134382Z ok  	github.com/gohugoio/hugo/common/version	0.153s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:07.2188239Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:07.2411511Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:07.6635097Z exec: go "test" "-p" "2" "./compare" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:09.3956749Z ok  	github.com/gohugoio/hugo/compare	0.044s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:09.4010212Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:09.4238159Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:09.8342493Z exec: go "test" "-p" "2" "./config" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:10.8701897Z ok  	github.com/gohugoio/hugo/config	0.020s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:10.8778806Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:10.9025292Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:11.3115919Z exec: go "test" "-p" "2" "./config/allconfig" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:40.4626775Z ok  	github.com/gohugoio/hugo/config/allconfig	0.532s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:40.5199298Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:40.5466228Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:41.0186163Z exec: go "test" "-p" "2" "./config/privacy" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:41.6989373Z ok  	github.com/gohugoio/hugo/config/privacy	0.024s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:41.7055279Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:41.7266623Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:22:42.1882566Z exec: go "test" "-p" "2" "./config/security" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:16.8901820Z ok  	github.com/gohugoio/hugo/config/security	0.155s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:16.9623339Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:16.9877054Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:17.4044542Z exec: go "test" "-p" "2" "./config/services" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:18.4353931Z ok  	github.com/gohugoio/hugo/config/services	0.065s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:18.4417953Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:18.4641259Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:18.8770646Z exec: go "test" "-p" "2" "./config/testconfig" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:19.1295879Z ?   	github.com/gohugoio/hugo/config/testconfig	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:19.1370118Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:19.1593038Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:19.5668878Z exec: go "test" "-p" "2" "./create" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:26.0463473Z ok  	github.com/gohugoio/hugo/create	0.254s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:26.0552368Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:26.0762967Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:26.4839487Z exec: go "test" "-p" "2" "./create/skeletons" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:26.7009598Z ?   	github.com/gohugoio/hugo/create/skeletons	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:26.7079656Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:26.7303067Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:27.1116904Z exec: go "test" "-p" "2" "./deploy/deployconfig" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:27.9449801Z ok  	github.com/gohugoio/hugo/deploy/deployconfig	0.033s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:27.9517814Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:27.9743535Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:28.3884092Z exec: go "test" "-p" "2" "./deps" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:29.6560387Z ok  	github.com/gohugoio/hugo/deps	0.080s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:29.6641246Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:29.6880835Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:30.0995922Z exec: go "test" "-p" "2" "./docshelper" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:30.1885387Z ?   	github.com/gohugoio/hugo/docshelper	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:30.1928287Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:30.2128137Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:30.6295786Z exec: go "test" "-p" "2" "./helpers" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:36.1055082Z ok  	github.com/gohugoio/hugo/helpers	0.379s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:36.1228996Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:36.1445908Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:36.5660042Z exec: go "test" "-p" "2" "./htesting" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:37.0937636Z ok  	github.com/gohugoio/hugo/htesting	0.017s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:37.0991209Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:37.1180611Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:37.5241525Z exec: go "test" "-p" "2" "./htesting/hqt" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:37.6577618Z ?   	github.com/gohugoio/hugo/htesting/hqt	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:37.6691365Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:37.7150287Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:23:38.1568928Z exec: go "test" "-p" "2" "./hugofs" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:10.1075225Z ok  	github.com/gohugoio/hugo/hugofs	0.354s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:10.1709417Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:10.1931255Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:10.5817977Z exec: go "test" "-p" "2" "./hugofs/files" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:11.0386863Z ok  	github.com/gohugoio/hugo/hugofs/files	0.016s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:11.0439298Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:11.0651547Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:11.4626937Z exec: go "test" "-p" "2" "./hugofs/hglob" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:12.7637179Z ok  	github.com/gohugoio/hugo/hugofs/hglob	0.030s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:12.7714009Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:12.7924237Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:13.1735205Z exec: go "test" "-p" "2" "./hugolib" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:13.2225386Z go: downloading github.com/fortytw2/leaktest v1.3.0
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:52.1866153Z ok  	github.com/gohugoio/hugo/hugolib	29.429s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:52.2038085Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:52.2241585Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:52.6153622Z exec: go "test" "-p" "2" "./hugolib/doctree" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:53.7395122Z ok  	github.com/gohugoio/hugo/hugolib/doctree	0.039s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:53.7477279Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:53.7672459Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:24:54.1487089Z exec: go "test" "-p" "2" "./hugolib/filesystems" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:01.3360144Z ok  	github.com/gohugoio/hugo/hugolib/filesystems	0.825s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:01.3450512Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:01.3649260Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:01.7492023Z exec: go "test" "-p" "2" "./hugolib/pagesfromdata" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:13.3373230Z ok  	github.com/gohugoio/hugo/hugolib/pagesfromdata	3.206s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:13.3514144Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:13.3722060Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:13.7556431Z exec: go "test" "-p" "2" "./hugolib/paths" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:13.9281634Z ?   	github.com/gohugoio/hugo/hugolib/paths	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:13.9352860Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:13.9550530Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:14.3332148Z exec: go "test" "-p" "2" "./hugolib/roles" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:20.1728632Z ok  	github.com/gohugoio/hugo/hugolib/roles	0.251s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:20.1839208Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:20.2051428Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:20.6055302Z exec: go "test" "-p" "2" "./hugolib/segments" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:46.9670018Z ok  	github.com/gohugoio/hugo/hugolib/segments	0.337s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:47.0266680Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:47.0507806Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:25:47.4958537Z exec: go "test" "-p" "2" "./hugolib/sitesmatrix" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:17.1928482Z ok  	github.com/gohugoio/hugo/hugolib/sitesmatrix	0.370s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:17.3050636Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:17.3260087Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:17.7260231Z exec: go "test" "-p" "2" "./hugolib/versions" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:22.8254304Z ok  	github.com/gohugoio/hugo/hugolib/versions	0.350s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:22.8347557Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:22.8546403Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:23.2563900Z exec: go "test" "-p" "2" "./identity" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:23.8052913Z ok  	github.com/gohugoio/hugo/identity	0.066s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:23.8113096Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:23.8315221Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:24.2389124Z exec: go "test" "-p" "2" "./identity/identitytesting" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:24.3506661Z ?   	github.com/gohugoio/hugo/identity/identitytesting	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:24.3561555Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:24.3762915Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:24.7773844Z exec: go "test" "-p" "2" "./internal/js" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:24.9839785Z ?   	github.com/gohugoio/hugo/internal/js	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:24.9906905Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:25.0110532Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:25.4086958Z exec: go "test" "-p" "2" "./internal/js/esbuild" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:42.6601198Z ok  	github.com/gohugoio/hugo/internal/js/esbuild	6.682s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:42.6766973Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:42.6997408Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:26:43.0952907Z exec: go "test" "-p" "2" "./internal/warpc" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:20.0165238Z ok  	github.com/gohugoio/hugo/internal/warpc	8.458s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:20.0825344Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:20.1440316Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:20.5404309Z exec: go "test" "-p" "2" "./internal/warpc/genjs" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:20.6957252Z ?   	github.com/gohugoio/hugo/internal/warpc/genjs	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:20.7017381Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:20.7202292Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:21.1015565Z exec: go "test" "-p" "2" "./langs" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:49.2809537Z ok  	github.com/gohugoio/hugo/langs	0.143s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:49.3424762Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:49.3617800Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:49.7571693Z exec: go "test" "-p" "2" "./langs/i18n" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:57.4383584Z ok  	github.com/gohugoio/hugo/langs/i18n	0.460s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:57.4526373Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:57.4908063Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:57.9258955Z exec: go "test" "-p" "2" "./livereload" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:58.0782457Z ?   	github.com/gohugoio/hugo/livereload	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:58.0841237Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:58.1037751Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:58.4909262Z exec: go "test" "-p" "2" "./livereload/gen" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:58.6487514Z ?   	github.com/gohugoio/hugo/livereload/gen	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:58.6540988Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:58.6748710Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:27:59.0458419Z exec: go "test" "-p" "2" "./markup" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:00.2878346Z ok  	github.com/gohugoio/hugo/markup	0.046s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:00.2954238Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:00.3150056Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:00.7238110Z exec: go "test" "-p" "2" "./markup/asciidocext" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:19.3907181Z ok  	github.com/gohugoio/hugo/markup/asciidocext	12.316s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:19.4010191Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:19.4211594Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:19.8120209Z exec: go "test" "-p" "2" "./markup/asciidocext/asciidocext_config" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:19.8620193Z ?   	github.com/gohugoio/hugo/markup/asciidocext/asciidocext_config	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:19.8652666Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:19.8835850Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:20.2663987Z exec: go "test" "-p" "2" "./markup/asciidocext/internal" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:20.4442805Z ?   	github.com/gohugoio/hugo/markup/asciidocext/internal	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:20.4515241Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:20.4709576Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:20.8425679Z exec: go "test" "-p" "2" "./markup/blackfriday" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:20.8877610Z ?   	github.com/gohugoio/hugo/markup/blackfriday	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:20.8907468Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:20.9084452Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:21.3146692Z exec: go "test" "-p" "2" "./markup/converter" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:21.4755374Z ?   	github.com/gohugoio/hugo/markup/converter	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:21.4813681Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:21.5010520Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:21.8800488Z exec: go "test" "-p" "2" "./markup/converter/hooks" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:21.9984754Z ?   	github.com/gohugoio/hugo/markup/converter/hooks	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:22.0040115Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:22.0241830Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:22.4147267Z exec: go "test" "-p" "2" "./markup/goldmark" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:47.1159039Z ok  	github.com/gohugoio/hugo/markup/goldmark	0.292s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:47.1754948Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:47.1969323Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:28:47.5666101Z exec: go "test" "-p" "2" "./markup/goldmark/blockquotes" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:18.0370982Z ok  	github.com/gohugoio/hugo/markup/goldmark/blockquotes	0.129s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:18.0934309Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:18.1134357Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:18.4882499Z exec: go "test" "-p" "2" "./markup/goldmark/codeblocks" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:23.2912765Z ok  	github.com/gohugoio/hugo/markup/goldmark/codeblocks	0.345s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:23.3001876Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:23.3225281Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:23.7164667Z exec: go "test" "-p" "2" "./markup/goldmark/goldmark_config" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:23.7618728Z ?   	github.com/gohugoio/hugo/markup/goldmark/goldmark_config	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:23.7649177Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:23.7838414Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:24.1641219Z exec: go "test" "-p" "2" "./markup/goldmark/hugocontext" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:24.9115753Z ok  	github.com/gohugoio/hugo/markup/goldmark/hugocontext	0.037s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:24.9184614Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:24.9373716Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:25.3281240Z exec: go "test" "-p" "2" "./markup/goldmark/images" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:30.4261361Z ok  	github.com/gohugoio/hugo/markup/goldmark/images	0.314s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:30.4371591Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:30.4575266Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:30.8396513Z exec: go "test" "-p" "2" "./markup/goldmark/internal/extensions/attributes" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:36.0515234Z ok  	github.com/gohugoio/hugo/markup/goldmark/internal/extensions/attributes	0.303s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:36.0624663Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:36.0823628Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:36.4696012Z exec: go "test" "-p" "2" "./markup/goldmark/internal/render" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:36.6515338Z ?   	github.com/gohugoio/hugo/markup/goldmark/internal/render	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:36.6580611Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:36.6783615Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:37.0646764Z exec: go "test" "-p" "2" "./markup/goldmark/passthrough" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:42.5667916Z ok  	github.com/gohugoio/hugo/markup/goldmark/passthrough	0.542s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:42.5761217Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:42.5958206Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:42.9675334Z exec: go "test" "-p" "2" "./markup/goldmark/tables" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:47.8899235Z ok  	github.com/gohugoio/hugo/markup/goldmark/tables	0.268s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:47.8995388Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:47.9195613Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:29:48.2955202Z exec: go "test" "-p" "2" "./markup/highlight" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:16.2499987Z ok  	github.com/gohugoio/hugo/markup/highlight	0.214s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:16.3168755Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:16.3386846Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:16.7529246Z exec: go "test" "-p" "2" "./markup/highlight/chromalexers" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:16.8566748Z ?   	github.com/gohugoio/hugo/markup/highlight/chromalexers	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:16.8618965Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:16.8856293Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:17.3077768Z exec: go "test" "-p" "2" "./markup/internal" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:17.4898034Z ?   	github.com/gohugoio/hugo/markup/internal	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:17.4959317Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:17.5167760Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:17.9168355Z exec: go "test" "-p" "2" "./markup/internal/attributes" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:18.0615186Z ?   	github.com/gohugoio/hugo/markup/internal/attributes	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:18.0670994Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:18.0883075Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:18.5195484Z exec: go "test" "-p" "2" "./markup/markup_config" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:19.2738388Z ok  	github.com/gohugoio/hugo/markup/markup_config	0.031s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:19.2794587Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:19.2993783Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:19.7340399Z exec: go "test" "-p" "2" "./markup/org" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:21.1731183Z ok  	github.com/gohugoio/hugo/markup/org	0.066s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:21.1815363Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:21.2026115Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:21.6010126Z exec: go "test" "-p" "2" "./markup/pandoc" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:47.7500346Z ok  	github.com/gohugoio/hugo/markup/pandoc	0.430s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:47.8163441Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:47.8370962Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:30:48.2492523Z exec: go "test" "-p" "2" "./markup/rst" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:25.3006277Z ok  	github.com/gohugoio/hugo/markup/rst	1.918s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:25.3565862Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:25.3771361Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:25.7664013Z exec: go "test" "-p" "2" "./markup/rst/rst_config" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:25.8473152Z ?   	github.com/gohugoio/hugo/markup/rst/rst_config	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:25.8529289Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:25.8720207Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:26.2678197Z exec: go "test" "-p" "2" "./markup/tableofcontents" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:59.8265816Z ok  	github.com/gohugoio/hugo/markup/tableofcontents	0.341s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:59.8899140Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:31:59.9098309Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:00.3113373Z exec: go "test" "-p" "2" "./media" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:01.0860415Z ok  	github.com/gohugoio/hugo/media	0.047s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:01.0921471Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:01.1122062Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:01.5168312Z exec: go "test" "-p" "2" "./metrics" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:02.4314086Z ok  	github.com/gohugoio/hugo/metrics	0.065s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:02.4380301Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:02.4571426Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:02.8681037Z exec: go "test" "-p" "2" "./minifiers" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:04.2179872Z ok  	github.com/gohugoio/hugo/minifiers	0.075s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:04.2255737Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:04.2500094Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:32:04.6400985Z exec: go "test" "-p" "2" "./modules" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:10.4350161Z ok  	github.com/gohugoio/hugo/modules	37.360s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:10.4953117Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:10.5162767Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:10.8981558Z exec: go "test" "-p" "2" "./modules/npm" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:34.5324573Z ok  	github.com/gohugoio/hugo/modules/npm	0.603s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:34.5835031Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:34.6043778Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:34.9850996Z exec: go "test" "-p" "2" "./navigation" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:35.7387205Z ok  	github.com/gohugoio/hugo/navigation	0.058s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:35.7453849Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:35.7645467Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:36.1386670Z exec: go "test" "-p" "2" "./output" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:59.3662278Z ok  	github.com/gohugoio/hugo/output	0.327s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:59.4265153Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:59.4504057Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:33:59.8652779Z exec: go "test" "-p" "2" "./parser" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:01.3418103Z ok  	github.com/gohugoio/hugo/parser	0.067s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:01.3477430Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:01.3660454Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:01.7414638Z exec: go "test" "-p" "2" "./parser/metadecoders" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:34.1456014Z ok  	github.com/gohugoio/hugo/parser/metadecoders	0.223s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:34.2413333Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:34.2638845Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:34.6821572Z exec: go "test" "-p" "2" "./parser/pageparser" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:35.5138837Z ok  	github.com/gohugoio/hugo/parser/pageparser	0.043s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:35.5201402Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:35.5417750Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:35.9233639Z exec: go "test" "-p" "2" "./publisher" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:37.5502246Z ok  	github.com/gohugoio/hugo/publisher	0.071s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:37.5585243Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:37.5792096Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:34:37.9620550Z exec: go "test" "-p" "2" "./related" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:04.3595382Z ok  	github.com/gohugoio/hugo/related	0.480s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:04.4156151Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:04.4371280Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:04.8201499Z exec: go "test" "-p" "2" "./releaser" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:04.9136273Z ?   	github.com/gohugoio/hugo/releaser	[no test files]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:04.9229830Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:04.9427004Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:05.3209974Z exec: go "test" "-p" "2" "./resources" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:28.8685128Z ok  	github.com/gohugoio/hugo/resources	1.184s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:28.9230849Z exec: go "clean" "-testcache"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:28.9430801Z exec: go "clean" "-i" "./..."
+test (1.27.x, windows-latest)	Test	2026-09-28T12:35:29.3216236Z exec: go "test" "-p" "2" "./resources/images" "-tags" "extended,withdeploy"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:04.7481620Z --- FAIL: TestImagesGoldenMethods (0.94s)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:04.7693602Z     testing.go:173: 
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:04.7694262Z         error:
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:04.7694594Z           values are not deep equal
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:04.7980220Z         diff (-got +want):
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3142935Z             os.dirEntry(
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3248412Z           - 	s"- crop-sunsetjpg-_200x200.jpg",
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3248873Z           + 	s"- crop-sunsetjpg-200x200.jpg",
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3249149Z             )
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3249317Z         got:
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3249545Z           s"- crop-sunsetjpg-_200x200.jpg"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3249740Z         want:
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3249944Z           s"- crop-sunsetjpg-200x200.jpg"
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3250141Z         stack:
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3276493Z           D:/a/hugo/hugo/resources/images/imagetesting/testing.go:173
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3276846Z             c.Assert(e1, eq, e2)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3277198Z           D:/a/hugo/hugo/resources/images/imagetesting/testing.go:195
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3277456Z             func() {
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3277680Z                 e2 := entries2[i]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3277875Z             
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3278184Z                 f1, err := os.Open(filepath.Join(outputDir, e1.Name()))
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3278472Z                 c.Assert(err, qt.IsNil)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3278737Z                 defer f1.Close()
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3278935Z             
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3279234Z                 f2, err := os.Open(filepath.Join(goldenDir, e2.Name()))
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3279508Z                 c.Assert(err, qt.IsNil)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3279737Z                 defer f2.Close()
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3279921Z             
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3280154Z                 imgs2 := decodeAll(f2)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3280394Z                 imgs1 := decodeAll(f1)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3280681Z                 c.Assert(len(imgs1), qt.Equals, len(imgs2))
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3281112Z             
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3281513Z Error: running "go test -p 2 ./resources/images -tags extended,withdeploy" failed with exit code 1
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3281857Z                 if !UsesFMA {
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3282095Z                     c.Assert(e1, eq, e2)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3282355Z                     _, err = f1.Seek(0, 0)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3282615Z                     c.Assert(err, qt.IsNil)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3282879Z                     _, err = f2.Seek(0, 0)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3283494Z                     c.Assert(err, qt.IsNil)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3283703Z             
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3283991Z                     hash1, _, err := hashing.XXHashFromReader(f1)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3284281Z                     c.Assert(err, qt.IsNil)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3284596Z                     hash2, _, err := hashing.XXHashFromReader(f2)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3284876Z                     c.Assert(err, qt.IsNil)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3285082Z             
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3285328Z                     c.Assert(hash1, qt.Equals, hash2)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3285538Z                 }
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3285697Z             
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3285908Z                 for i, img1 := range imgs1 {
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3286146Z                     img2 := imgs2[i]
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3286447Z                     nrgba1 := image.NewNRGBA(img1.Bounds())
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3286754Z                     gift.New().Draw(nrgba1, img1)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3287187Z                     nrgba2 := image.NewNRGBA(img2.Bounds())
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3287469Z                     gift.New().Draw(nrgba2, img2)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3287906Z                     c.Assert(goldenEqual(nrgba1, nrgba2), qt.Equals, true, qt.Commentf(e1.Name()))
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3288181Z                 }
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3288360Z             }()
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3376055Z           D:/a/hugo/hugo/resources/images/images_golden_integration_test.go:735
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3376425Z             imagetesting.RunGolden(opts)
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3376631Z         
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3376773Z FAIL
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3377005Z FAIL	github.com/gohugoio/hugo/resources/images	7.888s
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:05.3377241Z FAIL
+test (1.27.x, windows-latest)	Test	2026-09-28T12:36:10.2053872Z ##[error]Process completed with exit code 1.

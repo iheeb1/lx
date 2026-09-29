@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36419929425",
+    "--repo",
+    "jestjs/jest",
+    "--log-failed"
+  ],
+  "shell": "gh run view 36419929425 --repo jestjs/jest --log-failed",
+  "repo": "jestjs/jest",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): small: one step (yarn check-copyright-headers) listing files without headers",
+  "cwd": "/home/user/src/jest"
+}

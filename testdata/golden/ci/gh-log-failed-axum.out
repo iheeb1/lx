@@ -1,0 +1,33 @@
+[lx: 1 job, 1 failed step · per-line timestamps removed (2026-09-26 18:07:58 → 18:08:57 UTC) · 46 ##[group] blocks unwrapped]
+== test-msrv ==
+[lx: 35 steps folded (947 lines): Set up job · actions/checkout@v6 · dtolnay/rust-toolchain@nightly · Parse toolchain version · Construct rustup command line · Set $CARGO_HOME · Install rustup if needed · Install rustup if needed on windows · … +27 more]
+✗ Run cargo +1.80 test --locked --all-features · 41s
+[lx: hidden: 367 cargo status lines (Compiling ×183, Downloaded ×182, Updating, Downloading)]
+warning: unknown diagnostic attribute
+  --> axum-core/src/extract/option.rs:40:15
+   |
+40 | #[diagnostic::do_not_recommend]
+   |               ^^^^^^^^^^^^^^^^
+[lx: same warning at 13 more locations: axum-core/src/extract/option.rs:57:15, axum-core/src/extract/request_parts.rs:68:15, axum-core/src/extract/request_parts.rs:141:15, axum-core/src/extract/request_parts.rs:153:15, axum-core/src/extract/tuple.rs:6:15, axum-core/src/extract/tuple.rs:22:23, axum-core/src/extract/tuple.rs:48:23, axum/src/extract/nested_path.rs:50:15, axum/src/handler/mod.rs:207:15, axum/src/handler/mod.rs:225:23, axum/src/handler/mod.rs:271:15, axum/src/handler/mod.rs:317:15, … +1 more]
+
+warning: `axum-core` (lib) generated 38 warnings (30 duplicates)
+
+warning: `axum` (lib) generated 21 warnings (15 duplicates)
+warning: `axum-core` (lib) generated 38 warnings (38 duplicates)
+error[E0599]: no method named `with_trailers` found for struct `http_body_util::Full` in the current scope
+   --> axum-extra/src/response/multipart.rs:176:30
+    |
+175 |                           let body = Full::new(Bytes::copy_from_slice(contents))
+    |  ____________________________________-
+176 | |                             .with_trailers(async { Some(Ok(http::HeaderMap::new())) });
+    | |                             -^^^^^^^^^^^^^ method not found in `Full<Bytes>`
+    | |_____________________________|
+    |
+
+warning: `axum` (lib) generated 21 warnings (21 duplicates)
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `axum-extra` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+warning: `axum` (lib test) generated 21 warnings (21 duplicates)
+##[error]Process completed with exit code 101.
+[lx: 2 steps folded (33 lines): Post job cleanup · Complete job]

@@ -1,0 +1,411 @@
+Go tests with previous Go version (1.26)	UNKNOWN STEP	﻿2026-09-27T15:50:30.9077244Z Current runner version: '2.337.0'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9103177Z ##[group]Runner Image Provisioner
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9104070Z Hosted Compute Agent
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9105259Z Version: 20260828.587
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9105934Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9106772Z Build Date: 2026-08-28T16:44:25Z
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9107494Z Worker ID: {ccba3acb-44ba-4fdb-9aff-d05c501c0aa5}
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9108223Z Azure Region: westus
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9108835Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9110381Z ##[group]Operating System
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9111045Z Ubuntu
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9111665Z 24.04.5
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9112209Z LTS
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9112761Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9113336Z ##[group]Runner Image
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9113946Z Image: ubuntu-24.04
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9114766Z Version: 20260920.314.1
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9116041Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9117730Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9118785Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9119981Z ##[group]GITHUB_TOKEN Permissions
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9121842Z Contents: read
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9122548Z Metadata: read
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9123139Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9125587Z Secret source: None
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9126565Z Cache mode: write
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9127307Z Prepare workflow directory
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9786941Z Prepare all required actions
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:30.9837223Z Getting action download info
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:31.3296324Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:31.4503007Z Download action repository 'prometheus/promci-setup@55bd31fe92710532260eb57c554f2697363285c5' (SHA:55bd31fe92710532260eb57c554f2697363285c5)
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:31.7643348Z Getting action download info
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:31.9206412Z Download action repository 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:32.0332687Z Download action repository 'docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8' (SHA:96fe6ef7f33517b61c61be40b68a1882f3264fb8)
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:32.4823649Z Download action repository 'docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c' (SHA:bb05f3f5519dd87d3ba754cc423b652a5edd6d2c)
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.0089678Z Complete job name: Go tests with previous Go version (1.26)
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.0635836Z ##[group]Checking docker version
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.0649569Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.1703906Z '1.48'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.1719715Z Docker daemon API version: '1.48'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.1722032Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.1898621Z '1.48'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.1911368Z Docker client API version: '1.48'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.1918045Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.1922207Z ##[group]Clean up resources from previous jobs
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.1928848Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=3d1579"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.2088952Z ##[command]/usr/bin/docker network prune --force --filter "label=3d1579"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.2259135Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.2260241Z ##[group]Create local container network
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.2275253Z ##[command]/usr/bin/docker network create --label 3d1579 github_network_773c44a29b054893b378a7ef16d2ed0d
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.2819071Z a568197aa5c170dee0c95cc57a7381a0aeef8d148eee95267b3252768f6ee9ef
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.2843105Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.2870322Z ##[group]Starting job container
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:33.2895039Z ##[command]/usr/bin/docker pull quay.io/prometheus/golang-builder:1.26-base
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3239889Z 1.26-base: Pulling from prometheus/golang-builder
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3246701Z b4e4c0127190: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3249418Z 913bf1528a07: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3250406Z 5f61330abdef: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3251571Z 6fa4255e8fd2: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3252633Z 1fa5948b7f13: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3253564Z 4f4fb700ef54: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3254807Z 47e568c7f96d: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3255789Z f753671a85db: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3256829Z 784008a5ca55: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3257726Z 7c21b74b5b4b: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3258801Z 3f3de9c19b4a: Pulling fs layer
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3259668Z 784008a5ca55: Waiting
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3260547Z 4f4fb700ef54: Waiting
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3261126Z 47e568c7f96d: Waiting
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3261649Z 7c21b74b5b4b: Waiting
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3262100Z f753671a85db: Waiting
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3329071Z 3f3de9c19b4a: Waiting
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3329585Z 6fa4255e8fd2: Waiting
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.3329896Z 1fa5948b7f13: Waiting
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.6044902Z 913bf1528a07: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:35.6045631Z 913bf1528a07: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.1189354Z b4e4c0127190: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.1190344Z b4e4c0127190: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.3889632Z 1fa5948b7f13: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.3899899Z 1fa5948b7f13: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.6348008Z 4f4fb700ef54: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.6353728Z 4f4fb700ef54: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.9133481Z 47e568c7f96d: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.9134765Z 47e568c7f96d: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.9536510Z 6fa4255e8fd2: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:36.9537320Z 6fa4255e8fd2: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:37.2878527Z 784008a5ca55: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:37.2879706Z 784008a5ca55: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:37.4340399Z f753671a85db: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:37.4341626Z f753671a85db: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:37.6883323Z 3f3de9c19b4a: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:38.1377393Z b4e4c0127190: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:38.5450227Z 7c21b74b5b4b: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:38.5450791Z 7c21b74b5b4b: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:39.7266818Z 5f61330abdef: Verifying Checksum
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:39.7267349Z 5f61330abdef: Download complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:40.9054912Z 913bf1528a07: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:50.0058905Z 5f61330abdef: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:55.1891865Z 6fa4255e8fd2: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:55.1992341Z 1fa5948b7f13: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:55.2079590Z 4f4fb700ef54: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:55.2164869Z 47e568c7f96d: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:55.5805823Z f753671a85db: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:55.6221888Z 784008a5ca55: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.5397967Z 7c21b74b5b4b: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.5493229Z 3f3de9c19b4a: Pull complete
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.5530260Z Digest: sha256:fc013154ceddeaab02e5bb96e9f6549d77230851e55b3cb90cbdaba9d5dc5431
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.5546045Z Status: Downloaded newer image for quay.io/prometheus/golang-builder:1.26-base
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.5551343Z quay.io/prometheus/golang-builder:1.26-base
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.5637261Z ##[command]/usr/bin/docker create --name 193f541031f1408bb0da5b834e201959_quayioprometheusgolangbuilder126base_de6b91 --label 3d1579 --workdir /__w/prometheus/prometheus --network github_network_773c44a29b054893b378a7ef16d2ed0d  -e "HOME=/github/home" -e GITHUB_ACTIONS=true -e CI=true -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work":"/__w" -v "/home/runner/actions-runner/cached/2.337.0/externals":"/__e":ro -v "/home/runner/work/_temp":"/__w/_temp" -v "/home/runner/work/_actions":"/__w/_actions" -v "/opt/hostedtoolcache":"/__t" -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" --entrypoint "tail" quay.io/prometheus/golang-builder:1.26-base "-f" "/dev/null"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.5913944Z e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.5938193Z ##[command]/usr/bin/docker start e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8194825Z e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8220043Z ##[command]/usr/bin/docker ps --all --filter id=e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8357625Z e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a Up Less than a second
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8378003Z ##[command]/usr/bin/docker inspect --format "{{range .Config.Env}}{{println .}}{{end}}" e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8510350Z HOME=/github/home
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8510825Z GITHUB_ACTIONS=true
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8511403Z CI=true
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8512228Z PATH=/go/bin:/usr/local/go/bin:/usr/local/lib/pnpm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8512910Z YQ_VERSION=4.52.2
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8513388Z YQ_URL=https://github.com/mikefarah/yq/releases/download/v4.52.2/yq_linux_amd64
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8514063Z YQ_SUM=a74bd266990339e0c48a2103534aef692abf99f19390d12c2b0ce6830385c459
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8515069Z GOLANG_VERSION=1.26.8
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8515818Z GOLANG_DOWNLOAD_URL=https://golang.org/dl/go1.26.8.linux-amd64.tar.gz
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8517063Z GOLANG_DOWNLOAD_SHA256=d0f743b33e8d8945e6b1f432edd15785c70507121d6e2a723b21285eddf8b57b
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8518053Z GOPATH=/go
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8518505Z GOTESTSUM_VERSION=1.13.0
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8519714Z GOTESTSUM_URL=https://github.com/gotestyourself/gotestsum/releases/download/v1.13.0/gotestsum_1.13.0_linux_amd64.tar.gz
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8521331Z GOTESTSUM_SUM=11ccddeaf708ef228889f9fe2f68291a75b27013ddfc3b18156e094f5f40e8ee
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8522266Z PNPM_VERSION=11.3.0
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8523068Z PNPM_URL=https://github.com/pnpm/pnpm/releases/download/v11.3.0/pnpm-linux-x64.tar.gz
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8524536Z PNPM_SUM=6eb506b53297eb1186ba0cbff1577bb26d17713835a01a5342dcafae550827ce
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8540057Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8549381Z ##[group]Waiting for all services to be ready
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8551298Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8846342Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8847015Z with:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8847247Z   persist-credentials: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8847534Z   repository: prometheus/prometheus
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8849863Z   token: ***
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8850072Z   ssh-strict: true
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8850277Z   ssh-user: git
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8850466Z   clean: true
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8850674Z   sparse-checkout-cone-mode: true
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8851016Z   fetch-depth: 1
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8851244Z   fetch-tags: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8851450Z   show-progress: true
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8851653Z   lfs: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8851837Z   submodules: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8852044Z   set-safe-directory: true
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8852303Z   allow-unsafe-pr-checkout: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8852757Z env:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8852951Z   GOTOOLCHAIN: local
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8853157Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:56.8916506Z ##[command]/usr/bin/docker exec  e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a sh -c "cat /etc/*release | grep ^ID"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0893943Z Syncing repository: prometheus/prometheus
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0895802Z ##[group]Getting Git version info
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0896378Z Working directory is '/__w/prometheus/prometheus'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0896948Z [command]/usr/bin/git version
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0897214Z git version 2.39.5
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0920690Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0928392Z Temporarily overriding HOME='/__w/_temp/f6a009d6-bdbe-444a-9c9e-d537fc50efd9' before making global git config changes
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0929526Z Adding repository directory to the temporary git global config as a safe directory
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0933911Z [command]/usr/bin/git config --global --add safe.directory /__w/prometheus/prometheus
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0963851Z Deleting the contents of '/__w/prometheus/prometheus'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0968146Z ##[group]Determining repository object format
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0970197Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0970842Z ##[group]Initializing the repository
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.0975161Z [command]/usr/bin/git init /__w/prometheus/prometheus
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1012531Z hint: Using 'master' as the name for the initial branch. This default branch name
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1013448Z hint: is subject to change. To configure the initial branch name to use in all
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1014462Z hint: of your new repositories, which will suppress this warning, call:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1015138Z hint: 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1015458Z hint: 	git config --global init.defaultBranch <name>
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1015771Z hint: 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1016075Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1016593Z hint: 'development'. The just-created branch can be renamed via this command:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1016995Z hint: 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1017195Z hint: 	git branch -m <name>
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1021133Z Initialized empty Git repository in /__w/prometheus/prometheus/.git/
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1030936Z [command]/usr/bin/git remote add origin https://github.com/prometheus/prometheus
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1062548Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1063082Z ##[group]Disabling automatic garbage collection
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1066458Z [command]/usr/bin/git config --local gc.auto 0
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1096153Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1097082Z ##[group]Setting up auth
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1097592Z Removing SSH command configuration
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1104094Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1134554Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1366750Z Removing HTTP extra header
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1371184Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1401301Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1626209Z Removing includeIf entries pointing to credentials config files
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1632261Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1665664Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1896711Z [command]/usr/bin/git config --file /__w/_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1942893Z [command]/usr/bin/git config --local includeIf.gitdir:/__w/prometheus/prometheus/.git.path /__w/_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.1972732Z [command]/usr/bin/git config --local includeIf.gitdir:/__w/prometheus/prometheus/.git/worktrees/*.path /__w/_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.2002874Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.2034618Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.2060887Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.2061337Z ##[group]Fetching the repository
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:57.2068498Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +827c8b7b159c16b0fd5738b47ebaea2a72fbf2f4:refs/remotes/pull/19848/merge
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.0107440Z From https://github.com/prometheus/prometheus
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.0108514Z  * [new ref]         827c8b7b159c16b0fd5738b47ebaea2a72fbf2f4 -> pull/19848/merge
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.0132551Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.0133235Z ##[group]Determining the checkout info
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.0133952Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.0134957Z [command]/usr/bin/git sparse-checkout disable
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.0176829Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.0209012Z ##[group]Checking out the ref
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.0213874Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/19848/merge
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1804795Z Note: switching to 'refs/remotes/pull/19848/merge'.
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1805371Z 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1805751Z You are in 'detached HEAD' state. You can look around, make experimental
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1807961Z changes and commit them, and you can discard any commits you make in this
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1808689Z state without impacting any branches by switching back to a branch.
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1808977Z 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1809229Z If you want to create a new branch to retain commits you create, you may
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1809696Z do so (now or later) by using -c with the switch command. Example:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1809950Z 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1810060Z   git switch -c <new-branch-name>
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1810260Z 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1810360Z Or undo this operation with:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1810523Z 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1810606Z   git switch -
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1810749Z 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1810973Z Turn off this advice by setting config variable advice.detachedHead to false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1811277Z 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1811626Z HEAD is now at 827c8b7 Merge a5bdcc1a5ff54078e13625e3ada2abc08dfa0bbf into ea954809ceafceb53ecfa295ab0947753929de9e
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1823607Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1862127Z [command]/usr/bin/git log -1 --format=%H
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1887478Z 827c8b7b159c16b0fd5738b47ebaea2a72fbf2f4
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1900298Z ##[group]Removing auth
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1900802Z Removing SSH command configuration
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1905162Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.1941089Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2176354Z Removing HTTP extra header
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2178998Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2216072Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2460026Z Removing includeIf entries pointing to credentials config files
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2463027Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2485994Z includeif.gitdir:/__w/prometheus/prometheus/.git.path
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2486734Z includeif.gitdir:/__w/prometheus/prometheus/.git/worktrees/*.path
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2487302Z includeif.gitdir:/github/workspace/.git.path
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2487690Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2496646Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/__w/prometheus/prometheus/.git.path
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2519108Z /__w/_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2528076Z [command]/usr/bin/git config --local --unset includeif.gitdir:/__w/prometheus/prometheus/.git.path \/__w\/_temp\/git\-credentials\-0a772d6f\-34f9\-430a\-8cc4\-e0f5b08be4e1\.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2560535Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/__w/prometheus/prometheus/.git/worktrees/*.path
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2581090Z /__w/_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2589537Z [command]/usr/bin/git config --local --unset includeif.gitdir:/__w/prometheus/prometheus/.git/worktrees/*.path \/__w\/_temp\/git\-credentials\-0a772d6f\-34f9\-430a\-8cc4\-e0f5b08be4e1\.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2621493Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2643207Z /github/runner_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2652673Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-0a772d6f\-34f9\-430a\-8cc4\-e0f5b08be4e1\.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2684970Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2707363Z /github/runner_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2720335Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-0a772d6f\-34f9\-430a\-8cc4\-e0f5b08be4e1\.config
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2753197Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2982172Z Removing credentials config '/__w/_temp/git-credentials-0a772d6f-34f9-430a-8cc4-e0f5b08be4e1.config'
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.2994980Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3275449Z ##[group]Run prometheus/promci-setup@55bd31fe92710532260eb57c554f2697363285c5
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3275888Z with:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3276086Z   enable_npm: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3276308Z   cache_key_suffix: oldest
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3276539Z   enable_go: true
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3276754Z   enable_docker_multibuild: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3277003Z   memlimit_ratio: 0.8
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3277243Z   clean-runner-disk: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3277461Z env:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3277642Z   GOTOOLCHAIN: local
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3277843Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3369147Z ##[start-action display=Aggressive cleanup;id=__prometheus_promci-setup.__run]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3388004Z ##[end-action id=__prometheus_promci-setup.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3390244Z ##[start-action display=Resolve Go cache paths;id=__prometheus_promci-setup.go-cache-paths]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3435896Z ##[group]Run echo "build=$(go env GOCACHE)" >> "$GITHUB_OUTPUT"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3436391Z ^[[36;1mecho "build=$(go env GOCACHE)" >> "$GITHUB_OUTPUT"^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3436794Z ^[[36;1mecho "mod=$(go env GOMODCACHE)" >> "$GITHUB_OUTPUT"^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3440833Z shell: bash --noprofile --norc -e -o pipefail {0}
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3441159Z env:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3441350Z   GOTOOLCHAIN: local
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.3441574Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.4341503Z ##[end-action id=__prometheus_promci-setup.go-cache-paths;outcome=success;conclusion=success;duration_ms=95]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.4345024Z ##[start-action display=Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9;id=__prometheus_promci-setup.__actions_cache]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7546000Z ##[group]Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7546377Z with:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7546639Z   path: /github/home/.cache/go-build
+Go tests with previous Go version (1.26)	UNKNOWN STEP	/go/pkg/mod
+Go tests with previous Go version (1.26)	UNKNOWN STEP	
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7547154Z   key: Linux-go-oldest-bf446750e8b3da1fc724cce77a26b90c19ebd2f0c8c1e1466d1e8f5cc6263526
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7547638Z   restore-keys: Linux-go-oldest-
+Go tests with previous Go version (1.26)	UNKNOWN STEP	
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7547912Z   enableCrossOsArchive: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7548170Z   fail-on-cache-miss: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7548412Z   lookup-only: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7548634Z   save-always: false
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7548833Z env:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7549014Z   GOTOOLCHAIN: local
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7549212Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:58.7553782Z ##[command]/usr/bin/docker exec  e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a sh -c "cat /etc/*release | grep ^ID"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2163305Z Cache not found for input keys: Linux-go-oldest-bf446750e8b3da1fc724cce77a26b90c19ebd2f0c8c1e1466d1e8f5cc6263526, Linux-go-oldest-
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2266315Z ##[end-action id=__prometheus_promci-setup.__actions_cache;outcome=success;conclusion=success;duration_ms=792]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2270696Z ##[start-action display=Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9;id=__prometheus_promci-setup.__actions_cache_2]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2278495Z ##[end-action id=__prometheus_promci-setup.__actions_cache_2;outcome=skipped;conclusion=skipped;duration_ms=0]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2281859Z ##[start-action display=Set GOMEMLIMIT;id=__prometheus_promci-setup.__run_2]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2305357Z ##[group]Run ratio=0.8
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2305602Z ^[[36;1mratio=0.8^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2305888Z ^[[36;1mcgroup=$(awk -F':' '{print $3}' /proc/self/cgroup)^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2306335Z ^[[36;1mcgroup_mem_limit=$(< "/sys/fs/cgroup/${cgroup}/memory.max")^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2306725Z ^[[36;1mif [[ "${cgroup_mem_limit}" != "max" ]] ; then^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2307294Z ^[[36;1m  echo "${cgroup_mem_limit}" | awk -v "ratio=${ratio}" '{printf "GOMEMLIMIT=%.0fKiB\n", $1 / 1024 * ratio}' >> "$GITHUB_ENV"^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2307829Z ^[[36;1m  exit 0^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2308021Z ^[[36;1mfi^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2308648Z ^[[36;1mawk -v "ratio=${ratio}" '$1 == "MemTotal:" {printf "GOMEMLIMIT=%.0fKiB\n", $2 * ratio}' /proc/meminfo >> "$GITHUB_ENV"^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2309305Z shell: bash --noprofile --norc -e -o pipefail {0}
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2309597Z env:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2309791Z   GOTOOLCHAIN: local
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2309995Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2906133Z ##[end-action id=__prometheus_promci-setup.__run_2;outcome=success;conclusion=success;duration_ms=62]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2908655Z ##[start-action display=Run echo "GOMEMLIMIT=${GOMEMLIMIT}";id=__prometheus_promci-setup.__run_3]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2929513Z ##[group]Run echo "GOMEMLIMIT=${GOMEMLIMIT}"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2929850Z ^[[36;1mecho "GOMEMLIMIT=${GOMEMLIMIT}"^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2930283Z shell: bash --noprofile --norc -e -o pipefail {0}
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2930582Z env:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2930777Z   GOTOOLCHAIN: local
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2930994Z   GOMEMLIMIT: 13098758KiB
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.2931218Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3468699Z GOMEMLIMIT=13098758KiB
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3502589Z ##[end-action id=__prometheus_promci-setup.__run_3;outcome=success;conclusion=success;duration_ms=59]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3505640Z ##[start-action display=Run make promu;id=__prometheus_promci-setup.__run_4]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3527398Z ##[group]Run make promu
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3527653Z ^[[36;1mmake promu^[[0m
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3528033Z shell: bash --noprofile --norc -e -o pipefail {0}
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3528330Z env:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3528514Z   GOTOOLCHAIN: local
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3528741Z   GOMEMLIMIT: 13098758KiB
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.3528957Z ##[endgroup]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.4569140Z curl -s -L https://github.com/prometheus/promu/releases/download/v0.20.0/promu-0.20.0.linux-amd64.tar.gz | tar -xvzf - -C /tmp/tmp.p9n8r0OV8J
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8167412Z 
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8167904Z gzip: stdin: not in gzip format
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8171744Z tar: Child returned status 1
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8172342Z tar: Error is not recoverable: exiting now
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8175567Z make: *** [Makefile.common:406: /go/bin/promu] Error 2
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8220539Z ##[error]Process completed with exit code 2.
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8227528Z ##[end-action id=__prometheus_promci-setup.__run_4;outcome=failure;conclusion=failure;duration_ms=472]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8231409Z ##[start-action display=Set up QEMU;id=__prometheus_promci-setup.__docker_setup-qemu-action]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8236142Z ##[end-action id=__prometheus_promci-setup.__docker_setup-qemu-action;outcome=skipped;conclusion=skipped;duration_ms=0]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8238423Z ##[start-action display=Set up buildx;id=__prometheus_promci-setup.__docker_setup-buildx-action]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8241164Z ##[end-action id=__prometheus_promci-setup.__docker_setup-buildx-action;outcome=skipped;conclusion=skipped;duration_ms=0]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8413443Z Post job cleanup.
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8418166Z ##[start-action display=Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9;id=__ca933d2b-ff00-421b-bffc-94cedf39c076.__actions_cache]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8420553Z ##[end-action id=__ca933d2b-ff00-421b-bffc-94cedf39c076.__actions_cache;outcome=skipped;conclusion=skipped;duration_ms=0]
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8485204Z Post job cleanup.
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:50:59.8492178Z ##[command]/usr/bin/docker exec  e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a sh -c "cat /etc/*release | grep ^ID"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0280475Z [command]/usr/bin/git version
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0321608Z git version 2.39.5
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0374786Z Temporarily overriding HOME='/__w/_temp/377c43f3-e200-49c5-aceb-ebafe3119402' before making global git config changes
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0376178Z Adding repository directory to the temporary git global config as a safe directory
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0379756Z [command]/usr/bin/git config --global --add safe.directory /__w/prometheus/prometheus
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0416440Z Removing SSH command configuration
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0421150Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0455963Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0695889Z Removing HTTP extra header
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0705429Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0734529Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0967335Z Removing includeIf entries pointing to credentials config files
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.0974144Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.1006438Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.1383189Z Stop and remove container: 193f541031f1408bb0da5b834e201959_quayioprometheusgolangbuilder126base_de6b91
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.1388187Z ##[command]/usr/bin/docker rm --force e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.2604178Z e385ec9059e27e00472ecd2e5fc8740e063420584545997f96ab521ca7f7fe1a
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.2636096Z Remove container network: github_network_773c44a29b054893b378a7ef16d2ed0d
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.2640702Z ##[command]/usr/bin/docker network rm github_network_773c44a29b054893b378a7ef16d2ed0d
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.3573851Z github_network_773c44a29b054893b378a7ef16d2ed0d
+Go tests with previous Go version (1.26)	UNKNOWN STEP	2026-09-27T15:51:00.3652954Z Cleaning up orphan processes
+Go tests with previous Go version	UNKNOWN STEP	﻿2026-09-27T15:51:06.2773634Z Current runner version: '2.337.0'
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2800847Z ##[group]Runner Image Provisioner
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2801834Z Hosted Compute Agent
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2802456Z Version: 20260828.587
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2803095Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2803900Z Build Date: 2026-08-28T16:44:25Z
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2804593Z Worker ID: {76f92e77-8dbd-49fc-90cf-ac486080ffe3}
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2805405Z Azure Region: westus2
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2805991Z ##[endgroup]
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2807478Z ##[group]Operating System
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2808420Z Ubuntu
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2808982Z 24.04.5
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2809518Z LTS
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2810105Z ##[endgroup]
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2810657Z ##[group]Runner Image
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2811275Z Image: ubuntu-24.04
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2811856Z Version: 20260920.314.1
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2813221Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2814777Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2815765Z ##[endgroup]
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2816936Z ##[group]GITHUB_TOKEN Permissions
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2819166Z Contents: read
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2819883Z Metadata: read
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2820466Z ##[endgroup]
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2822757Z Secret source: None
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2823716Z Cache mode: write
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.2824532Z Prepare workflow directory
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.3231832Z Prepare all required actions
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.3340823Z Complete job name: Go tests with previous Go version
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.4585888Z ##[group]Run exit 1
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.4587036Z ^[[36;1mexit 1^[[0m
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.5562660Z shell: /usr/bin/bash -e {0}
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.5564319Z ##[endgroup]
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.5997071Z ##[error]Process completed with exit code 1.
+Go tests with previous Go version	UNKNOWN STEP	2026-09-27T15:51:06.6174699Z Cleaning up orphan processes

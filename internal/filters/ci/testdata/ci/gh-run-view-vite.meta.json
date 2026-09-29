@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36421179194",
+    "--repo",
+    "vitejs/vite"
+  ],
+  "shell": "gh run view 36421179194 --repo vitejs/vite",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): run summary: 2 failed jobs with their steps, passing jobs, annotations",
+  "cwd": "/home/user/src/vite"
+}

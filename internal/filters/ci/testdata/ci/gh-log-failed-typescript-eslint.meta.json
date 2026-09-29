@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36414684547",
+    "--repo",
+    "typescript-eslint/typescript-eslint",
+    "--log-failed"
+  ],
+  "shell": "gh run view 36414684547 --repo typescript-eslint/typescript-eslint --log-failed",
+  "repo": "typescript-eslint/typescript-eslint",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): UNKNOWN STEP format: nx run-many typecheck where the failing task is inside a ##[group] (tsc TS2345 error), nx cloud report tables, and a Required Checks job that runs exit 1",
+  "cwd": "/home/user/src/typescript-eslint"
+}

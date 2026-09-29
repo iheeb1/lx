@@ -1,0 +1,69 @@
+[lx: 6 tasks (nx), 3 failed: api:test, web:test, web:build · output regrouped by task, prefixes removed]
+ NX   Running targets build, test for 3 projects:
+
+- @acme/utils
+- api
+- web
+▸ api:build · go vet ./...
+✗ api:test · go test ./...
+--- FAIL: TestTotal (0.00s)
+    price_test.go:7: Total = 0, want 135
+--- FAIL: TestSlug (0.00s)
+    --- FAIL: TestSlug/Red_Shoes (0.00s)
+        price_test.go:18: Slug("Red Shoes") = "Red_Shoes", want "red-shoes"
+FAIL
+FAIL	example.com/acme/api	0.259s
+FAIL
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /home/user/src/acme/packages/api
+npm error workspace api@0.1.0
+npm error location /home/user/src/acme/packages/api
+npm error command failed
+npm error command sh -c go test ./...
+✗ web:test · jest
+ FAIL  ./cart.test.js
+  ● currency has two decimals
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "$5.00"
+    Received: "$5.0"
+    >  8 |   expect(currency(5)).toBe('$5.00')
+         |                       ^
+      at Object.toBe (cart.test.js:8:23)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 2 passed, 3 total
+Snapshots:   0 total
+Time:        0.147 s, estimated 1 s
+Ran all test suites.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /home/user/src/acme/packages/web
+npm error workspace web@0.1.0
+npm error location /home/user/src/acme/packages/web
+npm error command failed
+npm error command sh -c jest
+▸ @acme/utils:test · jest
+[1 passing suite, 3 passing tests hidden]
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        0.13 s, estimated 1 s
+Ran all test suites.
+▸ @acme/utils:build · tsc -p .
+✗ web:build · tsc -p .
+src/cart.ts(8,9): error TS2322: Type 'string' is not assignable to type 'number'.
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path /home/user/src/acme/packages/web
+npm error workspace web@0.1.0
+npm error location /home/user/src/acme/packages/web
+npm error command failed
+npm error command sh -c tsc -p .
+ NX   Running targets build, test for 3 projects failed
+
+Failed tasks:
+
+- api:test
+- web:test
+- web:build

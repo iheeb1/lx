@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36419566299",
+    "--repo",
+    "gohugoio/hugo",
+    "--log",
+    "--job",
+    "108918755017"
+  ],
+  "shell": "gh run view 36419566299 --repo gohugoio/hugo --log --job 108918755017",
+  "repo": "gohugoio/hugo",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): full --log of a passing 62-minute job: an 1,800-line free-disk-space action, a dozen install steps, and mage check running go vet and go test -race over every package",
+  "cwd": "/home/user/src/hugo"
+}

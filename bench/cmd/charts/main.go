@@ -106,6 +106,10 @@ func main() {
 		write(*out, "h2h-fidelity.svg", h2hFidelity(h2h))
 		write(*out, "overhead.svg", overhead(h2h))
 	}
+	var lb logbench
+	if readJSON(filepath.Join(*in, "logbench.json"), &lb) {
+		write(*out, "logs-h2h.svg", logsH2H(lb))
+	}
 }
 
 func tok(r row) (raw, lx float64) {

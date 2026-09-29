@@ -3,6 +3,7 @@ package filters
 
 import (
 	_ "github.com/iheeb1/lx/internal/filters/build"
+	_ "github.com/iheeb1/lx/internal/filters/ci"
 	_ "github.com/iheeb1/lx/internal/filters/data"
 	_ "github.com/iheeb1/lx/internal/filters/fs"
 	_ "github.com/iheeb1/lx/internal/filters/git"

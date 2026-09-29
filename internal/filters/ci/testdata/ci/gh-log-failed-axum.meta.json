@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36261423604",
+    "--repo",
+    "tokio-rs/axum",
+    "--log-failed"
+  ],
+  "shell": "gh run view 36261423604 --repo tokio-rs/axum --log-failed",
+  "repo": "tokio-rs/axum",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): UNKNOWN STEP format: MSRV job, cargo test build error E0599 after 21 warnings",
+  "cwd": "/home/user/src/axum"
+}

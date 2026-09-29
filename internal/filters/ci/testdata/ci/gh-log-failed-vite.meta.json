@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36421179194",
+    "--repo",
+    "vitejs/vite",
+    "--log-failed"
+  ],
+  "shell": "gh run view 36421179194 --repo vitejs/vite --log-failed",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): two failed jobs with gh step names: an oxfmt formatting diff (pnpm format && git diff --exit-code) and a vitest e2e failure (pnpm run test-serve-bundled); gh prints escapes as ^[[..m",
+  "cwd": "/home/user/src/vite"
+}

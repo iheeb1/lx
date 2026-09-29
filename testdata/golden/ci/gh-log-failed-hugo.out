@@ -1,0 +1,93 @@
+[lx: 1 job, 1 failed step · per-line timestamps removed (2026-09-28 12:12:28 → 12:36:10 UTC) · 1 ##[group] block unwrapped]
+== test (1.27.x, windows-latest) ==
+✗ Test · 23m42s
+$ mage -v test
+[lx: 355 lines of mage's command echo (exec: …) not shown]
+[go: downloading 176 modules]
+Running target: Test
+# github.com/bep/golibsass/internal/libsass
+In file included from file.cpp:2:
+../../libsass_src/src/file.cpp:12:10: warning: 'S_ISDIR' redefined
+   12 | # define S_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
+      |          ^~~~~~~
+In file included from D:/a/_temp/msys64/ucrt64/include/wchar.h:19,
+                 from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/cwchar:49,
+                 from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/bits/postypes.h:42,
+                 from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/iosfwd:44,
+                 from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/ios:42,
+                 from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/bits/ostream.h:43,
+                 from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/ostream:42,
+                 from D:/a/_temp/msys64/ucrt64/include/c++/16.2.0/iostream:43,
+                 from ../../libsass_src/src/memory/allocator.hpp:10,
+                 from ../../libsass_src/src/memory.hpp:8,
+                 from ../../libsass_src/src/sass.hpp:55,
+                 from ../../libsass_src/src/file.cpp:3:
+D:/a/_temp/msys64/ucrt64/include/sys/stat.h:77:9: note: this is the location of the previous definition
+   77 | #define S_ISDIR(m)      (((m) & S_IFMT) == S_IFDIR)
+      |         ^~~~~~~
+ok  	github.com/gohugoio/hugo	47.274s
+?   	32 packages [no test files] under github.com/gohugoio/hugo
+ok  	84 packages under github.com/gohugoio/hugo
+--- FAIL: TestImagesGoldenMethods (0.94s)
+    testing.go:173:
+        error:
+          values are not deep equal
+        diff (-got +want):
+            os.dirEntry(
+          - 	s"- crop-sunsetjpg-_200x200.jpg",
+          + 	s"- crop-sunsetjpg-200x200.jpg",
+            )
+        got:
+          s"- crop-sunsetjpg-_200x200.jpg"
+        want:
+          s"- crop-sunsetjpg-200x200.jpg"
+        stack:
+          D:/a/hugo/hugo/resources/images/imagetesting/testing.go:173
+            c.Assert(e1, eq, e2)
+          D:/a/hugo/hugo/resources/images/imagetesting/testing.go:195
+            func() {
+                e2 := entries2[i]
+
+                f1, err := os.Open(filepath.Join(outputDir, e1.Name()))
+                c.Assert(err, qt.IsNil)
+                defer f1.Close()
+
+                f2, err := os.Open(filepath.Join(goldenDir, e2.Name()))
+                c.Assert(err, qt.IsNil)
+                defer f2.Close()
+
+                imgs2 := decodeAll(f2)
+                imgs1 := decodeAll(f1)
+                c.Assert(len(imgs1), qt.Equals, len(imgs2))
+
+                if !UsesFMA {
+                    c.Assert(e1, eq, e2)
+                    _, err = f1.Seek(0, 0)
+                    c.Assert(err, qt.IsNil)
+                    _, err = f2.Seek(0, 0)
+                    c.Assert(err, qt.IsNil)
+
+                    hash1, _, err := hashing.XXHashFromReader(f1)
+                    c.Assert(err, qt.IsNil)
+                    hash2, _, err := hashing.XXHashFromReader(f2)
+                    c.Assert(err, qt.IsNil)
+
+                    c.Assert(hash1, qt.Equals, hash2)
+                }
+
+                for i, img1 := range imgs1 {
+                    img2 := imgs2[i]
+                    nrgba1 := image.NewNRGBA(img1.Bounds())
+                    gift.New().Draw(nrgba1, img1)
+                    nrgba2 := image.NewNRGBA(img2.Bounds())
+                    gift.New().Draw(nrgba2, img2)
+                    c.Assert(goldenEqual(nrgba1, nrgba2), qt.Equals, true, qt.Commentf(e1.Name()))
+                }
+            }()
+          D:/a/hugo/hugo/resources/images/images_golden_integration_test.go:735
+            imagetesting.RunGolden(opts)
+FAIL
+FAIL	github.com/gohugoio/hugo/resources/images	7.888s
+FAIL
+Error: running "go test -p 2 ./resources/images -tags extended,withdeploy" failed with exit code 1
+##[error]Process completed with exit code 1.

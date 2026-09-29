@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "docker",
+    "compose",
+    "up",
+    "--abort-on-container-exit",
+    "--exit-code-from",
+    "tests"
+  ],
+  "shell": "docker compose up --abort-on-container-exit --exit-code-from tests",
+  "repo": "",
+  "exit_code": 1,
+  "description": "REAL capture from a local docker compose project (postgres, redis, a busybox worker that logs 25 jobs then an error, and a golang test container running go test -v on the api package with 2 failing tests); prefixes padded to the longest container name, container lifecycle lines",
+  "cwd": "/home/user/src/shop",
+  "tool": "monorepo"
+}

@@ -73,6 +73,12 @@
       "status": "ok",
       "message": "last lx run 2 h ago",
       "fix": ""
+    },
+    {
+      "id": "laya",
+      "status": "skip",
+      "message": "not set up (optional: lx laya setup)",
+      "fix": ""
     }
   ]
 }

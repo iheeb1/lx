@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "32909439763",
+    "--repo",
+    "pytest-dev/pytest",
+    "--log-failed"
+  ],
+  "shell": "gh run view 32909439763 --repo pytest-dev/pytest --log-failed",
+  "repo": "pytest-dev/pytest",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): TRIMMED to 3 of the 20 failed jobs (build windows-py311, build ubuntu-py312, check), lines otherwise untouched: UNKNOWN STEP format, tox + pytest with ~4,500 tests (colored progress dots), the same EncodingWarning failure on two OSes, and an alls-green gate job with a multi-line env value",
+  "cwd": "/home/user/src/pytest"
+}

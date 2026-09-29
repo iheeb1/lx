@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "repos/jestjs/jest/actions/jobs/108920224357/logs"
+  ],
+  "shell": "gh api repos/jestjs/jest/actions/jobs/108920224357/logs",
+  "repo": "jestjs/jest",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): raw job log from the REST API (no job/step columns, real escape sequences): yarn install and build steps, then check-copyright-headers failing",
+  "cwd": "/home/user/src/jest"
+}

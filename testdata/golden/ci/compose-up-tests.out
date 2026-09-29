@@ -1,0 +1,112 @@
+[lx: 4 tasks (compose), 2 failed: worker-1, tests-1 · output regrouped by task, prefixes removed]
+[lx: 16 container lifecycle lines not shown]
+Attaching to cache-1, db-1, tests-1, worker-1
+▸ cache-1
+1:C 28 Sep 2026 13:08:57.324 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+1:C 28 Sep 2026 13:08:57.331 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+1:C 28 Sep 2026 13:08:57.331 * Redis version=7.4.10, bits=64, commit=00000000, modified=0, pid=1, just started
+1:C 28 Sep 2026 13:08:57.331 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+1:M 28 Sep 2026 13:08:57.331 * Increased maximum number of open files to 10032 (it was originally set to 1024).
+1:M 28 Sep 2026 13:08:57.331 * monotonic clock: POSIX clock_gettime
+1:M 28 Sep 2026 13:08:57.337 * Running mode=standalone, port=6379.
+1:M 28 Sep 2026 13:08:57.337 * Server initialized
+1:M 28 Sep 2026 13:08:57.337 * Ready to accept connections tcp
+1:signal-handler (1790600951) Received SIGTERM scheduling shutdown...
+1:M 28 Sep 2026 13:09:11.615 * User requested shutdown...
+1:M 28 Sep 2026 13:09:11.615 * Saving the final RDB snapshot before exiting.
+1:M 28 Sep 2026 13:09:11.618 * DB saved on disk
+1:M 28 Sep 2026 13:09:11.618 # Redis is now ready to exit, bye bye...
+cache-1 exited with code 0
+▸ db-1
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /var/lib/postgresql/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+sh: locale: not found
+2026-09-28 13:08:58.538 UTC [35] WARNING:  no usable system locales were found
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+initdb: warning: enabling "trust" authentication for local connections
+initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+waiting for server to start....2026-09-28 13:08:59.350 UTC [41] LOG:  starting PostgreSQL 16.14 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+2026-09-28 13:08:59.352 UTC [41] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-28 13:08:59.360 UTC [44] LOG:  database system was shut down at 2026-09-28 13:08:59 UTC
+2026-09-28 13:08:59.363 UTC [41] LOG:  database system is ready to accept connections
+ done
+server started
+
+/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+
+waiting for server to shut down....2026-09-28 13:08:59.380 UTC [41] LOG:  received fast shutdown request
+2026-09-28 13:08:59.382 UTC [41] LOG:  aborting any active transactions
+2026-09-28 13:08:59.383 UTC [41] LOG:  background worker "logical replication launcher" (PID 47) exited with exit code 1
+2026-09-28 13:08:59.383 UTC [42] LOG:  shutting down
+2026-09-28 13:08:59.384 UTC [42] LOG:  checkpoint starting: shutdown immediate
+2026-09-28 13:08:59.388 UTC [42] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.005 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/14F7160, redo lsn=0/14F7160
+2026-09-28 13:08:59.390 UTC [41] LOG:  database system is shut down
+ done
+server stopped
+
+PostgreSQL init process complete; ready for start up.
+
+2026-09-28 13:08:59.494 UTC [1] LOG:  starting PostgreSQL 16.14 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+2026-09-28 13:08:59.495 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-09-28 13:08:59.495 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-09-28 13:08:59.499 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-28 13:08:59.501 UTC [55] LOG:  database system was shut down at 2026-09-28 13:08:59 UTC
+2026-09-28 13:08:59.511 UTC [1] LOG:  database system is ready to accept connections
+2026-09-28 13:09:11.518 UTC [1] LOG:  received fast shutdown request
+2026-09-28 13:09:11.521 UTC [1] LOG:  aborting any active transactions
+2026-09-28 13:09:11.537 UTC [1] LOG:  background worker "logical replication launcher" (PID 58) exited with exit code 1
+2026-09-28 13:09:11.537 UTC [53] LOG:  shutting down
+2026-09-28 13:09:11.538 UTC [53] LOG:  checkpoint starting: shutdown immediate
+2026-09-28 13:09:11.545 UTC [53] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.001 s, total=0.008 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/14F71D8, redo lsn=0/14F71D8
+2026-09-28 13:09:11.549 UTC [1] LOG:  database system is shut down
+db-1 exited with code 0
+✗ worker-1
+worker: job 1 done in 3ms
+worker: job 2 done in 6ms
+worker: job 3 done in 9ms
+worker: job 4 done in 12ms
+worker: job 5 done in 15ms
+worker: job 6 done in 18ms
+worker: job 7 done in 21ms
+worker: job 8 done in 24ms
+worker: job 9 done in 27ms
+worker: job 10 done in 30ms
+  … 14 similar lines …
+worker: job 25 done in 75ms
+worker: ERROR job 26 failed: dial tcp db:5432: connection refused
+worker-1 exited with code 137
+✗ tests-1
+--- FAIL: TestTotal (0.00s)
+    price_test.go:7: Total = 0, want 135
+--- FAIL: TestSlug (0.00s)
+    --- FAIL: TestSlug/Red_Shoes (0.00s)
+        price_test.go:18: Slug("Red Shoes") = "Red_Shoes", want "red-shoes"
+FAIL
+FAIL	example.com/acme/api	0.008s
+FAIL
+[1 passed, 3 failed (incl. subtests) · hidden: 5 === RUN/--- PASS lines]
+tests-1 exited with code 1
+[lx: 12 container lifecycle lines not shown]
+
+ Compose Stopping Aborting on container exit...

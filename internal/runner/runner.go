@@ -57,7 +57,7 @@ func Run(argv []string, stdin io.Reader) Result {
 
 func RunWith(argv []string, o Options) Result {
 	start := time.Now()
-	path, err := exec.LookPath(argv[0])
+	r, err := Resolve(argv, os.Getenv)
 	if err != nil {
 		return Result{
 			Output:   "lx: command not found: " + argv[0],
@@ -65,8 +65,7 @@ func RunWith(argv []string, o Options) Result {
 			NotFound: true,
 		}
 	}
-	cmd := exec.Command(path, argv[1:]...)
-	cmd.Args[0] = argv[0]
+	cmd := r.Command()
 	cmd.Stdin = o.Stdin
 	buf := &capture{}
 	cmd.Stdout = stream{buf, false}
@@ -307,13 +306,12 @@ func (r Result) Replay(stdout, stderr io.Writer) bool {
 }
 
 func Passthrough(argv []string) int {
-	path, err := exec.LookPath(argv[0])
+	r, err := Resolve(argv, os.Getenv)
 	if err != nil {
 		os.Stderr.WriteString("lx: command not found: " + argv[0] + "\n")
 		return 127
 	}
-	cmd := exec.Command(path, argv[1:]...)
-	cmd.Args[0] = argv[0]
+	cmd := r.Command()
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
 	sigs := make(chan os.Signal, 4)
 	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP)

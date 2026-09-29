@@ -1,0 +1,17 @@
+[lx: 1 job, 0 failed steps · per-line timestamps removed (2026-09-28 12:05:17 → 13:07:33 UTC) · 39 ##[group] blocks unwrapped]
+== test (1.27.x, ubuntu-latest) ==
+[lx: 18 steps folded (2466 lines): Set up job · Free Disk Space (Ubuntu) · Checkout code · Install Go · Install Node · Install Ruby · Install Ruby gems · Install GoAT · … +10 more]
+  Version 3.x was not found in the local cache
+▸ Check · 41m38s
+$ sass --version;
+$ mage -v check;
+[lx: 579 lines of mage's command echo (exec: …) not shown]
+1.80.3
+Running target: Check
+Running dependency: Vet
+Running dependency: Fmt
+Running dependency: TestRace
+ok  	github.com/gohugoio/hugo	92.261s
+?   	48 packages [no test files] under github.com/gohugoio/hugo
+ok  	143 packages under github.com/gohugoio/hugo
+[lx: 6 steps folded (62 lines): Build for dragonfly · Post Install Python · Post Install Node · Post Install Go · Post Checkout code · Complete job]

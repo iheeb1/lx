@@ -1,0 +1,531 @@
+Lint with build (typecheck)	UNKNOWN STEP	﻿2026-09-28T11:17:30.4300307Z Current runner version: '2.337.0'
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4335291Z ##[group]Runner Image Provisioner
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4336550Z Hosted Compute Agent
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4337427Z Version: 20260828.587
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4338581Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4339970Z Build Date: 2026-08-28T16:44:25Z
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4341027Z Worker ID: {25c87224-2807-4fed-a583-11f5142ead27}
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4342253Z Azure Region: northcentralus
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4343237Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4346067Z ##[group]Operating System
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4347261Z Ubuntu
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4348304Z 24.04.5
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4349200Z LTS
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4350026Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4350905Z ##[group]Runner Image
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4351883Z Image: ubuntu-24.04
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4352761Z Version: 20260920.314.1
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4354860Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4357543Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4359565Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4361409Z ##[group]GITHUB_TOKEN Permissions
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4364337Z Contents: read
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4365246Z Metadata: read
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4366082Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4369820Z Secret source: None
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4371156Z Cache mode: write
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.4372222Z Prepare workflow directory
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.5027427Z Prepare all required actions
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.5096583Z Getting action download info
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.7485244Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:30.9337553Z Complete job name: Lint with build (typecheck)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0017614Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0018876Z with:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0019358Z   persist-credentials: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0019945Z   repository: typescript-eslint/typescript-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0024132Z   token: ***
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0024578Z   ssh-strict: true
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0025023Z   ssh-user: git
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0025454Z   clean: true
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0025911Z   sparse-checkout-cone-mode: true
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0026439Z   fetch-depth: 1
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0026874Z   fetch-tags: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0027324Z   show-progress: true
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0027774Z   lfs: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0028325Z   submodules: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0028785Z   set-safe-directory: true
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0029292Z   allow-unsafe-pr-checkout: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0030015Z env:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0030440Z   PRIMARY_NODE_VERSION: 24
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0030939Z   NX_CLOUD_ACCESS_TOKEN: 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0031463Z   NX_VERBOSE_LOGGING: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0031976Z   NX_CI_EXECUTION_ENV: ubuntu-latest
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.0032504Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1042123Z Syncing repository: typescript-eslint/typescript-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1044119Z ##[group]Getting Git version info
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1044979Z Working directory is '/home/runner/work/typescript-eslint/typescript-eslint'
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1046229Z [command]/usr/bin/git version
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1097115Z git version 2.55.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1117368Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1130849Z Temporarily overriding HOME='/home/runner/work/_temp/74a50c37-fc69-469f-b1d0-3b83102c21c9' before making global git config changes
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1136053Z Adding repository directory to the temporary git global config as a safe directory
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1137574Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/typescript-eslint/typescript-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1180176Z Deleting the contents of '/home/runner/work/typescript-eslint/typescript-eslint'
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1183946Z ##[group]Initializing the repository
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1187963Z [command]/usr/bin/git init /home/runner/work/typescript-eslint/typescript-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1265736Z hint: Using 'master' as the name for the initial branch. This default branch name
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1267486Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1269171Z hint: to use in all of your new repositories, which will suppress this warning,
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1270002Z hint: call:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1270479Z hint:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1271060Z hint: 	git config --global init.defaultBranch <name>
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1271751Z hint:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1272392Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1273375Z hint: 'development'. The just-created branch can be renamed via this command:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1274174Z hint:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1274674Z hint: 	git branch -m <name>
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1275218Z hint:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1275904Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1277063Z Initialized empty Git repository in /home/runner/work/typescript-eslint/typescript-eslint/.git/
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1279460Z [command]/usr/bin/git remote add origin https://github.com/typescript-eslint/typescript-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1324031Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1325299Z ##[group]Disabling automatic garbage collection
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1326912Z [command]/usr/bin/git config --local gc.auto 0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1357743Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1359138Z ##[group]Setting up auth
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1363972Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1396698Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1705056Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1737125Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.1969163Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.2000567Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.2233010Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.2269840Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.2271014Z ##[group]Fetching the repository
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:31.2279188Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +750a91528071e3f6df51efc13882941fbbd6eb36:refs/remotes/pull/12803/merge
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.0554858Z From https://github.com/typescript-eslint/typescript-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.0557945Z  * [new ref]         750a91528071e3f6df51efc13882941fbbd6eb36 -> pull/12803/merge
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.0563729Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.0565750Z ##[group]Determining the checkout info
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.0568300Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.0569512Z [command]/usr/bin/git sparse-checkout disable
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.0627459Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.0673381Z ##[group]Checking out the ref
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.0677167Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/12803/merge
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4655642Z Note: switching to 'refs/remotes/pull/12803/merge'.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4656621Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4656992Z You are in 'detached HEAD' state. You can look around, make experimental
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4657897Z changes and commit them, and you can discard any commits you make in this
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4658937Z state without impacting any branches by switching back to a branch.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4659811Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4660139Z If you want to create a new branch to retain commits you create, you may
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4660825Z do so (now or later) by using -c with the switch command. Example:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4661137Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4661294Z   git switch -c <new-branch-name>
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4661500Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4661653Z Or undo this operation with:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4661852Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4661976Z   git switch -
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4662225Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4662510Z Turn off this advice by setting config variable advice.detachedHead to false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4662852Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4663223Z HEAD is now at 750a915 Merge 82fc430704be92bd063e226986a537d1c6e6e3e2 into 0bbe5e74e2348c05f6e3bd3b6b6044b077b20926
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4672119Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4717792Z [command]/usr/bin/git log -1 --format=%H
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4742987Z 750a91528071e3f6df51efc13882941fbbd6eb36
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4753101Z ##[group]Removing auth
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4756753Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.4787456Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.5037509Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.5064235Z http.https://github.com/.extraheader
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.5071375Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.5111548Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.5355693Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.5386852Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.5636216Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.5938963Z Prepare all required actions
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.5939661Z Getting action download info
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.7239134Z Download action repository 'pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b' (SHA:703c52620218391530e48b9e8870d5c0082e1b9b)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:33.9648296Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0791881Z ##[group]Run ./.github/actions/prepare-install
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0792328Z with:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0792580Z   node-version: 24
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0792857Z   working-directory: .
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0793123Z env:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0793374Z   PRIMARY_NODE_VERSION: 24
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0793665Z   NX_CLOUD_ACCESS_TOKEN: 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0793956Z   NX_VERBOSE_LOGGING: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0794290Z   NX_CI_EXECUTION_ENV: ubuntu-latest
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0794605Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0853867Z ##[start-action display=echo github.ref;id=__self.__run]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0900957Z ##[group]Run echo "$GITHUB_REF"
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.0901377Z ^[[36;1mecho "$GITHUB_REF"^[[0m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1140305Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1140775Z env:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1141053Z   PRIMARY_NODE_VERSION: 24
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1141354Z   NX_CLOUD_ACCESS_TOKEN: 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1141647Z   NX_VERBOSE_LOGGING: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1141953Z   NX_CI_EXECUTION_ENV: ubuntu-latest
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1142280Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1263205Z refs/pull/12803/merge
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1279138Z ##[end-action id=__self.__run;outcome=success;conclusion=success;duration_ms=42]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1282231Z ##[start-action display=Install pnpm;id=__self.__pnpm_setup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1394813Z ##[group]Run pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1395452Z with:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1395696Z   cache: true
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1395946Z   install: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1396224Z   working-directory: .
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1396499Z   dest: ~/setup-pnpm
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1396780Z   require-lockfile: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1397053Z env:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1397299Z   PRIMARY_NODE_VERSION: 24
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1397587Z   NX_CLOUD_ACCESS_TOKEN: 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1397872Z   NX_VERBOSE_LOGGING: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1398396Z   NX_CI_EXECUTION_ENV: ubuntu-latest
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.1398718Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.2656000Z ##[group]Installing pnpm...
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.2661117Z Downloading pnpm 12.5.0 from the npm registry
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:34.4438618Z ==> Downloading pnpm 12.5.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.2031583Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.2031942Z Installation Completed!
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.2036800Z ##[group]Restoring cache...
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.3542431Z Cache hit for: pnpm-lockfile-verified-Linux-x64-8e8b923f76970a2f919332fe1f1aee9f48e0cf70bb034753546a1bec5f138d66
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.5869583Z Received 900 of 900 (100.0%), 0.0 MBs/sec
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.5870383Z Cache Size: ~0 MB (900 B)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.5897856Z [command]/usr/bin/tar -xf /home/runner/work/_temp/e523020b-3f8a-43d0-965b-83f6f4fd7991/cache.tzst -P -C /home/runner/work/typescript-eslint/typescript-eslint --use-compress-program unzstd
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.5970072Z Cache restored successfully
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.5997856Z Lockfile verification cache restored from key: pnpm-lockfile-verified-Linux-x64-8e8b923f76970a2f919332fe1f1aee9f48e0cf70bb034753546a1bec5f138d66
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.5999382Z [command]/home/runner/setup-pnpm/pnpm store path
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.6137000Z /home/runner/setup-pnpm/store/v11
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:35.7240674Z Cache hit for: pnpm-cache-Linux-x64-no-runtime-8e8b923f76970a2f919332fe1f1aee9f48e0cf70bb034753546a1bec5f138d66
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:36.8344259Z Received 134217728 of 212509639 (63.2%), 126.9 MBs/sec
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:37.1021292Z Received 212509639 of 212509639 (100.0%), 158.8 MBs/sec
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:37.1022526Z Cache Size: ~203 MB (212509639 B)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:37.1057571Z [command]/usr/bin/tar -xf /home/runner/work/_temp/c70b5f7e-c2f9-451c-b7ba-b6e37024233c/cache.tzst -P -C /home/runner/work/typescript-eslint/typescript-eslint --use-compress-program unzstd
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.7886495Z Cache restored successfully
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.7992593Z Cache restored from key: pnpm-cache-Linux-x64-no-runtime-8e8b923f76970a2f919332fe1f1aee9f48e0cf70bb034753546a1bec5f138d66
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.7994076Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.7994794Z No runtime requested (no `runtime` input and no `devEngines.runtime` in package.json). Skipping runtime install.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8186110Z ##[end-action id=__self.__pnpm_setup;outcome=success;conclusion=success;duration_ms=5690]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8227478Z ##[start-action display=Use Node.js 24;id=__self.__actions_setup-node]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8315046Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8315482Z with:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8315692Z   node-version: 24
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8315938Z   always-auth: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8316170Z   check-latest: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8319091Z   token: ***
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8319340Z env:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8319608Z   PRIMARY_NODE_VERSION: 24
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8319881Z   NX_CLOUD_ACCESS_TOKEN: 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8320131Z   NX_VERBOSE_LOGGING: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8320411Z   NX_CI_EXECUTION_ENV: ubuntu-latest
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8320755Z   PNPM_HOME: /home/runner/setup-pnpm
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.8321045Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.9743882Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.9747458Z (node:2312) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.9748419Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:39.9750904Z ##[group]Environment details
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3387441Z node: v24.21.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3387845Z npm: 11.19.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3388308Z yarn: 1.22.22
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3388911Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3486224Z ##[end-action id=__self.__actions_setup-node;outcome=success;conclusion=success;duration_ms=525]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3489844Z ##[start-action display=Install dependencies;id=__self.__run_2]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3510601Z ##[group]Run pnpm install --frozen-lockfile --trust-lockfile
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3511120Z ^[[36;1mpnpm install --frozen-lockfile --trust-lockfile^[[0m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3511537Z ^[[36;1mpnpm run check-clean-workspace-after-install^[[0m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3587049Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3587430Z env:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3587660Z   PRIMARY_NODE_VERSION: 24
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3587923Z   NX_CLOUD_ACCESS_TOKEN: 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3588442Z   NX_VERBOSE_LOGGING: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3588708Z   NX_CI_EXECUTION_ENV: ubuntu-latest
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3589035Z   PNPM_HOME: /home/runner/setup-pnpm
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3589308Z   HUSKY: 0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3589520Z   SKIP_POSTINSTALL: true
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3589776Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.3844745Z Scope: all 20 workspace projects
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.6914525Z Packages are hard linked from the content-addressable store to the virtual store.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.6951983Z   Content-addressable store is at: /home/runner/setup-pnpm/store/v11
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:40.6952925Z   Virtual store is at:             node_modules/.pnpm
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:41.6754612Z Packages: +1946
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:41.6755770Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:41.8855393Z Progress: resolved 1946, reused 1946, downloaded 0, added 1946, done
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.0650344Z . postinstall$ tsx tools/scripts/postinstall.mts
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.2996984Z . postinstall: 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.2998450Z . postinstall: Skipping postinstall script because $SKIP_POSTINSTALL is set...
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.2999604Z . postinstall: 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3164991Z . postinstall: Done
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3179077Z Lockfile is up to date, resolution step is skipped
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3179523Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3179688Z devDependencies:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3180069Z + @actions/github 9.1.1
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3180539Z + @arethetypeswrong/cli 0.18.3
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3181156Z + @eslint-community/eslint-plugin-eslint-comments 4.8.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3181742Z + @eslint/compat 2.1.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3182198Z + @eslint/config-helpers 0.7.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3182577Z + @eslint/js 10.0.1
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3182922Z + @nx/devkit 23.2.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3183231Z + @nx/js 23.2.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3183567Z + @nx/vitest 23.2.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3183864Z + @nx/workspace 23.2.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3184209Z + @swc/core 1.16.1
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3184564Z + @types/debug 4.1.13
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3185105Z + @types/natural-compare 1.4.3
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3185519Z + @types/node 24.13.3
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3185861Z + @types/semver 7.8.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3186478Z + @typescript-eslint/eslint-plugin link:packages/eslint-plugin
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3187487Z + @typescript-eslint/eslint-plugin-internal link:packages/eslint-plugin-internal
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3188464Z + @typescript-eslint/parser link:packages/parser
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3189170Z + @typescript-eslint/scope-manager link:packages/scope-manager
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3189841Z + @typescript-eslint/types link:packages/types
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3190599Z + @typescript-eslint/typescript-estree link:packages/typescript-estree
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3191330Z + @typescript-eslint/utils link:packages/utils
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3191986Z + @typescript/native <- typescript 7.1.0-dev.20260923.1
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3192525Z + @vitest/coverage-v8 4.1.10
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3193023Z + @vitest/eslint-plugin 1.6.16
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3193475Z + console-fail-test 0.9.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3193889Z + cspell 10.3.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3194481Z + eslint 10.11.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3194895Z + eslint-plugin-eslint-plugin 7.6.2
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3195353Z + eslint-plugin-import 2.32.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3195791Z + eslint-plugin-jsdoc 50.8.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3196233Z + eslint-plugin-jsx-a11y 6.10.2
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3196637Z + eslint-plugin-n 17.24.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3197089Z + eslint-plugin-perfectionist 5.11.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3197537Z + eslint-plugin-react 7.37.5
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3197979Z + eslint-plugin-react-hooks 5.2.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3198583Z + eslint-plugin-regexp 2.10.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3199030Z + eslint-plugin-unicorn 59.0.1
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3199394Z + execa 7.2.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3199755Z + get-github-auth-token 0.2.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3200125Z + globals 16.5.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3200421Z + husky 9.1.7
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3200721Z + knip 6.37.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3201037Z + lint-staged 15.5.2
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3201408Z + markdownlint-cli 0.49.1
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3201752Z + nx 23.2.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3202054Z + prettier 3.9.5
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3202358Z + rimraf 5.0.10
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3202660Z + semver 7.8.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3202960Z + tsx 4.23.12
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3203380Z + typescript <- @typescript/typescript6 6.0.2
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3203996Z + typescript-eslint link:packages/typescript-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3204457Z + vite 7.3.6
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3204757Z + vitest 4.1.10
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3204930Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3205135Z Done in 1.9s using pnpm v12.5.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.3463151Z $ git diff --quiet --exit-code
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6313787Z ##[end-action id=__self.__run_2;outcome=success;conclusion=success;duration_ms=2282]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6361928Z ##[group]Run pnpm typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6362234Z ^[[36;1mpnpm typecheck^[[0m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6430595Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6430950Z env:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6431183Z   PRIMARY_NODE_VERSION: 24
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6431438Z   NX_CLOUD_ACCESS_TOKEN: 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6431707Z   NX_VERBOSE_LOGGING: false
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6431981Z   NX_CI_EXECUTION_ENV: ubuntu-latest
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6432273Z   PNPM_HOME: /home/runner/setup-pnpm
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6432540Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:42.6672771Z $ nx run-many -t typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3612074Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3614297Z ^[[7m^[[1m^[[36m NX ^[[39m^[[22m^[[27m  ^[[36mRunning target ^[[1mtypecheck^[[22m for 19 projects and ^[[1m18^[[22m tasks they depend on:^[[39m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3615084Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3615451Z ^[[2m-^[[22m rule-schema-to-typescript-types
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3616018Z ^[[2m-^[[22m eslint-plugin-internal
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3616466Z ^[[2m-^[[22m integration-tests
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3616806Z ^[[2m-^[[22m typescript-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3617122Z ^[[2m-^[[22m typescript-estree
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3617436Z ^[[2m-^[[22m project-service
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3617733Z ^[[2m-^[[22m tsconfig-utils
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3618017Z ^[[2m-^[[22m website-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3618488Z ^[[2m-^[[22m eslint-plugin
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3618813Z ^[[2m-^[[22m scope-manager
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3619087Z ^[[2m-^[[22m visitor-keys
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3619368Z ^[[2m-^[[22m rule-tester
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3619651Z ^[[2m-^[[22m type-utils
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3619919Z ^[[2m-^[[22m ast-spec
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3620174Z ^[[2m-^[[22m website
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3620431Z ^[[2m-^[[22m parser
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3620675Z ^[[2m-^[[22m types
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3620911Z ^[[2m-^[[22m utils
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3621146Z ^[[2m-^[[22m repo
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3621274Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.3621509Z ^[[2m^[[36m^[[39m^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.8191967Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m tsconfig-utils:build  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.8192973Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m ast-spec:build  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:46.9776791Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m tsconfig-utils:typecheck  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:47.3729901Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m types:copy-ast-spec
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:47.6120283Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m types:build  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:47.9324254Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m visitor-keys:build  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:47.9326282Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m project-service:build  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:48.4222106Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m integration-tests:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:48.6920206Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m typescript-estree:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:49.3546760Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m scope-manager:build  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:49.3548507Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m ast-spec:typecheck  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:49.6479503Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m types:typecheck  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:49.6480495Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m utils:build  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:49.6481351Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m parser:build  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:49.9030025Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m visitor-keys:typecheck  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:49.9031466Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m project-service:typecheck  ^[[2m[remote cache]^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0228814Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0320233Z ##[group]❌ ^[[2m> ^[[22m^[[2mnx run^[[22m type-utils:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0388614Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0389468Z ^[[2m> ^[[22mtsc --build tsconfig.build.json
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0389873Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0420444Z ^[[96m../visitor-keys/src/visitor-keys.ts^[[0m:^[[93m273^[[0m:^[[93m31^[[0m - ^[[91merror^[[0m^[[90m TS2345: ^[[0mArgument of type 'AdditionalKeys' is not assignable to parameter of type 'VisitorKeys$1'.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0422092Z   'string' index signatures are incompatible.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0423774Z     Type 'readonly GetNodeTypeKeys<T>[] & readonly GetNodeTypeKeys<T>[]' is not assignable to type 'readonly string[]'.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0425152Z       The types returned by 'concat(...)' are incompatible between these types.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0426034Z         Type 'GetNodeTypeKeys<T>[]' is not assignable to type 'string[]'.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0426950Z           Type 'GetNodeTypeKeys<T>' is not assignable to type 'string'.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0427744Z             Type 'number' is not assignable to type 'string'.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0428353Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0449484Z ^[[7m273^[[0m   eslintVisitorKeys.unionWith(additionalKeys);
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0450311Z ^[[7m   ^[[0m ^[[91m                              ~~~~~~~~~~~~~~^[[0m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0450557Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0450563Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0450922Z Found 1 error in ../visitor-keys/src/visitor-keys.ts^[[90m:273^[[0m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0451216Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0451595Z Warning: command "tsc --build tsconfig.build.json" exited with non-zero status code
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.0452302Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:51.3710038Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m rule-tester:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:17:56.4883807Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m typescript-estree:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:00.1559936Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m scope-manager:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:02.4238539Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m parser:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:09.6882954Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m utils:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.1590775Z ^[[32m✔^[[39m  ^[[2mnx run^[[22m rule-tester:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3503001Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3503754Z ^[[2m^[[31m^[[39m^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3505323Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3506285Z ^[[7m^[[1m^[[31m NX ^[[39m^[[22m^[[27m  ^[[31mRunning target ^[[1mtypecheck^[[22m for 19 projects and ^[[1m18^[[22m tasks they depend on failed^[[39m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3506896Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3507682Z ^[[2mTasks not run because their dependencies failed or --nx-bail=true:^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3508055Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3508572Z ^[[2m-^[[22m rule-schema-to-typescript-types:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3509050Z ^[[2m-^[[22m eslint-plugin-internal:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3509520Z ^[[2m-^[[22m typescript-eslint:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3510070Z ^[[2m-^[[22m website-eslint:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3510578Z ^[[2m-^[[22m eslint-plugin:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3511099Z ^[[2m-^[[22m type-utils:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3511948Z ^[[2m-^[[22m website:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3512267Z ^[[2m-^[[22m repo:typecheck
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3512655Z ^[[2m-^[[22m rule-schema-to-typescript-types:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3513082Z ^[[2m-^[[22m eslint-plugin-internal:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3513446Z ^[[2m-^[[22m typescript-eslint:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3513785Z ^[[2m-^[[22m eslint-plugin:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3514120Z ^[[2m-^[[22m website-eslint:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3514420Z ^[[2m-^[[22m website:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3514575Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3514730Z ^[[2mFailed tasks:^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3514876Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3515015Z ^[[2m-^[[22m type-utils:build
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3515181Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3515772Z ^[[2mOutput of 22 successful tasks were not shown. Run with^[[22m --verbose ^[[2mor^[[22m --output-style=static ^[[2mto see it.^[[22m
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.3516215Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8287055Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8292923Z ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8294617Z │                         Tasks run for command: nx run-many -t typecheck                          │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8295784Z ├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8296813Z ├────────┬─────────────────────────────────────────────────────────┬──────────┬────────────────────┤
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8297875Z │ Status │                          Task                           │ Duration │    Cache Status    │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8298870Z ├────────┼─────────────────────────────────────────────────────────┼──────────┼────────────────────┤
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8300854Z │   ✔    │ tsconfig-utils:build                                    │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8301953Z │   ✔    │ ast-spec:build                                          │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8303049Z │   ✔    │ tsconfig-utils:typecheck                                │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8304229Z │   ✔    │ types:copy-ast-spec                                     │    0s    │     Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8305366Z │   ✔    │ integration-tests:typecheck                             │    1s    │     Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8306414Z │   ✔    │ types:build                                             │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8307473Z │   ✔    │ visitor-keys:build                                      │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8308643Z │   ✔    │ project-service:build                                   │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8309345Z │   ✔    │ typescript-estree:build                                 │    0s    │     Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8310051Z │   ✔    │ scope-manager:build                                     │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8310720Z │   ✔    │ ast-spec:typecheck                                      │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8311524Z │   ✔    │ types:typecheck                                         │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8312542Z │   ✔    │ utils:build                                             │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8313505Z │   ✔    │ parser:build                                            │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8314157Z │   ✔    │ visitor-keys:typecheck                                  │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8315239Z │   ✔    │ project-service:typecheck                               │    0s    │  Remote Cache Hit  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8316001Z │   ✔    │ typescript-estree:typecheck                             │    6s    │     Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8316677Z │   ✔    │ rule-tester:build                                       │    1s    │     Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8317347Z │   ✔    │ scope-manager:typecheck                                 │    3s    │     Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8318380Z │   ✔    │ parser:typecheck                                        │    2s    │     Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8319017Z │   ✔    │ utils:typecheck                                         │    9s    │     Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8319662Z │   ✔    │ rule-tester:typecheck                                   │    2s    │     Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8320351Z │        └─────────────────────────────────────────────────────────┴──────────┴────────────────────┤
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8321100Z │   ✖      type-utils:build                                             1s          Cache Miss     │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8321844Z │           > Logs: https://cloud.nx.app/runs/zrkPA9024A/task/type-utils%3Abuild                   │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8322608Z └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8323281Z ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8323930Z │                                   Nx Cloud Task Runner Report                                    │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8324600Z ├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8325259Z ├────────┬────────────────────────────────────────┬────────┬───────────────────────────────────────┤
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8325913Z │ 22     │ Successful Tasks                       │ 95.65% │ Success Percentage                    │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8326617Z │ 1      │ Failed Tasks                           │ 4.35%  │ Failure Percentage                    │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8327322Z ├────────┼────────────────────────────────────────┼────────┼───────────────────────────────────────┤
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8327946Z │ 13     │ Cached Tasks                           │ 56.52% │ Cache Hit Percentage                  │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8328873Z │ 23     │ Total Executed Tasks                   │ 25s    │ Run Duration                          │
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8329592Z └────────┴────────────────────────────────────────┴────────┴───────────────────────────────────────┘
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8330154Z  See more details at: https://cloud.nx.app/cipes/6aba4cb8d93811a0f91fc612 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8330468Z 
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8343040Z   Run duration:      25.3s
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8343487Z   Cache:             13/22 hit (59%)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8343948Z   Critical path:     22.4s (11 tasks)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.8344243Z   Recoverable time:  <1ms
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.9454624Z [ELIFECYCLE] Command failed with exit code 130.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.9486188Z ##[error]Process completed with exit code 130.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.9604003Z Post job cleanup.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.9609327Z ##[start-action display=Use Node.js 24;id=__7df924af-80e0-4b7e-bcb5-18be2524c924.__actions_setup-node]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.9612409Z ##[end-action id=__7df924af-80e0-4b7e-bcb5-18be2524c924.__actions_setup-node;outcome=skipped;conclusion=skipped;duration_ms=0]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.9614570Z ##[start-action display=Install pnpm;id=__7df924af-80e0-4b7e-bcb5-18be2524c924.__pnpm_setup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:12.9652987Z Post job cleanup.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.0890181Z ##[group]Running pnpm store prune...
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.1052008Z ##[endgroup]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.1053527Z Cache hit occurred on the primary key pnpm-cache-Linux-x64-no-runtime-8e8b923f76970a2f919332fe1f1aee9f48e0cf70bb034753546a1bec5f138d66, not saving cache.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.1055280Z (node:2995) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.1056340Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.1142266Z ##[end-action id=__7df924af-80e0-4b7e-bcb5-18be2524c924.__pnpm_setup;outcome=success;conclusion=success;duration_ms=152]
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.1278039Z Post job cleanup.
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2118647Z [command]/usr/bin/git version
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2155565Z git version 2.55.0
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2192721Z Temporarily overriding HOME='/home/runner/work/_temp/dd6f13a0-a4ac-4f57-a897-70cd3d129a95' before making global git config changes
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2194156Z Adding repository directory to the temporary git global config as a safe directory
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2197908Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/typescript-eslint/typescript-eslint
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2236393Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2268837Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2523674Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2556163Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2825833Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.2859675Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.3254050Z Cleaning up orphan processes
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.3579237Z Terminate orphan process: pid (2595) (MainThread)
+Lint with build (typecheck)	UNKNOWN STEP	2026-09-28T11:18:13.3590321Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Required Checks	UNKNOWN STEP	﻿2026-09-28T11:20:10.2288823Z Current runner version: '2.337.0'
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2309385Z ##[group]Runner Image Provisioner
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2310196Z Hosted Compute Agent
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2310677Z Version: 20260828.587
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2311185Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2311841Z Build Date: 2026-08-28T16:44:25Z
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2312384Z Worker ID: {161fe855-49f2-4629-901b-6b5c515f9dbe}
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2312979Z Azure Region: westus3
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2313488Z ##[endgroup]
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2314640Z ##[group]Operating System
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2315215Z Ubuntu
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2315638Z 24.04.5
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2316106Z LTS
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2316539Z ##[endgroup]
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2316983Z ##[group]Runner Image
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2317496Z Image: ubuntu-24.04
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2317953Z Version: 20260920.314.1
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2319041Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2320282Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2321099Z ##[endgroup]
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2322020Z ##[group]GITHUB_TOKEN Permissions
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2323573Z Contents: read
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2324066Z Metadata: read
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2324791Z ##[endgroup]
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2326846Z Secret source: None
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2327593Z Cache mode: write
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.2328251Z Prepare workflow directory
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.3317438Z Prepare all required actions
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.3369170Z Complete job name: Required Checks
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.3931763Z ##[group]Run exit 1
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.3932301Z ^[[36;1mexit 1^[[0m
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.7076028Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.7077431Z env:
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.7078109Z   PRIMARY_NODE_VERSION: 24
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.7078845Z   NX_CLOUD_ACCESS_TOKEN: 
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.7079584Z   NX_VERBOSE_LOGGING: false
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.7080365Z ##[endgroup]
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.7341569Z ##[error]Process completed with exit code 1.
+Required Checks	UNKNOWN STEP	2026-09-28T11:20:10.7478660Z Cleaning up orphan processes

@@ -168,6 +168,9 @@ func Run(e Env) Report {
 	s.checkStorage()
 	s.checkActivity()
 	s.checkContext()
+	s.checkLimits()
+	s.checkSearch()
+	s.checkLaya()
 	return Report{Version: e.Version, Binary: e.Executable, Checks: s.checks}
 }
 

@@ -1,0 +1,27 @@
+[lx: 27 step lines not shown (passed or skipped)]
+
+X main CI vitejs/vite#23607 · 36421179194
+Triggered via pull_request about 32 minutes ago
+
+JOBS
+✓ Get changed files in 16s (ID 108924006793)
+X Lint: node-24, ubuntu-latest in 47s (ID 108924007267)
+  X Check formatting
+✓ Build&Test: node-20, ubuntu-latest in 3m53s (ID 108924132776)
+✓ Build&Test: node-24, macos-latest in 6m27s (ID 108924132823)
+✓ Build&Test: node-24, windows-latest in 6m5s (ID 108924132837)
+✓ Build&Test: node-26, ubuntu-latest in 3m50s (ID 108924132845)
+✓ Build&Test: node-24, ubuntu-latest in 4m9s (ID 108924132887)
+X Build&Test: node-22, ubuntu-latest in 2m32s (ID 108924133120)
+  X Test serve (bundled dev)
+✓ Build & Test Failed in 5s (ID 108926462337)
+- Build & Test Passed or Skipped in 0s (ID 108926463328)
+
+ANNOTATIONS
+X Process completed with exit code 1. [×2]
+  Lint: node-24, ubuntu-latest: .github#30 · Build&Test: node-22, ubuntu-latest: .github#47
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748" [×5]
+  Lint: node-24, ubuntu-latest: .github#1 · Build&Test: node-20, ubuntu-latest: .github#1 · Build&Test: node-26, ubuntu-latest: .github#1 · … +2 more
+
+To see what failed, try: gh run view 36421179194 --log-failed
+View this run on GitHub: https://github.com/vitejs/vite/actions/runs/36421179194

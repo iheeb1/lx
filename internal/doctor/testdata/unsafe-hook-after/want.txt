@@ -17,4 +17,5 @@
 ✓ storage     runs: none stored yet ($ROOT/cache/lx/runs is created on the first condensed run)
 ✓ storage     history: nothing recorded yet ($ROOT/data/lx/history.jsonl)
 ✓ activity    no lx run recorded yet; no Claude Code session in the last day
+- laya        not set up (optional: lx laya setup)
 lx doctor: 0 failures, 4 warnings

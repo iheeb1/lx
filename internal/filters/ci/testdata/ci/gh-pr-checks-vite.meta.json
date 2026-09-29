@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "gh",
+    "pr",
+    "checks",
+    "23607",
+    "--repo",
+    "vitejs/vite"
+  ],
+  "shell": "gh pr checks 23607 --repo vitejs/vite",
+  "repo": "vitejs/vite",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): tab-separated checks (non-TTY): all passing or skipped, one with a description column",
+  "cwd": "/home/user/src/vite"
+}

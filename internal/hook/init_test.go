@@ -484,7 +484,7 @@ func TestInitProbe(t *testing.T) {
 	if got := hookCmd(t, filepath.Join(dir, "settings.json")); got != want {
 		t.Errorf("command = %q, want %q", got, want)
 	}
-	if f, ok := parseLxHook(want); !ok || f.prefix != spaced {
+	if f, ok := parseLxHook(want, "claude"); !ok || f.prefix != spaced {
 		t.Errorf("parseLxHook = %+v, %v", f, ok)
 	}
 

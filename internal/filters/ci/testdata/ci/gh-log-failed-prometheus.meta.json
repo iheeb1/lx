@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36331018875",
+    "--repo",
+    "prometheus/prometheus",
+    "--log-failed"
+  ],
+  "shell": "gh run view 36331018875 --repo prometheus/prometheus --log-failed",
+  "repo": "prometheus/prometheus",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): UNKNOWN STEP format, composite action (promci-setup) whose make promu step fails on a curl|tar download; a second job is a bare \"exit 1\"",
+  "cwd": "/home/user/src/prometheus"
+}

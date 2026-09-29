@@ -1,0 +1,99 @@
+lerna notice cli v8.2.4
+
+ Lerna (powered by Nx)   Running target test for 3 projects:
+
+- api
+- @acme/utils
+- web
+
+
+
+> @acme/utils:test
+
+
+> @acme/utils@0.1.0 test
+> jest
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2m./[22m[1mclamp.test.js[22m
+  [32m✓[39m [2mclamps low (1 ms)[22m
+  [32m✓[39m [2mclamps high[22m
+  [32m✓[39m [2mkeeps middle (1 ms)[22m
+
+[1mTest Suites: [22m[1m[32m1 passed[39m[22m, 1 total
+[1mTests:       [22m[1m[32m3 passed[39m[22m, 3 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.204 s, estimated 1 s
+[2mRan all test suites[22m[2m.[22m
+
+> web:test
+
+
+> web@0.1.0 test
+> jest
+
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2m./[22m[1mcart.test.js[22m
+  [32m✓[39m [2mtotal sums prices (1 ms)[22m
+  [31m✕[39m [2mcurrency has two decimals (1 ms)[22m
+  [32m✓[39m [2mempty cart[22m
+
+[1m[31m  [1m● [22m[1mcurrency has two decimals[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"$5.0[7m0[27m"[39m
+    Received: [31m"$5.0"[39m
+[2m[22m
+[2m    [0m [90m  6 |[39m[22m
+[2m     [90m  7 |[39m test([32m'currency has two decimals'[39m[33m,[39m () [33m=>[39m {[22m
+[2m    [31m[1m>[22m[2m[39m[90m  8 |[39m   expect(currency([35m5[39m))[33m.[39mtoBe([32m'$5.00'[39m)[22m
+[2m     [90m    |[39m                       [31m[1m^[22m[2m[39m[22m
+[2m     [90m  9 |[39m })[22m
+[2m     [90m 10 |[39m[22m
+[2m     [90m 11 |[39m test([32m'empty cart'[39m[33m,[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mcart.test.js[39m[0m[2m:8:23)[22m[2m[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m[1m[31m1 failed[39m[22m, [1m[32m2 passed[39m[22m, 3 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.219 s, estimated 1 s
+[2mRan all test suites[22m[2m.[22m
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /home/user/src/acme/packages/web
+npm error workspace web@0.1.0
+npm error location /home/user/src/acme/packages/web
+npm error command failed
+npm error command sh -c jest
+
+> api:test
+
+
+> api@0.1.0 test
+> go test ./...
+
+--- FAIL: TestTotal (0.00s)
+    price_test.go:7: Total = 0, want 135
+--- FAIL: TestSlug (0.00s)
+    --- FAIL: TestSlug/Red_Shoes (0.00s)
+        price_test.go:18: Slug("Red Shoes") = "Red_Shoes", want "red-shoes"
+FAIL
+FAIL	example.com/acme/api	0.247s
+FAIL
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /home/user/src/acme/packages/api
+npm error workspace api@0.1.0
+npm error location /home/user/src/acme/packages/api
+npm error command failed
+npm error command sh -c go test ./...
+
+
+
+ Lerna (powered by Nx)   Running target test for 3 projects failed
+
+Failed tasks:
+
+- web:test
+- api:test
+

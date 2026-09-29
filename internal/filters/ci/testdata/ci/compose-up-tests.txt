@@ -1,0 +1,155 @@
+ Network shop_default Creating 
+ Network shop_default Creating 
+ Network shop_default Created 
+ Network shop_default Created 
+ Container shop-worker-1 Creating 
+ Container shop-cache-1 Creating 
+ Container shop-db-1 Creating 
+ Container shop-worker-1 Created 
+ Container shop-cache-1 Created 
+ Container shop-db-1 Created 
+ Container shop-tests-1 Creating 
+ Container shop-tests-1 Created 
+Attaching to cache-1, db-1, tests-1, worker-1
+ Container shop-worker-1 Starting 
+ Container shop-db-1 Starting 
+ Container shop-cache-1 Starting 
+ Container shop-cache-1 Started 
+cache-1  | 1:C 28 Sep 2026 13:08:57.324 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+cache-1  | 1:C 28 Sep 2026 13:08:57.331 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+cache-1  | 1:C 28 Sep 2026 13:08:57.331 * Redis version=7.4.10, bits=64, commit=00000000, modified=0, pid=1, just started
+cache-1  | 1:C 28 Sep 2026 13:08:57.331 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+cache-1  | 1:M 28 Sep 2026 13:08:57.331 * Increased maximum number of open files to 10032 (it was originally set to 1024).
+cache-1  | 1:M 28 Sep 2026 13:08:57.331 * monotonic clock: POSIX clock_gettime
+cache-1  | 1:M 28 Sep 2026 13:08:57.337 * Running mode=standalone, port=6379.
+cache-1  | 1:M 28 Sep 2026 13:08:57.337 * Server initialized
+cache-1  | 1:M 28 Sep 2026 13:08:57.337 * Ready to accept connections tcp
+ Container shop-worker-1 Started 
+ Container shop-db-1 Started 
+ Container shop-tests-1 Starting 
+db-1     | The files belonging to this database system will be owned by user "postgres".
+db-1     | This user must also own the server process.
+db-1     | 
+db-1     | The database cluster will be initialized with locale "en_US.utf8".
+db-1     | The default database encoding has accordingly been set to "UTF8".
+db-1     | The default text search configuration will be set to "english".
+db-1     | 
+db-1     | Data page checksums are disabled.
+db-1     | 
+db-1     | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+db-1     | creating subdirectories ... ok
+db-1     | selecting dynamic shared memory implementation ... posix
+db-1     | selecting default max_connections ... 100
+db-1     | selecting default shared_buffers ... 128MB
+db-1     | selecting default time zone ... UTC
+db-1     | creating configuration files ... ok
+ Container shop-tests-1 Started 
+db-1     | running bootstrap script ... ok
+db-1     | sh: locale: not found
+db-1     | 2026-09-28 13:08:58.538 UTC [35] WARNING:  no usable system locales were found
+db-1     | performing post-bootstrap initialization ... ok
+db-1     | syncing data to disk ... ok
+db-1     | 
+db-1     | 
+db-1     | Success. You can now start the database server using:
+db-1     | 
+db-1     |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+db-1     | 
+db-1     | initdb: warning: enabling "trust" authentication for local connections
+db-1     | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+db-1     | waiting for server to start....2026-09-28 13:08:59.350 UTC [41] LOG:  starting PostgreSQL 16.14 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+db-1     | 2026-09-28 13:08:59.352 UTC [41] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+worker-1  | worker: job 1 done in 3ms
+db-1      | 2026-09-28 13:08:59.360 UTC [44] LOG:  database system was shut down at 2026-09-28 13:08:59 UTC
+db-1      | 2026-09-28 13:08:59.363 UTC [41] LOG:  database system is ready to accept connections
+db-1      |  done
+db-1      | server started
+db-1      | 
+db-1      | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+db-1      | 
+db-1      | waiting for server to shut down....2026-09-28 13:08:59.380 UTC [41] LOG:  received fast shutdown request
+db-1      | 2026-09-28 13:08:59.382 UTC [41] LOG:  aborting any active transactions
+db-1      | 2026-09-28 13:08:59.383 UTC [41] LOG:  background worker "logical replication launcher" (PID 47) exited with exit code 1
+db-1      | 2026-09-28 13:08:59.383 UTC [42] LOG:  shutting down
+db-1      | 2026-09-28 13:08:59.384 UTC [42] LOG:  checkpoint starting: shutdown immediate
+db-1      | 2026-09-28 13:08:59.388 UTC [42] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.005 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/14F7160, redo lsn=0/14F7160
+db-1      | 2026-09-28 13:08:59.390 UTC [41] LOG:  database system is shut down
+worker-1  | worker: job 2 done in 6ms
+worker-1  | worker: job 3 done in 9ms
+db-1      |  done
+db-1      | server stopped
+db-1      | 
+db-1      | PostgreSQL init process complete; ready for start up.
+db-1      | 
+db-1      | 2026-09-28 13:08:59.494 UTC [1] LOG:  starting PostgreSQL 16.14 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+db-1      | 2026-09-28 13:08:59.495 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+db-1      | 2026-09-28 13:08:59.495 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+db-1      | 2026-09-28 13:08:59.499 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1      | 2026-09-28 13:08:59.501 UTC [55] LOG:  database system was shut down at 2026-09-28 13:08:59 UTC
+worker-1  | worker: job 4 done in 12ms
+db-1      | 2026-09-28 13:08:59.511 UTC [1] LOG:  database system is ready to accept connections
+worker-1  | worker: job 5 done in 15ms
+worker-1  | worker: job 6 done in 18ms
+worker-1  | worker: job 7 done in 21ms
+worker-1  | worker: job 8 done in 24ms
+worker-1  | worker: job 9 done in 27ms
+worker-1  | worker: job 10 done in 30ms
+worker-1  | worker: job 11 done in 33ms
+worker-1  | worker: job 12 done in 36ms
+worker-1  | worker: job 13 done in 39ms
+worker-1  | worker: job 14 done in 42ms
+worker-1  | worker: job 15 done in 45ms
+worker-1  | worker: job 16 done in 48ms
+worker-1  | worker: job 17 done in 51ms
+worker-1  | worker: job 18 done in 54ms
+worker-1  | worker: job 19 done in 57ms
+worker-1  | worker: job 20 done in 60ms
+worker-1  | worker: job 21 done in 63ms
+worker-1  | worker: job 22 done in 66ms
+worker-1  | worker: job 23 done in 69ms
+worker-1  | worker: job 24 done in 72ms
+worker-1  | worker: job 25 done in 75ms
+worker-1  | worker: ERROR job 26 failed: dial tcp db:5432: connection refused
+tests-1   | === RUN   TestTotal
+tests-1   |     price_test.go:7: Total = 0, want 135
+tests-1   | --- FAIL: TestTotal (0.00s)
+tests-1   | === RUN   TestSlug
+tests-1   | === RUN   TestSlug/Red_Shoes
+tests-1   |     price_test.go:18: Slug("Red Shoes") = "Red_Shoes", want "red-shoes"
+tests-1   | === RUN   TestSlug/hat
+tests-1   | --- FAIL: TestSlug (0.00s)
+tests-1   |     --- FAIL: TestSlug/Red_Shoes (0.00s)
+tests-1   |     --- PASS: TestSlug/hat (0.00s)
+tests-1   | FAIL
+tests-1   | FAIL	example.com/acme/api	0.008s
+tests-1   | FAIL
+
+[Ktests-1 exited with code 1
+ Compose Stopping Aborting on container exit...
+ Container shop-worker-1 Stopping 
+ Container shop-tests-1 Stopping 
+ Container shop-tests-1 Stopped 
+ Container shop-cache-1 Stopping 
+ Container shop-db-1 Stopping 
+cache-1   | 1:signal-handler (1790600951) Received SIGTERM scheduling shutdown...
+db-1      | 2026-09-28 13:09:11.518 UTC [1] LOG:  received fast shutdown request
+db-1      | 2026-09-28 13:09:11.521 UTC [1] LOG:  aborting any active transactions
+db-1      | 2026-09-28 13:09:11.537 UTC [1] LOG:  background worker "logical replication launcher" (PID 58) exited with exit code 1
+db-1      | 2026-09-28 13:09:11.537 UTC [53] LOG:  shutting down
+db-1      | 2026-09-28 13:09:11.538 UTC [53] LOG:  checkpoint starting: shutdown immediate
+db-1      | 2026-09-28 13:09:11.545 UTC [53] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.001 s, total=0.008 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/14F71D8, redo lsn=0/14F71D8
+db-1      | 2026-09-28 13:09:11.549 UTC [1] LOG:  database system is shut down
+cache-1   | 1:M 28 Sep 2026 13:09:11.615 * User requested shutdown...
+cache-1   | 1:M 28 Sep 2026 13:09:11.615 * Saving the final RDB snapshot before exiting.
+cache-1   | 1:M 28 Sep 2026 13:09:11.618 * DB saved on disk
+cache-1   | 1:M 28 Sep 2026 13:09:11.618 # Redis is now ready to exit, bye bye...
+ Container shop-db-1 Stopped 
+
+[Kdb-1 exited with code 0
+ Container shop-cache-1 Stopped 
+
+[Kcache-1 exited with code 0
+ Container shop-worker-1 Stopped 
+
+[Kworker-1 exited with code 137
+

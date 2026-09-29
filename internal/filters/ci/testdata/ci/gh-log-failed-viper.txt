@@ -1,0 +1,535 @@
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	﻿2026-09-22T11:24:19.3287505Z Current runner version: '2.337.0'
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3315886Z ##[group]Runner Image Provisioner
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3316629Z Hosted Compute Agent
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3317173Z Version: 20260828.587
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3317731Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3318384Z Build Date: 2026-08-28T16:44:25Z
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3318970Z Worker ID: {d2bf74f8-1545-46cf-906e-d69010d1e6d6}
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3319594Z Azure Region: westus3
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3320134Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3321314Z ##[group]Operating System
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3321963Z Microsoft Windows Server 2025
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3322537Z 10.0.26100
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3323042Z Datacenter
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3323561Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3324114Z ##[group]Runner Image
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3324751Z Image: windows-2025-vs2026
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3325370Z Version: 20260907.229.1
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3326834Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260907.229/images/windows/Windows2025-VS2026-Readme.md
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3328323Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260907.229
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3329358Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3330487Z ##[group]GITHUB_TOKEN Permissions
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3332484Z Contents: read
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3333077Z Metadata: read
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3333645Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3335687Z Secret source: None
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3336556Z Cache mode: write
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3337269Z Prepare workflow directory
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3614424Z Prepare all required actions
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.3658543Z Getting action download info
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:19.6371617Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:20.4332997Z Download action repository 'actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a' (SHA:3041bf56c941b39c61721a86cd11f3bb1338122a)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:21.9435893Z Complete job name: Test (windows-latest, 1.23, viper_finder)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9665670Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9673553Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9673951Z with:
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9674121Z   repository: spf13/viper
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9675970Z   token: ***
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9676127Z   ssh-strict: true
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9676280Z   ssh-user: git
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9676438Z   persist-credentials: true
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9676618Z   clean: true
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9676793Z   sparse-checkout-cone-mode: true
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9676990Z   fetch-depth: 1
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9677146Z   fetch-tags: false
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9677334Z   show-progress: true
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9677547Z   lfs: false
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9677690Z   submodules: false
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9677854Z   set-safe-directory: true
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:22.9678178Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:23.6114254Z Syncing repository: spf13/viper
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:23.6115342Z ##[group]Getting Git version info
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:23.6115702Z Working directory is 'D:\a\viper\viper'
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:24.0727798Z [command]"C:\Program Files\Git\bin\git.exe" version
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:33.6319210Z git version 2.55.0.windows.5
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:33.6363882Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:33.6380964Z Temporarily overriding HOME='D:\a\_temp\3c576e4f-0253-4665-b87e-5fbee1f7afa5' before making global git config changes
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:33.6381823Z Adding repository directory to the temporary git global config as a safe directory
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:33.6390918Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\viper\viper
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:34.6885863Z Deleting the contents of 'D:\a\viper\viper'
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:34.6891913Z ##[group]Initializing the repository
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:34.6911088Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\viper\viper
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:36.3873903Z Initialized empty Git repository in D:/a/viper/viper/.git/
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:36.3917558Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/spf13/viper
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:37.2045075Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:37.2045788Z ##[group]Disabling automatic garbage collection
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:37.2056791Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:37.2344595Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:37.2345213Z ##[group]Setting up auth
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:37.2357253Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:37.2605310Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:57.4484702Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:57.4751132Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:57.9933154Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:58.0204820Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:58.0205670Z ##[group]Fetching the repository
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:58.0219333Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +32517b6f4c8789c00d855b80a80654d8c243bced:refs/remotes/pull/2150/merge
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.4526517Z From https://github.com/spf13/viper
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.4530361Z  * [new ref]         32517b6f4c8789c00d855b80a80654d8c243bced -> pull/2150/merge
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.4568087Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.4568731Z ##[group]Determining the checkout info
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.4571126Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.4580422Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.5011439Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.5278471Z ##[group]Checking out the ref
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.5287853Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/2150/merge
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7143234Z Note: switching to 'refs/remotes/pull/2150/merge'.
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7143577Z 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7143889Z You are in 'detached HEAD' state. You can look around, make experimental
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7144500Z changes and commit them, and you can discard any commits you make in this
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7145143Z state without impacting any branches by switching back to a branch.
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7145498Z 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7145976Z If you want to create a new branch to retain commits you create, you may
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7146607Z do so (now or later) by using -c with the switch command. Example:
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7146964Z 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7147238Z   git switch -c <new-branch-name>
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7147437Z 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7147662Z Or undo this operation with:
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7147859Z 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7147999Z   git switch -
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7148176Z 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7148415Z Turn off this advice by setting config variable advice.detachedHead to false
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7148845Z 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7199290Z HEAD is now at 32517b6 Merge a7a7c4c951c5b0008370a666be95654f020f0bc2 into 528f7416c4b56a4948673984b190bf8713f0c3c4
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7306973Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7663996Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.7914249Z 32517b6f4c8789c00d855b80a80654d8c243bced
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.8493748Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.8497760Z ##[group]Run actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.8498220Z with:
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.8498721Z   go-version: 1.23
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.8498920Z   check-latest: false
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.8500984Z   token: ***
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.8501135Z   cache: true
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.8501280Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.9886801Z Setup go version spec 1.23
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:24:59.9930464Z Attempting to download 1.23...
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:00.0198434Z (node:2984) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:00.0199798Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:00.9587375Z matching 1.23...
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:00.9614453Z Acquiring 1.23.12 from https://github.com/actions/go-versions/releases/download/1.23.12-16792118003/go-1.23.12-win32-x64.zip
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:01.6431571Z Extracting Go...
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:01.7163072Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command "$ErrorActionPreference = 'Stop' ; try { Add-Type -AssemblyName System.IO.Compression.ZipFile } catch { } ; try { [System.IO.Compression.ZipFile]::ExtractToDirectory('D:\a\_temp\go-1.23.12-win32-x64.zip', 'D:\a\_temp\4b14d688-8523-447e-af78-867574b0f2cd', $true) } catch { if (($_.Exception.GetType().FullName -eq 'System.Management.Automation.MethodException') -or ($_.Exception.GetType().FullName -eq 'System.Management.Automation.RuntimeException') ){ Expand-Archive -LiteralPath 'D:\a\_temp\go-1.23.12-win32-x64.zip' -DestinationPath 'D:\a\_temp\4b14d688-8523-447e-af78-867574b0f2cd' -Force } else { throw $_ } } ;"
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:05.2226613Z Successfully extracted go to D:\a\_temp\4b14d688-8523-447e-af78-867574b0f2cd
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:05.2226972Z Adding to the cache ...
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.3733358Z Created link C:\hostedtoolcache\windows\go\1.23.12\x64 => D:\hostedtoolcache\windows\go\1.23.12\x64
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.3736434Z Created link C:\hostedtoolcache\windows\go\1.23.12\x64.complete => D:\hostedtoolcache\windows\go\1.23.12\x64.complete
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.3737493Z Successfully cached go to C:\hostedtoolcache\windows\go\1.23.12\x64
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.3743452Z Added go to the path
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.3745589Z Successfully set up Go version 1.23
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.6946068Z [command]C:\hostedtoolcache\windows\go\1.23.12\x64\bin\go.exe env GOMODCACHE
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.6988105Z [command]C:\hostedtoolcache\windows\go\1.23.12\x64\bin\go.exe env GOCACHE
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.7268968Z C:\Users\runneradmin\go\pkg\mod
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.7280470Z C:\Users\runneradmin\AppData\Local\go-build
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.8723379Z ##[warning]Failed to restore: Cache service responded with 400
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.8730999Z Cache is not found
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.8745227Z go version go1.23.12 windows/amd64
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.8745480Z 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:12.8745800Z ##[group]go env
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2136327Z set GO111MODULE=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2136618Z set GOARCH=amd64
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2136823Z set GOBIN=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2137100Z set GOCACHE=C:\Users\runneradmin\AppData\Local\go-build
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2137472Z set GOENV=C:\Users\runneradmin\AppData\Roaming\go\env
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2137784Z set GOEXE=.exe
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2137984Z set GOEXPERIMENT=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2138180Z set GOFLAGS=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2138366Z set GOHOSTARCH=amd64
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2138570Z set GOHOSTOS=windows
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2139619Z set GOINSECURE=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2139926Z set GOMODCACHE=C:\Users\runneradmin\go\pkg\mod
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2141995Z set GONOPROXY=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2142247Z set GONOSUMDB=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2142445Z set GOOS=windows
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2142691Z set GOPATH=C:\Users\runneradmin\go
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2142966Z set GOPRIVATE=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2143249Z set GOPROXY=https://proxy.golang.org,direct
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2143624Z set GOROOT=C:\hostedtoolcache\windows\go\1.23.12\x64
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2143973Z set GOSUMDB=sum.golang.org
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2144221Z set GOTMPDIR=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2144441Z set GOTOOLCHAIN=auto
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2144831Z set GOTOOLDIR=C:\hostedtoolcache\windows\go\1.23.12\x64\pkg\tool\windows_amd64
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2145293Z set GOVCS=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2145537Z set GOVERSION=go1.23.12
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2145761Z set GODEBUG=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2145962Z set GOTELEMETRY=local
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2146340Z set GOTELEMETRYDIR=C:\Users\runneradmin\AppData\Roaming\go\telemetry
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2147230Z set GCCGO=gccgo
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2147444Z set GOAMD64=v1
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2147664Z set AR=ar
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2147838Z set CC=gcc
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2148033Z set CXX=g++
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2148336Z set CGO_ENABLED=1
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2148612Z set GOMOD=D:\a\viper\viper\go.mod
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2148879Z set GOWORK=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2149127Z set CGO_CFLAGS=-O2 -g
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2149364Z set CGO_CPPFLAGS=
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2149590Z set CGO_CXXFLAGS=-O2 -g
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2149826Z set CGO_FFLAGS=-O2 -g
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2150051Z set CGO_LDFLAGS=-O2 -g
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2150308Z set PKG_CONFIG=pkg-config
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2151221Z set GOGCCFLAGS=-m64 -mthreads -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=C:\Users\RUNNER~1\AppData\Local\Temp\go-build2476092823=/tmp/go-build -gno-record-gcc-switches
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2152033Z 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2152441Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2457209Z ##[group]Run go test -v -tags 'viper_finder' -shuffle=on ./...
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2457660Z ^[[36;1mgo test -v -tags 'viper_finder' -shuffle=on ./...^[[0m
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2568664Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.2568983Z ##[endgroup]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.5712713Z go: downloading github.com/stretchr/testify v1.11.1
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.5713375Z go: downloading github.com/pelletier/go-toml/v2 v2.2.4
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.5770399Z go: downloading go.yaml.in/yaml/v3 v3.0.4
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.7419422Z go: downloading github.com/spf13/cast v1.10.0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.7703093Z go: downloading github.com/subosito/gotenv v1.6.0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.7887011Z go: downloading github.com/fsnotify/fsnotify v1.9.0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.7991801Z go: downloading github.com/go-viper/mapstructure/v2 v2.4.0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.8227399Z go: downloading github.com/sagikazarmark/locafero v0.12.0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.8273465Z go: downloading github.com/spf13/afero v1.15.0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.8600385Z go: downloading github.com/spf13/pflag v1.0.10
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.9717846Z go: downloading github.com/davecgh/go-spew v1.1.1
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.9747230Z go: downloading github.com/pmezard/go-difflib v1.0.0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:16.9874989Z go: downloading golang.org/x/text v0.28.0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:17.8666885Z go: downloading golang.org/x/sys v0.29.0
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:17.8939821Z go: downloading gopkg.in/yaml.v3 v3.0.1
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0163372Z -test.shuffle 1790076335972338800
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0164100Z === RUN   TestUnmarshal
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0169199Z --- PASS: TestUnmarshal (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0169926Z === RUN   TestFlagShadow
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0170333Z --- PASS: TestFlagShadow (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0170736Z === RUN   TestAllKeysWithEnv
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0171137Z --- PASS: TestAllKeysWithEnv (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0171559Z === RUN   TestBindPFlags
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0171947Z --- PASS: TestBindPFlags (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0172706Z === RUN   TestDefault
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0173264Z --- PASS: TestDefault (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0173660Z === RUN   TestKeyDelimiter
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0174057Z --- PASS: TestKeyDelimiter (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0174477Z === RUN   TestBindPFlagsIntSlice
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0174936Z --- PASS: TestBindPFlagsIntSlice (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0175551Z === RUN   TestGetConfigFile
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0175979Z === RUN   TestGetConfigFile/config_file_set
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0176438Z === RUN   TestGetConfigFile/find_file
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0176872Z === RUN   TestGetConfigFile/find_files_only
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0177303Z === RUN   TestGetConfigFile/precedence
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0177739Z === RUN   TestGetConfigFile/without_extension
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0178257Z === RUN   TestGetConfigFile/without_extension_and_config_type
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0178806Z === RUN   TestGetConfigFile/experimental_finder
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0179264Z === RUN   TestGetConfigFile/finder
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0179692Z --- PASS: TestGetConfigFile (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0180205Z     --- PASS: TestGetConfigFile/config_file_set (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0180797Z     --- PASS: TestGetConfigFile/find_file (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0181523Z     --- PASS: TestGetConfigFile/find_files_only (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0182062Z     --- PASS: TestGetConfigFile/precedence (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0182608Z     --- PASS: TestGetConfigFile/without_extension (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0183259Z     --- PASS: TestGetConfigFile/without_extension_and_config_type (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0183916Z     --- PASS: TestGetConfigFile/experimental_finder (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0184498Z     --- PASS: TestGetConfigFile/finder (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0184998Z === RUN   TestSafeWriteConfigWithMissingConfigPath
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0185547Z --- PASS: TestSafeWriteConfigWithMissingConfigPath (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0186045Z === RUN   TestUnmarshaling
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0188440Z --- PASS: TestUnmarshaling (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0189125Z === RUN   TestReadConfigWithSetConfigFile
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0189624Z --- PASS: TestReadConfigWithSetConfigFile (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0190078Z === RUN   TestOverrides
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0190431Z --- PASS: TestOverrides (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0190805Z === RUN   TestAliases
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0191166Z --- PASS: TestAliases (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0191545Z === RUN   TestEnvPrefix
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0191942Z --- PASS: TestEnvPrefix (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0192885Z === RUN   TestSizeInBytes
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0193317Z --- PASS: TestSizeInBytes (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0193618Z === RUN   TestMergeConfigNoMerge
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0193945Z --- PASS: TestMergeConfigNoMerge (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0194285Z === RUN   TestAliasInConfigFile
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0194583Z --- PASS: TestAliasInConfigFile (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0194882Z === RUN   TestWriteHiddenFile
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0195171Z --- PASS: TestWriteHiddenFile (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0195471Z === RUN   TestWriteConfigTOML
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0195773Z === RUN   TestWriteConfigTOML/with_file_extension
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0196166Z === RUN   TestWriteConfigTOML/without_file_extension
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0196536Z --- PASS: TestWriteConfigTOML (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0196970Z     --- PASS: TestWriteConfigTOML/with_file_extension (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0197520Z     --- PASS: TestWriteConfigTOML/without_file_extension (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0197982Z === RUN   TestUnmarshalWithDecoderOptions
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0198361Z --- PASS: TestUnmarshalWithDecoderOptions (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0198710Z === RUN   TestDotEnv
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0198930Z --- PASS: TestDotEnv (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0199183Z === RUN   TestFindsNestedKeys
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0199467Z --- PASS: TestFindsNestedKeys (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0199842Z === RUN   TestDotParameter
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0200118Z --- PASS: TestDotParameter (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0201334Z === RUN   TestBindFlagValueSet
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0201647Z --- PASS: TestBindFlagValueSet (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0242025Z === RUN   TestParseNested
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0242346Z --- PASS: TestParseNested (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0242665Z === RUN   TestSubWithKeyDelimiter
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0242969Z --- PASS: TestSubWithKeyDelimiter (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0243322Z === RUN   TestMergeConfigMap
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0243919Z --- PASS: TestMergeConfigMap (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0244280Z === RUN   TestMergeConfigOverrideType
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0244671Z --- PASS: TestMergeConfigOverrideType (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0245082Z === RUN   TestSetConfigNameClearsFileCache
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0245504Z --- PASS: TestSetConfigNameClearsFileCache (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0245918Z === RUN   TestUnmarshalExact
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0246238Z --- PASS: TestUnmarshalExact (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0246572Z === RUN   TestNestedOverrides
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0246894Z --- PASS: TestNestedOverrides (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0247195Z === RUN   TestSliceIndexAccess
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0247510Z --- PASS: TestSliceIndexAccess (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0247842Z === RUN   TestReadInConfig
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0248143Z === RUN   TestReadInConfig/config_file_set
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0248487Z === RUN   TestReadInConfig/find_file
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0248893Z === RUN   TestReadInConfig/find_file_with_experimental_finder
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0249350Z === RUN   TestReadInConfig/find_file_using_a_finder
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0249727Z --- PASS: TestReadInConfig (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0250115Z     --- PASS: TestReadInConfig/config_file_set (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0250533Z     --- PASS: TestReadInConfig/find_file (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0251032Z     --- PASS: TestReadInConfig/find_file_with_experimental_finder (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0251589Z     --- PASS: TestReadInConfig/find_file_using_a_finder (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0251963Z === RUN   TestMultipleEnv
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0253109Z --- PASS: TestMultipleEnv (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0253446Z === RUN   TestAutoEnv
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0253722Z --- PASS: TestAutoEnv (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0254031Z === RUN   TestBindPFlagsStringSlice
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0254382Z --- PASS: TestBindPFlagsStringSlice (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0254714Z === RUN   TestIsSet
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0254952Z --- PASS: TestIsSet (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0255220Z === RUN   TestYML
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0255440Z --- PASS: TestYML (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0255729Z === RUN   TestBindPFlagsStringArray
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0256087Z --- PASS: TestBindPFlagsStringArray (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0256441Z === RUN   TestDefaultCodecRegistry
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0256755Z === RUN   TestDefaultCodecRegistry/OK
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0257112Z === RUN   TestDefaultCodecRegistry/CodecNotFound
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0257535Z === RUN   TestDefaultCodecRegistry/FormatIsCaseInsensitive
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0257967Z === RUN   TestDefaultCodecRegistry/OverrideDefault
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0258368Z --- PASS: TestDefaultCodecRegistry (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0258832Z     --- PASS: TestDefaultCodecRegistry/OK (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0259308Z     --- PASS: TestDefaultCodecRegistry/CodecNotFound (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0259876Z     --- PASS: TestDefaultCodecRegistry/FormatIsCaseInsensitive (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0260461Z     --- PASS: TestDefaultCodecRegistry/OverrideDefault (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0260863Z === RUN   TestWriteConfigDotEnv
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0261194Z === RUN   TestWriteConfigDotEnv/with_file_extension
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0261610Z === RUN   TestWriteConfigDotEnv/without_file_extension
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0261997Z --- PASS: TestWriteConfigDotEnv (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0262460Z     --- PASS: TestWriteConfigDotEnv/with_file_extension (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0263031Z     --- PASS: TestWriteConfigDotEnv/without_file_extension (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0263458Z === RUN   TestSliceFlagsReturnCorrectType
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0264210Z --- PASS: TestSliceFlagsReturnCorrectType (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0264593Z === RUN   TestAliasesOfAliases
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0264896Z --- PASS: TestAliasesOfAliases (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0265255Z === RUN   TestUnmarshalWithDefaultDecodeHook
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0265664Z --- PASS: TestUnmarshalWithDefaultDecodeHook (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0266021Z === RUN   TestDirsSearch
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0266297Z --- PASS: TestDirsSearch (0.01s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0266588Z === RUN   TestDefaultPost
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0266880Z --- PASS: TestDefaultPost (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0267195Z === RUN   TestCaseInsensitiveSet
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0267505Z --- PASS: TestCaseInsensitiveSet (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0267825Z === RUN   TestWatchFile
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0268092Z === RUN   TestWatchFile/file_content_changed
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0269050Z     viper_test.go:2449: test config file: C:\Users\RUNNER~1\AppData\Local\Temp\TestWatchFilefile_content_changed2142938107\001/config.yaml
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0270019Z     viper_test.go:2454: config file changed
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0270368Z     viper_test.go:2465: 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0270823Z         	Error Trace:	D:/a/viper/viper/viper_test.go:2465
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0271243Z         	Error:      	Not equal: 
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0271699Z         	            	expected: string("baz")
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0272184Z         	            	actual  : <nil>(<nil>)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0272651Z         	Test:       	TestWatchFile/file_content_changed
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0273092Z     viper_test.go:2454: config file changed
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0273826Z === RUN   TestWatchFile/link_to_real_file_changed_(à_la_Kubernetes)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0274574Z     viper_test.go:2471: Skipping test as symlink replacements don't work on non-linux environment...
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0275149Z --- FAIL: TestWatchFile (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0275526Z     --- FAIL: TestWatchFile/file_content_changed (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0276364Z     --- SKIP: TestWatchFile/link_to_real_file_changed_(à_la_Kubernetes) (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0276846Z === RUN   TestReadConfig
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0277129Z === RUN   TestReadConfig/ok
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0277841Z     viper_test.go:1549: [age beard hobbies clothing.jacket clothing.pants.size eyes hacker name clothing.trousers]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0278517Z === RUN   TestReadConfig/missing_config_type
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0278861Z --- PASS: TestReadConfig (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0279202Z     --- PASS: TestReadConfig/ok (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0279639Z     --- PASS: TestReadConfig/missing_config_type (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0280031Z === RUN   TestUnmarshalingWithAliases
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0280378Z --- PASS: TestUnmarshalingWithAliases (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0280694Z === RUN   TestEnv
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0280913Z --- PASS: TestEnv (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0281166Z === RUN   TestTOML
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0281401Z --- PASS: TestTOML (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0281689Z === RUN   TestIsPathShadowedInFlatMap
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0282051Z --- PASS: TestIsPathShadowedInFlatMap (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0282383Z === RUN   TestWriteConfig
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0282772Z === RUN   TestWriteConfig/json_with_file_extension_and_mismatch_type
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0283255Z === RUN   TestWriteConfig/yaml_with_file_extension
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0283644Z === RUN   TestWriteConfig/yaml_without_file_extension
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0284407Z === RUN   TestWriteConfig/yaml_with_file_extension_and_mismatch_type
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0284855Z === RUN   TestWriteConfig/json_with_file_extension
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0285243Z === RUN   TestWriteConfig/json_without_file_extension
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0285583Z --- PASS: TestWriteConfig (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0286118Z     --- PASS: TestWriteConfig/json_with_file_extension_and_mismatch_type (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0286778Z     --- PASS: TestWriteConfig/yaml_with_file_extension (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0287284Z     --- PASS: TestWriteConfig/yaml_without_file_extension (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0288062Z     --- PASS: TestWriteConfig/yaml_with_file_extension_and_mismatch_type (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0288673Z     --- PASS: TestWriteConfig/json_with_file_extension (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0289209Z     --- PASS: TestWriteConfig/json_without_file_extension (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0289612Z === RUN   TestSetEnvKeyReplacer
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0289918Z --- PASS: TestSetEnvKeyReplacer (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0290240Z === RUN   TestMergeConfig
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0290529Z --- PASS: TestMergeConfig (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0290847Z === RUN   TestBindPFlagDetectNilFlag
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0291216Z --- PASS: TestBindPFlagDetectNilFlag (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0291574Z === RUN   TestSub
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0291803Z --- PASS: TestSub (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0292066Z === RUN   TestBindFlagValue
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0292344Z --- PASS: TestBindFlagValue (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0292663Z === RUN   TestUnmarshalWithAutomaticEnv
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0293024Z === RUN   TestUnmarshalWithAutomaticEnv/OK
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0293394Z === RUN   TestUnmarshalWithAutomaticEnv/Precedence
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0293822Z === RUN   TestUnmarshalWithAutomaticEnv/Unset
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0294187Z === RUN   TestUnmarshalWithAutomaticEnv/Exact
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0294561Z --- PASS: TestUnmarshalWithAutomaticEnv (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0295014Z     --- PASS: TestUnmarshalWithAutomaticEnv/OK (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0295533Z     --- PASS: TestUnmarshalWithAutomaticEnv/Precedence (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0296054Z     --- PASS: TestUnmarshalWithAutomaticEnv/Unset (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0296546Z     --- PASS: TestUnmarshalWithAutomaticEnv/Exact (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0296931Z === RUN   TestCaseInsensitive
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0297229Z --- PASS: TestCaseInsensitive (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0297601Z === RUN   TestUnmarshal_DotSeparatorBackwardCompatibility
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0298097Z --- PASS: TestUnmarshal_DotSeparatorBackwardCompatibility (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0298635Z === RUN   TestAllKeys
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0298889Z --- PASS: TestAllKeys (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0299193Z === RUN   TestAutoEnvWithPrefix
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0299518Z --- PASS: TestAutoEnvWithPrefix (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0299871Z === RUN   TestBindPFlagStringToString
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0300240Z --- PASS: TestBindPFlagStringToString (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0300647Z === RUN   TestWrongDirsSearchNotFoundForMerge
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0301078Z --- PASS: TestWrongDirsSearchNotFoundForMerge (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0301482Z === RUN   TestCopyAndInsensitiviseMap
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0301817Z --- PASS: TestCopyAndInsensitiviseMap (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0302167Z === RUN   TestWrongDirsSearchNotFound
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0302488Z --- PASS: TestWrongDirsSearchNotFound (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0302838Z === RUN   TestSafeWriteConfigAsWithExistingFile
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0303196Z --- PASS: TestSafeWriteConfigAsWithExistingFile (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0303554Z === RUN   TestUnwrapParseErrors
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0303833Z --- PASS: TestUnwrapParseErrors (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0304405Z === RUN   TestBindPFlagStringToInt
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0304711Z --- PASS: TestBindPFlagStringToInt (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0305000Z === RUN   TestFinders
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0305212Z --- PASS: TestFinders (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0305493Z === RUN   TestSafeWriteConfigWithExistingFile
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0305938Z --- PASS: TestSafeWriteConfigWithExistingFile (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0306329Z === RUN   TestSafeWriteAsConfig
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0306629Z --- PASS: TestSafeWriteAsConfig (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0306961Z === RUN   TestMergeConfigWithSetConfigFile
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0307360Z --- PASS: TestMergeConfigWithSetConfigFile (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0307740Z === RUN   TestSafeWriteConfig
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0308051Z --- PASS: TestSafeWriteConfig (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0308371Z === RUN   TestEnvSubConfig
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0308667Z --- PASS: TestEnvSubConfig (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0309194Z === RUN   TestShadowedNestedValue
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0309496Z --- PASS: TestShadowedNestedValue (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0309820Z === RUN   TestBindPFlagsSlices
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0310110Z --- PASS: TestBindPFlagsSlices (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0310406Z === RUN   TestJSON
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0310647Z --- PASS: TestJSON (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0310934Z === RUN   TestEnvKeyReplacer
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0311237Z --- PASS: TestEnvKeyReplacer (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0311561Z === RUN   TestEmptyEnv_Allowed
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0311873Z --- PASS: TestEmptyEnv_Allowed (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0312195Z === RUN   TestWrongFileNotFound
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0312507Z --- PASS: TestWrongFileNotFound (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0312851Z === RUN   TestAbsPathify
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0313215Z     viper_test.go:2718: Skip test on Windows
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0313530Z --- SKIP: TestAbsPathify (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0313828Z === RUN   TestRemotePrecedence
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0314120Z --- PASS: TestRemotePrecedence (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0314424Z === RUN   TestEmptyEnv
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0314686Z --- PASS: TestEmptyEnv (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0314935Z === RUN   TestRecursiveAliases
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0315207Z --- PASS: TestRecursiveAliases (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0315511Z === RUN   TestBindPFlag
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0315776Z --- PASS: TestBindPFlag (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0316042Z === RUN   TestBoundCaseSensitivity
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0316365Z --- PASS: TestBoundCaseSensitivity (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0316672Z === RUN   ExampleFinder
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0316928Z --- PASS: ExampleFinder (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0317199Z === RUN   ExampleFinders
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0317455Z --- PASS: ExampleFinders (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0317725Z FAIL
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.0317999Z FAIL	github.com/spf13/viper	0.059s
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3057605Z -test.shuffle 1790076336298615800
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3072610Z === RUN   TestCodec_Decode
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3073003Z === RUN   TestCodec_Decode/OK
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3073417Z === RUN   TestCodec_Decode/InvalidData
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3074208Z     codec_test.go:53: decoding failed as expected: line `invalid data` doesn't match format
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3075013Z --- PASS: TestCodec_Decode (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3075477Z     --- PASS: TestCodec_Decode/OK (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3075970Z     --- PASS: TestCodec_Decode/InvalidData (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3077456Z === RUN   TestCodec_Encode
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3078326Z --- PASS: TestCodec_Encode (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3078627Z PASS
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3079555Z ok  	github.com/spf13/viper/internal/encoding/dotenv	0.020s
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3090626Z -test.shuffle 1790076336301908700
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3090994Z === RUN   TestCodec_Encode
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3091311Z --- PASS: TestCodec_Encode (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3091988Z === RUN   TestCodec_Decode
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3092563Z === RUN   TestCodec_Decode/OK
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3092919Z === RUN   TestCodec_Decode/InvalidData
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3094800Z     codec_test.go:85: decoding failed as expected: invalid character 'i' looking for beginning of value
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3095581Z --- PASS: TestCodec_Decode (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3096027Z     --- PASS: TestCodec_Decode/OK (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3098494Z     --- PASS: TestCodec_Decode/InvalidData (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3099647Z PASS
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3100133Z ok  	github.com/spf13/viper/internal/encoding/json	0.024s
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3161156Z -test.shuffle 1790076336312339000
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3161854Z === RUN   TestCodec_Decode
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3187603Z === RUN   TestCodec_Decode/OK
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3188068Z === RUN   TestCodec_Decode/InvalidData
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3188834Z     codec_test.go:95: decoding failed as expected: toml: expected character =
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3190132Z --- PASS: TestCodec_Decode (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3190654Z     --- PASS: TestCodec_Decode/OK (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3192485Z     --- PASS: TestCodec_Decode/InvalidData (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3193059Z === RUN   TestCodec_Encode
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3193366Z --- PASS: TestCodec_Encode (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3193667Z PASS
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.3194046Z ok  	github.com/spf13/viper/internal/encoding/toml	0.020s
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7294255Z ?   	github.com/spf13/viper/internal/features	[no test files]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7294652Z ?   	github.com/spf13/viper/internal/testutil	[no test files]
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7461223Z -test.shuffle 1790076336742286300
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7461490Z === RUN   TestCodec_Decode
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7461685Z === RUN   TestCodec_Decode/OK
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7461895Z === RUN   TestCodec_Decode/InvalidData
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7462414Z     codec_test.go:126: decoding failed as expected: yaml: unmarshal errors:
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7462918Z           line 1: cannot unmarshal !!str `invalid...` into map[string]interface {}
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7463260Z --- PASS: TestCodec_Decode (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7463505Z     --- PASS: TestCodec_Decode/OK (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7463772Z     --- PASS: TestCodec_Decode/InvalidData (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7463998Z === RUN   TestCodec_Encode
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7464189Z --- PASS: TestCodec_Encode (0.00s)
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7464368Z PASS
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7464565Z ok  	github.com/spf13/viper/internal/encoding/yaml	0.015s
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:36.7464797Z FAIL
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.3589112Z ##[error]Process completed with exit code 1.
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.3765492Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.3766521Z Post job cleanup.
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.5202036Z [command]"C:\Program Files\Git\bin\git.exe" version
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.5430558Z git version 2.55.0.windows.5
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.5485037Z Temporarily overriding HOME='D:\a\_temp\ed0d2acf-d38d-4b2e-aef9-ed9baecfaaed' before making global git config changes
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.5485956Z Adding repository directory to the temporary git global config as a safe directory
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.5493963Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\viper\viper
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.5745158Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:39.6001216Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:40.0201616Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:40.0399584Z http.https://github.com/.extraheader
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:40.0430515Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:40.0680091Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:40.4974937Z Cleaning up orphan processes
+Test (windows-latest, 1.23, viper_finder)	UNKNOWN STEP	2026-09-22T11:25:40.5335000Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

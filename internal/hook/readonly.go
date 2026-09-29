@@ -846,8 +846,13 @@ func (c *roCtx) du(args []roArg) (bool, string) {
 	return c.paths(ops)
 }
 
-var findDanger = roSet("-exec", "-execdir", "-ok", "-okdir", "-delete", "-fprint", "-fprint0", "-fprintf",
-	"-fls", "-follow", "-files0-from")
+var findDanger = roSet("-exec", "-execdir", "-ok", "-okdir", "-delete", "-rm", "-fprint", "-fprint0", "-fprintf",
+	"-fls", "-follow", "-files0-from", "-L", "-f", "-D")
+
+var findPattern = roSet("-name", "-iname", "-path", "-ipath", "-wholename", "-iwholename", "-lname", "-ilname",
+	"-regex", "-iregex", "-regextype", "-type", "-xtype", "-perm", "-size", "-user", "-group", "-uid", "-gid",
+	"-inum", "-links", "-fstype", "-printf", "-maxdepth", "-mindepth", "-amin", "-Bmin", "-cmin", "-mmin",
+	"-atime", "-Btime", "-ctime", "-mtime", "-used", "-context", "-xattrname")
 
 func (c *roCtx) find(args []roArg) (bool, string) {
 	i := 0
@@ -877,6 +882,7 @@ leading:
 	if ok, why := c.paths(starts); !ok {
 		return false, why
 	}
+	pattern := false
 	for ; i < len(args); i++ {
 		a := args[i]
 		if !a.plain() {
@@ -895,6 +901,13 @@ leading:
 				return false, why
 			}
 		}
+		// bfs (find in Claude Code) searches a bare word anywhere as a path
+		if !pattern && (v == "" || strings.IndexByte("-(!,)", v[0]) < 0) {
+			if ok, why := c.path(a); !ok {
+				return false, why
+			}
+		}
+		pattern = findPattern[v]
 	}
 	return true, ""
 }

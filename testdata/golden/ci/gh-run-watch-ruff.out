@@ -1,0 +1,60 @@
+[lx: 4 status refreshes; the latest is shown]
+[lx: 442 step lines not shown (passed or skipped)]
+✓ main CI · 36425221543
+Triggered via push about 12 minutes ago
+
+JOBS
+✓ Determine changes in 14s (ID 108937399019)
+✓ shellcheck in 33s (ID 108937509129)
+✓ cargo test (namespace-profile-windows-2022-x86-64-16x32) in 3m43s (ID 108937509242)
+✓ cargo test (namespace-profile-macos-15) in 2m31s (ID 108937509267)
+✓ cargo fmt in 24s (ID 108937509282)
+✓ cargo clippy in 2m23s (ID 108937509310)
+✓ cargo test (linux) in 4m18s (ID 108937509381)
+✓ cargo hawk in 6m29s (ID 108937509489)
+✓ cargo publish dry-run in 3m34s (ID 108937509530)
+✓ test scripts in 1m22s (ID 108937509656)
+✓ cargo shear in 20s (ID 108937509669)
+✓ prek in 1m8s (ID 108937509689)
+✓ mkdocs in 2m54s (ID 108937509746)
+✓ ty completion evaluation in 1m36s (ID 108937509754)
+✓ cargo build (msrv) in 1m57s (ID 108937509806)
+✓ cargo deny in 29s (ID 108937509820)
+✓ benchmarks instrumented ty (build) in 2m58s (ID 108937509828)
+✓ cargo test (wasm) in 2m44s (ID 108937509872)
+✓ benchmarks instrumented (ruff) in 4m3s (ID 108937509894)
+✓ cargo fuzz build in 7m28s (ID 108937509901)
+✓ benchmarks walltime (build) in 3m56s (ID 108937509923)
+✓ cargo test (linux, release) in 3m35s (ID 108937509957)
+✓ test ruff-lsp in 2m27s (ID 108937509984)
+✓ formatter instabilities and black similarity in 2m58s (ID 108937510027)
+✓ python package in 1m14s (ID 108937510109)
+- check playground (ID 108937510921)
+- ecosystem (ID 108937511027)
+- Fuzz for new ty panics (ID 108937511275)
+- fuzz parser (ID 108937511293)
+- PGO in 0s (ID 108937511307)
+✓ benchmarks instrumented ty (simulation: projects) in 7m13s (ID 108938666048)
+✓ benchmarks instrumented ty (memory: constraint_set) in 2m39s (ID 108938666097)
+✓ benchmarks instrumented ty (simulation: module_resolution) in 1m51s (ID 108938666117)
+✓ benchmarks instrumented ty (simulation: constraint_set) in 3m47s (ID 108938666161)
+✓ benchmarks instrumented ty (simulation: micro-m-z) in 8m52s (ID 108938666189)
+✓ benchmarks instrumented ty (memory: micro-m-z) in 4m54s (ID 108938666196)
+✓ benchmarks instrumented ty (simulation: micro-a-l) in 4m50s (ID 108938666211)
+✓ benchmarks instrumented ty (memory: micro-a-l) in 3m19s (ID 108938666240)
+✓ benchmarks instrumented ty (memory: projects) in 5m33s (ID 108938666362)
+✓ benchmarks walltime (sympy) in 5m30s (ID 108939040638)
+✓ benchmarks walltime (colour_science|static_frame) in 5m19s (ID 108939040673)
+✓ benchmarks walltime (pydantic|freqtrade|multithreaded|altair) in 5m5s (ID 108939040687)
+✓ benchmarks walltime (pandas|tanjun) in 5m59s (ID 108939040693)
+✓ benchmarks walltime (ide) in 2m32s (ID 108939040703)
+✓ benchmarks walltime (script) in 1m29s (ID 108939040789)
+- all required checks passed in 0s (ID 108940014759)
+
+ANNOTATIONS
+! Restore cache failed: Dependencies file is not found in /home/runner/work/ruff/ruff. Supported file pattern: go.mod
+shellcheck: .github#36
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: SebRollen/toml-action@b1b3628f55fc3a28208d4203ada8b737e9687876. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo build (msrv): .github#2
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+cargo test (wasm): .github#2

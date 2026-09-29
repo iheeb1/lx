@@ -107,7 +107,7 @@ func TestCheckOrderAndIDs(t *testing.T) {
 			t.Errorf("check %s: message %q fix %q", c.ID, c.Message, c.Fix)
 		}
 	}
-	want := "binary hook hook-binary hook-run path rtk perms env settings storage activity"
+	want := "binary hook hook-binary hook-run path rtk perms env settings storage activity laya"
 	if got := strings.Join(ids, " "); got != want {
 		t.Errorf("check order:\n got %s\nwant %s", got, want)
 	}

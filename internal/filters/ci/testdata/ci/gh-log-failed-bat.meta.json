@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "36270173409",
+    "--repo",
+    "sharkdp/bat",
+    "--log-failed"
+  ],
+  "shell": "gh run view 36270173409 --repo sharkdp/bat --log-failed",
+  "repo": "sharkdp/bat",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): UNKNOWN STEP format: rust toolchain setup, then cargo clippy with -D warnings failing (needless_bool); a second all-jobs gate job",
+  "cwd": "/home/user/src/bat"
+}

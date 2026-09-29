@@ -11,4 +11,5 @@
               fix: find $ROOT/cache/lx/runs -maxdepth 1 -type f -name '[0-9]*.*' -delete  # deletes every stored run: lx show <id> then has nothing to show
 ✓ storage     history: 2 records, 173 B in $ROOT/data/lx/history.jsonl
 ✓ activity    last lx run 1 h ago
+- laya        not set up (optional: lx laya setup)
 lx doctor: 0 failures, 1 warning

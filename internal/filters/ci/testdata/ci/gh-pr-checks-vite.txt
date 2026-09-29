@@ -1,0 +1,21 @@
+AgentScan	pass	9s	https://github.com/vitejs/vite/actions/runs/36422576693/job/108928659160	
+Build & Test Passed or Skipped	pass	4s	https://github.com/vitejs/vite/actions/runs/36422576661/job/108931554000	
+Build&Test: node-20, ubuntu-latest	pass	4m36s	https://github.com/vitejs/vite/actions/runs/36422576661/job/108929289902	
+Build&Test: node-22, ubuntu-latest	pass	4m39s	https://github.com/vitejs/vite/actions/runs/36422576661/job/108929290190	
+Build&Test: node-24, macos-latest	pass	5m13s	https://github.com/vitejs/vite/actions/runs/36422576661/job/108929290037	
+Build&Test: node-24, ubuntu-latest	pass	3m11s	https://github.com/vitejs/vite/actions/runs/36422576661/job/108929289983	
+Build&Test: node-24, windows-latest	pass	6m14s	https://github.com/vitejs/vite/actions/runs/36422576661/job/108929290097	
+Build&Test: node-26, ubuntu-latest	pass	3m28s	https://github.com/vitejs/vite/actions/runs/36422576661/job/108929290000	
+Get changed files	pass	17s	https://github.com/vitejs/vite/actions/runs/36422576661/job/108929145077	
+Header rules - vite-docs-main	pass	1m9s	https://app.netlify.com/projects/vite-docs-main/deploys/6aba5e7e09862c00085bb493	
+Lint: node-24, ubuntu-latest	pass	1m49s	https://github.com/vitejs/vite/actions/runs/36422576661/job/108929145575	
+Run zizmor	pass	16s	https://github.com/vitejs/vite/actions/runs/36422577078/job/108928692719	
+Semantic Pull Request	pass	6s	https://github.com/vitejs/vite/actions/runs/36423778309/job/108932637269	
+zizmor	pass	3s	https://github.com/vitejs/vite/runs/108928755466	
+Build & Test Failed	skipping	0	https://github.com/vitejs/vite/actions/runs/36422576661/job/108931555897	
+Comment and close PR	skipping	0	https://github.com/vitejs/vite/actions/runs/36422576693/job/108928660983	
+Comment and close issue	skipping	0	https://github.com/vitejs/vite/actions/runs/36422576693/job/108928660867	
+Pages changed - vite-docs-main	skipping	1m9s	https://app.netlify.com/projects/vite-docs-main/deploys/6aba5e7e09862c00085bb493	
+preview	skipping	0	https://github.com/vitejs/vite/actions/runs/36422549322/job/108928565644	
+Redirect rules - vite-docs-main	pass	1m9s	https://app.netlify.com/projects/vite-docs-main/deploys/6aba5e7e09862c00085bb493	
+netlify/vite-docs-main/deploy-preview	pass	0	https://deploy-preview-23607--vite-docs-main.netlify.app	Deploy Preview ready!

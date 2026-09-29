@@ -1,0 +1,60 @@
+[lx: 2 jobs, 2 failed steps · per-line timestamps removed (2026-09-28 11:17:30 → 11:20:10 UTC) · 29 ##[group] blocks unwrapped]
+== Lint with build (typecheck) ==
+[lx: 7 steps folded (309 lines): Set up job · actions/checkout · ./.github/actions/prepare-install · echo github.ref · Install pnpm · Use Node.js 24 · Install dependencies]
+  + console-fail-test 0.9.0
+✗ Run pnpm typecheck · 30.3s
+[lx: 23 tasks (nx), 1 failed: type-utils:build · output regrouped by task, prefixes removed]
+$ nx run-many -t typecheck
+
+ NX   Running target typecheck for 19 projects and 18 tasks they depend on:
+
+- rule-schema-to-typescript-types
+- eslint-plugin-internal
+- integration-tests
+[lx: +16 more]
+[lx: 22 passed tasks without output: tsconfig-utils:build, ast-spec:build, tsconfig-utils:typecheck, types:copy-ast-spec, types:build, visitor-keys:build, … +16 more]
+✗ type-utils:build · tsc --build tsconfig.build.json
+../visitor-keys/src/visitor-keys.ts:273:31 - error TS2345: Argument of type 'AdditionalKeys' is not assignable to parameter of type 'VisitorKeys$1'.
+  'string' index signatures are incompatible.
+    Type 'readonly GetNodeTypeKeys<T>[] & readonly GetNodeTypeKeys<T>[]' is not assignable to type 'readonly string[]'.
+      The types returned by 'concat(...)' are incompatible between these types.
+        Type 'GetNodeTypeKeys<T>[]' is not assignable to type 'string[]'.
+          Type 'GetNodeTypeKeys<T>' is not assignable to type 'string'.
+            Type 'number' is not assignable to type 'string'.
+
+Found 1 error in ../visitor-keys/src/visitor-keys.ts:273
+
+Warning: command "tsc --build tsconfig.build.json" exited with non-zero status code
+ NX   Running target typecheck for 19 projects and 18 tasks they depend on failed
+
+Tasks not run because their dependencies failed or --nx-bail=true:
+
+- rule-schema-to-typescript-types:typecheck
+- eslint-plugin-internal:typecheck
+- typescript-eslint:typecheck
+[lx: +11 more]
+
+Failed tasks:
+
+- type-utils:build
+
+Output of 22 successful tasks were not shown. Run with --verbose or --output-style=static to see it.
+
+[lx: 40 table lines not shown]
+│   ✖      type-utils:build                                             1s          Cache Miss     │
+│ 1      │ Failed Tasks                           │ 4.35%  │ Failure Percentage                    │
+ See more details at: https://cloud.nx.app/cipes/6aba4cb8d93811a0f91fc612
+
+  Run duration:      25.3s
+  Cache:             13/22 hit (59%)
+  Critical path:     22.4s (11 tasks)
+  Recoverable time:  <1ms
+[ELIFECYCLE] Command failed with exit code 130.
+##[error]Process completed with exit code 130.
+[lx: 6 steps folded (26 lines): Post job cleanup · Use Node.js 24 · Install pnpm · Post job cleanup · Complete job]
+  ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+== Required Checks ==
+[lx: 1 step folded (29 lines): Set up job]
+✗ Run exit 1 · 340ms
+##[error]Process completed with exit code 1.
+[lx: 1 step folded (1 line): Complete job]

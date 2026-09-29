@@ -168,6 +168,11 @@ var contractCommands = []string{
 	"just dev", "just --list", "task --watch test", "mise run", "turbo run dev", "turbo run test --dry-run",
 	"nx serve app", "nx graph", "rake -T", "deno test --watch", "deno task dev", "cargo nextest list",
 	"composer run-script --list", "sh scripts/ci.sh",
+
+	"gh run view 42 --log-failed", "gh run view 42 --log --job 7", "gh -R o/r run view 42 --log", "gh run view 42",
+	"gh run view --job 7", "gh run watch 42 --exit-status", "gh pr checks 12", "gh pr checks", "gh api repos/o/r/actions/jobs/7/logs",
+	"gh run view 42 --web", "gh run view 42 --json jobs", "gh run view 42 --log -q .", "gh pr checks --watch",
+	"gh pr checks --json name,state", "gh run list", "gh pr view 12", "gh api repos/o/r/actions/runs/42",
 }
 
 var genericOnly = map[string]string{
@@ -204,8 +209,8 @@ var runnerOnly = map[string]string{
 	"task test":                     "go-task task: the report it prints is detected or condensed by the generic engine",
 	"task lint test":                "go-task tasks: each report is detected or condensed by the generic engine",
 	"mise run test":                 "mise task: the report it prints is detected or condensed by the generic engine",
-	"turbo run test":                "turbo prefixes each line with pkg:task: (no detector matches): the generic engine condenses it",
-	"turbo run build test lint":     "turbo prefixes each line with pkg:task: (no detector matches): the generic engine condenses it",
+	"turbo run test":                "turbo prefixes each line with pkg:task:; the monorepo detector regroups the lines by task and hands each task's output to its tool's filter",
+	"turbo run build test lint":     "turbo prefixes each line with pkg:task:; the monorepo detector regroups the lines by task and hands each task's output to its tool's filter",
 	"nx test app":                   "nx target: the executor's report (jest, vitest …) is detected",
 	"nx run app:test":               "nx target: the executor's report is detected",
 	"nx run-many -t test lint":      "nx targets: the executors' reports are detected or condensed by the generic engine",

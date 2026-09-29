@@ -1,0 +1,11 @@
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	﻿2026-09-28T12:13:14.6287447Z ##[group]Run yarn check-copyright-headers
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:14.6287837Z ^[[36;1myarn check-copyright-headers^[[0m
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:14.6356937Z shell: /usr/bin/bash -e {0}
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:14.6357226Z ##[endgroup]
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:15.4702892Z Meta copyright header check failed for the following files:
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:15.4703281Z 
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:15.4703583Z   e2e/config-single-project-no-ancestor-config/__tests__/a.test.js
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:15.4704115Z   e2e/config-single-project-no-ancestor-config/myconfig.js
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:15.4704393Z 
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:15.4705195Z Please include the header or exclude the files in `scripts/checkCopyrightHeaders.mjs`
+Static Checks (Lint, Typecheck, Yarn Validate)	check copyright headers	2026-09-28T12:13:15.5073407Z ##[error]Process completed with exit code 1.

@@ -51,6 +51,7 @@ func TestReadOnlyTable(t *testing.T) {
 
 		`find . -name '*.go'`, `find src -type f`, `find -H src -maxdepth 2`, `find . -name '*.go' -newer src/main.go`,
 		`find . -path ./node_modules -prune -o -print`, `find . -newermt 2024-01-01`, `find`, `find . \( -name a -o -name b \)`,
+		`find . -perm /u+x -type f`, `find . -regex '/x/.*' -size +1M -mtime -2`, `find src -name x -o -name y -print`,
 
 		`grep -rn TODO internal`, `grep -rn TODO`, `grep -E 'a|b' src/main.go`, `grep -e foo -e bar -r src`,
 		`egrep -n x src`, `fgrep -rl x .`, `grep --include='*.go' -rn x .`, `grep -C3 foo src/main.go`,
@@ -67,7 +68,8 @@ func TestReadOnlyTable(t *testing.T) {
 		`find . -delete`, `find . -exec rm {} +`, `find . -execdir ls \;`, `find . -ok rm {} \;`, `find . -fprint out`,
 		`find . -fprintf out '%p'`, `find . -fls out`, `find . -follow`, `find . -files0-from x`, `find -L . -name x`,
 		`find -f /etc`, `find -D tree .`, `find / -name x`, `find esc`, `find . -name *.go`, `find . -newer /etc/passwd`,
-		`find ../.. -name x`,
+		`find ../.. -name x`, `find . -name x -rm`, `find . -name '*.pem' /etc`, `find . -type f -f /etc`,
+		`find . -type f -L`, `find . -name x -D tree`, `find . -name x esc`, `find src -name x ../..`,
 
 		`rg --pre ./x foo`, `rg --pre=x foo`, `rg --pre-glob '*' foo`, `rg -z foo`, `rg --search-zip foo`, `rg -L foo`,
 		`rg --follow foo`, `rg --hostname-bin x foo`, `rg --type-add 'x:*.x' foo`, `rg --files /etc`, `rg foo /etc`,

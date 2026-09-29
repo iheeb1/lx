@@ -1,0 +1,27 @@
+[lx: 1 job, 1 failed step · per-line timestamps removed (2026-09-28 12:20:42 → 12:23:12 UTC) · 27 ##[group] blocks unwrapped]
+== Build&Test: node-22, ubuntu-latest ==
+[lx: 9 steps folded (559 lines): Set up job · Checkout · Install pnpm and node 22 · (non-windows) Set Playwright path and Get playwright version · Cache Playwright's binary · Install Playwright · Build · Test unit · … +1 more]
+  .../node_modules/unrs-resolver postinstall: [napi-postinstall@0.3.4] Failed to find package "@unrs/resolver-binding-linux-x64-gnu" on the file system
+  .../node_modules/unrs-resolver postinstall: [napi-postinstall@0.3.4] Failed to install package "@unrs/resolver-binding-linux-x64-gnu" using npm Cannot find module 'unrs-resolver/package.json'
+  Error: transport was disconnected, cannot call "fetchModule"
+✗ Test serve (bundled dev) · 54.5s
+$ pnpm run test-serve-bundled
+$ VITE_TEST_BUNDLED_DEV=1 vitest run -c vitest.config.e2e.ts
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  playground/css-no-codesplit/__tests__/css-no-codesplit.spec.ts > should load all stylesheets
+AssertionError: expected 'black' to be 'blue' // Object.is equality
+Expected: "blue"
+Received: "black"
+ ❯ playground/css-no-codesplit/__tests__/css-no-codesplit.spec.ts:5:44
+      5|   expect(await getColor('.shared-linked')).toBe('blue')
+       |                                            ^
+
+[1 console block of passing tests hidden]
+ Test Files  1 failed | 78 passed | 22 skipped (101)
+      Tests  1 failed | 697 passed | 338 skipped (1036)
+   Duration  54.01s (transform 938ms, setup 43.28s, import 1.76s, tests 87.30s, environment 7ms)
+[ELIFECYCLE] Command failed with exit code 1.
+##[error]Process completed with exit code 1.
+[lx: 3 steps folded (26 lines): Post Install pnpm and node 22 · Post Checkout · Complete job]

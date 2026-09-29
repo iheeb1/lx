@@ -1,0 +1,59 @@
+[lx: 3 tasks (nx), 2 failed: web:test, api:test · output regrouped by task, prefixes removed]
+lerna notice cli v8.2.4
+
+ Lerna (powered by Nx)   Running target test for 3 projects:
+
+- api
+- @acme/utils
+- web
+▸ @acme/utils:test · jest
+[1 passing suite, 3 passing tests hidden]
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        0.204 s, estimated 1 s
+Ran all test suites.
+✗ web:test · jest
+ FAIL  ./cart.test.js
+  ● currency has two decimals
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "$5.00"
+    Received: "$5.0"
+    >  8 |   expect(currency(5)).toBe('$5.00')
+         |                       ^
+      at Object.toBe (cart.test.js:8:23)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 2 passed, 3 total
+Snapshots:   0 total
+Time:        0.219 s, estimated 1 s
+Ran all test suites.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /home/user/src/acme/packages/web
+npm error workspace web@0.1.0
+npm error location /home/user/src/acme/packages/web
+npm error command failed
+npm error command sh -c jest
+✗ api:test · go test ./...
+--- FAIL: TestTotal (0.00s)
+    price_test.go:7: Total = 0, want 135
+--- FAIL: TestSlug (0.00s)
+    --- FAIL: TestSlug/Red_Shoes (0.00s)
+        price_test.go:18: Slug("Red Shoes") = "Red_Shoes", want "red-shoes"
+FAIL
+FAIL	example.com/acme/api	0.247s
+FAIL
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /home/user/src/acme/packages/api
+npm error workspace api@0.1.0
+npm error location /home/user/src/acme/packages/api
+npm error command failed
+npm error command sh -c go test ./...
+ Lerna (powered by Nx)   Running target test for 3 projects failed
+
+Failed tasks:
+
+- web:test
+- api:test

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "35719892990",
+    "--repo",
+    "spf13/viper",
+    "--log-failed"
+  ],
+  "shell": "gh run view 35719892990 --repo spf13/viper --log-failed",
+  "repo": "spf13/viper",
+  "exit_code": 0,
+  "description": "REAL capture (read-only gh against a public repo, 2026-09): UNKNOWN STEP format (gh cannot map lines to steps, so the whole job log is printed): setup, checkout, setup-go, then go test -v with two failing subtests on windows",
+  "cwd": "/home/user/src/viper"
+}

@@ -11,4 +11,5 @@
 ✓ storage     history: 3 records, 266 B in $ROOT/data/lx/history.jsonl
 ! activity    Claude Code ran today but lx recorded nothing for 3 days: is the hook running (another config dir)?
               fix: restart Claude Code after lx init, and check that /hooks lists $ROOT/bin/lx hook claude
+- laya        not set up (optional: lx laya setup)
 lx doctor: 0 failures, 1 warning

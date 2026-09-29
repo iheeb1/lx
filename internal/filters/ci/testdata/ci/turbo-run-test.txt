@@ -1,0 +1,91 @@
+
+   • turbo 2.11.5
+   • Packages in scope: @acme/utils, api, web
+   • Running test in 3 packages
+   • Remote caching disabled
+
+api:test: cache bypass, force executing e30b21bf8db2d27a
+@acme/utils:test: cache bypass, force executing ebfb72987585dd16
+web:test: cache bypass, force executing c7836c97f9559c72
+web:test: 
+web:test: > web@0.1.0 test
+web:test: > jest
+web:test: 
+@acme/utils:test: 
+@acme/utils:test: > @acme/utils@0.1.0 test
+@acme/utils:test: > jest
+@acme/utils:test: 
+api:test: 
+api:test: > api@0.1.0 test
+api:test: > go test ./...
+api:test: 
+api:test: --- FAIL: TestTotal (0.00s)
+api:test:     price_test.go:7: Total = 0, want 135
+api:test: --- FAIL: TestSlug (0.00s)
+api:test:     --- FAIL: TestSlug/Red_Shoes (0.00s)
+api:test:         price_test.go:18: Slug("Red Shoes") = "Red_Shoes", want "red-shoes"
+api:test: FAIL
+api:test: FAIL	example.com/acme/api	0.449s
+api:test: FAIL
+api:test: npm error Lifecycle script `test` failed with error:
+api:test: npm error code 1
+api:test: npm error path /home/user/src/acme/packages/api
+api:test: npm error workspace api@0.1.0
+api:test: npm error location /home/user/src/acme/packages/api
+api:test: npm error command failed
+api:test: npm error command sh -c go test ./...
+api#test:  WARNING  command finished with error, but continuing...
+@acme/utils:test: PASS ./clamp.test.js
+@acme/utils:test:   ✓ clamps low
+@acme/utils:test:   ✓ clamps high
+@acme/utils:test:   ✓ keeps middle
+@acme/utils:test: 
+@acme/utils:test: Test Suites: 1 passed, 1 total
+@acme/utils:test: Tests:       3 passed, 3 total
+@acme/utils:test: Snapshots:   0 total
+@acme/utils:test: Time:        0.212 s
+@acme/utils:test: Ran all test suites.
+web:test: FAIL ./cart.test.js
+web:test:   ✓ total sums prices (1 ms)
+web:test:   ✕ currency has two decimals (1 ms)
+web:test:   ✓ empty cart
+web:test: 
+web:test:   ● currency has two decimals
+web:test: 
+web:test:     expect(received).toBe(expected) // Object.is equality
+web:test: 
+web:test:     Expected: "$5.00"
+web:test:     Received: "$5.0"
+web:test: 
+web:test:        6 |
+web:test:        7 | test('currency has two decimals', () => {
+web:test:     >  8 |   expect(currency(5)).toBe('$5.00')
+web:test:          |                       ^
+web:test:        9 | })
+web:test:       10 |
+web:test:       11 | test('empty cart', () => {
+web:test: 
+web:test:       at Object.toBe (cart.test.js:8:23)
+web:test: 
+web:test: Test Suites: 1 failed, 1 total
+web:test: Tests:       1 failed, 2 passed, 3 total
+web:test: Snapshots:   0 total
+web:test: Time:        0.225 s
+web:test: Ran all test suites.
+web:test: npm error Lifecycle script `test` failed with error:
+web:test: npm error code 1
+web:test: npm error path /home/user/src/acme/packages/web
+web:test: npm error workspace web@0.1.0
+web:test: npm error location /home/user/src/acme/packages/web
+web:test: npm error command failed
+web:test: npm error command sh -c jest
+web#test:  WARNING  command finished with error, but continuing...
+api#test:  ERROR  command (/home/user/src/acme/packages/api) /usr/local/bin/npm run test exited (1)
+web#test:  ERROR  command (/home/user/src/acme/packages/web) /usr/local/bin/npm run test exited (1)
+
+ Tasks:    1 successful, 3 total
+Cached:    0 cached, 3 total
+  Time:    1.262s 
+Failed:    api#test, web#test
+
+ ERROR  run failed: command  exited (1)

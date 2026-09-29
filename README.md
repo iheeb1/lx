@@ -89,6 +89,57 @@ rtk covers more ground: 100+ commands, 18 agents, a large community. lx takes a 
 | Model-written `rtk git push` | escapes `Bash(git push:*)` deny rules | `lx git push` is checked against deny rules as `git push` |
 | Commands run | often twice (e.g. `git status`) | exactly once, with your exact argv |
 
+### Logs
+
+Agents read logs too: `docker logs`, `kubectl logs`, `journalctl`. [loghub](https://github.com/logpai/loghub) publishes 2,000-line samples of real system logs, with the template of every line, which makes it possible to count what a condensed view drops. The benchmark reads 14 of them the way an agent reads a container's log, with `docker logs app`. Each ran raw, through rtk, and through lx. lx ran with and without a task from the agent's session, and with and without Laya, an optional local model ([integrations/laya](integrations/laya)) that lx can ask which parts of an output are routine:
+
+![Logs: tokens saved against templates kept](docs/img/logs-h2h.svg)
+
+| 14 logs, 28,000 lines | Tokens | Saved | Templates shown | Error kinds shown | Error lines verbatim | Median time |
+|---|---|---|---|---|---|---|
+| raw (`docker logs app`) | 1,540,125 | | 100% | 100% | 100% | 9 ms |
+| rtk 0.50, its hook's rewrite (`rtk docker logs app`) | 3,436 | 99.8% | 0.8% | 3.4% | 0.4% | 20 ms |
+| `rtk log app.log` | 5,816 | 99.6% | 2.2% | 10.1% | 0.9% | 14 ms |
+| lx | 102,971 | 93.3% | 27.5% | 47.5% | 20.8% | 289 ms |
+| lx + task | 113,323 | 92.6% | 28.3% | 49.6% | 24.3% | 250 ms |
+| lx + laya | 102,971 | 93.3% | 27.5% | 47.5% | 20.8% | 899 ms |
+| lx + laya + task | 113,323 | 92.6% | 28.3% | 49.6% | 24.3% | 1,037 ms |
+| lx + laya, 30 s timeout | 102,998 | 93.3% | 27.8% | 47.5% | 20.9% | 1,041 ms |
+
+*Templates shown* counts the log's 1,300 ground-truth templates that have a line, or a count line, in the view. A line copied from the log, whole or cut short, counts for its own template only. *Error kinds* counts the 238 of them that have warning, error or fatal lines. Tokens are exact o200k counts. The times are medians over the 14 logs, from an M1 Pro. How each number is measured is in [docs/benchmark.md](docs/benchmark.md#logs-benchcmdlogbench).
+
+**Where rtk wins.** It is smaller and faster. Its views are 18 to 30 times smaller than lx's, and they take 14 to 20 ms against lx's 289 ms (625 ms on Hadoop). The cost is that they show almost nothing. `rtk docker logs` asks docker for the last 100 lines only. rtk's log filter counts INFO lines without showing any of them, and it cuts the examples it does keep to 100 characters. `rtk log` shows no template at all on Hadoop, Spark and OpenStack, and rtk's hook path shows none on 7 of the 14 logs. Which examples `rtk log` keeps changes from run to run, by a template or two per log.
+
+**Where lx falls short.** lx shows 27.5% of the templates and 47.5% of the error kinds, which is 12 and 5 times what `rtk log` shows. But its coverage ranges from 100% on Apache down to 11% on Hadoop and 8% on Zookeeper. In those two logs, one warning repeats hundreds of times with a different counter or timestamp. lx keeps every repeat as a distinct error record, so they fill the budget, and the rest becomes counted `… N lines omitted …` markers (`lx show 1 --errors` prints them all).
+
+**Laya changed nothing at lx's default timeout.** lx asked it on 10 of the 14 logs. Its confidence rarely reaches lx's fold threshold (0.65, or 0.80 in `error` mode), so it folded templates in only 4 of 70 runs, all on Linux, and never in a scored run. How much it judges before lx's 1.2 s deadline also varies from run to run: on BGL, 0 to 16 of the 24 items lx sent. With a 30 s timeout, so that it judges every item, it folded templates in 5 of 70 runs, again only on Linux. The scored run then showed 4 more templates, all through the folded lines themselves. `[×4] combo kernel: <*> hash table entries: …` counts for three kernel templates that plain lx names on a `vars:` line, which this measure does not read, and two `session opened/closed` lines count for two more. The same folds lost one: `0MB HIGHMEM available.` became `combo <*> <*> <*> <*>`, a line with no text left. Laya also marked an anonymous FTP login as routine. Laya costs about 0.6 s more per run (0.9 s median), a 0.9 GB venv plus a 0.85 GB model, 6 to 7 s to load, and 1.8 to 2.6 GB of peak memory in the daemon, depending on the run.
+
+**The task comes from the session, not from Laya.** Here the agent's question was in the session ("Why are HDFS block transfers failing?"), and lx + laya + task matched lx + task exactly. What differs from plain lx comes from lx's session awareness. Five of the 14 tasks (HDFS, Hadoop, BGL, Thunderbird, Apache) read as debugging, *why … failing* or *what is causing …*, and put lx in `error` mode. That shows 2 more points of error kinds and 3.5 more of verbatim error lines, for 10% more tokens. The session's focus pass also adds up to 0.9 s on these 2,000-line logs (Hadoop, Zookeeper).
+
+lx's five smaller log fixtures cover docker compose, docker, journalctl and kubectl, with 100 to 270 lines each. On them, lx keeps all 14 error kinds and 28 of 30 error lines verbatim, at 89.5% saved. rtk's hook passes three of the five through raw. `rtk log` keeps 12 of the 14 kinds, at 95.7% saved. Neither tool condenses `cat app.log`: lx's hook leaves `cat` alone, and `rtk read` prints the file whole.
+
+<details>
+<summary>Per log: tokens, templates and error kinds shown (rtk · rtk log · lx)</summary>
+
+| Log | Raw | rtk | rtk log | lx | Templates shown | Error kinds shown | lx time |
+|---|---|---|---|---|---|---|---|
+| HDFS | 96,898 | 41 | 241 | 5,676 | 0 · 1 · 13 of 14 | 0 · 1 · 1 of 1 | 101 ms |
+| Hadoop | 128,687 | 313 | 627 | 7,468 | 0 · 0 · 12 of 114 | 0 · 0 · 8 of 12 | 625 ms |
+| Spark | 70,536 | 41 | 35 | 3,604 | 0 · 0 · 24 of 36 | none | 213 ms |
+| Zookeeper | 108,318 | 394 | 657 | 7,839 | 1 · 2 · 4 of 50 | 1 · 2 · 3 of 12 | 556 ms |
+| BGL | 141,636 | 713 | 842 | 7,465 | 0 · 1 · 29 of 120 | 0 · 1 · 17 of 77 | 595 ms |
+| HPC | 45,422 | 203 | 481 | 7,372 | 1 · 3 · 19 of 46 | 1 · 3 · 13 of 15 | 195 ms |
+| Thunderbird | 130,488 | 41 | 351 | 8,135 | 0 · 2 · 17 of 149 | 0 · 2 · 7 of 10 | 319 ms |
+| Linux | 86,361 | 67 | 307 | 8,568 | 1 · 2 · 44 of 118 | 0 · 1 · 8 of 14 | 326 ms |
+| Android | 100,980 | 83 | 269 | 7,710 | 1 · 2 · 68 of 165 | 0 · 0 · 6 of 15 | 159 ms |
+| HealthApp | 72,555 | 41 | 75 | 8,120 | 0 · 1 · 31 of 75 | 0 · 1 · 3 of 3 | 38 ms |
+| Apache | 64,500 | 605 | 600 | 7,999 | 2 · 4 · 6 of 6 | 1 · 3 · 4 of 4 | 260 ms |
+| OpenSSH | 84,716 | 357 | 436 | 8,340 | 1 · 2 · 14 of 27 | 1 · 2 · 10 of 15 | 532 ms |
+| OpenStack | 298,335 | 139 | 282 | 6,904 | 0 · 0 · 22 of 43 | 0 · 0 · 2 of 2 | 234 ms |
+| Mac | 110,693 | 398 | 613 | 7,771 | 4 · 9 · 55 of 337 | 4 · 8 · 31 of 58 | 398 ms |
+
+</details>
+
 ## Install
 
 ```sh
