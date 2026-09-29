@@ -69,7 +69,7 @@ func TestFitRoom(t *testing.T) {
 	}
 }
 
-const fitScript = `i=0; while [ $i -lt 300 ]; do i=$((i+1)); echo "step $i finished, 12 records written"; ` +
+const fitScript = `exec 2>&1; i=0; while [ $i -lt 300 ]; do i=$((i+1)); echo "step $i finished, 12 records written"; ` +
 	`if [ $i = 150 ]; then echo "error: step 150 failed: disk full" >&2; fi; done; exit 3`
 
 var receiptRe = regexp.MustCompile(`^\[lx: [\d,]+→\d+ lines \(−\d+%\) · full output: lx show \d+\]$`)
