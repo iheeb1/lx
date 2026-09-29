@@ -22,6 +22,7 @@
 - **It learns.** When the agent has to read a run back in full, lx shows more of that command next time, per project (`lx tune`). → [Commands](#commands)
 - **Safe to switch on.** The hook respects your deny and ask rules, `lx init --readonly` keeps read-only commands prompt-free, and `lx doctor` checks the whole setup. → [Use it with your agent](#use-it-with-your-agent)
 - **Measure it first.** `lx discover` replays your own session transcripts and reports what lx would have saved, and whether its views kept what your agent acted on. → [Commands](#commands)
+- **One message to set it up.** Paste a prompt into your agent and it installs lx, hooks it into itself and checks the result with `lx doctor`. → [Install](#install)
 
 ---
 
@@ -174,6 +175,34 @@ lx's five smaller log fixtures cover docker compose, docker, journalctl and kube
 </details>
 
 ## Install
+
+**Let your agent do it.** Paste this into Claude Code, Codex, Cursor, Gemini CLI, Copilot or any other coding agent:
+
+```text
+Install lx (https://github.com/iheeb1/lx) on this machine and hook it into this agent.
+lx condenses the output of the shell commands you run, never hides an error, and keeps
+every full output recoverable with `lx show`.
+
+1. Install it with `brew install iheeb1/tap/lx` if Homebrew is available, otherwise with
+   `curl -fsSL https://github.com/iheeb1/lx/releases/latest/download/install.sh | sh`
+   (the script checks the release's SHA256SUMS and installs to ~/.local/bin).
+   Check that `lx version` works.
+2. Hook it into the agent you are:
+   - Claude Code: run `lx init`.
+   - Codex: run `lx init --agent codex`, then tell me to trust the hook in /hooks.
+   - Cursor, Gemini CLI or GitHub Copilot: `lx init --agent cursor` (or gemini, copilot)
+     prints a snippet and the file it belongs in. Merge it into that file and keep
+     everything already there.
+   - Any other agent: add the block `lx init --agent agents-md` prints to this
+     repository's AGENTS.md.
+3. Run `lx doctor` and fix anything it reports.
+4. Never add an allow rule such as `Bash(lx:*)`: it would approve any command run through lx.
+5. Tell me what you changed, and whether I need to restart the session for the hook to work.
+```
+
+The agent asks before each command it runs, as usual. To set lx up for everyone on a repository instead, ask it to run `lx init --project --portable` and commit `.claude/settings.json` (see [For teams](#for-teams)).
+
+**Or install it yourself:**
 
 ```sh
 brew install iheeb1/tap/lx          # macOS / Linux with Homebrew
