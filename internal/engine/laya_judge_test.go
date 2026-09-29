@@ -77,6 +77,8 @@ func hashed(family, item string) engine.JudgeVerdict {
 var svcNames = strings.Fields("alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo " +
 	"sierra tango uniform victor whiskey xray yankee zulu amber basalt cobalt dune ember fjord garnet harbor iris jasper")
 
+var svcRoles = []string{"api", "db", "cache", "queue"}
+
 func svcLog() string {
 	seed := uint64(7)
 	next := func(n int) int {
@@ -97,7 +99,7 @@ func svcLog() string {
 		case i%37 == 5:
 			fmt.Fprintf(&b, "%s INFO  [billing] invoice reconciled with ledger ref=%d amount=%d\n", ts, 100000+next(90000), next(5000))
 		default:
-			n := svcNames[next(len(svcNames))]
+			n := svcNames[next(len(svcNames))] + "-" + svcRoles[next(len(svcRoles))]
 			fmt.Fprintf(&b, "%s INFO  [%s] %s-sync %s-flush %s-commit %s-verify batch=%d took=%dms\n", ts, n, n, n, n, n, 1000+next(9000), 1+next(900))
 		}
 	}
@@ -140,6 +142,8 @@ func laNote(r engine.Result) string {
 
 var routineRe = regexp.MustCompile(`^\[×([\d,]+)\] .* \(routine\)$`)
 
+var omittedRe = regexp.MustCompile(`(?m)^… \d+ more templates? \([\d,]+ lines?\) omitted …$`)
+
 func routineLines(view string) []string {
 	var out []string
 	for _, ln := range strings.Split(view, "\n") {
@@ -176,21 +180,25 @@ func TestJudgeFoldsRoutineTemplates(t *testing.T) {
 	if len(folded) == 0 {
 		t.Fatalf("nothing folded:\n%s", res.Output)
 	}
-	if want := fmt.Sprintf("laya: %d routine templates folded", len(folded)); laNote(res) != want {
+	if want := fmt.Sprintf("laya: %d templates judged routine", len(folded)); laNote(res) != want {
 		t.Errorf("note %q, want %q", laNote(res), want)
 	}
 	for _, n := range svcNames {
-		if !strings.Contains(res.Output, "["+n+"]") {
+		if !strings.Contains(res.Output, "["+n+"-") {
 			t.Errorf("template %s no longer represented:\n%s", n, res.Output)
 		}
 	}
-	total := 0
+	least := math.MaxInt
 	for _, ln := range folded {
 		n, _ := strconv.Atoi(strings.ReplaceAll(routineRe.FindStringSubmatch(ln)[1], ",", ""))
-		total += n
+		least = min(least, n)
 	}
-	if total < 500 {
-		t.Errorf("folded templates count %d lines, want most of the log", total)
+	for _, ln := range strings.Split(res.Output, "\n") {
+		if m := regexp.MustCompile(`^\[×([\d,]+)\] `).FindStringSubmatch(ln); m != nil && !routineRe.MatchString(ln) {
+			if n, _ := strconv.Atoi(strings.ReplaceAll(m[1], ",", "")); n > least {
+				t.Errorf("%q outnumbers a judged template (×%d) but was not sent", ln, least)
+			}
+		}
 	}
 	if m := newMissing(textutil.Clean(raw), res.Output, plain.Output); len(m) > 0 {
 		t.Errorf("judge cost error lines: %q", m)
@@ -200,8 +208,16 @@ func TestJudgeFoldsRoutineTemplates(t *testing.T) {
 			t.Errorf("%q missing:\n%s", e, res.Output)
 		}
 	}
-	if res.OutTokens >= plain.OutTokens*3/4 {
-		t.Errorf("judged view %d tokens, plain %d: expected a clear cut", res.OutTokens, plain.OutTokens)
+	tightPlain := judged(dockerLogs, 0, raw, engine.Options{Budget: 2500})
+	tight := judged(dockerLogs, 0, raw, engine.Options{Budget: 2500, Judge: &fakeJudge{decide: noise(0.9)}})
+	if !omittedRe.MatchString(tightPlain.Output) || !omittedRe.MatchString(tight.Output) {
+		t.Fatalf("a 2500-token budget no longer omits templates:\n%s", tight.Output)
+	}
+	if n := len(routineLines(tight.Output)); n != 0 {
+		t.Errorf("%d judged templates kept while others were omitted:\n%s", n, tight.Output)
+	}
+	if strings.Count(tight.Output, "\n") < strings.Count(tightPlain.Output, "\n")*9/10 {
+		t.Errorf("judged tight view %d lines, plain %d", strings.Count(tight.Output, "\n"), strings.Count(tightPlain.Output, "\n"))
 	}
 	calls, items := fj.seen()
 	if calls != 1 {
@@ -232,7 +248,7 @@ func TestJudgeFoldsGenericLogs(t *testing.T) {
 	if !strings.HasPrefix(res.Output, "[log: ") || !strings.HasPrefix(plain.Output, "[log: ") {
 		t.Fatalf("not templated:\n%s", res.Output)
 	}
-	if n := len(routineLines(res.Output)); n != 24 || laNote(res) != "laya: 24 routine templates folded" {
+	if n := len(routineLines(res.Output)); n != 24 || laNote(res) != "laya: 24 templates judged routine" {
 		t.Errorf("%d folded, note %q (templateLogs in modes.go must call TemplateLogsFor(c, lines))", n, laNote(res))
 	}
 	if m := newMissing(textutil.Clean(raw), res.Output, plain.Output); len(m) > 0 {
@@ -244,7 +260,7 @@ func TestJudgeUnsureKeepsTodaysView(t *testing.T) {
 	raw := svcLog()
 	plain := judged(dockerLogs, 0, raw, engine.Options{})
 	for name, d := range map[string]func(string, string) engine.JudgeVerdict{
-		"needed":   func(string, string) engine.JudgeVerdict { return engine.JudgeVerdict{Keep: true, Confidence: 0.99} },
+		"needed":   func(string, string) engine.JudgeVerdict { return engine.JudgeVerdict{Keep: true, Confidence: 0.64} },
 		"low":      noise(0.64),
 		"nan":      noise(math.NaN()),
 		"negative": noise(-1),
@@ -254,6 +270,20 @@ func TestJudgeUnsureKeepsTodaysView(t *testing.T) {
 		if res.Output != plain.Output || laNote(res) != "" {
 			t.Errorf("%s: view changed or noted %q", name, laNote(res))
 		}
+	}
+}
+
+func TestJudgeKeepsNeededTemplatesInFull(t *testing.T) {
+	raw := svcLog()
+	plain := judged(dockerLogs, 0, raw, engine.Options{})
+	fj := &fakeJudge{decide: func(string, string) engine.JudgeVerdict { return engine.JudgeVerdict{Keep: true, Confidence: 0.99} }}
+	res := judged(dockerLogs, 0, raw, engine.Options{Judge: fj})
+	if laNote(res) != "laya: 24 templates kept in full" || len(routineLines(res.Output)) != 0 {
+		t.Errorf("note %q:\n%s", laNote(res), res.Output)
+	}
+	full := len(regexp.MustCompile(`(?m)^2026-09-26T\S+ INFO .* \[×\d+\]$`).FindAllString(res.Output, -1))
+	if full != 24 || res.OutTokens <= plain.OutTokens {
+		t.Errorf("%d templates in full, %d tokens (plain %d)", full, res.OutTokens, plain.OutTokens)
 	}
 }
 
@@ -272,13 +302,14 @@ func TestJudgeThresholdByMode(t *testing.T) {
 		{engine.ModeVerify, 0, 0.60},
 		{engine.ModeMinimal, 0, 0.55},
 	} {
+		plain := judged(dockerLogs, c.exit, raw, engine.Options{Mode: c.mode})
 		below := judged(dockerLogs, c.exit, raw, engine.Options{Mode: c.mode, Judge: &fakeJudge{decide: noise(c.thr - 0.01)}})
 		at := judged(dockerLogs, c.exit, raw, engine.Options{Mode: c.mode, Judge: &fakeJudge{decide: noise(c.thr)}})
-		if n := len(routineLines(below.Output)); n != 0 {
-			t.Errorf("%v exit %d: %d templates folded below %.2f", c.mode, c.exit, n, c.thr)
+		if below.Output != plain.Output {
+			t.Errorf("%v exit %d: view changed below %.2f", c.mode, c.exit, c.thr)
 		}
-		if len(routineLines(at.Output)) == 0 {
-			t.Errorf("%v exit %d: nothing folded at %.2f", c.mode, c.exit, c.thr)
+		if at.Output == plain.Output {
+			t.Errorf("%v exit %d: view unchanged at %.2f", c.mode, c.exit, c.thr)
 		}
 	}
 }
@@ -547,7 +578,7 @@ func TestJudgeKeepsTemplatesHidingAlarms(t *testing.T) {
 		if i%20 == 9 {
 			lvl = "crit"
 		}
-		raw += fmt.Sprintf("\n2026-09-26T11:%02d:%02d.000Z lvl=%s msg=sweep job=cache host=web1 n=%d", i/60, i%60, lvl, i*7)
+		raw += fmt.Sprintf("\n2026-09-26T11:%02d:%02d.000Z msg=sweep job=cache lvl=%s host=web1 n=%d", i/60, i%60, lvl, i*7)
 	}
 	plain := judged(dockerLogs, 0, raw, engine.Options{})
 	if !strings.Contains(plain.Output, "crit ×3") {

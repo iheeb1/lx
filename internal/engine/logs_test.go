@@ -106,7 +106,7 @@ func TestTemplateLogsFixtures(t *testing.T) {
 		if !strings.HasPrefix(out[0], "[log: ") {
 			t.Errorf("%s: header %q", name, out[0])
 		}
-		if m := MissingErrorLines(strings.Join(in, "\n"), joined); len(m) > 0 {
+		if m := MissingErrorKinds(strings.Join(in, "\n"), joined); len(m) > 0 {
 			t.Errorf("%s: error lines lost: %q", name, m)
 		}
 		if len(out)*4 > len(in) {
@@ -126,12 +126,12 @@ func TestTemplateLogsDetails(t *testing.T) {
 	if !strings.Contains(joined, "WARN dfs.DataNode$DataXceiver") || !strings.Contains(joined, "java.io.IOException: Connection reset by peer") {
 		t.Errorf("warning/error record missing:\n%s", joined)
 	}
-	if !strings.Contains(joined, "[×150]") || !strings.Contains(joined, "vars:") {
+	if !strings.Contains(joined, "[×150]") || !strings.Contains(joined, "[×6, last 081109 200823]") || !strings.Contains(joined, "vars: PacketResponder ") {
 		t.Errorf("counts or vars missing:\n%s", joined)
 	}
 	out, _ = TemplateLogs(jsonLinesLog())
 	joined = strings.Join(out, "\n")
-	if !strings.Contains(joined, `"err":"pq: deadlock detected","query_id":7150}`) || !strings.Contains(joined, "duration_ms 1–") {
+	if !strings.Contains(joined, `"err":"pq: deadlock detected","query_id":7150} [×2`) || !strings.Contains(joined, "vars: query_id 7150 ×1, 7151 ×1") {
 		t.Errorf("jsonl:\n%s", joined)
 	}
 }
@@ -153,5 +153,14 @@ func TestTemplateLogsRejects(t *testing.T) {
 	}
 	if _, ok := TemplateLogs(blame); ok {
 		t.Error("git blame templated")
+	}
+}
+
+func TestClassifyLinesKeepsLiteralHash(t *testing.T) {
+	got := classifyLines([]string{"make[#]: *** No rule to make target 'a'.  Stop.", "make[12]: *** No rule to make target 'a'.  Stop."})
+	for i, want := range []Level{Classify("make[#]: *** No rule to make target 'a'.  Stop."), Err} {
+		if got[i] != want {
+			t.Errorf("line %d: %v, want %v", i, got[i], want)
+		}
 	}
 }

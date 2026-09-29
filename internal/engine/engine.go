@@ -349,8 +349,11 @@ func process(c *Context, raw string, opt Options) (res Result) {
 	if name == "generic" {
 		var shape string
 		out, shape = GenericShape(c, clean)
-		if shape == "json" || shape == "paths" {
+		switch shape {
+		case "json", "paths":
 			guard, errorsFirst = false, false
+		case "log":
+			guard = false
 		}
 		if f := DetectedFilter(shape); f != nil {
 			name = shape

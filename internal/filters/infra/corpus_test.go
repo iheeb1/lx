@@ -113,7 +113,11 @@ func TestCorpus(t *testing.T) {
 				t.Fatal("Apply is not deterministic")
 			}
 			fixture.Golden(t, "infra", cc.name, got)
-			if missing := fixture.ErrorLinesMissing(clean, got); len(missing) > 0 {
+			missing := fixture.ErrorLinesMissing(clean, got)
+			if cc.filter == "logs" {
+				missing = engine.MissingErrorKinds(clean, got)
+			}
+			if len(missing) > 0 {
 				if cc.drops == nil {
 					t.Errorf("%d error lines missing, e.g. %q", len(missing), missing[0])
 				} else {

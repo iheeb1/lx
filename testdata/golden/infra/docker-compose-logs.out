@@ -1,20 +1,12 @@
-[log: 156 lines, 8 templates, 9 distinct error records, 2026-09-26 10:00:00.412 UTC … 2026-09-26 10:05:01.002 UTC]
+[log: 156 lines, 8 templates, 9 error records of 2 kinds, 2026-09-26 10:00:00.412 UTC … 2026-09-26 10:05:01.002 UTC]
 db-1     | PostgreSQL init process complete; ready for start up.
 db-1     | 2026-09-26 10:00:00.412 UTC [1] LOG:  starting PostgreSQL 16.4 on aarch64-unknown-linux-musl
 db-1     | 2026-09-26 10:00:00.418 UTC [1] LOG:  database system is ready to accept connections
-web-1    | 2026-09-26T05:20:00.000Z info: GET /products/100 200 5ms [×75]
-    vars: GET ×17 distinct (/products/100, …); #8 ×15 distinct (5ms, …)
-worker-1 | 2026-09-26T05:20:02.001Z info: job thumbnail.render #3001 done in 41ms [×30]
-    vars: thumbnail.render ×30 distinct (#3001, …); in ×30 distinct (41ms, …)
-redis-1  | 1:M 26 Sep 2026 10:00:03.003 * 100 changes in 300 seconds. Saving... [×37]
-worker-1 | 2026-09-26T05:20:10.005Z error: job email.send #3005 failed: SMTP 421 4.7.0 Try again later (attempt 3/5)
-worker-1 | 2026-09-26T05:20:50.025Z error: job email.send #3025 failed: SMTP 421 4.7.0 Try again later (attempt 2/5)
-worker-1 | 2026-09-26T05:21:30.045Z error: job email.send #3045 failed: SMTP 421 4.7.0 Try again later (attempt 1/5)
-worker-1 | 2026-09-26T05:22:10.065Z error: job email.send #3065 failed: SMTP 421 4.7.0 Try again later (attempt 3/5)
-worker-1 | 2026-09-26T05:22:50.085Z error: job email.send #3085 failed: SMTP 421 4.7.0 Try again later (attempt 2/5)
-worker-1 | 2026-09-26T05:23:30.105Z error: job email.send #3105 failed: SMTP 421 4.7.0 Try again later (attempt 1/5)
-worker-1 | 2026-09-26T05:24:10.125Z error: job email.send #3125 failed: SMTP 421 4.7.0 Try again later (attempt 3/5)
-worker-1 | 2026-09-26T05:24:50.145Z error: job email.send #3145 failed: SMTP 421 4.7.0 Try again later (attempt 2/5)
+[×75] web-1 | info: GET /products/<N> 200 <DUR>
+[×30] worker-1 | info: job thumbnail.render #<N> done in <DUR>
+[×37] redis-1 | 1:M 26 Sep 2026 * 100 changes in 300 seconds. Saving...
+worker-1 | 2026-09-26T05:20:10.005Z error: job email.send #3005 failed: SMTP 421 4.7.0 Try again later (attempt 3/5) [×8, last 2026-09-26T05:24:50.145Z]
+    vars: email.send ×8 distinct; #16 3/5 ×3, 2/5 ×3, 1/5 ×2
 db-1     | 2026-09-26 10:05:01.002 UTC [812] ERROR:  duplicate key value violates unique constraint "orders_pkey"
 db-1     | 2026-09-26 10:05:01.002 UTC [812] DETAIL:  Key (id)=(ord_1234) already exists.
 db-1     | 2026-09-26 10:05:01.002 UTC [812] STATEMENT:  INSERT INTO orders (id, total) VALUES ($1, $2)

@@ -36,6 +36,9 @@ var specs = []spec{
 	{Key: "rtk-log", Label: "rtk log <file>", tool: "rtk-log"},
 	{Key: "lx", Label: "lx", tool: "lx"},
 	{Key: "lx-task", Label: "lx + task", tool: "lx", task: true},
+	{Key: "lx-minimal", Label: "lx --mode minimal", tool: "lx", env: []string{"LX_MODE=minimal"}},
+	{Key: "lx-1000", Label: "lx, 1,000-token budget", tool: "lx", env: []string{"LX_BUDGET=1000"}},
+	{Key: "lx-500", Label: "lx, 500-token budget", tool: "lx", env: []string{"LX_BUDGET=500"}},
 	{Key: "lx-laya", Label: "lx + laya", tool: "lx", laya: true},
 	{Key: "lx-laya-task", Label: "lx + laya + task", tool: "lx", laya: true, task: true},
 	// every item judged: what laya would do with no deadline
@@ -355,7 +358,7 @@ func lxEnv(sb *sandbox, c *logCase, key string, extra []string) []string {
 }
 
 func layaFolded(out string) bool {
-	return strings.Contains(out, "judged routine (laya)") || strings.Contains(out, " (routine)")
+	return strings.Contains(out, "judged routine (laya)") || strings.Contains(out, " (routine)") || strings.Contains(out, "· laya: ")
 }
 
 func fatal(err error) {

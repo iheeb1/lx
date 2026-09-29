@@ -1,13 +1,11 @@
-[log: 272 lines, 4 templates, 6 distinct error records, 2026-09-26T05:20:00.000Z … 2026-09-26T05:50:13.259Z]
-2026-09-26T05:20:00.000Z INFO [health] GET /healthz 200 1ms [×86]
+[log: 272 lines, 4 templates, 6 error records of 2 kinds, 2026-09-26T05:20:00.000Z … 2026-09-26T05:50:13.259Z]
+[×86] INFO [health] GET /healthz 200 <DUR>
     vars: #7 1ms ×22, 4ms ×22, 3ms ×22, 2ms ×20
-2026-09-26T05:20:07.001Z INFO [http] GET /api/orders?page=1 200 19ms user=u_1 [×85]
-    vars: GET /api/orders?page=7 ×29, /api/orders?page=1 ×28, /api/orders?page=4 ×28; #7 ×30 distinct (19ms, …); user ×23 distinct (u_1, …)
-2026-09-26T05:20:14.002Z DEBUG [cache] hit key=order:4002 ttl=298s [×83]
-    vars: key ×64+ distinct (order:4002, …); ttl ×20 distinct (298s, …)
-2026-09-26T05:21:59.012Z ERROR [orders] failed to charge order ord_1017: stripe: card_declined (request req_db522a3881be3c48)
-2026-09-26T05:27:49.012Z ERROR [orders] failed to charge order ord_1067: stripe: card_declined (request req_b41952188a051060)
-2026-09-26T05:33:39.012Z ERROR [orders] failed to charge order ord_1117: stripe: card_declined (request req_e9add0dbe49c9451)
+[×85] INFO [http] GET <*> 200 <DUR> user=<*>
+    vars: GET /api/orders?page=7 ×29, /api/orders?page=1 ×28, /api/orders?page=4 ×28
+[×83] DEBUG [cache] hit key=order:<N> ttl=<DUR>
+2026-09-26T05:21:59.012Z ERROR [orders] failed to charge order ord_1017: stripe: card_declined (request req_db522a3881be3c48) [×5, last 2026-09-26T05:45:19.012Z]
+    vars: order ×5 distinct; #12 ×5 distinct
 2026-09-26T05:35:17.005Z ERROR [http] unhandled error in GET /api/orders/9812
 TypeError: Cannot read properties of undefined (reading 'total')
     at computeTotals (/app/dist/orders/totals.js:41:28)
@@ -15,6 +13,4 @@ TypeError: Cannot read properties of undefined (reading 'total')
     at async /app/dist/http/routes/orders.js:57:19
     at async Layer.handle [as handle_request] (/app/node_modules/express/lib/router/layer.js:95:5)
     … 6 library frames (express)
-2026-09-26T05:39:29.012Z ERROR [orders] failed to charge order ord_1167: stripe: card_declined (request req_559bf1f41bb5cd26)
 2026-09-26T05:43:20.900Z WARN [db] slow query 1203ms: SELECT * FROM orders WHERE customer_id = $1 ORDER BY created_at DESC
-2026-09-26T05:45:19.012Z ERROR [orders] failed to charge order ord_1217: stripe: card_declined (request req_4da8774a9dcb9f6f)

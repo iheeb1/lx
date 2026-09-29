@@ -3,6 +3,8 @@ package engine
 import (
 	"fmt"
 	"strings"
+
+	"github.com/iheeb1/lx/internal/lazyre"
 )
 
 type Guarded interface {
@@ -83,4 +85,62 @@ func squash(s string) string {
 		lines[i] = strings.Join(strings.Fields(ln), " ")
 	}
 	return strings.Join(lines, "\n")
+}
+
+var (
+	countSuffixRe = lazyre.New(`\s\[×[\d,]+(?:, last [^\]]*)?\]$`)
+	countPrefixRe = lazyre.New(`^\[×[\d,]+\] `)
+)
+
+func MissingErrorKinds(in, out string) []string {
+	var shown [][]string
+	for _, ln := range strings.Split(out, "\n") {
+		ln = countPrefixRe.ReplaceAllString(countSuffixRe.ReplaceAllString(ln, ""), "")
+		shown = append(shown, strings.Fields(ln))
+	}
+	summarized := strings.Contains(out, " distinct: ")
+	var miss []string
+	for _, ln := range MissingErrorLines(in, out) {
+		a := strings.Fields(ln)
+		near := false
+		for _, b := range shown {
+			if near = kindShown(a, b, out, summarized); near {
+				break
+			}
+		}
+		if !near {
+			miss = append(miss, ln)
+		}
+	}
+	return miss
+}
+
+func kindShown(a, b []string, out string, summarized bool) bool {
+	if len(b) == 0 || len(b) > len(a) || len(b) < len(a) && len(b)*2 < len(a) {
+		return false
+	}
+	for o := len(a) - len(b); o >= 0; o-- {
+		diff, lost := 0, false
+		for k, tok := range b {
+			x := a[o+k]
+			if Mask(x) == Mask(tok) || strings.Contains(tok, "<") && len(b) < len(a) {
+				continue
+			}
+			diff++
+			if w := strings.Trim(x, `",;()[]:`); wordTok(w) && !strings.Contains(out, w) && !summarized {
+				lost = true
+			}
+		}
+		allowed := max(1, len(b)/5)
+		if len(b) <= 2 {
+			allowed = 0
+		}
+		if diff <= allowed && !lost {
+			return true
+		}
+		if len(b) == len(a) {
+			break
+		}
+	}
+	return false
 }

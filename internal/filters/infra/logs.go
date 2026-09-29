@@ -12,6 +12,8 @@ type logsFilter struct{}
 
 func (logsFilter) Name() string { return "logs" }
 
+func (logsFilter) GuardsErrors() bool { return true }
+
 func (logsFilter) Match(c *engine.Context) bool {
 	if engine.MachineReadable(c) {
 		return false
@@ -82,6 +84,9 @@ func (logsFilter) Apply(c *engine.Context, out string) (string, bool) {
 			if klog > 0 && len(ln) > 4 && ln[0] == '[' && ln[2] == ']' && ln[3] == ' ' && klogRe.MatchString(ln[4:]) {
 				ln = ln[4:]
 			}
+			if j := strings.Index(ln, "] ["); klog > 0 && strings.HasPrefix(ln, "[×") && j > 0 && len(ln) > j+6 && ln[j+4] == ']' && ln[j+5] == ' ' && strings.IndexByte("IWEF", ln[j+3]) >= 0 {
+				ln = ln[:j+2] + ln[j+6:]
+			}
 			if engine.Classify(ln) == engine.Normal {
 				ln = engine.ShortenLine(ln, 400)
 			}
@@ -97,5 +102,6 @@ func (logsFilter) Apply(c *engine.Context, out string) (string, bool) {
 		return out, true
 	}
 	note := fmt.Sprintf("[lx: %d log lines; repeated lines and library stack frames folded]", len(lines))
-	return note + "\n" + strings.TrimRight(strings.Join(folded, "\n"), "\n"), true
+	res, _ := engine.Guard(out, note+"\n"+strings.TrimRight(strings.Join(folded, "\n"), "\n"))
+	return res, true
 }

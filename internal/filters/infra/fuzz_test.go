@@ -60,15 +60,18 @@ func FuzzInfraFilters(f *testing.F) {
 			return
 		}
 		if g, ok := fl.(engine.Guarded); ok && g.GuardsErrors() {
-
-			for _, m := range engine.MissingErrorLines(in, a) {
+			missing := engine.MissingErrorLines
+			if fl.Name() == "logs" {
+				missing = engine.MissingErrorKinds
+			}
+			for _, m := range missing(in, a) {
 				if !strings.Contains(a, " rows; others: ") && !strings.Contains(a, " rows]") {
 					t.Fatalf("%s dropped %q without merging", fl.Name(), m)
 				}
 			}
 			return
 		}
-		if m := engine.MissingErrorLines(in, a); len(m) > 0 && fl.Name() != "logs" {
+		if m := engine.MissingErrorLines(in, a); len(m) > 0 {
 			t.Fatalf("%s dropped error line %q", fl.Name(), m[0])
 		}
 	})

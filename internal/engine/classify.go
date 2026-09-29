@@ -63,9 +63,35 @@ func Classify(line string) Level {
 	return Normal
 }
 
-var errSpecialRe = lazyre.New(`(?i)^\s*E\s{2,}\S|^\s*[✗✘✕×]\s|\bTS\d{4}\b|\berror\[E\d+\]|^\s*npm (?:ERR!|error)|` +
-	`^--- FAIL|^FAIL\b|^\s*FAILED\b|^\s*!\s+\[rejected\]|` +
-	`^\s*g?make(?:\[\d+\])?: \*\*\*|\bundefined symbols?\b|\bunknown (?:options?|flags?|arguments?|commands?)\b|^\s*e: `)
+var (
+	errLeadRe = lazyre.New(`(?i)^(?:\s*(?:E\s{2,}\S|[✗✘✕×]\s|npm (?:ERR!|error)|FAILED\b|!\s+\[rejected\]|g?make(?:\[\d+\])?: \*\*\*|e: )|--- FAIL|FAIL\b)`)
+	errMidRe  = lazyre.New(`(?i)\bTS\d{4}\b|\berror\[E\d+\]|\bundefined symbols?\b|\bunknown (?:options?|flags?|arguments?|commands?)\b`)
+)
+
+func errSpecial(s string) bool {
+	if errLeadRe.MatchString(s) {
+		return true
+	}
+	low := asciiLower(s)
+	if !strings.ContainsAny(s, "\u212a\u017f") && !tsCode(low) && !strings.Contains(low, "error[e") && !strings.Contains(low, "undefined symbol") && !strings.Contains(low, "unknown ") {
+		return false
+	}
+	return errMidRe.MatchString(s)
+}
+
+func tsCode(low string) bool {
+	for i := strings.Index(low, "ts"); i >= 0; {
+		if i+2 < len(low) && low[i+2] >= '0' && low[i+2] <= '9' {
+			return true
+		}
+		j := strings.Index(low[i+1:], "ts")
+		if j < 0 {
+			return false
+		}
+		i += 1 + j
+	}
+	return false
+}
 
 var errWords = map[string]bool{
 	"error": true, "errors": true, "fatal": true, "panic": true, "panicked": true, "exception": true,
@@ -85,7 +111,7 @@ var errPhrases = [][]string{
 }
 
 func errMatch(s string) bool {
-	if errSpecialRe.MatchString(s) {
+	if errSpecial(s) {
 		return true
 	}
 	type tok struct{ start, end int }
@@ -178,17 +204,7 @@ func mayClassify(line string) bool {
 			return true
 		}
 	}
-	for i := strings.Index(lower, "ts"); i >= 0; {
-		if i+2 < len(lower) && lower[i+2] >= '0' && lower[i+2] <= '9' {
-			return true
-		}
-		j := strings.Index(lower[i+1:], "ts")
-		if j < 0 {
-			break
-		}
-		i += 1 + j
-	}
-	return false
+	return tsCode(lower)
 }
 
 func asciiLower(s string) string {

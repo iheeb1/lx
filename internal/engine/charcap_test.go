@@ -287,7 +287,7 @@ func TestCharCapSynthetic(t *testing.T) {
 				t.Errorf("%s/%d: over the cap the view must be reduced", sh.name, size)
 			}
 			for _, e := range errs {
-				if !strings.Contains(res.Output, e) {
+				if !strings.Contains(res.Output, e) && (!strings.HasPrefix(res.Output, "[log: ") || len(engine.MissingErrorKinds(e, res.Output)) > 0) {
 					t.Errorf("%s/%d: capped view lost %q", sh.name, size, e)
 				}
 			}

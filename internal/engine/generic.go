@@ -80,7 +80,11 @@ func genericShape(c *Context, s string) (string, string) {
 		}
 	}
 	if l, ok := templateLogs(c, lines); ok {
-		l = shortenAll(l)
+		for i, ln := range l {
+			if Classify(ln) == Normal {
+				l[i] = shortenLine(ln, 400)
+			}
+		}
 		if tokens.Count(strings.Join(l, "\n")) < tokens.Count(s)*3/4 {
 			return strings.Join(l, "\n"), "log"
 		}

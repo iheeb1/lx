@@ -26,8 +26,9 @@ type logbench struct {
 }
 
 type logPoint struct {
-	label, class string
-	hollow       bool
+	key, label   string
+	class        string
+	hollow, dots bool
 	cover, left  float64
 	tokens       float64
 	raw, tmpl    float64
@@ -49,8 +50,12 @@ func logsH2H(lb logbench) string {
 	byKey := map[string]*logPoint{}
 	var order []string
 	for _, v := range lb.Variants {
+		if strings.Contains(v.Key, "laya") || strings.HasSuffix(v.Key, "-task") {
+			continue
+		}
 		class, hollow := logFamily(v.Key)
-		byKey[v.Key] = &logPoint{label: v.Label, class: class, hollow: hollow}
+		dots := v.Key == "raw" || v.Key == "rtk" || v.Key == "rtk-log" || v.Key == "lx"
+		byKey[v.Key] = &logPoint{key: v.Key, label: v.Label, class: class, hollow: hollow, dots: dots}
 		order = append(order, v.Key)
 	}
 	var tmpl float64
@@ -97,6 +102,8 @@ func logsH2H(lb logbench) string {
 			n, counted, n, compact(tmpl)), pts)
 }
 
+var budgetCurve = []string{"lx-500", "lx-1000", "lx-minimal", "lx"}
+
 const (
 	hollow = "fill:var(--surface);stroke-width:2"
 	halo   = "paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round"
@@ -121,8 +128,11 @@ func logScatter(title, subtitle string, pts []*logPoint) string {
 	for _, it := range items {
 		rx += 18 + textWidth(it[1]) + 22
 	}
-	fmt.Fprintf(&c.b, `<circle cx="%.1f" cy="72" r="5" class="k1" style="%s"/>`, rx+6, hollow)
-	c.text(rx+18, 78, "l", "start", "ring: with laya, or rtk log <file>")
+	fmt.Fprintf(&c.b, `<circle cx="%.1f" cy="72" r="5" class="k2" style="%s"/>`, rx+6, hollow)
+	c.text(rx+18, 78, "l", "start", "ring: rtk log <file>")
+	rx += 18 + textWidth("ring: rtk log <file>") + 22
+	fmt.Fprintf(&c.b, `<line x1="%.1f" y1="72" x2="%.1f" y2="72" class="k1" style="stroke-width:2"/>`, rx, rx+16)
+	c.text(rx+22, 78, "l", "start", "lx at 500, 1,000, 2,000 and 8,000 tokens")
 
 	lo := 0.0
 	for _, p := range pts {
@@ -152,7 +162,21 @@ func logScatter(title, subtitle string, pts []*logPoint) string {
 	c.text(left+pw/2, h-12, "l", "middle", "ground-truth templates with a line or a count in the view →")
 	fmt.Fprintf(&c.b, `<text x="18" y="%.1f" class="l" text-anchor="middle" transform="rotate(-90 18 %.1f)">tokens saved (log scale) →</text>`, top+ph/2, top+ph/2)
 
+	var curve []string
+	for _, k := range budgetCurve {
+		for _, p := range pts {
+			if p.key == k {
+				curve = append(curve, fmt.Sprintf("%.1f,%.1f", x(p.cover), y(p.left)))
+			}
+		}
+	}
+	if len(curve) > 1 {
+		fmt.Fprintf(&c.b, `<polyline points="%s" fill="none" class="k1" style="stroke-width:2;stroke-linejoin:round" opacity="0.6"/>`, strings.Join(curve, " "))
+	}
 	for _, p := range pts {
+		if !p.dots {
+			continue
+		}
 		for i, cs := range p.cases {
 			fmt.Fprintf(&c.b, `<circle cx="%.1f" cy="%.1f" r="2.5" class="%s" opacity="0.35"><title>%s — %s: %.0f%% of templates, %.2f%% of the tokens left</title></circle>`,
 				x(cs[0]), y(cs[1]), p.class, esc(p.names[i]), esc(p.label), cs[0], cs[1])

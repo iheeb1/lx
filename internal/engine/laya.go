@@ -41,7 +41,7 @@ const (
 	chunkHead    = 3
 	chunkTail    = 8
 
-	routineRunes  = 110
+	routineRunes  = 200
 	listingMargin = 0.15
 )
 
@@ -56,6 +56,8 @@ var (
 	// levels logLevel misses: pino numbers, lvl=crit, CRIT, logrus ERRO[
 	alarmRe = lazyre.New(`(?i:\b(?:log_?)?(?:level|lvl|severity)["']?\s*[=:]\s*["']?(?:warn\w*|wrn|err\w*|eror|crit\w*|fatal|fata|d?panic|alert|emerg\w*|severe|[456]0)\b)` +
 		`|\b(?:CRIT|ALERT|EMERG(?:ENCY)?|ERRO?|EROR|WRN|FATA|PANI|DPANIC)\b`)
+
+	tzRe = lazyre.New(`^[+-]\d{4}\]?$`)
 
 	changeRe = lazyre.New(`^\s*(?:[-+~]|-/\+|\+/-)\s+\S|^@@ |^(?:---|\+\+\+) \S`)
 )
@@ -73,7 +75,7 @@ type judgeRun struct {
 	made     map[string]judgeFold
 }
 
-type judgeFold struct{ templates, lines int }
+type judgeFold struct{ templates, lines, kept int }
 
 func newJudgeRun(c *Context, o Options) *judgeRun {
 	if o.Judge == nil {
@@ -248,10 +250,10 @@ func judgeWorth(lines []string) bool {
 	return tokens.Count(strings.Join(lines, "\n")) > judgeMinTokens
 }
 
-func (c *Context) judgeTemplates(items []*logItem, owner []*logTemplate, lines, body []string) map[*logTemplate]string {
+func (c *Context) judgeTemplates(tmpls, owner []*logTemplate, lines, body []string) (keep, noise map[*logTemplate]bool) {
 	r := c.judging()
 	if r == nil || !judgeWorth(body) {
-		return nil
+		return nil, nil
 	}
 	forced := map[*logTemplate]bool{}
 	if r.fm != nil && owner != nil {
@@ -262,13 +264,13 @@ func (c *Context) judgeTemplates(items []*logItem, owner []*logTemplate, lines, 
 		}
 	}
 	var cand []*logTemplate
-	for _, it := range items {
-		if t := it.tmpl; t != nil && t.count >= 2 && !forced[t] && !t.alarming() {
+	for _, t := range tmpls {
+		if !t.isErr && t.count >= 2 && !forced[t] && !t.alarming() {
 			cand = append(cand, t)
 		}
 	}
 	if len(cand) == 0 {
-		return nil
+		return nil, nil
 	}
 	sort.SliceStable(cand, func(a, b int) bool { return cand[a].count > cand[b].count })
 	cand = cand[:min(len(cand), judgeMaxItems)]
@@ -278,32 +280,36 @@ func (c *Context) judgeTemplates(items []*logItem, owner []*logTemplate, lines, 
 	}
 	vs := r.ask(FamilyLogs, texts)
 	if vs == nil {
-		return nil
+		return nil, nil
 	}
 	thr := judgeThreshold(modeOf(c))
-	var fold map[*logTemplate]string
+	keep, noise = map[*logTemplate]bool{}, map[*logTemplate]bool{}
 	for i, t := range cand {
-		if !routine(vs[i], thr) {
-			continue
+		switch v := vs[i]; {
+		case routine(v, thr):
+			noise[t] = true
+			r.made[t.routineLine()] = judgeFold{templates: 1}
+		case v.Keep && v.Confidence >= thr && v.Confidence <= 1:
+			keep[t] = true
+			r.made[t.render(styleExample)[0]] = judgeFold{kept: 1}
 		}
-		if fold == nil {
-			fold = map[*logTemplate]string{}
-		}
-		ln := t.routineLine()
-		fold[t] = ln
-		r.made[ln] = judgeFold{templates: 1}
 	}
-	return fold
+	return keep, noise
 }
 
-func (t *logTemplate) routineLine() string {
+func (t *logTemplate) routineLine() string { return t.countLine() + " (routine)" }
+
+func (t *logTemplate) countLine() string {
 	raw, _ := logTokens(t.example)
-	start := 0
-	if loc := logTSRe.FindStringIndex(t.example); loc != nil && loc[0] <= 1 {
-		start = len(strings.Fields(t.example[:loc[1]]))
-	}
+	start := t.tsTokens()
 	var parts []string
-	for k, tok := range t.toks {
+	dropped := false
+	for k, tok := range t.toks[:t.head] {
+		if dropped && k < len(raw) && tzRe.MatchString(raw[k]) {
+			dropped = false
+			continue
+		}
+		dropped = false
 		if k < len(raw) {
 			switch {
 			case len(t.slots[k].counts) == 1 && !t.slots[k].overflow:
@@ -320,16 +326,17 @@ func (t *logTemplate) routineLine() string {
 		switch {
 		case k < start:
 		case len(parts) == 0 && placeholder(tok):
-		case strings.Contains(t.toks[k], "<TS>"), strings.Contains(t.toks[k], "<TIME>"), strings.Contains(t.toks[k], "<DATE>"):
+		case timeTok(t.toks[k]):
+			dropped = true
 		default:
 			parts = append(parts, tok)
 		}
 	}
 	if len(parts) == 0 {
-		parts = t.toks
+		parts = t.toks[:t.head]
 	}
 	s := cutRunes(cellEscaper.Replace(strings.Join(parts, " ")), routineRunes)
-	return fmt.Sprintf("[×%s] %s (routine)", commaInt(t.count), s)
+	return fmt.Sprintf("[×%s] %s", commaInt(t.count), s)
 }
 
 func placeholder(tok string) bool {
@@ -480,15 +487,21 @@ func (r *judgeRun) note(out string) string {
 		if m, ok := r.made[strings.TrimSpace(ln)]; ok {
 			f.templates += m.templates
 			f.lines += m.lines
+			f.kept += m.kept
 		}
 	}
-	switch {
-	case f.templates > 0 && f.lines > 0:
-		return fmt.Sprintf("laya: %s, %d lines folded", Plural(f.templates, "routine template", "routine templates"), f.lines)
-	case f.templates > 0:
-		return "laya: " + Plural(f.templates, "routine template", "routine templates") + " folded"
-	case f.lines > 0:
-		return fmt.Sprintf("laya: %d routine lines folded", f.lines)
+	var parts []string
+	if f.kept > 0 {
+		parts = append(parts, Plural(f.kept, "template", "templates")+" kept in full")
 	}
-	return ""
+	if f.templates > 0 {
+		parts = append(parts, Plural(f.templates, "template", "templates")+" judged routine")
+	}
+	if f.lines > 0 {
+		parts = append(parts, fmt.Sprintf("%d routine lines folded", f.lines))
+	}
+	if len(parts) == 0 {
+		return ""
+	}
+	return "laya: " + strings.Join(parts, ", ")
 }

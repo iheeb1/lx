@@ -137,6 +137,8 @@ As in the head to head, each tool wraps it the way its hook would
 | rtk log | `rtk log app.log`: rtk's log filter on the whole file. No hook produces it, but it is rtk's best case for logs |
 | lx | `lx docker logs app` with `LX_LAYA=0` and no session |
 | lx + task | the same inside an agent session that carries a task (below), `LX_LAYA=0` |
+| lx --mode minimal | lx with `LX_MODE=minimal`: at most 2,000 tokens |
+| lx, 1,000 / 500-token budget | lx with `LX_BUDGET=1000` or `500`, to compare with rtk at its own size |
 | lx + laya | lx with the Laya daemon running |
 | lx + laya + task | both |
 | lx + laya, 30 s timeout | lx + laya with `LX_LAYA_TIMEOUT=30s`, so that every item lx sends gets judged |
@@ -160,32 +162,33 @@ laya does.
 
 **Laya.** The real daemon (laya 0.3.21, model `convaiinnovations/laya`,
 typed-decisions) runs under the sandbox's HOME. logbench starts it with
-`lx laya start`. When the lx binary has no `laya` command, as in the published
-run, it runs the same embedded `lx_laya.py` with the same offline environment.
+`lx laya start`. When the lx binary has no `laya` command, it runs the same
+embedded `lx_laya.py` with the same offline environment.
 lx's default judge timeout of 1.2 s applies except in the 30 s variant.
 `logbench.json` records the venv and model sizes, the load time, peak memory,
 and for each variant how many requests and items lx sent, how many items the
-daemon judged before the deadline in each request, and in how many runs a
-template was folded.
+daemon judged before the deadline in each request, and in how many runs Laya
+changed the view (a template kept in full or judged routine).
 
 **Metrics.**
 
 - **Tokens**: exact o200k counts, with tiktoken, of everything the variant
   printed (stdout and stderr together).
 - **Templates shown**: the share of a log's ground-truth templates that the
-  view shows. `[×N]` counts and lx's `(routine)` tag are stripped first. A
+  view shows. `[×N]` and `[×N, last …]` counts and lx's `(routine)` tag are
+  stripped first. A
   view line copied from the log shows the template loghub gives that log
   line, and no other: a looser template that also matches it (`rhost=<*>`
   swallowing `  user=root`) does not count. Some lines are cut short and end
-  in `...` or `…`: rtk cuts examples at 100 characters, and lx cuts routine
-  lines at 110 and elides the middle of very long ones. A cut line shows a
+  in `...` or `…`: rtk cuts examples at 100 characters, and lx cuts count lines
+  at 200 and elides the middle of very long lines. A cut line shows a
   template when every log line that starts with its visible part has that
   template, and the visible part holds at least 16 of the template's constant
   characters (or all of them). A cut line that could come from lines of two
   templates shows neither. Lines that are not copied from the log are matched
   against the templates, with each `<*>` read as `.+?`. The match must end at
   the end of the line, because the message is the last field of every loghub
-  format. Laya's routine lines carry placeholders of their own (`<*>`, `<N>`…).
+  format. lx's count lines carry placeholders of their own (`<*>`, `<N>`…).
   One counts when some log line could match both it and the template, with 16
   constant characters lined up, so a single such line can count for several
   templates. Templates with fewer than 4 constant characters are left out. So
@@ -204,7 +207,7 @@ template was folded.
   the command. The pooled rows give the median of the 14 logs' medians. The
   first run's output is the one scored. With Laya, the repeats can differ
   from it: how many items the daemon judges before the deadline varies from
-  run to run (0 to 16 of 24 on BGL), and so do its folds.
+  run to run (6 to 16 of 24 on BGL), and so do its folds.
 
 **Blind spots.**
 
@@ -212,8 +215,11 @@ template was folded.
   line. The measure doesn't say whether the values that matter (which block,
   which host) are in the view. lx summarizes them on `vars:` lines, and rtk
   shows the first example of each group. A `vars:` line never counts as
-  showing a template, even when it names one, while a Laya placeholder line
-  can count for several.
+  showing a template, even when it names one, while a count line with
+  placeholders can count for several. lx merges error records whose tokens
+  differ in at most a fifth of their positions, so two loghub error templates
+  can share one line: only the one its example shows is counted, even when the
+  `vars:` line under it names the other (`Failed password ×135, none ×4`).
 - Pooled numbers and the chart weight every template equally. Mac, with 337
   templates, weighs 24 times as much as HDFS, with 14.
 - The raw row assumes the agent reads everything. In Claude Code, output over

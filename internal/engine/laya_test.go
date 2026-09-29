@@ -44,7 +44,7 @@ func judgeCtx(j Judge, timeout time.Duration) *Context {
 	return &Context{Argv: []string{"tool"}, jr: newJudgeRun(&Context{}, Options{Judge: j, JudgeTimeout: timeout})}
 }
 
-func TestRoutineLine(t *testing.T) {
+func TestCountLine(t *testing.T) {
 	var journal []string
 	for i := 0; i < 60; i++ {
 		journal = append(journal, fmt.Sprintf("Sep 26 09:%02d:%02d web01 shop-api[2201]: level=info msg=\"request completed\" path=/api/p/%d status=200 duration=%dms", i/6, i%60, i, i+3))
@@ -54,25 +54,23 @@ func TestRoutineLine(t *testing.T) {
 		fail  string
 		want  string
 	}{
-		"hdfs":    {hdfsLog(), "081109 235959 1 ERROR dfs.Worker: worker %d failed", "[×150] INFO dfs.DataNode$PacketResponder: PacketResponder <*> for block blk_<N> terminating (routine)"},
-		"jsonl":   {jsonLinesLog(), `{"ts":"2026-09-26T11:00:00.000Z","level":"error","msg":"worker %d failed"}`, `[×298] "level":"info" "msg":"request completed" "method":"GET" "path":<*> "status":200 "duration_ms":<*> (routine)`},
-		"journal": {journal, `Sep 26 10:00:00 web01 shop-api[2201]: level=error msg="worker %d failed"`, `[×60] web01 shop-api[2201]: level=info msg="request completed" path=<*> status=200 duration=<DUR> (routine)`},
+		"hdfs":    {hdfsLog(), "081109 235959 1 ERROR dfs.Worker: worker %d failed", "[×150] INFO dfs.DataNode$PacketResponder: PacketResponder <*> for block blk_<N> terminating"},
+		"jsonl":   {jsonLinesLog(), `{"ts":"2026-09-26T11:00:00.000Z","level":"error","msg":"worker %d failed"}`, `[×298] "level":"info" "msg":"request completed" "method":"GET" "path":<*> "status":200 "duration_ms":<*>`},
+		"journal": {journal, `Sep 26 10:00:00 web01 shop-api[2201]: level=error msg="worker %d failed"`, `[×60] web01 shop-api[2201]: level=info msg="request completed" path=<*> status=200 duration=<DUR>`},
 	} {
 		lines := append([]string(nil), c.lines...)
 		for i := 0; i < 90; i++ {
 			lines = append(lines, fmt.Sprintf(c.fail, i))
 		}
-		sj := &stubJudge{}
-		out, ok := TemplateLogsFor(judgeCtx(sj, time.Second), lines)
-		if !ok || sj.count() != 1 {
-			t.Fatalf("%s: templated %v, %d judge calls", name, ok, sj.count())
+		out, ok := TemplateLogs(lines)
+		if !ok {
+			t.Fatalf("%s: not templated", name)
 		}
-		if body := strings.Join(out, "\n"); !strings.Contains(body, "\n"+c.want+"\n") {
+		if body := strings.Join(out, "\n") + "\n"; !strings.Contains(body, "\n"+c.want+"\n") {
 			t.Errorf("%s: want %s in\n%s", name, c.want, body)
 		}
-		plain, _ := TemplateLogs(lines)
-		if len(plain) <= len(out) {
-			t.Errorf("%s: judged view %d lines, plain %d", name, len(out), len(plain))
+		if n := strings.Count(strings.Join(out, "\n"), " [×90"); n != 1 {
+			t.Errorf("%s: the 90 failures are not one record:\n%s", name, strings.Join(out, "\n"))
 		}
 	}
 }

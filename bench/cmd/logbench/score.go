@@ -177,7 +177,7 @@ func overlap(a, b string) int {
 
 var (
 	countHead = lazyre.New(`^\[×[\d,]+\]\s*`)
-	countTail = lazyre.New(`\s*\[×[\d,]+\]$`)
+	countTail = lazyre.New(`\s*\[×[\d,]+(?:, last [^\]]*)?\]$`)
 )
 
 // cut drops a trailing ... or …, which a log line can also have for real
